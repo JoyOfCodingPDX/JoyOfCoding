@@ -15,7 +15,7 @@ import javax.swing.event.*;
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
@@ -40,6 +40,9 @@ public class GradeBookGUI extends JFrame {
 
   /** A menu listing the recently visited gradebook files */
   private JMenuItem recentFilesMenu;
+
+  /** A label that displays status messages */
+  private JLabel status;
 
   /** An action for creating a new grade book file */
   private Action newAction;
@@ -98,6 +101,43 @@ public class GradeBookGUI extends JFrame {
     // Add the GradeBookPanel
     this.bookPanel = new GradeBookPanel(this);
     this.getContentPane().add(this.bookPanel, BorderLayout.CENTER);
+
+    // Add the status label.  Status messages are displaed for five
+    // seconds
+    this.status = new JLabel(" ") {
+        private java.util.Timer timer =
+          new java.util.Timer(true /* isDaemon */);
+        private TimerTask lastTask = null;
+
+        public void setText(String text) {
+          super.setText(text);
+          if ("".equals(text.trim())) {
+            // Avoid recusion
+            return;
+          }
+
+          if (lastTask != null) {
+            lastTask.cancel();
+          }
+          lastTask = new TimerTask() {
+              public void run() {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                      // Empty label looks funny with border
+                      GradeBookGUI.this.status.setText(" ");
+                    }
+                  });
+              }
+            };
+          timer.schedule(lastTask, 5 * 1000);
+        }
+      };
+    Border inside = BorderFactory.createEmptyBorder(0, 2, 0, 0);
+    Border outside = BorderFactory.createLoweredBevelBorder();
+    Border border =
+      BorderFactory.createCompoundBorder(outside, inside); 
+    this.status.setBorder(border);
+    this.getContentPane().add(this.status, BorderLayout.SOUTH);
 
     // Handle exit events
     this.addWindowListener(new WindowAdapter() {
@@ -357,6 +397,7 @@ public class GradeBookGUI extends JFrame {
     try {
       XmlDumper dumper = new XmlDumper(this.file);
       dumper.dump(this.book);
+      this.status.setText("Saved " + this.file);
 
     } catch (IOException ex) {
       error("While writing grade book", ex);
@@ -449,6 +490,8 @@ public class GradeBookGUI extends JFrame {
     } catch (ParserException ex) {
       error("While parsing file " + file.getName(), ex);
     }
+
+    this.status.setText("Opened " + file);
   }
 
   /**
@@ -478,6 +521,7 @@ public class GradeBookGUI extends JFrame {
 	  XmlStudentParser sp = new XmlStudentParser(file);
 	  Student student = sp.parseStudent();
 	  this.book.addStudent(student);
+          this.status.setText("Imported " + student.getFullName());
         
 	} catch (IOException ex) {
 	  error("Could not access " + file.getName(), ex);
@@ -508,6 +552,8 @@ public class GradeBookGUI extends JFrame {
 
     this.displayGradeBook(new GradeBook(className));
     this.file = null;
+    this.status.setText("Created new graded book for \"" + className +
+                        "\"");
   }
 
   /**

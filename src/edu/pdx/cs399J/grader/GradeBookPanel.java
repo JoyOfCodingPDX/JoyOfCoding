@@ -69,6 +69,7 @@ public class GradeBookPanel extends JPanel {
           }
         }
       });
+    this.students.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 
     leftPanel.add(new JScrollPane(this.students), BorderLayout.CENTER);
     JPanel buttons = new JPanel();
@@ -96,7 +97,8 @@ public class GradeBookPanel extends JPanel {
 
     split.setLeftComponent(leftPanel);
 
-    this.add(split);
+    this.setLayout(new BorderLayout());
+    this.add(split, BorderLayout.CENTER);
   }
 
   /**
