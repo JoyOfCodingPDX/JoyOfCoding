@@ -38,6 +38,7 @@
     <delete file="${jars.dir}/${cs410J.jar}"/>
     <delete file="${jars.dir}/${familyTree.jar}"/>
     <delete file="${jars.dir}/${grader.jar}"/>
+    <delete dir="${api.docs.dir}"/>
   </target>
 
   <!-- Builds the example code -->
