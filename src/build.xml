@@ -188,7 +188,7 @@
   <!-- Runs the junit unit tests for the family tree code -->
   <target name="familyTree-tests" depends="familyTree">
     <junit printsummary="yes">
-      <formatter type="plain" />
+      <formatter type="plain" usefile="false"/>
       <test name="edu.pdx.cs410J.familyTree.tests.PersonTest" />
       <test name="edu.pdx.cs410J.familyTree.tests.MarriageTest" />
       <test name="edu.pdx.cs410J.familyTree.tests.XmlTest" />
@@ -237,6 +237,7 @@
         <pathelement location="${classes.dir}"/>
         <pathelement location="${jars.dir}/activation.jar"/>
         <pathelement location="${jars.dir}/mail.jar"/>
+        <pathelement location="${jars.dir}/junit.jar"/>
       </classpath>
       <link href="http://java.sun.com/j2se/1.4/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>

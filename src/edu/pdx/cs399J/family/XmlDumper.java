@@ -217,7 +217,6 @@ public class XmlDumper extends XmlHelper implements Dumper {
     // Then we simply write the DOM tree to the destination
     try {
       Source src = new DOMSource(doc);
-      assert this.pw != null;
       Result res = new StreamResult(this.pw);
 
       TransformerFactory xFactory = TransformerFactory.newInstance();
