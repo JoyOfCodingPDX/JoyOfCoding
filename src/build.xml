@@ -152,6 +152,8 @@
            includes="edu/pdx/cs410J/familyTree/**"
            includeAntRuntime="false"
            debug="on"/>
+    <copy file="${src.dir}/edu/pdx/cs410J/familyTree/familytree.dtd" 
+          toDir="${classes.dir}/edu/pdx/cs410J/familyTree"/>
     <jar jarfile="${jars.dir}/${familyTree.jar}"
          basedir="${classes.dir}"
          update="yes"
@@ -171,6 +173,8 @@
         <pathelement location="${jars.dir}/mail.jar"/>
       </classpath>
     </javac>
+    <copy file="${src.dir}/edu/pdx/cs410J/grader/gradebook.dtd" 
+          toDir="${classes.dir}/edu/pdx/cs410J/grader"/>
     <jar jarfile="${jars.dir}/${grader.jar}"
          basedir="${classes.dir}"
          manifest="edu/pdx/cs410J/grader/Manifest.mf"

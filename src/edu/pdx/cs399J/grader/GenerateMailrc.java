@@ -81,7 +81,7 @@ public class GenerateMailrc {
     GradeBook book = null;
     PrintWriter mailrc = null;
     try {
-      XmlParser parser = new XmlParser(bookName);
+      XmlGradeBookParser parser = new XmlGradeBookParser(bookName);
       book = parser.parse();
       mailrc = new PrintWriter(new FileWriter(mailrcName), true);
 

@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.familyTree;
 
-import edu.pdx.cs410J.ParserException;
-
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -39,7 +37,7 @@ public class AddPerson {
     err.println("Where options are:");
     err.println("  -firstName name    Person's first name");
     err.println("  -middleName name   Person's middle name");
-    err.println("  -lastname name     Person's last name");
+    err.println("  -lastName name     Person's last name");
     err.println("  -dob date          Person's date of birth " + 
 		"(e.g. Jun 27, 1936)");
     err.println("  -dod date          Person's date of death " +
@@ -238,7 +236,7 @@ public class AddPerson {
       try {
 	tree = parser.parse();
 
-      } catch (ParserException ex) {
+      } catch (FamilyTreeException ex) {
 	err.println("** File " + fileName + " is malformatted");
 	System.exit(1);
       }

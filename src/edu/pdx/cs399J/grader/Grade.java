@@ -218,7 +218,7 @@ public class Grade implements Notable {
     // Parse XML file
     GradeBook book = null;
     try {
-      XmlParser parser = new XmlParser(file);
+      XmlGradeBookParser parser = new XmlGradeBookParser(file);
       book = parser.parse();
 
     } catch (FileNotFoundException ex) {

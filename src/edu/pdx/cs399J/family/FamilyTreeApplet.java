@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-import edu.pdx.cs410J.ParserException;
-
 /**
  * This class is an applet that displays an immutable family tree.  
  */

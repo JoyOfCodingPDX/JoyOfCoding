@@ -209,7 +209,7 @@ public class AssignmentPanel extends JPanel {
 
     GradeBook book = null;
     try {
-      XmlParser parser = new XmlParser(fileName);
+      XmlGradeBookParser parser = new XmlGradeBookParser(fileName);
       book = parser.parse();
 
     } catch (FileNotFoundException ex) {

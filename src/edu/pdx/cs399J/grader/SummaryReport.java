@@ -164,7 +164,7 @@ public class SummaryReport {
     GradeBook book = null;
     try {
       err.println("Parsing " + file);
-      XmlParser parser = new XmlParser(file);
+      XmlGradeBookParser parser = new XmlGradeBookParser(file);
       book = parser.parse();
 
     } catch (FileNotFoundException ex) {

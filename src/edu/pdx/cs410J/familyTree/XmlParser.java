@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.familyTree;
 
-import edu.pdx.cs410J.ParserException;
-
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -16,7 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author David Whitlock
  */
-public class XmlParser implements Parser {
+public class XmlParser extends XmlHelper implements Parser {
 
   private FamilyTree tree;  // The family tree we're building
   private InputStream in;  // Read XML file from here
@@ -59,14 +57,14 @@ public class XmlParser implements Parser {
    * text.
    */
   private static int extractInteger(Node node) 
-    throws ParserException {
+    throws FamilyTreeException {
 
     String text = extractString(node);
     try {
       return Integer.parseInt(text);
 
     } catch (NumberFormatException ex) {
-      throw new ParserException("Bad integer: " + text);
+      throw new FamilyTreeException("Bad integer: " + text);
     }
   }
 
@@ -75,11 +73,11 @@ public class XmlParser implements Parser {
    * from it.
    */
   private static Date extractDate(Element root) 
-    throws ParserException {
+    throws FamilyTreeException {
 
     // Make sure we're dealing with a data
     if (!root.getNodeName().equals("date")) {
-      throw new ParserException("Not a <date>: " +
+      throw new FamilyTreeException("Not a <date>: " +
 				root.getNodeName() + ", '" +
 				root.getNodeValue() + "'");
     }
@@ -106,7 +104,7 @@ public class XmlParser implements Parser {
       } else {
 	String s = "Invalidate element in date: " +
 	  element.getNodeName();
-	throw new ParserException(s);
+	throw new FamilyTreeException(s);
       }
     }
 
@@ -117,10 +115,10 @@ public class XmlParser implements Parser {
    * Examines a chunk of a DOM tree and adds a person to the family
    * tree.
    */
-  private void handlePerson(Element root) throws ParserException {
+  private void handlePerson(Element root) throws FamilyTreeException {
     // Make sure that we're dealing with a person here
     if (!root.getNodeName().equals("person")) {
-      throw new ParserException("Expecting a <person>");
+      throw new FamilyTreeException("Expecting a <person>");
     }
 
     Person person = null;
@@ -160,7 +158,7 @@ public class XmlParser implements Parser {
 	}
 	
 	if(dob == null) {
-	  throw new ParserException("No <date> in <dob>?");
+	  throw new FamilyTreeException("No <date> in <dob>?");
 	}
 
 	person.setDateOfBirth(extractDate(dob));
@@ -178,7 +176,7 @@ public class XmlParser implements Parser {
         }
 
         if (dod == null) {
-          throw new ParserException("No <date> in <dod>?");
+          throw new FamilyTreeException("No <date> in <dod>?");
         }
 
 	person.setDateOfDeath(extractDate(dod));
@@ -190,7 +188,7 @@ public class XmlParser implements Parser {
 	  id = Integer.parseInt(s);
 
 	} catch (NumberFormatException ex) {
-	  throw new ParserException("Bad father-id: " + s);
+	  throw new FamilyTreeException("Bad father-id: " + s);
 	}
 
 	person.setFather(this.tree.getPerson(id));
@@ -202,7 +200,7 @@ public class XmlParser implements Parser {
           id = Integer.parseInt(s);
 
         } catch (NumberFormatException ex) {
-          throw new ParserException("Bad mother-id: " + s);
+          throw new FamilyTreeException("Bad mother-id: " + s);
         }
 
         person.setMother(this.tree.getPerson(id));
@@ -213,10 +211,10 @@ public class XmlParser implements Parser {
   /**
    * Examines a chunk of a DOM tree and makes note of a marriage. 
    */
-  private void handleMarriage(Element root) throws ParserException {
+  private void handleMarriage(Element root) throws FamilyTreeException {
     // Make sure we're dealing with a marriage
     if (!root.getNodeName().equals("marriage")) {
-      throw new ParserException("");
+      throw new FamilyTreeException("");
     }
 
     int husband_id = 0;
@@ -233,7 +231,7 @@ public class XmlParser implements Parser {
 	  husband_id = Integer.parseInt(id);
 
 	} catch (NumberFormatException ex) {
-	  throw new ParserException("Bad husband id: " + id);
+	  throw new FamilyTreeException("Bad husband id: " + id);
 	}
 
       } else if (attr.getNodeName().equals("wife-id")) {
@@ -242,7 +240,7 @@ public class XmlParser implements Parser {
 	try {
 	  wife_id = Integer.parseInt(id);
 	} catch (NumberFormatException ex) {
-	  throw new ParserException("Bad wife id: " + id);
+	  throw new FamilyTreeException("Bad wife id: " + id);
 	}
       }
     }
@@ -277,7 +275,7 @@ public class XmlParser implements Parser {
    * Parses the specified input source in XML format and from it
    * creates a family tree.
    */
-  public FamilyTree parse() throws ParserException {
+  public FamilyTree parse() throws FamilyTreeException {
     this.tree = new FamilyTree();
 
     // Create a DOM tree from the XML source
@@ -289,24 +287,26 @@ public class XmlParser implements Parser {
 
       DocumentBuilder builder = 
 	factory.newDocumentBuilder();
-      builder.setErrorHandler(new DefaultHandler());
+      builder.setErrorHandler(this);
+      builder.setEntityResolver(this);
+
       doc = builder.parse(new InputSource(this.in));
 
     } catch (ParserConfigurationException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex);
 
     } catch (SAXException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex);
 
     } catch (IOException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex);
     }
 
     Element root = (Element) doc.getChildNodes().item(1);
 
     // Make sure that we are really dealing with a family tree
     if (!root.getNodeName().equals("familytree")) {
-      throw new ParserException("Not a family tree XML source: " +
+      throw new FamilyTreeException("Not a family tree XML source: " +
                                 root.getNodeName());
     }
 
@@ -330,7 +330,7 @@ public class XmlParser implements Parser {
       } else {
 	String s = "A family tree should not have a " +
 	  element.getNodeName();
-	throw new ParserException(s);
+	throw new FamilyTreeException(s);
       }
     }
 
@@ -360,7 +360,7 @@ public class XmlParser implements Parser {
     } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file " + fileName);
 
-    } catch (ParserException ex) {
+    } catch (FamilyTreeException ex) {
       System.err.println("** " + ex.getMessage());
     }
   }

@@ -227,7 +227,7 @@ public class GradeBook {
     if (file.exists()) {
       // Parse a grade book from the XML file
       try {
-        XmlParser parser = new XmlParser(file);
+        XmlGradeBookParser parser = new XmlGradeBookParser(file);
         book = parser.parse();
 
       } catch (FileNotFoundException ex) {
@@ -253,8 +253,13 @@ public class GradeBook {
         }
 
         try {
-          Student student = XmlParser.parseStudent(null, importFile);
+          XmlStudentParser sp = new XmlStudentParser(importFile);
+          Student student = sp.parseStudent();
           book.addStudent(student);
+
+        } catch (IOException ex) {
+          err.println("** Error during parsing: " + ex.getMessage());
+          System.exit(1);
 
         } catch (ParserException ex) {
           err.println("** Error during parsing: " + ex.getMessage());

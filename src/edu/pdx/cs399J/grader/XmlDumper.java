@@ -15,11 +15,7 @@ import org.xml.sax.*;
  * file.  By default, the students in the grade book are dumped to XML
  * files in the same directory as the grade book's XML file.
  */
-public class XmlDumper {
-  private static final String systemID = 
-    "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
-  private static final String publicID = 
-    "-//Portland State University//DTD CS410J Grade Book//EN";
+public class XmlDumper extends XmlHelper {
 
   private File studentDir = null; // Where to dump student XML files
   PrintWriter pw = null;          // Where to dump grade book
@@ -79,6 +75,8 @@ public class XmlDumper {
       factory.setValidating(true);
 
       DocumentBuilder builder = factory.newDocumentBuilder();
+      builder.setErrorHandler(this);
+      builder.setEntityResolver(this);
 
       DOMImplementation dom =
         builder.getDOMImplementation();
@@ -179,6 +177,7 @@ public class XmlDumper {
       Transformer xform = xFactory.newTransformer();
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
       xform.transform(src, res);
 
     } catch (TransformerException ex) {
@@ -227,6 +226,7 @@ public class XmlDumper {
       Transformer xform = xFactory.newTransformer();
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
       xform.transform(src, res);
 
     } catch (TransformerException ex) {

@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.familyTree;
 
-import edu.pdx.cs410J.ParserException;
-
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -43,22 +41,22 @@ public class TextParser implements Parser {
 
   /**
    * Helper method that creates an error string and throws a
-   * <code>ParserException</code>.
+   * <code>FamilyTreeException</code>.
    */
-  private void error(String message) throws ParserException {
+  private void error(String message) throws FamilyTreeException {
     int lineNumber = this.in.getLineNumber();
     String m = "Error at line " + lineNumber + ": " + message;
-    throw new ParserException(m);
+    throw new FamilyTreeException(m);
   }
 
   /**
    * Parses the specified input source and from it creates a family
    * tree.
    *
-   * @throws ParserException
+   * @throws FamilyTreeException
    *         The data source is malformatted
    */
-  public FamilyTree parse() throws ParserException {
+  public FamilyTree parse() throws FamilyTreeException {
     this.tree = new FamilyTree();
 
     // Examine each line of the file.  The first line should contain a
@@ -115,7 +113,7 @@ public class TextParser implements Parser {
     } catch (IOException ex) {
       int lineNumber = this.in.getLineNumber();
       String m = "Parsing error at line " + lineNumber;
-      throw new ParserException(m);
+      throw new FamilyTreeException(m);
     }
 
     return this.tree;
@@ -125,7 +123,7 @@ public class TextParser implements Parser {
    * Helper method that parses the source, creates a
    * <code>Person</code>, and adds it to the family tree.
    */
-  private void parsePerson(int nLines) throws ParserException {
+  private void parsePerson(int nLines) throws FamilyTreeException {
     Person person = null;
 
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
@@ -279,7 +277,7 @@ public class TextParser implements Parser {
   /**
    * Helper method that parses the source and create marriages.
    */
-  private void parseMarriage(int nLines) throws ParserException {
+  private void parseMarriage(int nLines) throws FamilyTreeException {
     Marriage marriage = null;
 
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
@@ -426,7 +424,7 @@ public class TextParser implements Parser {
     } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file " + fileName);
 
-    } catch (ParserException ex) {
+    } catch (FamilyTreeException ex) {
       System.err.println("** " + ex.getMessage());
     }
   }

@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-import edu.pdx.cs410J.ParserException;
-
 /**
  * This class is a <code>JPanel</code> that can be used to display a
  * family tree. 
@@ -198,7 +196,7 @@ public class FamilyTreePanel extends JPanel {
       this.sourceLocation.setText(ex.toString());
       return;
 
-    } catch (ParserException ex) {
+    } catch (FamilyTreeException ex) {
       this.sourceLocation.setText(ex.toString());
       return;
     }
@@ -212,7 +210,7 @@ public class FamilyTreePanel extends JPanel {
    * XML format from it.
    */ 
   protected FamilyTree parseSource(URL url) 
-    throws IOException, ParserException { 
+    throws IOException, FamilyTreeException { 
     
     InputStream stream = url.openStream();
 

@@ -212,7 +212,7 @@ public class GradeBookGUI extends JFrame {
       File file = chooser.getSelectedFile();
       
       try {
-        XmlParser parser = new XmlParser(file);
+        XmlGradeBookParser parser = new XmlGradeBookParser(file);
         GradeBook book = parser.parse();
         this.displayGradeBook(book);
         this.file = file;
@@ -247,9 +247,14 @@ public class GradeBookGUI extends JFrame {
       // grade book
       File file = chooser.getSelectedFile();
       try {
-        Student student = XmlParser.parseStudent(null, file);
+        XmlStudentParser sp = new XmlStudentParser(file);
+        Student student = sp.parseStudent();
         this.book.addStudent(student);
         
+      } catch (IOException ex) {
+        error("Could not access " + file.getName(), ex);
+        return;
+
       } catch (ParserException ex) {
         error("While parsing file " + file.getName(), ex);
         return;
@@ -327,17 +332,19 @@ public class GradeBookGUI extends JFrame {
 
       } else {
         try {
-          XmlParser parser = new XmlParser(file);
+          XmlGradeBookParser parser = new XmlGradeBookParser(file);
           GradeBook book = parser.parse();
           gui.displayGradeBook(book);
           gui.file = file;
 
         } catch (IOException ex) {
-          err.println("While parsing file " + file.getName());
+          err.println("While parsing file " + file.getName() + 
+                      ": " + ex);
           System.exit(1);
 
         } catch (ParserException ex) {
-          err.println("While parsing file " + file.getName());
+          err.println("While parsing file " + file.getName() +
+                      ": " + ex);
           System.exit(1);
         }
       }

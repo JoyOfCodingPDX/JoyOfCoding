@@ -7,8 +7,6 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import edu.pdx.cs410J.ParserException;
-
 /**
  * This class is a graphical user interface that lets the user edit a
  * family tree.
@@ -430,7 +428,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
       } catch (FileNotFoundException ex) {
         error(ex.toString());
 
-      } catch (ParserException ex) {
+      } catch (FamilyTreeException ex) {
         error(ex.toString());
       }
 

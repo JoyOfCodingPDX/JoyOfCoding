@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.familyTree;
 
-import edu.pdx.cs410J.ParserException;
-
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -189,7 +187,7 @@ public class NoteMarriage {
       try {
         tree = parser.parse();
 
-      } catch (ParserException ex) {
+      } catch (FamilyTreeException ex) {
         err.println("** File " + fileName + " is malformatted");
         System.exit(1);
       }

@@ -16,12 +16,7 @@ import org.xml.sax.*;
  * file) in XML format.  This file is meant to be used by an
  * <code>XmlParser</code> to create a <code>FamilyTree</code>.
  */
-public class XmlDumper implements Dumper {
-  private static final String systemID = 
-    "http://www.cs.pdx.edu/~whitlock/dtds/familytree.dtd";
-  private static final String publicID = 
-    "-//Portland State University//DTD CS410J Family Tree//EN";
-
+public class XmlDumper extends XmlHelper implements Dumper {
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   private PrintWriter pw;      // Dumping destination
@@ -94,12 +89,14 @@ public class XmlDumper implements Dumper {
       factory.setValidating(true);
 
       DocumentBuilder builder = factory.newDocumentBuilder();
+      builder.setErrorHandler(this);
+      builder.setEntityResolver(this);
 
       DOMImplementation dom =
         builder.getDOMImplementation();
       DocumentType docType = 
-        dom.createDocumentType("familytree", publicID, systemID);
-      doc = dom.createDocument(null, "familytree", docType);
+        dom.createDocumentType("family-tree", publicID, systemID);
+      doc = dom.createDocument(null, "family-tree", docType);
 
     } catch (ParserConfigurationException ex) {
       ex.printStackTrace(System.err);
@@ -134,21 +131,21 @@ public class XmlDumper implements Dumper {
 
 	String firstName = person.getFirstName();
 	if(firstName != null) {
-	  Element fn = doc.createElement("firstname");
+	  Element fn = doc.createElement("first-name");
 	  p.appendChild(fn);
 	  fn.appendChild(doc.createTextNode(firstName));
 	}
 
 	String middleName = person.getMiddleName();
 	if(middleName != null) {
-	  Element mn = doc.createElement("middlename");
+	  Element mn = doc.createElement("middle-name");
 	  p.appendChild(mn);
 	  mn.appendChild(doc.createTextNode(middleName));
 	}
 
 	String lastName = person.getLastName();
 	if(lastName != null) {
-	  Element ln = doc.createElement("lastname");
+	  Element ln = doc.createElement("last-name");
 	  p.appendChild(ln);
 	  ln.appendChild(doc.createTextNode(lastName));
 	}
@@ -225,6 +222,7 @@ public class XmlDumper implements Dumper {
       Transformer xform = xFactory.newTransformer();
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
       xform.transform(src, res);
 
     } catch (TransformerException ex) {
