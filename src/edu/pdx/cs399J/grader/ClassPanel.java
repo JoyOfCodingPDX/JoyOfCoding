@@ -14,20 +14,14 @@ import javax.swing.event.*;
  * <code>GradeBook</code>.
  */
 public class ClassPanel extends JPanel {
-  private static String QUIZ = "Quiz";
-  private static String PROJECT = "Project";
-  private static String OTHER = "Other";
-
   private GradeBook book;
-  private Vector assignmentNames = new Vector();
+
+  private JFrame frame;
 
   // GUI components we care about
   private JLabel classNameLabel;
   private JList assignmentsList;
-  private JTextField nameField;
-  private JComboBox typeBox;
-  private JTextField pointsField;
-  private JTextField descriptionField;
+  private AssignmentPanel assignmentPanel;
 
   private JButton newAssignmentButton;
   private JButton newStudentButton;
@@ -35,8 +29,10 @@ public class ClassPanel extends JPanel {
   /**
    * Creats a <code>ClassPanel</code> and initializes its components.
    */
-  public ClassPanel() {
+  public ClassPanel(JFrame fram) {
+    this.frame = frame;
     this.setLayout(new BorderLayout());
+    this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
     JPanel classNamePanel = new JPanel();
     classNamePanel.setLayout(new BoxLayout(classNamePanel,
@@ -55,106 +51,58 @@ public class ClassPanel extends JPanel {
     assignmentsPanel.setLayout(new BorderLayout());
 
     JPanel listPanel = new JPanel();
+    listPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     listPanel.setLayout(new BorderLayout());
+
     this.assignmentsList = new JList();
+    assignmentsList.addListSelectionListener(new
+      ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+          String name = (String) assignmentsList.getSelectedValue();
+          if(name != null) {
+            Assignment assign = book.getAssignment(name);
+            if(assign == null) {
+              String s = "No assignment named: " + name;
+              throw new IllegalArgumentException(s);
+            }
+            displayAssignment(assign);
+          }
+        }
+      });
     listPanel.add(new JScrollPane(this.assignmentsList),
                   BorderLayout.CENTER);
+
     this.newAssignmentButton = new JButton("Add Assignment");
     this.newAssignmentButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          // Get the name and max points of the assignment
-          String name = nameField.getText();
-          if(name == null || name.equals("")) {
-            String s = "No assignment name specified";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-          }
-
-          String points = pointsField.getText();
-          if(points == null || points.equals("")) {
-            String s = "No points value specified";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-          }
-
-          // Create a new Assignment object
-          try {
-            double d = Double.parseDouble(points);
-            Assignment newAssign = new Assignment(name, d);
-            fillInAssignment(newAssign);
-            book.addAssignment(newAssign);
-
-          } catch(NumberFormatException ex) {
-            String s = points + " is not a number";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-          }
+          createAssignment();
         }
       });
     listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
 
     assignmentsPanel.add(listPanel, BorderLayout.WEST);
 
-    // Set up the panel containing info about an assignment
     JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+    infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    infoPanel.setLayout(new BorderLayout());
+    this.assignmentPanel = new AssignmentPanel(false);
+    infoPanel.add(assignmentPanel, BorderLayout.CENTER);
+
     JPanel p = new JPanel();
-    p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-
-    p.add(new JLabel("Name:"));
-    this.nameField = new JTextField(8);
-    p.add(this.nameField);
-    p.add(Box.createHorizontalGlue());
-    infoPanel.add(p);
-
-    p = new JPanel();
-    p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-    p.add(new JLabel("Max points:"));
-    this.pointsField = new JTextField(5);
-    p.add(this.pointsField);
-    p.add(Box.createHorizontalGlue());
-    infoPanel.add(p);
-
-    p = new JPanel();
-    p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-    p.add(new JLabel("Type:"));
-    this.typeBox = new JComboBox();
-    this.typeBox.addItem(QUIZ);
-    this.typeBox.addItem(PROJECT);
-    this.typeBox.addItem(OTHER);
-    p.add(this.typeBox);
-    p.add(Box.createHorizontalGlue());
-    infoPanel.add(p);
-
-    p = new JPanel();
-    p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-    p.add(new JLabel("Description:"));
-    this.descriptionField = new JTextField(20);
-    p.add(this.descriptionField);
-    p.add(Box.createHorizontalGlue());
-    infoPanel.add(p);
-
-    infoPanel.add(Box.createVerticalGlue());
-
-    p = new JPanel();
     p.setLayout(new FlowLayout());
     JButton updateButton = new JButton("Update");
     updateButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          
+          // Get the selected assignment and update it
+          String name = (String) assignmentsList.getSelectedValue();
+          Assignment assign = book.getAssignment(name);
+
+          // Update currently selected assignment
+          updateAssignment(assign);
         }
       });
     p.add(updateButton);
-    infoPanel.add(p);
+    infoPanel.add(p, BorderLayout.SOUTH);
 
     assignmentsPanel.add(infoPanel, BorderLayout.EAST);
 
@@ -188,11 +136,33 @@ public class ClassPanel extends JPanel {
   }
 
   /**
+   * Creates a new assignment based on the contents of the "name" and
+   * "max points" fields.  While we're at it, we add it to the
+   * assignment book and display it in the assignment list.
+   */
+  private Assignment createAssignment() {
+    NewAssignmentDialog dialog = new NewAssignmentDialog(this.frame);
+    dialog.pack();
+    dialog.setLocationRelativeTo(frame);
+    dialog.setVisible(true);
+
+    Assignment newAssign = dialog.getAssignment();
+
+    if(newAssign != null) {
+      book.addAssignment(newAssign);
+      this.displayAssignments(book);
+      this.assignmentsList.setSelectedValue(newAssign.getName(),
+                                            true);
+    }
+    return(newAssign);
+  }
+
+  /**
    * Fills in the contents of an <code>Assignment</code> based on the
    * contents of the GUI.
    */
-  private void fillInAssignment(Assignment assign) {
-    
+  private void updateAssignment(Assignment assign) {
+    this.assignmentPanel.updateAssignment(assign);
   }
 
   /**
@@ -207,13 +177,28 @@ public class ClassPanel extends JPanel {
     // Display name of the class
     this.classNameLabel.setText(book.getClassName());
 
+    this.displayAssignments(book);
+    this.assignmentsList.clearSelection();  // No initial selection
+  }
+
+  /**
+   * Displays the names of all of the assignments in a given grade
+   * book in the assignmentsList.
+   */
+  void displayAssignments(GradeBook book) {
     // Display all of the assignments
-    this.assignmentNames = new Vector();
-    this.assignmentNames.addAll(book.getAssignmentNames());
-    this.assignmentsList.setListData(this.assignmentNames);
-    this.assignmentsList.clearSelection();
+    Vector assignmentNames = new Vector();
+    assignmentNames.addAll(book.getAssignmentNames());
+    this.assignmentsList.setListData(assignmentNames);
   }
   
+  /**
+   * Displays an assignment in the appropriate fields
+   */
+  private void displayAssignment(Assignment assign) {
+    this.assignmentPanel.displayAssignment(assign);
+  }
+
   /**
    * Test program that displays and edits the information in a given
    * grade book stored in an XML file.
@@ -224,7 +209,7 @@ public class ClassPanel extends JPanel {
       System.exit(1);
     }
 
-    String fileName = args[0];
+    final String fileName = args[0];
 
     GradeBook book = null;
     try {
@@ -244,12 +229,22 @@ public class ClassPanel extends JPanel {
       System.exit(1);
     }
 
-    ClassPanel classPanel = new ClassPanel();
+    JFrame frame = new JFrame("ClassPanel test");
+    ClassPanel classPanel = new ClassPanel(frame);
     classPanel.setGradeBook(book);
 
-    JFrame frame = new JFrame("StudentsList test");
+    final GradeBook theBook = book;
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
+          // Write changes to grade book back to file
+          try {
+            XmlDumper dumper = new XmlDumper(fileName);
+            dumper.dump(theBook);
+
+          } catch(IOException ex) {
+            System.err.println("** Error while writing XML file: " + ex);
+          }
+
           System.exit(1);
         }
       });

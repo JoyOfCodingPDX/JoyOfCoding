@@ -10,7 +10,7 @@ import edu.pdx.cs410J.ParserException;
  *
  * @author David Whitlock
  */
-public class Assignment {
+public class Assignment implements Notable {
   /**
    * The assignment is a project
    */
@@ -50,6 +50,14 @@ public class Assignment {
    */
   public double getPoints() {
     return(this.points);
+  }
+
+  /**
+   * Sets the number of points that this <code>Assignment</code> is
+   * worth.
+   */
+  public void setPoints(double points) {
+    this.points = points;
   }
 
   /**

@@ -8,7 +8,7 @@ import edu.pdx.cs410J.ParserException;
 /**
  * This class represents a student who is taking CS410J.
  */
-public class Student {
+public class Student implements Notable {
 
   private String id;
   private String firstName;

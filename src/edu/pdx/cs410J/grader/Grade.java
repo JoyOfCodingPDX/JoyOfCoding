@@ -8,7 +8,7 @@ import edu.pdx.cs410J.ParserException;
 /**
  * This class represent the grade a student got on an assignment.
  */
-public class Grade {
+public class Grade implements Notable {
   /**
    * The assignment is not complete
    */
