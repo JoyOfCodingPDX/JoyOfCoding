@@ -399,7 +399,7 @@ public class Submit {
 				     DateFormat.FULL);
     text.append("Submitted on: " + df.format(submitTime) + "\n");
     if(comment != null) {
-      text.append("Comment: " + comment);
+      text.append("\nComment: " + comment + "\n\n");
     }
     text.append("Contents:\n");
     
