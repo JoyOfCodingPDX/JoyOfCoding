@@ -11,6 +11,10 @@ import javax.swing.border.*;
 
 /**
  * This is a dialog for editing a <code>Marriage</code>.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.5 $
+ * @since Fall 2000
  */
 public class EditMarriageDialog extends JDialog {
 
@@ -45,8 +49,7 @@ public class EditMarriageDialog extends JDialog {
                             FamilyTree tree) {
     this(owner, "Creating Marriage", tree);
 
-    int id = spouse.getId();
-    if (id % 2 == 0) {
+    if (spouse.getGender() == Person.MALE) {
       // husband
       this.husband = spouse;
       this.husbandField.setText(this.husband.getFullName());
