@@ -26,6 +26,22 @@ public class JNLPServicesExample extends JPanel {
     } catch (UnavailableServiceException ex) {
       tabs.add(title, new JLabel("BasicService not available"));
     }
+
+    title = "File Services";
+    try {
+      tabs.add(title, new FileServicesExample());
+
+    } catch (UnavailableServiceException ex) {
+      tabs.add(title, new JLabel("File Services not available"));
+    }
+
+    title = "Peristence Service";
+    try {
+      tabs.add(title, new PersistenceServiceExample());
+
+    } catch (UnavailableServiceException ex) {
+      tabs.add(title, new JLabel("Persistence Service not available"));
+    }
   }
 
   /**
