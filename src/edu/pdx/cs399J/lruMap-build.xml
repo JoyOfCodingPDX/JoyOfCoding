@@ -24,12 +24,11 @@
   <target name="props">
     <property environment="myenv"/>
 
-    <!-- Uncomment and sent to your login id
+    <!-- Uncomment and set to your login id
     <property name="user.id" value="whitlock"/>
     -->
 
     <property name="src.dir" value="${basedir}"/>
-    <property name="jars.dir" value="${basedir}/../jars"/>
     <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
