@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
+    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
