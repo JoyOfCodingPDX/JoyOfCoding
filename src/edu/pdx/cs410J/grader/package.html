@@ -3,4 +3,44 @@
 <P>This package contains classes that are used to keep track of
 students, grade projects, and submit assignments in CS410J.</P>
 
+<P>When we test student code, we run a security manager to ensure that
+their code does not do anything malicious and to allow us to run
+multiple invocation of a <code>main</code> without the JVM exiting.
+We also employ a policy file that looks like this:</P>
+
+<PRE>
+// Privileges for Dave's code and student's code
+
+// Dave's code
+grant
+  codeBase "file:/u/whitlock/jars/cs410J.jar",
+  codeBase "file:/u/whitlock/jars/grader.jar",
+  codeBase "file:/u/whitlock/jars/xerces.jar",
+  codeBase "file:/u/sjavata/classes-dave"
+{
+  // Let my code do anything
+  permission java.security.AllPermission;
+
+};
+
+// Student's code
+grant
+  codeBase "file:/u/sjavata/classes"
+{
+  permission java.file.FilePermission
+    "${user.home}/proj2/-", "read, write";
+  permission java.net.SocketPermission
+    "localhost:12345", "accept,connect,listen";
+};
+</PRE>
+
+<p>A command line would look like:</p>
+
+<PRE>
+$ java -Djava.security.policy=/u/sjavata/grader.policy \
+  -cp ~/classes-dave:/u/whitlock/jars/examples.jar \
+  edu.pdx.cs410J.grader.TestProject0b \
+  -studentClasses ~/classes whitlock
+</PRE>
+
 </BODY>
