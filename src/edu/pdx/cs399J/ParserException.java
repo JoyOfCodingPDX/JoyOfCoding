@@ -1,7 +1,7 @@
 package edu.pdx.cs399J;
 
 /**
- * A <tt>ParserException</tt> is thrown when a file or other data
+ * A <code>ParserException</code> is thrown when a file or other data
  * source is being parsed and it is decided that the source is
  * malformatted.
  *
@@ -10,7 +10,8 @@ package edu.pdx.cs399J;
 public class ParserException extends Exception {
 
   /**
-   * Constructor.
+   * Creates a new <code>ParserException</code> with a given
+   * descriptive message.
    */
   public ParserException(String description) {
     super(description);

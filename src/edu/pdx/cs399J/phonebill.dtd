@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- DTD for describing a phone bill and its phone calls -->
+
+<!-- A phone bill has a customer and some number of phone calls -->
+<!ELEMENT phone-bill (customer, call*)>
+
+<!ELEMENT customer (#PCDATA)>
+
+<!-- A phone call has caller's phone number, a callee's phone number,
+     a start time and an end time -->
+<!ELEMENT call (caller, callee, start, end)>
+
+<!ELEMENT caller (#PCDATA)>
+<!ELEMENT callee (#PCDATA)>
+<!ELEMENT start (date, time)>
+<!ELEMENT end (date, time)>
+
+<!-- A date has a month, day, and a year specified by
+     java.util.Calendar.DATE, Calendar.MONTH, and Calendar.YEAR,
+     respectfully. --> 
+<!ELEMENT date EMPTY>
+<!ATTLIST date
+          day    CDATA  #REQUIRED
+          month  CDATA  #REQUIRED
+          year   CDATA  #REQUIRED
+>
+
+<!-- A time has an hour and a minute.  Hours are specified by
+     Calendar.HOUR_OF_DAY.  Minutes are specified by Calendar.MINUTE. -->
+<!ELEMENT time EMPTY>
+<!ATTLIST time
+          hour    CDATA  #REQUIRED
+          minute  CDATA  #REQUIRED
+>

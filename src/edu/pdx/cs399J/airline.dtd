@@ -7,7 +7,7 @@
 
 <!ELEMENT name (#PCDATA)>
 
-<!-- An flight has a number, a source, a departure time, a
+<!-- A flight has a number, a source, a departure time, a
      destination, an arrival time -->
 <!ELEMENT flight (number, src, depart, dest, arrive)>
 

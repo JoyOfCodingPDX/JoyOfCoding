@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='us-ascii'?>
 
-<!-- A sample airling XML file -->
+<!-- A sample airline XML file -->
 <!DOCTYPE airline
           SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
 
