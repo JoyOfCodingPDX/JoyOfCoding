@@ -1,14 +1,13 @@
 package edu.pdx.cs410J.familyTree;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 
-import com.sun.xml.tree.XmlDocument;
-
-import edu.pdx.cs410J.ParserException;
-
+import org.apache.xerces.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -283,27 +282,38 @@ public class XmlParser implements Parser {
     this.tree = new FamilyTree();
 
     // Create a DOM tree from the XML source
-    Document doc = null;
+    DOMParser parser = new DOMParser();
     try {
-      DocumentBuilderFactory factory =
-        DocumentBuilderFactory.newInstance();
-      factory.setValidating(true);
+      String f = "http://apache.org/xml/features/dom/defer-node-expansion";
+      parser.setFeature(f, false);
+      parser.setFeature("http://xml.org/sax/features/validation", true);
 
-      DocumentBuilder builder =
-        factory.newDocumentBuilder();
-      doc = builder.parse(this.in);
+      // Since we traverse all the nodes, its more efficient to not
+      // use deferred nodes, but the exceptions are ignorable if
+      // there's a glitch.
 
-    } catch(Throwable ex) {
-      StringWriter sw = new StringWriter();
-      ex.printStackTrace(new PrintWriter(sw, true));
-      throw new ParserException(sw.toString());
+    } catch (SAXNotRecognizedException snr) {
+    } catch (SAXNotSupportedException sns) {
     }
+
+    try {
+      parser.parse(new InputSource(in));
+
+    } catch(SAXException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+
+    } catch(IOException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+    }
+
+    Document doc = parser.getDocument();
 
     Element root = (Element) doc.getChildNodes().item(1);
 
     // Make sure that we are really dealing with a family tree
     if(!root.getNodeName().equals("familytree")) {
-      throw new ParserException("Not a family tree XML source!");
+      throw new ParserException("Not a family tree XML source: " +
+                                root.getNodeName());
     }
 
     NodeList stuff = root.getChildNodes();

@@ -6,8 +6,8 @@ import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 
-import com.sun.xml.tree.XmlDocument;
-
+import org.apache.xerces.dom.*;
+import org.apache.xml.serialize.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -17,6 +17,11 @@ import org.xml.sax.*;
  * <code>XmlParser</code> to create a <code>FamilyTree</code>.
  */
 public class XmlDumper implements Dumper {
+  private static final String systemID = 
+    "http://www.cs.pdx.edu/~whitlock/dtds/familytree.dtd";
+  private static final String publicID = 
+    "-//Portland State University//DTD CS410J Family Tree//EN";
+
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   private PrintWriter pw;      // Dumping destination
@@ -81,39 +86,28 @@ public class XmlDumper implements Dumper {
    */
   public void dump(FamilyTree tree) {
     // First we create a DOM tree that represents the family tree
-    DocumentBuilderFactory factory =
-      DocumentBuilderFactory.newInstance();
+        Document doc = null;
 
-    XmlDocument doc = null;
     try {
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      doc = (XmlDocument) builder.newDocument();
+      DOMImplementation dom =
+        DOMImplementationImpl.getDOMImplementation();
+      DocumentType dtd = 
+        dom.createDocumentType("familyTree", publicID, systemID);
+      doc = dom.createDocument(null, "familytree", dtd);
 
-    } catch(ParserConfigurationException ex) {
-      err.println("** Bad parser configuration: " + ex);
+    } catch(DOMException ex) {
+      // Eep, this is bad
+      ex.printStackTrace(System.err);
       System.exit(1);
     }
-
-    // Specify the DTD
-    try {
-      String host = "www.cs.pdx.edu";
-      String file = "/~whitlock/dtds/familytree.dtd";
-      URL url = new URL("http", host, file);
-      doc.setDoctype(null, url.toString(), null);
-
-    } catch(MalformedURLException ex) {
-      err.println("** Bad URL: " + ex);
-      System.exit(1);
-    }
-
+    
     // Keep track of all of the marriages
     Set marriages = new HashSet();
 
     // Construct the DOM tree
     try {
       // Make the family tree
-      Element ft = doc.createElement("familytree");
-      doc.appendChild(ft);
+      Element ft = doc.getDocumentElement();
 
       // Make the people
       Iterator people = tree.getPeople().iterator();
@@ -214,7 +208,14 @@ public class XmlDumper implements Dumper {
 
     // Then we simply write the DOM tree to the destination
     try {
-      doc.write(this.pw);
+      OutputFormat format = new OutputFormat(doc);
+      format.setIndenting(true);
+      format.setIndent(2);
+      format.setLineWidth(70);
+    
+      XMLSerializer serial = new XMLSerializer(this.pw, format);
+      serial.asDOMSerializer();
+      serial.serialize(doc);
 
     } catch(IOException ex) {
       err.println("** IOException while writing XML: " + ex);
