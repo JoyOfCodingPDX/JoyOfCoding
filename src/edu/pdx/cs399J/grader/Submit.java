@@ -124,6 +124,13 @@ public class Submit {
       File file = new File(fileName);
       file = file.getAbsoluteFile();  // Full path
       
+      // Does the file exist?
+      if(!file.exists()) {
+        err.println("** Not submitting file " + fileName + 
+                    " because it does not exist");
+        continue;
+      }
+
       // Is the file on the "no submit" list?
       String name = file.getName();
       if(noSubmit.contains(name)) {
