@@ -17,10 +17,10 @@ class XmlRemoteFamilyTree extends UnicastRemoteObject
 
   /** The underlying family tree whose contents this remote family
    * tree serves up. */
-  transient private FamilyTree tree;
+  private transient FamilyTree tree;
 
   /** The XML file that serves as the source of this family tree */
-  transient private File xmlFile;
+  private transient File xmlFile;
 
   /** The highest id in the family tree */
   private int highestId;
@@ -44,7 +44,7 @@ class XmlRemoteFamilyTree extends UnicastRemoteObject
    */
   XmlRemoteFamilyTree(File xmlFile) 
     throws RemoteException, IOException, FamilyTreeException {
-    super();   // Will register this object with RMI runtime
+    super();   // Register this object with RMI runtime
 
     if (xmlFile.exists()) {
       out.println("Reading Family Tree from " + xmlFile);
