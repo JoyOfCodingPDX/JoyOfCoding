@@ -113,7 +113,8 @@ public class Survey {
 
     String firstName = ask("What is your first name?");
     String lastName = ask("What is your last name?");
-    String nickName = ask("Is there a nick name that you go by?");
+    String nickName = ask("What is your nickname? (Leave blank if " +
+                          "you don't have one)");
     String id = ask("MANDATORY: What is your UNIX login id?");
 
     if(id == null || id.equals("")) {
@@ -126,7 +127,7 @@ public class Survey {
     String ssn = ask("What is your social security number (XXX-XX-XXXX)?");
     String major = ask("What is your major?");
     String learn = ask("What do you hope to learn in CS410J?");
-    String comments = ask("Is there anything else you'd like to tell me?");
+    String comments = ask("What else would you like to tell me?");
 
     // Create a Student instance based on the response
     Student student = new Student(id);
