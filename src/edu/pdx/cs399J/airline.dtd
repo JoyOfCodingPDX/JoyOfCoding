@@ -3,14 +3,15 @@
 <!-- DTD for describing an airline and its flights -->
 
 <!-- An airline has a name and some number of flights -->
-<!ELEMENT apptbook (owner, flight*)>
+<!ELEMENT airline (name, flight*)>
 
-<!ELEMENT owner (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
 
 <!-- An flight has a number, a source, a departure time, a
      destination, an arrival time -->
 <!ELEMENT flight (number, src, depart, dest, arrive)>
 
+<!ELEMENT number (#PCDATA)>
 <!ELEMENT src (#PCDATA)>
 <!ELEMENT depart (day, time)>
 <!ELEMENT dest (#PCDATA)>
