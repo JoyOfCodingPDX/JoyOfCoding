@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
+    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -38,11 +38,18 @@
     <property name="family.jar" value="family.jar"/>
     <property name="grader.jar" value="grader.jar"/>
     <property name="client.jar" value="client.jar"/>
+    <property name="cs410G.jar" value="cs410G.jar"/>
 
     <property name="keystore" value="${src.dir}/keystore"/>
     <property name="storepass" value="mystorepass"/>
     <property name="game.console" value="gameConsole"/>
+    <property name="dave.alias" value="dave"/>
 
+    <!-- Sanity check -->
+    <available type="dir" file="${daves.jars.dir}" 
+               property="found.daves.jars.dir"/>
+    <fail unless="found.daves.jars.dir"
+          message="Could not find daves.jars.dir: ${daves.jars.dir}"/>
   </target>
 
   <!-- Removes byproducts of building -->
@@ -89,6 +96,7 @@
         <pathelement location="${daves.jars.dir}/junit.jar"/>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
         <pathelement location="${daves.jars.dir}/mail.jar"/>
+        <pathelement location="${daves.jars.dir}/jnlp.jar"/>
       </classpath>
     </javac>
 
@@ -113,7 +121,38 @@
 
   </target>
 
-  <target name="src" depends="props, compile-src">
+  <target name="build-keystore" depends="props">
+    <description>Builds a keystore that contains certificates for 
+                 signing jar files</description>
+    <!-- Always create from scratch -->
+    <delete file="${keystore}"/>
+
+    <genkey keystore="${keystore}" storepass="${storepass}" 
+            alias="${dave.alias}">
+      <dname>
+        <param name="CN" value="David Whitlock"/>
+        <param name="OU" value="Computer Science Department"/>
+        <param name="O"  value="Portland State University"/>
+        <param name="L"  value="Portland"/>
+        <param name="ST" value="Oregon"/>
+        <param name="C"  value="US"/>
+      </dname>
+    </genkey>
+
+    <genkey keystore="${keystore}" storepass="${storepass}" 
+            alias="${game.console}">
+      <dname>
+        <param name="CN" value="Game Console"/>
+        <param name="OU" value="CS399J Security Examples"/>
+        <param name="O"  value="Portland State University"/>
+        <param name="L"  value="Portland"/>
+        <param name="ST" value="Oregon"/>
+        <param name="C"  value="US"/>
+      </dname>
+    </genkey>
+  </target>
+
+  <target name="src" depends="props, build-keystore, compile-src">
     <description>Compiles the Java source code and place it in jar
                  files</description> 
 
@@ -129,6 +168,8 @@
         <include name="edu/pdx/cs399J/*.dtd"/>
       </fileset>
     </jar>
+    <signjar jar="${jars.dir}/${cs399J.jar}" alias="${dave.alias}"
+        keystore="${keystore}" storepass="${storepass}" />
 
     <jar jarfile="${jars.dir}/${family.jar}"
          update="yes">
@@ -139,6 +180,8 @@
         <include name="edu/pdx/cs399J/family/familytree.dtd"/>
       </fileset>
     </jar>
+    <signjar jar="${jars.dir}/${family.jar}" alias="${dave.alias}"
+        keystore="${keystore}" storepass="${storepass}" />
 
     <jar jarfile="${jars.dir}/${grader.jar}"
          manifest="edu/pdx/cs399J/grader/Manifest.mf"
@@ -150,6 +193,8 @@
         <include name="edu/pdx/cs399J/grader/gradebook.dtd"/>
       </fileset>
     </jar>
+    <signjar jar="${jars.dir}/${grader.jar}" alias="${dave.alias}"
+        keystore="${keystore}" storepass="${storepass}" />
 
     <jar jarfile="${jars.dir}/${examples.jar}" update="yes">
       <fileset dir="${classes.dir}">
@@ -166,6 +211,8 @@
         <exclude name="edu/pdx/cs399J/rmi/GetMoviesInYear*.class"/>
       </fileset>
     </jar>    
+    <signjar jar="${jars.dir}/${examples.jar}" alias="${dave.alias}"
+        keystore="${keystore}" storepass="${storepass}" />
 
     <jar jarfile="${jars.dir}/${client.jar}"
          update="yes">
@@ -183,27 +230,21 @@
       </fileset>
     </jar>
 
+    <jar jarfile="${jars.dir}/${cs410G.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs410G/**/*.class"/>
+      </fileset>
+    </jar>
+    <signjar jar="${jars.dir}/${cs410G.jar}" alias="${dave.alias}"
+        keystore="${keystore}" storepass="${storepass}" />
+
     <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
   </target>
 
-  <target name="game-console" depends="props, src" >
+  <target name="game-console" depends="props, build-keystore, src" >
     <description>Builds the keystore, certificates, etc. for running
         the game console security example</description>
-
-    <delete file="${keystore}"/>
-
-    <!-- Create a keystore for holding keys and certificates -->
-    <genkey keystore="${keystore}" storepass="${storepass}" 
-            alias="${game.console}">
-      <dname>
-        <param name="CN" value="Game Console"/>
-        <param name="OU" value="CS399J Security Examples"/>
-        <param name="O"  value="Portland State University"/>
-        <param name="L"  value="Portland"/>
-        <param name="ST" value="Oregon"/>
-        <param name="C"  value="US"/>
-      </dname>
-    </genkey>
 
     <!-- Build the (trusted) game console jar -->
     <jar jarfile="${jars.dir}/gameConsole.jar" update="yes">
