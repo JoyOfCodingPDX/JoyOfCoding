@@ -29,6 +29,7 @@
     <property name="cs410J.jar" value="cs410J.jar"/>
     <property name="familyTree.jar" value="familyTree.jar"/>
     <property name="grader.jar" value="grader.jar"/>
+    <property name="client.jar" value="client.jar"/>
   </target>
 
   <!-- Removes byproducts of building -->
@@ -87,6 +88,24 @@
          includes="edu/pdx/cs410J/xml/**"/>
   </target>
 
+  <!-- Builds the JUnit examples -->
+  <target name="junit" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/junit/**"
+           includeAntRuntime="false"
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/junit.jar"/>
+      </classpath>
+    </javac>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/junit/**"/>
+  </target>
+
   <!-- Builds the Networking examples -->
   <target name="net" depends="props">
     <mkdir dir="${classes.dir}"/>
@@ -130,6 +149,56 @@
          includes="edu/pdx/cs410J/security/**"/>
   </target>
 
+  <!-- Builds the rmi examples -->
+  <target name="rmi" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410E/rmi/**"
+           includeAntRuntime="false"
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/junit.jar"/>
+      </classpath>
+    </javac>
+
+    <!-- Generate "stubs" for remote classes -->
+    <rmic includes=
+            "edu/pdx/cs410E/rmi/EquationSolverImpl.class,
+             edu/pdx/cs410E/rmi/MovieDatabaseImpl.class"
+          classpath="${classes.dir}"
+          base="${classes.dir}"/>
+
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+         <include name="edu/pdx/cs410E/rmi/**"/>
+         <!-- Server doesn't need client code -->
+         <exclude name="edu/pdx/cs410E/rmi/EquationClient.class"/>
+         <exclude name="edu/pdx/cs410E/rmi/CreateMovie.class"/>
+         <exclude name="edu/pdx/cs410E/rmi/NoteCharacter.class"/>
+         <exclude name="edu/pdx/cs410E/rmi/GetFilmography.class"/>
+         <exclude name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="${jars.dir}/${client.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+         <include name="edu/pdx/cs410E/rmi/EquationClient.class"/>
+         <include name="edu/pdx/cs410E/rmi/EquationSolver.class"/>
+         <include name="edu/pdx/cs410E/rmi/Movie.class"/>
+         <include name="edu/pdx/cs410E/rmi/MovieDatabase.class"/>
+         <include name="edu/pdx/cs410E/rmi/Query.class"/>
+         <include name="edu/pdx/cs410E/rmi/CreateMovie.class"/>
+         <include name="edu/pdx/cs410E/rmi/NoteCharacter.class"/>
+         <include name="edu/pdx/cs410E/rmi/GetFilmography.class"/>
+         <include name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
+         <include name="edu/pdx/cs410E/rmi/ShutdownMovieDatabase.class"/>
+      </fileset>
+    </jar>
+  </target>
+
   <!-- Builds the source code for projects in CS410J -->
   <target name="cs410J" depends="props">
     <mkdir dir="${classes.dir}"/>
@@ -151,13 +220,30 @@
            destdir="${classes.dir}"
            includes="edu/pdx/cs410J/familyTree/**"
            includeAntRuntime="false"
-           debug="on"/>
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/junit.jar"/>
+      </classpath>
+    </javac>
     <copy file="${src.dir}/edu/pdx/cs410J/familyTree/familytree.dtd" 
           toDir="${classes.dir}/edu/pdx/cs410J/familyTree"/>
     <jar jarfile="${jars.dir}/${familyTree.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/familyTree/*"/>
+         includes="edu/pdx/cs410J/familyTree/**"/>
+  </target>
+
+  <!-- Runs the junit unit tests for the family tree code -->
+  <target name="familyTree-tests" depends="familyTree">
+    <junit printsummary="yes">
+      <formatter type="plain" />
+      <test name="edu.pdx.cs410J.familyTree.tests.PersonTest" />
+      <test name="edu.pdx.cs410J.familyTree.tests.MarriageTest" />
+      <test name="edu.pdx.cs410J.familyTree.tests.XmlTest" />
+      <classpath>
+        <pathelement location="${jars.dir}/familyTree.jar"/>
+      </classpath>
+    </junit>
   </target>
 
   <!-- Builds the grader's code -->
@@ -203,6 +289,7 @@
       <link href="http://java.sun.com/j2se/1.4/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>
       <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
+      <link href="http://www.junit.org/junit/javadoc/3.7"/>
     </javadoc>
   </target>
 
