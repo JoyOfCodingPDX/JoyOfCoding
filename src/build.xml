@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
+    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -37,6 +37,7 @@
     <property name="cs399J.jar" value="cs399J.jar"/>
     <property name="family.jar" value="family.jar"/>
     <property name="grader.jar" value="grader.jar"/>
+    <property name="client.jar" value="client.jar"/>
 
     <property name="keystore" value="${src.dir}/keystore"/>
     <property name="storepass" value="mystorepass"/>
@@ -51,6 +52,7 @@
     <delete file="${jars.dir}/${cs399J.jar}"/>
     <delete file="${jars.dir}/${family.jar}"/>
     <delete file="${jars.dir}/${grader.jar}"/>
+    <delete file="${jars.dir}/${client.jar}"/>
     <delete dir="${api.docs.dir}"/>
     <delete dir="${tests.results.dir}"/>
   </target>
@@ -69,9 +71,8 @@
     </javac>
   </target>	
 
-  <target name="src" depends="props, junit-src">
-    <description>Compiles the Java source code and place it in jar
-                 files</description> 
+  <target name="compile-src" depends="props, junit-src">
+    <description>Compiles Java source code</description> 
 
     <mkdir dir="${classes.dir}"/>
 
@@ -90,6 +91,31 @@
         <pathelement location="${daves.jars.dir}/mail.jar"/>
       </classpath>
     </javac>
+
+    <!-- Generate "stubs" for remote classes -->
+    <rmic includes=
+            "edu/pdx/cs399J/rmi/EquationSolverImpl.class,
+             edu/pdx/cs399J/rmi/MovieDatabaseImpl.class"
+          classpath="${classes.dir}"
+          base="${classes.dir}"/>
+    <rmic includes=
+            "edu/pdx/cs399J/family/RdbRemoteFamilyTree.class,
+             edu/pdx/cs399J/family/RdbRemotePerson.class,
+             edu/pdx/cs399J/family/RemoteMarriageImpl.class,
+             edu/pdx/cs399J/family/RemotePersonImpl.class,
+             edu/pdx/cs399J/family/XmlRemoteFamilyTree.class"
+          classpath="${classes.dir}"
+          base="${classes.dir}"/>
+
+    <!-- Copy resources -->
+    <copy file="${src.dir}/edu/pdx/cs399J/reflect/doi.txt"
+          toDir="${classes.dir}/edu/pdx/cs399J/reflect"/>
+
+  </target>
+
+  <target name="src" depends="props, compile-src">
+    <description>Compiles the Java source code and place it in jar
+                 files</description> 
 
     <!-- Build the various jar files -->
     <mkdir dir="${jars.dir}"/>
@@ -131,8 +157,31 @@
         <exclude name="edu/pdx/cs399J/*.class"/>
         <exclude name="edu/pdx/cs399J/grader/*"/>
         <exclude name="edu/pdx/cs399J/family/**"/>
+
+        <!-- Server doesn't need client code -->
+        <exclude name="edu/pdx/cs399J/rmi/EquationClient.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/CreateMovie.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/NoteCharacter.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/GetFilmography.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/GetMoviesInYear*.class"/>
       </fileset>
     </jar>    
+
+    <jar jarfile="${jars.dir}/${client.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+         <include name="edu/pdx/cs399J/rmi/EquationClient.class"/>
+         <include name="edu/pdx/cs399J/rmi/EquationSolver.class"/>
+         <include name="edu/pdx/cs399J/rmi/Movie.class"/>
+         <include name="edu/pdx/cs399J/rmi/MovieDatabase.class"/>
+         <include name="edu/pdx/cs399J/rmi/Query.class"/>
+         <include name="edu/pdx/cs399J/rmi/CreateMovie.class"/>
+         <include name="edu/pdx/cs399J/rmi/NoteCharacter.class"/>
+         <include name="edu/pdx/cs399J/rmi/GetFilmography.class"/>
+         <include name="edu/pdx/cs399J/rmi/GetMoviesInYear*.class"/>
+         <include name="edu/pdx/cs399J/rmi/ShutdownMovieDatabase.class"/>
+      </fileset>
+    </jar>
 
     <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
   </target>
