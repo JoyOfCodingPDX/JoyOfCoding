@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.prefs.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -14,14 +15,31 @@ import javax.swing.event.*;
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
 
+  /** The prefix for the "recent file" preference */
+  private static final String RECENT_FILE = "GradeBook_recent_file_";
+
+  /** The maximum number of recent files */
+  private static final int MAX_RECENT_FILES = 4;
+
+  ///////////////////////  Instance Fields  ///////////////////////
+
   private GradeBook book;
   private GradeBookPanel bookPanel;
   private File file;       // Where the grade book lives
+
+  /** The most recently visited files (by name) */
+  private ArrayList recentFiles;
+
+  /** Preferences for using this application */
+  private Preferences prefs;
+
+  /** A menu listing the recently visited gradebook files */
+  private JMenuItem recentFilesMenu;
 
   /** An action for creating a new grade book file */
   private Action newAction;
@@ -41,12 +59,27 @@ public class GradeBookGUI extends JFrame {
   /** An action for exiting the GUI */
   private Action exitAction;
 
+  ///////////////////////  Constructors  ///////////////////////
+
   /**
    * Create and lay out a new <code>GradeBookGUI</code>
    */
   public GradeBookGUI(String title) {
     super(title);
 
+    // Read preference information
+    this.prefs = Preferences.userNodeForPackage(this.getClass());
+    this.recentFiles = new ArrayList();
+    for (int i = 0; i < MAX_RECENT_FILES; i++) {
+      String recent = this.prefs.get(RECENT_FILE + i, null);
+      if (recent != null) {
+        File file = new File(recent);
+        if (file.exists()) {
+          this.recentFiles.add(recent);
+        }
+      }
+    }
+    
     // Set up the actions
     this.setupActions();
 
@@ -54,6 +87,7 @@ public class GradeBookGUI extends JFrame {
     JMenuBar menuBar = new JMenuBar();
     this.setJMenuBar(menuBar);
     this.addFileMenu(menuBar);
+    this.updateRecentFilesMenu();
 
     this.getContentPane().setLayout(new BorderLayout());
 
@@ -228,6 +262,12 @@ public class GradeBookGUI extends JFrame {
 
     fileMenu.addSeparator();
 
+    this.recentFilesMenu = new JMenu("Recent Files");
+    this.recentFilesMenu.setMnemonic(KeyEvent.VK_R);
+    fileMenu.add(this.recentFilesMenu);
+
+    fileMenu.addSeparator();
+
     fileMenu.add(new JMenuItem(this.exitAction));
   }
 
@@ -250,6 +290,51 @@ public class GradeBookGUI extends JFrame {
       message, ex.getMessage()},
                                   "An exception was thrown",
                                   JOptionPane.ERROR_MESSAGE);
+  }
+
+  /**
+   * Makes note that the current <code>file</code> has been changed.
+   * Updates the preferences accordingly.
+   *
+   * @since Fall 2004
+   */
+  private void noteRecentFile() {
+    assert this.file != null;
+    String name = this.file.getAbsolutePath();
+    this.recentFiles.remove(name);
+    this.recentFiles.add(name);
+    while (this.recentFiles.size() > MAX_RECENT_FILES) {
+      this.recentFiles.remove(this.recentFiles.size() - 1);
+    }
+    for (int i = 0;
+         i < this.recentFiles.size() && i < MAX_RECENT_FILES;
+         i++) {
+      this.prefs.put(RECENT_FILE + i,
+                     (String) this.recentFiles.get(i));
+    }
+    updateRecentFilesMenu();
+  }
+
+  /**
+   * Updates the contents of the "recent files" menu
+   *
+   * @since Fall 2004
+   */
+  private void updateRecentFilesMenu() {
+    this.recentFilesMenu.removeAll();
+    for (int i = 0; i < this.recentFiles.size(); i++) {
+      String fileName = (String) this.recentFiles.get(i);
+      final File file = new File(fileName);
+      if (file.exists()) {
+        JMenuItem item = new JMenuItem((i+1) + ": " + fileName);
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              open(file);
+            }
+          });
+        this.recentFilesMenu.add(item);
+      }
+    }
   }
 
   /**
@@ -324,6 +409,7 @@ public class GradeBookGUI extends JFrame {
     if (response == JFileChooser.APPROVE_OPTION) {
       this.file = chooser.getSelectedFile();
       save();
+      noteRecentFile();
     }
   }
 
@@ -339,20 +425,29 @@ public class GradeBookGUI extends JFrame {
     if (response == JFileChooser.APPROVE_OPTION) {
       // Read the grade book from the file and display it in the GUI
       File file = chooser.getSelectedFile();
-      
-      try {
-        XmlGradeBookParser parser = new XmlGradeBookParser(file);
-        GradeBook book = parser.parse();
-        this.displayGradeBook(book);
-        this.file = file;
+      open(file);
+    }
+  }
 
-      } catch (IOException ex) {
-        error("While parsing file " + file.getName(), ex);
-        return;
+  /**
+   * Opens the grade book stored in the given file
+   */ 
+  private void open(File file) {
+    this.checkDirtyGradeBook();
 
-      } catch (ParserException ex) {
-        error("While parsing file " + file.getName(), ex);
-      }
+    try {
+      XmlGradeBookParser parser = new XmlGradeBookParser(file);
+      GradeBook book = parser.parse();
+      this.displayGradeBook(book);
+      this.file = file;
+      noteRecentFile();
+
+    } catch (IOException ex) {
+      error("While parsing file " + file.getName(), ex);
+      return;
+
+    } catch (ParserException ex) {
+      error("While parsing file " + file.getName(), ex);
     }
   }
 
@@ -416,10 +511,18 @@ public class GradeBookGUI extends JFrame {
   }
 
   /**
-   * Called when the GUI is about to exit.  If the grade book has been
-   * modified and not saved, ask the user if he wants to save it.
+   * Prompts the user to save modified data and exits
    */
   private void exit() {
+    checkDirtyGradeBook();
+    System.exit(0);
+  }
+
+  /**
+   * If the grade book has been modified and not saved, ask the user
+   * if he wants to save it.
+   */
+  private void checkDirtyGradeBook() {
     if (this.book != null && this.book.isDirty()) {
       int response = JOptionPane.showConfirmDialog(this, new String[] {
         "You have made changes to the grade book.",
@@ -436,8 +539,6 @@ public class GradeBookGUI extends JFrame {
         return;
       }
     }
-
-    System.exit(0);
   }
 
   /**
@@ -468,22 +569,7 @@ public class GradeBookGUI extends JFrame {
         err.println("** " + file + " is not a file");
 
       } else {
-        try {
-          XmlGradeBookParser parser = new XmlGradeBookParser(file);
-          GradeBook book = parser.parse();
-          gui.displayGradeBook(book);
-          gui.file = file;
-
-        } catch (IOException ex) {
-          err.println("While parsing file " + file.getName() + 
-                      ": " + ex);
-          System.exit(1);
-
-        } catch (ParserException ex) {
-          err.println("While parsing file " + file.getName() +
-                      ": " + ex);
-          System.exit(1);
-        }
+        gui.open(file);
       }
     }
 

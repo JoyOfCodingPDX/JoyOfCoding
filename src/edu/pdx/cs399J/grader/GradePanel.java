@@ -29,6 +29,11 @@ public class GradePanel extends JPanel {
   private JList lateList;
   private JList resubmitList;
 
+  /** The most recently selected index in the assignments list */
+  private int assignmentIndex = -1;
+
+  ///////////////////////  Constructors  ///////////////////////
+
   /**
    * Creates and populates a new <code>GradePanel</code>
    */
@@ -233,6 +238,12 @@ public class GradePanel extends JPanel {
 
     // Might as well refresh assignments list
     this.displayAssignmentsFor(this.book);
+
+    // Display the grade for the currently selected
+    Assignment assign = getSelectedAssignment();
+    if (assign != null) {
+      displayGradeFor(assign);
+    }
   }
 
   /**
@@ -264,11 +275,22 @@ public class GradePanel extends JPanel {
   private Assignment getSelectedAssignment() {
     String name = (String) this.assignmentsList.getSelectedValue();
     if (name != null) {
+      this.assignmentIndex = this.assignmentsList.getSelectedIndex();
       Assignment assign = this.book.getAssignment(name);
       return assign;
 
-    } else {
+    } else if (this.assignmentIndex == -1) {
       return null;
+
+    } else if (this.assignmentIndex >=
+               this.assignmentsList.getModel().getSize()) {
+      // Changed grade book?
+      this.assignmentIndex = -1;
+      return null;
+
+    } else {
+      this.assignmentsList.setSelectedIndex(this.assignmentIndex);
+      return getSelectedAssignment();
     }
   }
 
