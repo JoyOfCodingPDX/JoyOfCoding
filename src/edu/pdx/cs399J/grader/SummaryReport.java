@@ -78,7 +78,7 @@ public class SummaryReport {
         line += " (MISSING GRADE)";
 
       } else if (grade.getScore() == Grade.INCOMPLETE || 
-                grade.getScore() == Grade.NOGRADE) {
+                grade.getScore() == Grade.NO_GRADE) {
         line += " (INCOMPLETE)";
       }
 

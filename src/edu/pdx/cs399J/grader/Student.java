@@ -26,6 +26,8 @@ public class Student implements Notable {
 
   private boolean dirty;
 
+  ///////////////////////  Constructors  ///////////////////////
+
   /**
    * Creates a new <code>Student</code> with a given id.  An example
    * of an id is the student's UNIX login name.
@@ -38,6 +40,8 @@ public class Student implements Notable {
     this.notes = new ArrayList();
     this.setDirty(true);
   }
+
+  ///////////////////////  Instance Methods  ///////////////////////
 
   /**
    * Returns the id of this <code>Student</code>
@@ -300,12 +304,35 @@ public class Student implements Notable {
     return sb.toString();
   }
 
+  ///////////////////////  Utility Methods  ///////////////////////
+
+  /**
+   * Two <code>Student</code>s are equal if they have the same id
+   */
+  public boolean equals(Object o) {
+    if (o instanceof Student) {
+      return this.getId().equals(((Student) o).getId());
+
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Two students that are equal must have the same hash code
+   */
+  public int hashCode() {
+    return this.getId().hashCode();
+  }
+
   /**
    * Returns a brief textual description of this <code>Student</code>
    */
   public String toString() {
     return this.getId() + ": " + this.getFullName();
   }
+
+  ///////////////////////  Main Program  ///////////////////////
 
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);

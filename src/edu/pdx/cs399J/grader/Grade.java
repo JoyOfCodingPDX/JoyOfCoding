@@ -17,7 +17,7 @@ public class Grade implements Notable {
   /**
    * Some work has been submitted, but no grade has been assigned
    */
-  public static final double NOGRADE = -2.0;
+  public static final double NO_GRADE = -2.0;
 
   private String assignmentName;
   private double score;         // Score student received
@@ -251,7 +251,7 @@ public class Grade implements Notable {
         s = Grade.INCOMPLETE;
 
       } else if (noGrade) {
-        s = Grade.NOGRADE;
+        s = Grade.NO_GRADE;
 
       } else if (score == null) {
         err.println("** No score for " + assignment);
@@ -278,7 +278,7 @@ public class Grade implements Notable {
         grade.setScore(Grade.INCOMPLETE);
 
       } else if (noGrade) {
-        grade.setScore(Grade.NOGRADE);
+        grade.setScore(Grade.NO_GRADE);
 
       } else if (score != null) {
         try {

@@ -221,7 +221,7 @@ public class GradePanel extends JPanel {
     if (name.equals("")) {
       name = student.getId();
     }
-    this.studentNameLabel.setText(name);
+    this.studentNameLabel.setText(name + " (" + student.getId() + ")");
     this.lateList.setListData(new Vector(student.getLate()));
     this.resubmitList.setListData(new Vector(student.getResubmitted()));
 

@@ -335,8 +335,8 @@ public class XmlDumper extends XmlHelper {
         if (grade.getScore() == Grade.INCOMPLETE) {
           gradeNode.setAttribute("type", "INCOMPLETE");
           
-        } else if (grade.getScore() == Grade.NOGRADE) {
-          gradeNode.setAttribute("type", "NOGRADE");
+        } else if (grade.getScore() == Grade.NO_GRADE) {
+          gradeNode.setAttribute("type", "NO_GRADE");
         }
 
         gradesNode.appendChild(gradeNode);
