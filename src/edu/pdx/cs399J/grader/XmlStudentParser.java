@@ -69,10 +69,12 @@ class XmlStudentParser extends XmlHelper {
     try {
       double s = Double.parseDouble(score);
       Grade grade = new Grade(name, s);
-      Iterator iter = notes.iterator();
-      while (iter.hasNext()) {
-        String note = (String) iter.next();
-        grade.addNote(note);
+      if (notes != null) {
+	Iterator iter = notes.iterator();
+	while (iter.hasNext()) {
+	  String note = (String) iter.next();
+	  grade.addNote(note);
+	}
       }
 
       return grade;

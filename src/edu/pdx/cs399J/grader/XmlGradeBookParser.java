@@ -215,7 +215,7 @@ public class XmlGradeBookParser extends XmlHelper {
               Student stu = sp.parseStudent();
               this.book.addStudent(stu);
 
-            } catch (IOException ex) {
+            } catch (Exception ex) {
               String s = "While parsing " + file + ": " + ex;
               throw new ParserException(s);
             }

@@ -56,9 +56,11 @@ class XmlHelper implements EntityResolver, ErrorHandler {
   //////////////////  ErrorHandler Methods  ////////////////////////
   
   public void warning(SAXParseException ex) throws SAXException { 
-    String s = "Warning while parsing XML (" + ex.getLineNumber() +
-      ":" + ex.getColumnNumber() + "): " + ex.getMessage();
-    System.err.println(s);
+    // Most warnings are annoying
+
+//      String s = "Warning while parsing XML (" + ex.getLineNumber() +
+//        ":" + ex.getColumnNumber() + "): " + ex.getMessage();
+//      System.err.println(s);
   }
 
   public void error(SAXParseException ex) throws SAXException {
