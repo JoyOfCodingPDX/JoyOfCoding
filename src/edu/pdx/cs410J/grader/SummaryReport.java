@@ -23,59 +23,92 @@ public class SummaryReport {
     format.setMaximumFractionDigits(1);
 
     Set grades = new HashSet();
-    Grade lowestQuiz = null;
+    Assignment lowestQuiz = null;
     double best = 0.0;
     double total = 0.0;
 
     pw.println("Grade summary for: " + student.getFullName());
+    SimpleDateFormat df = 
+      new SimpleDateFormat("EEEE MMMM d, yyyy 'at' h:mm a");
+    pw.println("Generated on: " + df.format(new Date()));
     pw.println("");
 
     Iterator allGradeNames = 
-      (new TreeSet(student.getGradeNames())).iterator();
+      (new TreeSet(book.getAssignmentNames())).iterator();
     while(allGradeNames.hasNext()) {
       String gradeName = (String) allGradeNames.next();
       Grade grade = student.getGrade(gradeName);
       Assignment assign = book.getAssignment(gradeName);
 
+      // Average non-existent scores as zero
+      double score;
+      if(grade == null) {
+        score = 0.0;
+
+      } else {
+        score = grade.getScore();
+      }
+
       if(assign.getType() == Assignment.QUIZ) {
         if(lowestQuiz == null) {
-          lowestQuiz = grade;
+          lowestQuiz = assign;
 
-        } else if(grade.getScore() < lowestQuiz.getScore()) {
-          lowestQuiz = grade;
+        } else {
+          Grade lowestGrade = student.getGrade(lowestQuiz.getName());
+          if(lowestGrade == null || score < lowestGrade.getScore()) {
+            lowestQuiz = assign;
+          }
         }
       }
 
-      // Skip incompletes and no grades
-      if(grade.getScore() == Grade.INCOMPLETE ||
-         grade.getScore() == Grade.NOGRADE) {
-        pw.println("  " + assign.getName() + " (" +
-                   assign.getDescription() + "): " + "INCOMPLETE");
-        continue;
+      String line = "  " + assign.getName() + " (" +
+        assign.getDescription() + "): " + format.format(score) + "/" +
+        format.format(assign.getPoints());
 
-      } else {
-        pw.println("  " + assign.getName() + " (" +
-                   assign.getDescription() + "): " +
-                   format.format(grade.getScore()) + "/" +
-                   format.format(assign.getPoints()));
+
+      // Skip incompletes and no grades
+      if(grade == null) {
+        line += " (MISSING GRADE)";
+
+      } else if(grade.getScore() == Grade.INCOMPLETE || 
+                grade.getScore() == Grade.NOGRADE) {
+        line += " (INCOMPLETE)";
       }
 
+      pw.println(line);
+
       best += assign.getPoints();
-      total += grade.getScore();
+      total += score;
     }
 
     if(lowestQuiz != null) {
       pw.println("");
       pw.println("Lowest Quiz grade dropped: " +
-		 lowestQuiz.getAssignmentName());
+		 lowestQuiz.getName());
+      pw.println("");
 
       // Subtract lowest quiz grade
-      total -= lowestQuiz.getScore();
-      best -= book.getAssignment(lowestQuiz.getAssignmentName()).getPoints();
+      Grade lowestGrade = student.getGrade(lowestQuiz.getName());
+      total -= (lowestGrade != null ? lowestGrade.getScore() : 0);
+      best -= lowestQuiz.getPoints();
     }
 
+    // Print out late and resubmitted assignments
+    pw.println("Late assignments:");
+    Iterator late = student.getLate().iterator();
+    while(late.hasNext()) {
+      pw.println("  " + late.next());
+    }
+    pw.println();
+
+    pw.println("Resubmitted assignments");
+    Iterator resubmit = student.getResubmitted().iterator();
+    while(resubmit.hasNext()) {
+      pw.println("  " + resubmit.next());
+    }
     pw.println("");
-    pw.println("Final grade: " + format.format(total)  + "/" +
+
+    pw.println("Total grade: " + format.format(total)  + "/" +
                format.format(best));
 
     allTotals.put(student, new Double(total/best));
@@ -123,6 +156,7 @@ public class SummaryReport {
     // Parse XML file
     GradeBook book = null;
     try {
+      err.println("Parsing " + file);
       XmlParser parser = new XmlParser(file);
       book = parser.parse();
 
@@ -143,6 +177,9 @@ public class SummaryReport {
     Iterator ids = book.getStudentIds().iterator();
     while(ids.hasNext()) {
       String id = (String) ids.next();
+
+      err.println(id);
+
       Student student = book.getStudent(id);
       
       File outFile = new File(outDir, id + ".report");
