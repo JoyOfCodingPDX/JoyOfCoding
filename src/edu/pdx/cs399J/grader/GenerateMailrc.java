@@ -35,7 +35,7 @@ public class GenerateMailrc {
       Student student = (Student) iter.next();
       String email = student.getEmail();
       if(email != null) {
-	mailrc.print("alias " + student.getId() + " \"" + email);
+	mailrc.print("alias " + student.getId() + " \"");
 	StringBuffer name = new StringBuffer();
 
         if(student.getNickName() != null) {
@@ -50,7 +50,7 @@ public class GenerateMailrc {
 	  name.append(student.getLastName());
 	}
 	if(!name.toString().equals("")) {
-	  mailrc.print(" (" + name + ")");
+	  mailrc.print(name.trim() + " <" + email + ">");
 	}
 	mailrc.println("\"");
       }
