@@ -219,6 +219,7 @@
          manifest="edu/pdx/cs399J/grader/Manifest.mf"
          update="yes"
          includes="edu/pdx/cs399J/grader/*"/>
+    <chmod file="${jars.dir}/${grader.jar}" perm="a+r"/>
   </target>
 
   <!-- Builds the Javadocs for all my code -->

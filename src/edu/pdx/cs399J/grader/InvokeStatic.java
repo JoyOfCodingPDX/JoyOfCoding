@@ -200,24 +200,38 @@ public class InvokeStatic {
     }
 
     Class[] types = (Class[]) argsTypes.toArray(new Class[0]);
-
-    // Make sure that the number of parameter types equals the number
-    // of parameters
-    if (!params.isEmpty() && types.length != params.size()) {
-      err.println("Param mismatch: " + types.length + 
-                  " param types and " + params.size() + " params");
-    }
+    List actuals = new ArrayList();
 
     // Translate the parameters into objects
     for (int i = 0; i < types.length; i++) {
       Class type = types[i];
       if (params.isEmpty()) {
-	params.add(i, getDefaultValueFor(type));
+	actuals.add(getDefaultValueFor(type));
+
+      } else if (type.isArray()) {
+	// The params are elements of the array
+	Class elementType = type.getComponentType();
+	Object array = Array.newInstance(elementType, params.size());
+
+	for (int j = 0; j < params.size(); j++) {
+	  String param = (String) params.get(j);
+	  Array.set(array, j, parseParam(param, elementType));
+	}
+
+	actuals.add(array);
 
       } else {
 	String param = (String) params.get(i);
-	params.set(i, parseParam(param, type));
+	actuals.add(parseParam(param, type));
       }
+    }
+
+    // Make sure that the number of parameter types equals the number
+    // of parameters
+    if (!actuals.isEmpty() && types.length != actuals.size()) {
+      String s = "Param mismatch: " + types.length + 
+	" param types and " + actuals.size() + " params";
+      throw new IllegalArgumentException(s);
     }
 
     if (VERBOSE) {
@@ -235,7 +249,7 @@ public class InvokeStatic {
       }
       sb.append(")");
       out.println(sb.toString());
-      out.println("params are " + params);
+      out.println("params are " + actuals);
     }
 
     Class c = Class.forName(className);
@@ -243,7 +257,7 @@ public class InvokeStatic {
     m.setAccessible(true);
 
     try {
-      Object value = m.invoke(null, params.toArray());
+      Object value = m.invoke(null, actuals.toArray());
 
       if (!m.getReturnType().equals(Void.TYPE)) {
 	System.out.println("\nMethod returned: " + value);
