@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import java.io.*;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import java.util.jar.*;
@@ -32,25 +33,29 @@ public class Submit {
   private static final String MANIFEST_DIR = "META-INF/";
 
   private static String projName = null;
-  private static String sourceDir = null;
   private static String userName = null;
   private static String userEmail = null;
+  private static String userId = null;
   private static String serverName = "mailhost.pdx.edu";
   private static boolean DEBUG = false;
   private static boolean SAVEJAR = false;
   private static Date submitTime = null;
 
   private static final String TA_EMAIL = "sjavata@cs.pdx.edu";
+  private static final String NO_SUBMIT_LIST_URL =
+    "http://www.cs.pdx.edu/~whitlock/no-submit";
 
   /**
    * Prints usage information about this program.
    */
   private static void usage() {
-    err.println("usage: java Submit [options] Student-Name");
+    err.println("usage: java Submit [options] files");
     err.println("  Where [options] are:");
     err.println("  -project proj      What project is being " +
 		"submitted");
-    err.println("  -sourcedir dir     Where to look for .java files"); 
+    err.println("  -student name      Who is submitting the project");
+    err.println("  -loginId id        UNIX login id");
+//     err.println("  -sourcedir dir     Where to look for .java files"); 
     err.println("  -email email       Student's email address");
     err.println("  -savejar           Saves temporary Jar file " +
 		"(optional)");
@@ -70,19 +75,30 @@ public class Submit {
   }
 
   /**
-   * Searches a given named directory for files ending in .java.
-   * Recurses over subdirectories.
+   * Searches for the files given on the command line.  Ignores files
+   * that do not end in .java, or that appear on the "no subit" list.
+   * Files must reside in a directory named
+   * edu/pdx/cs410J/<studentId>.
    */
-  private static Set searchForSourceFiles(String dirName) {
-    File dir = new File(dirName);
-    if(!dir.exists()) {
-      err.println("** ERROR: Directory " + dir + " does not exist!");
-      System.exit(1);
-    }
+  private static Set searchForSourceFiles(Set fileNames) {
+    // Compute the "no submit" list
+    Set noSubmit = new HashSet();
 
-    if(!dir.isDirectory()) {
-      err.println("** ERROR: " + dir + " is not a directory");
-      System.exit(1);
+    try {
+      URL url = new URL(NO_SUBMIT_LIST_URL);
+      InputStreamReader isr = new InputStreamReader(url.openStream());
+      BufferedReader br = new BufferedReader(isr);
+      while(br.ready()) {
+        noSubmit.add(br.readLine());
+      }
+
+    } catch(MalformedURLException ex) {
+      err.println("** WARNING: Cannot access \"no submit\" list: " +
+                  ex.getMessage());
+
+    } catch(IOException ex) {
+      err.println("** WARNING: Problems while reading " + 
+                  "\"no submit\" list: " + ex);
     }
 
     // Files should be sorted by name
@@ -102,46 +118,67 @@ public class Submit {
 	}
       });
 
-    searchForSourceFiles0(dir, files);
+    Iterator iter = fileNames.iterator();
+    while(iter.hasNext()) {
+      String fileName = (String) iter.next();
+      File file = new File(fileName);
+      file = file.getAbsoluteFile();  // Full path
+      
+      // Is the file on the "no submit" list?
+      String name = file.getName();
+      if(noSubmit.contains(name)) {
+        err.println("** Not submitting file " + fileName + 
+                    " because it is on the \"no submit\" list");
+        continue;
+      }
+
+      // Does the file name end in .java?
+      if(!name.endsWith(".java")) {
+        err.println("** No submitting file " + fileName + 
+                    " because does end in \".java\"");
+        continue;
+      }
+
+      // Verify that file is in the correct directory.
+      File parent = file.getParentFile();
+      if(parent == null || !parent.getName().equals(userId)) {
+        err.println("** Not submitting file " + fileName + 
+                    ": it does not reside in a directory named " +
+                    userId);
+        continue;
+      }
+
+      parent = parent.getParentFile();
+      if(parent == null || !parent.getName().equals("cs410J")) {
+        err.println("** Not submitting file " + fileName + 
+                    ": it does not reside in a directory named " +
+                    "cs410J" + File.separator + userId);
+        continue;
+      }
+
+      parent = parent.getParentFile();
+      if(parent == null || !parent.getName().equals("pdx")) {
+        err.println("** Not submitting file " + fileName + 
+                    ": it does not reside in a directory named " +
+                    "pdx" + File.separator + "cs410J" + File.separator
+                    + userId);
+        continue;
+      }
+
+      parent = parent.getParentFile();
+      if(parent == null || !parent.getName().equals("edu")) {
+        err.println("** Not submitting file " + fileName + 
+                    ": it does not reside in a directory named " +
+                    "edu" + File.separator + "pdx" + File.separator +
+                    "cs410J" + File.separator + userId);
+        continue;
+      }
+
+      // We like this file
+      files.add(file);
+    }
+
     return(files);
-  }
-
-  /**
-   * Does the real work of searching for .java files.  Calls itself
-   * recursively.
-   */
-  private static void searchForSourceFiles0(File dir, Set files) {
-    db("Looking for source files in " + dir);
-
-    File[] javaFiles = dir.listFiles(new FilenameFilter() {
-	public boolean accept(File dir, String name) {
-	  if(name.endsWith(".java")) {
-	    return(true);
-	  } else {
-	    return(false);
-	  }
-	}
-      });
-
-    // Add .java files to Set files
-    for(int i = 0; i < javaFiles.length; i++) {
-      files.add(javaFiles[i]);
-    }
-
-    File[] subDirs = dir.listFiles(new FileFilter() {
-	public boolean accept(File file) {
-	  if(file.isDirectory()) {
-	    return(true);
-	  } else {
-	    return(false);
-	  }
-	}
-      });
-
-    // Recurse over subdirectories
-    for(int i = 0; i < subDirs.length; i++) {
-      searchForSourceFiles0(subDirs[i], files);
-    }
   }
 
   /**
@@ -206,15 +243,8 @@ public class Submit {
    * directory.
    */
   private static String getRelativeName(File file) {
-    // Will this work in all cases?
-    String fileName = file.getAbsolutePath();
-    String dirName = (new File(sourceDir)).getAbsolutePath();
-
-//      err.println("file: " + file.getAbsolutePath());
-//      err.println("fileName: " + fileName);
-//      err.println("dirName: " + dirName);
-
-    return(fileName.substring(dirName.length() + 1));
+    // We already know that the file is in the correct directory
+    return("edu/pdx/cs410J/" + userId + "/" + file.getName());
   }
 
   /**
@@ -478,7 +508,7 @@ public class Submit {
    * an email to the Grader.
    */
   public static void main(String[] args) {
-    StringBuffer sb = null;
+    Set fileNames = new HashSet();
 
     // Parse the command line
     for(int i = 0; i < args.length; i++) {
@@ -490,13 +520,21 @@ public class Submit {
 
 	projName = args[i];
 
-      } else if(args[i].equals("-sourcedir")) {
-	if(++i >= args.length) {
-	  err.println("** No source directory specified");
-	  usage();
-	}
+      } else if(args[i].equals("-student")) {
+        if(++i >= args.length) {
+          err.println("** No name specified");
+          usage();
+        }
 
-	sourceDir = args[i];
+        userName = args[i];
+
+      } else if(args[i].equals("-loginId")) {
+        if(++i >= args.length) {
+          err.println("** No login id specified");
+          usage();
+        }
+
+        userId = args[i];
 
       } else if(args[i].equals("-email")) {
 	if(++i >= args.length) {
@@ -521,12 +559,8 @@ public class Submit {
 	SAVEJAR = true;
 
       } else {
-	// Must be part of the student's name
-	if(sb == null) {
-	  sb = new StringBuffer();
-	}
-
-	sb.append(args[i] + " ");
+        // The name of a source file
+        fileNames.add(args[i]);
       }
     }
 
@@ -536,8 +570,13 @@ public class Submit {
       usage();
     }
 
-    if(sourceDir == null) {
-      err.println("** Missing source directory");
+    if(userName == null) {
+      err.println("** Missing student name");
+      usage();
+    }
+
+    if(userId == null) {
+      err.println("** Missing login id");
       usage();
     }
 
@@ -556,18 +595,10 @@ public class Submit {
       }
     }
 
-    if(sb == null) {
-      err.println("** Missing user name");
-      usage();
-
-    } else {
-      userName = sb.toString().trim();
-    }
-
     db("Command line successfully parsed.");
 
     // Recursively search the source directory for .java files
-    Set sourceFiles = searchForSourceFiles(sourceDir);
+    Set sourceFiles = searchForSourceFiles(fileNames);
 
     db(sourceFiles.size() + " source files found");
 
