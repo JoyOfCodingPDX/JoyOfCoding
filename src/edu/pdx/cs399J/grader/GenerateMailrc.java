@@ -37,7 +37,12 @@ public class GenerateMailrc {
       if(email != null) {
 	mailrc.print("alias " + student.getId() + " \"" + email);
 	StringBuffer name = new StringBuffer();
-	if(student.getFirstName() != null) {
+
+        if(student.getNickName() != null) {
+          name.append(student.getNickName());
+          name.append(" ");
+
+        } else if(student.getFirstName() != null) {
 	  name.append(student.getFirstName());
 	  name.append(" ");
 	}
