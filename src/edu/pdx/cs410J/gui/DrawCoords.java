@@ -10,7 +10,7 @@ import javax.swing.*;
  * click are printed.
  * 
  * @author David Whitlock
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $, $Date: 2001-05-19 20:55:34 $
  */
 public class DrawCoords extends JPanel {
 

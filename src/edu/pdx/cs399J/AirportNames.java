@@ -232,7 +232,7 @@ public class AirportNames {
     this.names.put("CMN", "Casablanca, Morocco");
     this.names.put("CPT", "Cape town , South Africa");
     this.names.put("CTX", "Sapporo, Japan");
-    this.names.put("UN", "Cancun, Mexico");
+    this.names.put("CUN", "Cancun, Mexico");
     this.names.put("CZM", "Cozumel, Mexico");
     this.names.put("DOM", "Dominica, Dominica");
     this.names.put("DUB", "Dublin, Ireland");
