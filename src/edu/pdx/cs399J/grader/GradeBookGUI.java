@@ -92,7 +92,9 @@ public class GradeBookGUI extends JFrame {
 			       new Integer(KeyEvent.VK_N));
     URL newURL =
       cl.getResource("toolbarButtonGraphics/general/New16.gif");
-    this.newAction.putValue(Action.SMALL_ICON, new ImageIcon(newURL));
+    if (newURL != null) {
+      this.newAction.putValue(Action.SMALL_ICON, new ImageIcon(newURL));
+    }
 
     // Open action
     this.openAction = new AbstractAction("Open ...") {
@@ -110,7 +112,9 @@ public class GradeBookGUI extends JFrame {
 			       new Integer(KeyEvent.VK_O));
     URL openURL =
       cl.getResource("toolbarButtonGraphics/general/Open16.gif");
-    this.openAction.putValue(Action.SMALL_ICON, new ImageIcon(openURL));
+    if (openURL != null) {
+      this.openAction.putValue(Action.SMALL_ICON, new ImageIcon(openURL));
+    }
 
     // Import action
     this.importAction = new AbstractAction("Import...") {
@@ -129,7 +133,9 @@ public class GradeBookGUI extends JFrame {
     this.importAction.setEnabled(false);
     URL importURL =
       cl.getResource("toolbarButtonGraphics/general/Import16.gif");
-    this.importAction.putValue(Action.SMALL_ICON, new ImageIcon(importURL));
+    if (importURL != null) {
+      this.importAction.putValue(Action.SMALL_ICON, new ImageIcon(importURL));
+    }
 
     // Save action
     this.saveAction = new AbstractAction("Save") {
@@ -148,7 +154,9 @@ public class GradeBookGUI extends JFrame {
     this.saveAction.setEnabled(false);
     URL saveURL =
       cl.getResource("toolbarButtonGraphics/general/Save16.gif");
-    this.saveAction.putValue(Action.SMALL_ICON, new ImageIcon(saveURL));
+    if (saveURL != null) {
+      this.saveAction.putValue(Action.SMALL_ICON, new ImageIcon(saveURL));
+    }
 
     // Save As action
     this.saveAsAction = new AbstractAction("Save As ...") {
@@ -163,7 +171,9 @@ public class GradeBookGUI extends JFrame {
     this.saveAsAction.setEnabled(false);
     URL saveAsURL =
       cl.getResource("toolbarButtonGraphics/general/SaveAs16.gif");
-    this.saveAsAction.putValue(Action.SMALL_ICON, new ImageIcon(saveAsURL));
+    if (saveAsURL != null) {
+      this.saveAsAction.putValue(Action.SMALL_ICON, new ImageIcon(saveAsURL));
+    }
 
     // Exit Action
     this.exitAction = new AbstractAction("Exit") {
