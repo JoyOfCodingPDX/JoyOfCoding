@@ -207,6 +207,8 @@
            includes="edu/pdx/cs410E/reflect/**"
            includeAntRuntime="false"
            debug="on"/>
+    <copy file="${src.dir}/edu/pdx/cs410E/reflect/doi.txt"
+          toDir="${classes.dir}/edu/pdx/cs410E/reflect"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
