@@ -9,7 +9,7 @@ public class CheckboxGroupExample extends Panel {
 
   /**
    * Create some {@link java.awt.Checkbox checkboxes} in a {@link
-   * java.awt.CheckboxGroup group and add them to this panel
+   * java.awt.CheckboxGroup group} and add them to this panel
    */
   public CheckboxGroupExample() {
     CheckboxGroup group = new CheckboxGroup();

@@ -1,10 +1,10 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.lang;
 
 /**
  * This class demonstrates Javadoc comments
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/Javadoc.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/lang/Javadoc.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock
