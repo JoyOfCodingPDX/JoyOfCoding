@@ -1,19 +1,14 @@
 package edu.pdx.cs410J;
 
 /**
- * This interface allows the contents of an appointment book to be
- * dumped to some destination.
- *
- * @author David Whitlock
+ * Classes that implement this interface dump the contents of an
+ * airline to some destination.
  */
 public interface Dumper {
 
   /**
-   * Dumps an appointment book to some destination.
-   *
-   * @param book
-   *        The appointment book whose contents are to be dumped
+   * Dumps an airline to some destination.
    */
-  public void dump(AbstractAppointmentBook book);
+  public void dump(AbstractAirline airline);
 
 }

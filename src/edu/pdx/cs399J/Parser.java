@@ -1,17 +1,15 @@
 package edu.pdx.cs410J;
 
 /**
- * This interface is to be implemented by classes that create an
- * appointment book from the contents of a file.
- *
- * @author David Whitlock
+ * Classes that implement this interface read some source and from it
+ * create an airline.
  */
 public interface Parser {
-
   /**
-   * Parses the contents of a file or other input source and returns
-   * an appointment book.
+   * Parses some source and returns an airline.
+   *
+   * @throws ParserException
+   *         If the source is malformatted.
    */
-  public AbstractAppointmentBook parse() throws ParserException;
-
+  public AbstractAirline parse() throws ParserException; 
 }
