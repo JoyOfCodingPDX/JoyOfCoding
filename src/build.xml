@@ -31,14 +31,6 @@
     <property name="cs410J.jar" value="cs410J.jar"/>
     <property name="familyTree.jar" value="familyTree.jar"/>
     <property name="grader.jar" value="grader.jar"/>
-    <property name="client.jar" value="client.jar"/>
-
-    <!-- Stuff for Cloudscape -->
-    <property name="cloud-lib" value="${myenv.J2EE_HOME}/lib/cloudscape" />
-    <property name="system-lib" value="${myenv.J2EE_HOME}/lib/system" />
-    <property name="cloud-path" value=".:${cloud-lib}/cloudclient.jar:${cloud-lib}/RmiJdbc.jar:${system-lib}/cloudutil.jar:${system-lib}/cloudscape.jar"/>
-    <property name="cloud-jvmargs" value="-Xms16m -Xmx32m -Dij.connection.CloudscapeDB=jdbc:rmi://localhost:1099/jdbc:cloudscape:CloudscapeDB;create=true -Dcloudscape.system.home=${myenv.J2EE_HOME}\cloudscape"/>
-  </target>
 
   <!-- Removes byproducts of building -->
   <target name="clean" depends="props">
@@ -155,92 +147,6 @@
          basedir="${classes.dir}"
          update="yes"
          includes="edu/pdx/cs410J/security/**"/>
-  </target>
-
-  <!-- Builds the rmi examples -->
-  <target name="rmi" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs410E/rmi/**"
-           includeAntRuntime="false"
-           debug="on">
-      <classpath>
-        <pathelement location="${jars.dir}/junit.jar"/>
-      </classpath>
-    </javac>
-
-    <!-- Generate "stubs" for remote classes -->
-    <rmic includes=
-            "edu/pdx/cs410E/rmi/EquationSolverImpl.class,
-             edu/pdx/cs410E/rmi/MovieDatabaseImpl.class"
-          classpath="${classes.dir}"
-          base="${classes.dir}"/>
-
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         update="yes">
-      <fileset dir="${classes.dir}">
-         <include name="edu/pdx/cs410E/rmi/**"/>
-         <!-- Server doesn't need client code -->
-         <exclude name="edu/pdx/cs410E/rmi/EquationClient.class"/>
-         <exclude name="edu/pdx/cs410E/rmi/CreateMovie.class"/>
-         <exclude name="edu/pdx/cs410E/rmi/NoteCharacter.class"/>
-         <exclude name="edu/pdx/cs410E/rmi/GetFilmography.class"/>
-         <exclude name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
-      </fileset>
-    </jar>
-
-    <jar jarfile="${jars.dir}/${client.jar}"
-         update="yes">
-      <fileset dir="${classes.dir}">
-         <include name="edu/pdx/cs410E/rmi/EquationClient.class"/>
-         <include name="edu/pdx/cs410E/rmi/EquationSolver.class"/>
-         <include name="edu/pdx/cs410E/rmi/Movie.class"/>
-         <include name="edu/pdx/cs410E/rmi/MovieDatabase.class"/>
-         <include name="edu/pdx/cs410E/rmi/Query.class"/>
-         <include name="edu/pdx/cs410E/rmi/CreateMovie.class"/>
-         <include name="edu/pdx/cs410E/rmi/NoteCharacter.class"/>
-         <include name="edu/pdx/cs410E/rmi/GetFilmography.class"/>
-         <include name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
-         <include name="edu/pdx/cs410E/rmi/ShutdownMovieDatabase.class"/>
-      </fileset>
-    </jar>
-  </target>
-
-  <!-- Builds the reflection examples -->
-  <target name="reflect" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs410E/reflect/**"
-           includeAntRuntime="false"
-           debug="on"/>
-    <copy file="${src.dir}/edu/pdx/cs410E/reflect/doi.txt"
-          toDir="${classes.dir}/edu/pdx/cs410E/reflect"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs410E/reflect/**"/>
-  </target>
-
-  <!-- Builds the JDBC examples -->
-
-  <!-- Populates a Cloudscape database with various pieces of data -->
-
-  <target name="jdbc-populate-cars" depends="props">
-  <java classname="COM.cloudscape.tools.ij" fork="yes" >
-     <jvmarg line="${cloud-jvmargs}"/>
-     <arg value="${src.dir}/edu/pdx/cs410E/jdbc/populate-cars.sql"/>
-     <classpath path="${cloud-path}"/>
-  </java>
-  </target>
-
-  <target name="jdbc-populate-inventory" depends="props">
-  <java classname="COM.cloudscape.tools.ij" fork="yes" >
-     <jvmarg line="${cloud-jvmargs}"/>
-     <arg value="${src.dir}/edu/pdx/cs410E/jdbc/populate-inventory.sql"/>
-     <classpath path="${cloud-path}"/>
-  </java>
   </target>
 
   <!-- Builds the source code for projects in CS410J -->
