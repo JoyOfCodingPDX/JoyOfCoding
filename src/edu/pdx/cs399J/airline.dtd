@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- DTD for describing an airline and its flights -->
+
+<!-- An airline has a name and some number of flights -->
+<!ELEMENT apptbook (owner, flight*)>
+
+<!ELEMENT owner (#PCDATA)>
+
+<!-- An flight has a number, a source, a departure time, a
+     destination, an arrival time -->
+<!ELEMENT flight (number, src, depart, dest, arrive)>
+
+<!ELEMENT src (#PCDATA)>
+<!ELEMENT depart (day, time)>
+<!ELEMENT dest (#PCDATA)>
+<!ELEMENT arrive (day, time)>
+
+
+<!-- A date has a month, day, and a year specified by Calendar.DATE,
+     Calendar.MONTH, and Calendar.YEAR, respectfully. -->
+<!ELEMENT day EMPTY>
+<!ATTLIST day
+          day    CDATA  #REQUIRED
+          month  CDATA  #REQUIRED
+          year   CDATA  #REQUIRED
+>
+
+<!-- A time has an hour and a minute.  Hours are specified by
+     Calendar.HOUR_OF_DAY.  Minutes are specified by Calendar.MINUTE. -->
+<!ELEMENT time EMPTY>
+<!ATTLIST time
+          hour    CDATA  #REQUIRED
+          minute  CDATA  #REQUIRED
+>
+
