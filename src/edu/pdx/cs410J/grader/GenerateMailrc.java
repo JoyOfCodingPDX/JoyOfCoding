@@ -50,7 +50,7 @@ public class GenerateMailrc {
 	  name.append(student.getLastName());
 	}
 	if(!name.toString().equals("")) {
-	  mailrc.print(name.trim() + " <" + email + ">");
+	  mailrc.print(name.toString().trim() + " <" + email + ">");
 	}
 	mailrc.println("\"");
       }
