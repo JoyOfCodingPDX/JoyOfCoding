@@ -20,6 +20,8 @@
 
   <!-- Sets up properties used during building -->
   <target name="props">
+    <property environment="myenv"/>
+
     <property name="src.dir" value="."/>
     <property name="jars.dir" value="../jars"/>
     <property name="api.docs.dir" value="../docs"/>
@@ -30,6 +32,12 @@
     <property name="familyTree.jar" value="familyTree.jar"/>
     <property name="grader.jar" value="grader.jar"/>
     <property name="client.jar" value="client.jar"/>
+
+    <!-- Stuff for Cloudscape -->
+    <property name="cloud-lib" value="${myenv.J2EE_HOME}/lib/cloudscape" />
+    <property name="system-lib" value="${myenv.J2EE_HOME}/lib/system" />
+    <property name="cloud-path" value=".:${cloud-lib}/cloudclient.jar:${cloud-lib}/RmiJdbc.jar:${system-lib}/cloudutil.jar:${system-lib}/cloudscape.jar"/>
+    <property name="cloud-jvmargs" value="-Xms16m -Xmx32m -Dij.connection.CloudscapeDB=jdbc:rmi://localhost:1099/jdbc:cloudscape:CloudscapeDB;create=true -Dcloudscape.system.home=${myenv.J2EE_HOME}\cloudscape"/>
   </target>
 
   <!-- Removes byproducts of building -->
@@ -213,6 +221,26 @@
          basedir="${classes.dir}"
          update="yes"
          includes="edu/pdx/cs410E/reflect/**"/>
+  </target>
+
+  <!-- Builds the JDBC examples -->
+
+  <!-- Populates a Cloudscape database with various pieces of data -->
+
+  <target name="jdbc-populate-cars" depends="props">
+  <java classname="COM.cloudscape.tools.ij" fork="yes" >
+     <jvmarg line="${cloud-jvmargs}"/>
+     <arg value="${src.dir}/edu/pdx/cs410E/jdbc/populate-cars.sql"/>
+     <classpath path="${cloud-path}"/>
+  </java>
+  </target>
+
+  <target name="jdbc-populate-inventory" depends="props">
+  <java classname="COM.cloudscape.tools.ij" fork="yes" >
+     <jvmarg line="${cloud-jvmargs}"/>
+     <arg value="${src.dir}/edu/pdx/cs410E/jdbc/populate-inventory.sql"/>
+     <classpath path="${cloud-path}"/>
+  </java>
   </target>
 
   <!-- Builds the source code for projects in CS410J -->
