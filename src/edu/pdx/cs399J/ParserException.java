@@ -17,4 +17,12 @@ public class ParserException extends Exception {
     super(description);
   }
 
+  /**
+   * Creates a new <code>ParserException</code> that was caused by
+   * another exception.
+   */
+  public ParserException(String description, Throwable cause) {
+    super(description, cause);
+  }
+
 }
