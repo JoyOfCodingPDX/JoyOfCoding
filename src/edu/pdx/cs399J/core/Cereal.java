@@ -1,9 +1,11 @@
 package edu.pdx.cs399J.core;
 
+import java.util.*;
+
 /**
  * This class represents a box of cereal.  It has a name and a price.
  */
-public class Cereal {
+public class Cereal implements Comparable {
   private String name;
   private double price;
 
@@ -32,4 +34,49 @@ public class Cereal {
   public String toString() {
     return this.name + " $" + this.price;
   }
+
+  /**
+   * Compares two <code>Cereal</code>s based on their name
+   */
+  public int compareTo(Object o) {
+    Cereal c2 = (Cereal) o;
+    return this.getName().compareTo(c2.getName());
+  }
+
+  /**
+   * Two be consistent with the natural ordering, two
+   * <code>Cereal</code>s that have the same name, are themselves the
+   * same.
+   */
+  public boolean equals(Object o) {
+    if (o instanceof Cereal) {
+      Cereal other = (Cereal) o;
+      return this.getName().equals(other.getName());
+    }
+    return false;
+  }
+
+  /**
+   * Two cereals that are equal must have the same hash code.
+   */
+  public int hashCode() {
+    return this.getName().hashCode();
+  }
+
+  /**
+   * Demonstrates the natural ordering of <code>Cereals</code> by
+   * adding a bunch of cereals to a {@link SortedSet}
+   */
+  public static void main(String[] args) {
+    SortedSet set = new TreeSet();
+    set.add(new Cereal("Total", 3.56));
+    set.add(new Cereal("Raisin Bran", 2.65));
+    set.add(new Cereal("Sugar Crisps", 2.38));
+
+    Iterator iter = set.iterator();
+    while (iter.hasNext()) {
+      System.out.println(iter.next());
+    }
+  }
+
 }

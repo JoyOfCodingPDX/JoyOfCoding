@@ -124,6 +124,10 @@ public class CheckbookTableModel extends AbstractTableModel {
     return columnNames.length;
   }
 
+  public String getColumnName(int columnIndex) {
+    return columnNames[columnIndex];
+  }
+
   public Object getValueAt(int row, int column) {
     Check check = (Check) this.checks.get(row);
     switch (column) {

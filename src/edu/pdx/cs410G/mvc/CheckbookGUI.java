@@ -15,7 +15,8 @@ public class CheckbookGUI extends JPanel {
 
     // Create the checkbook table
     final CheckbookTableModel checkbook = new CheckbookTableModel();
-    this.add(new JTable(checkbook), BorderLayout.CENTER);
+    this.add(new JScrollPane(new JTable(checkbook)),
+             BorderLayout.CENTER);
     
     // Add a button to create a new check
     JButton newCheck = new JButton("Create a new check");

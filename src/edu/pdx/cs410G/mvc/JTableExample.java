@@ -23,37 +23,13 @@ public class JTableExample extends JPanel {
     };
 
     // Create a tabel model based on that data
-    TableModel model = new DefaultTableModel(data, columnNames) {
-	public int getColumnCount() {
-	  int count = super.getColumnCount();
-	  System.out.println("Column count: " + count);
-	  return count;
-	}
-
-	public String getColumnName(int column) {
-	  String name = super.getColumnName(column);
-	  System.out.println("Column name " + column + ": " + name);
-	  return name;
-	}
-
-	public Object getValueAt(int row, int column) {
-	  Object value = super.getValueAt(row, column);
-	  System.out.println("[" + row + ", " + column + "] " +
-			     value);
-	  return value;
-	}
-
-	public int findColumn(String columnName) {
-	  int column = super.findColumn(columnName);
-	  System.out.println("Column \"" + columnName + "\" " +
-			     column);
-	  return column;
-	}
-      };
+    TableModel model = new DefaultTableModel(data, columnNames);
     
-    // Create a JTable to display the data
+    // Create a JTable to display the data.  Note that the table
+    // heading will not be displayed automatically unless you place in
+    // the table in JScrollPane.
     JTable tree = new JTable(model);
-    this.add(tree, BorderLayout.CENTER);
+    this.add(new JScrollPane(tree), BorderLayout.CENTER);
   }
   
   public static void main(String[] args) {
