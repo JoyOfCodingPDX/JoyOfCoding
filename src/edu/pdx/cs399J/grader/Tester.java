@@ -355,9 +355,26 @@ public class Tester {
     // Print out args
     StringBuffer sb = new StringBuffer();
     for(int j = 0; j < args.length; j++) {
-      sb.append(args[j] + " ");
+      boolean needQuotes = false;
+
+      if(args[j].indexOf(" ") != -1) {
+        needQuotes = true;
+      }
+
+      if(needQuotes) {
+        sb.append("\"");
+      }
+
+      sb.append(args[j]);
+
+      if(needQuotes) {
+        sb.append("\"");
+      }
+
+      sb.append(" ");
     }
-    this.log.println("Command line: " + sb.toString().trim());
+ 
+   this.log.println("Command line: " + sb.toString().trim());
     this.log.println("");
     this.log.println("Program output:");
 
