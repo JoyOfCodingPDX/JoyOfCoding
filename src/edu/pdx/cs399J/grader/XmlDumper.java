@@ -178,6 +178,7 @@ public class XmlDumper extends XmlHelper {
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
       xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
+//       xform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
       // Suppress warnings about "Declared encoding not matching
       // actual one
