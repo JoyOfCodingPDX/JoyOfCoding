@@ -66,7 +66,7 @@ public class BuildPhonebook {
 
       Element name = doc.createElement("name");
       biz.appendChild(name);
-      String br = "Brokat Technologies";
+      String br = "GemStone Systems, Inc.";
       name.appendChild(doc.createTextNode(br));
       
       Element address = doc.createElement("address");
