@@ -152,7 +152,7 @@
     </genkey>
   </target>
 
-  <target name="src" depends="props, build-keystore, compile-src">
+  <target name="src" depends="props, compile-src, build-keystore">
     <description>Compiles the Java source code and place it in jar
                  files</description> 
 
@@ -335,6 +335,7 @@
       <tarfileset dir="${src.dir}">
         <include name="edu/pdx/cs399J/**/*.java"/>
         <include name="edu/pdx/cs399J/**/*.dtd"/>
+        <include name="edu/pdx/cs399J/**/*.xml"/>
         <include name="build.xml"/>
       </tarfileset>
     </tar>
