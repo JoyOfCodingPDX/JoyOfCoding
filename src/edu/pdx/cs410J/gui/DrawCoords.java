@@ -11,7 +11,7 @@ import javax.swing.*;
  */
 public class DrawCoords extends JPanel {
 
-  private Point point;  // Where the mouse was clicked
+  protected Point point;  // Where the mouse was clicked
 
   /**
    * Create a new <code>DrawCoords</code>.  Set up a mouse listener

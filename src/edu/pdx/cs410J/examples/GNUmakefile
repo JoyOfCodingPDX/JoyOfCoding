@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.2 2001-03-13 23:33:38 whitlock Exp $
+# $Id: GNUmakefile,v 1.3 2001-05-06 04:58:25 whitlock Exp $
 #
 
 # example leaf node for building a java package
@@ -44,6 +44,8 @@ JAVA_CLASSES= \
         DivTwo \
         DoIFly \
         DrawCoords \
+        DrawCoordsApplet \
+        DrawPolygon \
         Duck \
         DumpURL \
         Farm \
@@ -92,6 +94,7 @@ JAVA_CLASSES= \
         SayWhat \
         Sheep \
         SignMessage \
+        SimpleDate \
         SimpleGUI \
         Speaker \
         SynchronizedATM \
@@ -100,6 +103,7 @@ JAVA_CLASSES= \
         TextEditor \
         Today \
         Transfer \
+        TranslateCoords \
         Turkey \
         ValidateXml \
         VerifyMessage \
