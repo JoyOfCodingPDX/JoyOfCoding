@@ -20,7 +20,7 @@ public class Javadoc {
    * @throws IllegalArgumentException
    *         The <code>double</code> is zero
    */
-  double invert(double d) 
+  public double invert(double d) 
     throws IllegalArgumentException {
     if (d == 0.0) {
       String s = d + " can't be zero!";

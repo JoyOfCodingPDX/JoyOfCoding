@@ -16,13 +16,14 @@ public class DivTwo {
     double d1 = 0.0;
     double d2 = 0.0;
 
+    if (args.length < 2) {
+      System.err.println("Not enough arguments");
+      System.exit(1);
+    }
+
     try {
       d1 = Double.parseDouble(args[0]);
       d2 = Double.parseDouble(args[1]);
-
-    } catch (ArrayIndexOutOfBoundsException ex) {
-      System.err.println("Not enough arguments");
-      System.exit(1);
 
     } catch (NumberFormatException ex) {
       System.err.println("Not a double: " + ex);
