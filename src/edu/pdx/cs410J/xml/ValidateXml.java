@@ -1,14 +1,15 @@
 package edu.pdx.cs410J.xml;
 
 import java.io.*;
-import org.apache.xerces.parsers.DOMParser;
+import javax.xml.parsers.*;
 import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This program parses and XML file and validates it for correctness
  * against its DTD.
  */
-public class ValidateXml implements ErrorHandler {
+public class ValidateXml extends DefaultHandler {
 
   private static PrintStream err = System.err;
 
@@ -25,21 +26,15 @@ public class ValidateXml implements ErrorHandler {
   }
 
   public static void main(String[] args) {
-    DOMParser parser = null;
     try {
-      InputSource source = new InputSource(new FileReader(args[0]));
-      parser = new DOMParser();
-      parser.setErrorHandler(new ValidateXml());
+      SAXParserFactory factory = SAXParserFactory.newInstance();
+      factory.setValidating(true);
 
-      try {
-	// Validate the XML file against its DTD
-        parser.setFeature("http://xml.org/sax/features/validation", true);
-        
-      } catch (SAXNotRecognizedException snr) {
-      } catch (SAXNotSupportedException sns) {
-      }
-      
-      parser.parse(source);
+      SAXParser parser = factory.newSAXParser();
+      parser.parse(new File(args[0]), new ValidateXml());
+
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace(System.err);
 
     } catch (SAXException ex) {
       err.println("Parsing exception: " + ex);

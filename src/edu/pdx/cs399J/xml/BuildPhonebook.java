@@ -2,8 +2,10 @@ package edu.pdx.cs410J.xml;
 
 import java.io.*;
 import java.net.*;
-import org.apache.xerces.dom.*;
-import org.apache.xml.serialize.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 
 /**
@@ -25,6 +27,7 @@ public class BuildPhonebook {
     try {
       File dtd = new File("phonebook.dtd");
       systemID = dtd.toURL().toString();
+
     } catch (MalformedURLException ex) {
       err.println("** Bad URL: " + ex);
       System.exit(1);
@@ -32,11 +35,21 @@ public class BuildPhonebook {
 
     // Create an empty Document
     try {
+      DocumentBuilderFactory factory =
+        DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
       DOMImplementation dom =
-        DOMImplementationImpl.getDOMImplementation();
+        builder.getDOMImplementation();
       DocumentType docType = 
         dom.createDocumentType("phonebook", publicID, systemID);
       doc = dom.createDocument(null, "phonebook", docType);
+
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
 
     } catch (DOMException ex) {
       // Eep, this is bad
@@ -88,17 +101,17 @@ public class BuildPhonebook {
 
     // Write the XML document to the console
     try {
-      OutputFormat format = new OutputFormat(doc);
-      format.setIndenting(true);
-      format.setIndent(2);
-      format.setLineWidth(70);
-    
-      PrintWriter pw = new PrintWriter(System.out, true);
-      XMLSerializer serial = new XMLSerializer(pw, format);
-      serial.serialize(doc);
+      Source src = new DOMSource(doc);
+      Result res = new StreamResult(System.out);
 
-    } catch (IOException ex) {
-      err.println("** IOException: " + ex);
+      TransformerFactory xFactory = TransformerFactory.newInstance();
+      Transformer xform = xFactory.newTransformer();
+      xform.setOutputProperty(OutputKeys.INDENT, "yes");
+      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.transform(src, res);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
       System.exit(1);
     }
   }
