@@ -220,7 +220,7 @@ class StudentsModel extends AbstractListModel {
               name2 = s2.getId();
             }
 
-            if (name1.equals(name2)) {
+            if (name1.equalsIgnoreCase(name2)) {
               name1 = s1.getFirstName();
               name2 = s2.getFirstName();
 
@@ -236,7 +236,7 @@ class StudentsModel extends AbstractListModel {
               return name1.compareTo(name2);
             }
 
-            if (name1.equals(name2)) {
+            if (name1.equalsIgnoreCase(name2)) {
               return s1.getId().compareTo(s2.getId());
 
             } else {

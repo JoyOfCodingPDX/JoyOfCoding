@@ -89,7 +89,21 @@ public class StudentsList extends JPanel {
         public int compare(Object o1, Object o2) {
           String lastName1 = ((Student) o1).getLastName();
           String lastName2 = ((Student) o2).getLastName();
-          return lastName1.compareTo(lastName2);
+
+          if (!lastName1.equalsIgnoreCase(lastName2)) {
+            return lastName1.compareTo(lastName2);            
+          }
+
+          String firstName1 = ((Student) o1).getFirstName();
+          String firstName2 = ((Student) o2).getFirstName();
+
+          if (!firstName1.equalsIgnoreCase(firstName2)) {
+            return firstName1.compareTo(firstName2);            
+          }
+
+          String fullName1 = ((Student) o1).getFullName();
+          String fullName2 = ((Student) o2).getFullName();
+          return fullName1.compareTo(fullName2);
         }
 
         public boolean equals(Object o) {
