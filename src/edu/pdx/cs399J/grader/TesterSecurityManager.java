@@ -4,10 +4,14 @@ import java.io.*;
 import java.security.*;
 
 /**
- * This class allows us to call a <code>main</code> method multiple
+ * <P>This class allows us to call a <code>main</code> method multiple
  * times without the JVM exiting.  Basically, every time the JVM goes
- * to exit, we throw a <code>SecurityException</code> which we then
- * catch and ignore.
+ * to exit, we throw a <code>TesterExitException</code> which we then
+ * catch and ignore.</P>
+ *
+ * <P>Note that if you install this security manager, you will have to
+ * write a policy file that grants permissions to the code base from
+ * which the user class was loaded.</P>
  *
  * @author My good buddy, Nate Nystrom
  */
@@ -33,8 +37,8 @@ public class TesterSecurityManager extends SecurityManager {
   public void checkExit(int status) {
 //      System.err.println("exit " + status);
     if (! allowExit) {
-      throw new SecurityException("Tried to exit (status=" +
-                                  status + ")");
+      throw new TesterExitException("Tried to exit (status=" +
+                                    status + ")");
     }
   }
 
@@ -57,9 +61,14 @@ public class TesterSecurityManager extends SecurityManager {
 //    public void checkAccept(String host, int port) {}
 //    public void checkPermission(Permission perm) {}
 //    public void checkPermission(Permission perm, Object context) {}
-//    public void checkPropertiesAccess() {}
-//    public void checkPropertyAccess(String key) {}
-//    public void checkPropertyAccess(String key, String val) {}
+//    public void checkPropertiesAccess() {
+//      System.out.println("Checking properties");
+//      super.checkPropertiesAccess();
+//    }
+//    public void checkPropertyAccess(String key) {
+//      System.out.println("Checking property: " + key);
+//      super.checkPropertyAccess(key);
+//    }
 //    public boolean checkTopLevelWindow(Object window) { return true; }
 //    public void checkPackageAccess(String pkg) {}
 //    public void checkPackageDefinition(String pkg) {}

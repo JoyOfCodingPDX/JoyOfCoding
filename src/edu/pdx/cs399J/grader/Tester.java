@@ -223,36 +223,35 @@ public class Tester {
     // Run the method
     Object result = null;
     try {
-      result = m.invoke(null, params);
+      try {
+        result = m.invoke(null, params);
 
-    } catch(SecurityException ex) {
-      // Throw by TesterSecurityManager.  Ignore it.
-
-    } catch(InvocationTargetException ex) {
-      // If the actural exception thrown is a SecurityException, then
-      // we're okay.
-      Throwable thr = ex.getTargetException();
-      if(thr instanceof SecurityException) {
-        // That's okay...
-
-      } else {
-        System.err.println("** InvocationTargetException while " +
-                           "invoking " + className + "." + methodName
-			   + "()");
-        ex.printStackTrace(System.err);
-        return(null);
+      } catch(InvocationTargetException ex) {
+        throw ex.getTargetException();
       }
+
+    } catch(TesterExitException ex) {
+      // That's okay, we're just exiting from one invocation of the
+      // main method
 
     } catch(IllegalAccessException ex) {
       System.err.println("** IllegalAccessException while invoking " +
                          className + "." + methodName + "()");
       ex.printStackTrace(System.err);
-      return(null);
+      result = null;
 
-//      } catch(Throwable ex) {
-//        // Log everything else
-//        ex.printStackTrace(System.err);
-//        return(null);
+    } catch(Exception ex) {
+      // Log everything else
+      System.err.println("** Exception while invoking " +
+                         className + "." + methodName + "()");
+      ex.printStackTrace(System.err);
+      result = null;
+
+    } catch(Throwable ex) {
+      // EEEP!!!
+      System.err.println("*** SEVERE ERROR!!!");
+      ex.printStackTrace(System.err);
+      System.exit(1);
     }
 
     System.out.flush();
@@ -322,7 +321,7 @@ public class Tester {
     // and we don't need to worry about the old values of static
     // fields.
     ClassLoader sysLoader = ClassLoader.getSystemClassLoader();
-    ClassLoader loader = new URLClassLoader(urls, sysLoader);
+    ClassLoader loader = new URLClassLoader(urls);
 //      ClassLoader loader = sysLoader;
 
     // First load the class and get its main method
@@ -365,29 +364,19 @@ public class Tester {
     // Invoke the main method with the given arguments.
     try {
       Object[] actuals = {args};
-      main.invoke(null, actuals);
+      
+      try {
+        main.invoke(null, actuals);
     
+      } catch(InvocationTargetException ex) {
+        throw ex.getTargetException();
+      }
+
       System.exit(42);
 
-    } catch(SecurityException ex) {
-      // Throw by TesterSecurityManager.  Ignore it.
-//        this.consoleOut.println(ex);
-
-    } catch(InvocationTargetException ex) {
-      // If the actural exception thrown is a SecurityException, then
-      // we're okay.
-      Throwable thr = ex.getTargetException();
-//        this.consoleOut.println(thr);
-
-      if(thr instanceof SecurityException) {
+    } catch (TesterExitException ex) {
 	// That's okay...
-
-      } else {
-	System.err.println("** InvocationTargetException while " +
-			   "invoking main");
-	ex.printStackTrace(System.err);
-	return;
-      }
+//         this.consoleOut.println(thr);
       
     } catch(IllegalAccessException ex) {
       System.err.println("** IllegalAccessException while invoking " +
@@ -395,14 +384,22 @@ public class Tester {
       ex.printStackTrace(System.err);
       return;
 
-    } finally {
+    } catch(Exception ex) {
+      System.err.println("** Exception while invoking main");
+      ex.printStackTrace(System.err);
+      return;
+
+    } catch(Throwable ex) {
+      // EEEP!!!
+      System.err.println("*** SEVERE ERROR!!!");
+      ex.printStackTrace(System.err);
+      System.exit(1);
+    }
 //        this.consoleOut.println("Finally: " + args);
 //        System.out.println("Finally: " + args);
-      System.out.flush();
-      System.err.flush();
-      this.log.println("");
-    }
-
+    System.out.flush();
+    System.err.flush();
+    this.log.println("");
   }
 
   /**
@@ -567,6 +564,25 @@ public class Tester {
    */
   public void finalize() {
     this.done = true;
+  }
+
+  /**
+   * Load a class from a given directory
+   */
+  public static void main(String[] args) {
+    String url = args[0];
+    String className = args[1];
+
+    // Install a TesterSecurityManager that will allow us to run a
+    // main method multiple times without exiting.
+    TesterSecurityManager tsm = new TesterSecurityManager();
+    System.setSecurityManager(tsm);
+
+    Tester tester = new Tester(new PrintWriter(System.out, true));
+    tester.setURLs(Tester.parseURLPath(url));
+
+    String[] classArgs = { "Hello", "World" };
+    tester.executeMain(className, classArgs);    
   }
 
   /**
