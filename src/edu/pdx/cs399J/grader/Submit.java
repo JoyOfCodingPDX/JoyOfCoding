@@ -24,6 +24,7 @@ import javax.mail.internet.*;
  * http://java.sun.com/products/javamail</A></center>
  *
  * @author David Whitlock
+ * @since Fall 2000
  */
 public class Submit {
 
@@ -50,20 +51,20 @@ public class Submit {
    * Prints usage information about this program.
    */
   private static void usage() {
-    err.println("usage: java Submit [options] files");
-    err.println("  Where [options] are:");
-    err.println("  -project proj      What project is being " +
-		"submitted");
-    err.println("  -student name      Who is submitting the project");
-    err.println("  -loginId id        UNIX login id");
-//     err.println("  -sourcedir dir     Where to look for .java files"); 
-    err.println("  -email email       Student's email address");
-    err.println("  -savejar           Saves temporary Jar file " +
-		"(optional)");
-    err.println("  -smtp serverName   Name of SMTP server " +
-		"(optional)");
-    err.println("  -verbose           Debugging output (optional)");
-    err.println("  -comment comment   Info for the Grader (optional)");
+    err.println("usage: java Submit [options] args file+");
+    err.println("  args are (in this order):");
+    err.println("    project      What project is being submitted");
+    err.println("    student      Who is submitting the project?");
+    err.println("    loginId      UNIX login id");
+    err.println("    email        Student's email address");
+    err.println("    file         Java source file to submit");
+    err.println("  options are (options may appear in any order):");
+    err.println("    -savejar           Saves temporary Jar file");
+    err.println("    -smtp serverName   Name of SMTP server");
+    err.println("    -verbose           Log debugging output");
+    err.println("    -comment comment   Info for the Grader");
+    err.println("");
+    err.println("Submits Java source code to the CS399J grader.");
     System.exit(1);
   }
 
@@ -533,39 +534,8 @@ public class Submit {
 
     // Parse the command line
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-project")) {
-	if(++i >= args.length) {
-	  err.println("** No project name specified");
-	  usage();
-	}
-
-	projName = args[i];
-
-      } else if (args[i].equals("-student")) {
-        if (++i >= args.length) {
-          err.println("** No name specified");
-          usage();
-        }
-
-        userName = args[i];
-
-      } else if (args[i].equals("-loginId")) {
-        if (++i >= args.length) {
-          err.println("** No login id specified");
-          usage();
-        }
-
-        userId = args[i];
-
-      } else if (args[i].equals("-email")) {
-	if(++i >= args.length) {
-	  err.println("** No email address specified");
-	  usage();
-	}
-
-	userEmail = args[i];
-
-      } else if (args[i].equals("-smtp")) {
+      // Check for options first
+      if (args[i].equals("-smtp")) {
 	if(++i >= args.length) {
 	  err.println("** No SMTP server specified");
 	  usage();
@@ -587,6 +557,18 @@ public class Submit {
 
         comment = args[i];
 
+      } else if (projName == null) {
+	projName = args[i];
+
+      } else if (userName == null) {
+        userName = args[i];
+
+      } else if (userId == null) {
+        userId = args[i];
+
+      } else if (userEmail == null) {
+	userEmail = args[i];
+
       } else {
         // The name of a source file
         fileNames.add(args[i]);
@@ -601,7 +583,7 @@ public class Submit {
 
     if (userName == null) {
       err.println("** Missing student name");
-      usage();
+       usage();
     }
 
     if (userId == null) {
