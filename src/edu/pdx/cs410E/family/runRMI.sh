@@ -28,14 +28,14 @@ JAR_DIR=/home/davidw/PSU/jars
 POLICY_FILE=`pwd`/rmi-server.policy
 CLOUD_LIB=${J2EE_HOME}/lib/cloudscape
 
-CLASSPATH=${JAR_DIR}/familyTree.jar
+CLASSPATH=${JAR_DIR}/family.jar
 CLASSPATH=${CLASSPATH}:${JAR_DIR}/junit.jar
 CLASSPATH=${CLASSPATH}:${CLOUD_LIB}/RmiJdbc.jar
 CLASSPATH=${CLASSPATH}:${CLOUD_LIB}/cloudclient.jar
 
 # Execute a big, ugly java command line
 
-java -Djava.rmi.server.codebase=file:${JAR_DIR}/familyTree.jar \
+java -Djava.rmi.server.codebase=file:${JAR_DIR}/family.jar \
   -Djava.rmi.server.hostname=${HOST} \
   -Djava.security.policy=${POLICY_FILE} \
   ${DEBUG} \

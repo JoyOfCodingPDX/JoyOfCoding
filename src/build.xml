@@ -13,7 +13,7 @@
     <echo message="  cs399J      Builds code for CS399J assignments"/>
     <echo message="  examples    Builds example code"/>
     <echo message="  grader      Builds code for grading"/>
-    <echo message="  familyTree  Builds the family tree example code"/>
+    <echo message="  family      Builds the family tree example code"/>
     <echo message="  docs        Builds the Javadocs for all this code"/>
     <echo message="  clean       Removes all byproducts of building"/>
   </target>
@@ -29,7 +29,7 @@
 
     <property name="examples.jar" value="examples.jar"/>
     <property name="cs399J.jar" value="cs399J.jar"/>
-    <property name="familyTree.jar" value="familyTree.jar"/>
+    <property name="family.jar" value="family.jar"/>
     <property name="grader.jar" value="grader.jar"/>
   </target>
 
@@ -38,7 +38,7 @@
     <delete dir="${classes.dir}"/>
     <delete file="${jars.dir}/${examples.jar}"/>
     <delete file="${jars.dir}/${cs399J.jar}"/>
-    <delete file="${jars.dir}/${familyTree.jar}"/>
+    <delete file="${jars.dir}/${family.jar}"/>
     <delete file="${jars.dir}/${grader.jar}"/>
     <delete dir="${api.docs.dir}"/>
   </target>
@@ -165,11 +165,11 @@
   </target>
 
   <!-- Builds the family tree code -->
-  <target name="familyTree" depends="props">
+  <target name="family" depends="props">
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/familyTree/**"
+           includes="edu/pdx/cs399J/family/**"
            includeAntRuntime="false"
            debug="on"
            source="1.4">
@@ -177,23 +177,23 @@
         <pathelement location="${jars.dir}/junit.jar"/>
       </classpath>
     </javac>
-    <copy file="${src.dir}/edu/pdx/cs399J/familyTree/familytree.dtd" 
-          toDir="${classes.dir}/edu/pdx/cs399J/familyTree"/>
-    <jar jarfile="${jars.dir}/${familyTree.jar}"
+    <copy file="${src.dir}/edu/pdx/cs399J/family/familytree.dtd" 
+          toDir="${classes.dir}/edu/pdx/cs399J/family"/>
+    <jar jarfile="${jars.dir}/${family.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs399J/familyTree/**"/>
+         includes="edu/pdx/cs399J/family/**"/>
   </target>
 
   <!-- Runs the junit unit tests for the family tree code -->
-  <target name="familyTree-tests" depends="familyTree">
+  <target name="family-tests" depends="family">
     <junit printsummary="yes">
       <formatter type="plain" usefile="false"/>
-      <test name="edu.pdx.cs399J.familyTree.tests.PersonTest" />
-      <test name="edu.pdx.cs399J.familyTree.tests.MarriageTest" />
-      <test name="edu.pdx.cs399J.familyTree.tests.XmlTest" />
+      <test name="edu.pdx.cs399J.family.tests.PersonTest" />
+      <test name="edu.pdx.cs399J.family.tests.MarriageTest" />
+      <test name="edu.pdx.cs399J.family.tests.XmlTest" />
       <classpath>
-        <pathelement location="${jars.dir}/familyTree.jar"/>
+        <pathelement location="${jars.dir}/family.jar"/>
       </classpath>
     </junit>
   </target>
@@ -222,7 +222,7 @@
 
   <!-- Builds the Javadocs for all my code -->
   <target name="docs" 
-          depends="props, cs399J, examples, grader, familyTree">
+          depends="props, cs399J, examples, grader, family">
     <mkdir dir="${api.docs.dir}"/>
     <javadoc packagenames="edu.pdx.cs399J.*"
              destdir="${api.docs.dir}"

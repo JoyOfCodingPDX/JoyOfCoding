@@ -1,6 +1,6 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
-import edu.pdx.cs410J.familyTree.Person;
+import edu.pdx.cs399J.family.Person;
 import java.rmi.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,7 +12,7 @@ import java.util.Date;  // Not to be confused with java.sql.Date
 /**
  * This class implements <code>RemotePerson</code> and models a person
  * whose data is stored in a relational database.  Note that no {@link
- * edu.pdx.cs410J.familyTree.Person} object is created.
+ * edu.pdx.cs399J.family.Person} object is created.
  */
 class RdbRemotePerson extends java.rmi.server.UnicastRemoteObject
   implements RemotePerson {

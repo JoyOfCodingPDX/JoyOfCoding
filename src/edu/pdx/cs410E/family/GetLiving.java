@@ -1,4 +1,4 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
 import java.io.*;
 import java.rmi.*;

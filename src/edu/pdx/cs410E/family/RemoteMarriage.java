@@ -1,10 +1,10 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
 import java.rmi.*;
 import java.util.*;
 
 /**
- * This interface models a {@link edu.pdx.cs410J.familyTree.Marriage}
+ * This interface models a {@link edu.pdx.cs399J.family.Marriage}
  * that is accessed remotely using Java Remote Method Invocation.
  */
 public interface RemoteMarriage extends Remote {

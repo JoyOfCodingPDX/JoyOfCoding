@@ -1,6 +1,6 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
-import edu.pdx.cs410J.familyTree.*;
+import edu.pdx.cs399J.family.*;
 import java.io.*;
 import java.net.*;
 import java.rmi.*;

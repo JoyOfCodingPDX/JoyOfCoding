@@ -1,13 +1,13 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
-import edu.pdx.cs410J.familyTree.Marriage;
+import edu.pdx.cs399J.family.Marriage;
 import java.rmi.*;
 import java.util.Date;
 
 /**
  * This is class implements the <code>RemoteMarriage</code> interface.
  * Basically, it delegates all of its behavior to an underlying {@link
- * edu.pdx.cs410J.Marriage} that lives only on the server.
+ * edu.pdx.cs399J.Marriage} that lives only on the server.
  */
 class RemoteMarriageImpl extends java.rmi.server.UnicastRemoteObject
   implements RemoteMarriage {

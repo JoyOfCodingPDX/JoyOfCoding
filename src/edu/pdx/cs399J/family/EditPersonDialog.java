@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.familyTree;
+package edu.pdx.cs399J.family;
 
 import java.awt.*;
 import java.awt.event.*;

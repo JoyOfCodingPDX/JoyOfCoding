@@ -11,7 +11,7 @@
     <echo message=""/>
     <echo message="Targets are:"/>
     <echo message="  examples    Builds example code"/>
-    <echo message="  familyTree  Builds the family tree example code"/>
+    <echo message="  family      Builds the family tree example code"/>
     <echo message="  docs        Builds the Javadocs for all this code"/>
     <echo message="  clean       Removes all byproducts of building"/>
   </target>
@@ -26,7 +26,7 @@
     <property name="classes.dir" value="./classes"/>
 
     <property name="examples.jar" value="examples.jar"/>
-    <property name="familyTree.jar" value="familyTree.jar"/>
+    <property name="family.jar" value="family.jar"/>
     <property name="client.jar" value="client.jar"/>
 
     <!-- Stuff for Cloudscape -->
@@ -41,7 +41,7 @@
     <delete dir="${classes.dir}"/>
     <delete file="${jars.dir}/${client.jar}"/>
     <delete file="${jars.dir}/${examples.jar}"/>
-    <delete file="${jars.dir}/${familyTree.jar}"/>
+    <delete file="${jars.dir}/${family.jar}"/>
     <delete dir="${api.docs.dir}"/>
   </target>
 
@@ -164,29 +164,29 @@
 
   <!-- Builds the family tree examples -->
 
-  <target name="familyTree" depends="props">
+  <target name="family" depends="props">
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410E/familyTree/**"
+           includes="edu/pdx/cs410E/family/**"
            includeAntRuntime="false"
            debug="on">
     </javac>
 
     <!-- Generate "stubs" for remote classes -->
     <rmic includes=
-            "edu/pdx/cs410E/familyTree/RdbRemoteFamilyTree.class,
-             edu/pdx/cs410E/familyTree/RdbRemotePerson.class,
-             edu/pdx/cs410E/familyTree/RemoteMarriageImpl.class,
-             edu/pdx/cs410E/familyTree/RemotePersonImpl.class,
-             edu/pdx/cs410E/familyTree/XmlRemoteFamilyTree.class"
+            "edu/pdx/cs410E/family/RdbRemoteFamilyTree.class,
+             edu/pdx/cs410E/family/RdbRemotePerson.class,
+             edu/pdx/cs410E/family/RemoteMarriageImpl.class,
+             edu/pdx/cs410E/family/RemotePersonImpl.class,
+             edu/pdx/cs410E/family/XmlRemoteFamilyTree.class"
           classpath="${classes.dir}"
           base="${classes.dir}"/>
 
     <!-- Build the tests -->
     <javac srcdir="${src.dir}/tests"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410E/familyTree/**"
+           includes="edu/pdx/cs410E/family/**"
            includeAntRuntime="false"
            debug="on">
       <classpath>
@@ -194,10 +194,10 @@
       </classpath>
     </javac>
 
-    <jar jarfile="${jars.dir}/${familyTree.jar}"
+    <jar jarfile="${jars.dir}/${family.jar}"
          update="yes">
       <fileset dir="${classes.dir}">
-         <include name="edu/pdx/cs410E/familyTree/**"/>
+         <include name="edu/pdx/cs410E/family/**"/>
          <!-- Server doesn't need client code -->
          <exclude name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
       </fileset>
@@ -212,10 +212,10 @@
 
   </target>
 
-  <target name="familyTree-create-tables" depends="props">
+  <target name="family-create-tables" depends="props">
   <java classname="COM.cloudscape.tools.ij" fork="yes" >
      <jvmarg line="${cloud-jvmargs}"/>
-     <arg value="${src.dir}/edu/pdx/cs410E/familyTree/create-tables.sql"/>
+     <arg value="${src.dir}/edu/pdx/cs410E/family/create-tables.sql"/>
      <classpath path="${cloud-path}"/>
   </java>
   </target>

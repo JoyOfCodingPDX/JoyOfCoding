@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.familyTree;
+package edu.pdx.cs399J.family;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +14,7 @@ import javax.swing.event.*;
  * <code>Person</code>.
  */
 public class PersonPanel extends JPanel {
-  private FamilyTreePanel familyTreeGUI;  // Used for callbacks
+  private FamilyTreePanel familyGUI;  // Used for callbacks
 
   private Person person;  // Who are we displaying?
   private ArrayList marriages = new ArrayList();
@@ -32,8 +32,8 @@ public class PersonPanel extends JPanel {
    * Creates a <code>PersonPanel</code> for displaying
    * <code>Person</code>s
    */ 
-  public PersonPanel(final FamilyTreePanel familyTreeGUI) {
-    this.familyTreeGUI = familyTreeGUI;
+  public PersonPanel(final FamilyTreePanel familyGUI) {
+    this.familyGUI = familyGUI;
 
     this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     
@@ -61,7 +61,7 @@ public class PersonPanel extends JPanel {
     this.fatherName.setAlignmentX(Component.LEFT_ALIGNMENT);
     this.fatherName.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
-          PersonPanel.this.familyTreeGUI.displayFather();
+          PersonPanel.this.familyGUI.displayFather();
         }
       });
     infoPanel.add(this.fatherName);
@@ -72,7 +72,7 @@ public class PersonPanel extends JPanel {
     this.motherName.setAlignmentX(Component.LEFT_ALIGNMENT);
     this.motherName.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
-          PersonPanel.this.familyTreeGUI.displayMother();
+          PersonPanel.this.familyGUI.displayMother();
         }
       });
     infoPanel.add(motherName);
@@ -104,19 +104,19 @@ public class PersonPanel extends JPanel {
               marriage = (Marriage) marriages.get(index);
             }
 
-            if (marriage != null && familyTreeGUI.canEdit()) { 
+            if (marriage != null && familyGUI.canEdit()) { 
               EditMarriageDialog dialog = 
                 new EditMarriageDialog(marriage, 
-                                       familyTreeGUI.getFrame(), 
-                                       familyTreeGUI.getFamilyTree());
+                                       familyGUI.getFrame(), 
+                                       familyGUI.getFamilyTree());
               dialog.pack();
-              dialog.setLocationRelativeTo(familyTreeGUI);
+              dialog.setLocationRelativeTo(familyGUI);
               dialog.setVisible(true);
               
               if (dialog.getMarriage() != null) {
                 // Assume a change was made and update person panel
-                familyTreeGUI.setDirty(true);
-                familyTreeGUI.showPerson(person);
+                familyGUI.setDirty(true);
+                familyGUI.showPerson(person);
               }
             }
           }
@@ -128,13 +128,13 @@ public class PersonPanel extends JPanel {
 
     // If the GUI can't edit a person, don't bother display the
     // buttons to do so.
-    if (familyTreeGUI.canEdit()) {
+    if (familyGUI.canEdit()) {
       JButton addMarriageButton = new JButton("Add Marriage");
       addMarriageButton.setToolTipText("Notes a marriage involving " +
                                        "this person"); 
       addMarriageButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            PersonPanel.this.familyTreeGUI.addMarriage();
+            PersonPanel.this.familyGUI.addMarriage();
           }
         });
       JPanel addMarriagePanel = new JPanel();
@@ -151,7 +151,7 @@ public class PersonPanel extends JPanel {
       editButton.setToolTipText("Click to edit this person");
       editButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            PersonPanel.this.familyTreeGUI.editPerson();
+            PersonPanel.this.familyGUI.editPerson();
           }
         });
       editPanel.setLayout(new BoxLayout(editPanel, BoxLayout.X_AXIS));

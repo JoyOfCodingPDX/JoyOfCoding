@@ -1,10 +1,10 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
 import java.rmi.*;
 import java.util.*;
 
 /**
- * This interface models a {@link edu.pdx.cs410J.familyTree.Person}
+ * This interface models a {@link edu.pdx.cs399J.family.Person}
  * that is accessed remotely using Java Remote Method Invocation.
  */
 public interface RemotePerson extends Remote {
@@ -16,8 +16,8 @@ public interface RemotePerson extends Remote {
 
   /**
    * Returns this person's gender (either {@link
-   * edu.pdx.cs410J.familyTree.Person#MALE} or 
-   * {@link edu.pdx.cs410J.familyTree.Person#FEMALE}.
+   * edu.pdx.cs399J.family.Person#MALE} or 
+   * {@link edu.pdx.cs399J.family.Person#FEMALE}.
    */
   public int getGender() throws RemoteException;
 
