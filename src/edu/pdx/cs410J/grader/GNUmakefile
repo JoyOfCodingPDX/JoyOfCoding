@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.2 2001-02-19 23:56:41 whitlock Exp $
+# $Id: GNUmakefile,v 1.3 2001-02-20 02:40:28 whitlock Exp $
 #
 
 # example leaf node for building a java package
@@ -23,6 +23,10 @@ JAVA_CLASSES= \
 	CloseStream \
 	Grade \
 	GradeBook \
+<<<<<<< GNUmakefile
+        GradePanel \
+=======
+>>>>>>> 1.2
 	NewAssignmentDialog \
 	Notable \
 	NotesPanel \

@@ -65,9 +65,19 @@ public class NotesPanel extends JPanel {
    * this <code>NotesPanel</code>.
    */
   public void setNotable(Notable notable) {
+    clearNotes();   // Start from scratch
     this.notable = notable;
     this.notesList.setListData(notable.getNotes().toArray());
     this.notes.addAll(notable.getNotes());
+  }
+
+  /**
+   * Clears the contents of the notes list
+   */
+  public void clearNotes() {
+    this.notesList.setListData(new Vector());
+    this.notes = new Vector();
+    this.notable = null;
   }
 
   /**
@@ -80,6 +90,7 @@ public class NotesPanel extends JPanel {
     while(iter.hasNext()) {
       notable.addNote((String) iter.next());
     }
+    this.setNotable(notable);
   }
 
 }

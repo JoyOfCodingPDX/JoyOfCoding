@@ -309,8 +309,9 @@ public class XmlDumper {
       
       for(int i = 0; i < late.size(); i++) {
         String name = (String) late.get(i);
-        Element lateName = doc.createElement("name");
-        lateName.appendChild(doc.createTextNode(name));
+        Element nameNode = doc.createElement("name");
+        nameNode.appendChild(doc.createTextNode(name));
+        lateNode.appendChild(nameNode);
       }
       
       root.appendChild(lateNode);
@@ -322,8 +323,9 @@ public class XmlDumper {
           
       for(int i = 0; i < resubmitted.size(); i++) {
         String name = (String) resubmitted.get(i);
-        Element resubName = doc.createElement("name");
-        resubName.appendChild(doc.createTextNode(name));
+        Element nameNode = doc.createElement("name");
+        nameNode.appendChild(doc.createTextNode(name));
+        resubNode.appendChild(nameNode);
       }
 
       root.appendChild(resubNode);
