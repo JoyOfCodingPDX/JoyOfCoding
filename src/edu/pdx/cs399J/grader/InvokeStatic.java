@@ -123,7 +123,7 @@ public class InvokeStatic {
     }
 
     if (params.isEmpty()) {
-      params.add(new String[0]);
+      params.add("");
     }
 
     // Translate the methodArgsTypes into types
