@@ -28,6 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
+    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -69,13 +70,14 @@
       <exclude name="edu/pdx/cs399J/whitlock/**"/>
       <exclude name="edu/pdx/cs399J/fall2000/**"/>
       <classpath>
-        <pathelement location="${jars.dir}/junit.jar"/>
-        <pathelement location="${jars.dir}/activation.jar"/>
-        <pathelement location="${jars.dir}/mail.jar"/>
+        <pathelement location="${daves.jars.dir}/junit.jar"/>
+        <pathelement location="${daves.jars.dir}/activation.jar"/>
+        <pathelement location="${daves.jars.dir}/mail.jar"/>
       </classpath>
     </javac>
 
     <!-- Build the various jar files -->
+    <mkdir dir="${jars.dir}"/>
 
     <jar jarfile="${jars.dir}/${cs399J.jar}"
          update="yes">
@@ -207,9 +209,9 @@
     >
       <classpath>
         <pathelement location="${classes.dir}"/>
-        <pathelement location="${jars.dir}/activation.jar"/>
-        <pathelement location="${jars.dir}/mail.jar"/>
-        <pathelement location="${jars.dir}/junit.jar"/>
+        <pathelement location="${daves.jars.dir}/activation.jar"/>
+        <pathelement location="${daves.jars.dir}/mail.jar"/>
+        <pathelement location="${daves.jars.dir}/junit.jar"/>
       </classpath>
       <link href="http://java.sun.com/j2se/1.4/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>

@@ -127,9 +127,14 @@ public class SummaryReport {
   /**
    * Prints usage information about this main program
    */
-  private static void usage() {
-    err.println("\njava SummaryReport xmlFile outDir");
+  private static void usage(String s) {
+    err.println("\n** " + s + "\n");
+    err.println("\njava SummaryReport xmlFile outDir (student)*");
     err.println("\n");
+    err.println("Generates summary grade reports for the given " +
+		"students.  If student is not \ngiven, then reports " + 
+		"for all students are generated.");
+    err.println("");
     System.exit(1);
   }
 
@@ -138,26 +143,42 @@ public class SummaryReport {
    * grade book located in a given XML file.
    */
   public static void main(String[] args) {
-    if (args.length < 2) {
-      err.println("** Not enough arguments");
-      usage();
+    String xmlFileName = null;
+    String outputDirName = null;
+    Collection students = new ArrayList();
+
+    for (int i = 0; i < args.length; i++) {
+      if (xmlFileName == null) {
+	xmlFileName = args[i];
+
+      } else if (outputDirName == null) {
+	outputDirName = args[i];
+
+      } else {
+	students.add(args[i]);
+      }
     }
 
-    String xmlFile = args[0];
+    if (xmlFileName == null) {
+      usage("Missing XML file name");
+    }
+
+    if (outputDirName == null) {
+      usage("Missing output dir name");
+    }
+
+    String xmlFile = xmlFileName;
     File outDir = new File(args[1]);
     if (!outDir.exists()) {
       outDir.mkdirs();
 
     } else if (!outDir.isDirectory()) {
-      err.println("** " + outDir + " is not a directory");
-      System.exit(1);
+      usage(outDir + " is not a directory");
     }
 
     File file = new File(xmlFile);
     if (!file.exists()) {
-      err.println("** Grade book file " + xmlFile + 
-                  " does not exist");
-      System.exit(1);
+      usage("Grade book file " + xmlFile + " does not exist");
     }
 
     // Parse XML file
@@ -183,10 +204,8 @@ public class SummaryReport {
     // Create a SummaryReport for every student
     Iterator ids;
 
-    if (args.length > 2) {
-      List l = new ArrayList();
-      l.add(args[2]);
-      ids = l.iterator();
+    if (!students.isEmpty()) {
+      ids = students.iterator();
 
     } else {
       ids = book.getStudentIds().iterator();
