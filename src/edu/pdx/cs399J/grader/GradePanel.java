@@ -87,6 +87,20 @@ public class GradePanel extends JPanel {
     JPanel fields = new JPanel();
     fields.setLayout(new GridLayout(0, 1));
     this.gradeField = new JTextField(5);
+    this.gradeField.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Assignment assign = getSelectedAssignment();
+          if (assign != null && student != null) {
+            Grade grade = student.getGrade(assign.getName());
+            if (grade == null) {
+              grade = createGrade();
+
+            } else {
+              updateGrade(grade);
+            }
+          }
+        }
+      });
     fields.add(this.gradeField);
 
     p.add(labels, BorderLayout.WEST);
