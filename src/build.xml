@@ -187,6 +187,7 @@
          manifest="edu/pdx/cs399J/grader/Manifest.mf"
          update="yes">
       <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/ParserException.*"/>
         <include name="edu/pdx/cs399J/grader/**"/>
       </fileset>
       <fileset dir="${src.dir}">
