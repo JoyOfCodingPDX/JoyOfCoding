@@ -158,33 +158,53 @@ public class StudentPanel extends JPanel {
    */
   private void updateStudent(Student student) {
     String firstName = this.firstNameField.getText();
-    if(firstName != null && !firstName.equals("")) {
+    if(firstName != null) {
       student.setFirstName(firstName);
     }
 
     String lastName = this.lastNameField.getText();
-    if(lastName != null && !lastName.equals("")) {
-      student.setLastName(lastName);
+    if(lastName != null) {
+      if(lastName.equals("")) {
+        student.setLastName(null);
+      } else {
+        student.setLastName(lastName);
+      }
     }
 
     String nickName = this.nickNameField.getText();
-    if(nickName != null && !nickName.equals("")) {
-      student.setNickName(nickName);
+    if(nickName != null) {
+      if(nickName.equals("")) {
+        student.setNickName(null);
+      } else {
+        student.setNickName(nickName);
+      }
     }
 
     String email = this.emailField.getText();
-    if(email != null && !email.equals("")) {
-      student.setEmail(email);
+    if(email != null) {
+      if(email.equals("")) {
+        student.setEmail(null);
+      } else {
+        student.setEmail(email);
+      }
     }
 
     String ssn = this.ssnField.getText();
-    if(ssn != null && !ssn.equals("")) {
-      student.setSsn(ssn);
+    if(ssn != null) {
+      if(ssn.equals("")) {
+        student.setSsn(null);
+      } else {
+        student.setSsn(ssn);
+      }
     }
 
     String major = this.majorField.getText();
-    if(major != null && !major.equals("")) {
-      student.setMajor(major);
+    if(major != null) {
+      if(major.equals("")) {
+        student.setMajor(null);
+      } else {
+        student.setMajor(major);
+      }
     }
     
     // The NotesPanel takes care of adding notes
