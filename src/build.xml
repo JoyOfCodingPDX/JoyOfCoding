@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 
-<!-- Jakarta Ant build file for PSU source code -->
+<!-- Jakarta Ant build file for PSU source code.  You can find out
+     more about Ant at: 
+
+                    http://jakarta.apache.org/ant
+
+-->
 
 <project default="usage" basedir=".">
 
@@ -31,6 +36,11 @@
     <property name="cs399J.jar" value="cs399J.jar"/>
     <property name="family.jar" value="family.jar"/>
     <property name="grader.jar" value="grader.jar"/>
+
+    <property name="keystore" value="${src.dir}/keystore"/>
+    <property name="storepass" value="mystorepass"/>
+    <property name="game.console" value="gameConsole"/>
+
   </target>
 
   <!-- Removes byproducts of building -->
@@ -98,8 +108,7 @@
       </fileset>
     </jar>
 
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         update="yes">
+    <jar jarfile="${jars.dir}/${examples.jar}" update="yes">
       <fileset dir="${classes.dir}">
         <include name="edu/pdx/cs399J/**/*.class"/>
         <exclude name="edu/pdx/cs399J/*.class"/>
@@ -109,6 +118,55 @@
     </jar>    
 
     <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
+  </target>
+
+  <target name="game-console" depends="props, src" >
+    <description>Builds the keystore, certificates, etc. for running
+        the game console security example</description>
+
+    <delete file="${keystore}"/>
+
+    <!-- Create a keystore for holding keys and certificates -->
+    <genkey keystore="${keystore}" storepass="${storepass}" 
+            alias="${game.console}">
+      <dname>
+        <param name="CN" value="Game Console"/>
+        <param name="OU" value="CS399J Security Examples"/>
+        <param name="O"  value="Portland State University"/>
+        <param name="L"  value="Portland"/>
+        <param name="ST" value="Oregon"/>
+        <param name="C"  value="US"/>
+      </dname>
+    </genkey>
+
+    <!-- Build the (trusted) game console jar -->
+    <jar jarfile="${jars.dir}/gameConsole.jar" update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/security/Game*.class"/>
+      </fileset>
+    </jar>
+    <signjar jar="${jars.dir}/gameConsole.jar" alias="${game.console}"
+        keystore="${keystore}" storepass="${storepass}" />
+    <chmod perm="a+r" file="${jars.dir}/gameConsole.jar"/>
+
+    <!-- Have to export the certificate "by hand" -->
+    <exec executable="keytool">
+      <arg line="-keystore ${keystore}"/>
+      <arg line="-storepass ${storepass}"/>
+      <arg value="-export"/>
+      <arg line="-alias ${game.console}"/>
+      <arg line="-file ${jars.dir}/gameConsole.cer"/>
+    </exec>
+    <chmod perm="a+r" file="${jars.dir}/gameConsole.cer"/>
+
+    <!-- Build the (untrusted) game jar -->
+    <jar jarfile="${jars.dir}/guessingGame.jar" update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/security/GuessingGame.class"/>
+      </fileset>
+    </jar>
+    <chmod perm="a+r" file="${jars.dir}/guessingGame.jar"/>
+
   </target>
 
   <target name="unit-tests" depends="src">
