@@ -30,7 +30,7 @@ public class LRUMapTest extends TestCase {
   /**
    * Tests creating a LRU Map with a bogus class name
    *
-   * @see AbstractLRUMap.createLRUMap(String, int)
+   * @see AbstractLRUMap#createLRUMap(String, int)
    */
   public void testCreateNoSuchClass() {
     try {
@@ -45,7 +45,7 @@ public class LRUMapTest extends TestCase {
    * Tests creating an LRU Map that does not subclass {@link
    * AbstractLRUMap}. 
    *
-   * @see AbstractLRUMap.createLRUMap(String, int)
+   * @see AbstractLRUMap#createLRUMap(String, int)
    */
   public void testCreateNotAMap() {
     try {
@@ -59,7 +59,7 @@ public class LRUMapTest extends TestCase {
   /**
    * Tests creating an LRU Map from an interface class
    *
-   * @see AbstractLRUMap.createLRUMap(String, int)
+   * @see AbstractLRUMap#createLRUMap(String, int)
    */
   public void testCreateInterface() {
     try {
@@ -74,7 +74,7 @@ public class LRUMapTest extends TestCase {
    * Tests creating an LRU Map from a class without the required
    * one-argument constructor.
    *
-   * @see AbstractLRUMap.createLRUMap(String, int)
+   * @see AbstractLRUMap#createLRUMap(String, int)
    */
   public void testCreateNoOneArgConstructor() {
     try {
@@ -89,7 +89,7 @@ public class LRUMapTest extends TestCase {
   /**
    * Tests creating a new LRU Map
    *
-   * @see AbstractLRUMap.createLRUMap(String, int)
+   * @see AbstractLRUMap#createLRUMap(String, int)
    */
   public void testCreate() {
     AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, 4);

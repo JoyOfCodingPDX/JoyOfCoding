@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
+    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -333,7 +333,7 @@
         <pathelement location="${daves.jars.dir}/mail.jar"/>
         <pathelement location="${daves.jars.dir}/junit.jar"/>
       </classpath>
-      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+      <link href="http://java.sun.com/j2se/1.4.1/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>
       <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
       <link href="http://www.junit.org/junit/javadoc/3.7"/>

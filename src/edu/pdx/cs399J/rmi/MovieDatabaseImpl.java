@@ -9,7 +9,7 @@ import java.util.*;
  * This class provides an implementation of the remote {@link
  * MovieDatabase} interface.  Note that this class does not extened
  * {@link UnicastRemoteObject}.  Therefore, we have to invoke {@link
- * UnicastRemoteObject#exportObject()} in the constructor.
+ * UnicastRemoteObject#exportObject} in the constructor.
  */
 public class MovieDatabaseImpl implements MovieDatabase {
 

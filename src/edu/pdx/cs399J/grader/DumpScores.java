@@ -33,7 +33,7 @@ public class DumpScores {
         return 1;
 
       } else {
-        assert this.score == other.score;
+//          assert this.score == other.score;
         return 0;
       }
     }
