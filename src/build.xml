@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+
+<!-- Jakarta Ant build file for PSU source code -->
+
+<project default="usage" basedir=".">
+
+  <!-- Prints usage information on what to build -->
+  <target name="usage">
+    <echo message=""/>
+    <echo message="Building PSU Java source code:"/>
+    <echo message=""/>
+    <echo message="Targets are:"/>
+    <echo message="  cs410J      Builds code for CS410J assignments"/>
+    <echo message="  examples    Builds example code"/>
+    <echo message="  grader      Builds code for grading"/>
+    <echo message="  familyTree  Builds the family tree example code"/>
+    <echo message="  docs        Builds the Javadocs for all this code"/>
+    <echo message="  clean       Removes all byproducts of building"/>
+  </target>
+
+  <!-- Sets up properties used during building -->
+  <target name="props">
+    <property name="src.dir" value="."/>
+    <property name="jars.dir" value="../jars"/>
+    <property name="api.docs.dir" value="../docs"/>
+    <property name="classes.dir" value="./classes"/>
+
+    <property name="examples.jar" value="examples.jar"/>
+    <property name="cs410J.jar" value="cs410J.jar"/>
+    <property name="familyTree.jar" value="familyTree.jar"/>
+    <property name="grader.jar" value="grader.jar"/>
+  </target>
+
+  <!-- Removes byproducts of building -->
+  <target name="clean" depends="props">
+    <delete dir="${classes.dir}"/>
+    <delete file="${jars.dir}/${examples.jar}"/>
+    <delete file="${jars.dir}/${cs410J.jar}"/>
+    <delete file="${jars.dir}/${familyTree.jar}"/>
+    <delete file="${jars.dir}/${grader.jar}"/>
+  </target>
+
+  <!-- Builds the example code -->
+  <target name="examples" 
+          depends="props, lang, core, xml, net, gui, security"/>
+  
+  <!-- Builds the Code API examples -->
+  <target name="core" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/core/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/core/**"/>
+  </target>
+
+  <!-- Builds the Java Language examples -->
+  <target name="lang" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/lang/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/lang/**"/>
+  </target>
+
+  <!-- Builds the XML examples -->
+  <target name="xml" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/xml/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/xml/**"/>
+  </target>
+
+  <!-- Builds the Networking examples -->
+  <target name="net" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/net/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/net/**"/>
+  </target>
+
+  <!-- Builds the GUI examples -->
+  <target name="gui" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/gui/**"
+           excludes="edu/pdx/cs410J/gui/DrawText.java"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/gui/**"/>
+  </target>
+
+  <!-- Builds the security examples -->
+  <target name="security" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/security/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/security/**"/>
+  </target>
+
+  <!-- Builds the source code for projects in CS410J -->
+  <target name="cs410J" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/*.java"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${cs410J.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/*.class"/>
+  </target>
+
+  <!-- Builds the family tree code -->
+  <target name="familyTree" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/familyTree/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${familyTree.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410J/familyTree/*"/>
+  </target>
+
+  <!-- Builds the grader's code -->
+  <target name="grader" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410J/grader/**"
+           includeAntRuntime="false"
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/activation.jar"/>
+        <pathelement location="${jars.dir}/mail.jar"/>
+      </classpath>
+    </javac>
+    <jar jarfile="${jars.dir}/${grader.jar}"
+         basedir="${classes.dir}"
+         manifest="edu/pdx/cs410J/grader/Manifest.mf"
+         update="yes"
+         includes="edu/pdx/cs410J/grader/*"/>
+  </target>
+
+  <!-- Builds the Javadocs for all my code -->
+  <target name="docs" 
+          depends="props, cs410J, examples, grader, familyTree">
+    <mkdir dir="${api.docs.dir}"/>
+    <javadoc packagenames="edu.pdx.cs410J.*"
+             destdir="${api.docs.dir}"
+             sourcepath="${src.dir}"
+             excludepackagenames="edu.pdx.cs410J.fall2000"
+             nohelp="yes"
+             use="yes"
+             splitindex="yes"
+             windowtitle="CS410J Docs"
+    >
+      <classpath>
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${jars.dir}/activation.jar"/>
+        <pathelement location="${jars.dir}/mail.jar"/>
+      </classpath>
+      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+      <link href="http://java.sun.com/products/javamail/javadocs"/>
+      <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
+    </javadoc>
+  </target>
+
+</project>
