@@ -184,7 +184,6 @@ public class Survey {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter pw =
       new PrintWriter(new OutputStreamWriter(baos), true);
-    bytes = baos.toByteArray();
 
     try {
       Source src = new DOMSource(xmlDoc);
@@ -200,6 +199,8 @@ public class Survey {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
+
+    bytes = baos.toByteArray();
 
     // Email the results of the survey to the TA and CC the student
     
