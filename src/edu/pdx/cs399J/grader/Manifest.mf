@@ -3,4 +3,5 @@ Created-By: David Whitlock
 Class-Path: http://www.cs.pdx.edu/~whitlock/jars/cs399J.jar 
             http://www.cs.pdx.edu/~whitlock/jars/mail.jar 
             http://www.cs.pdx.edu/~whitlock/jars/activation.jar
+            http://www.cs.pdx.edu/~whitlock/jars/jlfgr-1_0.jar
 Main-Class: edu.pdx.cs399J.grader.GradeBookGUI

@@ -19,7 +19,8 @@ public abstract class AbstractPhoneBill {
   public abstract void addPhoneCall(AbstractPhoneCall call);
 
   /**
-   * Returns all of the phone calls in this phone bill
+   * Returns all of the phone calls (as instances of {@link
+   * AbstractPhoneCall}) in this phone bill
    */
   public abstract Collection getPhoneCalls();
 

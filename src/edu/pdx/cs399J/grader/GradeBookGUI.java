@@ -4,6 +4,7 @@ import edu.pdx.cs399J.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -18,6 +19,21 @@ public class GradeBookGUI extends JFrame {
   private GradeBookPanel bookPanel;
   private File file;       // Where the grade book lives
 
+  /** An action for creating a new grade book file */
+  private Action newAction;
+
+  /** An action for importing students into a gradebook */
+  private Action importAction;
+
+  /** An action for opening a gradebook */
+  private Action openAction;
+
+  /** An action for saving a gradebook */
+  private Action saveAction;
+
+  /** An action for saving a gradebook with a given file name */
+  private Action saveAsAction;
+
   /** An action for exiting the GUI */
   private Action exitAction;
 
@@ -27,14 +43,23 @@ public class GradeBookGUI extends JFrame {
   public GradeBookGUI(String title) {
     super(title);
 
+    // Set up the actions
+    this.setupActions();
+
     // Add the menus
     JMenuBar menuBar = new JMenuBar();
     this.setJMenuBar(menuBar);
     this.addFileMenu(menuBar);
 
+    this.getContentPane().setLayout(new BorderLayout());
+
+    // Add the tool bar
+    this.getContentPane().add(this.createToolBar(),
+			      BorderLayout.NORTH);
+
     // Add the GradeBookPanel
     this.bookPanel = new GradeBookPanel(this);
-    this.getContentPane().add(this.bookPanel);
+    this.getContentPane().add(this.bookPanel, BorderLayout.CENTER);
 
     // Handle exit events
     this.addWindowListener(new WindowAdapter() {
@@ -45,6 +70,132 @@ public class GradeBookGUI extends JFrame {
   }
 
   /**
+   * Initializes the action objects that encapsulate actions that can
+   * be performed by various widgets in this GUI.
+   */
+  private void setupActions() {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+
+    // New action
+    this.newAction = new AbstractAction("New ...") {
+	public void actionPerformed(ActionEvent e) {
+	  newGradeBook();
+	}
+      };
+    this.newAction.putValue(Action.SHORT_DESCRIPTION,
+			       "New grade book");
+    this.newAction.putValue(Action.LONG_DESCRIPTION,
+			       "Create a new grade book");
+    this.newAction.putValue(Action.ACCELERATOR_KEY, 
+			       KeyStroke.getKeyStroke("control N"));
+    this.newAction.putValue(Action.MNEMONIC_KEY, 
+			       new Integer(KeyEvent.VK_N));
+    URL newURL =
+      cl.getResource("toolbarButtonGraphics/general/New16.gif");
+    this.newAction.putValue(Action.SMALL_ICON, new ImageIcon(newURL));
+
+    // Open action
+    this.openAction = new AbstractAction("Open ...") {
+	public void actionPerformed(ActionEvent e) {
+	  open();
+	}
+      };
+    this.openAction.putValue(Action.SHORT_DESCRIPTION,
+			       "Open grade book");
+    this.openAction.putValue(Action.LONG_DESCRIPTION,
+			       "Open a grade book file");
+    this.openAction.putValue(Action.ACCELERATOR_KEY, 
+			       KeyStroke.getKeyStroke("control O"));
+    this.openAction.putValue(Action.MNEMONIC_KEY, 
+			       new Integer(KeyEvent.VK_O));
+    URL openURL =
+      cl.getResource("toolbarButtonGraphics/general/Open16.gif");
+    this.openAction.putValue(Action.SMALL_ICON, new ImageIcon(openURL));
+
+    // Import action
+    this.importAction = new AbstractAction("Import...") {
+	public void actionPerformed(ActionEvent e) {
+	  importStudent();
+	}
+      };
+    this.importAction.putValue(Action.SHORT_DESCRIPTION,
+			       "Import students");
+    this.importAction.putValue(Action.LONG_DESCRIPTION,
+			       "Import students into a grade book");
+    this.importAction.putValue(Action.ACCELERATOR_KEY, 
+			       KeyStroke.getKeyStroke("control I"));
+    this.importAction.putValue(Action.MNEMONIC_KEY, 
+			       new Integer(KeyEvent.VK_I));
+    this.importAction.setEnabled(false);
+    URL importURL =
+      cl.getResource("toolbarButtonGraphics/general/Import16.gif");
+    this.importAction.putValue(Action.SMALL_ICON, new ImageIcon(importURL));
+
+    // Save action
+    this.saveAction = new AbstractAction("Save") {
+	public void actionPerformed(ActionEvent e) {
+	  save();
+	}
+      };
+    this.saveAction.putValue(Action.SHORT_DESCRIPTION,
+			       "Save grade book");
+    this.saveAction.putValue(Action.LONG_DESCRIPTION,
+			       "Save the current grade book file");
+    this.saveAction.putValue(Action.ACCELERATOR_KEY, 
+			       KeyStroke.getKeyStroke("control S"));
+    this.saveAction.putValue(Action.MNEMONIC_KEY, 
+			       new Integer(KeyEvent.VK_S));
+    this.saveAction.setEnabled(false);
+    URL saveURL =
+      cl.getResource("toolbarButtonGraphics/general/Save16.gif");
+    this.saveAction.putValue(Action.SMALL_ICON, new ImageIcon(saveURL));
+
+    // Save As action
+    this.saveAsAction = new AbstractAction("Save As ...") {
+	public void actionPerformed(ActionEvent e) {
+	  saveAs();
+	}
+      };
+    this.saveAsAction.putValue(Action.SHORT_DESCRIPTION,
+			       "Save grade book");
+    this.saveAsAction.putValue(Action.MNEMONIC_KEY, 
+			       new Integer(KeyEvent.VK_A));
+    this.saveAsAction.setEnabled(false);
+    URL saveAsURL =
+      cl.getResource("toolbarButtonGraphics/general/SaveAs16.gif");
+    this.saveAsAction.putValue(Action.SMALL_ICON, new ImageIcon(saveAsURL));
+
+    // Exit Action
+    this.exitAction = new AbstractAction("Exit") {
+	public void actionPerformed(ActionEvent e) {
+	  exit();
+	}
+      };
+    this.exitAction.putValue(Action.SHORT_DESCRIPTION, "Exit");
+    this.exitAction.putValue(Action.LONG_DESCRIPTION,
+			     "Exit the grade book program");
+    this.exitAction.putValue(Action.ACCELERATOR_KEY, 
+			     KeyStroke.getKeyStroke("control Q"));
+    this.exitAction.putValue(Action.MNEMONIC_KEY, 
+			     new Integer(KeyEvent.VK_X));
+  }
+
+  /**
+   * Returns a <code>JToolBar</code> for this GUI
+   */
+  private JToolBar createToolBar() {
+    JToolBar tools = new JToolBar(JToolBar.HORIZONTAL);
+    tools.setFloatable(false);
+    tools.add(this.newAction);
+    tools.add(this.openAction);
+    tools.add(this.importAction);
+    tools.addSeparator();
+    tools.add(this.saveAction);
+    tools.add(this.saveAsAction);
+    return tools;
+  }
+
+  /**
    * Adds a "File" menu to this gui
    */
   private void addFileMenu(JMenuBar menuBar) {
@@ -52,57 +203,18 @@ public class GradeBookGUI extends JFrame {
     fileMenu.setMnemonic(KeyEvent.VK_F);
     menuBar.add(fileMenu);
 
-    JMenuItem newItem = new JMenuItem("New");
-    newItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          newGradeBook();
-        }
-      });
-    fileMenu.add(newItem);
-
-    JMenuItem openItem = new JMenuItem("Open...");
-    openItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          open();
-        }
-      });
-    fileMenu.add(openItem);
-
-    JMenuItem importItem = new JMenuItem("Import...");
-    importItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          importStudent();
-        }
-      });
-    fileMenu.add(importItem);
+    fileMenu.add(new JMenuItem(this.newAction));
+    fileMenu.add(new JMenuItem(this.openAction));
+    fileMenu.add(new JMenuItem(this.importAction));
 
     fileMenu.addSeparator();
 
-    JMenuItem saveAsItem = new JMenuItem("Save As...");
-    saveAsItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          saveAs();
-        }
-      });
-    fileMenu.add(saveAsItem);
-
-    JMenuItem saveItem = new JMenuItem("Save");
-    saveItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          save();
-        }
-      });
-    fileMenu.add(saveItem);
+    fileMenu.add(new JMenuItem(this.saveAction));
+    fileMenu.add(new JMenuItem(this.saveAsAction));
 
     fileMenu.addSeparator();
 
-    JMenuItem exitItem = new JMenuItem("Exit");
-    exitItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          exit();
-        }
-      });
-    fileMenu.add(exitItem);
+    fileMenu.add(new JMenuItem(this.exitAction));
   }
 
   /**
@@ -243,24 +355,29 @@ public class GradeBookGUI extends JFrame {
     JFileChooser chooser = this.getFileChooser();
     chooser.setDialogTitle("Import student XML file");
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    chooser.setMultiSelectionEnabled(true);
     int response = chooser.showOpenDialog(this);
     
     if (response == JFileChooser.APPROVE_OPTION) {
-      // Read the student from the selected file and add it to the
-      // grade book
-      File file = chooser.getSelectedFile();
-      try {
-        XmlStudentParser sp = new XmlStudentParser(file);
-        Student student = sp.parseStudent();
-        this.book.addStudent(student);
+      // Read the student from each of the selected files and add it
+      // to the grade book
+      File[] files = chooser.getSelectedFiles();
+      for (int i = 0; i < files.length; i++) {
+	File file = files[i];
+	try {
+	  XmlStudentParser sp = new XmlStudentParser(file);
+	  Student student = sp.parseStudent();
+	  this.book.addStudent(student);
         
-      } catch (IOException ex) {
-        error("Could not access " + file.getName(), ex);
-        return;
+	} catch (IOException ex) {
+	  error("Could not access " + file.getName(), ex);
+	  return;
 
-      } catch (ParserException ex) {
-        error("While parsing file " + file.getName(), ex);
-        return;
+	} catch (ParserException ex) {
+	  error("While parsing file " + file.getName(), ex);
+	  return;
+	}
       }
     }
   }
@@ -314,6 +431,9 @@ public class GradeBookGUI extends JFrame {
    */
   private void displayGradeBook(GradeBook book) {
     this.book = book;
+    this.importAction.setEnabled(true);
+    this.saveAction.setEnabled(true);
+    this.saveAsAction.setEnabled(true);
     this.setTitle(book.getClassName());
     this.bookPanel.displayGradeBook(this.book);
   }

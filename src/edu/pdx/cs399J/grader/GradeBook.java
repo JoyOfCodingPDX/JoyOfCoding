@@ -23,7 +23,7 @@ public class GradeBook {
     this.className = className;
     this.assignments = new TreeMap();
     this.students = new TreeMap();
-    this.dirty = false;
+    this.dirty = true;
   }
 
   /**

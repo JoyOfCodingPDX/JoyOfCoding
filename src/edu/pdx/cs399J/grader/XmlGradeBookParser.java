@@ -174,6 +174,7 @@ public class XmlGradeBookParser extends XmlHelper {
       Element child = (Element) node;
       if (child.getTagName().equals("name")) {
         this.book = new GradeBook(extractTextFrom(child));
+	this.book.setDirty(false);
 
       } else if (this.book == null) {
         throw new ParserException("name element is not first");
