@@ -17,8 +17,8 @@
 
 <!-- A date has a month, day, and a year specified by Calendar.DATE,
      Calendar.MONTH, and Calendar.YEAR, respectfully. -->
-<!ELEMENT day EMPTY>
-<!ATTLIST day
+<!ELEMENT date EMPTY>
+<!ATTLIST date
           day    CDATA  #REQUIRED
           month  CDATA  #REQUIRED
           year   CDATA  #REQUIRED

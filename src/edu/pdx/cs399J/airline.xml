@@ -10,12 +10,12 @@
     <number>1437</number>
     <src>BJX</src>
     <depart>
-      <day day="25" month="9" year="2001"/>
+      <date day="25" month="9" year="2003"/>
       <time hour="17" minute="0"/>
     </depart>
     <dest>CMN</dest> <!-- They're taking me to Marrakesh! -->
     <arrive>
-      <day day="26" month="9" year="2001"/>
+      <date day="26" month="9" year="2003"/>
       <time hour="3" minute="56"/>
     </arrive>
   </flight>
@@ -23,12 +23,12 @@
     <number>7865</number>
     <src>JNB</src>
     <depart>
-      <day day="15" month="5" year="2001"/>
+      <date day="15" month="5" year="2003"/>
       <time hour="7" minute="24"/>
     </depart>
     <dest>XIY</dest>
     <arrive>
-      <day day="16" month="5" year="2001"/>
+      <date day="16" month="5" year="2003"/>
       <time hour="9" minute="7"/>
     </arrive>
   </flight>
