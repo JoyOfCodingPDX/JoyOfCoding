@@ -185,7 +185,7 @@
     <javadoc packagenames="edu.pdx.cs410J.*"
              destdir="${api.docs.dir}"
              sourcepath="${src.dir}"
-             excludepackagenames="edu.pdx.cs410J.fall2000"
+             excludepackagenames="edu.pdx.cs410J.fall2000, edu.pdx.cs410J.whitlock"
              nohelp="yes"
              use="yes"
              splitindex="yes"
