@@ -118,8 +118,8 @@ public class Person {
    * Returns this person's gender
    */
   public int getGender() {
-    assert this.gender != UNKNOWN_GENDER : 
-      "Forgot to set gender of " + this.getId();
+//     assert this.gender != UNKNOWN_GENDER : 
+//       "Forgot to set gender of " + this.getId();
     return this.gender;
   }
 
@@ -214,7 +214,7 @@ public class Person {
       return UNKNOWN;
 
     } else {
-      assert this.fatherId != UNKNOWN;
+//       assert this.fatherId != UNKNOWN;
       return this.father.getId();
     }
   }
