@@ -89,7 +89,7 @@ public class Submit {
       InputStreamReader isr = new InputStreamReader(url.openStream());
       BufferedReader br = new BufferedReader(isr);
       while(br.ready()) {
-        noSubmit.add(br.readLine());
+        noSubmit.add(br.readLine().trim());
       }
 
     } catch(MalformedURLException ex) {

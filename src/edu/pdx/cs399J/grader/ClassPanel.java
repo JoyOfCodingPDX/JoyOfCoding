@@ -220,7 +220,7 @@ public class ClassPanel extends JPanel {
    */
   public static void main(String[] args) {
     if(args.length < 1) {
-      System.err.println("** usage: java StudentsList xmlFile");
+      System.err.println("** usage: java ClassPanel xmlFile");
       System.exit(1);
     }
 
