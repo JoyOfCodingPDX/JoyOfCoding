@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.examples;
 
 import java.io.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -17,23 +18,67 @@ public class FileSystemBrowser extends JPanel {
    * Set up a new <code>FileSystemBrowser</code> and add components to
    * it.
    */
-  public FileSystemBrowser() {
-    File[] fileRoots = File.listRoots();
+  public FileSystemBrowser(File dir) {
+    System.out.println("Dir: " + dir);
+
+    File[] fileRoots = null;
+
+    if(dir == null) {
+      fileRoots = File.listRoots();
+    } else {
+      fileRoots = new File[1];
+      fileRoots[0] = dir;
+    }
+
     TreeNode[] rootNodes = new FileSystemNode[fileRoots.length];
-    for(int i = 0; i < rootNodes.length; i++) {
+    for(int i = 0; i < fileRoots.length; i++) {
       System.out.println("Root: " + fileRoots[i]);
       rootNodes[i] = new FileSystemNode(fileRoots[i]);
     }
 
+    JSplitPane splitPane = new JSplitPane();
+
+    final FileSystemTable table = new FileSystemTable();
+    splitPane.setRightComponent(table);
+
     JTree tree = new JTree(rootNodes[0]);
-    this.add(new JScrollPane(tree));
+    tree.addTreeSelectionListener(new TreeSelectionListener() {
+        public void valueChanged(TreeSelectionEvent e) {
+          TreePath path = e.getPath();
+          FileSystemNode node = 
+            (FileSystemNode) path.getLastPathComponent();
+          File file = node.getFile();
+          table.showDirectory(file);
+        }
+      });
+
+    JScrollPane scroll = 
+      new JScrollPane(tree,
+                      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    splitPane.setLeftComponent(scroll);
+
+    this.setLayout(new BorderLayout());
+    this.add(splitPane, BorderLayout.CENTER);
   }
 
   /**
    * Creates and displays a <code>FileSystemBrowser</code>
    */
   public static void main(String[] args) {
-    JPanel browser = new FileSystemBrowser();
+    File dir = null;
+
+    if(args.length > 0) {
+      dir = new File(args[0]);
+      if(!dir.exists() || !dir.isDirectory()) {
+        System.err.println("** Not a directory: " + dir);
+        System.exit(1);
+      }
+    }
+
+    JPanel browser = new FileSystemBrowser(dir);
+
+
     JFrame frame = new JFrame("File System Browser");
     frame.getContentPane().add(browser);
 
