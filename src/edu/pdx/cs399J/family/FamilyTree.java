@@ -54,4 +54,10 @@ public class FamilyTree {
     this.people.put(new Integer(person.getId()), person);
   }
 
+  //////////////////////// Utility Methods  ///////////////////////
+
+  public String toString() {
+    return "A FamilyTree with " + this.people.size() + " people";
+  }
+
 }

@@ -15,6 +15,19 @@ public class TextParser implements Parser {
   private LineNumberReader in;     // Read input from here
   private FamilyTree tree;         // The family tree we're building
 
+  ///////////////////////  Static Methods  ///////////////////////
+
+  private static final PrintStream out = System.out;
+  private static final PrintStream err = System.err;
+
+  private static void db(String s) {
+    if (Boolean.getBoolean("TextParser.DEBUG")) {
+      out.println(s);
+    }
+  }
+
+  ////////////////////////  Constructors  ////////////////////////
+
   /**
    * Creates a new text parser that reads its input from a file of a
    * given name.
@@ -35,9 +48,11 @@ public class TextParser implements Parser {
    * Creates a new text parser that reads its input from the given
    * writer.  This lets us read from a sources other than files.
    */
-  TextParser(Reader reader) {
+  public TextParser(Reader reader) {
     this.in = new LineNumberReader(reader);
   }
+
+  //////////////////////  Instance Methods  //////////////////////
 
   /**
    * Helper method that creates an error string and throws a
@@ -70,9 +85,14 @@ public class TextParser implements Parser {
 	String line = this.in.readLine();
 
 	// Ignore empty lines
-	if(line.equals("")) {
+        if (line == null) {
+          break;
+
+        } else if(line.equals("")) {
 	  continue;
 	}
+
+        db("Read line: \"" + line + "\"");
 
 	// Parse the header line
 	String type = null;
@@ -116,6 +136,15 @@ public class TextParser implements Parser {
       throw new FamilyTreeException(m);
     }
 
+    // Okay, we're all done parsing the tree now we need to "patch up"
+    // the Person objects to make sure that their mothers and fathers
+    // all exist.
+    Iterator people = this.tree.getPeople().iterator();
+    while (people.hasNext()) {
+      Person person = (Person) people.next();
+      person.patchUp(this.tree);
+    }
+
     return this.tree;
   }
 
@@ -142,10 +171,16 @@ public class TextParser implements Parser {
 	error("IOException: " + ex.getMessage());
       }
 
+      if (line == null) {
+        break;
+      }
+
       // Ignore empty lines
       if (line.equals("")) {
 	continue;
       }
+
+      db("Read line: \"" + line + "\"");
 
       // Parse the line
       String key = null;
@@ -177,11 +212,35 @@ public class TextParser implements Parser {
 	// id
 	try {
 	  int id = Integer.parseInt(value);
-	  person = this.tree.getPerson(id);
+          if (this.tree.getPerson(id) != null) {
+            error("FamilyTree already has person " + id);
+
+          } else {
+            // Call this Person constructor because we will fill in
+            // the gender later
+            person = new Person(id);
+            this.tree.addPerson(person);
+          }
 
 	} catch (NumberFormatException ex) {
 	  error("Malformatted id: " + value);
 	}
+
+      } else if (key.equals("g")) {
+        // gender
+        if (person != null) {
+          try {
+            int gender = Integer.parseInt(value);
+            person.setGender(gender);
+            db("Set gender of " + person + " to " + gender);
+
+          } catch (NumberFormatException ex) {
+            error("Malformed gender: " + value);
+          }
+
+        } else {
+          error("Id must be specified before gender");
+        }
 
       } else if (key.equals("fn")) {
 	// firstName
@@ -215,7 +274,7 @@ public class TextParser implements Parser {
 	if(person != null) {
 	  try {
 	    int fatherId  = Integer.parseInt(value);
-	    person.setFather(this.tree.getPerson(fatherId));
+	    person.setFatherId(fatherId);
 
 	  } catch (NumberFormatException ex) {
 	    error("Malformatted father id: " + value);
@@ -230,7 +289,7 @@ public class TextParser implements Parser {
 	if(person != null) {
 	  try {
 	    int motherId = Integer.parseInt(value);
-	    person.setMother(this.tree.getPerson(motherId));
+	    person.setMotherId(motherId);
 
 	  } catch (NumberFormatException ex) {
 	    error("Malformatted mother id: " + value);

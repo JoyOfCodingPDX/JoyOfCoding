@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.junit;
 
 import java.io.*;
+import java.lang.reflect.*;
 import java.util.*;
 import junit.framework.*;
 
@@ -31,7 +32,7 @@ public class TestRunner {
   /**
    * The main program
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Throwable {
     String className = null;
     List methodNames = new ArrayList();
 
@@ -48,6 +49,27 @@ public class TestRunner {
       usage("Missing class name");
     }
 
+    Class c = Class.forName(className);
+    TestSuite suite;
+
+    if (methodNames.isEmpty()) {
+      suite = new TestSuite(c);
+
+    } else {
+      suite = new TestSuite();
+
+      Constructor init =
+        c.getConstructor(new Class[] { String.class });
+      Iterator iter = methodNames.iterator();
+      while (iter.hasNext()) {
+        String methodName = (String) iter.next();
+        TestCase tc =
+          (TestCase) init.newInstance(new Object[] { methodName });
+        suite.addTest(tc);
+      }
+    }
+
+    junit.textui.TestRunner.run(suite);
   }
 
 }

@@ -6,8 +6,7 @@ package edu.pdx.cs399J.family;
  */
 public class FamilyTreeException extends RuntimeException {
 
-  /** The exception being wrapped by this FamilyTreeException */
-  private Throwable nested;
+  ///////////////////////  Constructors  ///////////////////////
 
   /**
    * Creates a new <Code>FamilyTreeException</code> with the given

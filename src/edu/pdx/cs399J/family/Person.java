@@ -23,6 +23,9 @@ public class Person {
   /** A constant representing the male gender */
   public static final int MALE = 2;
 
+  /** A constant representing an unknown gender */
+  private static final int UNKNOWN_GENDER = 3;
+
   private int id;
   private int gender;
   private String firstName;
@@ -34,29 +37,55 @@ public class Person {
   private Date dob;             // Date of birth
   private Date dod;             // Date of death
 
+  /** The id of this person's mother.  We need this for the parsers
+      who read a person's id before the Person is created. */
+  private int motherId = UNKNOWN;
+
+  /** The id of this person's father.  We need this for the parsers
+      who read a person's id before the Person is created. */
+  private int fatherId = UNKNOWN;
+
   /**
    * Creates a new <code>Person</code> with a given id and gender.
    * An {@link #UNKNOWN} person cannot be created. 
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         <code>id</code> is less than 1 or <code>gender</code> is
    *         neither {@link #MALE} nor {@link #FEMALE}
    */
   public Person(int id, int gender) {
     if (id < 1) {
       String m = "A person's id must be greater than 1: " + id;
-      throw new IllegalArgumentException(m);
+      throw new FamilyTreeException(m);
     }
 
     if (gender != MALE && gender != FEMALE) {
       String s = "Gender must be MALE or FEMALE";
-      throw new IllegalArgumentException(s);
+      throw new FamilyTreeException(s);
     }
 
     this.id = id;
     this.gender = gender;
     this.marriages = new ArrayList();
   }
+
+  /**
+   * Creates a person of unknown gender.  Note that this method is
+   * package protected and is meant to be invoked by parsers, etc. in
+   * which we have to create a person before we know its gender.
+   */
+  Person(int id) {
+    if (id < 1) {
+      String m = "A person's id must be greater than 1: " + id;
+      throw new FamilyTreeException(m);
+    }
+
+    this.id = id;
+    this.gender = UNKNOWN_GENDER;
+    this.marriages = new ArrayList();
+  }
+
+  ///////////////////////  Instance Methods  ///////////////////////
 
   /**
    * Returns this person's id.
@@ -66,9 +95,31 @@ public class Person {
   }
 
   /**
+   * Sets this person's gender.  Note that this method is package
+   * protected.
+   *
+   * @throws FamilyTreeException
+   *         The <code>gender</code> is neither {@link #MALE} nor
+   *         {@link #FEMALE}.
+   * 
+   * @see #Person(int)
+   */
+  void setGender(int gender) {
+    if (gender == MALE || gender == FEMALE) {
+      this.gender = gender;
+
+    } else {
+      String s = "Invalid gender: " + gender;
+      throw new FamilyTreeException(s);
+    }
+  }
+
+  /**
    * Returns this person's gender
    */
   public int getGender() {
+    assert this.gender != UNKNOWN_GENDER : 
+      "Forgot to set gender of " + this.getId();
     return this.gender;
   }
 
@@ -140,15 +191,16 @@ public class Person {
   /**
    * Sets this person's father.
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         <code>father</code> is not {@link #MALE}
    */
   public void setFather(Person father) {
     if (father.getGender() != Person.MALE) {
       String s = "Father " + father + " must be MALE";
-      throw new IllegalArgumentException(s);
+      throw new FamilyTreeException(s);
     }
 
+    this.fatherId = father.getId();
     this.father = father;
   }
 
@@ -162,6 +214,7 @@ public class Person {
       return UNKNOWN;
 
     } else {
+      assert this.fatherId != UNKNOWN;
       return this.father.getId();
     }
   }
@@ -174,15 +227,28 @@ public class Person {
   }
 
   /**
+   * Sets the id of this person's father.  This method is package
+   * protected because it is only intended to be access by parsers and
+   * other objects that would see a peron's id before the person is
+   * created.
+   *
+   * @see #patchUp
+   */
+  void setFatherId(int id) {
+    this.fatherId = id;
+  }
+
+  /**
    * Sets this person's mother.
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         <code>mother</code>'s gender is not {@link #FEMALE}
    */
   public void setMother(Person mother) {
     if (mother.getGender() != Person.FEMALE) {
-      String s = "Mother " + mother + " must be FEMALE";
-      throw new IllegalArgumentException(s);
+      String s = "Person " + mother.getId() + "(mother of " +
+        this.getId() + ") must be FEMALE";
+      throw new FamilyTreeException(s);
     }
 
     this.mother = mother;
@@ -210,6 +276,53 @@ public class Person {
   }
 
   /**
+   * Sets the id of this person's mother.  This method is package
+   * protected because it is only intended to be accessed by parsers
+   * and other objects that would see a peron's id before the person
+   * is created.
+   *
+   * @see #patchUp
+   */
+  void setMotherId(int id) {
+    this.motherId = id;
+  }
+
+  /**
+   * "Patches up" a person's mother and father <code>Person</code>
+   * objects.  This method is package protected because it is only
+   * intended to be accessed by parsers and other objects that would
+   * see a peron's id before the person is created.
+   *
+   * @throws FamilyTreeException
+   *         Either the mother or father does not existin in
+   *         <code>tree</code> or if the gender has not been set
+   */
+  void patchUp(FamilyTree tree) {
+    if (this.father == null && this.fatherId != UNKNOWN) {
+      Person father = tree.getPerson(this.fatherId);
+      if (father == null) {
+        String s = "Father " + this.fatherId + " does not exist";
+        throw new FamilyTreeException(s);
+      }
+      this.setFather(father);
+    }
+
+    if (this.mother == null && this.motherId != UNKNOWN) {
+      Person mother = tree.getPerson(this.motherId);
+      if (mother == null) {
+        String s = "Mother " + this.motherId + " does not exist";
+        throw new FamilyTreeException(s);
+      }
+      this.setMother(mother);
+    }
+
+    if (this.gender == UNKNOWN_GENDER) {
+      String s = "Gender has not been set yet!";
+      throw new FamilyTreeException(s);
+    }
+  }
+
+  /**
    * Sets this person's date of birth.
    */
   public void setDateOfBirth(Date dob) {
@@ -226,7 +339,7 @@ public class Person {
   /**
    * Sets this person's date of death.
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         If this person's data of birth is known and
    *         <code>dod</code> occurs before it.
    */
@@ -234,7 +347,7 @@ public class Person {
     if (this.dob != null && this.dob.after(dod)) {
       String s = "Date of death (" + dod + 
         ") cannot occur before date of birth (" + this.dob + ")";
-      throw new IllegalArgumentException(s);
+      throw new FamilyTreeException(s);
     }
 
     this.dod = dod;
@@ -250,7 +363,7 @@ public class Person {
   /**
    * Makes note of a marriage this person was involved in.
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         If this person is not one of the spouses in the marriage
    */
   public void addMarriage(Marriage marriage) {
@@ -258,14 +371,14 @@ public class Person {
       if (!marriage.getHusband().equals(this)) {
         String s = "This person (" + this.getFullName() + 
           ") is not the husband in " + marriage;
-        throw new IllegalArgumentException(s);
+        throw new FamilyTreeException(s);
       }
 
     } else {
       if (!marriage.getWife().equals(this)) {
         String s = "This person (" + this.getFullName() + 
           ") is not the wife in " + marriage;
-        throw new IllegalArgumentException(s);
+        throw new FamilyTreeException(s);
       }
     }
 

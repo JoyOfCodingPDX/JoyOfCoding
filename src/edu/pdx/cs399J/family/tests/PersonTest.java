@@ -49,28 +49,28 @@ public class PersonTest extends TestCase {
 
   /**
    * Create a person with an invalid id.  Make sure it throws an
-   * IllegalArgumentException. 
+   * FamilyTreeException. 
    */
   public void testInvalidPersonId() {
     try {
       Person p = new Person(-7, Person.FEMALE);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
 
   /**
    * Create a person with an invalid gender.  Make sure it throws an
-   * IllegalArgumentException. 
+   * FamilyTreeException. 
    */
   public void testInvalidGender() {
     try {
       Person p = new Person(1, 3);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -142,9 +142,9 @@ public class PersonTest extends TestCase {
     Person father = new Person(2, Person.FEMALE);
     try {
       child.setFather(father);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -168,9 +168,9 @@ public class PersonTest extends TestCase {
     Person mother = new Person(2, Person.MALE);
     try {
       child.setMother(mother);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -201,9 +201,9 @@ public class PersonTest extends TestCase {
     p.setDateOfBirth(dob);
     try {
       p.setDateOfDeath(dod);
-      fail("Should have thrown IllegalArgumentException");
+      fail("Should have thrown FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -224,9 +224,9 @@ public class PersonTest extends TestCase {
     Person p = new Person(3, Person.MALE);
     try {
       p.addMarriage(m);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -239,9 +239,9 @@ public class PersonTest extends TestCase {
     Person p = new Person(3, Person.FEMALE);
     try {
       p.addMarriage(m);
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }

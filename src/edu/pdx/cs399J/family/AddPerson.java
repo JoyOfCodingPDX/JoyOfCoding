@@ -19,6 +19,7 @@ public class AddPerson {
 
   // Data for a person
   private static int id = -1;
+  private static String gender;
   private static String fileName;
   private static boolean useXml = false;  // Text file by default
   private static String firstName;
@@ -35,6 +36,7 @@ public class AddPerson {
     err.println("Adds a person to a family tree");
     err.println("usage: java AddPerson -id id -file file [options]");
     err.println("Where options are:");
+    err.println("  -gender gender     Person's gender (male or female)");
     err.println("  -firstName name    Person's first name");
     err.println("  -middleName name   Person's middle name");
     err.println("  -lastName name     Person's last name");
@@ -74,6 +76,13 @@ public class AddPerson {
 	if(id < 1) {
 	  return "Invalid id value: " + id;
 	}
+
+      } else if (args[i].equals("-gender")) {
+        if (++i >= args.length) {
+          return "Missing gender";
+        }
+
+        gender = args[i];
 
       } else if (args[i].equals("-file")) {
 	if(++i >= args.length) {
@@ -249,6 +258,31 @@ public class AddPerson {
     // Get a person and update its information
     Person person = tree.getPerson(id);
 
+    if (person == null) {
+      int g;
+
+      if (gender == null) {
+        String s = "Must specify a gender when creating a new person";
+        err.println(s);
+        System.exit(1);
+        g = -1;                 // Keep compiler from complaining
+
+      } else if (gender.equalsIgnoreCase("male")) {
+        g = Person.MALE;
+
+      } else if (gender.equalsIgnoreCase("female")) {
+        g = Person.FEMALE;
+
+      } else {
+        err.println("** Illegal gender: " + gender);
+        System.exit(1);
+        g = -1;
+      }
+
+      person = new Person(id, g);
+      tree.addPerson(person);
+    }
+
     if (firstName != null) {
       person.setFirstName(firstName);
     }
@@ -273,8 +307,7 @@ public class AddPerson {
       // Make a child aware of his/her parent
       Person child = tree.getPerson(childId);
       
-      // All males have even ids, all females have odd ids
-      if (id % 2 == 0) {
+      if (person.getGender() == Person.MALE) {
 	child.setFather(person);
 	
       } else {

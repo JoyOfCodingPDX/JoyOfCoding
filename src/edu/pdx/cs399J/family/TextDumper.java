@@ -37,7 +37,7 @@ public class TextDumper implements Dumper {
    * <code>PrintWriter</code>.  This way, we can dump to destinations
    * other than files.  
    */
-  private TextDumper(PrintWriter pw) {
+  public TextDumper(PrintWriter pw) {
     this.pw = pw;
   }
 
@@ -76,6 +76,9 @@ public class TextDumper implements Dumper {
       StringBuffer data = new StringBuffer();
 
       data.append("id: " + person.getId() + "\n");
+      lines++;
+
+      data.append("g: " + person.getGender() + "\n");
       lines++;
 
       String firstName = person.getFirstName();

@@ -8,9 +8,9 @@ import junit.framework.*;
  * This class tests the functionality of the <code>Marriage</code>
  * class.
  */
-public class MarriageTest extends TestCase {
+public class MarriageTest extends FamilyTestCase {
 
-    /**
+  /**
    * Returns a suite containing all of the tests in this class
    */
   public static Test suite() {
