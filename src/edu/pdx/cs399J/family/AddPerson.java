@@ -10,15 +10,16 @@ import java.util.*;
  * stored in a given file.
  *
  * @author David Whitlock
+ * @since Fall 2000
  */
 public class AddPerson {
 
   // Save you fingers from typing "System.out" all the time
-  private static PrintWriter out = new PrintWriter(System.out, true);
-  private static PrintWriter err = new PrintWriter(System.err, true);
+  private static final PrintStream out = System.out;
+  private static final PrintStream err = System.err;
 
   // Data for a person
-  private static int id = -1;
+  private static int id = 0;
   private static String gender;
   private static String fileName;
   private static boolean useXml = false;  // Text file by default
@@ -27,26 +28,33 @@ public class AddPerson {
   private static String lastName;
   private static Date dob;          // Date of birth
   private static Date dod;          // Date of death
-  private static int childId = -1;
+  private static int childId = 0;
 
   /**
    * Displays a help message on how to use this program.
    */
-  private static void usage() {
+  private static void usage(String s) {
+    err.println("\n** " + s + "\n");
+
     err.println("Adds a person to a family tree");
-    err.println("usage: java AddPerson -id id -file file [options]");
-    err.println("Where options are:");
-    err.println("  -gender gender     Person's gender (male or female)");
-    err.println("  -firstName name    Person's first name");
-    err.println("  -middleName name   Person's middle name");
-    err.println("  -lastName name     Person's last name");
-    err.println("  -dob date          Person's date of birth " + 
+    err.println("usage: java AddPerson [options] <args>");
+    err.println("  args are (in this order):");
+    err.println("    file         File to store data in");
+    err.println("    id           Person's id (greater or equal to 1)");
+    err.println("    gender       Person's gender (male or female)");
+    err.println("    firstName    Person's first name");
+    err.println("    middleName   Person's middle name");
+    err.println("    lastName     Person's last name");
+    err.println("    dob          Person's date of birth " + 
 		"(e.g. Jun 27, 1936)");
-    err.println("  -dod date          Person's date of death " +
+    err.println("  options are (options may appear in any order):");
+    err.println("    -parentOf id       Person's child");
+    err.println("    -dod date          Person's date of death " +
 		"(e.g. Jan 12, 1987)");
-    err.println("  -parentOf id       Person's child");
-    err.println("  -text              File in text format (default)");
-    err.println("  -xml               File in XML format");
+    err.println("    -xml               File in XML format instead of text");
+
+    err.println("\n");
+    System.exit(1);
   }
 
   /**
@@ -57,90 +65,11 @@ public class AddPerson {
    */
   private static String parseCommandLine(String[] args) {
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+    df.setLenient(false);
 
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-id")) {
-	// Next argument should be id
-	if(++i >= args.length) {
-	  // No more arguments to parse.  Eeep.
-	  return "Missing id";
-	}
-
-	try {
-	  id = Integer.parseInt(args[i]);
-	
-	} catch (NumberFormatException ex) {
-	  return "Malformatted id: " + args[i];
-	}
-      
-	if(id < 1) {
-	  return "Invalid id value: " + id;
-	}
-
-      } else if (args[i].equals("-gender")) {
-        if (++i >= args.length) {
-          return "Missing gender";
-        }
-
-        gender = args[i];
-
-      } else if (args[i].equals("-file")) {
-	if(++i >= args.length) {
-	  return "Missing file name";
-	}
-
-	fileName = args[i];
-
-      } else if (args[i].equals("-text")) {
-	useXml = false;
-
-      } else if (args[i].equals("-xml")) {
+      if (args[i].equals("-xml")) {
 	useXml = true;
-
-      } else if (args[i].equals("-firstName")) {
-	if(++i >= args.length) {
-	  return "Missing first name";
-	}
-
-	firstName = args[i];
-
-      } else if (args[i].equals("-middleName")) {
-	if(++i >= args.length) {
-	  return "Missing middle name";
-	}
-
-	middleName = args[i];
-
-      } else if (args[i].equals("-lastName")) {
-	if(++i >= args.length) {
-	  return "Missing last name";
-	}
-
-	lastName = args[i];
-
-      } else if (args[i].equals("-dob")) {
-	if(++i >= args.length) {
-	  return "Missing date of birth";
-	}
-
-	// A date will take up three arguments
-	StringBuffer sb = new StringBuffer(args[i] + " ");
-	for(int j = i+1; j < i+3; j++) {
-	  if (j >= args.length) {
-	    return "Malformatted date of birth: " + sb;
-
-	  } else {
-	    sb.append(args[j] + " ");
-	  }
-	}
-	i = i+2;
-
-	try {
-	  dob = df.parse(sb.toString().trim());
-
-	} catch (ParseException ex) {
-	  return "Malformatted date of birth: " + sb;
-	}
 
       } else if (args[i].equals("-dod")) {
 	if(++i >= args.length) {
@@ -148,16 +77,16 @@ public class AddPerson {
 	}
 
 	// A date will take up three arguments
-	StringBuffer sb = new StringBuffer(args[i] + " ");
-	for(int j = i+1; j < i+3; j++) {
-	  if (j >= args.length) {
-	    return "Malformatted date of birth: " + sb;
+	StringBuffer sb = new StringBuffer();
+	for(int j = 0; j < 3; j++) {
+	  if (i >= args.length) {
+	    return "Malformatted date of death: " + sb;
 
 	  } else {
-	    sb.append(args[j] + " ");
+	    sb.append(args[i] + " ");
 	  }
+          i++;
 	}
-	i = i+2;
 
 	try {
 	  dod = df.parse(sb.toString().trim());
@@ -182,17 +111,82 @@ public class AddPerson {
 	  return "Invalid child id value: " + childId;
 	}
 
+      } else if (fileName == null) {
+
+	fileName = args[i];
+
+      } else if (id == 0) {
+	try {
+	  id = Integer.parseInt(args[i]);
+	
+	} catch (NumberFormatException ex) {
+	  return "Malformatted id: " + args[i];
+	}
+      
+	if(id < 1) {
+	  return "Invalid id value: " + id;
+	}
+
+      } else if (gender == null) {
+
+        gender = args[i];
+
+      } else if (firstName == null) {
+
+	firstName = args[i];
+        
+      } else if (middleName == null) {
+
+	middleName = args[i];
+
+      } else if (lastName == null) {
+
+	lastName = args[i];
+
+      } else if (dob == null) {
+	// A date will take up three arguments
+	StringBuffer sb = new StringBuffer();
+	for(int j = 0; j < 3; j++) {
+	  if (i >= args.length) {
+	    return "Malformatted date of birth: " + sb;
+
+	  } else {
+	    sb.append(args[i] + " ");
+	  }
+
+          i++;
+	}
+
+	try {
+	  dob = df.parse(sb.toString().trim());
+
+	} catch (ParseException ex) {
+	  return "Malformatted date of birth: " + sb;
+	}
+
       } else {
 	return("Unknown command line option: " + args[i]);
       }
     }
 
     // Make some additional checks
-    if (id == -1) {
+    if (id == 0) {
       return "No id specified";
 
     } else if (fileName == null) {
       return "No file name specified";
+
+    } else if (gender == null) {
+      return "Missing gender";
+
+    } else if (firstName == null) {
+      return "Missing first name";
+     
+    } else if (middleName == null) {
+      return "Missing middle name";
+
+    } else if (lastName == null) {
+      return "Missing last name";
     }
 
     // No errors!
@@ -209,9 +203,7 @@ public class AddPerson {
 
     if (message != null) {
       // An error occurred, report it
-      err.println("** " + message + "\n");
-      usage();
-      System.exit(1);
+      usage(message);
     }
 
     FamilyTree tree = null;
@@ -283,17 +275,9 @@ public class AddPerson {
       tree.addPerson(person);
     }
 
-    if (firstName != null) {
-      person.setFirstName(firstName);
-    }
-
-    if (middleName != null) {
-      person.setMiddleName(middleName);
-    }
-
-    if (lastName != null) {
-      person.setLastName(lastName);
-    }
+    person.setFirstName(firstName);
+    person.setMiddleName(middleName);
+    person.setLastName(lastName);
 
     if (dob != null) {
       person.setDateOfBirth(dob);
@@ -303,9 +287,15 @@ public class AddPerson {
       person.setDateOfDeath(dod);
     }
 
-    if (childId != -1) {
+    if (childId != 0) {
       // Make a child aware of his/her parent
       Person child = tree.getPerson(childId);
+      if (child == null) {
+        String s = "The child with id " + childId +
+          " does not exist";
+        err.println("\n** " + s + "\n");
+        System.exit(1);
+      }
       
       if (person.getGender() == Person.MALE) {
 	child.setFather(person);

@@ -30,8 +30,22 @@ public class MDIExample extends JFrame {
     // JInternalFrame
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(new JMenuItem(new OpenAction()));
+    this.setJMenuBar(menuBar);
+
+    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
   }
 
+  ///////////////////////  Main Program  ////////////////////////
+
+  /**
+   * Starts up an <code>MDIExample</code>
+   */
+  public static void main(String[] args) {
+    MDIExample mdi = new MDIExample();
+    mdi.setSize(500, 500);
+    mdi.setVisible(true);
+  }
+  
   ///////////////////////  Inner Classes  ///////////////////////
 
   /**
@@ -72,14 +86,21 @@ public class MDIExample extends JFrame {
 	text = sw.toString();
 
       } catch (IOException ex) {
+        ex.printStackTrace();
 	return;
       }
       
-      // Create a JInternalFrame that displays the text
-      JInternalFrame internal = new JInternalFrame();
       JEditorPane editor = new JEditorPane();
       editor.setText(text);
+
+      // Create a JInternalFrame that displays the text
+      JInternalFrame internal =
+        new JInternalFrame(file.getName(), true /* resizable */,
+                           true /* closable */);
       internal.getContentPane().add(new JScrollPane(editor));
+      internal.setDefaultCloseOperation(internal.DISPOSE_ON_CLOSE);
+      internal.pack();
+      internal.setVisible(true);
 
       // Add the JInternalFrame to the JDesktopPane
       JDesktopPane desktop = 
@@ -88,7 +109,4 @@ public class MDIExample extends JFrame {
     }
   }
 
-  ///////////////////////  Main Program  ////////////////////////
-
-  
 }

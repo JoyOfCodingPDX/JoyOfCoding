@@ -9,6 +9,7 @@ import java.util.*;
  * family tree. 
  *
  * @author David Whitlock
+ * @since Fall 2000
  */
 public class NoteMarriage {
 
@@ -16,8 +17,8 @@ public class NoteMarriage {
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
-  private static int husbandId = -1;
-  private static int wifeId = -1;
+  private static int husbandId = 0;
+  private static int wifeId = 0;
   private static Date date;
   private static String location;
   private static String fileName;
@@ -26,15 +27,23 @@ public class NoteMarriage {
   /**
    * Displays a help message on how to use this program.
    */
-  private static void usage() {
+  private static void usage(String s) {
+    err.println("\n** " + s + "\n");
+
     err.println("Makes note of a marriage between two people");
-    err.println("usage: java NoteMarriage -husbandId id -wifeId id " +
-		"-file file [options]");
-    err.println("Where options are:");
-    err.println("  -date date          Date marriage took place");
-    err.println("  -location string    Where marriage took place");
-    err.println("  -text               File in text format (default)");
-    err.println("  -xml                File in XML format");
+    err.println("usage: java NoteMarriage [options] <args>");
+    err.println("  args are (in this order):");
+    err.println("    file                File containing family info");
+    err.println("    husbandId           The id of the husband");
+    err.println("    wifeId              The id of the wife");
+
+    err.println("  options are (options may appear in any order):");
+    err.println("    -date date          Date marriage took place");
+    err.println("    -location string    Where marriage took place");
+    err.println("    -xml                File in XML format");
+
+    err.println("\n");
+    System.exit(1);
   }  
 
   /**
@@ -47,37 +56,8 @@ public class NoteMarriage {
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-husbandId")) {
-	if(++i >= args.length) {
-	  return "Missing husband id";
-	}
-
-	try {
-	  husbandId = Integer.parseInt(args[i]);
-
-	} catch (NumberFormatException ex) {
-	  return "Malformatted husband id: " + args[i];
-	}
-
-	if(husbandId < 1) {
-	  return "Illegal husband id value: " + husbandId;
-	}
-
-      } else if (args[i].equals("-wifeId")) {
-	if(++i >= args.length) {
-	  return "Missing wife id";
-	}
-
-	try {
-	  wifeId = Integer.parseInt(args[i]);
-
-	} catch (NumberFormatException ex) {
-	  return "Malformatted wife id: " + args[i];
-	}
-
-	if(wifeId < 1) {
-	  return "Illegal wife id value: " + husbandId;
-	}
+      if (args[i].equals("-xml")) {
+	useXml = true;
 
       } else if (args[i].equals("-date")) {
 	if(++i >= args.length) {
@@ -85,16 +65,18 @@ public class NoteMarriage {
 	}
 
 	// A date will take up three arguments
-	StringBuffer sb = new StringBuffer(args[i] + " ");
-	for(int j = i+1; j < i+3; j++) {
-	  if (j >= args.length) {
+	StringBuffer sb = new StringBuffer();
+	for(int j = 0; j < 3; j++) {
+	  if (i >= args.length) {
 	    return "Malformatted date of birth: " + sb;
 
 	  } else {
-	    sb.append(args[j] + " ");
+	    sb.append(args[i] + " ");
 	  }
+
+          i++;
 	}
-	i = i+2;
+        i--;
 
 	try {
 	  date = df.parse(sb.toString().trim());
@@ -110,18 +92,32 @@ public class NoteMarriage {
 
 	location = args[i];
 
-      } else if (args[i].equals("-file")) {
-	if(++i >= args.length) {
-	  return "Missing file name";
-	}
-
+      } else if (fileName == null) {
 	fileName = args[i];
 
-      } else if (args[i].equals("-text")) {
-	useXml = false;
+      } else if (husbandId == 0) {
+	try {
+	  husbandId = Integer.parseInt(args[i]);
 
-      } else if (args[i].equals("-xml")) {
-	useXml = true;
+	} catch (NumberFormatException ex) {
+	  return "Malformatted husband id: " + args[i];
+	}
+
+	if (husbandId < 1) {
+	  return "Illegal husband id value: " + husbandId;
+	}
+
+      } else if (wifeId == 0) {
+	try {
+	  wifeId = Integer.parseInt(args[i]);
+
+	} catch (NumberFormatException ex) {
+	  return "Malformatted wife id: " + args[i];
+	}
+
+	if(wifeId < 1) {
+	  return "Illegal wife id value: " + husbandId;
+	}
 
       } else {
 	return("Unknown command line option: " + args[i]);
@@ -129,10 +125,10 @@ public class NoteMarriage {
     }
 
     // Make some additional checks
-    if (husbandId == -1) {
+    if (husbandId == 0) {
       return "No husband id specified";
 
-    } else if (wifeId == -1) {
+    } else if (wifeId == 0) {
       return "No wife id specified";
 
     } else if (fileName == null) {
@@ -151,9 +147,7 @@ public class NoteMarriage {
     String message = parseCommandLine(args);
 
     if (message != null) {
-      err.println("** " + message + "\n");
-      usage();
-      System.exit(1);
+      usage(message);
     }
 
     FamilyTree tree = null;

@@ -2,16 +2,20 @@ package edu.pdx.cs399J.family.tests;
 
 import edu.pdx.cs399J.family.*;
 import java.io.*;
+import java.lang.reflect.*;
 import java.util.*;
 import junit.framework.*;
 
 /**
  * This class tests the behavior of the {@link AddPerson} program to
- * ensure that I don't again suffer the kind of embarrassment I suffer
- * in the Spring of 2002 when my students found a bunch of bugs in my
- * code.
+ * ensure that I don't again suffer the kind of embarrassment I
+ * suffered in the Spring of 2002 when my students found a bunch of
+ * bugs in my code.
  */
 public class AddPersonTest extends TestCase {
+
+  private static final boolean DEBUG =
+    Boolean.getBoolean("AddPersonTest.DEBUG");
 
   public AddPersonTest(String name) {
     super(name);
@@ -30,6 +34,10 @@ public class AddPersonTest extends TestCase {
    * string 
    */
   private void addPerson(String cmdLine) {
+    if (DEBUG) {
+      System.out.println("\n" + cmdLine + "\n");
+    }
+
     // Create an array of Strings to send to main
     StringTokenizer st = new StringTokenizer(cmdLine);
     String[] args = new String[st.countTokens()];
@@ -38,6 +46,67 @@ public class AddPersonTest extends TestCase {
     }
 
     AddPerson.main(args);
+    reset(AddPerson.class);
+  }
+
+  /**
+   * "Resets" all of the static fields in a given class to their
+   * default value
+   */
+  private static void reset(Class c) {
+    Field[] fields = c.getDeclaredFields();
+    for (int i = 0; i < fields.length; i++) {
+      Field field = fields[i];
+      if (!Modifier.isFinal(field.getModifiers())) {
+        field.setAccessible(true);
+        try {
+          reset(field);
+
+        } catch (IllegalAccessException ex) {
+          StringWriter sw = new StringWriter();
+          sw.write("While accessing field " + field + ": ");
+          ex.printStackTrace(new PrintWriter(sw, true));
+          fail(sw.toString());
+        }
+      }
+    }
+  }
+
+  /**
+   * "Resets" the value of the given static field to its default value
+   */
+  private static void reset(Field field)
+    throws IllegalAccessException {
+
+    Class type = field.getType();
+    if (type.equals(boolean.class)) {
+      field.set(null, Boolean.FALSE);
+
+    } else if (type.equals(char.class)) {
+      field.set(null, new Character('\0'));
+
+    } else if (type.equals(byte.class)) {
+      field.set(null, new Byte((byte) 0));
+
+    } else if (type.equals(short.class)) {
+      field.set(null, new Short((short) 0));
+
+    } else if (type.equals(int.class)) {
+      field.set(null, new Integer(0));
+
+    } else if (type.equals(long.class)) {
+      field.set(null, new Long(0L));
+
+    } else if (type.equals(float.class)) {
+      field.set(null, new Float(0.0f));
+
+    } else if (type.equals(double.class)) {
+      field.set(null, new Double(0.0));
+
+    } else {
+      assert Object.class.isAssignableFrom(type) : type;
+      field.set(null, null);
+    }
   }
   
   /**
@@ -45,6 +114,10 @@ public class AddPersonTest extends TestCase {
    * string 
    */
   private void noteMarriage(String cmdLine) {
+    if (DEBUG) {
+      System.out.println("\n" + cmdLine + "\n");
+    }
+
     // Create an array of Strings to send to main
     StringTokenizer st = new StringTokenizer(cmdLine);
     String[] args = new String[st.countTokens()];
@@ -53,6 +126,7 @@ public class AddPersonTest extends TestCase {
     }
 
     NoteMarriage.main(args);
+    reset(NoteMarriage.class);
   }
   
   /**
@@ -79,22 +153,17 @@ public class AddPersonTest extends TestCase {
     String fileName = file.getAbsolutePath();
 
     
-    addPerson("-id 1 -file " + fileName + " -gender male " +
-              "-firstName David -middleName Michael " +
-              "-lastName Whitlock " + fileOption);
+    addPerson(fileOption + fileName +
+              " 1 male David Michael Whitlock");
     
-    addPerson("-id 2 -file " + fileName + " -gender male " +
-              "-firstName Stanley -middleName Jay " +
-              "-lastName Whitlock -dob Feb 27, 1948 -parentOf 1 " +
-              fileOption);
+    addPerson(fileOption + "-parentOf 1 " + fileName + 
+              " 2 male Stanley Jay Whitlock Feb 27, 1948");
 
-    addPerson("-id 3 -file " + fileName + " -gender female " +
-              "-firstName Carolyn -middleName Joyce " +
-              "-lastName Granger -dob Feb 27, 1948 -parentOf 1 " +
-              fileOption);
+    addPerson(fileOption + "-parentOf 1 " + fileName + 
+              " 3 female Carolyn Joyce Granger May 17, 1945");
 
-    noteMarriage("-husbandId 2 -wifeId 3 -date Jun 12, 1969 " +
-                 "-file " + fileName + " " + fileOption);
+    noteMarriage(fileOption + "-date Jul 12, 1969 " + fileName +
+                 " 2 3 ");
 
     // If we get this far, delete the file
     file.delete();
@@ -103,10 +172,10 @@ public class AddPersonTest extends TestCase {
   ////////  Test cases
 
   public void testText() {
-    createDavesFamily("-text");
+    createDavesFamily("");
   }
 
   public void testXml() {
-    createDavesFamily("-xml");
+    createDavesFamily("-xml ");
   }
 }

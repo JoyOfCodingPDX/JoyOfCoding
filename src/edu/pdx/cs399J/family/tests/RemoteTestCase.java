@@ -3,7 +3,9 @@ package edu.pdx.cs399J.family.tests;
 import edu.pdx.cs399J.family.*;
 
 import java.io.*;
+import java.net.*;
 import java.rmi.*;
+import java.rmi.registry.*;
 import java.util.*;
 import junit.framework.*;
 
@@ -13,13 +15,13 @@ import junit.framework.*;
  */
 public abstract class RemoteTestCase extends TestCase {
 
-  /** The the name of the host on which the RMI registry runs */
-  protected static String host =
-    System.getProperty("RemoteTestCase.HOST", "localhost");
-
   /** The port on which the RMI registry runs */
-  protected static String port =
-    System.getProperty("RemoteTestCase.PORT", "1099");
+  private static final int RMI_PORT =
+    Integer.getInteger("RMI_PORT", 1099).intValue();
+
+  /** An RMI Registry that is co-located in the VM in which the test
+   * runs */
+  private static Registry registry;
 
   ////////  Constructors
 
@@ -53,7 +55,29 @@ public abstract class RemoteTestCase extends TestCase {
     this.unbind();
   }
 
-  ////////  Helper methods
+//   ////////  Helper methods
+
+//   /**
+//    * Creates a new {@link XmlRemoteFamilyTree} and bind it into the
+//    * registry. 
+//    */
+//   protected void setUp() {
+//     try {
+//       File file = File.createTempFile(this.getName(), ".xml");
+//       file.delete();
+//       bind(new XmlRemoteFamilyTree(file));
+
+//     } catch (Exception ex) {
+//       fail("While creating XmlRemoteFamilyTree: " + ex);
+//     }
+//   }
+
+//   /**
+//    * Unbinds the {@link XmlRemoteFamilyTree}
+//    */
+//   protected void tearDown() {
+//     unbind();
+//   }
 
   /**
    * Returns the name that the <code>RemoteFamilyTree</code> is bound
@@ -64,25 +88,51 @@ public abstract class RemoteTestCase extends TestCase {
   }
 
   /**
-   * Returns the URL for locating the remote family tree
+   * Returns an RMI registry that is co-located in this VM.  If one
+   * doesn't exist, it is started on {@link #RMI_PORT}
    */
-  private String getURL() {
-    return "rmi://" + host + ":" + port + "/" + this.getFamilyName();
+  private Registry getRegistry() {
+    if (registry != null) {
+      return registry;
+    }
+
+    synchronized (RemoteTestCase.class) {
+      if (registry != null) {
+        return registry;
+      }
+
+      try {
+        registry = LocateRegistry.getRegistry(RMI_PORT);
+
+      } catch (RemoteException ex) {
+        try {
+          registry = LocateRegistry.createRegistry(RMI_PORT);
+
+        } catch (RemoteException ex1) {
+          StringWriter sw = new StringWriter();
+          ex1.printStackTrace(new PrintWriter(sw, true));
+          fail("Couldn't create local registry: " + sw);
+        }
+      }
+
+      return registry;
+    }
   }
 
   /**
    * Returns the <code>RemoteFamilyTree</code> used by this test
    */
   protected RemoteFamilyTree getTree() {
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
+//     if (System.getSecurityManager() == null) {
+//       System.setSecurityManager(new RMISecurityManager());
+//     }
 
+    Registry registry = getRegistry();
     try {
-      return (RemoteFamilyTree) Naming.lookup(this.getURL());
+      return (RemoteFamilyTree) registry.lookup(this.getName());
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getURL() +
+      fail("While getting remote family tree on " + this.getName() +
            ": " + ex);
       return null;
     }
@@ -93,16 +143,16 @@ public abstract class RemoteTestCase extends TestCase {
    * <code>RemoteFamilyTree</code> into the RMI namespace.
    */
   protected void bind(RemoteFamilyTree tree) {
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
+//     if (System.getSecurityManager() == null) {
+//       System.setSecurityManager(new RMISecurityManager());
+//     }
 
     try {
-      Naming.rebind(this.getURL(), tree);
+      getRegistry().rebind(this.getName(), tree);
       System.out.println("Successfully bound RemoteFamilyTree");
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getURL() +
+      fail("While getting remote family tree on " + this.getName() +
            ": " + ex);
     }
   }
@@ -112,19 +162,19 @@ public abstract class RemoteTestCase extends TestCase {
    * tree from the RMI namespace.
    */
   protected void unbind() {
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
+//     if (System.getSecurityManager() == null) {
+//       System.setSecurityManager(new RMISecurityManager());
+//     }
 
     try {
       RemoteFamilyTree tree = 
-        (RemoteFamilyTree) Naming.lookup(this.getURL());
+        (RemoteFamilyTree) getRegistry().lookup(this.getName());
       tree.shutdown();
-      Naming.unbind(this.getURL());
+      getRegistry().unbind(this.getName());
       System.out.println("Successfully unbound RemoteFamilyTree");
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getURL() +
+      fail("While getting remote family tree on " + this.getName() +
            ": " + ex);
     }
   }

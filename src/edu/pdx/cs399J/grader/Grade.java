@@ -234,12 +234,13 @@ public class Grade implements Notable {
       System.exit(1);
     }
 
-    // Get the student
-    Student student = book.getStudent(id);
-    if (student == null) {
+    if (!book.containsStudent(id)) {
       err.println("** No student with id: " + id);
       System.exit(1);
     }
+
+    // Get the student
+    Student student = book.getStudent(id);
 
     // Get the grade
     Grade grade = student.getGrade(assignment);

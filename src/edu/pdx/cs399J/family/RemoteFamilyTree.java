@@ -68,8 +68,8 @@ public interface RemoteFamilyTree extends Remote {
     throws RemoteException;
 
   /**
-   * Returns the people in the family tree that are living (i.e. have
-   * a date of birth, but no date of death)
+   * Returns the people in the family tree that are living
+   * (i&#46;e&#46; have a date of birth, but no date of death)
    */
   public Collection getLiving() throws RemoteException;
 
