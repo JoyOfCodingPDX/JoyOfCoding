@@ -13,7 +13,7 @@ public class Farm {
    */
   private static void print(Map map) {
     Iterator keys = map.keySet().iterator();
-    while(keys.hasNext()) {
+    while (keys.hasNext()) {
       Object key = keys.next();
       Object value = map.get(key);
 

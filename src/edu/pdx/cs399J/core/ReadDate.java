@@ -29,11 +29,11 @@ public class ReadDate {
       in.close();
       System.out.println("Read " + date);
 
-    } catch(ClassNotFoundException ex) {
+    } catch (ClassNotFoundException ex) {
       System.err.println("** No class " + ex);
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("**IOException: " + ex);
       System.exit(1);
     }

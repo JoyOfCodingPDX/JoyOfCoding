@@ -10,7 +10,7 @@ import javax.swing.*;
  * click are printed.
  * 
  * @author David Whitlock
- * @version $Revision: 1.4 $, $Date: 2001-05-19 20:55:34 $
+ * @version $Revision: 1.5 $, $Date: 2001-07-25 21:39:13 $
  */
 public class DrawCoords extends JPanel {
 
@@ -29,7 +29,7 @@ public class DrawCoords extends JPanel {
 
           int x = e.getX();
           int y = e.getY();
-          if(point == null) {
+          if (point == null) {
             point = new Point(x, y);
 
           } else {
@@ -54,7 +54,7 @@ public class DrawCoords extends JPanel {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
 
-    if(this.point == null) {
+    if (this.point == null) {
       // Nothing to do
       return;
     }
@@ -75,11 +75,11 @@ public class DrawCoords extends JPanel {
     int x = point.x + 6;
     int y = point.y + 3;
     
-    if(x + stringWidth > panelWidth) {
+    if (x + stringWidth > panelWidth) {
       x -= (stringWidth + 12);
     }
 
-    if(y + stringHeight > panelHeight) {
+    if (y + stringHeight > panelHeight) {
       y -= (6);
     }
 

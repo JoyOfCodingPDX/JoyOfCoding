@@ -1,5 +1,5 @@
 # 
-# $Id: java.gmk,v 1.1 2001-02-19 23:47:33 whitlock Exp $
+# $Id: java.gmk,v 1.2 2001-07-25 21:39:33 whitlock Exp $
 #
 
 INCLUDED_JAVA=true
@@ -46,10 +46,10 @@ endif
 ifdef JAR_FILE
   Targets += do_jar
   ifdef MANIFEST
-    JAR_FLAGS=cvfm
+    JAR_FLAGS=cfm
     MANIFEST_FILE=$(cwd)$(DS)$(MANIFEST)
   else
-    JAR_FLAGS=cvf
+    JAR_FLAGS=cf
   endif
 
   PKG_AS_DIR=$(subst .,$(DS),$(PACKAGE))

@@ -48,7 +48,7 @@ public class StudentsList extends JPanel {
           StudentsList.this.displayStudents();
         }
       });
-    if(this.howSorted == SORT_BY_NAME) {
+    if (this.howSorted == SORT_BY_NAME) {
       byName.setSelected(true);
     }
 
@@ -59,7 +59,7 @@ public class StudentsList extends JPanel {
           StudentsList.this.displayStudents();
         }
       });
-    if(this.howSorted == SORT_BY_ID) {
+    if (this.howSorted == SORT_BY_ID) {
       byId.setSelected(true);
     }
 
@@ -89,11 +89,11 @@ public class StudentsList extends JPanel {
         public int compare(Object o1, Object o2) {
           String lastName1 = ((Student) o1).getLastName();
           String lastName2 = ((Student) o2).getLastName();
-          return(lastName1.compareTo(lastName2));
+          return lastName1.compareTo(lastName2);
         }
 
         public boolean equals(Object o) {
-          return(true);
+          return true;
         }
       });
 
@@ -102,16 +102,16 @@ public class StudentsList extends JPanel {
         public int compare(Object o1, Object o2) {
           String id1 = ((Student) o1).getId();
           String id2 = ((Student) o2).getId();
-          return(id1.compareTo(id2));
+          return id1.compareTo(id2);
         }
 
         public boolean equals(Object o) {
-          return(true);
+          return true;
         }
       });
 
     Iterator ids = book.getStudentIds().iterator();
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
       Student student = (Student) book.getStudent(id);
       sortedByName.add(student);
@@ -135,11 +135,11 @@ public class StudentsList extends JPanel {
   private ArrayList getList() {
     switch(this.howSorted) {
     case SORT_BY_NAME:
-      return(this.studentsByName);
+      return this.studentsByName;
     case SORT_BY_ID:
-      return(this.studentsById);
+      return this.studentsById;
     default:
-      return(new ArrayList());
+      return new ArrayList();
     }
   }
   
@@ -152,7 +152,7 @@ public class StudentsList extends JPanel {
     Object[] array = new Object[list.size()];
 
     Iterator iter = list.iterator();
-    for(int i = 0; iter.hasNext(); i++) {
+    for (int i = 0; iter.hasNext(); i++) {
       Student student = (Student) iter.next();
       array[i] = student.getFullName() + " (" + student.getId() + ")";
     }
@@ -166,7 +166,7 @@ public class StudentsList extends JPanel {
    * displays the students in it using a <code>StudentsList</code>.
    */    
   public static void main(String[] args) {
-    if(args.length < 1) {
+    if (args.length < 1) {
       System.err.println("** usage: java StudentsList xmlFile");
       System.exit(1);
     }
@@ -178,15 +178,15 @@ public class StudentsList extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }

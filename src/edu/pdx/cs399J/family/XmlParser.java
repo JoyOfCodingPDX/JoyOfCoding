@@ -52,7 +52,7 @@ public class XmlParser implements Parser {
    * text.
    */
   private static String extractString(Node node) {
-    return(node.getFirstChild().getNodeValue());
+    return node.getFirstChild().getNodeValue();
   }
 
   /**
@@ -64,9 +64,9 @@ public class XmlParser implements Parser {
 
     String text = extractString(node);
     try {
-      return(Integer.parseInt(text));
+      return Integer.parseInt(text);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       throw new ParserException("Bad integer: " + text);
     }
   }
@@ -79,7 +79,7 @@ public class XmlParser implements Parser {
     throws ParserException {
 
     // Make sure we're dealing with a data
-    if(!root.getNodeName().equals("date")) {
+    if (!root.getNodeName().equals("date")) {
       throw new ParserException("Not a <date>: " +
 				root.getNodeName() + ", '" +
 				root.getNodeValue() + "'");
@@ -88,20 +88,20 @@ public class XmlParser implements Parser {
     Calendar cal = Calendar.getInstance();
 
     NodeList children = root.getChildNodes();
-    for(int i = 0; i < children.getLength(); i++) {
+    for (int i = 0; i < children.getLength(); i++) {
       Node node = children.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	continue;
       }
 
       Element element = (Element) node;
-      if(element.getNodeName().equals("month")) {
+      if (element.getNodeName().equals("month")) {
 	cal.set(Calendar.MONTH, extractInteger(element));
 
-      } else if(element.getNodeName().equals("day")) {
+      } else if (element.getNodeName().equals("day")) {
 	cal.set(Calendar.DATE, extractInteger(element));
 
-      } else if(element.getNodeName().equals("year")) {
+      } else if (element.getNodeName().equals("year")) {
 	cal.set(Calendar.YEAR, extractInteger(element));
 
       } else {
@@ -111,7 +111,7 @@ public class XmlParser implements Parser {
       }
     }
 
-    return(cal.getTime());
+    return cal.getTime();
   }
 
   /**
@@ -120,41 +120,41 @@ public class XmlParser implements Parser {
    */
   private void handlePerson(Element root) throws ParserException {
     // Make sure that we're dealing with a person here
-    if(!root.getNodeName().equals("person")) {
+    if (!root.getNodeName().equals("person")) {
       throw new ParserException("Expecting a <person>");
     }
 
     Person person = null;
 
     NodeList elements = root.getChildNodes();
-    for(int i = 0; i < elements.getLength(); i++) {
+    for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	continue;
       }
 
       Element element = (Element) node;
-      if(element.getNodeName().equals("id")) {
+      if (element.getNodeName().equals("id")) {
 	int id = extractInteger(element);
 	person = this.tree.getPerson(id);
 	continue;
 
-      } else if(element.getNodeName().equals("firstname")) {
+      } else if (element.getNodeName().equals("firstname")) {
 	person.setFirstName(extractString(element));
 
-      } else if(element.getNodeName().equals("lastname")) {
+      } else if (element.getNodeName().equals("lastname")) {
 	person.setLastName(extractString(element));
 
-      } else if(element.getNodeName().equals("middlename")) {
+      } else if (element.getNodeName().equals("middlename")) {
 	person.setMiddleName(extractString(element));
 
-      } else if(element.getNodeName().equals("dob")) {
+      } else if (element.getNodeName().equals("dob")) {
 	Element dob = null;
 
 	NodeList list = element.getChildNodes();
 	for(int j = 0; j < list.getLength(); j++) {
 	  Node n = list.item(j);
-	  if(n instanceof Element) {
+	  if (n instanceof Element) {
 	    dob = (Element) n;
 	    break;
 	  }
@@ -166,43 +166,43 @@ public class XmlParser implements Parser {
 
 	person.setDateOfBirth(extractDate(dob));
 
-      } else if(element.getNodeName().equals("dod")) {
+      } else if (element.getNodeName().equals("dod")) {
         Element dod = null;
 
         NodeList list = element.getChildNodes();
-        for(int j = 0; j < list.getLength(); j++) {
+        for (int j = 0; j < list.getLength(); j++) {
           Node n = list.item(j);
-          if(n instanceof Element) {
+          if (n instanceof Element) {
             dod = (Element) n;
             break;
           }
         }
 
-        if(dod == null) {
+        if (dod == null) {
           throw new ParserException("No <date> in <dod>?");
         }
 
 	person.setDateOfDeath(extractDate(dod));
 
-      } else if(element.getNodeName().equals("father-id")) {
+      } else if (element.getNodeName().equals("father-id")) {
 	String s = extractString(element);
 	int id = 0;
 	try {
 	  id = Integer.parseInt(s);
 
-	} catch(NumberFormatException ex) {
+	} catch (NumberFormatException ex) {
 	  throw new ParserException("Bad father-id: " + s);
 	}
 
 	person.setFather(this.tree.getPerson(id));
 
-      } else if(element.getNodeName().equals("mother-id")) {
+      } else if (element.getNodeName().equals("mother-id")) {
         String s = extractString(element);
         int id = 0;
         try {
           id = Integer.parseInt(s);
 
-        } catch(NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
           throw new ParserException("Bad mother-id: " + s);
         }
 
@@ -216,7 +216,7 @@ public class XmlParser implements Parser {
    */
   private void handleMarriage(Element root) throws ParserException {
     // Make sure we're dealing with a marriage
-    if(!root.getNodeName().equals("marriage")) {
+    if (!root.getNodeName().equals("marriage")) {
       throw new ParserException("");
     }
 
@@ -225,24 +225,24 @@ public class XmlParser implements Parser {
 
     // Extract the husband and wife id's
     NamedNodeMap attrs = root.getAttributes();
-    for(int i = 0; i < attrs.getLength(); i++) {
+    for (int i = 0; i < attrs.getLength(); i++) {
       Node attr = attrs.item(i);
-      if(attr.getNodeName().equals("husband-id")) {
+      if (attr.getNodeName().equals("husband-id")) {
 	String id = attr.getNodeValue();
 
 	try {
 	  husband_id = Integer.parseInt(id);
 
-	} catch(NumberFormatException ex) {
+	} catch (NumberFormatException ex) {
 	  throw new ParserException("Bad husband id: " + id);
 	}
 
-      } else if(attr.getNodeName().equals("wife-id")) {
+      } else if (attr.getNodeName().equals("wife-id")) {
 	String id = attr.getNodeValue();
 
 	try {
 	  wife_id = Integer.parseInt(id);
-	} catch(NumberFormatException ex) {
+	} catch (NumberFormatException ex) {
 	  throw new ParserException("Bad wife id: " + id);
 	}
       }
@@ -258,17 +258,17 @@ public class XmlParser implements Parser {
 
     // Fill in info about the marriage
     NodeList elements = root.getChildNodes();
-    for(int i = 0; i < elements.getLength(); i++) {
+    for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	continue;
       }
 
       Element element = (Element) node;
-      if(element.getNodeName().equals("location")) {
+      if (element.getNodeName().equals("location")) {
 	marriage.setLocation(extractString(element));
 
-      } else if(element.getNodeName().equals("date")) {
+      } else if (element.getNodeName().equals("date")) {
 	marriage.setDate(extractDate(element));
       }
     }
@@ -299,10 +299,10 @@ public class XmlParser implements Parser {
     try {
       parser.parse(new InputSource(in));
 
-    } catch(SAXException ex) {
+    } catch (SAXException ex) {
       throw new ParserException("While parsing XML source: " + ex);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       throw new ParserException("While parsing XML source: " + ex);
     }
 
@@ -311,26 +311,26 @@ public class XmlParser implements Parser {
     Element root = (Element) doc.getChildNodes().item(1);
 
     // Make sure that we are really dealing with a family tree
-    if(!root.getNodeName().equals("familytree")) {
+    if (!root.getNodeName().equals("familytree")) {
       throw new ParserException("Not a family tree XML source: " +
                                 root.getNodeName());
     }
 
     NodeList stuff = root.getChildNodes();
-    for(int i = 0; i < stuff.getLength(); i++) {
+    for (int i = 0; i < stuff.getLength(); i++) {
       Node node = stuff.item(i);
 
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	// Ignore whitespace text and other stuff
 	continue;
       }
 
       Element element = (Element) node;
 
-      if(element.getNodeName().equals("person")) {
+      if (element.getNodeName().equals("person")) {
 	handlePerson(element);
 
-      } else if(element.getNodeName().equals("marriage")) {
+      } else if (element.getNodeName().equals("marriage")) {
 	handleMarriage(element);
 
       } else {
@@ -340,7 +340,7 @@ public class XmlParser implements Parser {
       }
     }
 
-    return(this.tree);
+    return this.tree;
   }
 
   /**
@@ -348,7 +348,7 @@ public class XmlParser implements Parser {
    * and prints the resulting family tree to standard out.
    */
   public static void main(String[] args) {
-    if(args.length == 0) {
+    if (args.length == 0) {
       System.err.println("** Missing file name");
       System.exit(1);
     }
@@ -363,10 +363,10 @@ public class XmlParser implements Parser {
       PrettyPrinter pretty = new PrettyPrinter(out);
       pretty.dump(tree);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file " + fileName);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** " + ex.getMessage());
     }
   }

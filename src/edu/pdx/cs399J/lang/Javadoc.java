@@ -22,11 +22,11 @@ public class Javadoc {
    */
   double invert(double d) 
     throws IllegalArgumentException {
-    if(d == 0.0) {
+    if (d == 0.0) {
       String s = d + " can't be zero!";
       throw new IllegalArgumentException(s);
     } else {
-      return(1.0 / d);
+      return 1.0 / d;
     }
   }
 }

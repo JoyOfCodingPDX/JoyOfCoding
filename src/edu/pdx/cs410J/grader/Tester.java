@@ -74,12 +74,12 @@ public class Tester {
   public Tester(final String id, File logDir) {
     this.id = id;
 
-    if(!logDir.isDirectory()) {
+    if (!logDir.isDirectory()) {
       throw new IllegalArgumentException(logDir + 
 					 " is not a directory");
     }
 
-    if(!logDir.exists()) {
+    if (!logDir.exists()) {
       logDir.mkdirs();
     }
 
@@ -93,7 +93,7 @@ public class Tester {
     try {
       fos = new FileOutputStream(logFile);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       throw new IllegalArgumentException("Could not open " +
 					 logFileName);
     }
@@ -140,24 +140,24 @@ public class Tester {
    * representing each file on the path.
    */
   public static URL[] parseURLPath(String path) {
-    if(path == null) {
-      return(new URL[0]);
+    if (path == null) {
+      return new URL[0];
     }
 
     StringTokenizer st = new StringTokenizer(path,
 					     File.pathSeparator);
     URL[] urls = new URL[st.countTokens()];
-    for(int i = 0; st.hasMoreTokens(); i++) {
+    for (int i = 0; st.hasMoreTokens(); i++) {
       File file = new File(st.nextToken());
       try {
 	urls[i] = file.toURL();
 
-      } catch(MalformedURLException ex) {
+      } catch (MalformedURLException ex) {
 	System.err.println("** Malformatted URL: " + file);
       }
     }
     
-    return(urls);
+    return urls;
   }
 
   /**
@@ -175,7 +175,7 @@ public class Tester {
 			    Class[] paramTypes, Object[] params) {
 
     // By default, print a banner
-    return(executeStatic(className, methodName, paramTypes, params, true));
+    return executeStatic(className, methodName, paramTypes, params, true);
   }
 
 
@@ -197,24 +197,24 @@ public class Tester {
     try {
       c = Class.forName(className, true, loader);
 
-    } catch(ClassNotFoundException ex) {
+    } catch (ClassNotFoundException ex) {
       System.err.println("** Could not load " + className);
       ex.printStackTrace(System.err);
-      return(null);
+      return null;
     }
 
     Method m = null;
     try {
       m = c.getMethod(methodName, paramTypes);
 
-    } catch(NoSuchMethodException ex) {
+    } catch (NoSuchMethodException ex) {
       System.err.println("** Could not find method " + methodName + 
 			 " in " + className);
       ex.printStackTrace(System.err);
-      return(null);
+      return null;
     }
 
-    if(printBanner) {
+    if (printBanner) {
       // Print out some information
       this.printBanner("Executing " + className + "." + methodName +
 		       "()", '-');
@@ -226,28 +226,28 @@ public class Tester {
       try {
         result = m.invoke(null, params);
 
-      } catch(InvocationTargetException ex) {
+      } catch (InvocationTargetException ex) {
         throw ex.getTargetException();
       }
 
-    } catch(TesterExitException ex) {
+    } catch (TesterExitException ex) {
       // That's okay, we're just exiting from one invocation of the
       // main method
 
-    } catch(IllegalAccessException ex) {
+    } catch (IllegalAccessException ex) {
       System.err.println("** IllegalAccessException while invoking " +
                          className + "." + methodName + "()");
       ex.printStackTrace(System.err);
       result = null;
 
-    } catch(Exception ex) {
+    } catch (Exception ex) {
       // Log everything else
       System.err.println("** Exception while invoking " +
                          className + "." + methodName + "()");
       ex.printStackTrace(System.err);
       result = null;
 
-    } catch(Throwable ex) {
+    } catch (Throwable ex) {
       // EEEP!!!
       System.err.println("*** SEVERE ERROR!!!");
       ex.printStackTrace(System.err);
@@ -259,7 +259,7 @@ public class Tester {
 
     this.log.println("");
     this.log.flush();
-    return(result);
+    return result;
   }
 
   /**
@@ -279,7 +279,7 @@ public class Tester {
 	  try {
 	    Tester.this.executeMain(className, args);
 
-	  } catch(Throwable t) {
+	  } catch (Throwable t) {
 	    return;
 	  }
 	}
@@ -288,7 +288,7 @@ public class Tester {
     Thread thread = new Thread(r);
     thread.start();
 
-    return(thread);
+    return thread;
   }
 
   /**
@@ -298,11 +298,11 @@ public class Tester {
   public boolean wait(int seconds) {
     try {
       Thread.sleep(1000 * seconds);
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       ex.printStackTrace();
-      return(false);
+      return false;
     }
-    return(true);
+    return true;
   }
 
   /**
@@ -329,7 +329,7 @@ public class Tester {
     try {
       c = Class.forName(className, true, loader);
 
-    } catch(ClassNotFoundException ex) {
+    } catch (ClassNotFoundException ex) {
       System.err.println("** Could not load " + className);
       ex.printStackTrace(System.err);
       return;
@@ -342,7 +342,7 @@ public class Tester {
 
       main = c.getMethod("main", paramTypes);
 
-    } catch(NoSuchMethodException ex) {
+    } catch (NoSuchMethodException ex) {
       System.err.println("** Could not find main method in " +
 			 className);
       ex.printStackTrace(System.err);
@@ -354,20 +354,20 @@ public class Tester {
 
     // Print out args
     StringBuffer sb = new StringBuffer();
-    for(int j = 0; j < args.length; j++) {
+    for (int j = 0; j < args.length; j++) {
       boolean needQuotes = false;
 
-      if(args[j].indexOf(" ") != -1) {
+      if (args[j].indexOf(" ") != -1) {
         needQuotes = true;
       }
 
-      if(needQuotes) {
+      if (needQuotes) {
         sb.append("\"");
       }
 
       sb.append(args[j]);
 
-      if(needQuotes) {
+      if (needQuotes) {
         sb.append("\"");
       }
 
@@ -385,7 +385,7 @@ public class Tester {
       try {
         main.invoke(null, actuals);
     
-      } catch(InvocationTargetException ex) {
+      } catch (InvocationTargetException ex) {
         throw ex.getTargetException();
       }
 
@@ -395,18 +395,18 @@ public class Tester {
 	// That's okay...
 //         this.consoleOut.println(thr);
       
-    } catch(IllegalAccessException ex) {
+    } catch (IllegalAccessException ex) {
       System.err.println("** IllegalAccessException while invoking " +
 			 "main");
       ex.printStackTrace(System.err);
       return;
 
-    } catch(Exception ex) {
+    } catch (Exception ex) {
       System.err.println("** Exception while invoking main");
       ex.printStackTrace(System.err);
       return;
 
-    } catch(Throwable ex) {
+    } catch (Throwable ex) {
       // EEEP!!!
       System.err.println("*** SEVERE ERROR!!!");
       ex.printStackTrace(System.err);
@@ -432,9 +432,9 @@ public class Tester {
 
     args = (String[]) args.clone();
 
-    for(int i = 0; i < args.length; i++) {
+    for (int i = 0; i < args.length; i++) {
       Iterator keys = map.keySet().iterator();
-      while(keys.hasNext()) {
+      while (keys.hasNext()) {
 	String key = (String) keys.next();
 	String value = (String) map.get(key);
 	int index = args[i].indexOf(key);
@@ -449,7 +449,7 @@ public class Tester {
       }
     }
 
-    return(args);
+    return args;
   }
 
   /**
@@ -481,10 +481,10 @@ public class Tester {
     int length = text.length();
 
     // Don't bother centering if the text is wider than the log.
-    if(length < WIDTH) {
+    if (length < WIDTH) {
       int indent = (WIDTH - length) / 2;
 
-      for(int i = 0; i < indent - 1; i++) {
+      for (int i = 0; i < indent - 1; i++) {
 	this.log.print(c);
       }
       this.log.print(' ');
@@ -493,11 +493,11 @@ public class Tester {
 
     this.log.print(text);
 
-    if(length < WIDTH) {
+    if (length < WIDTH) {
       int indent = (WIDTH - length) / 2;
 
       this.log.print(' ');
-      for(int i = 0; i < indent - 1; i++) {
+      for (int i = 0; i < indent - 1; i++) {
 	this.log.print(c);
       }
       this.log.flush();
@@ -516,7 +516,7 @@ public class Tester {
     try {
       src = new FileInputStream(srcFile);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       String s = "Could not find file " + srcFile;
       throw new IllegalArgumentException(s);
     }
@@ -526,14 +526,14 @@ public class Tester {
       
       byte[] buffer = new byte[1024];
       int count = src.read(buffer);
-      while(count != -1) {
+      while (count != -1) {
 	dest.write(buffer, 0, count);
 	count = src.read(buffer);
       }
       src.close();
       dest.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       String s = "IOException " + ex;
       throw new IllegalArgumentException(s);
     }
@@ -550,7 +550,7 @@ public class Tester {
     printlnCentered("File: " + file.getName());
     this.log.println("");
 
-    if(!file.exists()) {
+    if (!file.exists()) {
       printlnCentered("Does not exist!");
       return;
     }
@@ -559,16 +559,16 @@ public class Tester {
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
 
-      while(br.ready()) {
+      while (br.ready()) {
 	String line = br.readLine();
 	this.log.println(line);
       }
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       String s = "Could not find file: " + file;
       throw new IllegalArgumentException(s);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       throw new IllegalArgumentException(ex.toString());
     }
 
@@ -624,7 +624,7 @@ public class Tester {
     tester.printBanner("Catting a file!", '*');
 
     // Cat the file given in args[0]
-    if(args.length > 0) {
+    if (args.length > 0) {
       File file = new File(args[0]);
       tester.cat(file);
     }

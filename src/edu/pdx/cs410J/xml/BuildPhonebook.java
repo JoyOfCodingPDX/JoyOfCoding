@@ -25,7 +25,7 @@ public class BuildPhonebook {
     try {
       File dtd = new File("phonebook.dtd");
       systemID = dtd.toURL().toString();
-    } catch(MalformedURLException ex) {
+    } catch (MalformedURLException ex) {
       err.println("** Bad URL: " + ex);
       System.exit(1);
     }
@@ -38,7 +38,7 @@ public class BuildPhonebook {
         dom.createDocumentType("phonebook", publicID, systemID);
       doc = dom.createDocument(null, "phonebook", docType);
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       // Eep, this is bad
       ex.printStackTrace(System.err);
       System.exit(1);
@@ -81,7 +81,7 @@ public class BuildPhonebook {
       phone.setAttribute("areacode", "503");
       phone.setAttribute("number", "533-3000");
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       ex.printStackTrace(err);
       System.exit(1);
     }
@@ -97,7 +97,7 @@ public class BuildPhonebook {
       XMLSerializer serial = new XMLSerializer(pw, format);
       serial.serialize(doc);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }

@@ -27,8 +27,8 @@ public abstract class AbstractAirline {
    * Returns a brief textual description of this airline.
    */
   public String toString() {
-    return(this.getName() + " with " + this.getFlights().size() + 
-           " flights");
+    return this.getName() + " with " + this.getFlights().size() + 
+           " flights";
   }
 
 }

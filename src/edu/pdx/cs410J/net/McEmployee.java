@@ -27,7 +27,7 @@ public class McEmployee implements Runnable {
   public void run() {
     System.out.println(this.name + " arrives at work");
 
-    while(this.mcDonalds.moreBigMacs()) {
+    while (this.mcDonalds.moreBigMacs()) {
       System.out.println(this.name + " starts a BigMac");
 
       // It takes time to cook a BigMac
@@ -35,7 +35,7 @@ public class McEmployee implements Runnable {
       try {
 	Thread.sleep(wait);
 
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 	return;
       }
 

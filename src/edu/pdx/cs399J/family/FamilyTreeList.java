@@ -29,11 +29,11 @@ public class FamilyTreeList extends JList {
         public int compare(Object o1, Object o2) {
           Person p1 = (Person) o1;
           Person p2 = (Person) o2;
-          return(p1.getId() - p2.getId());
+          return p1.getId() - p2.getId();
         }
 
         public boolean equals(Object o) {
-          return(true);
+          return true;
         }
       });
 
@@ -41,7 +41,7 @@ public class FamilyTreeList extends JList {
     String[] array = new String[sortedPeople.size()];
 
     Iterator iter = sortedPeople.iterator();
-    for(int i = 0; iter.hasNext(); i++) {
+    for (int i = 0; iter.hasNext(); i++) {
       Person person = (Person) iter.next();
       array[i] = person.getFullName() + " (" + person.getId() + ")";
       indexToPerson.put(new Integer(i), person);
@@ -57,7 +57,7 @@ public class FamilyTreeList extends JList {
   public Person getSelectedPerson() {
     int index = this.getSelectedIndex();
     Person person = (Person) this.indexToPerson.get(new Integer(index));
-    return(person);
+    return person;
   }
 
   /**
@@ -66,14 +66,14 @@ public class FamilyTreeList extends JList {
   public void setSelectedPerson(Person person) {
     Integer index = null;
     Iterator iter = this.indexToPerson.entrySet().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Map.Entry entry = (Map.Entry) iter.next();
-      if(entry.getValue().equals(person)) {
+      if (entry.getValue().equals(person)) {
         index = (Integer) entry.getKey();
       }
     }
 
-    if(index == null) {
+    if (index == null) {
       return;
 
     } else {

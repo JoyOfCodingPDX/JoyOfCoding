@@ -19,7 +19,7 @@ public class FormattedDate {
    */
   public static void main(String[] args) {
     StringBuffer sb = new StringBuffer();
-    for(int i = 0; i < args.length; i++) {
+    for (int i = 0; i < args.length; i++) {
       sb.append(args[i] + " ");
     }
     Date date = null;
@@ -28,7 +28,7 @@ public class FormattedDate {
     try {
       date = df.parse(sb.toString().trim());
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       String s = "Bad date: " + sb;
       System.err.println("** " + s);
       System.exit(1);

@@ -26,7 +26,7 @@ public abstract class AbstractFlight {
    * Returns this flight's departure time as a <code>Date</code>.
    */
   public Date getDeparture() {
-    return(null);
+    return null;
   }
 
   /**
@@ -45,7 +45,7 @@ public abstract class AbstractFlight {
    * Returns this flight's arrival time as a <code>Date</code>.
    */
   public Date getArrival() {
-    return(null);
+    return null;
   }
 
   /**
@@ -57,8 +57,8 @@ public abstract class AbstractFlight {
    * Returns a brief textual description of this flight.
    */
   public String toString() {
-    return("Flight " + this.getNumber() + " departs " + this.getSource()
+    return "Flight " + this.getNumber() + " departs " + this.getSource()
            + " at " + this.getDepartureString() + " arrives " +
-           this.getDestination() + " at " + this.getArrivalString());
+           this.getDestination() + " at " + this.getArrivalString();
   }
 }

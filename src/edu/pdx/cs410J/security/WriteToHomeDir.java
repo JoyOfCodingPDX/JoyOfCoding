@@ -18,7 +18,7 @@ public class WriteToHomeDir {
       pw.println("Hello There!");
       pw.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
     }

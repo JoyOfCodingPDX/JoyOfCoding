@@ -20,7 +20,7 @@ public class Person {
    * Returns this <code>Person</code>'s shoe size.
    */
   double shoeSize() {
-    return(this.shoeSize);
+    return this.shoeSize;
   }
 
   /** 

@@ -28,7 +28,7 @@ public class XmlDumper {
   public XmlDumper(File xmlFile) throws IOException {
     this(new PrintWriter(new FileWriter(xmlFile), true));
 
-    if(!xmlFile.exists()) {
+    if (!xmlFile.exists()) {
       xmlFile.createNewFile();
     }
 
@@ -57,7 +57,7 @@ public class XmlDumper {
    * generated.
    */
   public void setStudentDir(File dir) {
-    if(dir.exists() && !dir.isDirectory()) {
+    if (dir.exists() && !dir.isDirectory()) {
       throw new IllegalArgumentException(dir + " is not a directory");
     }
     
@@ -77,7 +77,7 @@ public class XmlDumper {
         dom.createDocumentType("gradebook", publicID, systemID);
       doc = dom.createDocument(null, "gradebook", dtd);
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       // Eep, this is bad
       ex.printStackTrace(System.err);
       System.exit(1);
@@ -93,7 +93,7 @@ public class XmlDumper {
     // assignment nodes
     Element assignments = doc.createElement("assignments");
     Iterator iter = book.getAssignmentNames().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Assignment assign = book.getAssignment((String) iter.next());
       Element assignNode = doc.createElement("assignment");
 
@@ -102,7 +102,7 @@ public class XmlDumper {
       assignNode.appendChild(assignName);
 
       String desc = assign.getDescription();
-      if(desc != null) {
+      if (desc != null) {
         Element assignDesc = doc.createElement("description");
         assignDesc.appendChild(doc.createTextNode(desc));
         assignNode.appendChild(assignDesc);
@@ -142,7 +142,7 @@ public class XmlDumper {
     // Students
     Element studentsNode = doc.createElement("students");
     Iterator ids = book.getStudentIds().iterator();
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
       Element studentNode = doc.createElement("id");
       studentNode.appendChild(doc.createTextNode(id));
@@ -150,7 +150,7 @@ public class XmlDumper {
       studentsNode.appendChild(studentNode);
 
       Student student = book.getStudent(id);
-      if(student.isDirty()) {
+      if (student.isDirty()) {
         dumpStudent(student);
       }
     }
@@ -177,7 +177,7 @@ public class XmlDumper {
    */
   private static void doNotes(Document doc, Element parent, List notes) {
     Element notesNode = doc.createElement("notes");
-    for(int i = 0; i < notes.size(); i++) {
+    for (int i = 0; i < notes.size(); i++) {
       String note = (String) notes.get(i);
       Element noteNode = doc.createElement("note");
       noteNode.appendChild(doc.createTextNode(note));
@@ -224,7 +224,7 @@ public class XmlDumper {
         dom.createDocumentType("student", publicID, systemID);
       doc = dom.createDocument(null, "student", dtd);
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       // Eep, this is bad
       ex.printStackTrace(System.err);
       System.exit(1);
@@ -238,46 +238,46 @@ public class XmlDumper {
     root.appendChild(id);
 
     // First name
-    if(student.getFirstName() != null) {
+    if (student.getFirstName() != null) {
       Element firstName = doc.createElement("firstName");
       firstName.appendChild(doc.createTextNode(student.getFirstName()));
       root.appendChild(firstName);
     }
 
-    if(student.getLastName() != null) {
+    if (student.getLastName() != null) {
       Element lastName = doc.createElement("lastName");
       lastName.appendChild(doc.createTextNode(student.getLastName()));
       root.appendChild(lastName);
     }
 
-    if(student.getNickName() != null) {
+    if (student.getNickName() != null) {
       Element nickName = doc.createElement("nickName");
       nickName.appendChild(doc.createTextNode(student.getNickName()));
       root.appendChild(nickName);
     }
 
-    if(student.getEmail() != null) {
+    if (student.getEmail() != null) {
       Element email = doc.createElement("email");
       email.appendChild(doc.createTextNode(student.getEmail()));
       root.appendChild(email);
     }
 
-    if(student.getSsn() != null) {
+    if (student.getSsn() != null) {
       Element ssn = doc.createElement("ssn");
       ssn.appendChild(doc.createTextNode(student.getSsn()));
       root.appendChild(ssn);
     }
 
-    if(student.getMajor() != null) {
+    if (student.getMajor() != null) {
       Element major = doc.createElement("major");
       major.appendChild(doc.createTextNode(student.getMajor()));
       root.appendChild(major);
     }
 
     Iterator gradeNames = student.getGradeNames().iterator();
-    if(gradeNames.hasNext()) {
+    if (gradeNames.hasNext()) {
       Element gradesNode = doc.createElement("grades");
-      while(gradeNames.hasNext()) {
+      while (gradeNames.hasNext()) {
         String gradeName = (String) gradeNames.next();
         Grade grade = student.getGrade(gradeName);
         
@@ -293,10 +293,10 @@ public class XmlDumper {
         
         doNotes(doc, gradeNode, grade.getNotes());
         
-        if(grade.getScore() == Grade.INCOMPLETE) {
+        if (grade.getScore() == Grade.INCOMPLETE) {
           gradeNode.setAttribute("type", "INCOMPLETE");
           
-        } else if(grade.getScore() == Grade.NOGRADE) {
+        } else if (grade.getScore() == Grade.NOGRADE) {
           gradeNode.setAttribute("type", "NOGRADE");
         }
 
@@ -307,10 +307,10 @@ public class XmlDumper {
     }
 
     List late = student.getLate();
-    if(!late.isEmpty()) {
+    if (!late.isEmpty()) {
       Element lateNode = doc.createElement("late");
       
-      for(int i = 0; i < late.size(); i++) {
+      for (int i = 0; i < late.size(); i++) {
         String name = (String) late.get(i);
         Element nameNode = doc.createElement("name");
         nameNode.appendChild(doc.createTextNode(name));
@@ -321,10 +321,10 @@ public class XmlDumper {
     }
 
     List resubmitted = student.getResubmitted();
-    if(!resubmitted.isEmpty()) {
+    if (!resubmitted.isEmpty()) {
       Element resubNode = doc.createElement("resubmitted");
           
-      for(int i = 0; i < resubmitted.size(); i++) {
+      for (int i = 0; i < resubmitted.size(); i++) {
         String name = (String) resubmitted.get(i);
         Element nameNode = doc.createElement("name");
         nameNode.appendChild(doc.createTextNode(name));
@@ -335,11 +335,11 @@ public class XmlDumper {
     }
 
     List notes = student.getNotes();
-    if(!notes.isEmpty()) {
+    if (!notes.isEmpty()) {
       doNotes(doc, root, notes);
     }
 
-    return(doc);
+    return doc;
   }
 
 }

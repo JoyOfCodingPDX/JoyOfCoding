@@ -127,12 +127,12 @@ public class GradeBookGUI extends JFrame {
    * Saves the grade book being edited to a file
    */
   private void save() {
-    if(this.book == null) {
+    if (this.book == null) {
       // Nothing to do
       return;
     }
 
-    if(this.file == null) {
+    if (this.file == null) {
       saveAs();
       // saveAs() will recursively invoke save() if the user selects a
       // file
@@ -144,7 +144,7 @@ public class GradeBookGUI extends JFrame {
       XmlDumper dumper = new XmlDumper(this.file);
       dumper.dump(this.book);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       error("While writing grade book", ex);
       return;
     }
@@ -156,7 +156,7 @@ public class GradeBookGUI extends JFrame {
    */
   private JFileChooser getFileChooser() {
     JFileChooser chooser = new JFileChooser();
-    if(this.file != null) {
+    if (this.file != null) {
       chooser.setCurrentDirectory(file.getAbsoluteFile().getParentFile());
     } else {
       String cwd = System.getProperty("user.dir");
@@ -165,22 +165,22 @@ public class GradeBookGUI extends JFrame {
 
     chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
         public boolean accept(File file) {
-          if(file.isDirectory()) {
-            return(true);
+          if (file.isDirectory()) {
+            return true;
           }
 
           String fileName = file.getName();
-          return(fileName.endsWith(".xml"));
+          return fileName.endsWith(".xml");
         }
 
         public String getDescription() {
-          return("XML files");
+          return "XML files";
         }
       });
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     chooser.setMultiSelectionEnabled(false);
 
-    return(chooser);
+    return chooser;
   }
 
   /**
@@ -192,7 +192,7 @@ public class GradeBookGUI extends JFrame {
     chooser.setDialogType(JFileChooser.SAVE_DIALOG);
     int response = chooser.showSaveDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       this.file = chooser.getSelectedFile();
       save();
     }
@@ -207,7 +207,7 @@ public class GradeBookGUI extends JFrame {
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
     int response = chooser.showOpenDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       // Read the grade book from the file and display it in the GUI
       File file = chooser.getSelectedFile();
       
@@ -217,11 +217,11 @@ public class GradeBookGUI extends JFrame {
         this.displayGradeBook(book);
         this.file = file;
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         error("While parsing file " + file.getName(), ex);
         return;
 
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
         error("While parsing file " + file.getName(), ex);
       }
     }
@@ -232,7 +232,7 @@ public class GradeBookGUI extends JFrame {
    * added to the grade book
    */
   private void importStudent() {
-    if(this.book == null) {
+    if (this.book == null) {
       error("You must open a grade book before importing a student");
       return;
     }
@@ -242,7 +242,7 @@ public class GradeBookGUI extends JFrame {
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
     int response = chooser.showOpenDialog(this);
     
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       // Read the student from the selected file and add it to the
       // grade book
       File file = chooser.getSelectedFile();
@@ -250,7 +250,7 @@ public class GradeBookGUI extends JFrame {
         Student student = XmlParser.parseStudent(null, file);
         this.book.addStudent(student);
         
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
         error("While parsing file " + file.getName(), ex);
         return;
       }
@@ -268,7 +268,7 @@ public class GradeBookGUI extends JFrame {
                                   "Enter class name",
                                   JOptionPane.INFORMATION_MESSAGE);
 
-    if(className == null || className.equals("")) {
+    if (className == null || className.equals("")) {
       return;
     }
 
@@ -281,7 +281,7 @@ public class GradeBookGUI extends JFrame {
    * modified and not saved, ask the user if he wants to save it.
    */
   private void exit() {
-    if(this.book != null && this.book.isDirty()) {
+    if (this.book != null && this.book.isDirty()) {
       int response = JOptionPane.showConfirmDialog(this, new String[] {
         "You have made changes to the grade book.",
         "Do you want to save them?"},
@@ -289,10 +289,10 @@ public class GradeBookGUI extends JFrame {
         JOptionPane.YES_NO_CANCEL_OPTION,
         JOptionPane.QUESTION_MESSAGE);
       
-      if(response == JOptionPane.YES_OPTION) {
+      if (response == JOptionPane.YES_OPTION) {
         save();
 
-      } else if(response == JOptionPane.CANCEL_OPTION) {
+      } else if (response == JOptionPane.CANCEL_OPTION) {
         // Don't exit
         return;
       }
@@ -316,13 +316,13 @@ public class GradeBookGUI extends JFrame {
   public static void main(String[] args) {
     GradeBookGUI gui = new GradeBookGUI("CS410J Grade Book Program");
 
-    if(args.length > 0) {
+    if (args.length > 0) {
       PrintStream err = System.err;
       File file = new File(args[0]);
-      if(!file.exists()) {
+      if (!file.exists()) {
         err.println("** " + file + " does not exist");
 
-      } else if(!file.isFile()) {
+      } else if (!file.isFile()) {
         err.println("** " + file + " is not a file");
 
       } else {
@@ -332,11 +332,11 @@ public class GradeBookGUI extends JFrame {
           gui.displayGradeBook(book);
           gui.file = file;
 
-        } catch(IOException ex) {
+        } catch (IOException ex) {
           err.println("While parsing file " + file.getName());
           System.exit(1);
 
-        } catch(ParserException ex) {
+        } catch (ParserException ex) {
           err.println("While parsing file " + file.getName());
           System.exit(1);
         }

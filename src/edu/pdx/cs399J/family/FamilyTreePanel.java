@@ -55,7 +55,7 @@ public class FamilyTreePanel extends JPanel {
     scrollPane.setMinimumSize(minSizeLeft);
     
     JPanel newPersonPanel = null;
-    if(this.canEdit()) {
+    if (this.canEdit()) {
       newPersonPanel = new JPanel();
       newPersonPanel.setLayout(new BoxLayout(newPersonPanel,
                                              BoxLayout.X_AXIS));
@@ -75,7 +75,7 @@ public class FamilyTreePanel extends JPanel {
     JPanel treePanel = new JPanel();
     treePanel.setLayout(new BorderLayout());
     treePanel.add(scrollPane, BorderLayout.CENTER);
-    if(this.canEdit()) {
+    if (this.canEdit()) {
       treePanel.add(newPersonPanel, BorderLayout.SOUTH);
     }
 
@@ -111,7 +111,7 @@ public class FamilyTreePanel extends JPanel {
    * Returns <code>true</code> if this GUI can be used to edit a person.
    */
   boolean canEdit() {
-    return(false);
+    return false;
   }
 
   /**
@@ -126,7 +126,7 @@ public class FamilyTreePanel extends JPanel {
    */
   void displayMother() {
     Person person = this.treeList.getSelectedPerson();
-    if(person != null) {
+    if (person != null) {
       this.treeList.setSelectedPerson(person.getMother());
     }
   }
@@ -136,7 +136,7 @@ public class FamilyTreePanel extends JPanel {
    */
   void displayFather() {
     Person person = this.treeList.getSelectedPerson();
-    if(person != null) {
+    if (person != null) {
       this.treeList.setSelectedPerson(person.getFather());
     }
   }
@@ -145,7 +145,7 @@ public class FamilyTreePanel extends JPanel {
    * Returns the <code>FamilyTree</code> being edited.
    */
   FamilyTree getFamilyTree() {
-    return(this.tree);
+    return this.tree;
   }
 
   /**
@@ -183,7 +183,7 @@ public class FamilyTreePanel extends JPanel {
    * Returns <code>null</code> for the panel.
    */
   JFrame getFrame() {
-    return(null);
+    return null;
   }
 
   /**
@@ -193,12 +193,12 @@ public class FamilyTreePanel extends JPanel {
     try {
       this.tree = parseSource(url);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.out.println("source = " + this.sourceLocation + ": " + ex);
       this.sourceLocation.setText(ex.toString());
       return;
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       this.sourceLocation.setText(ex.toString());
       return;
     }
@@ -217,7 +217,7 @@ public class FamilyTreePanel extends JPanel {
     InputStream stream = url.openStream();
 
     XmlParser parser = new XmlParser(stream);
-    return(parser.parse());
+    return parser.parse();
   }
 
   /**
@@ -225,7 +225,7 @@ public class FamilyTreePanel extends JPanel {
    * a <code>JFrame</code>
    */
   public static void main(String[] args) {
-    if(args.length < 1) {
+    if (args.length < 1) {
       System.err.println("** No URL Specified!!");
       System.exit(1);
     }
@@ -234,7 +234,7 @@ public class FamilyTreePanel extends JPanel {
     try {
       url = new URL(args[0]);
 
-    } catch(MalformedURLException ex) {
+    } catch (MalformedURLException ex) {
       System.err.println(ex.toString());
       System.exit(1);
     }

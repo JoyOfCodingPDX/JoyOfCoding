@@ -70,7 +70,7 @@ public class ChoosePersonDialog extends JDialog {
    * Returns the choosen person
    */
   public Person getPerson() {
-    return(this.person);
+    return this.person;
   }
 
 }

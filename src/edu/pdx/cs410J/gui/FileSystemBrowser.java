@@ -21,7 +21,7 @@ public class FileSystemBrowser extends JPanel {
   public FileSystemBrowser(File dir) {
     File[] fileRoots = null;
 
-    if(dir == null) {
+    if (dir == null) {
       fileRoots = File.listRoots();
     } else {
       fileRoots = new File[1];
@@ -29,7 +29,7 @@ public class FileSystemBrowser extends JPanel {
     }
 
     TreeNode[] rootNodes = new FileSystemNode[fileRoots.length];
-    for(int i = 0; i < fileRoots.length; i++) {
+    for (int i = 0; i < fileRoots.length; i++) {
       rootNodes[i] = new FileSystemNode(fileRoots[i]);
     }
 
@@ -65,9 +65,9 @@ public class FileSystemBrowser extends JPanel {
   public static void main(String[] args) {
     File dir = null;
 
-    if(args.length > 0) {
+    if (args.length > 0) {
       dir = new File(args[0]);
-      if(!dir.exists() || !dir.isDirectory()) {
+      if (!dir.exists() || !dir.isDirectory()) {
         System.err.println("** Not a directory: " + dir);
         System.exit(1);
       }

@@ -43,14 +43,14 @@ public class Student implements Notable {
    * Returns the id of this <code>Student</code>
    */
   public String getId() {
-    return(this.id);
+    return this.id;
   }
 
   /**
    * Returns the first name of this <code>Student</code>
    */
   public String getFirstName() {
-    return(this.firstName);
+    return this.firstName;
   }
 
   /**
@@ -65,7 +65,7 @@ public class Student implements Notable {
    * Returns the last name of this <code>Student</code>
    */
   public String getLastName() {
-    return(this.lastName);
+    return this.lastName;
   }
 
   /**
@@ -80,7 +80,7 @@ public class Student implements Notable {
    * Returns the nick name of this <code>Student</code>
    */
   public String getNickName() {
-    return(this.nickName);
+    return this.nickName;
   }
 
   /**
@@ -97,26 +97,26 @@ public class Student implements Notable {
    */
   public String getFullName() {
     StringBuffer sb = new StringBuffer();
-    if(this.firstName != null) {
+    if (this.firstName != null) {
       sb.append(this.firstName);
     }
 
-    if(this.nickName != null) {
+    if (this.nickName != null) {
       sb.append(" \"" + this.nickName + "\"");
     }
 
-    if(this.lastName != null) {
+    if (this.lastName != null) {
       sb.append(" " + this.lastName);
     }
 
-    return(sb.toString().trim());
+    return sb.toString().trim();
   }
 
   /**
    * Returns the email address of this <code>Student</code>
    */
   public String getEmail() {
-    return(this.email);
+    return this.email;
   }
 
   /**
@@ -131,7 +131,7 @@ public class Student implements Notable {
    * Returns the social security number of this <code>Student</code>
    */
   public String getSsn() {
-    return(this.ssn);
+    return this.ssn;
   }
 
   /**
@@ -146,7 +146,7 @@ public class Student implements Notable {
    * Returns the major of this <code>Student</code>
    */
   public String getMajor() {
-    return(this.major);
+    return this.major;
   }
 
   /**
@@ -162,7 +162,7 @@ public class Student implements Notable {
    * <code>Student</code> has received a <code>Grade</code>.
    */
   public Set getGradeNames() {
-    return(this.grades.keySet());
+    return this.grades.keySet();
   }
 
   /**
@@ -171,7 +171,7 @@ public class Student implements Notable {
    * assignment, <code>null</code> is returned.
    */
   public Grade getGrade(String assignmentName) {
-    return((Grade) this.grades.get(assignmentName));
+    return (Grade) this.grades.get(assignmentName);
   }
 
   /**
@@ -187,7 +187,7 @@ public class Student implements Notable {
    * Returns the names of all of the assignments that are late.
    */
   public List getLate() {
-    return(this.late);
+    return this.late;
   }
 
   /**
@@ -202,7 +202,7 @@ public class Student implements Notable {
    * Returns the names of all of the assignments that are resubmitted.
    */
   public List getResubmitted() {
-    return(this.resubmitted);
+    return this.resubmitted;
   }
 
   /**
@@ -217,7 +217,7 @@ public class Student implements Notable {
    * Returns all of the notes about this <code>Student</code>
    */
   public List getNotes() {
-    return(this.notes);
+    return this.notes;
   }
 
   /**
@@ -234,13 +234,13 @@ public class Student implements Notable {
    */
   boolean isDirty() {
     Iterator iter = this.grades.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Grade grade = (Grade) iter.next();
-      if(grade.isDirty()) {
-        return(true);
+      if (grade.isDirty()) {
+        return true;
       }
     }
-    return(this.dirty);
+    return this.dirty;
   }
 
   /**
@@ -259,7 +259,7 @@ public class Student implements Notable {
 
     // Make all Grades clean
     Iterator iter = this.grades.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Grade grade = (Grade) iter.next();
       grade.makeClean();
     }
@@ -277,34 +277,34 @@ public class Student implements Notable {
     sb.append(student.getFullName());
 
     String email = student.getEmail();
-    if(email != null && !email.equals("")) {
+    if (email != null && !email.equals("")) {
       sb.append(", " + email);
     }
 
     String ssn = student.getSsn();
-    if(ssn != null && !ssn.equals("")) {
+    if (ssn != null && !ssn.equals("")) {
       sb.append(", " + ssn);
     }
 
     String major = student.getMajor();
-    if(major != null && !major.equals("")) {
+    if (major != null && !major.equals("")) {
       sb.append(", " + major);
     }
 
     Iterator iter = this.getNotes().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       String note = (String) iter.next();
       sb.append(", \"" + note + "\"");
     }
 
-    return(sb.toString());
+    return sb.toString();
   }
 
   /**
    * Returns a brief textual description of this <code>Student</code>
    */
   public String toString() {
-    return(this.getId() + ": " + this.getFullName());
+    return this.getId() + ": " + this.getFullName();
   }
 
   private static PrintWriter out = new PrintWriter(System.out, true);
@@ -344,80 +344,80 @@ public class Student implements Notable {
     String note = null;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-id")) {
-        if(++i >= args.length) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-id")) {
+        if (++i >= args.length) {
           err.println("** Missing id");
           usage();
         }
 
         id = args[i];
 
-      } else if(args[i].equals("-xmlFile") || args[i].equals("-file")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-xmlFile") || args[i].equals("-file")) {
+        if (++i >= args.length) {
           err.println("** Missing xml file name");
           usage();
         }
 
         xmlFile = args[i];
 
-      } else if(args[i].equals("-firstName")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-firstName")) {
+        if (++i >= args.length) {
           err.println("** Missing first name");
           usage();
         }
 
         firstName = args[i];
 
-      } else if(args[i].equals("-lastName")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-lastName")) {
+        if (++i >= args.length) {
           err.println("** Missing last name");
           usage();
         }
 
         lastName = args[i];
 
-      } else if(args[i].equals("-nickName")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-nickName")) {
+        if (++i >= args.length) {
           err.println("** Missing nick name");
           usage();
         }
 
         nickName = args[i];
 
-      } else if(args[i].equals("-email")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-email")) {
+        if (++i >= args.length) {
           err.println("** Missing email address");
           usage();
         }
 
         email = args[i];
 
-      } else if(args[i].equals("-ssn")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-ssn")) {
+        if (++i >= args.length) {
           err.println("** Missing social security number");
           usage();
         }
 
         ssn = args[i];
 
-      } else if(args[i].equals("-major")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-major")) {
+        if (++i >= args.length) {
           err.println("** Missing major");
           usage();
         }
 
         major = args[i];
 
-      } else if(args[i].equals("-note")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-note")) {
+        if (++i >= args.length) {
           err.println("** Missing text of note");
           usage();
         }
 
         note = args[i];
 
-      } else if(args[i].startsWith("-")) {
+      } else if (args[i].startsWith("-")) {
         err.println("** Unknown option: " + args[i]);
         usage();
 
@@ -428,19 +428,19 @@ public class Student implements Notable {
     }
 
     // Check to make sure that command line was entered correctly
-    if(id == null) {
+    if (id == null) {
       err.println("** No id specified");
       usage();
     }
 
-    if(xmlFile == null) {
+    if (xmlFile == null) {
       err.println("** No XML file specified");
       usage();
     }
 
     // Parse the XML file to get a GradeBook
     File file = new File(xmlFile);
-    if(!file.exists()) {
+    if (!file.exists()) {
       err.println("** Grade book file " + xmlFile + 
                   " does not exist");
       System.exit(1);
@@ -451,15 +451,15 @@ public class Student implements Notable {
       XmlParser parser = new XmlParser(file);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       err.println("** Exception while parsing " + file + ": " + ex);
       System.exit(1);
     }
@@ -467,31 +467,31 @@ public class Student implements Notable {
     // Get the Student
     Student student = book.getStudent(id);
 
-    if(firstName != null) {
+    if (firstName != null) {
       student.setFirstName(firstName);
     }
 
-    if(lastName != null) {
+    if (lastName != null) {
       student.setLastName(lastName);
     }
 
-    if(nickName != null) {
+    if (nickName != null) {
       student.setNickName(nickName);
     }
 
-    if(email != null) {
+    if (email != null) {
       student.setEmail(email);
     }
 
-    if(ssn != null) {
+    if (ssn != null) {
       student.setSsn(ssn);
     }
 
-    if(major != null) {
+    if (major != null) {
       student.setMajor(major);
     }
 
-    if(note != null) {
+    if (note != null) {
       student.addNote(note);
     }
 
@@ -500,7 +500,7 @@ public class Student implements Notable {
       XmlDumper dumper = new XmlDumper(file);
       dumper.dump(book);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** While dumping to " + file + ": " + ex);
       System.exit(1);
     }

@@ -11,17 +11,17 @@ public class BankAccount {
     try {
       long time = (long) (Math.random() * 1000);
       Thread.sleep(time);
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       
     }
-    return(this.balance);
+    return this.balance;
   }
 
   public void setBalance(int balance) {
     try {
       long time = (long) (Math.random() * 1000);
       Thread.sleep(time);
-    } catch(InterruptedException ex) { 
+    } catch (InterruptedException ex) { 
 
     }
     this.balance = balance;

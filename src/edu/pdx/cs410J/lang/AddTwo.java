@@ -20,7 +20,7 @@ public class AddTwo {
     try {
       anInt = Integer.parseInt(args[0]);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       System.err.println("Invalid integer: " + args[0]);
       System.exit(1);
     }
@@ -28,7 +28,7 @@ public class AddTwo {
     try {
       anotherInt = Integer.parseInt(args[1]);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       System.err.println("Invalid integer: " + args[1]);
       System.exit(1);
     }

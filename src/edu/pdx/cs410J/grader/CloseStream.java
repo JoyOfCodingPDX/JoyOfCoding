@@ -13,7 +13,7 @@ public class CloseStream {
     try {
       fos = new FileOutputStream("TEST");
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       ex.printStackTrace();
       System.exit(1);
     }
@@ -27,7 +27,7 @@ public class CloseStream {
     try {
       fos.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace();
       System.exit(1);
     }

@@ -48,18 +48,18 @@ public class ChatCommunicator implements Runnable {
     try {
       socket = new Socket("localhost", port);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       // Nobody listening
 //        System.out.println("Nobody's listening");
     }
 
-    if(socket == null) {
+    if (socket == null) {
       // Listen
       try {
 	ServerSocket server = new ServerSocket(port, 10);
 	socket = server.accept();
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** IOException: " + ex);
 	System.exit(1);
       }
@@ -83,6 +83,6 @@ public class ChatCommunicator implements Runnable {
    * Gets messages from the <code>ChatListener</code>
    */
   public List getMessages() {
-    return(this.listener.getMessages());
+    return this.listener.getMessages();
   }
 }

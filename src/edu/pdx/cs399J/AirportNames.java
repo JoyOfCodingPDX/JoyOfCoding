@@ -326,18 +326,18 @@ public class AirportNames {
    * Returns the name of an airport with a given three-letter code.
    */
   public static String getName(String code) {
-    if(airportNames == null) {
+    if (airportNames == null) {
       airportNames = new AirportNames();
     }
 
-    return((String) airportNames.names.get(code));
+    return (String) airportNames.names.get(code);
   }
 
   /**
    * Quick test program
    */
   public static void main(String[] args) {
-    for(int i = 0; i < args.length; i++) {
+    for (int i = 0; i < args.length; i++) {
       String name = AirportNames.getName(args[i]);
       System.out.println(args[i] + ": " + name);
     }

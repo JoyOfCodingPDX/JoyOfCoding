@@ -12,14 +12,14 @@ public class PersonComparator implements Comparator {
     double size1 = ((Person) o1).shoeSize();
     double size2 = ((Person) o2).shoeSize();
 
-    if(size1 > size2) {
-      return(1);
+    if (size1 > size2) {
+      return 1;
 
-    } else if(size1 < size2) {
-      return(-1);
+    } else if (size1 < size2) {
+      return -1;
 
     } else {
-      return(0);
+      return 0;
     }
   }
 
@@ -36,7 +36,7 @@ public class PersonComparator implements Comparator {
 
     // Print out the people
     Iterator iter = set.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Person p = (Person) iter.next();
       System.out.println(p);
     }

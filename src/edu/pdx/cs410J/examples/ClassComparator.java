@@ -16,7 +16,7 @@ public class ClassComparator implements Comparator {
     String name2 = o2.getClass().getName();
     
     // Take advantage of String's compartTo method
-    return(name1.compareTo(name2));
+    return name1.compareTo(name2);
   }
 
   /**
@@ -32,7 +32,7 @@ public class ClassComparator implements Comparator {
 
     // Print out the set
     Iterator iter = set.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Object o = iter.next();
       String s = o + " (" + o.getClass().getName() + ")";
       System.out.println(s);

@@ -20,7 +20,7 @@ public class ParseTextFile {
   }
 
   public static void main(String[] args) {
-    if(args.length < 3) {
+    if (args.length < 3) {
       err.println("** Missing command line arguments");
       usage();
     }
@@ -43,29 +43,29 @@ public class ParseTextFile {
       String line = in.readLine();
       StringTokenizer st = new StringTokenizer(line);
       st.nextToken();    // Skip "id"
-      while(st.hasMoreTokens()) {
+      while (st.hasMoreTokens()) {
         String assignment = st.nextToken();
         assignments.add(assignment);
       }
 
       line = in.readLine();
-      while(line != null) {
+      while (line != null) {
         st = new StringTokenizer(line);
         String studentName = st.nextToken();
         Student student = book.getStudent(studentName);
 
-        for(int i = 0; st.hasMoreTokens(); i++) {
+        for (int i = 0; st.hasMoreTokens(); i++) {
           String s = st.nextToken();
           String assignment = (String) assignments.get(i);
           double score;
 
-          if(s.equals("I")) {
+          if (s.equals("I")) {
             score = Grade.INCOMPLETE;
 
           } else {
             try {
               score = Double.parseDouble(s);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
               err.println("** Bad number: " + s);
               System.exit(1);
               score = -4.2;
@@ -78,7 +78,7 @@ public class ParseTextFile {
 
         line = in.readLine();
       }
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace();
       System.exit(1);
     }
@@ -88,7 +88,7 @@ public class ParseTextFile {
       XmlDumper dumper = new XmlDumper(xmlFile);
       dumper.dump(book);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** Error while writing XML file: " + ex);
       System.exit(1);
     }

@@ -35,14 +35,14 @@ public class SummaryReport {
 
     Iterator allGradeNames = 
       (new TreeSet(book.getAssignmentNames())).iterator();
-    while(allGradeNames.hasNext()) {
+    while (allGradeNames.hasNext()) {
       String gradeName = (String) allGradeNames.next();
       Grade grade = student.getGrade(gradeName);
       Assignment assign = book.getAssignment(gradeName);
 
       // Average non-existent scores as zero
       double score;
-      if(grade == null) {
+      if (grade == null) {
         score = 0.0;
 
       } else {
@@ -51,15 +51,15 @@ public class SummaryReport {
 
 //       System.out.println("Examining " + assign + ", score: " + score);
 
-      if(assign.getType() == Assignment.QUIZ) {
-        if(lowestQuiz == null) {
+      if (assign.getType() == Assignment.QUIZ) {
+        if (lowestQuiz == null) {
           lowestQuiz = assign;
 //           System.out.println("Lowest quiz: " + lowestQuiz + 
 //                              ", score: " + score);
 
         } else {
           Grade lowestGrade = student.getGrade(lowestQuiz.getName());
-          if(lowestGrade != null && score < lowestGrade.getScore()) {
+          if (lowestGrade != null && score < lowestGrade.getScore()) {
             lowestQuiz = assign;
 //             System.out.println("Lowest quiz: " + lowestQuiz + ", score: "
 //                                + score + ", lowest grade: " +
@@ -74,10 +74,10 @@ public class SummaryReport {
 
 
       // Skip incompletes and no grades
-      if(grade == null) {
+      if (grade == null) {
         line += " (MISSING GRADE)";
 
-      } else if(grade.getScore() == Grade.INCOMPLETE || 
+      } else if (grade.getScore() == Grade.INCOMPLETE || 
                 grade.getScore() == Grade.NOGRADE) {
         line += " (INCOMPLETE)";
       }
@@ -88,7 +88,7 @@ public class SummaryReport {
       total += score;
     }
 
-    if(lowestQuiz != null) {
+    if (lowestQuiz != null) {
       pw.println("");
       pw.println("Lowest Quiz grade dropped: " +
 		 lowestQuiz.getName());
@@ -103,14 +103,14 @@ public class SummaryReport {
     // Print out late and resubmitted assignments
     pw.println("Late assignments:");
     Iterator late = student.getLate().iterator();
-    while(late.hasNext()) {
+    while (late.hasNext()) {
       pw.println("  " + late.next());
     }
     pw.println();
 
     pw.println("Resubmitted assignments:");
     Iterator resubmit = student.getResubmitted().iterator();
-    while(resubmit.hasNext()) {
+    while (resubmit.hasNext()) {
       pw.println("  " + resubmit.next());
     }
     pw.println("");
@@ -138,23 +138,23 @@ public class SummaryReport {
    * grade book located in a given XML file.
    */
   public static void main(String[] args) {
-    if(args.length < 2) {
+    if (args.length < 2) {
       err.println("** Not enough arguments");
       usage();
     }
 
     String xmlFile = args[0];
     File outDir = new File(args[1]);
-    if(!outDir.exists()) {
+    if (!outDir.exists()) {
       outDir.mkdirs();
 
-    } else if(!outDir.isDirectory()) {
+    } else if (!outDir.isDirectory()) {
       err.println("** " + outDir + " is not a directory");
       System.exit(1);
     }
 
     File file = new File(xmlFile);
-    if(!file.exists()) {
+    if (!file.exists()) {
       err.println("** Grade book file " + xmlFile + 
                   " does not exist");
       System.exit(1);
@@ -167,15 +167,15 @@ public class SummaryReport {
       XmlParser parser = new XmlParser(file);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       err.println("** Exception while parsing " + file + ": " + ex);
       System.exit(1);
     }
@@ -183,7 +183,7 @@ public class SummaryReport {
     // Create a SummaryReport for every student
     Iterator ids;
 
-    if(args.length > 2) {
+    if (args.length > 2) {
       List l = new ArrayList();
       l.add(args[2]);
       ids = l.iterator();
@@ -192,7 +192,7 @@ public class SummaryReport {
       ids = book.getStudentIds().iterator();
     }
 
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
 
       err.println(id);
@@ -206,7 +206,7 @@ public class SummaryReport {
         dumpReportTo(book, student, pw);
 
 //         dumpReportTo(book, student, out);
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         ex.printStackTrace();
         System.exit(1);
       }
@@ -219,11 +219,11 @@ public class SummaryReport {
           Student s2 = (Student) o2;
           Double d1 = (Double) allTotals.get(s1);
           Double d2 = (Double) allTotals.get(s2);
-          return(d2.compareTo(d1));
+          return d2.compareTo(d1);
         }
 
         public boolean equals(Object o) {
-          return(true);
+          return true;
         }
       });
 
@@ -233,7 +233,7 @@ public class SummaryReport {
 
 
     Iterator iter = sorted.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Student student = (Student) iter.next();
       Double d = (Double) allTotals.get(student);
       out.println(student + ": " + format.format(d.doubleValue()));

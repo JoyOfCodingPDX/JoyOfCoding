@@ -58,41 +58,41 @@ public class PrettyPrinter implements Dumper {
     // Iterate over the people in the sorted tree in order and print
     // out a description of each person.
     Iterator iter = sortedTree.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Person person = (Person) iter.next();
 
       pw.println("Person " + person.getId() + ": " +
 		 person.getFullName());
 
       Date dob = person.getDateOfBirth();
-      if(dob != null) {
+      if (dob != null) {
 	pw.print("  Born on " + df.format(dob));
       }
 
       Date dod = person.getDateOfDeath();
-      if(dod != null) {
+      if (dod != null) {
 	pw.print(", died on " + df.format(dod));
       }
 
-      if(dob != null || dod != null) {
+      if (dob != null || dod != null) {
 	// Only print a newline if a date was printed
 	pw.println("");
       }
 
       Person mother = person.getMother();
-      if(mother != null) {
+      if (mother != null) {
 	pw.println("  Mother: " + mother.getFullName() + " (" +
 		   mother.getId() + ")");
       }
 
       Person father = person.getFather();
-      if(father != null) {
+      if (father != null) {
 	pw.println("  Father: " + father.getFullName() + " (" +
 		   father.getId() + ")");
       }
 
       Iterator marriages = person.getMarriages().iterator();
-      while(marriages.hasNext()) {
+      while (marriages.hasNext()) {
 	Marriage marriage = (Marriage) marriages.next();
 	Person spouse;
 
@@ -147,7 +147,7 @@ public class PrettyPrinter implements Dumper {
       Person p1 = null;
       Person p2 = null;
 
-      if(one instanceof Person) {
+      if (one instanceof Person) {
 	p1 = (Person) one;
 
       } else {
@@ -155,7 +155,7 @@ public class PrettyPrinter implements Dumper {
 					   one.getClass());
       }
 
-      if(two instanceof Person) {
+      if (two instanceof Person) {
 	p2 = (Person) two;
 
       } else {
@@ -163,7 +163,7 @@ public class PrettyPrinter implements Dumper {
 					   two.getClass());
       }
 
-      return(p1.getId() - p2.getId());
+      return p1.getId() - p2.getId();
     }
 
     /**
@@ -171,7 +171,7 @@ public class PrettyPrinter implements Dumper {
      * <code>PersonSorter</code>s are the same.
      */
     public boolean equals(Object o) {
-      if(o instanceof PersonSorter) {
+      if (o instanceof PersonSorter) {
 	return(true);
 
       } else {
@@ -201,7 +201,7 @@ public class PrettyPrinter implements Dumper {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       marriage.setDate(df.parse("Jul 12, 1969"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.out.println("** Malformed marriage date?");
       System.exit(1);
     }

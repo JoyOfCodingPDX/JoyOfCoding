@@ -66,21 +66,21 @@ public class EditPersonDialog extends JDialog {
     
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
     Date dob = person.getDateOfBirth();
-    if(dob != null) {
+    if (dob != null) {
       this.dobField.setText(df.format(dob));
     }
     Date dod = person.getDateOfDeath();
-    if(dod != null) {
+    if (dod != null) {
       this.dodField.setText(df.format(dod));
     }
 
     this.father = person.getFather();
-    if(this.father != null) {
+    if (this.father != null) {
       this.fatherField.setText(this.father.getFullName());
     }
 
     this.mother = person.getMother();
-    if(this.mother != null) {
+    if (this.mother != null) {
       this.motherField.setText(this.mother.getFullName());
     }
   }
@@ -136,7 +136,7 @@ public class EditPersonDialog extends JDialog {
           dialog.setVisible(true);
           
           Person father = dialog.getPerson();
-          if(father != null) {
+          if (father != null) {
             EditPersonDialog.this.father = father;
             String fatherName =
               EditPersonDialog.this.father.getFullName(); 
@@ -158,7 +158,7 @@ public class EditPersonDialog extends JDialog {
           dialog.setVisible(true);
           
           Person mother = dialog.getPerson();
-          if(mother != null) {
+          if (mother != null) {
             EditPersonDialog.this.mother = mother;
             String motherName =
               EditPersonDialog.this.mother.getFullName(); 
@@ -180,7 +180,7 @@ public class EditPersonDialog extends JDialog {
           dialog.setVisible(true);
           
           Person child = dialog.getPerson();
-          if(child != null) {
+          if (child != null) {
             EditPersonDialog.this.child = child;
             String childName = EditPersonDialog.this.child.getFullName();
             EditPersonDialog.this.childField.setText(childName);
@@ -206,7 +206,7 @@ public class EditPersonDialog extends JDialog {
           try {
             id = Integer.parseInt(idField.getText());
 
-          } catch(NumberFormatException ex) {
+          } catch (NumberFormatException ex) {
             error("Invalid id: " + idField.getText());
             return;
           }
@@ -215,9 +215,9 @@ public class EditPersonDialog extends JDialog {
 
           text = dobField.getText();
           Date dob = null;
-          if(text != null && !text.equals("")) {
+          if (text != null && !text.equals("")) {
             dob = parseDate(dobField.getText());
-            if(dob == null) {
+            if (dob == null) {
               // Parse error
               return;
             }
@@ -225,16 +225,16 @@ public class EditPersonDialog extends JDialog {
 
           text = dodField.getText();
           Date dod = null;
-          if(text != null && !text.equals("")) {
+          if (text != null && !text.equals("")) {
             dod = parseDate(dodField.getText());
-            if(dod == null) {
+            if (dod == null) {
               // Parse error
               return;
             }
           }
           
           // Okay, everything parsed alright
-          if(person == null) {
+          if (person == null) {
             person = new Person(id);
           }
 
@@ -246,8 +246,8 @@ public class EditPersonDialog extends JDialog {
           person.setMother(mother);
           person.setFather(father);
 
-          if(child != null) {
-            if(person.getId() % 2 == 0) {
+          if (child != null) {
+            if (person.getId() % 2 == 0) {
               child.setFather(person);
 
             } else {
@@ -285,7 +285,7 @@ public class EditPersonDialog extends JDialog {
    * <code>EditPersonDialog</code>.
    */
   public Person getPerson() {
-    return(this.person);
+    return this.person;
   }
 
   /**
@@ -300,19 +300,19 @@ public class EditPersonDialog extends JDialog {
       DateFormat.getDateInstance(DateFormat.FULL),
     };
 
-    for(int i = 0; i < formats.length; i++) {
+    for (int i = 0; i < formats.length; i++) {
       DateFormat df = formats[i];
       try {
         Date date = df.parse(text);
-        return(date);
+        return date;
 
-      } catch(ParseException ex) {
+      } catch (ParseException ex) {
         continue;
       }
     }
 
     error("Could not parse date: " + text);
-    return(null);
+    return null;
   }
 
   /**
@@ -340,7 +340,7 @@ public class EditPersonDialog extends JDialog {
           dialog.setVisible(true);
 
           Person person = dialog.getPerson();
-          if(person != null) {
+          if (person != null) {
             tree.addPerson(person);
             PrettyPrinter pretty = 
               new PrettyPrinter(new PrintWriter(System.out, true));

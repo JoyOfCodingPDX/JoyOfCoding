@@ -69,7 +69,7 @@ public class TextDumper implements Dumper {
     // Examine every person in the family tree and dump their data to
     // the destination PrintWriter.
     Iterator iter = tree.getPeople().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Person person = (Person) iter.next();
 
       int lines = 0;   // How many lines in the encoding
@@ -79,43 +79,43 @@ public class TextDumper implements Dumper {
       lines++;
 
       String firstName = person.getFirstName();
-      if(firstName != null) {
+      if (firstName != null) {
 	data.append("fn: " + firstName + "\n");
 	lines++;
       }
 
       String middleName = person.getMiddleName();
-      if(middleName != null) {
+      if (middleName != null) {
 	data.append("mn: " + middleName + "\n");
 	lines++;
       }
 
       String lastName = person.getLastName();
-      if(lastName != null) {
+      if (lastName != null) {
 	data.append("ln: " + lastName + "\n");
 	lines++;
       }
 
       Person mother = person.getMother();
-      if(mother != null) {
+      if (mother != null) {
 	data.append("m: " + mother.getId() + "\n");
 	lines++;
       }
 
       Person father = person.getFather();
-      if(father != null) {
+      if (father != null) {
 	data.append("f: " + father.getId() + "\n");
 	lines++;
       }
 
       Date dob = person.getDateOfBirth();
-      if(dob != null) {
+      if (dob != null) {
 	data.append("dob: " + df.format(dob) + "\n");
 	lines++;
       }
 
       Date dod = person.getDateOfDeath();
-      if(dod != null) {
+      if (dod != null) {
 	data.append("dod: " + df.format(dod) + "\n");
 	lines++;
       }
@@ -130,7 +130,7 @@ public class TextDumper implements Dumper {
 
     // Now we have to dump the marriages
     iter = marriages.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Marriage marriage = (Marriage) iter.next();
       
       int lines = 0;
@@ -142,13 +142,13 @@ public class TextDumper implements Dumper {
       lines++;
 
       String location = marriage.getLocation();
-      if(location != null) {
+      if (location != null) {
 	data.append("l: " + location + "\n");
 	lines++;
       }
 
       Date date = marriage.getDate();
-      if(date != null) {
+      if (date != null) {
 	data.append("d: " + df.format(date) + "\n");
 	lines++;
       }
@@ -168,7 +168,7 @@ public class TextDumper implements Dumper {
    * file specified by the first argument.
    */
   public static void main(String[] args) {
-    if(args.length == 0) {
+    if (args.length == 0) {
       System.err.println("** No file specified");
       System.exit(1);
     }
@@ -190,7 +190,7 @@ public class TextDumper implements Dumper {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       marriage.setDate(df.parse("Jul 12, 1969"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.out.println("** Malformed marriage date?");
       System.exit(1);
     }
@@ -209,7 +209,7 @@ public class TextDumper implements Dumper {
       TextDumper dumper = new TextDumper(fileName);
       dumper.dump(tree);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException while dealing with " +
 			 fileName);
       System.exit(1);

@@ -27,14 +27,14 @@ public abstract class AbstractAppointment {
    * Returns the Date that this appointment begins.
    */
   public Date begin() {
-    return(null);
+    return null;
   }
 
   /**
    * Returns the Date that this appointment ends.
    */
   public Date end() {
-    return(null);
+    return null;
   }
 
   /**
@@ -43,7 +43,7 @@ public abstract class AbstractAppointment {
   public abstract String text();
 
   public String toString() {
-    return("You should override the toString() method of AbstractAppointment");
+    return "You should override the toString() method of AbstractAppointment";
   }
 
 }

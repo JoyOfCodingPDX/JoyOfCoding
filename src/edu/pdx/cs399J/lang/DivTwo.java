@@ -20,16 +20,16 @@ public class DivTwo {
       d1 = Double.parseDouble(args[0]);
       d2 = Double.parseDouble(args[1]);
 
-    } catch(ArrayIndexOutOfBoundsException ex) {
+    } catch (ArrayIndexOutOfBoundsException ex) {
       System.err.println("Not enough arguments");
       System.exit(1);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       System.err.println("Not a double: " + ex);
       System.exit(1);
     }
 
-    if(d2 == 0.0) {
+    if (d2 == 0.0) {
       String m = "Denominator can't be zero!";
       throw new IllegalArgumentException(m);
     }

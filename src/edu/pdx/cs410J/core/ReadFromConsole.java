@@ -20,7 +20,7 @@ public class ReadFromConsole {
     BufferedReader br = new BufferedReader(isr);
     StringWriter text = new StringWriter();
 
-    while(true) {
+    while (true) {
       try {
 	// Read a line from the console
 	String line = br.readLine();
@@ -33,7 +33,7 @@ public class ReadFromConsole {
 	  text.write(line + " ");
 	}
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	System.err.println("** " + ex);
 	System.exit(1);
       }

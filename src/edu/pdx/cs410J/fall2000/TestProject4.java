@@ -95,8 +95,8 @@ public class TestProject4 {
     String studentClassPath = "";
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-logDir")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-logDir")) {
 	if(++i >= args.length) {
 	  err.println("** Missing log dir");
 	  usage();
@@ -104,7 +104,7 @@ public class TestProject4 {
 
 	logDirName = args[i];
 
-      } else if(args[i].equals("-studentClasses")) {
+      } else if (args[i].equals("-studentClasses")) {
 	if(++i >= args.length) {
 	  err.println("** Missing student class path");
 	  usage();
@@ -112,7 +112,7 @@ public class TestProject4 {
 
 	studentClassPath = args[i];
 
-      } else if(args[i].startsWith("-")) {
+      } else if (args[i].startsWith("-")) {
 	err.println("** Unknown option: " + args[i]);
 	usage();
 
@@ -121,13 +121,13 @@ public class TestProject4 {
       }
     }
 
-    if(students.isEmpty()) {
+    if (students.isEmpty()) {
       err.println("** No students specified");
       usage();
     }
 
     File logDir;
-    if(logDirName == null) {
+    if (logDirName == null) {
       String cwd = System.getProperty("user.dir");
       logDir = new File(cwd);
 
@@ -135,7 +135,7 @@ public class TestProject4 {
       logDir = new File(logDirName);
     }
 
-    if(!logDir.exists()) {
+    if (!logDir.exists()) {
       logDir.mkdirs();
     }
 
@@ -149,7 +149,7 @@ public class TestProject4 {
     // Get the id of every student in the class and run his/her
     // project through the tester
     Iterator ids = students.iterator();
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
 
       String clientName = PACKAGE + id + CLIENT;
@@ -172,7 +172,7 @@ public class TestProject4 {
       try {
 	// Wait for it...
 	server.join();
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 	ex.printStackTrace();
 	return;
       }
@@ -184,7 +184,7 @@ public class TestProject4 {
       try {
 	// Wait for it...
 	server.join();
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 	ex.printStackTrace();
 	return;
       }
@@ -193,7 +193,7 @@ public class TestProject4 {
       // Test 3
       tester.printBanner(testDescriptions[2], '*');
       tester.executeMainInThread(serverName, testArgs[2]);
-      if(!tester.wait(5)) {
+      if (!tester.wait(5)) {
 	return;
       }
       tester.println("");
@@ -244,7 +244,7 @@ public class TestProject4 {
       try {
 	// Wait for server to shut down
 	server.join();
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 	ex.printStackTrace();
 	return;
       }
@@ -253,7 +253,7 @@ public class TestProject4 {
       // Test 13
       tester.printBanner(testDescriptions[12], '*');
       server = tester.executeMainInThread(serverName, testArgs[12]);
-      if(!tester.wait(5)) {
+      if (!tester.wait(5)) {
 	return;
       }
       tester.println("");
@@ -295,7 +295,7 @@ public class TestProject4 {
   public static void main0(String[] args) {
     // If there are arguments, print them.  Otherwise, call
     // executeMain to do the work
-    if(args.length == 0) {
+    if (args.length == 0) {
       // Make a new Tester
       String userDir = System.getProperty("user.dir");
       File cwd = new File(userDir);
@@ -305,7 +305,7 @@ public class TestProject4 {
 			 testArgs[2]);
 
     } else {
-      for(int i = 0; i < args.length; i++) {
+      for (int i = 0; i < args.length; i++) {
 	System.out.print(args[i]);
 	if(i < args.length - 1) {
 	  System.out.print(", ");

@@ -25,7 +25,7 @@ public class Speaker {
     try {
       port = Integer.parseInt(args[1]);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       err.println("** Bad port number: " + args[1]);
       System.exit(1);
     }
@@ -38,16 +38,16 @@ public class Speaker {
 	new OutputStreamWriter(socket.getOutputStream());
       PrintWriter speaker = new PrintWriter(osw);
 
-      for(int i = 2; i < args.length; i++) {
+      for (int i = 2; i < args.length; i++) {
 	speaker.println(args[i]);
       }
 
       speaker.close();
 
-    } catch(UnknownHostException ex) {
+    } catch (UnknownHostException ex) {
       err.println("** Could not connect to host: " + host);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }

@@ -23,11 +23,11 @@ public class TranslateCoords extends DrawCoords {
     AffineTransform xform = new AffineTransform();
     xform.translate(d.width/2, d.height/2);
 
-    if(this.point != null) {
+    if (this.point != null) {
       try {
         this.point = (Point) xform.inverseTransform(this.point, 
                                                     new Point());
-      } catch(NoninvertibleTransformException ex) {
+      } catch (NoninvertibleTransformException ex) {
         // Don't change point, shouldn't happen with translate
       }
     }

@@ -22,23 +22,23 @@ public class Business extends PhoneBookEntry {
    */
   public Business(Element root) {
     NodeList elements = root.getChildNodes();
-    for(int i = 0; i < elements.getLength(); i++) {
+    for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
 
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	continue;
       }
 
       Element element = (Element) node;
       
-      if(element.getNodeName().equals("name")) {
+      if (element.getNodeName().equals("name")) {
 	Node text = element.getFirstChild();
 	this.name = text.getNodeValue();
 
-      } else if(element.getNodeName().equals("address")) {
+      } else if (element.getNodeName().equals("address")) {
 	fillInAddress(element);
 
-      } else if(element.getNodeName().equals("phone")) {
+      } else if (element.getNodeName().equals("phone")) {
 	fillInPhone(element);
 
       } else {
@@ -54,6 +54,6 @@ public class Business extends PhoneBookEntry {
     sb.append(this.name + "\n");
     sb.append(super.toString());
 
-    return(sb.toString());
+    return sb.toString();
   }
 }

@@ -47,8 +47,8 @@ public class MailFile {
     boolean debug = false;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-server")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-server")) {
 	if(++i >= args.length) {
 	  err.println("** Missing server name");
 	  usage();
@@ -56,13 +56,13 @@ public class MailFile {
 
 	serverName = args[i];
 
-      } if(args[i].equals("-verbose")) {
+      } if (args[i].equals("-verbose")) {
 	debug = true;
 
-      } else if(fileName == null) {
+      } else if (fileName == null) {
 	fileName = args[i];
 
-      } else if(recipient == null) {
+      } else if (recipient == null) {
 	recipient = args[i];
 
       } else {
@@ -76,17 +76,17 @@ public class MailFile {
     }
 
     // Check to make sure everything is okay
-    if(fileName == null) {
+    if (fileName == null) {
       err.println("** No file specified");
       usage();
     }
 
-    if(recipient == null) {
+    if (recipient == null) {
       err.println("** No recipient specified");
       usage();
     }
 
-    if(subject == null) {
+    if (subject == null) {
       // Default subject
       subject = new StringBuffer("A file for you");
     }
@@ -103,17 +103,17 @@ public class MailFile {
       InternetAddress[] to = {new InternetAddress(recipient)};
       message.setRecipients(Message.RecipientType.TO, to);
 
-    } catch(AddressException ex) {
+    } catch (AddressException ex) {
       err.println("** Invalid address: " + recipient);
       System.exit(1);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** MessagingException: " + ex);
       System.exit(1);
     }
     
     File file = new File(fileName);
-    if(!file.exists()) {
+    if (!file.exists()) {
       err.println("** File " + file + " does not exist!");
       System.exit(1);
     }
@@ -123,7 +123,7 @@ public class MailFile {
     try {
       textPart.setContent("File " + file, "text/plain");
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with text part: " + ex);
       System.exit(1);
     }
@@ -137,7 +137,7 @@ public class MailFile {
       filePart.setFileName(file.getName());
       filePart.setDescription("The file you requested");
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with file part: " + ex);
       System.exit(1);
     }
@@ -152,7 +152,7 @@ public class MailFile {
       // Finally, send the message
       Transport.send(message);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception while adding parts and sending: " +
 		  ex);
       System.exit(1);

@@ -26,7 +26,7 @@ public class WriteDoubles {
     try {
       fos = new FileOutputStream(args[0]);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** No such file: " + args[0]);
       System.exit(1);
     }
@@ -35,15 +35,15 @@ public class WriteDoubles {
     DataOutputStream dos = new DataOutputStream(fos);
 
     // Write the doubles to the DataOutputStream
-    for(int i = 1; i < args.length; i++) {
+    for (int i = 1; i < args.length; i++) {
       try {
 	double d = Double.parseDouble(args[i]);
 	dos.writeDouble(d);
 
-      } catch(NumberFormatException ex) {
+      } catch (NumberFormatException ex) {
 	err.println("** Not a double: " + args[i]);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** " + ex);
 	System.exit(1);
       }

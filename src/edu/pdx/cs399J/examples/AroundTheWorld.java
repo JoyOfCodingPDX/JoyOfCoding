@@ -33,7 +33,7 @@ public class AroundTheWorld {
   private static void printAvailableLocales(Locale locale) {
     Locale[] locales = Locale.getAvailableLocales();
     out.println("Available locales:");
-    for(int i = 0; i < locales.length; i++) {
+    for (int i = 0; i < locales.length; i++) {
       Locale l = locales[i];
       out.println("Locale " + i + " of " + locales.length);
       out.println("  Name: " + l.getDisplayName(locale));
@@ -53,7 +53,7 @@ public class AroundTheWorld {
   private static void printTimeZones(Locale locale) {
     String[] codes = TimeZone.getAvailableIDs();
     out.println("Time zones");
-    for(int i = 0; i < codes.length; i++) {
+    for (int i = 0; i < codes.length; i++) {
       String code = codes[i];
       TimeZone tz = TimeZone.getTimeZone(code);
       out.println("  " + code + ": " + tz.getDisplayName(locale));
@@ -98,8 +98,8 @@ public class AroundTheWorld {
     String timeZoneCode = null;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-country")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-country")) {
 	if(++i >= args.length) {
 	  err.println("** Missing country code");
 	  usage();
@@ -107,7 +107,7 @@ public class AroundTheWorld {
 
 	countryCode = args[i];
 
-      } else if(args[i].equals("-language")) {
+      } else if (args[i].equals("-language")) {
 	if(++i >= args.length) {
 	  err.println("** Missing language code");
 	  usage();
@@ -115,7 +115,7 @@ public class AroundTheWorld {
 
 	languageCode = args[i];
 
-      } else if(args[i].equals("-timeZone")) {
+      } else if (args[i].equals("-timeZone")) {
 	if(++i >= args.length) {
 	  err.println("** Missing time zone code");
 	  usage();
@@ -131,19 +131,19 @@ public class AroundTheWorld {
 
     Locale locale;
 
-    if(countryCode == null) {
+    if (countryCode == null) {
       // Use default
       locale = Locale.getDefault();
 
-    } else if(countryCode.equals("??")) {
+    } else if (countryCode.equals("??")) {
       locale = Locale.getDefault();
       printAvailableLocales(locale);
 
-    } else if(languageCode == null) {
+    } else if (languageCode == null) {
       // Use default
       locale = Locale.getDefault();
 
-    } else if(languageCode.equals("??")) {
+    } else if (languageCode.equals("??")) {
       locale = Locale.getDefault();
       printAvailableLocales(locale);
 
@@ -152,11 +152,11 @@ public class AroundTheWorld {
     }
 
     TimeZone timeZone;
-    if(timeZoneCode == null) {
+    if (timeZoneCode == null) {
       // Use default
       timeZone = TimeZone.getDefault();
 
-    } else if(timeZoneCode.equals("??")) {
+    } else if (timeZoneCode.equals("??")) {
       timeZone = TimeZone.getDefault();
       printTimeZones(locale);
 

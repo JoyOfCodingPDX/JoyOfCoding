@@ -50,11 +50,11 @@ public class MakeJar {
     String version = "1.0";     // Version of Jar file
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-nocompress")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-nocompress")) {
 	compress = false;
 
-      } else if(args[i].equals("-author")) {
+      } else if (args[i].equals("-author")) {
 	if(++i >= args.length) {
 	  err.println("** Missing author name");
 	  usage();
@@ -62,7 +62,7 @@ public class MakeJar {
 
 	author = args[i];
 
-      } else if(args[i].equals("-version")) {
+      } else if (args[i].equals("-version")) {
 	if(++i >= args.length) {
 	  err.println("** Missing version");
 	  usage();
@@ -70,7 +70,7 @@ public class MakeJar {
 
 	version = args[i];
 
-      } else if(jarFileName == null) {
+      } else if (jarFileName == null) {
 	jarFileName = args[i];
 
       } else {
@@ -79,12 +79,12 @@ public class MakeJar {
       }
     }
 
-    if(jarFileName == null) {
+    if (jarFileName == null) {
       err.println("** No Jar file specified");
       usage();
     }
 
-    if(fileNames.isEmpty()) {
+    if (fileNames.isEmpty()) {
       err.println("** No files specified");
       usage();
     }
@@ -103,12 +103,12 @@ public class MakeJar {
       OutputStream os = new FileOutputStream(jarFile);
       jos = new JarOutputStream(os, manifest);
  
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex.getMessage());
       System.exit(1);
     }
 
-    if(compress) {
+    if (compress) {
       jos.setMethod(JarOutputStream.DEFLATED);
     } else {
       jos.setMethod(JarOutputStream.STORED);
@@ -116,7 +116,7 @@ public class MakeJar {
 
     // Now open all the files and add them to the JAR file
     Iterator names = fileNames.iterator();
-    while(names.hasNext()) {
+    while (names.hasNext()) {
       String fileName = (String) names.next();
       try {
 	File file = new File(fileName);
@@ -140,11 +140,11 @@ public class MakeJar {
 	  CRC32 checksum = new CRC32();
 	  checksum.reset();
 	  long total = 0;
-	  while((read = is.read(buffer)) != -1) {
+	  while ((read = is.read(buffer)) != -1) {
 	    checksum.update(buffer, 0, read);
 	    total += read;
 	  }
-	  if(total != file.length()) {
+	  if (total != file.length()) {
 	    throw new JarException("File length problems during " +
 				   file.getPath() + " (" + total + 
 				   " out of " + file.length() + ")");
@@ -161,7 +161,7 @@ public class MakeJar {
 	is.close();
 	jos.closeEntry();
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** IOException: " + ex.getMessage());
 	System.exit(1);
       }

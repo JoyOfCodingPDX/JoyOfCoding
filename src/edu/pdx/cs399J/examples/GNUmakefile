@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.3 2001-05-06 04:58:25 whitlock Exp $
+# $Id: GNUmakefile,v 1.4 2001-07-25 21:39:15 whitlock Exp $
 #
 
 # example leaf node for building a java package
@@ -16,6 +16,8 @@ EXTRA_JARS= \
 
 
 JAVA_CLASSES= \
+        ActionEventExample \
+        ActionEventExample2 \
         AddTwo \
         Animal \
         Ant \
@@ -25,6 +27,7 @@ JAVA_CLASSES= \
         Bee \
         Bird \
         BuildPhonebook \
+        ButtonExample \
         Business \
         Cereal \
         CerealComparator \
@@ -33,6 +36,10 @@ JAVA_CLASSES= \
         ChatMessage \
         ChatSession \
         ChatSpeaker \
+        CheckboxExample \
+        CheckboxGroupExample \
+        CheckboxMenuItemExample \
+        ChoiceExample \
         ClassComparator \
         Clock \
         Collections \
@@ -40,6 +47,7 @@ JAVA_CLASSES= \
         CountingRace \
         Cow \
         DateDemo \
+        DialogExample \
         DirectoryFilter \
         DivTwo \
         DoIFly \
@@ -68,7 +76,9 @@ JAVA_CLASSES= \
         Insect \
         Javadoc \
         JavaFilenameFilter \
+        LabelExample \
         Listener \
+        ListExample \
         LoadFromURL \
         MailFile \
         MakeJar \
@@ -76,6 +86,9 @@ JAVA_CLASSES= \
         McCustomer \
         McDonalds \
         McEmployee \
+        MouseAndKeyEvents \
+        MenuExample \
+        MenuShortcutExample \
         GraphNode \
         ParseString \
         PassByValue \
@@ -83,6 +96,7 @@ JAVA_CLASSES= \
         PersonComparator \
         PhoneBook \
         PhoneBookEntry \
+        PopupMenuExample \
         PrintDigest \
         PrintUser \
         ReadDate \
@@ -101,6 +115,8 @@ JAVA_CLASSES= \
         SynchronizedBankAccount \
         SystemProperties \
         TextEditor \
+        TextAreaExample \
+        TextFieldExample \
         Today \
         Transfer \
         TranslateCoords \
@@ -108,6 +124,7 @@ JAVA_CLASSES= \
         ValidateXml \
         VerifyMessage \
         WhatAmI \
+        WindowAdapterExample \
         WriteDate \
         WriteDoubles \
         WriteGraphNodes \

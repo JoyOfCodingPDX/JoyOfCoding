@@ -41,10 +41,10 @@ public class ValidateXml implements ErrorHandler {
       
       parser.parse(source);
 
-    } catch(SAXException ex) {
+    } catch (SAXException ex) {
       err.println("Parsing exception: " + ex);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("IOException: " + ex);
     }
   }

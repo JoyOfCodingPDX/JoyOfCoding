@@ -191,7 +191,7 @@ public class TextEditor extends JFrame {
 
     UIManager.LookAndFeelInfo[] infos =
       UIManager.getInstalledLookAndFeels();
-    for(int i = 0; i < infos.length; i++) {
+    for (int i = 0; i < infos.length; i++) {
       final UIManager.LookAndFeelInfo info = infos[i];
 
       JMenuItem plafItem = new JMenuItem(info.getName());
@@ -202,7 +202,7 @@ public class TextEditor extends JFrame {
               SwingUtilities.updateComponentTreeUI(TextEditor.this);
               TextEditor.this.pack();
 
-            } catch(Exception ex) {
+            } catch (Exception ex) {
               error(ex.toString());
               return;
             }
@@ -241,7 +241,7 @@ public class TextEditor extends JFrame {
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
     int response = chooser.showOpenDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       // Read in the file and display its text to the editorPane
       this.file = chooser.getSelectedFile();
       StringBuffer sb = new StringBuffer();
@@ -250,12 +250,12 @@ public class TextEditor extends JFrame {
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         char[] buffer = new char[1024];
-        while(br.ready()) {
+        while (br.ready()) {
           int count = br.read(buffer, 0, buffer.length);
           sb.append(buffer, 0, count);
         }
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         error(ex.toString());
         return;
       }
@@ -270,35 +270,35 @@ public class TextEditor extends JFrame {
    */
   private JFileChooser getFileChooser() {
     JFileChooser chooser = new JFileChooser();
-    if(this.file != null) {
+    if (this.file != null) {
       chooser.setCurrentDirectory(file.getParentFile());
     }
 
     chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
         public boolean accept(File file) {
-          if(file.isDirectory()) {
-            return(true);
+          if (file.isDirectory()) {
+            return true;
           }
 
           String fileName = file.getName();
-          return(fileName.endsWith(".txt"));
+          return fileName.endsWith(".txt");
         }
 
         public String getDescription() {
-          return("Text files");
+          return "Text files";
         }
       });
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     chooser.setMultiSelectionEnabled(false);
 
-    return(chooser);
+    return chooser;
   }
 
   /**
    * Saves the contents of the editorPane to a text file.
    */
   private void saveTextFile() {
-    if(this.file == null) {
+    if (this.file == null) {
       saveAs();
       return;
     }
@@ -309,7 +309,7 @@ public class TextEditor extends JFrame {
       pw.print(this.editorPane.getText());
       pw.flush();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       error(ex.toString());
       return;
     }
@@ -324,7 +324,7 @@ public class TextEditor extends JFrame {
     chooser.setDialogType(JFileChooser.SAVE_DIALOG);
     int response = chooser.showSaveDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       this.file = chooser.getSelectedFile();
       saveTextFile();
     }
@@ -335,7 +335,7 @@ public class TextEditor extends JFrame {
    * a verifcation dialog box.
    */
   private void checkExit() {
-    if(this.verifyOnExit) {
+    if (this.verifyOnExit) {
       int response = JOptionPane.showConfirmDialog(this, new String[] {
         "You are about to exit.",
         "Are you sure you want to do this?"},
@@ -343,7 +343,7 @@ public class TextEditor extends JFrame {
         JOptionPane.YES_NO_OPTION,
         JOptionPane.QUESTION_MESSAGE);
 
-      if(response == JOptionPane.YES_OPTION) {
+      if (response == JOptionPane.YES_OPTION) {
         System.exit(0);
       }
 

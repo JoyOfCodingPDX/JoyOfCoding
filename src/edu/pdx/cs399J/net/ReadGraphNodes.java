@@ -21,11 +21,11 @@ public class ReadGraphNodes {
       GraphNode root = (GraphNode) in.readObject();
       System.out.println("Graph has " + root.traverse() + " nodes");
 
-    } catch(ClassNotFoundException ex) {
+    } catch (ClassNotFoundException ex) {
       System.err.println("** No class: " + ex);
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException: " + ex);
       System.exit(1);
     }

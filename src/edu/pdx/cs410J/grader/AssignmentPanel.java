@@ -65,7 +65,7 @@ public class AssignmentPanel extends JPanel {
 
     this.add(infoPanel, BorderLayout.NORTH);
 
-    if(!canCreate) {
+    if (!canCreate) {
       this.nameField.setEditable(false);
     }
 
@@ -81,23 +81,23 @@ public class AssignmentPanel extends JPanel {
   public Assignment createAssignment() {
     // Get the name and max points of the assignment
     String name = nameField.getText();
-    if(name == null || name.equals("")) {
+    if (name == null || name.equals("")) {
       String s = "No assignment name specified";
       JOptionPane.showMessageDialog(AssignmentPanel.this, 
                                     new String[] {s},
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
-      return(null);
+      return null;
     }
 
     String points = pointsField.getText();
-    if(points == null || points.equals("")) {
+    if (points == null || points.equals("")) {
       String s = "No points value specified";
       JOptionPane.showMessageDialog(AssignmentPanel.this, 
                                     new String[] {s},
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
-      return(null);
+      return null;
     }
 
     // Create a new Assignment object
@@ -106,15 +106,15 @@ public class AssignmentPanel extends JPanel {
       Assignment newAssign = new Assignment(name, d);
       updateAssignment(newAssign);
       this.notes.addAllNotesTo(newAssign);
-      return(newAssign);
+      return newAssign;
       
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       String s = points + " is not a number";
       JOptionPane.showMessageDialog(AssignmentPanel.this, 
                                     new String[] {s},
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
-      return(null);
+      return null;
     }    
   }
 
@@ -125,13 +125,13 @@ public class AssignmentPanel extends JPanel {
   public void displayAssignment(Assignment assign) {
     this.nameField.setText(assign.getName());
     this.pointsField.setText("" + assign.getPoints());
-    if(assign.getType() == Assignment.QUIZ) {
+    if (assign.getType() == Assignment.QUIZ) {
       this.typeBox.setSelectedItem(QUIZ);
 
-    } else if(assign.getType() == Assignment.PROJECT) {
+    } else if (assign.getType() == Assignment.PROJECT) {
       this.typeBox.setSelectedItem(PROJECT);
 
-    } else if(assign.getType() == Assignment.OTHER) {
+    } else if (assign.getType() == Assignment.OTHER) {
       this.typeBox.setSelectedItem(OTHER);
 
     } else {
@@ -140,7 +140,7 @@ public class AssignmentPanel extends JPanel {
     }
 
     String description = assign.getDescription();
-    if(description != null) {
+    if (description != null) {
       this.descriptionField.setText(description);
     }
 
@@ -153,7 +153,7 @@ public class AssignmentPanel extends JPanel {
    */
   public void updateAssignment(Assignment assign) {
     String points = pointsField.getText();
-    if(points == null || points.equals("")) {
+    if (points == null || points.equals("")) {
       String s = "No points value specified";
       JOptionPane.showMessageDialog(AssignmentPanel.this, 
                                     new String[] {s},
@@ -166,7 +166,7 @@ public class AssignmentPanel extends JPanel {
       double d = Double.parseDouble(points);
       assign.setPoints(d);
       
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       String s = points + " is not a number";
       JOptionPane.showMessageDialog(AssignmentPanel.this, 
                                     new String[] {s},
@@ -177,13 +177,13 @@ public class AssignmentPanel extends JPanel {
 
     String type = (String) this.typeBox.getSelectedItem();
 
-    if(type.equals(QUIZ)) {
+    if (type.equals(QUIZ)) {
       assign.setType(Assignment.QUIZ);
 
-    } else if(type.equals(PROJECT)) {
+    } else if (type.equals(PROJECT)) {
       assign.setType(Assignment.PROJECT);
 
-    } else if(type.equals(OTHER)) {
+    } else if (type.equals(OTHER)) {
       assign.setType(Assignment.OTHER);
 
     } else {
@@ -193,7 +193,7 @@ public class AssignmentPanel extends JPanel {
 
     String description = this.descriptionField.getText();
 
-    if(description != null && !description.equals("")) {
+    if (description != null && !description.equals("")) {
       assign.setDescription(description);
     }
 
@@ -212,21 +212,21 @@ public class AssignmentPanel extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }
 
     Assignment assign = book.getAssignment(assignName);
-    if(assign == null) {
+    if (assign == null) {
       System.err.println("Not such assignment: " + assignName);
       System.exit(1);
     }

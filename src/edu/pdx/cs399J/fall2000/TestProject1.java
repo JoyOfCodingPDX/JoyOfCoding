@@ -80,8 +80,8 @@ public class TestProject1 {
     String gradeBookFile = null;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-logDir")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-logDir")) {
 	if(++i >= args.length) {
 	  err.println("** Missing log dir");
 	  usage();
@@ -89,22 +89,22 @@ public class TestProject1 {
 
 	logDirName = args[i];
 
-      } else if(args[i].startsWith("-")) {
+      } else if (args[i].startsWith("-")) {
 	err.println("** Unknown option: " + args[i]);
 	usage();
 
-      } else if(gradeBookFile == null) {
+      } else if (gradeBookFile == null) {
 	gradeBookFile = args[i];
       }
     }
 
-    if(gradeBookFile == null) {
+    if (gradeBookFile == null) {
       err.println("** Missing grade book file");
       usage();
     }
 
     File logDir;
-    if(logDirName == null) {
+    if (logDirName == null) {
       String cwd = System.getProperty("user.dir");
       logDir = new File(cwd);
 
@@ -112,7 +112,7 @@ public class TestProject1 {
       logDir = new File(logDirName);
     }
 
-    if(!logDir.exists()) {
+    if (!logDir.exists()) {
       logDir.mkdirs();
     }
 
@@ -124,7 +124,7 @@ public class TestProject1 {
     // Get the id of every student in the class and run his/her
     // project through the tester
     Iterator ids = (new HashSet()).iterator();
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
 
       String className = PACKAGE + id + PROJECT;
@@ -210,7 +210,7 @@ public class TestProject1 {
   public static void main0(String[] args) {
     // If there are arguments, print them.  Otherwise, call
     // executeMain to do the work
-    if(args.length == 0) {
+    if (args.length == 0) {
       // Make a new Tester
       String userDir = System.getProperty("user.dir");
       File cwd = new File(userDir);
@@ -220,7 +220,7 @@ public class TestProject1 {
 			 testArgs[2]);
 
     } else {
-      for(int i = 0; i < args.length; i++) {
+      for (int i = 0; i < args.length; i++) {
 	System.out.print(args[i]);
 	if(i < args.length - 1) {
 	  System.out.print(", ");

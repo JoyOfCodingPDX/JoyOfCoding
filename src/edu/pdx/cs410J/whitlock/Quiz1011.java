@@ -20,7 +20,7 @@ public class Quiz1011 {
    * (mother's father)
    */
   public static String getMaternalGrandfatherName(Person person) {
-    return(person.getMother().getFather().getFullName());
+    return person.getMother().getFather().getFullName();
   }
 
   /**
@@ -30,31 +30,31 @@ public class Quiz1011 {
   public static Person getOldestLiving(FamilyTree tree) {
     Person oldest = null;
     Iterator people = tree.getPeople().iterator();
-    while(people.hasNext()) {
+    while (people.hasNext()) {
       Person person = (Person) people.next();
 
-      if(person.getDateOfBirth() == null) {
+      if (person.getDateOfBirth() == null) {
 	// Something is wrong!
 	continue;
       }
 
-      if(person.getDateOfDeath() != null) {
+      if (person.getDateOfDeath() != null) {
 	// Not living
 	continue;
       }
 
-      if(oldest == null) {
+      if (oldest == null) {
 	oldest = person;
 	continue;
       }
 
-      if(person.getDateOfBirth().before(oldest.getDateOfBirth())) {
+      if (person.getDateOfBirth().before(oldest.getDateOfBirth())) {
 	// person was born before oldest, person is older 
 	oldest = person;
       }
     }
 
-    return(oldest);
+    return oldest;
   }
 
   /**
@@ -71,11 +71,11 @@ public class Quiz1011 {
     double log = Math.log((double) id) / Math.log(2.0);
     int great = ((int) Math.floor(log)) - 2;
 
-    if(great >= 1) {
-      return(great);
+    if (great >= 1) {
+      return great;
 
     } else {
-      return(0);
+      return 0;
     }
   }
 
@@ -102,14 +102,14 @@ public class Quiz1011 {
     Collection names = new ArrayList();  // Student's ids
 
     // Parse command line
-    for(int i = 0; i < args.length; i++) {
-      if(familyTreeFileName == null) {
+    for (int i = 0; i < args.length; i++) {
+      if (familyTreeFileName == null) {
 	familyTreeFileName = args[i];
 
-      } else if(gradeBookFileName == null) {
+      } else if (gradeBookFileName == null) {
 	gradeBookFileName = args[i];
 
-      } else if(args[i].startsWith("-")) {
+      } else if (args[i].startsWith("-")) {
 	err.println("** Unknown command line option: " + args[i]);
 	usage();
 
@@ -118,12 +118,12 @@ public class Quiz1011 {
       }
     }
 
-    if(familyTreeFileName == null) {
+    if (familyTreeFileName == null) {
       err.println("** Missing family tree file");
       usage();
     }
 
-    if(gradeBookFileName == null) {
+    if (gradeBookFileName == null) {
       err.println("** Missing grade book file");
       usage();
     }
@@ -136,11 +136,11 @@ public class Quiz1011 {
     try {
       tree = (new XmlParser(familyTreeFileName)).parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** Could not find file: " + ex);
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       err.println("** Couldn't build family tree: " + ex);
       System.exit(1);
     }
@@ -156,14 +156,14 @@ public class Quiz1011 {
 
     // Grade each student's submission
     Iterator ids = null;
-    if(names.isEmpty()) {
+    if (names.isEmpty()) {
       ids = grades.getUserIds().iterator();
 
     } else {
       ids = names.iterator();
     }
 
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       String id = (String) ids.next();
 
       Tester tester = new Tester(id, reportDir);
@@ -197,7 +197,7 @@ public class Quiz1011 {
       tester.println("Test: Get oldest living person in family tree");
       tester.println("Expected result was: " + 
 		     ((Person) expected).getFullName());
-      if(result == null) {
+      if (result == null) {
 	tester.println("Your result was: " + result);
 
       } else {

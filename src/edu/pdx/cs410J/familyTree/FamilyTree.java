@@ -25,7 +25,7 @@ public class FamilyTree {
    * tree.
    */
   public Collection getPeople() {
-    return(this.people.values());
+    return this.people.values();
   }
 
   /**
@@ -37,7 +37,7 @@ public class FamilyTree {
   public Person getPerson(int id) {
     Person person;
     Integer key = new Integer(id);
-    if(this.people.containsKey(key)) {
+    if (this.people.containsKey(key)) {
       person = (Person) this.people.get(key);
 
     } else {
@@ -45,7 +45,7 @@ public class FamilyTree {
       this.people.put(key, person);
     }
 
-    return(person);
+    return person;
   }
 
   /**

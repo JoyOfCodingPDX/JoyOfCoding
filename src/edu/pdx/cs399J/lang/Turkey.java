@@ -10,7 +10,7 @@ public class Turkey extends Bird {
   }
 
   public String says() {
-    return("Gobble");
+    return "Gobble";
   }
 
 }

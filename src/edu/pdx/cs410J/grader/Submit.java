@@ -71,7 +71,7 @@ public class Submit {
    * Prints debugging output.
    */
   private static void db(String s) {
-    if(DEBUG) {
+    if (DEBUG) {
       err.println("++ " + s);
     }
   }
@@ -90,15 +90,15 @@ public class Submit {
       URL url = new URL(NO_SUBMIT_LIST_URL);
       InputStreamReader isr = new InputStreamReader(url.openStream());
       BufferedReader br = new BufferedReader(isr);
-      while(br.ready()) {
+      while (br.ready()) {
         noSubmit.add(br.readLine().trim());
       }
 
-    } catch(MalformedURLException ex) {
+    } catch (MalformedURLException ex) {
       err.println("** WARNING: Cannot access \"no submit\" list: " +
                   ex.getMessage());
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** WARNING: Problems while reading " + 
                   "\"no submit\" list: " + ex);
     }
@@ -106,11 +106,11 @@ public class Submit {
     // Files should be sorted by name
     Set files = new TreeSet(new Comparator() {
 	public int compare(Object o1, Object o2) {
-	  if((o1 instanceof File) && (o2 instanceof File)) {
+	  if ((o1 instanceof File) && (o2 instanceof File)) {
 	    String name1 = o1.toString();
 	    String name2 = o2.toString();
 
-	    return(name1.compareTo(name2));
+	    return name1.compareTo(name2);
 
 	  } else {
 	    String m = "Cannot compare a " + o1.getClass() + " and a " +
@@ -121,13 +121,13 @@ public class Submit {
       });
 
     Iterator iter = fileNames.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       String fileName = (String) iter.next();
       File file = new File(fileName);
       file = file.getAbsoluteFile();  // Full path
       
       // Does the file exist?
-      if(!file.exists()) {
+      if (!file.exists()) {
         err.println("** Not submitting file " + fileName + 
                     " because it does not exist");
         continue;
@@ -135,14 +135,14 @@ public class Submit {
 
       // Is the file on the "no submit" list?
       String name = file.getName();
-      if(noSubmit.contains(name)) {
+      if (noSubmit.contains(name)) {
         err.println("** Not submitting file " + fileName + 
                     " because it is on the \"no submit\" list");
         continue;
       }
 
       // Does the file name end in .java?
-      if(!name.endsWith(".java")) {
+      if (!name.endsWith(".java")) {
         err.println("** No submitting file " + fileName + 
                     " because does end in \".java\"");
         continue;
@@ -150,7 +150,7 @@ public class Submit {
 
       // Verify that file is in the correct directory.
       File parent = file.getParentFile();
-      if(parent == null || !parent.getName().equals(userId)) {
+      if (parent == null || !parent.getName().equals(userId)) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
                     userId);
@@ -158,7 +158,7 @@ public class Submit {
       }
 
       parent = parent.getParentFile();
-      if(parent == null || !parent.getName().equals("cs410J")) {
+      if (parent == null || !parent.getName().equals("cs410J")) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
                     "cs410J" + File.separator + userId);
@@ -166,7 +166,7 @@ public class Submit {
       }
 
       parent = parent.getParentFile();
-      if(parent == null || !parent.getName().equals("pdx")) {
+      if (parent == null || !parent.getName().equals("pdx")) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
                     "pdx" + File.separator + "cs410J" + File.separator
@@ -175,7 +175,7 @@ public class Submit {
       }
 
       parent = parent.getParentFile();
-      if(parent == null || !parent.getName().equals("edu")) {
+      if (parent == null || !parent.getName().equals("edu")) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
                     "edu" + File.separator + "pdx" + File.separator +
@@ -187,7 +187,7 @@ public class Submit {
       files.add(file);
     }
 
-    return(files);
+    return files;
   }
 
   /**
@@ -203,12 +203,12 @@ public class Submit {
     out.println(projName);
 
     Iterator iter = sourceFiles.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       File file = (File) iter.next();
       out.println("  " + file);
     }
 
-    if(comment != null) {
+    if (comment != null) {
       out.println("\nComment: " + comment + "\n\n");
     }
 
@@ -217,23 +217,23 @@ public class Submit {
     InputStreamReader isr = new InputStreamReader(System.in);
     BufferedReader in = new BufferedReader(isr);
   
-    while(true) {
+    while (true) {
       out.print("Do you wish to continue with the submission? (yes/no) ");
       out.flush();
 
       try {
 	String line = in.readLine().trim();
 	if(line.equals("yes")) {
-	  return(true);
+	  return true;
 
-	} else if(line.equals("no")) {
-	  return(false);
+	} else if (line.equals("no")) {
+	  return false;
 
 	} else {
 	  err.println("** Please enter yes or no");
 	}
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** Exception while reading from System.in: " + ex);
       }
     }
@@ -244,10 +244,10 @@ public class Submit {
    * only one digit, it prepends it with a 0.
    */
   private static String doCal(int i) {
-    if(i < 10) {
-      return("0" + i);
+    if (i < 10) {
+      return "0" + i;
     } else {
-      return("" + i);
+      return "" + i;
     }
   }
 
@@ -257,7 +257,7 @@ public class Submit {
    */
   private static String getRelativeName(File file) {
     // We already know that the file is in the correct directory
-    return("edu/pdx/cs410J/" + userId + "/" + file.getName());
+    return "edu/pdx/cs410J/" + userId + "/" + file.getName();
   }
 
   /**
@@ -269,14 +269,14 @@ public class Submit {
     File jarFile = null;
     try {
       jarFile = File.createTempFile(jarFileName, ".jar");
-      if(!SAVEJAR) {
+      if (!SAVEJAR) {
 	jarFile.deleteOnExit();
 
       } else {
 	out.println("Saving temporary Jar file: " + jarFile);
       }
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** Could not create Jar file: " + jarFileName +
 		  ".jar: " + ex);
       System.exit(1);
@@ -310,7 +310,7 @@ public class Submit {
       jos = new JarOutputStream(os, manifest);
       jos.setMethod(JarOutputStream.DEFLATED);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** Exception while opening JarOutputStream: " +
 		  ex);
       System.exit(1);
@@ -318,7 +318,7 @@ public class Submit {
 
     // Add the source files to the Jar
     Iterator iter = sourceFiles.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       try {
 	File file = (File) iter.next();
 
@@ -338,19 +338,19 @@ public class Submit {
         // Add the entry to the JAR file
         jos.putNextEntry(entry);
         is = new BufferedInputStream(new FileInputStream(file));
-        while((read = is.read(buffer, 0, buffer.length)) != -1) {
+        while ((read = is.read(buffer, 0, buffer.length)) != -1) {
           jos.write(buffer, 0, read);
         }
         is.close();
         jos.closeEntry();
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         err.println("** IOException: " + ex.getMessage());
         System.exit(1);
       }
     }
 
-    return(jarFile);
+    return jarFile;
   }
 
   /**
@@ -379,12 +379,12 @@ public class Submit {
       subject.append(projName);
       message.setSubject(subject.toString());
 
-    } catch(AddressException ex) {
+    } catch (AddressException ex) {
       err.println("** Exception with TA's email (" + TA_EMAIL + "): "
 		  + ex);
       System.exit(1);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception while setting recipients of TA " +
 		  "email: " + ex);
       System.exit(1);
@@ -398,13 +398,13 @@ public class Submit {
       DateFormat.getDateTimeInstance(DateFormat.FULL,
 				     DateFormat.FULL);
     text.append("Submitted on: " + df.format(submitTime) + "\n");
-    if(comment != null) {
+    if (comment != null) {
       text.append("\nComment: " + comment + "\n\n");
     }
     text.append("Contents:\n");
     
     Iterator iter = sourceFiles.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       File file = (File) iter.next();
       text.append("  " + getRelativeName(file) + "\n");
     }
@@ -417,7 +417,7 @@ public class Submit {
       // Try not to display text as separate attachment
       textPart.setDisposition("inline");
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with text part: " + ex);
       System.exit(1);
     }
@@ -433,7 +433,7 @@ public class Submit {
       filePart.setFileName(jarFileTitle);
       filePart.setDescription(userName + "'s " + projName);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with file part: " + ex);
       System.exit(1);
     }
@@ -448,7 +448,7 @@ public class Submit {
 
       Transport.send(message);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception while adding parts and sending: " +
 		  ex);
       System.exit(1);
@@ -479,12 +479,12 @@ public class Submit {
       subject.append(" submission");
       message.setSubject(subject.toString());
 
-    } catch(AddressException ex) {
+    } catch (AddressException ex) {
       err.println("** Exception with user's email (" + userEmail + 
 		  "): " + ex);
       System.exit(1);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with setting subject: " + ex);
       System.exit(1);
     }
@@ -498,12 +498,12 @@ public class Submit {
     text.append("submitted the following files for " + projName + ":\n");
 
     Iterator iter = sourceFiles.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       File file = (File) iter.next();
       text.append("  " + file.getAbsolutePath() + "\n");
     }
 
-    if(comment != null) {
+    if (comment != null) {
       text.append("\nComment: " + comment + "\n\n");
     }
 
@@ -517,7 +517,7 @@ public class Submit {
 
       Transport.send(message);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with text part: " + ex);
       System.exit(1);
     }
@@ -532,8 +532,8 @@ public class Submit {
     Set fileNames = new HashSet();
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-project")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-project")) {
 	if(++i >= args.length) {
 	  err.println("** No project name specified");
 	  usage();
@@ -541,23 +541,23 @@ public class Submit {
 
 	projName = args[i];
 
-      } else if(args[i].equals("-student")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-student")) {
+        if (++i >= args.length) {
           err.println("** No name specified");
           usage();
         }
 
         userName = args[i];
 
-      } else if(args[i].equals("-loginId")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-loginId")) {
+        if (++i >= args.length) {
           err.println("** No login id specified");
           usage();
         }
 
         userId = args[i];
 
-      } else if(args[i].equals("-email")) {
+      } else if (args[i].equals("-email")) {
 	if(++i >= args.length) {
 	  err.println("** No email address specified");
 	  usage();
@@ -565,7 +565,7 @@ public class Submit {
 
 	userEmail = args[i];
 
-      } else if(args[i].equals("-smtp")) {
+      } else if (args[i].equals("-smtp")) {
 	if(++i >= args.length) {
 	  err.println("** No SMTP server specified");
 	  usage();
@@ -573,14 +573,14 @@ public class Submit {
 
 	serverName = args[i];
 
-      } else if(args[i].equals("-verbose")) {
+      } else if (args[i].equals("-verbose")) {
 	DEBUG = true;
 
-      } else if(args[i].equals("-savejar")) {
+      } else if (args[i].equals("-savejar")) {
 	SAVEJAR = true;
 
-      } else if(args[i].equals("-comment")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-comment")) {
+        if (++i >= args.length) {
           err.println("** No comment specified");
           usage();
         }
@@ -594,22 +594,22 @@ public class Submit {
     }
 
     // Make sure that user entered enough information
-    if(projName == null) {
+    if (projName == null) {
       err.println("** Missing project name");
       usage();
     }
 
-    if(userName == null) {
+    if (userName == null) {
       err.println("** Missing student name");
       usage();
     }
 
-    if(userId == null) {
+    if (userId == null) {
       err.println("** Missing login id");
       usage();
     }
 
-    if(userEmail == null) {
+    if (userEmail == null) {
       err.println("** Missing email address");
       usage();
 
@@ -618,7 +618,7 @@ public class Submit {
       try {
 	new InternetAddress(userEmail);
 	
-      } catch(AddressException ex) {
+      } catch (AddressException ex) {
 	err.println("** Invalid email address: " + userEmail);
 	System.exit(1);
       }
@@ -631,13 +631,13 @@ public class Submit {
 
     db(sourceFiles.size() + " source files found");
 
-    if(sourceFiles.size() == 0) {
+    if (sourceFiles.size() == 0) {
       err.println("** No source files were found.  Exiting.");
       System.exit(1);
     }
 
     // Verify submission with user
-    if(!verifySubmission(sourceFiles)) {
+    if (!verifySubmission(sourceFiles)) {
       // User does not want to submit
       return;
     }

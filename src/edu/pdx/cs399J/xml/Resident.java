@@ -25,39 +25,39 @@ public class Resident extends PhoneBookEntry {
    */
   public Resident(Element root) {
     NodeList elements = root.getChildNodes();
-    for(int i = 0; i < elements.getLength(); i++) {
+    for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
 
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	continue;
       }
 
       Element element = (Element) node;
 
-      if(element.getNodeName().equals("firstname")) {
+      if (element.getNodeName().equals("firstname")) {
 	Node name = element.getFirstChild();
 	Node text = name.getFirstChild();
 	this.firstName = text.getNodeValue();
 
-      } else if(element.getNodeName().equals("initial")) {
+      } else if (element.getNodeName().equals("initial")) {
 	Node text = element.getFirstChild();
 	this.middleInitial = text.getNodeValue();
 
-      } else if(element.getNodeName().equals("lastname")) {
+      } else if (element.getNodeName().equals("lastname")) {
 	Node name = element.getFirstChild();
 	Node text = name.getFirstChild();
 	this.lastName = text.getNodeValue();
 
-      } else if(element.getNodeName().equals("address")) {
+      } else if (element.getNodeName().equals("address")) {
 	fillInAddress(element);
 
-      } else if(element.getNodeName().equals("phone")) {
+      } else if (element.getNodeName().equals("phone")) {
 	fillInPhone(element);
       }
     }
 
     // Check for the "unlisted" attribute
-    if(root.getAttribute("unlisted").equals("true")) {
+    if (root.getAttribute("unlisted").equals("true")) {
       this.unlisted = true;
     }
   }
@@ -68,6 +68,6 @@ public class Resident extends PhoneBookEntry {
 	      this.lastName + "\n");
     sb.append(super.toString());
 
-    return(sb.toString());
+    return sb.toString();
   }
 }

@@ -13,7 +13,7 @@ public class GenerateKeys {
 
     try {
       gen = KeyPairGenerator.getInstance("DSA");
-    } catch(NoSuchAlgorithmException ex) {
+    } catch (NoSuchAlgorithmException ex) {
       ex.printStackTrace(System.err);
     }
 
@@ -30,7 +30,7 @@ public class GenerateKeys {
       fos = new FileOutputStream ("public.key");
       fos.write(publicKey.getEncoded());
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
     }

@@ -10,7 +10,7 @@ public class Ant extends Insect {
   }
 
   public String name() {
-    return("ant");
+    return "ant";
   }
 
 }

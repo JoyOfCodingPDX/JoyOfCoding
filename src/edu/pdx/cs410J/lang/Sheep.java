@@ -10,7 +10,7 @@ public class Sheep extends Mammal {
   }
 
   public String says() {
-    return("Baa");
+    return "Baa";
   }
 
 }

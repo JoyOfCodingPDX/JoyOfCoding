@@ -38,16 +38,16 @@ public class Survey {
     StringBuffer sb = new StringBuffer();
     sb.append("Name: " + student.getFullName() + "\n");
     sb.append("UNIX login: " + student.getId() + "\n");
-    if(student.getEmail() != null) {
+    if (student.getEmail() != null) {
       sb.append("Email: " + student.getEmail() + "\n");
     }
-    if(student.getSsn() != null) {
+    if (student.getSsn() != null) {
       sb.append("SSN: " + student.getSsn() + "\n");
     }
-    if(student.getMajor() != null) {
+    if (student.getMajor() != null) {
       sb.append("Major: " + student.getMajor() + "\n");
     }
-    return(sb.toString());
+    return sb.toString();
   }
 
   /**
@@ -61,12 +61,12 @@ public class Survey {
     try {
       response = in.readLine();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException while reading response: " + ex);
       System.exit(1);
     }
 
-    return(response);
+    return response;
   }
 
   /**
@@ -82,16 +82,16 @@ public class Survey {
 
   public static void main(String[] args) {
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-mailServer")) {
-        if(++i >= args.length) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-mailServer")) {
+        if (++i >= args.length) {
           err.println("** Missing mail server name");
           usage();
         }
 
         serverName = args[i];
 
-      } else if(args[i].startsWith("-")) {
+      } else if (args[i].startsWith("-")) {
         err.println("** Unknown command line option: " + args[i]);
         usage();
 
@@ -117,7 +117,7 @@ public class Survey {
                           "you don't have one)");
     String id = ask("MANDATORY: What is your UNIX login id?");
 
-    if(id == null || id.equals("")) {
+    if (id == null || id.equals("")) {
       err.println("** You must enter a valid UNIX login id");
       System.exit(1);
     }
@@ -132,27 +132,27 @@ public class Survey {
     // Create a Student instance based on the response
     Student student = new Student(id);
 
-    if(firstName != null && !firstName.equals("")) {
+    if (firstName != null && !firstName.equals("")) {
       student.setFirstName(firstName);
     }
 
-    if(lastName != null && !lastName.equals("")) {
+    if (lastName != null && !lastName.equals("")) {
       student.setLastName(lastName);
     }
 
-    if(nickName != null && !nickName.equals("")) {
+    if (nickName != null && !nickName.equals("")) {
       student.setNickName(nickName);
     }
 
-    if(email != null && !email.equals("")) {
+    if (email != null && !email.equals("")) {
       student.setEmail(email);
     }
 
-    if(ssn != null && !ssn.equals("")) {
+    if (ssn != null && !ssn.equals("")) {
       student.setSsn(ssn);
     }
 
-    if(major != null && !major.equals("")) {
+    if (major != null && !major.equals("")) {
       student.setMajor(major);
     }
 
@@ -163,7 +163,7 @@ public class Survey {
     out.println(summary);
 
     String verify = ask("\nIs this information correct (y/n)?");
-    if(!verify.equals("y")) {
+    if (!verify.equals("y")) {
       err.println("** Not sending information.  Exiting.");
       System.exit(1);
     }
@@ -185,7 +185,7 @@ public class Survey {
       serial.asDOMSerializer();
       serial.serialize(xmlDoc);  
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** While saving XML file: " + ex);
       System.exit(1);
     }
@@ -205,18 +205,18 @@ public class Survey {
       message.setRecipients(Message.RecipientType.TO, to);
 
       String studentEmail = student.getEmail();
-      if(studentEmail != null) {
+      if (studentEmail != null) {
         InternetAddress[] cc = {new InternetAddress(studentEmail)};
         message.setRecipients(Message.RecipientType.CC, cc);
       }
 
       message.setSubject("CS410J Survey for " + student.getFullName());
 
-    } catch(AddressException ex) {
+    } catch (AddressException ex) {
       err.println("** Exception with email address " + ex);
       System.exit(1);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception while setting recipients email:" +
                   ex);
       System.exit(1);
@@ -239,7 +239,7 @@ public class Survey {
       // Try not to display text as separate attachment
       textPart.setDisposition("inline");
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with text part: " + ex);
       System.exit(1);
     }
@@ -255,7 +255,7 @@ public class Survey {
       filePart.setFileName(xmlFileTitle);
       filePart.setDescription("XML file for " + student.getFullName());
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception with file part: " + ex);
       System.exit(1);
     }
@@ -270,7 +270,7 @@ public class Survey {
 
       Transport.send(message);
 
-    } catch(MessagingException ex) {
+    } catch (MessagingException ex) {
       err.println("** Exception while adding parts and sending: " +
 		  ex);
       System.exit(1);

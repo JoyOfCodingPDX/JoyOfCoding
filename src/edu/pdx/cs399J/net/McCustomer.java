@@ -31,7 +31,7 @@ public class McCustomer implements Runnable {
 	this.mcDonalds.wait();
       }
 
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       return;
     }
 

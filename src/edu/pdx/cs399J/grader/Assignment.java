@@ -43,7 +43,7 @@ public class Assignment implements Notable {
    * Returns the name of this <code>Assignment</code>
    */
   public String getName() {
-    return(this.name);
+    return this.name;
   }
 
   /**
@@ -51,7 +51,7 @@ public class Assignment implements Notable {
    * worth
    */
   public double getPoints() {
-    return(this.points);
+    return this.points;
   }
 
   /**
@@ -67,7 +67,7 @@ public class Assignment implements Notable {
    * Returns a description of this <code>Assignment</code>
    */
   public String getDescription() {
-    return(this.description);
+    return this.description;
   }
 
   /**
@@ -86,7 +86,7 @@ public class Assignment implements Notable {
    * @see #OTHER
    */
   public int getType() {
-    return(this.type);
+    return this.type;
   }
 
   /**
@@ -105,7 +105,7 @@ public class Assignment implements Notable {
    * Returns notes about this <code>Assignment</code>
    */
   public List getNotes() {
-    return(this.notes);
+    return this.notes;
   }
 
   /**
@@ -128,7 +128,7 @@ public class Assignment implements Notable {
    * modified.
    */
   public boolean isDirty() {
-    return(this.dirty);
+    return this.dirty;
   }
 
   /**
@@ -143,8 +143,8 @@ public class Assignment implements Notable {
    * <code>Assignment</code>
    */
   public String toString() {
-    return("Assignment " + this.getName() + " worth " +
-           this.getPoints());
+    return "Assignment " + this.getName() + " worth " +
+           this.getPoints();
   }
   
 
@@ -180,53 +180,53 @@ public class Assignment implements Notable {
     String note = null;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-xmlFile")) {
-        if(++i >= args.length) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-xmlFile")) {
+        if (++i >= args.length) {
           err.println("** Missing XML file name");
           usage();
         }
 
         fileName = args[i];
 
-      } else if(args[i].equals("-name")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-name")) {
+        if (++i >= args.length) {
           err.println("** Missing assignment name");
           usage();
         }
 
         name = args[i];
 
-      } else if(args[i].equals("-points")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-points")) {
+        if (++i >= args.length) {
           err.println("** Missing points value");
           usage();
         }
 
         points = args[i];
 
-      } else if(args[i].equals("-description")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-description")) {
+        if (++i >= args.length) {
           err.println("** Missing description");
           usage();
         }
         
         desc = args[i];
 
-      } else if(args[i].equals("-type")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-type")) {
+        if (++i >= args.length) {
           err.println("** Missing type");
           usage();
         }
 
         // Make sure type is valid
-        if(args[i].equals("PROJECT")) {
+        if (args[i].equals("PROJECT")) {
           type = new Integer(Assignment.PROJECT);
 
-        } else if(args[i].equals("QUIZ")) {
+        } else if (args[i].equals("QUIZ")) {
           type = new Integer(Assignment.QUIZ);
 
-        } else if(args[i].equals("OTHER")) {
+        } else if (args[i].equals("OTHER")) {
           type = new Integer(Assignment.OTHER);
 
         } else {
@@ -234,8 +234,8 @@ public class Assignment implements Notable {
           usage();
         }
 
-      } else if(args[i].equals("-note")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-note")) {
+        if (++i >= args.length) {
           err.println("** Missing note");
           usage();
         }
@@ -248,24 +248,24 @@ public class Assignment implements Notable {
     }
 
     // Verify command line
-    if(fileName == null) {
+    if (fileName == null) {
       err.println("** No file name specified");
       usage();
     }
 
-    if(name == null) {
+    if (name == null) {
       err.println("** No assignment name specified");
       usage();
     }
 
     File file = new File(fileName);
-    if(!file.exists()) {
+    if (!file.exists()) {
       err.println("** Grade book file " + fileName + 
                   " does not exist");
       System.exit(1);
     }
 
-    if(name == null) {
+    if (name == null) {
       err.println("** No assignment name specified");
       usage();
     }
@@ -275,24 +275,24 @@ public class Assignment implements Notable {
       XmlParser parser = new XmlParser(file);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       err.println("** Exception while parsing " + file + ": " + ex);
       System.exit(1);
     }
 
     // Get the assignment
     Assignment assign = book.getAssignment(name);
-    if(assign == null) {
+    if (assign == null) {
       // Did we specify a points value?
-      if(points == null) {
+      if (points == null) {
         err.println("** No points specified");
         usage();
       }
@@ -301,12 +301,12 @@ public class Assignment implements Notable {
       try {
         value = Double.parseDouble(points);
 
-      } catch(NumberFormatException ex) {
+      } catch (NumberFormatException ex) {
         err.println("** Not a valid point value: " + points);
         System.exit(1);
       }
 
-      if(value < 0.0) {
+      if (value < 0.0) {
         err.println("** Not a valid point value: " + value);
         System.exit(1);
       }
@@ -317,15 +317,15 @@ public class Assignment implements Notable {
     }
 
     // Set the properties of the assignment
-    if(desc != null) {
+    if (desc != null) {
       assign.setDescription(desc);
     }
 
-    if(type != null) {
+    if (type != null) {
       assign.setType(type.intValue());
     }
 
-    if(note != null) {
+    if (note != null) {
       assign.addNote(note);
     }
 
@@ -334,7 +334,7 @@ public class Assignment implements Notable {
       XmlDumper dumper = new XmlDumper(file);
       dumper.dump(book);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** While dumping to " + file + ": " + ex);
       System.exit(1);
     }

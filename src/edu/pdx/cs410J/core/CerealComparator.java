@@ -10,12 +10,12 @@ public class CerealComparator implements Comparator {
     double price1 = ((Cereal) o1).getPrice();
     double price2 = ((Cereal) o2).getPrice();
 
-    if(price1 > price2) {
-      return(1);
-    } else if(price1 < price2) {
-      return(-1);
+    if (price1 > price2) {
+      return 1;
+    } else if (price1 < price2) {
+      return -1;
     } else {
-      return(0);
+      return 0;
     }
   }
 
@@ -28,7 +28,7 @@ public class CerealComparator implements Comparator {
 
     // Print out the cereals
     Iterator iter = set.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Cereal c = (Cereal) iter.next();
       System.out.println(c);
     }

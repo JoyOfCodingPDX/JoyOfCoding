@@ -13,7 +13,7 @@ public class Collections {
    */
   private static void print(Collection c) {
     Iterator iter = c.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Object o = iter.next();
       System.out.println(o);
     }

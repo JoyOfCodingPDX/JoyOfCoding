@@ -9,6 +9,6 @@ public class Cow extends Mammal {
   }
 
   public String says() { 
-    return("Moo"); 
+    return "Moo"; 
   }
 }

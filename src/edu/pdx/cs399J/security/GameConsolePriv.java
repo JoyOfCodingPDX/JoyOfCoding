@@ -19,21 +19,21 @@ public class GameConsolePriv extends GameConsole {
 	  public Object run() {
 	    boolean b = 
 	      GameConsolePriv.super.writePreferences(game, prefs);
-	    return(new Boolean(b));
+	    return new Boolean(b);
 	  }
 	});
-    return(b.booleanValue());
+    return b.booleanValue();
   }
 
   public String readPreferences(final Game game) {
     String prefs = 
       (String) AccessController.doPrivileged(new PrivilegedAction() {
 	  public Object run() {
-	    return(GameConsolePriv.super.readPreferences(game));
+	    return GameConsolePriv.super.readPreferences(game);
 	  }
 	});
 					     
-    return(prefs);
+    return prefs;
   }
 
 
@@ -51,7 +51,7 @@ public class GameConsolePriv extends GameConsole {
     try {
       game = console.loadGame(gameName, gameURL);
 
-    } catch(Exception ex) {
+    } catch (Exception ex) {
       System.err.println("** Could not load game " + gameName + 
 			 " from " + gameURL);
       System.err.println("** " + ex);

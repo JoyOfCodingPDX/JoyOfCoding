@@ -54,13 +54,13 @@ public class GradeBookPanel extends JPanel {
     this.students.addListSelectionListener(new
       ListSelectionListener() {
         public void valueChanged(ListSelectionEvent e) {
-          if(GradeBookPanel.this.model == null) {
+          if (GradeBookPanel.this.model == null) {
             return;
           }
           
           int index = students.getSelectedIndex();
 
-          if(index >= 0) {
+          if (index >= 0) {
             String id = model.getIdAt(index);
             displayStudent(id);
 
@@ -113,7 +113,7 @@ public class GradeBookPanel extends JPanel {
    * full names or by the ids.
    */
   private void displayStudents(int sortOrder) {
-    if(this.book == null) {
+    if (this.book == null) {
       // Nothing to do
       return;
     }
@@ -144,15 +144,15 @@ public class GradeBookPanel extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }
@@ -169,7 +169,7 @@ public class GradeBookPanel extends JPanel {
             XmlDumper dumper = new XmlDumper(fileName);
             dumper.dump(theBook);
 
-          } catch(IOException ex) {
+          } catch (IOException ex) {
             System.err.println("** Error while writing XML file: " + ex);
           }
 
@@ -203,44 +203,44 @@ class StudentsModel extends AbstractListModel {
           Student s1 = (Student) o1;
           Student s2 = (Student) o2;
 
-          if(sortedOrder == GradeBookPanel.BY_ID) {
+          if (sortedOrder == GradeBookPanel.BY_ID) {
             // Sort by id
-            return(s1.getId().compareTo(s2.getId()));
+            return s1.getId().compareTo(s2.getId());
 
-          } else if(sortedOrder == GradeBookPanel.BY_NAME) {
+          } else if (sortedOrder == GradeBookPanel.BY_NAME) {
             // Sort by last name
             String name1 = s1.getLastName();
             String name2 = s2.getLastName();
 
-            if(name1 == null) {
+            if (name1 == null) {
               name1 = s1.getId();
             }
 
-            if(name2 == null) {
+            if (name2 == null) {
               name2 = s2.getId();
             }
 
-            if(name1.equals(name2)) {
+            if (name1.equals(name2)) {
               name1 = s1.getFirstName();
               name2 = s2.getFirstName();
 
-              if(name1 == null) {
+              if (name1 == null) {
                 name1 = s1.getId();
               }
 
-              if(name2 == null) {
+              if (name2 == null) {
                 name2 = s2.getId();
               }
 
             } else {
-              return(name1.compareTo(name2));
+              return name1.compareTo(name2);
             }
 
-            if(name1.equals(name2)) {
-              return(s1.getId().compareTo(s2.getId()));
+            if (name1.equals(name2)) {
+              return s1.getId().compareTo(s2.getId());
 
             } else {
-              return(name1.compareTo(name2));
+              return name1.compareTo(name2);
             }
 
           } else {
@@ -250,29 +250,29 @@ class StudentsModel extends AbstractListModel {
         }
 
         public boolean equals(Object o) {
-          return(o == this);
+          return o == this;
         }
       });
 
     Iterator iter = book.getStudentIds().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       String id = (String) iter.next();
       sortedStudents.add(book.getStudent(id));
     }
 
     iter = sortedStudents.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Student student = (Student) iter.next();
       this.ids.add(student.getId());
 
-      if(sortedOrder == GradeBookPanel.BY_ID) {
+      if (sortedOrder == GradeBookPanel.BY_ID) {
         // Display id
         this.data.add(student.getId());
 
-      } else if(sortedOrder == GradeBookPanel.BY_NAME) {
+      } else if (sortedOrder == GradeBookPanel.BY_NAME) {
         // Display full name
         String name = student.getFullName();
-        if(name == null || name.equals("")) {
+        if (name == null || name.equals("")) {
           name = student.getId();
         }
         this.data.add(name);
@@ -289,15 +289,15 @@ class StudentsModel extends AbstractListModel {
    * Returns the id of the student at the given index
    */
   public String getIdAt(int index) {
-    return((String) ids.get(index));
+    return (String) ids.get(index);
   }
 
   public Object getElementAt(int index) {
-    return(data.get(index));
+    return data.get(index);
   }
 
   public int getSize() {
-    return(this.data.size());
+    return this.data.size();
   }
 
 }

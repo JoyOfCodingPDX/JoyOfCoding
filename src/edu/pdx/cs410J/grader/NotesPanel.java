@@ -43,12 +43,12 @@ public class NotesPanel extends JPanel {
     button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String note = field.getText();
-          if(note != null && !note.equals("")) {
+          if (note != null && !note.equals("")) {
             notes.add(note);
             notesList.setListData(notes);
           }
 
-          if(notable != null) {
+          if (notable != null) {
             notable.addNote(note);
           }
 
@@ -87,7 +87,7 @@ public class NotesPanel extends JPanel {
    */
   public void addAllNotesTo(Notable notable) {
     Iterator iter = this.notes.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       notable.addNote((String) iter.next());
     }
     this.setNotable(notable);

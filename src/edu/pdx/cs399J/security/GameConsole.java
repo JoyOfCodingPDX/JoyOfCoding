@@ -20,7 +20,7 @@ public class GameConsole {
     String home = System.getProperty("user.home");
     try {
       File dir = new File(home, ".games");
-      if(!dir.exists()) {
+      if (!dir.exists()) {
 	dir.mkdirs();
       }
 
@@ -29,11 +29,11 @@ public class GameConsole {
       fw.write(prefs);
       fw.flush();
       fw.close();
-    } catch(IOException ex) {
-      return(false);
+    } catch (IOException ex) {
+      return false;
     }
 
-    return(true);
+    return true;
   }
 
   /**
@@ -45,31 +45,31 @@ public class GameConsole {
     String home = System.getProperty("user.home");
     try {
       File dir = new File(home, ".games");
-      if(!dir.exists()) {
+      if (!dir.exists()) {
 	dir.mkdirs();
       }
 
       File file = new File(dir, game.getName());
-      if(!file.exists()) {
+      if (!file.exists()) {
 	// No preferences
 	return("");
 
-      } else if(file.isDirectory()) {
+      } else if (file.isDirectory()) {
 	return(null);
       }
 
       StringBuffer sb = new StringBuffer();
       char[] arr = new char[1024];
       FileReader fr = new FileReader(file);
-      while(fr.ready()) {
+      while (fr.ready()) {
 	fr.read(arr, 0, arr.length);
 	sb.append(arr);
       }
 
-      return(sb.toString());
+      return sb.toString();
 
-    } catch(IOException ex) {
-      return(null);
+    } catch (IOException ex) {
+      return null;
     }
   }
 
@@ -87,7 +87,7 @@ public class GameConsole {
 
     // Make an instance of the Game class and return it
     Game game = (Game) gameClass.newInstance();
-    return(game);
+    return game;
   }
 
   /**
@@ -104,7 +104,7 @@ public class GameConsole {
       Game game = console.loadGame(gameName, gameURL);
       game.play(console);
 
-    } catch(Exception ex) {
+    } catch (Exception ex) {
       System.err.println("** Could not load game " + gameName + 
 			 " from " + gameURL);
       System.err.println("** " + ex);

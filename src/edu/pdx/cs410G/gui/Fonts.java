@@ -55,7 +55,7 @@ public class Fonts extends JPanel {
         public void valueChanged(ListSelectionEvent e) {
           // Set the font and update
           int i = list.getSelectedIndex();
-          if(i != -1) {
+          if (i != -1) {
             String fontName = fontNames[i];
             Font font = coords.getFont();
             font = new Font(fontName, font.getStyle(),
@@ -66,7 +66,7 @@ public class Fonts extends JPanel {
         }
       });
 
-    return(new JScrollPane(list));    
+    return new JScrollPane(list);    
   }
 
   /**
@@ -81,14 +81,14 @@ public class Fonts extends JPanel {
           Color newColor = 
             JColorChooser.showDialog(Fonts.this, "Select a Color",
                                      coords.getForeground());
-          if(newColor != null) {
+          if (newColor != null) {
             coords.setForeground(newColor);
             coords.repaint();
           }
         }
       });
 
-    return(button);
+    return button;
   }
 
   /**
@@ -106,7 +106,7 @@ public class Fonts extends JPanel {
           coords.repaint();
         }
       });
-    return(button);
+    return button;
   }
 
   /**
@@ -124,7 +124,7 @@ public class Fonts extends JPanel {
           coords.repaint();
         }
       });
-    return(button);
+    return button;
   }
 
   /**
@@ -141,13 +141,13 @@ public class Fonts extends JPanel {
             font = font.deriveFont(Float.parseFloat(size));
             coords.setFont(font);
             coords.repaint();
-          } catch(NumberFormatException ex) {
+          } catch (NumberFormatException ex) {
             // Ignore
           }
         }
       });
 
-    return(field);
+    return field;
   }
 
   /**

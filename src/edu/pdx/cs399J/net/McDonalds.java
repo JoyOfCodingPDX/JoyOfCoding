@@ -27,12 +27,12 @@ public class McDonalds {
    * Returns <code>true</code> if there are more BigMacs to cook.
    */
   public synchronized boolean moreBigMacs() {
-    if(this.nBigMacs <= 0) {
-      return(false);
+    if (this.nBigMacs <= 0) {
+      return false;
 
     } else {
       this.nBigMacs--;
-      return(true);
+      return true;
     }
   }
 
@@ -49,7 +49,7 @@ public class McDonalds {
       nCustomers = Integer.parseInt(args[0]);
       nEmployees = Integer.parseInt(args[1]);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       err.println("** NumberFormatException");
       System.exit(1);
     }
@@ -58,13 +58,13 @@ public class McDonalds {
     McDonalds mcDonalds = new McDonalds(nCustomers);
 
     // The customers enter...
-    for(int i = 0; i < nCustomers; i++) {
+    for (int i = 0; i < nCustomers; i++) {
       McCustomer customer = new McCustomer(i, mcDonalds);
       (new Thread(customer)).start();
     }
 
     // The employees start cooking...
-    for(int i = 0; i < nEmployees; i++) {
+    for (int i = 0; i < nEmployees; i++) {
       McEmployee employee = new McEmployee(i, mcDonalds);
       (new Thread(employee)).start();
     }

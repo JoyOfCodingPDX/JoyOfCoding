@@ -11,7 +11,7 @@ public abstract class Animal {
    * Returns the name of this animal.
    */
   public final String getName() {
-    return(this.name);
+    return this.name;
   }
 
   /**
@@ -20,6 +20,6 @@ public abstract class Animal {
   public abstract String says();
 
   public String toString() {
-    return(getName() + " says " + says());
+    return getName() + " says " + says();
   }
 }

@@ -28,28 +28,28 @@ public class PhoneBook {
    */
   public PhoneBook(Element root) {
     // Verify that this is a phonebook XML doc
-    if(!root.getNodeName().equals("phonebook")) {
+    if (!root.getNodeName().equals("phonebook")) {
       String s = "Not a phonebook: " + root.getNodeName();
       throw new IllegalArgumentException(s);
     }
 
     this.entries = new ArrayList();
     NodeList entries = root.getChildNodes();
-    for(int i = 0; i < entries.getLength(); i++) {
+    for (int i = 0; i < entries.getLength(); i++) {
       Node node = entries.item(i);
       
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
 	// Ignore other stuff
 	continue;
       }
 
       Element entry = (Element) node;
 
-      if(entry.getNodeName().equals("resident")) {
+      if (entry.getNodeName().equals("resident")) {
 	Resident resident = new Resident(entry);
 	this.entries.add(resident);
 
-      } else if(entry.getNodeName().equals("business")) {
+      } else if (entry.getNodeName().equals("business")) {
 	Business business = new Business(entry);
 	this.entries.add(business);
 
@@ -77,15 +77,15 @@ public class PhoneBook {
 	factory.newDocumentBuilder();
       doc = builder.parse(new File(args[0]));
 
-    } catch(ParserConfigurationException ex) {
+    } catch (ParserConfigurationException ex) {
       err.println("** " + ex);
       System.exit(1);
 
-    } catch(SAXException ex) {
+    } catch (SAXException ex) {
       err.println("** SAXException: " + ex);
       System.exit(1);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }
@@ -100,11 +100,11 @@ public class PhoneBook {
     sb.append("Phone Book\n\n");
 
     Iterator iter = this.entries.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       sb.append(iter.next());
       sb.append("\n");
     }
     
-    return(sb.toString());
+    return sb.toString();
   }
 }

@@ -43,7 +43,7 @@ public class FileSystemTable extends JPanel {
   }
 
   public Dimension getPreferredSize() {
-    return(new Dimension(600, 400));
+    return new Dimension(600, 400);
   }
 
   /**
@@ -52,7 +52,7 @@ public class FileSystemTable extends JPanel {
    */
   public static void main(String[] args) {
     File file = new File(args[0]);
-    if(!file.isDirectory() || !file.exists()) {
+    if (!file.isDirectory() || !file.exists()) {
       System.err.println("** Not a directory: " + args[0]);
       System.exit(1);
     }

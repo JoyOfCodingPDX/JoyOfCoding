@@ -81,7 +81,7 @@ public class StudentPanel extends JPanel {
     JButton update = new JButton("Update");
     update.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          if(StudentPanel.this.student != null) {
+          if (StudentPanel.this.student != null) {
             updateStudent(StudentPanel.this.student);
           }
         }
@@ -120,32 +120,32 @@ public class StudentPanel extends JPanel {
     this.idField.setText(student.getId());
 
     String firstName = student.getFirstName();
-    if(firstName != null && !firstName.equals("")) {
+    if (firstName != null && !firstName.equals("")) {
       this.firstNameField.setText(firstName);
     }
 
     String lastName = student.getLastName();
-    if(lastName != null && !lastName.equals("")) {
+    if (lastName != null && !lastName.equals("")) {
       this.lastNameField.setText(lastName);
     }
 
     String nickName = student.getNickName();
-    if(nickName != null && !nickName.equals("")) {
+    if (nickName != null && !nickName.equals("")) {
       this.nickNameField.setText(nickName);
     }
 
     String email = student.getEmail();
-    if(email != null && !email.equals("")) {
+    if (email != null && !email.equals("")) {
       this.emailField.setText(email);
     }
 
     String ssn = student.getSsn();
-    if(ssn != null && !ssn.equals("")) {
+    if (ssn != null && !ssn.equals("")) {
       this.ssnField.setText(ssn);
     }
 
     String major = student.getMajor();
-    if(major != null && !major.equals("")) {
+    if (major != null && !major.equals("")) {
       this.majorField.setText(major);
     }
 
@@ -158,13 +158,13 @@ public class StudentPanel extends JPanel {
    */
   private void updateStudent(Student student) {
     String firstName = this.firstNameField.getText();
-    if(firstName != null) {
+    if (firstName != null) {
       student.setFirstName(firstName);
     }
 
     String lastName = this.lastNameField.getText();
-    if(lastName != null) {
-      if(lastName.equals("")) {
+    if (lastName != null) {
+      if (lastName.equals("")) {
         student.setLastName(null);
       } else {
         student.setLastName(lastName);
@@ -172,8 +172,8 @@ public class StudentPanel extends JPanel {
     }
 
     String nickName = this.nickNameField.getText();
-    if(nickName != null) {
-      if(nickName.equals("")) {
+    if (nickName != null) {
+      if (nickName.equals("")) {
         student.setNickName(null);
       } else {
         student.setNickName(nickName);
@@ -181,8 +181,8 @@ public class StudentPanel extends JPanel {
     }
 
     String email = this.emailField.getText();
-    if(email != null) {
-      if(email.equals("")) {
+    if (email != null) {
+      if (email.equals("")) {
         student.setEmail(null);
       } else {
         student.setEmail(email);
@@ -190,8 +190,8 @@ public class StudentPanel extends JPanel {
     }
 
     String ssn = this.ssnField.getText();
-    if(ssn != null) {
-      if(ssn.equals("")) {
+    if (ssn != null) {
+      if (ssn.equals("")) {
         student.setSsn(null);
       } else {
         student.setSsn(ssn);
@@ -199,8 +199,8 @@ public class StudentPanel extends JPanel {
     }
 
     String major = this.majorField.getText();
-    if(major != null) {
-      if(major.equals("")) {
+    if (major != null) {
+      if (major.equals("")) {
         student.setMajor(null);
       } else {
         student.setMajor(major);
@@ -225,15 +225,15 @@ public class StudentPanel extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }
@@ -252,7 +252,7 @@ public class StudentPanel extends JPanel {
             XmlDumper dumper = new XmlDumper(fileName);
             dumper.dump(theBook);
 
-          } catch(IOException ex) {
+          } catch (IOException ex) {
             System.err.println("** Error while writing XML file: " + ex);
           }
 

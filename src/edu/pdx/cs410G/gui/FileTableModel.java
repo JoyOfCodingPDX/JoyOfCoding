@@ -23,10 +23,10 @@ public class FileTableModel extends AbstractTableModel {
     // Gather information about the files in the directory
     File[] files = dir.listFiles(new FileFilter() {
         public boolean accept(File file) {
-          if(file.isDirectory()) {
-            return(false);
+          if (file.isDirectory()) {
+            return false;
           } else {
-            return(true);
+            return true;
           }
         }
       });
@@ -35,16 +35,16 @@ public class FileTableModel extends AbstractTableModel {
         public int compare(Object o1, Object o2) {
           String s1 = ((File) o1).getName();
           String s2 = ((File) o2).getName();
-          return(s1.compareTo(s2));
+          return s1.compareTo(s2);
         }
       });
-    for(int i = 0; i < files.length; i++) {
+    for (int i = 0; i < files.length; i++) {
       sorted.add(files[i]);
     }
     files = (File[]) sorted.toArray(files);
 
     this.data = new Object[files.length][];
-    for(int i = 0; i < files.length; i++) {
+    for (int i = 0; i < files.length; i++) {
       File file = files[i];
       data[i] = new Object[this.getColumnCount()];
       data[i][0] = file.getName();
@@ -57,32 +57,32 @@ public class FileTableModel extends AbstractTableModel {
   }
 
   public int findColumn(String columnName) {
-    for(int i = 0; i < columnNames.length; i++) {
-      if(columnNames.equals(columnName)) {
-        return(i);
+    for (int i = 0; i < columnNames.length; i++) {
+      if (columnNames.equals(columnName)) {
+        return i;
       }
     }
 
-    return(-1);
+    return -1;
   }
 
   public Class getColumnClass(int columnIndex) {
-    return(this.data[0][columnIndex].getClass());
+    return this.data[0][columnIndex].getClass();
   }
 
   public String getColumnName(int column) {
-    return(columnNames[column]);
+    return columnNames[column];
   }
 
   public int getRowCount() {
-    return(data.length);
+    return data.length;
   }
 
   public int getColumnCount() {
-    return(columnNames.length);
+    return columnNames.length;
   }
 
   public Object getValueAt(int row, int column) {
-    return(data[row][column]);
+    return data[row][column];
   }
 }

@@ -38,7 +38,7 @@ public class ChatSpeaker implements Runnable {
 
       this.bos = new BufferedOutputStream(socket.getOutputStream());
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }
@@ -52,11 +52,11 @@ public class ChatSpeaker implements Runnable {
   public void run() {
 //      System.out.println("ChatSpeaker starting");
 
-    while(true) {
+    while (true) {
       try {
 	// Is there a message to send?
 	synchronized(this.outgoing) {
-	  if(!this.outgoing.isEmpty()) {
+	  if (!this.outgoing.isEmpty()) {
 	    ChatMessage m = (ChatMessage) this.outgoing.remove(0);
 	    
 //  	    System.out.println("Sending: " + m);
@@ -65,7 +65,7 @@ public class ChatSpeaker implements Runnable {
 	    out.writeObject(m);
 	    out.flush();
 
-	    if(m.isLastMessage()) {
+	    if (m.isLastMessage()) {
 	      // Send the last message and then go home
 	      break;
 	    }
@@ -76,12 +76,12 @@ public class ChatSpeaker implements Runnable {
 	  this.outgoing.wait();
 	}
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** IOException: " + ex);
 	System.exit(1);
 	break;
 	
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 //  	System.out.println("Done sending messages");
 	break;
       }

@@ -42,7 +42,7 @@ public class NewAssignmentDialog extends JDialog {
           // Create a new Assignment from the contents of assignment
           // panel
           assignment = assignmentPanel.createAssignment();
-          if(assignment != null) {
+          if (assignment != null) {
             // Assignment is okay
             NewAssignmentDialog.this.dispose();
           }
@@ -72,7 +72,7 @@ public class NewAssignmentDialog extends JDialog {
    * no assignment was created, <code>null</code> is returned.
    */
   public Assignment getAssignment() {
-    return(this.assignment);
+    return this.assignment;
   }
 
 }

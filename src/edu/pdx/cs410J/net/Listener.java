@@ -25,7 +25,7 @@ public class Listener {
 
     try {
       port = Integer.parseInt(args[0]);
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       err.println("** Bad port number: " + args[0]);
       System.exit(1);
     }
@@ -43,14 +43,14 @@ public class Listener {
       BufferedReader listener = new BufferedReader(isr);
 
       String line = "";
-      while(!line.equals("bye")) {
+      while (!line.equals("bye")) {
 	line = listener.readLine();
 	out.println(line);
       }
 
       listener.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }

@@ -48,49 +48,49 @@ public class NoteMarriage {
   private static String parseCommandLine(String[] args) {
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-husbandId")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-husbandId")) {
 	if(++i >= args.length) {
-	  return("Missing husband id");
+	  return "Missing husband id";
 	}
 
 	try {
 	  husbandId = Integer.parseInt(args[i]);
 
-	} catch(NumberFormatException ex) {
-	  return("Malformatted husband id: " + args[i]);
+	} catch (NumberFormatException ex) {
+	  return "Malformatted husband id: " + args[i];
 	}
 
 	if(husbandId < 1) {
-	  return("Illegal husband id value: " + husbandId);
+	  return "Illegal husband id value: " + husbandId;
 	}
 
-      } else if(args[i].equals("-wifeId")) {
+      } else if (args[i].equals("-wifeId")) {
 	if(++i >= args.length) {
-	  return("Missing wife id");
+	  return "Missing wife id";
 	}
 
 	try {
 	  wifeId = Integer.parseInt(args[i]);
 
-	} catch(NumberFormatException ex) {
-	  return("Malformatted wife id: " + args[i]);
+	} catch (NumberFormatException ex) {
+	  return "Malformatted wife id: " + args[i];
 	}
 
 	if(wifeId < 1) {
-	  return("Illegal wife id value: " + husbandId);
+	  return "Illegal wife id value: " + husbandId;
 	}
 
-      } else if(args[i].equals("-date")) {
+      } else if (args[i].equals("-date")) {
 	if(++i >= args.length) {
-	  return("Missing marriage date");
+	  return "Missing marriage date";
 	}
 
 	// A date will take up three arguments
 	StringBuffer sb = new StringBuffer(args[i] + " ");
 	for(int j = i+1; j < i+3; j++) {
-	  if(j >= args.length) {
-	    return("Malformatted date of birth: " + sb);
+	  if (j >= args.length) {
+	    return "Malformatted date of birth: " + sb;
 
 	  } else {
 	    sb.append(args[j] + " ");
@@ -101,28 +101,28 @@ public class NoteMarriage {
 	try {
 	  date = df.parse(sb.toString().trim());
 
-	} catch(ParseException ex) {
-	  return("Malformatted marriage date: " + args[i]);
+	} catch (ParseException ex) {
+	  return "Malformatted marriage date: " + args[i];
 	}
 
-      } else if(args[i].equals("-location")) {
+      } else if (args[i].equals("-location")) {
 	if(++i >= args.length) {
-	  return("Missing marriage location");
+	  return "Missing marriage location";
 	}
 
 	location = args[i];
 
-      } else if(args[i].equals("-file")) {
+      } else if (args[i].equals("-file")) {
 	if(++i >= args.length) {
-	  return("Missing file name");
+	  return "Missing file name";
 	}
 
 	fileName = args[i];
 
-      } else if(args[i].equals("-text")) {
+      } else if (args[i].equals("-text")) {
 	useXml = false;
 
-      } else if(args[i].equals("-xml")) {
+      } else if (args[i].equals("-xml")) {
 	useXml = true;
 
       } else {
@@ -131,18 +131,18 @@ public class NoteMarriage {
     }
 
     // Make some additional checks
-    if(husbandId == -1) {
-      return("No husband id specified");
+    if (husbandId == -1) {
+      return "No husband id specified";
 
-    } else if(wifeId == -1) {
-      return("No wife id specified");
+    } else if (wifeId == -1) {
+      return "No wife id specified";
 
-    } else if(fileName == null) {
-      return("No file specified");
+    } else if (fileName == null) {
+      return "No file specified";
     }
 
     // No errors
-    return(null);
+    return null;
   }
 
   /**
@@ -152,7 +152,7 @@ public class NoteMarriage {
     // Parse the command line
     String message = parseCommandLine(args);
 
-    if(message != null) {
+    if (message != null) {
       err.println("** " + message + "\n");
       usage();
       System.exit(1);
@@ -162,14 +162,14 @@ public class NoteMarriage {
 
     // If the data file exists, read it in
     File file = new File(fileName);
-    if(file.exists()) {
+    if (file.exists()) {
       Parser parser = null;
-      if(useXml) {
+      if (useXml) {
 	// File in XML format
 	try {
 	  parser = new XmlParser(file);
 
-	} catch(FileNotFoundException ex) {
+	} catch (FileNotFoundException ex) {
 	  err.println("** Could not find file " + fileName);
 	  System.exit(1);
 	}
@@ -179,7 +179,7 @@ public class NoteMarriage {
         try {
           parser = new TextParser(file);
 
-        } catch(FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
           err.println("** Could not find file " + fileName);
           System.exit(1);
         }
@@ -189,7 +189,7 @@ public class NoteMarriage {
       try {
         tree = parser.parse();
 
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
         err.println("** File " + fileName + " is malformatted");
         System.exit(1);
       }
@@ -207,21 +207,21 @@ public class NoteMarriage {
     husband.addMarriage(marriage);
     wife.addMarriage(marriage);
 
-    if(location != null) {
+    if (location != null) {
       marriage.setLocation(location);
     }
 
-    if(date != null) {
+    if (date != null) {
       marriage.setDate(date);
     }
 
     // Now write the family tree to the file
     Dumper dumper = null;
-    if(useXml) {
+    if (useXml) {
       try {
 	dumper = new XmlDumper(file);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** Error while dealing with " + file);
 	System.exit(1);
       }
@@ -230,7 +230,7 @@ public class NoteMarriage {
       try {
         dumper = new TextDumper(file);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         err.println("** Error while dealing with " + file);
         System.exit(1);
       }

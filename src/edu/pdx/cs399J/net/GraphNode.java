@@ -25,13 +25,13 @@ public class GraphNode implements java.io.Serializable {
     this.beenVisited = true;
 
     Iterator iter = children.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       GraphNode child = (GraphNode) iter.next();
-      if(!child.beenVisited) {
+      if (!child.beenVisited) {
 	total += child.traverse();
       }
     }
 
-    return(total);
+    return total;
   }
 }

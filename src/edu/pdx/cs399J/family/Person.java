@@ -31,7 +31,7 @@ public class Person {
    *        A unique number greater than 0 identifying this person.
    */
   public Person(int id) {
-    if(id < 1) {
+    if (id < 1) {
       String m = "A person's id must be greater than 1: " + id;
       throw new IllegalArgumentException(m);
     }
@@ -44,7 +44,7 @@ public class Person {
    * Returns this person's id.
    */
   public int getId() {
-    return(this.id);
+    return this.id;
   }
 
   /**
@@ -58,7 +58,7 @@ public class Person {
    * Returns this person's first name.
    */
   public String getFirstName() {
-    return(this.firstName);
+    return this.firstName;
   }
 
   /**
@@ -72,7 +72,7 @@ public class Person {
    * Returns this person's middle name.
    */
   public String getMiddleName() {
-    return(this.middleName);
+    return this.middleName;
   }
 
   /**
@@ -86,7 +86,7 @@ public class Person {
    * Returns this person's last name.
    */
   public String getLastName() {
-    return(this.lastName);
+    return this.lastName;
   }
 
   /**
@@ -95,21 +95,21 @@ public class Person {
   public String getFullName() {
     StringBuffer fullName = new StringBuffer();
 
-    if(this.firstName != null) {
+    if (this.firstName != null) {
       fullName.append(this.firstName);
       fullName.append(' ');
     }
 
-    if(this.middleName != null) {
+    if (this.middleName != null) {
       fullName.append(this.middleName);
       fullName.append(' ');
     }
 
-    if(this.lastName != null) {
+    if (this.lastName != null) {
       fullName.append(this.lastName);
     }
 
-    return(fullName.toString().trim());
+    return fullName.toString().trim();
   }
 
   /**
@@ -124,14 +124,14 @@ public class Person {
    */
   public int getFatherId() {
     // Father's id is always twice of this person's id
-    return(this.id * 2);
+    return this.id * 2;
   }
 
   /**
    * Returns this person's father.
    */
   public Person getFather() {
-    return(this.father);
+    return this.father;
   }
 
   /**
@@ -146,14 +146,14 @@ public class Person {
    */
   public int getMotherId() {
     // Mother's id is always one more than the father's
-    return(this.getFatherId() + 1);
+    return this.getFatherId() + 1;
   }
 
   /**
    * Returns this person's mother.
    */
   public Person getMother() {
-    return(this.mother);
+    return this.mother;
   }
 
   /**
@@ -167,7 +167,7 @@ public class Person {
    * Returns this person's date of birth.
    */
   public Date getDateOfBirth() {
-    return(this.dob);
+    return this.dob;
   }
 
   /**
@@ -181,7 +181,7 @@ public class Person {
    * Returns this person's date of death.
    */
   public Date getDateOfDeath() {
-    return(this.dod);
+    return this.dod;
   }
 
   /**
@@ -195,7 +195,7 @@ public class Person {
    * Returns the marriages that this person was involved in.
    */
   public Collection getMarriages() {
-    return(this.marriages);
+    return this.marriages;
   }
 
   /**
@@ -206,23 +206,23 @@ public class Person {
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
     sb.append("Person " + this.id + ": " + this.getFullName());
-    if(this.dob != null) {
+    if (this.dob != null) {
       sb.append("\nBorn: " + df.format(this.dob));
     }
-    if(this.dod != null) {
+    if (this.dod != null) {
       sb.append("Died: " + df.format(this.dod));
     }
 
-    if(this.mother != null) {
+    if (this.mother != null) {
       sb.append("\nMother: " + this.mother.getFullName());
     }
-    if(this.father != null) {
+    if (this.father != null) {
       sb.append(", Father: " + this.father.getFullName());
     }
 
     sb.append("\nMarried " + this.marriages.size() + " times");
 
-    return(sb.toString());
+    return sb.toString();
   }
 
   /**
@@ -253,7 +253,7 @@ public class Person {
     me.setMiddleName("Michael");
     me.setLastName("Whitlock");
 
-    return(me);
+    return me;
   }
 
   /**
@@ -269,12 +269,12 @@ public class Person {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       mom.setDateOfBirth(df.parse("May 17, 1945"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.err.println("** Malformatted mom's birthday?");
       System.exit(1);
     }
 
-    return(mom);
+    return mom;
   }
 
   /**
@@ -290,12 +290,12 @@ public class Person {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       dad.setDateOfBirth(df.parse("Feb 27, 1948"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.err.println("** Malformatted dad's birthday?");
       System.exit(1);
     }
 
-    return(dad);
+    return dad;
   }
 
 }

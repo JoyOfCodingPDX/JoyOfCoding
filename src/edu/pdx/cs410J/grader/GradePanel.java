@@ -58,7 +58,7 @@ public class GradePanel extends JPanel {
         public void valueChanged(ListSelectionEvent e) {
           // Display the grade for the currently selected
           Assignment assign = getSelectedAssignment();
-          if(assign != null) {
+          if (assign != null) {
             displayGradeFor(assign);
           }
         }
@@ -103,9 +103,9 @@ public class GradePanel extends JPanel {
     updateButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           Assignment assign = getSelectedAssignment();
-          if(assign != null && student != null) {
+          if (assign != null && student != null) {
             Grade grade = student.getGrade(assign.getName());
-            if(grade == null) {
+            if (grade == null) {
               grade = createGrade();
 
             } else {
@@ -132,9 +132,9 @@ public class GradePanel extends JPanel {
     addLate.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           Assignment assign = getSelectedAssignment();
-          if(assign != null && student != null) {
+          if (assign != null && student != null) {
             java.util.List late = student.getLate();
-//             if(!late.contains(assign.getName())) {
+//             if (!late.contains(assign.getName())) {
               student.addLate(assign.getName());
               Vector v = new Vector(student.getLate());
               lateList.setListData(v);
@@ -156,9 +156,9 @@ public class GradePanel extends JPanel {
     addResubmit.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           Assignment assign = getSelectedAssignment();
-          if(assign != null && student != null) {
+          if (assign != null && student != null) {
             java.util.List resubmit = student.getResubmitted();
-//             if(!resubmit.contains(assign.getName())) {
+//             if (!resubmit.contains(assign.getName())) {
               student.addResubmitted(assign.getName());
               Vector v = new Vector(student.getResubmitted());
               resubmitList.setListData(v);
@@ -204,7 +204,7 @@ public class GradePanel extends JPanel {
 
     this.student = student;
     String name = student.getFullName();
-    if(name.equals("")) {
+    if (name.equals("")) {
       name = student.getId();
     }
     this.studentNameLabel.setText(name);
@@ -222,9 +222,9 @@ public class GradePanel extends JPanel {
     this.gradeLabel.setText("Grade (out of " + assign.getPoints() +
                             "):");
     
-    if(this.student != null) {
+    if (this.student != null) {
       this.grade = student.getGrade(assign.getName());
-      if(this.grade != null) {
+      if (this.grade != null) {
         this.gradeField.setText("" + grade.getScore());
         this.notes.setNotable(this.grade);
         return;
@@ -241,12 +241,12 @@ public class GradePanel extends JPanel {
    */
   private Assignment getSelectedAssignment() {
     String name = (String) this.assignmentsList.getSelectedValue();
-    if(name != null) {
+    if (name != null) {
       Assignment assign = this.book.getAssignment(name);
-      return(assign);
+      return assign;
 
     } else {
-      return(null);
+      return null;
     }
   }
 
@@ -257,16 +257,16 @@ public class GradePanel extends JPanel {
   private Grade createGrade() {
     Assignment assign = getSelectedAssignment();
 
-    if(this.student == null) {
-      return(null);
+    if (this.student == null) {
+      return null;
 
-    } else if(assign == null) {
+    } else if (assign == null) {
       String s = "Please select an assignment";
       JOptionPane.showMessageDialog(this, 
                                     new String[] {s},
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
-      return(null);
+      return null;
     }
 
     String score = this.gradeField.getText();
@@ -276,15 +276,15 @@ public class GradePanel extends JPanel {
       Grade grade = new Grade(assign.getName(), d);
       this.notes.addAllNotesTo(grade);
       this.student.setGrade(assign.getName(), grade);
-      return(grade);
+      return grade;
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       String s = score + " is not a number";
       JOptionPane.showMessageDialog(this, 
                                     new String[] {s},
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
-      return(null);
+      return null;
     }    
   }
 
@@ -299,7 +299,7 @@ public class GradePanel extends JPanel {
       double d = Double.parseDouble(score);
       grade.setScore(d);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       String s = score + " is not a number";
       JOptionPane.showMessageDialog(this, 
                                     new String[] {s},
@@ -323,15 +323,15 @@ public class GradePanel extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }
@@ -351,7 +351,7 @@ public class GradePanel extends JPanel {
             XmlDumper dumper = new XmlDumper(fileName);
             dumper.dump(theBook);
 
-          } catch(IOException ex) {
+          } catch (IOException ex) {
             System.err.println("** Error while writing XML file: " + ex);
           }
 

@@ -31,21 +31,21 @@ public class GradeBook {
    * <code>GradeBook</code>
    */
   public String getClassName() {
-    return(this.className);
+    return this.className;
   }
 
   /**
    * Returns the names of the assignments for this class
    */
   public Set getAssignmentNames() {
-    return(this.assignments.keySet());
+    return this.assignments.keySet();
   }
 
   /**
    * Returns the <code>Assignment</code> of a given name
    */
   public Assignment getAssignment(String name) {
-    return((Assignment) this.assignments.get(name));
+    return (Assignment) this.assignments.get(name);
   }
 
   /**
@@ -60,7 +60,7 @@ public class GradeBook {
    * Returns the ids of all of the students in this class
    */
   public Set getStudentIds() {
-    return(this.students.keySet());
+    return this.students.keySet();
   }
 
   /**
@@ -70,11 +70,11 @@ public class GradeBook {
    */
   public Student getStudent(String id) {
     Student student = (Student) this.students.get(id);
-    if(student == null) {
+    if (student == null) {
       student = new Student(id);
       this.addStudent(student);
     }
-    return(student);
+    return student;
   }
 
   /**
@@ -89,7 +89,7 @@ public class GradeBook {
    * Removes a <code>Student</code> from this <code>GradeBook</code>
    */
   public void removeStudent(Student student) {
-    if(this.students.remove(student.getId()) != null) {
+    if (this.students.remove(student.getId()) != null) {
       this.setDirty(true);
     }
   }
@@ -109,14 +109,14 @@ public class GradeBook {
 
     // Mark all of the assignments as clean
     Iterator iter = this.assignments.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Assignment assign = (Assignment) iter.next();
       assign.makeClean();
     }
 
     // Mark all of the students as clean
     iter = this.students.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Student student = (Student) iter.next();
       student.makeClean();
     }
@@ -127,29 +127,29 @@ public class GradeBook {
    * modified.
    */
   public boolean isDirty() {
-    if(this.dirty) {
-      return(true);
+    if (this.dirty) {
+      return true;
     }
 
     // Are any of the Assignments dirty?
     Iterator iter = this.assignments.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Assignment assign = (Assignment) iter.next();
-      if(assign.isDirty()) {
-        return(true);
+      if (assign.isDirty()) {
+        return true;
       }
     }
 
     // Are any of the Students dirty?
     iter = this.students.values().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Student student = (Student) iter.next();
-      if(student.isDirty()) {
-        return(true);
+      if (student.isDirty()) {
+        return true;
       }
     }
 
-    return(false);
+    return false;
   }
 
   /**
@@ -157,8 +157,8 @@ public class GradeBook {
    * <code>GradeBook</code>.
    */
   public String toString() {
-    return("Grade book for " + this.getClassName() + " with " +
-           this.getStudentIds().size() + " students");
+    return "Grade book for " + this.getClassName() + " with " +
+           this.getStudentIds().size() + " students";
   }
 
   private static PrintWriter out = new PrintWriter(System.out, true);
@@ -185,25 +185,25 @@ public class GradeBook {
     String importName = null;
 
     // Parse the command line
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-file")) {
-        if(++i >= args.length) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-file")) {
+        if (++i >= args.length) {
           err.println("** Missing file name");
           usage();
         }
 
         xmlFile = args[i];
 
-      } else if(args[i].equals("-name")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-name")) {
+        if (++i >= args.length) {
           err.println("** Missing class name");
           usage();
         }
 
         name = args[i];
 
-      } else if(args[i].equals("-import")) {
-        if(++i >= args.length) {
+      } else if (args[i].equals("-import")) {
+        if (++i >= args.length) {
           err.println("** Missing import file name");
           usage();
         }
@@ -216,7 +216,7 @@ public class GradeBook {
       }
     }
 
-    if(xmlFile == null) {
+    if (xmlFile == null) {
       err.println("** No XML file specified");
       usage();
     }
@@ -224,29 +224,29 @@ public class GradeBook {
     GradeBook book = null;
 
     File file = new File(xmlFile);
-    if(file.exists()) {
+    if (file.exists()) {
       // Parse a grade book from the XML file
       try {
         XmlParser parser = new XmlParser(file);
         book = parser.parse();
 
-      } catch(FileNotFoundException ex) {
+      } catch (FileNotFoundException ex) {
         err.println("** Could not find file: " + ex.getMessage());
         System.exit(1);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         err.println("** IOException during parsing: " + ex.getMessage());
         System.exit(1);
 
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
         err.println("** Error during parsing: " + ex.getMessage());
         System.exit(1);
       }
 
       // Do we import?
-      if(importName != null) {
+      if (importName != null) {
         File importFile = new File(importName);
-        if(!importFile.exists()) {
+        if (!importFile.exists()) {
           err.println("** Import file " + importFile.getName() + 
                       " does not exist");
           System.exit(1);
@@ -256,13 +256,13 @@ public class GradeBook {
           Student student = XmlParser.parseStudent(null, importFile);
           book.addStudent(student);
 
-        } catch(ParserException ex) {
+        } catch (ParserException ex) {
           err.println("** Error during parsing: " + ex.getMessage());
           System.exit(1);
         }
       }
 
-    } else if(name == null) {
+    } else if (name == null) {
       err.println("** Must specify a class name when creating a " +
                   "grade book");
       System.exit(1);
@@ -277,7 +277,7 @@ public class GradeBook {
       XmlDumper dumper = new XmlDumper(file);
       dumper.dump(book);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** Error while writing XML file: " + ex);
       System.exit(1);
     }

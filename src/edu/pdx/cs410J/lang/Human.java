@@ -9,6 +9,6 @@ public class Human extends Mammal {
   }
 
   public String says() { 
-    return("Hello"); 
+    return "Hello"; 
   }
 }

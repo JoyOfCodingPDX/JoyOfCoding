@@ -21,7 +21,7 @@ public class DumpURL {
     try {
       url = new URL(args[0]);
 
-    } catch(MalformedURLException ex) {
+    } catch (MalformedURLException ex) {
       err.println("** Bad URL: " + args[0]);
       System.exit(1);
     }
@@ -31,14 +31,14 @@ public class DumpURL {
       InputStreamReader isr = new InputStreamReader(urlStream);
       BufferedReader br = new BufferedReader(isr);
 
-      while(br.ready()) {
+      while (br.ready()) {
 	String line = br.readLine();
 	System.out.println(line);
       }
 
       br.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }

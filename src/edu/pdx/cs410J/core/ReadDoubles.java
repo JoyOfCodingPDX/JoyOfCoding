@@ -24,22 +24,22 @@ public class ReadDoubles {
     try {
       fis = new FileInputStream(args[0]);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       err.println("** No such file: " + args[0]);
     }
 
     DataInputStream dis = new DataInputStream(fis);
-    while(true) {
+    while (true) {
       try {
 	double d = dis.readDouble();
 	out.print(d + " ");
 	out.flush();
 
-      } catch(EOFException ex) {
+      } catch (EOFException ex) {
 	// All done reading
 	break;
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** " + ex);
 	System.exit(1);
       }

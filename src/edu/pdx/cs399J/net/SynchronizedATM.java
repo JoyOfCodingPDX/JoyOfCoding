@@ -17,7 +17,7 @@ public class SynchronizedATM extends ATM {
    * Perform each transaction on the account
    */
   public void run() {
-    for(int i = 0; i < transactions.length; i++) {
+    for (int i = 0; i < transactions.length; i++) {
       // Get the lock on the account
       synchronized(account) {
         // Get the balance
@@ -67,7 +67,7 @@ public class SynchronizedATM extends ATM {
       t2.join();
       t3.join();
 
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       return;
     }
 

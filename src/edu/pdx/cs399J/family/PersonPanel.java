@@ -95,16 +95,16 @@ public class PersonPanel extends JPanel {
     this.marriagesList.setMinimumSize(new Dimension(100, 30));
     this.marriagesList.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
-          if(e.getClickCount() == 2) {
+          if (e.getClickCount() == 2) {
             // Double-click to edit marriage
             int index = marriagesList.getSelectedIndex();
             Marriage marriage = null;
 
-            if(index < marriages.size()) {
+            if (index < marriages.size()) {
               marriage = (Marriage) marriages.get(index);
             }
 
-            if(marriage != null && familyTreeGUI.canEdit()) { 
+            if (marriage != null && familyTreeGUI.canEdit()) { 
               EditMarriageDialog dialog = 
                 new EditMarriageDialog(marriage, 
                                        familyTreeGUI.getFrame(), 
@@ -113,7 +113,7 @@ public class PersonPanel extends JPanel {
               dialog.setLocationRelativeTo(familyTreeGUI);
               dialog.setVisible(true);
               
-              if(dialog.getMarriage() != null) {
+              if (dialog.getMarriage() != null) {
                 // Assume a change was made and update person panel
                 familyTreeGUI.setDirty(true);
                 familyTreeGUI.showPerson(person);
@@ -128,7 +128,7 @@ public class PersonPanel extends JPanel {
 
     // If the GUI can't edit a person, don't bother display the
     // buttons to do so.
-    if(familyTreeGUI.canEdit()) {
+    if (familyTreeGUI.canEdit()) {
       JButton addMarriageButton = new JButton("Add Marriage");
       addMarriageButton.setToolTipText("Notes a marriage involving " +
                                        "this person"); 
@@ -190,7 +190,7 @@ public class PersonPanel extends JPanel {
     // Re-initialize all fields
     fillInLabels();
 
-    if(this.person == null) {
+    if (this.person == null) {
       // When no person is selected
       return;
     }
@@ -200,29 +200,29 @@ public class PersonPanel extends JPanel {
     this.name.setText(person.getFullName());
 
     Date dob = person.getDateOfBirth();
-    if(dob != null) {
+    if (dob != null) {
       this.dob.setText("Born: " + df.format(dob));
     }
 
     Date dod = person.getDateOfDeath();
-    if(dod != null) {
+    if (dod != null) {
       this.dod.setText("Died: " + df.format(dod));
     }
 
     Person father = person.getFather();
-    if(father != null) {
+    if (father != null) {
       this.fatherName.setText("Father: " + father.getFullName());
     }
 
     Person mother = person.getMother();
-    if(mother != null) {
+    if (mother != null) {
       this.motherName.setText("Mother: " + mother.getFullName());
     }
 
     this.marriages = new ArrayList(person.getMarriages());
     Vector list = new Vector();
     Iterator iter = person.getMarriages().iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Marriage marriage = (Marriage) iter.next();
 
       StringBuffer sb = new StringBuffer();
@@ -232,12 +232,12 @@ public class PersonPanel extends JPanel {
       sb.append(spouse.getFullName());
 
       Date date = marriage.getDate();
-      if(date != null) {
+      if (date != null) {
 	sb.append(" on " + df.format(date));
       }
 
       String location = marriage.getLocation();
-      if(location != null || !location.equals("")) {
+      if (location != null || !location.equals("")) {
 	sb.append(" in " + location);
       }
 
@@ -252,10 +252,10 @@ public class PersonPanel extends JPanel {
    */
   public Person showFather() {
     Person father = this.person.getFather();
-    if(father != null) {
+    if (father != null) {
       this.showPerson(father);
     }
-    return(father);
+    return father;
   }
 
   /**
@@ -263,9 +263,9 @@ public class PersonPanel extends JPanel {
    */
   public Person showMother() {
     Person mother = this.person.getMother();
-    if(mother != null) {
+    if (mother != null) {
       this.showPerson(mother);
     }
-    return(mother);
+    return mother;
   }
 }

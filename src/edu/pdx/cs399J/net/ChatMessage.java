@@ -31,7 +31,7 @@ public class ChatMessage implements Serializable {
    * Returns <code>true</code> if this is the last message sent
    */
   public boolean isLastMessage() {
-    return(this.text.trim().equals("bye"));
+    return this.text.trim().equals("bye");
   }
 
   /**
@@ -46,7 +46,7 @@ public class ChatMessage implements Serializable {
     sb.append(df.format(this.date));
     sb.append("]> ");
     sb.append(this.text);
-    return(sb.toString());
+    return sb.toString();
   }
 
 }

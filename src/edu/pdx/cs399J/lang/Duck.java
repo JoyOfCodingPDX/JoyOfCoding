@@ -10,7 +10,7 @@ public class Duck extends Bird implements Flies {
   }
 
   public String says() {
-    return("Quack");
+    return "Quack";
   }
 
   public void fly() {

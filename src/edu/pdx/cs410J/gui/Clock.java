@@ -82,7 +82,7 @@ public class Clock extends Canvas {
 	       this.circleRadius * 2);         // height
 
     // Draw the numbers on the clock face
-    for(int i = 1; i <= 12; i++) {
+    for (int i = 1; i <= 12; i++) {
       Point end = this.pointAtTime(center, 5 * i, this.numberDistance);
 
       // Attempt to center the string nicely
@@ -137,7 +137,7 @@ public class Clock extends Canvas {
     double x = radius * Math.sin(angle) + center.x;
     double y = radius * Math.cos(angle) + center.y;
 
-    return(new Point((int) x, (int) y));
+    return new Point((int) x, (int) y);
   }
 
   /**
@@ -146,16 +146,16 @@ public class Clock extends Canvas {
    */
   public String getDateString() {
     DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
-    return(df.format(this.now));
+    return df.format(this.now);
   }
 
   public Dimension getPreferredSize() {
     // As I recall, it is a good idea to override this method
-    return(this.getSize());
+    return this.getSize();
   }
 
   public Dimension getMinimumSize() {
-    return(this.getPreferredSize());
+    return this.getPreferredSize();
   }
 
   /**

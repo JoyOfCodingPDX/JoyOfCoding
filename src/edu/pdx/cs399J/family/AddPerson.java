@@ -58,69 +58,69 @@ public class AddPerson {
   private static String parseCommandLine(String[] args) {
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].equals("-id")) {
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("-id")) {
 	// Next argument should be id
 	if(++i >= args.length) {
 	  // No more arguments to parse.  Eeep.
-	  return("Missing id");
+	  return "Missing id";
 	}
 
 	try {
 	  id = Integer.parseInt(args[i]);
 	
-	} catch(NumberFormatException ex) {
-	  return("Malformatted id: " + args[i]);
+	} catch (NumberFormatException ex) {
+	  return "Malformatted id: " + args[i];
 	}
       
 	if(id < 1) {
-	  return("Invalid id value: " + id);
+	  return "Invalid id value: " + id;
 	}
 
-      } else if(args[i].equals("-file")) {
+      } else if (args[i].equals("-file")) {
 	if(++i >= args.length) {
-	  return("Missing file name");
+	  return "Missing file name";
 	}
 
 	fileName = args[i];
 
-      } else if(args[i].equals("-text")) {
+      } else if (args[i].equals("-text")) {
 	useXml = false;
 
-      } else if(args[i].equals("-xml")) {
+      } else if (args[i].equals("-xml")) {
 	useXml = true;
 
-      } else if(args[i].equals("-firstName")) {
+      } else if (args[i].equals("-firstName")) {
 	if(++i >= args.length) {
-	  return("Missing first name");
+	  return "Missing first name";
 	}
 
 	firstName = args[i];
 
-      } else if(args[i].equals("-middleName")) {
+      } else if (args[i].equals("-middleName")) {
 	if(++i >= args.length) {
-	  return("Missing middle name");
+	  return "Missing middle name";
 	}
 
 	middleName = args[i];
 
-      } else if(args[i].equals("-lastName")) {
+      } else if (args[i].equals("-lastName")) {
 	if(++i >= args.length) {
-	  return("Missing last name");
+	  return "Missing last name";
 	}
 
 	lastName = args[i];
 
-      } else if(args[i].equals("-dob")) {
+      } else if (args[i].equals("-dob")) {
 	if(++i >= args.length) {
-	  return("Missing date of birth");
+	  return "Missing date of birth";
 	}
 
 	// A date will take up three arguments
 	StringBuffer sb = new StringBuffer(args[i] + " ");
 	for(int j = i+1; j < i+3; j++) {
-	  if(j >= args.length) {
-	    return("Malformatted date of birth: " + sb);
+	  if (j >= args.length) {
+	    return "Malformatted date of birth: " + sb;
 
 	  } else {
 	    sb.append(args[j] + " ");
@@ -131,20 +131,20 @@ public class AddPerson {
 	try {
 	  dob = df.parse(sb.toString().trim());
 
-	} catch(ParseException ex) {
-	  return("Malformatted date of birth: " + sb);
+	} catch (ParseException ex) {
+	  return "Malformatted date of birth: " + sb;
 	}
 
-      } else if(args[i].equals("-dod")) {
+      } else if (args[i].equals("-dod")) {
 	if(++i >= args.length) {
-	  return("Missing date of death");
+	  return "Missing date of death";
 	}
 
 	// A date will take up three arguments
 	StringBuffer sb = new StringBuffer(args[i] + " ");
 	for(int j = i+1; j < i+3; j++) {
-	  if(j >= args.length) {
-	    return("Malformatted date of birth: " + sb);
+	  if (j >= args.length) {
+	    return "Malformatted date of birth: " + sb;
 
 	  } else {
 	    sb.append(args[j] + " ");
@@ -155,24 +155,24 @@ public class AddPerson {
 	try {
 	  dod = df.parse(sb.toString().trim());
 
-	} catch(ParseException ex) {
-	  return("Malformatted date of death: " + sb);
+	} catch (ParseException ex) {
+	  return "Malformatted date of death: " + sb;
 	}
 
-      } else if(args[i].equals("-parentOf")) {
+      } else if (args[i].equals("-parentOf")) {
 	if(++i >= args.length) {
-	  return("No child id specified");
+	  return "No child id specified";
 	}
 
 	try {
 	  childId = Integer.parseInt(args[i]);
 
-	} catch(NumberFormatException ex) {
-	  return("Malformatted child id: " + args[i]);
+	} catch (NumberFormatException ex) {
+	  return "Malformatted child id: " + args[i];
 	}
 
 	if(childId < 1) {
-	  return("Invalid child id value: " + childId);
+	  return "Invalid child id value: " + childId;
 	}
 
       } else {
@@ -181,15 +181,15 @@ public class AddPerson {
     }
 
     // Make some additional checks
-    if(id == -1) {
-      return("No id specified");
+    if (id == -1) {
+      return "No id specified";
 
-    } else if(fileName == null) {
-      return("No file name specified");
+    } else if (fileName == null) {
+      return "No file name specified";
     }
 
     // No errors!
-    return(null);
+    return null;
   }
 
   /**
@@ -200,7 +200,7 @@ public class AddPerson {
     // First parse the command line
     String message = parseCommandLine(args);
 
-    if(message != null) {
+    if (message != null) {
       // An error occurred, report it
       err.println("** " + message + "\n");
       usage();
@@ -211,14 +211,14 @@ public class AddPerson {
 
     // If the data file exists, read it in
     File file = new File(fileName);
-    if(file.exists()) {
+    if (file.exists()) {
       Parser parser = null;
-      if(useXml) {
+      if (useXml) {
 	// File in XML format
 	try {
 	  parser = new XmlParser(file);
 
-	} catch(FileNotFoundException ex) {
+	} catch (FileNotFoundException ex) {
 	  err.println("** Could not find file " + fileName);
 	  System.exit(1);
 	}
@@ -228,7 +228,7 @@ public class AddPerson {
 	try {
 	  parser = new TextParser(file);
 
-	} catch(FileNotFoundException ex) {
+	} catch (FileNotFoundException ex) {
 	  err.println("** Could not find file " + fileName);
 	  System.exit(1);
 	}
@@ -238,7 +238,7 @@ public class AddPerson {
       try {
 	tree = parser.parse();
 
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
 	err.println("** File " + fileName + " is malformatted");
 	System.exit(1);
       }
@@ -251,32 +251,32 @@ public class AddPerson {
     // Get a person and update its information
     Person person = tree.getPerson(id);
 
-    if(firstName != null) {
+    if (firstName != null) {
       person.setFirstName(firstName);
     }
 
-    if(middleName != null) {
+    if (middleName != null) {
       person.setMiddleName(middleName);
     }
 
-    if(lastName != null) {
+    if (lastName != null) {
       person.setLastName(lastName);
     }
 
-    if(dob != null) {
+    if (dob != null) {
       person.setDateOfBirth(dob);
     }
 
-    if(dod != null) {
+    if (dod != null) {
       person.setDateOfDeath(dod);
     }
 
-    if(childId != -1) {
+    if (childId != -1) {
       // Make a child aware of his/her parent
       Person child = tree.getPerson(childId);
       
       // All males have even ids, all females have odd ids
-      if(id % 2 == 0) {
+      if (id % 2 == 0) {
 	child.setFather(person);
 	
       } else {
@@ -286,11 +286,11 @@ public class AddPerson {
 
     // Now write the family tree to the file
     Dumper dumper = null;
-    if(useXml) {
+    if (useXml) {
       try {
 	dumper = new XmlDumper(file);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** Error while dealing with " + file);
 	System.exit(1);
       }
@@ -299,7 +299,7 @@ public class AddPerson {
       try {
 	dumper = new TextDumper(file);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** Error while dealing with " + file);
 	System.exit(1);
       }

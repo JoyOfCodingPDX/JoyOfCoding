@@ -59,9 +59,9 @@ public class ClassPanel extends JPanel {
       ListSelectionListener() {
         public void valueChanged(ListSelectionEvent e) {
           String name = (String) assignmentsList.getSelectedValue();
-          if(name != null) {
+          if (name != null) {
             Assignment assign = book.getAssignment(name);
-            if(assign == null) {
+            if (assign == null) {
               String s = "No assignment named: " + name;
               throw new IllegalArgumentException(s);
             }
@@ -118,7 +118,7 @@ public class ClassPanel extends JPanel {
     this.newStudentButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String id = newStudentField.getText();
-          if(id == null || id.equals("")) {
+          if (id == null || id.equals("")) {
             String s = "No student id specified";
             JOptionPane.showMessageDialog(ClassPanel.this, 
                                           new String[] {s},
@@ -127,7 +127,7 @@ public class ClassPanel extends JPanel {
             return;
           }
 
-	  if(ClassPanel.this.book == null) {
+	  if (ClassPanel.this.book == null) {
             String s = "No grade book opened";
             JOptionPane.showMessageDialog(ClassPanel.this, 
                                           new String[] {s},
@@ -157,13 +157,13 @@ public class ClassPanel extends JPanel {
 
     Assignment newAssign = dialog.getAssignment();
 
-    if(newAssign != null) {
+    if (newAssign != null) {
       book.addAssignment(newAssign);
       this.displayAssignments(book);
       this.assignmentsList.setSelectedValue(newAssign.getName(),
                                             true);
     }
-    return(newAssign);
+    return newAssign;
   }
 
   /**
@@ -215,7 +215,7 @@ public class ClassPanel extends JPanel {
    * grade book stored in an XML file.
    */
   public static void main(String[] args) {
-    if(args.length < 1) {
+    if (args.length < 1) {
       System.err.println("** usage: java ClassPanel xmlFile");
       System.exit(1);
     }
@@ -227,15 +227,15 @@ public class ClassPanel extends JPanel {
       XmlParser parser = new XmlParser(fileName);
       book = parser.parse();
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }
@@ -252,7 +252,7 @@ public class ClassPanel extends JPanel {
             XmlDumper dumper = new XmlDumper(fileName);
             dumper.dump(theBook);
 
-          } catch(IOException ex) {
+          } catch (IOException ex) {
             System.err.println("** Error while writing XML file: " + ex);
           }
 

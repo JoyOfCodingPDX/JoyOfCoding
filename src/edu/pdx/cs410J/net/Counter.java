@@ -19,13 +19,13 @@ public class Counter extends Thread {
    */
   public void run() {
     // Wait for a random amount of time and then print a number
-    for(int i = 1; i <= 6; i++) {
+    for (int i = 1; i <= 6; i++) {
       try {
 	long time = (long) (Math.random() * 1000);
 
 	Thread.sleep(time);
 
-      } catch(InterruptedException ex) {
+      } catch (InterruptedException ex) {
 	return;
       }
 

@@ -37,14 +37,14 @@ public class DateDemo {
     
     Date day = null;
 
-    if(args.length == 0) {
+    if (args.length == 0) {
       // Use the current day/time
       day = new Date();
 
     } else {
       // Parse the command line as if it were a date
       StringBuffer sb = new StringBuffer();
-      for(int i = 0; i < args.length; i++) {
+      for (int i = 0; i < args.length; i++) {
 	sb.append(args[i]);
 	sb.append(' ');
       }
@@ -52,7 +52,7 @@ public class DateDemo {
       try {
 	day = dfShort.parse(sb.toString());
 
-      } catch(ParseException ex) {
+      } catch (ParseException ex) {
 	System.err.println("** Malformatted date: " + sb);
 	System.exit(1);
       }

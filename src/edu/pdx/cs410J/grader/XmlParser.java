@@ -49,11 +49,11 @@ public class XmlParser {
    * generated.
    */
   public void setStudentDir(File dir) {
-    if(!dir.exists()) {
+    if (!dir.exists()) {
       throw new IllegalArgumentException(dir + " does not exist");
     }
 
-    if(!dir.isDirectory()) {
+    if (!dir.isDirectory()) {
       throw new IllegalArgumentException(dir + " is not a directory");
     }
 
@@ -65,7 +65,7 @@ public class XmlParser {
    */
   private static String extractTextFrom(Element element) {
     Text text = (Text) element.getFirstChild();
-    return((text == null ? "" : text.getData()));
+    return (text == null ? "" : text.getData());
   }
 
   /**
@@ -75,19 +75,19 @@ public class XmlParser {
     List list = new ArrayList();
 
     NodeList children = element.getChildNodes();
-    for(int i = 0; i < children.getLength(); i++) {
+    for (int i = 0; i < children.getLength(); i++) {
       Node node = children.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
         continue;
       }
 
       Element child = (Element) node;
-      if(child.getTagName().equals("note")) {
+      if (child.getTagName().equals("note")) {
         list.add(extractTextFrom(child));
       }
     }
 
-    return(list);
+    return list;
   }
 
   /**
@@ -101,60 +101,60 @@ public class XmlParser {
     String description = null;
 
     NodeList children = element.getChildNodes();
-    for(int i = 0; i < children.getLength(); i++) {
+    for (int i = 0; i < children.getLength(); i++) {
       Node node = children.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
         continue;
       }
 
       Element child = (Element) node;
-      if(child.getTagName().equals("name")) {
+      if (child.getTagName().equals("name")) {
         name = extractTextFrom(child);
 
-      } else if(child.getTagName().equals("description")) {
+      } else if (child.getTagName().equals("description")) {
         description = extractTextFrom(child);
 
-      } else if(child.getTagName().equals("points")) {
+      } else if (child.getTagName().equals("points")) {
         String points = extractTextFrom(child);
         try {
-          if(name == null) {
+          if (name == null) {
             throw new ParserException("No name for assignment with " +
                                       "points " + points);
           }
           assign = new Assignment(name, Double.parseDouble(points));
-          if(description != null) {
+          if (description != null) {
             assign.setDescription(description);
           }
 
-        } catch(NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
           throw new ParserException("Invalid points value: " +
                                     points);
         }
 
-      } else if(child.getTagName().equals("notes")) {
+      } else if (child.getTagName().equals("notes")) {
         Iterator notes = extractNotesFrom(child).iterator();
-        while(notes.hasNext()) {
+        while (notes.hasNext()) {
           assign.addNote((String) notes.next());
         }
       }
     }
 
-    if(assign == null ) {
+    if (assign == null ) {
       throw new ParserException("No assignment found!");
     }
     
     String type = element.getAttribute("type");
-    if(type.equals("PROJECT")) {
+    if (type.equals("PROJECT")) {
       assign.setType(Assignment.PROJECT);
       
-    } else if(type.equals("QUIZ")) {
+    } else if (type.equals("QUIZ")) {
       assign.setType(Assignment.QUIZ);
       
-    } else if(type.equals("OTHER")) {
+    } else if (type.equals("OTHER")) {
       assign.setType(Assignment.OTHER);
     }
 
-    return(assign);
+    return assign;
   }
 
   /**
@@ -166,25 +166,25 @@ public class XmlParser {
     List notes = null;
 
     NodeList kids = root.getChildNodes();
-    for(int j = 0; j < kids.getLength(); j++) {
+    for (int j = 0; j < kids.getLength(); j++) {
       Node kidNode = kids.item(j);
-      if(!(kidNode instanceof Element)) {
+      if (!(kidNode instanceof Element)) {
         continue;
       }
       
       Element kid = (Element) kidNode;
-      if(kid.getTagName().equals("name")) {
+      if (kid.getTagName().equals("name")) {
         name = extractTextFrom(kid);
         
-      } else if(kid.getTagName().equals("score")) {
+      } else if (kid.getTagName().equals("score")) {
         score = extractTextFrom(kid);
         
-      } else if(kid.getTagName().equals("notes")) {
+      } else if (kid.getTagName().equals("notes")) {
         notes = extractNotesFrom(kid);
       }
     }
     
-    if(name == null || score == null) {
+    if (name == null || score == null) {
       throw new ParserException("Malformed grade");
     }
     
@@ -192,14 +192,14 @@ public class XmlParser {
       double s = Double.parseDouble(score);
       Grade grade = new Grade(name, s);
       Iterator iter = notes.iterator();
-      while(iter.hasNext()) {
+      while (iter.hasNext()) {
         String note = (String) iter.next();
         grade.addNote(note);
       }
 
-      return(grade);
+      return grade;
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       throw new ParserException("Malformatted number: " + score);
     }
   }
@@ -230,10 +230,10 @@ public class XmlParser {
       
       parser.parse(source);
 
-    } catch(SAXException ex) {
+    } catch (SAXException ex) {
       throw new ParserException("While parsing XML source: " + ex);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       throw new ParserException("While parsing XML source: " + ex);
     }
 
@@ -246,7 +246,7 @@ public class XmlParser {
       throw new ParserException("Document parsing failed");
     }
 
-    if(!root.getTagName().equals("student")) {
+    if (!root.getTagName().equals("student")) {
       throw new ParserException(file + 
                                 " does not contain a student");
     }
@@ -254,16 +254,16 @@ public class XmlParser {
     Student student = null;
 
     NodeList children = root.getChildNodes();
-    for(int i = 0; i < children.getLength(); i++) {
+    for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
         continue;
       }
 
       Element child = (Element) node;
-      if(child.getTagName().equals("id")) {
+      if (child.getTagName().equals("id")) {
         String idFromFile = extractTextFrom(child);
-        if(id != null && !id.equals(idFromFile)) {
+        if (id != null && !id.equals(idFromFile)) {
           throw new ParserException(file + 
                                     " does not contain student " +
                                     student.getId());
@@ -271,88 +271,88 @@ public class XmlParser {
 
         student = new Student(idFromFile);
 
-      } else if(child.getTagName().equals("firstName")) {
+      } else if (child.getTagName().equals("firstName")) {
         String firstName = extractTextFrom(child);
         student.setFirstName(firstName);
 
-      } else if(child.getTagName().equals("lastName")) {
+      } else if (child.getTagName().equals("lastName")) {
         String lastName = extractTextFrom(child);
         student.setLastName(lastName);
 
-      } else if(child.getTagName().equals("nickName")) {
+      } else if (child.getTagName().equals("nickName")) {
         String nickName = extractTextFrom(child);
         student.setNickName(nickName);
 
-      } else if(child.getTagName().equals("email")) {
+      } else if (child.getTagName().equals("email")) {
         String email = extractTextFrom(child);
         student.setEmail(email);
 
-      } else if(child.getTagName().equals("ssn")) {
+      } else if (child.getTagName().equals("ssn")) {
         String ssn = extractTextFrom(child);
         student.setSsn(ssn);
 
-      } else if(child.getTagName().equals("major")) {
+      } else if (child.getTagName().equals("major")) {
         String major = extractTextFrom(child);
         student.setMajor(major);
 
-      } else if(child.getTagName().equals("grades")) {
+      } else if (child.getTagName().equals("grades")) {
         NodeList kids = child.getChildNodes();
-        for(int j = 0; j < kids.getLength(); j++) {
+        for (int j = 0; j < kids.getLength(); j++) {
           Node kidNode = kids.item(j);
-          if(!(kidNode instanceof Element)) {
+          if (!(kidNode instanceof Element)) {
             continue;
           }
 
           Element kid = (Element) kidNode;
-          if(kid.getTagName().equals("grade")) {
+          if (kid.getTagName().equals("grade")) {
             Grade grade = extractGradeFrom(kid);
             student.setGrade(grade.getAssignmentName(), grade);
           }
         }
 
-      } else if(child.getTagName().equals("late")) {
+      } else if (child.getTagName().equals("late")) {
         NodeList kids = child.getChildNodes();
-        for(int j = 0; j < kids.getLength(); j++) {
+        for (int j = 0; j < kids.getLength(); j++) {
           Node kidNode = kids.item(j);
-          if(!(kidNode instanceof Element)) {
+          if (!(kidNode instanceof Element)) {
             continue;
           }
 
           Element kid = (Element) kidNode;
-          if(kid.getTagName().equals("name")) {
+          if (kid.getTagName().equals("name")) {
             student.addLate(extractTextFrom(kid));
           }
         }
 
-      } else if(child.getTagName().equals("resubmitted")) {
+      } else if (child.getTagName().equals("resubmitted")) {
         NodeList kids = child.getChildNodes();
-        for(int j = 0; j < kids.getLength(); j++) {
+        for (int j = 0; j < kids.getLength(); j++) {
           Node kidNode = kids.item(j);
-          if(!(kidNode instanceof Element)) {
+          if (!(kidNode instanceof Element)) {
             continue;
           }
 
           Element kid = (Element) kidNode;
-          if(kid.getTagName().equals("name")) {
+          if (kid.getTagName().equals("name")) {
             student.addResubmitted(extractTextFrom(kid));
           }
         }
 
-      } else if(child.getTagName().equals("notes")) {
+      } else if (child.getTagName().equals("notes")) {
         Iterator notes = extractNotesFrom(child).iterator();
-        while(notes.hasNext()) {
+        while (notes.hasNext()) {
           String note = (String) notes.next();
           student.addNote(note);
         }
       }
     }
 
-    if(student != null) {
+    if (student != null) {
       // Students are initially clean
       student.makeClean();
     }
 
-    return(student);
+    return student;
   }
 
   /**
@@ -377,10 +377,10 @@ public class XmlParser {
     try {
       parser.parse(new InputSource(in));
 
-    } catch(SAXException ex) {
+    } catch (SAXException ex) {
       throw new ParserException("While parsing XML source: " + ex);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       throw new ParserException("While parsing XML source: " + ex);
     }
 
@@ -394,46 +394,46 @@ public class XmlParser {
     }
 
     NodeList children = root.getChildNodes();
-    for(int i = 0; i < children.getLength(); i++) {
+    for (int i = 0; i < children.getLength(); i++) {
       Node node = children.item(i);
-      if(!(node instanceof Element)) {
+      if (!(node instanceof Element)) {
         continue;
       }
 
       Element child = (Element) node;
-      if(child.getTagName().equals("name")) {
+      if (child.getTagName().equals("name")) {
         this.book = new GradeBook(extractTextFrom(child));
 
-      } else if(this.book == null) {
+      } else if (this.book == null) {
         throw new ParserException("name element is not first");
 
-      } else if(child.getTagName().equals("assignments")) {
+      } else if (child.getTagName().equals("assignments")) {
         NodeList assignments = child.getChildNodes();
-        for(int j = 0; j < assignments.getLength(); j++) {
+        for (int j = 0; j < assignments.getLength(); j++) {
           Node assignment = assignments.item(j);
-          if(assignment instanceof Element) {
+          if (assignment instanceof Element) {
             Assignment assign = 
               extractAssignmentFrom((Element) assignment);
             this.book.addAssignment(assign);
           }
         }
 
-      } else if(child.getTagName().equals("students")) {
+      } else if (child.getTagName().equals("students")) {
         NodeList students = child.getChildNodes();
-        for(int j = 0; j < students.getLength(); j++) {
+        for (int j = 0; j < students.getLength(); j++) {
           Node student = students.item(j);
 
-          if(!(student instanceof Element)) {
+          if (!(student instanceof Element)) {
             continue;
           }
               
           Element idElement = (Element) student;
-          if(idElement.getTagName().equals("id")) {
+          if (idElement.getTagName().equals("id")) {
             String id = extractTextFrom(idElement);
                 // Locate the XML file for the Student
             File file = 
               new File(this.studentDir, id + ".xml");
-            if(!file.exists()) {
+            if (!file.exists()) {
               throw new IllegalArgumentException("No XML file for " +
                                                  id);
             }
@@ -442,17 +442,17 @@ public class XmlParser {
             this.book.addStudent(stu);
           }         
         }
-      } else if(child.getTagName().equals("lateDays")) {
+      } else if (child.getTagName().equals("lateDays")) {
         // Fill in later, maybe.
       }
     }
 
-    if(this.book != null) {
+    if (this.book != null) {
       // The book is initially clean
       this.book.makeClean();
     }
 
-    return(this.book);
+    return this.book;
   }
 
 }

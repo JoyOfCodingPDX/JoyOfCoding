@@ -21,28 +21,28 @@ public class GenerateMailrc {
 	public int compare(Object o1, Object o2) {
 	  String id1 = ((Student) o1).getId();
 	  String id2 = ((Student) o2).getId();
-	  return(id1.compareTo(id2));
+	  return id1.compareTo(id2);
 	}
       });
     Iterator ids = book.getStudentIds().iterator();
-    while(ids.hasNext()) {
+    while (ids.hasNext()) {
       sorted.add(book.getStudent((String) ids.next()));
     }
 
     Iterator iter = sorted.iterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       // alias id "email (firstName LastName)"
       Student student = (Student) iter.next();
       String email = student.getEmail();
-      if(email != null) {
+      if (email != null) {
 	mailrc.print("alias " + student.getId() + " \"");
 	StringBuffer name = new StringBuffer();
 
-        if(student.getNickName() != null) {
+        if (student.getNickName() != null) {
           name.append(student.getNickName());
           name.append(" ");
 
-        } else if(student.getFirstName() != null) {
+        } else if (student.getFirstName() != null) {
 	  name.append(student.getFirstName());
 	  name.append(" ");
 	}
@@ -70,7 +70,7 @@ public class GenerateMailrc {
    * Main program.
    */
   public static void main(String[] args) {
-    if(args.length < 2) {
+    if (args.length < 2) {
       System.err.println("** Missing arguments");
       usage();
     }
@@ -85,15 +85,15 @@ public class GenerateMailrc {
       book = parser.parse();
       mailrc = new PrintWriter(new FileWriter(mailrcName), true);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
       
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** Error during parsing: " + ex);
       System.exit(1);
     }

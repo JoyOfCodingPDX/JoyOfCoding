@@ -36,7 +36,7 @@ public class ChatListener implements Runnable {
 //        System.out.println("InputStream");
       this.bis = new BufferedInputStream(socket.getInputStream());
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }
@@ -52,7 +52,7 @@ public class ChatListener implements Runnable {
 //      System.out.println("ChatListener starting");
 
     // Do stuff...
-    while(true) {
+    while (true) {
 //        System.out.println("Waiting to receive");
       
       try {
@@ -68,16 +68,16 @@ public class ChatListener implements Runnable {
 //  	  System.out.println("Is " + m + " last? " +
 //  			     (m.isLastMessage() ? "yes" : "no"));
 
-	  if(m.isLastMessage()) {
+	  if (m.isLastMessage()) {
 	    break;
 	  }
 	}
 	  
-      } catch(ClassNotFoundException ex) {
+      } catch (ClassNotFoundException ex) {
 	err.println("** Could not find class: " + ex);
 	System.exit(1);
 	  
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** IOException: " + ex);
 	System.exit(1);
       }
@@ -99,6 +99,6 @@ public class ChatListener implements Runnable {
       this.incoming.clear();
     }
 
-    return(messages);
+    return messages;
   }
 }

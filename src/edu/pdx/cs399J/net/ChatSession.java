@@ -28,7 +28,7 @@ public class ChatSession {
     try {
       port = Integer.parseInt(args[1]);
 
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       err.println("** Bad port number: " + args[1]);
     }
 
@@ -45,7 +45,7 @@ public class ChatSession {
       BufferedReader br = new BufferedReader(isr);
 
       String line = "";
-      while(!line.trim().equals("bye")) {
+      while (!line.trim().equals("bye")) {
 	// Print and read messages from the listener
 	Iterator messages = communicator.getMessages().iterator();
 	while(messages.hasNext()) {
@@ -66,7 +66,7 @@ public class ChatSession {
 
       out.println("Waiting for other side to shut down");
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException: " + ex);
       System.exit(1);
     }

@@ -10,13 +10,13 @@ import java.security.spec.*;
  */
 public class VerifyMessage {
   public static void main(String[] args) {
-    String keyName = args[0];
+    String fileName = args[0];
     String digestName = args[1];
     String message = args[2];
 
     try {
       // Read in key from file
-      FileInputStream fis = new FileInputStream(keyName);
+      FileInputStream fis = new FileInputStream(fileName);
       byte[] encodedKey = new byte[fis.available()];
       fis.read(encodedKey);
       fis.close();
@@ -38,29 +38,29 @@ public class VerifyMessage {
 
       sig.initVerify(publicKey);
       sig.update(message.getBytes());
-      if(sig.verify(digest)) {
+      if (sig.verify(digest)) {
 	System.out.println("Success");
       } else {
 	System.out.println("Failure");
       }
       return;
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       ex.printStackTrace(System.err);
 
-    } catch(NoSuchProviderException ex) {
+    } catch (NoSuchProviderException ex) {
       ex.printStackTrace(System.err);
 
-    } catch(NoSuchAlgorithmException ex) {
+    } catch (NoSuchAlgorithmException ex) {
       ex.printStackTrace(System.err);
 
-    } catch(InvalidKeySpecException ex) {
+    } catch (InvalidKeySpecException ex) {
       ex.printStackTrace(System.err);
 
-    } catch(SignatureException ex) {
+    } catch (SignatureException ex) {
       ex.printStackTrace(System.err);
 
-    } catch(InvalidKeyException ex) {
+    } catch (InvalidKeyException ex) {
       ex.printStackTrace(System.err);
     }
 

@@ -26,7 +26,7 @@ public class WriteToFile {
       writer = new FileWriter(args[0]);
 
       // Write the command line arguments to the file
-      for(int i = 1; i < args.length; i++) {
+      for (int i = 1; i < args.length; i++) {
 	writer.write(args[i]);
 	writer.write('\n');
       }
@@ -35,7 +35,7 @@ public class WriteToFile {
       writer.flush();
       writer.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** " + ex);
     }
   }

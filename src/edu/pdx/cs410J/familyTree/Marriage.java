@@ -29,21 +29,21 @@ public class Marriage {
    * Returns the husband in his marriage.
    */
   public Person getHusband() {
-    return(this.husband);
+    return this.husband;
   }
 
   /**
    * Returns the wife in this marriage.
    */
   public Person getWife() {
-    return(this.wife);
+    return this.wife;
   }
 
   /**
    * Returns the date on which the husband and wife were married.
    */
   public Date getDate() {
-    return(this.date);
+    return this.date;
   }
 
   /**
@@ -57,7 +57,7 @@ public class Marriage {
    * Returns the location at which the husband and wife were married.
    */
   public String getLocation() {
-    return(this.location.trim());
+    return this.location.trim();
   }
 
   /**
@@ -75,15 +75,15 @@ public class Marriage {
     sb.append(this.husband.getFullName() + " and " +
 	      this.wife.getFullName() + " were married");
 
-    if(this.date != null) {
+    if (this.date != null) {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       sb.append(" on " + df.format(this.date));
     }
-    if(this.location != null) {
+    if (this.location != null) {
       sb.append(" in " + this.location);
     }
 
-    return(sb.toString());
+    return sb.toString();
   }
 
   /**
@@ -102,7 +102,7 @@ public class Marriage {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       marriage.setDate(df.parse("Jul 12, 1969"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.err.println("** Malformatted wedding day?");
       System.exit(1);
     }

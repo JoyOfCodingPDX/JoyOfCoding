@@ -46,7 +46,7 @@ public class EditMarriageDialog extends JDialog {
     this(owner, "Creating Marriage", tree);
 
     int id = spouse.getId();
-    if(id % 2 == 0) {
+    if (id % 2 == 0) {
       // husband
       this.husband = spouse;
       this.husbandField.setText(this.husband.getFullName());
@@ -83,7 +83,7 @@ public class EditMarriageDialog extends JDialog {
     this.wifeField.setEditable(false);
     
     Date date = marriage.getDate();
-    if(date != null) {
+    if (date != null) {
       DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
       this.dateField.setText(df.format(date));
     }
@@ -117,7 +117,7 @@ public class EditMarriageDialog extends JDialog {
     husbandField.setEditable(false);
     husbandField.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
-          if(!changeHusband) {
+          if (!changeHusband) {
             return;
           }
 
@@ -129,7 +129,7 @@ public class EditMarriageDialog extends JDialog {
           dialog.setVisible(true);
          
           Person husband = dialog.getPerson();
-          if(husband != null) {
+          if (husband != null) {
             EditMarriageDialog.this.husband = husband;
             String husbandName =
               EditMarriageDialog.this.husband.getFullName();
@@ -143,7 +143,7 @@ public class EditMarriageDialog extends JDialog {
     wifeField.setEditable(false);
     wifeField.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
-          if(!changeWife) {
+          if (!changeWife) {
             return;
           }
 
@@ -155,7 +155,7 @@ public class EditMarriageDialog extends JDialog {
           dialog.setVisible(true);
          
           Person wife = dialog.getPerson();
-          if(wife != null) {
+          if (wife != null) {
             EditMarriageDialog.this.wife = wife;
             String wifeName =
               EditMarriageDialog.this.wife.getFullName();
@@ -184,12 +184,12 @@ public class EditMarriageDialog extends JDialog {
 	public void actionPerformed(ActionEvent e) {
 	  // Create a new marriage based on the information entered in
 	  // this dialog
-          if(husband == null) {
+          if (husband == null) {
             error("Missing husband");
             return;
           }
 
-          if(wife == null) {
+          if (wife == null) {
             error("Missing wife");
             return;
           }
@@ -198,16 +198,16 @@ public class EditMarriageDialog extends JDialog {
 
           text = dateField.getText();
           Date date = null;
-          if(text != null && !text.equals("")) {
+          if (text != null && !text.equals("")) {
             date = parseDate(text);
-            if(date == null) {
+            if (date == null) {
               // Parse error
               return;
             }
           }
           
           // Everything parsed alright
-          if(marriage == null) {
+          if (marriage == null) {
             marriage = new Marriage(husband, wife);
             husband.addMarriage(marriage);
             wife.addMarriage(marriage);
@@ -246,7 +246,7 @@ public class EditMarriageDialog extends JDialog {
    * <code>EditMarriageDialog</code>.
    */
   public Marriage getMarriage() {
-    return(this.marriage);
+    return this.marriage;
   }
 
   /**
@@ -261,19 +261,19 @@ public class EditMarriageDialog extends JDialog {
       DateFormat.getDateInstance(DateFormat.FULL),
     };
 
-    for(int i = 0; i < formats.length; i++) {
+    for (int i = 0; i < formats.length; i++) {
       DateFormat df = formats[i];
       try {
         Date date = df.parse(text);
-        return(date);
+        return date;
 
-      } catch(ParseException ex) {
+      } catch (ParseException ex) {
         continue;
       }
     }
 
     error("Could not parse date: " + text);
-    return(null);
+    return null;
   }
 
   /**

@@ -26,7 +26,7 @@ public class FamilyTreeApplet extends JApplet {
     this.getContentPane().add(viewer);
 
     String xmlFile = this.getParameter("xmlFile");
-    if(xmlFile != null) {
+    if (xmlFile != null) {
       URL url = null;
       try {
 //         URL base = this.getDocumentBase();
@@ -34,7 +34,7 @@ public class FamilyTreeApplet extends JApplet {
         url = new URL(xmlFile);
         viewer.setURLSource(url);
 
-      } catch(MalformedURLException ex) {
+      } catch (MalformedURLException ex) {
         viewer.setSourceText(ex.toString());
       }
     }

@@ -78,7 +78,7 @@ public class XmlDumper implements Dumper {
     y.appendChild(doc.createTextNode(year + ""));
 
     // Return the date Element
-    return(d);
+    return d;
   }
 
   /**
@@ -95,7 +95,7 @@ public class XmlDumper implements Dumper {
         dom.createDocumentType("familytree", publicID, systemID);
       doc = dom.createDocument(null, "familytree", dtd);
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       // Eep, this is bad
       ex.printStackTrace(System.err);
       System.exit(1);
@@ -111,7 +111,7 @@ public class XmlDumper implements Dumper {
 
       // Make the people
       Iterator people = tree.getPeople().iterator();
-      while(people.hasNext()) {
+      while (people.hasNext()) {
 	Person person = (Person) people.next();
 	
 	// Create the person element
@@ -178,7 +178,7 @@ public class XmlDumper implements Dumper {
 
       // Make the marriages
       Iterator iter = marriages.iterator();
-      while(iter.hasNext()) {
+      while (iter.hasNext()) {
 	Marriage marriage = (Marriage) iter.next();
 	
 	Element m = doc.createElement("marriage");
@@ -200,7 +200,7 @@ public class XmlDumper implements Dumper {
 
       }
 
-    } catch(DOMException ex) {
+    } catch (DOMException ex) {
       err.println("** Exception while building DOM tree: " + ex);
       ex.printStackTrace(err);
       System.exit(1);
@@ -217,7 +217,7 @@ public class XmlDumper implements Dumper {
       serial.asDOMSerializer();
       serial.serialize(doc);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       err.println("** IOException while writing XML: " + ex);
       System.exit(1);
     }
@@ -246,7 +246,7 @@ public class XmlDumper implements Dumper {
       DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
       marriage.setDate(df.parse("Jul 12, 1969"));
 
-    } catch(ParseException ex) {
+    } catch (ParseException ex) {
       System.out.println("** Malformed marriage date?");
       System.exit(1);
     }
@@ -262,11 +262,11 @@ public class XmlDumper implements Dumper {
 
     // Dump the family tree 
     XmlDumper dumper = null;
-    if(args.length > 0) {
+    if (args.length > 0) {
       try {
 	dumper = new XmlDumper(args[0]);
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	err.println("** IOException: " + ex);
 	System.exit(1);
       }

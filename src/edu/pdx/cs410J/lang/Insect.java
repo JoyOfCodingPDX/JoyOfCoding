@@ -9,7 +9,7 @@ public abstract class Insect extends Animal {
    * All insects say "Buzz"
    */
   public String says() {
-    return("Buzz");
+    return "Buzz";
   }
 
 }

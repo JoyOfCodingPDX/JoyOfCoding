@@ -18,7 +18,7 @@ public class ParseString {
     StringTokenizer st;
     st = new StringTokenizer(string, delimit);
 
-    while(st.hasMoreTokens()) {
+    while (st.hasMoreTokens()) {
       String token = st.nextToken();
       System.out.println("Token: " + token);
     }

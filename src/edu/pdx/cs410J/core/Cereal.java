@@ -19,17 +19,17 @@ public class Cereal {
    * Returns the name of this cereal
    */
   public String getName() {
-    return(this.name);
+    return this.name;
   }
 
   /**
    * Returns the price of this cereal
    */
   public double getPrice() {
-    return(this.price);
+    return this.price;
   }
 
   public String toString() {
-    return(this.name + " $" + this.price);
+    return this.name + " $" + this.price;
   }
 }

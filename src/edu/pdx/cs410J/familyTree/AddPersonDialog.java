@@ -104,7 +104,7 @@ public class AddPersonDialog extends JDialog {
           try {
             id = Integer.parseInt(idField.getText());
 
-          } catch(NumberFormatException ex) {
+          } catch (NumberFormatException ex) {
             error("Invalid id: " + idField.getText());
             return;
           }
@@ -113,9 +113,9 @@ public class AddPersonDialog extends JDialog {
 
           text = dobField.getText();
           Date dob = null;
-          if(text != null && !text.equals("")) {
+          if (text != null && !text.equals("")) {
             dob = parseDate(dobField.getText());
-            if(dob == null) {
+            if (dob == null) {
               // Parse error
               return;
             }
@@ -123,9 +123,9 @@ public class AddPersonDialog extends JDialog {
 
           text = dodField.getText();
           Date dod = null;
-          if(text != null && !text.equals("")) {
+          if (text != null && !text.equals("")) {
             dod = parseDate(dodField.getText());
-            if(dod == null) {
+            if (dod == null) {
               // Parse error
               return;
             }
@@ -171,7 +171,7 @@ public class AddPersonDialog extends JDialog {
    * <code>AddPersonDialog</code>.
    */
   public Person getPerson() {
-    return(this.newPerson);
+    return this.newPerson;
   }
 
   /**
@@ -186,19 +186,19 @@ public class AddPersonDialog extends JDialog {
       DateFormat.getDateInstance(DateFormat.FULL),
     };
 
-    for(int i = 0; i < formats.length; i++) {
+    for (int i = 0; i < formats.length; i++) {
       DateFormat df = formats[i];
       try {
         Date date = df.parse(text);
-        return(date);
+        return date;
 
-      } catch(ParseException ex) {
+      } catch (ParseException ex) {
         continue;
       }
     }
 
     error("Could not parse date: " + text);
-    return(null);
+    return null;
   }
 
   /**
@@ -226,7 +226,7 @@ public class AddPersonDialog extends JDialog {
           dialog.setVisible(true);
 
           Person newPerson = dialog.getPerson();
-          if(newPerson != null) {
+          if (newPerson != null) {
             tree.addPerson(newPerson);
             PrettyPrinter pretty = 
               new PrettyPrinter(new PrintWriter(System.out, true));

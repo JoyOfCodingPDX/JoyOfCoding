@@ -19,12 +19,12 @@ public class FindJavaFiles {
    */
   private static void findJavaFiles(File dir) {
     File[] javaFiles = dir.listFiles(javaFilter);
-    for(int i = 0; i < javaFiles.length; i++) {
+    for (int i = 0; i < javaFiles.length; i++) {
       System.out.println(javaFiles[i].toString());
     }
 
     File[] dirs = dir.listFiles(dirFilter);
-    for(int i = 0; i < dirs.length; i++) {
+    for (int i = 0; i < dirs.length; i++) {
       findJavaFiles(dirs[i]);
     }
   }
@@ -35,7 +35,7 @@ public class FindJavaFiles {
    */
   public static void main(String[] args) {
     File file = new File(args[0]);
-    if(file.isDirectory()) {
+    if (file.isDirectory()) {
       dirFilter = new DirectoryFilter();
       javaFilter = new JavaFilenameFilter();
 

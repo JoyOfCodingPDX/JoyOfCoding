@@ -28,7 +28,7 @@ public class ATM implements Runnable {
    * Perform each transaction on the account
    */
   public void run() {
-    for(int i = 0; i < transactions.length; i++) {
+    for (int i = 0; i < transactions.length; i++) {
       // Get the balance
       int balance = account.getBalance();
       out.println(this.name + " got balance " + balance);
@@ -74,7 +74,7 @@ public class ATM implements Runnable {
       t2.join();
       t3.join();
 
-    } catch(InterruptedException ex) {
+    } catch (InterruptedException ex) {
       return;
     }
 

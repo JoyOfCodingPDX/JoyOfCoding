@@ -68,7 +68,7 @@ public class TextParser implements Parser {
     // other methods.
 
     try {
-      while(this.in.ready()) {
+      while (this.in.ready()) {
 	String line = this.in.readLine();
 
 	// Ignore empty lines
@@ -96,29 +96,29 @@ public class TextParser implements Parser {
 
 	try {
 	  int n = Integer.parseInt(nLines);
-	  if(type.equals("P")) {
+	  if (type.equals("P")) {
 	    this.parsePerson(n);
 
-	  } else if(type.equals("M")) {
+	  } else if (type.equals("M")) {
 	    this.parseMarriage(n);
 
 	  } else {
 	    error("Invalid type string: " + type);
 	  }
 
-	} catch(NumberFormatException ex) {
+	} catch (NumberFormatException ex) {
 	  error("Malformatted line count: " + nLines);
 	}
 
       }
     
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       int lineNumber = this.in.getLineNumber();
       String m = "Parsing error at line " + lineNumber;
       throw new ParserException(m);
     }
 
-    return(this.tree);
+    return this.tree;
   }
 
   /**
@@ -130,7 +130,7 @@ public class TextParser implements Parser {
 
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-    for(int i = 0; i < nLines; i++) {
+    for (int i = 0; i < nLines; i++) {
       String line = null;
       try {
 	if(!this.in.ready()) {
@@ -140,12 +140,12 @@ public class TextParser implements Parser {
 
 	line = this.in.readLine();
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
 	error("IOException: " + ex.getMessage());
       }
 
       // Ignore empty lines
-      if(line.equals("")) {
+      if (line.equals("")) {
 	continue;
       }
 
@@ -155,14 +155,14 @@ public class TextParser implements Parser {
 
       StringTokenizer st = new StringTokenizer(line, ":");
 	
-      if(st.hasMoreTokens()) {
+      if (st.hasMoreTokens()) {
 	key = st.nextToken();
 
       } else {
 	error("No key specified");
       }
 
-      if(st.hasMoreTokens()) {
+      if (st.hasMoreTokens()) {
 	StringBuffer sb = new StringBuffer();
 	while(st.hasMoreTokens()) {
 	  sb.append(st.nextToken() + " ");
@@ -175,17 +175,17 @@ public class TextParser implements Parser {
 
       // Now do a "switch" on the key and parse the value
       // appropriately
-      if(key.equals("id")) {
+      if (key.equals("id")) {
 	// id
 	try {
 	  int id = Integer.parseInt(value);
 	  person = this.tree.getPerson(id);
 
-	} catch(NumberFormatException ex) {
+	} catch (NumberFormatException ex) {
 	  error("Malformatted id: " + value);
 	}
 
-      } else if(key.equals("fn")) {
+      } else if (key.equals("fn")) {
 	// firstName
 	if(person != null) {
 	  person.setFirstName(value);
@@ -194,7 +194,7 @@ public class TextParser implements Parser {
 	  error("Id must be specified before first name");
 	}
 
-      } else if(key.equals("mn")) {
+      } else if (key.equals("mn")) {
 	// middleName
 	if(person != null) {
 	  person.setMiddleName(value);
@@ -203,7 +203,7 @@ public class TextParser implements Parser {
 	  error("Id must be specified before middle name");
 	}
 
-      } else if(key.equals("ln")) {
+      } else if (key.equals("ln")) {
 	// lastName
 	if(person != null) {
 	  person.setLastName(value);
@@ -212,14 +212,14 @@ public class TextParser implements Parser {
 	  error("Id must be specified before last name");
 	}
 
-      } else if(key.equals("f")) {
+      } else if (key.equals("f")) {
 	// father
 	if(person != null) {
 	  try {
 	    int fatherId  = Integer.parseInt(value);
 	    person.setFather(this.tree.getPerson(fatherId));
 
-	  } catch(NumberFormatException ex) {
+	  } catch (NumberFormatException ex) {
 	    error("Malformatted father id: " + value);
 	  }
 
@@ -227,14 +227,14 @@ public class TextParser implements Parser {
 	  error("Id must be specified before father");
 	}
 
-      } else if(key.equals("m")) {
+      } else if (key.equals("m")) {
 	// mother
 	if(person != null) {
 	  try {
 	    int motherId = Integer.parseInt(value);
 	    person.setMother(this.tree.getPerson(motherId));
 
-	  } catch(NumberFormatException ex) {
+	  } catch (NumberFormatException ex) {
 	    error("Malformatted mother id: " + value);
 	  }
 
@@ -242,13 +242,13 @@ public class TextParser implements Parser {
 	  error("Id must be specified before mother");
 	}
 
-      } else if(key.equals("dob")) {
+      } else if (key.equals("dob")) {
 	// date of birth
 	if(person != null) {
 	  try {
 	    person.setDateOfBirth(df.parse(value));
 
-	  } catch(ParseException ex) {
+	  } catch (ParseException ex) {
 	    error("Malformatted date of birth: " + value);
 	  }
 
@@ -256,13 +256,13 @@ public class TextParser implements Parser {
 	  error("Id must be specified before date of birth");
 	}
 
-      } else if(key.equals("dod")) {
+      } else if (key.equals("dod")) {
 	// date of death
 	if(person != null) {
 	  try {
 	    person.setDateOfDeath(df.parse(value));
 
-	  } catch(ParseException ex) {
+	  } catch (ParseException ex) {
 	    error("Malformatted date of death: " + value);
 	  }
 
@@ -284,20 +284,20 @@ public class TextParser implements Parser {
 
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-    if(nLines < 1) {
+    if (nLines < 1) {
       error("Missing ids in marriage");
     }
 
     String line = null;
     try {
-      if(!this.in.ready()) {
+      if (!this.in.ready()) {
 	// The reader should be ready, Houston we have a problem!
 	error("Unexpected end of file");
       }
 
       line = this.in.readLine();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       error("IOException: " + ex.getMessage());
     }
 
@@ -306,13 +306,13 @@ public class TextParser implements Parser {
     Person husband = null;
     Person wife = null;
     StringTokenizer st = new StringTokenizer(line, " ");
-    if(st.hasMoreTokens()) {
+    if (st.hasMoreTokens()) {
       String s = st.nextToken();
       try {
 	int husbandId = Integer.parseInt(s);
 	husband = this.tree.getPerson(husbandId);
 
-      } catch(NumberFormatException ex) {
+      } catch (NumberFormatException ex) {
 	error("Malformatted husband id: " + s);
       }
 
@@ -320,13 +320,13 @@ public class TextParser implements Parser {
       error("Missing husband id");
     }
 
-    if(st.hasMoreTokens()) {
+    if (st.hasMoreTokens()) {
       String s = st.nextToken();
       try {
 	int wifeId = Integer.parseInt(s);
 	wife = this.tree.getPerson(wifeId);
 
-      } catch(NumberFormatException ex) {
+      } catch (NumberFormatException ex) {
 	error("Malformatted wife id: " + s);
       }
 
@@ -339,7 +339,7 @@ public class TextParser implements Parser {
     husband.addMarriage(marriage);
     
     // Parse the rest
-    for(int i = 1; i < nLines; i++) {
+    for (int i = 1; i < nLines; i++) {
       line = null;
       try {
 	if(!this.in.ready()) {
@@ -349,12 +349,12 @@ public class TextParser implements Parser {
 
         line = this.in.readLine();
 
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         error("IOException: " + ex.getMessage());
       }
 
       // Ignore empty lines
-      if(line.equals("")) {
+      if (line.equals("")) {
         continue;
       }
 
@@ -365,16 +365,16 @@ public class TextParser implements Parser {
 
       st = new StringTokenizer(line, ":");
 
-      if(st.hasMoreTokens()) {
+      if (st.hasMoreTokens()) {
         key = st.nextToken();
 
       } else {
         error("No key specified");
       }
 
-      if(st.hasMoreTokens()) {
+      if (st.hasMoreTokens()) {
         StringBuffer sb = new StringBuffer();
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
           sb.append(st.nextToken() + " ");
         }
         value = sb.toString().trim();
@@ -385,16 +385,16 @@ public class TextParser implements Parser {
 
       // Now do a "switch" on the key and parse the value
       // appropriately
-      if(key.equals("d")) {
+      if (key.equals("d")) {
 	// date
 	try {
 	  marriage.setDate(df.parse(value));
 
-	} catch(ParseException ex) {
+	} catch (ParseException ex) {
 	  error("Malformatted marriage date: " + value);
 	}
 
-      } else if(key.equals("l")) {
+      } else if (key.equals("l")) {
 	marriage.setLocation(value);
 
       } else {
@@ -408,7 +408,7 @@ public class TextParser implements Parser {
    * Pretty print the resulting family tree.
    */
   public static void main(String[] args) {
-    if(args.length == 0) {
+    if (args.length == 0) {
       System.err.println("** Missing file name");
       System.exit(1);
     }
@@ -423,10 +423,10 @@ public class TextParser implements Parser {
       PrettyPrinter pretty = new PrettyPrinter(out);
       pretty.dump(tree);
 
-    } catch(FileNotFoundException ex) {
+    } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file " + fileName);
 
-    } catch(ParserException ex) {
+    } catch (ParserException ex) {
       System.err.println("** " + ex.getMessage());
     }
   }

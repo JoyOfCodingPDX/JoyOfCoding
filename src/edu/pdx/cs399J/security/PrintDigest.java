@@ -17,7 +17,7 @@ public class PrintDigest {
     MessageDigest algorithm = null;
     try {
       algorithm = MessageDigest.getInstance("MD5");
-    } catch(NoSuchAlgorithmException ex) {
+    } catch (NoSuchAlgorithmException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
@@ -27,7 +27,7 @@ public class PrintDigest {
     byte[] digest = algorithm.digest();
 
     StringBuffer hexString = new StringBuffer();
-    for(int i = 0; i < digest.length; i++) {
+    for (int i = 0; i < digest.length; i++) {
       String s = Integer.toHexString(0xFF & digest[i]);
       hexString.append(s);
     }

@@ -38,7 +38,7 @@ public class WriteGraphNodes {
       out.flush();
       out.close();
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       System.err.println("** IOException: " + ex);
       System.exit(1);
     }

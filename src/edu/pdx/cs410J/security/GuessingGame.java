@@ -13,7 +13,7 @@ public class GuessingGame implements Game {
     new BufferedReader(new InputStreamReader(System.in));
 
   public String getName() {
-    return("GuessingGame");
+    return "GuessingGame";
   }
 
   /**
@@ -26,7 +26,7 @@ public class GuessingGame implements Game {
 
     // First get the preferences
     String prefs = console.readPreferences(this);
-    if(prefs == null) {
+    if (prefs == null) {
       System.err.println("** Couldn't read preferences");
       return;
     }
@@ -35,22 +35,22 @@ public class GuessingGame implements Game {
     try {
       highScore = Integer.parseInt(prefs.trim());
       out.println("The high score is: " + highScore);
-    } catch(NumberFormatException ex) {
+    } catch (NumberFormatException ex) {
       // Ignore
     }
 
     // Guess the number
     int guesses = 1;
-    while(true) {
+    while (true) {
       out.print("Your guess: ");
       int guess = getGuess();
-      if((guess < 1) || (guess > 10)) {
+      if ((guess < 1) || (guess > 10)) {
 	out.println("Guess a number between 1 and 10");
 
-      } else if(guess > number) {
+      } else if (guess > number) {
 	out.println("Too high!");
 
-      } else if(guess < number) {
+      } else if (guess < number) {
 	out.println("Too low!");
 
       } else {
@@ -63,10 +63,10 @@ public class GuessingGame implements Game {
 
     out.println("It took you " + guesses + " guesses");
     
-    if((highScore == -1) || (guesses < highScore)) {
+    if ((highScore == -1) || (guesses < highScore)) {
       out.println("A new high score!");
       prefs = guesses + "";
-      if(!console.writePreferences(this, prefs)) {
+      if (!console.writePreferences(this, prefs)) {
 	System.err.println("** Couldn't write preferences");
       }
     }
@@ -79,13 +79,13 @@ public class GuessingGame implements Game {
    */
   private int getGuess() {
     try {
-      return(Integer.parseInt(in.readLine()));
+      return Integer.parseInt(in.readLine());
 
-    } catch(NumberFormatException ex) {
-      return(-1);
+    } catch (NumberFormatException ex) {
+      return -1;
 
-    } catch(IOException ex) {
-      return(-1);
+    } catch (IOException ex) {
+      return -1;
     }
   }
   

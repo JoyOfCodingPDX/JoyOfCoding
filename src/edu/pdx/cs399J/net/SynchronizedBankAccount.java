@@ -9,7 +9,7 @@ public class SynchronizedBankAccount extends BankAccount {
   int id = nextId++;
 
   public synchronized int getBalance() {
-    return(super.getBalance());
+    return super.getBalance();
   }
 
   public synchronized void setBalance(int balance) {

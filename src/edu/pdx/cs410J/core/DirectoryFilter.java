@@ -12,11 +12,11 @@ public class DirectoryFilter implements FileFilter {
    * Returns <code>true</code> if a file is a directory
    */
   public boolean accept(File file) {
-    if(file.isDirectory()) {
-      return(true);
+    if (file.isDirectory()) {
+      return true;
 
     } else {
-      return(false);
+      return false;
     }
   }
 

@@ -63,7 +63,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    * family tree.
    */
   boolean canEdit() {
-    return(true);
+    return true;
   }
 
   /**
@@ -171,11 +171,11 @@ public class FamilyTreeGUI extends FamilyTreePanel {
 
     UIManager.LookAndFeelInfo[] infos =
       UIManager.getInstalledLookAndFeels();
-    for(int i = 0; i < infos.length; i++) {
+    for (int i = 0; i < infos.length; i++) {
       final UIManager.LookAndFeelInfo info = infos[i];
 
       JRadioButtonMenuItem plafItem;
-      if(info.getName().equals(UIManager.getLookAndFeel().getName()))
+      if (info.getName().equals(UIManager.getLookAndFeel().getName()))
         {
           plafItem = new JRadioButtonMenuItem(info.getName(), true);
 
@@ -190,7 +190,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
               SwingUtilities.updateComponentTreeUI(FamilyTreeGUI.this);
               FamilyTreeGUI.this.pack();
 
-            } catch(Exception ex) {
+            } catch (Exception ex) {
               error(ex.toString());
               return;
             }
@@ -218,7 +218,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    */
   void editPerson() {
     Person person = this.treeList.getSelectedPerson();
-    if(person == null) {
+    if (person == null) {
       return;
     }
 
@@ -229,7 +229,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
     dialog.setVisible(true);
 
     person = dialog.getPerson();
-    if(person != null) {
+    if (person != null) {
       // Assume some change was made
       this.setDirty(true);
 
@@ -242,7 +242,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    * Sets the <code>Person</code> displayed in the GUI
    */
   void showPerson(Person person) {
-    if(person == null) {
+    if (person == null) {
       this.personMenu.setEnabled(false);
 
     } else {
@@ -267,7 +267,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
     dialog.setVisible(true);
 
     Person newPerson = dialog.getPerson();
-    if(newPerson != null) {
+    if (newPerson != null) {
       // A change was made
       this.setDirty(true);
 
@@ -290,7 +290,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
     dialog.setVisible(true);
    
     Marriage newMarriage = dialog.getMarriage();
-    if(newMarriage != null) {
+    if (newMarriage != null) {
       // A change was made and update person panel
       this.setDirty(true);
       this.showPerson(person);
@@ -301,7 +301,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    * Saves the family tree to a file
    */
   private void save() {
-    if(this.file == null) {
+    if (this.file == null) {
       saveAs();
       return;
     }
@@ -313,7 +313,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
       dumper.dump(this.tree);
       this.setDirty(false);
 
-    } catch(IOException ex) {
+    } catch (IOException ex) {
       error("Error while saving family tree: " + ex);
     }
 
@@ -325,7 +325,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    */
   private JFileChooser getFileChooser() {
     JFileChooser chooser = new JFileChooser();
-    if(this.file == null) {
+    if (this.file == null) {
       String cwd = System.getProperty("user.dir");
       chooser.setCurrentDirectory(new File(cwd));
 
@@ -335,22 +335,22 @@ public class FamilyTreeGUI extends FamilyTreePanel {
 
     chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
         public boolean accept(File file) {
-          if(file.isDirectory()) {
-            return(true);
+          if (file.isDirectory()) {
+            return true;
           }
 
           String fileName = file.getName();
-          return(fileName.endsWith(".xml"));
+          return fileName.endsWith(".xml");
         }
 
         public String getDescription() {
-          return("XML files (*.xml)");
+          return "XML files (*.xml)";
         }
       });
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     chooser.setMultiSelectionEnabled(false);
 
-    return(chooser);
+    return chooser;
   }
 
   /**
@@ -365,10 +365,10 @@ public class FamilyTreeGUI extends FamilyTreePanel {
     chooser.setDialogType(JFileChooser.SAVE_DIALOG);
     int response = chooser.showSaveDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       this.file = chooser.getSelectedFile();
 
-      if(this.file.exists()) {
+      if (this.file.exists()) {
         response = 
           JOptionPane.showConfirmDialog(this, new String[] {
             "File " + this.file + " already exists.",
@@ -377,7 +377,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
                                         JOptionPane.YES_NO_OPTION,
                                         JOptionPane.QUESTION_MESSAGE);
 
-        if(response == JOptionPane.NO_OPTION) {
+        if (response == JOptionPane.NO_OPTION) {
           // Try it again...
           saveAs();
           return;      // Only save once
@@ -394,7 +394,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
   private void open() {
 //     System.out.println("Opening an XML file");
 
-    if(this.isDirty) {
+    if (this.isDirty) {
       int response = 
         JOptionPane.showConfirmDialog(this, new String[] {
           "You have made changes to your family tree.",
@@ -403,10 +403,10 @@ public class FamilyTreeGUI extends FamilyTreePanel {
                                       JOptionPane.YES_NO_CANCEL_OPTION,
                                       JOptionPane.QUESTION_MESSAGE);
     
-      if(response == JOptionPane.YES_OPTION) {
+      if (response == JOptionPane.YES_OPTION) {
         save();
 
-      } else if(response == JOptionPane.CANCEL_OPTION) {
+      } else if (response == JOptionPane.CANCEL_OPTION) {
         // Don't open new file, keep working with old
         return;
       }
@@ -419,7 +419,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
     int response = chooser.showOpenDialog(this);
 
-    if(response == JFileChooser.APPROVE_OPTION) {
+    if (response == JFileChooser.APPROVE_OPTION) {
       File file = chooser.getSelectedFile();
       FamilyTree tree = null;
 
@@ -427,15 +427,15 @@ public class FamilyTreeGUI extends FamilyTreePanel {
         XmlParser parser = new XmlParser(file);
         tree = parser.parse();
 
-      } catch(FileNotFoundException ex) {
+      } catch (FileNotFoundException ex) {
         error(ex.toString());
 
-      } catch(ParserException ex) {
+      } catch (ParserException ex) {
         error(ex.toString());
       }
 
 
-      if(tree != null) {
+      if (tree != null) {
         // Everything is okay
         this.file = file;
         this.sourceLocation.setText(this.file.getName());
@@ -461,7 +461,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    * Returns the <code>JFrame</code> associated with this GUI.
    */
   JFrame getFrame() {
-    return(this.frame);
+    return this.frame;
   }
 
   /**
@@ -469,7 +469,7 @@ public class FamilyTreeGUI extends FamilyTreePanel {
    * user to verify that he really wants to exit.
    */
   private void exit() {
-    if(this.isDirty) {
+    if (this.isDirty) {
       int response = 
         JOptionPane.showConfirmDialog(this, new String[] {
           "You have made changes to your family tree.",
@@ -478,11 +478,11 @@ public class FamilyTreeGUI extends FamilyTreePanel {
                                       JOptionPane.YES_NO_CANCEL_OPTION,
                                       JOptionPane.QUESTION_MESSAGE);
     
-      if(response == JOptionPane.YES_OPTION) {
+      if (response == JOptionPane.YES_OPTION) {
         save();
         System.exit(0);
 
-      } else if(response == JOptionPane.NO_OPTION) {
+      } else if (response == JOptionPane.NO_OPTION) {
         System.exit(0);
       }
 
