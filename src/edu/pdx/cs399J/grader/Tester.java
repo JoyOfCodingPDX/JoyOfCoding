@@ -438,6 +438,13 @@ public class Tester {
   /**
    * Prints a left justified line of text to the log file.
    */
+  public void println(Object o) {
+    this.log.println(o);
+  }
+
+  /**
+   * Prints a left justified line of text to the log file.
+   */
   public void println(String text) {
     this.log.println(text);
   }
