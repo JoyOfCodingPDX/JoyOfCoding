@@ -347,6 +347,11 @@ public class XmlParser {
       }
     }
 
+    if(student != null) {
+      // Students are initially clean
+      student.makeClean();
+    }
+
     return(student);
   }
 
@@ -440,6 +445,11 @@ public class XmlParser {
       } else if(child.getTagName().equals("lateDays")) {
         // Fill in later, maybe.
       }
+    }
+
+    if(this.book != null) {
+      // The book is initially clean
+      this.book.makeClean();
     }
 
     return(this.book);
