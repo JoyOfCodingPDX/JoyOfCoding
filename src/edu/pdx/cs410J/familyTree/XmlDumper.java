@@ -92,7 +92,7 @@ public class XmlDumper implements Dumper {
       DOMImplementation dom =
         DOMImplementationImpl.getDOMImplementation();
       DocumentType dtd = 
-        dom.createDocumentType("familyTree", publicID, systemID);
+        dom.createDocumentType("familytree", publicID, systemID);
       doc = dom.createDocument(null, "familytree", dtd);
 
     } catch(DOMException ex) {
