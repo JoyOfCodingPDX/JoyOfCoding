@@ -55,7 +55,21 @@
     <delete dir="${tests.results.dir}"/>
   </target>
 
-  <target name="src" depends="props">
+  <target name="junit-src" depends="props">
+    <description>Compiles the JUnit and JFCUnit source code</description>
+    <mkdir dir="${classes.dir}"/>
+
+    <!-- Have to compile with -target 1.3 because JUnit has deprecated
+         methods named "assert" -->
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includeAntRuntime="false"
+           debug="off" source="1.3">
+      <include name="junit/**/*.java"/>
+    </javac>
+  </target>	
+
+  <target name="src" depends="props, junit-src">
     <description>Compiles the Java source code and place it in jar
                  files</description> 
 
