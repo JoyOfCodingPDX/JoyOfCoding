@@ -157,7 +157,7 @@ public class GradeBookGUI extends JFrame {
   private JFileChooser getFileChooser() {
     JFileChooser chooser = new JFileChooser();
     if(this.file != null) {
-      chooser.setCurrentDirectory(file.getParentFile());
+      chooser.setCurrentDirectory(file.getAbsoluteFile().getParentFile());
     } else {
       String cwd = System.getProperty("user.dir");
       chooser.setCurrentDirectory(new File(cwd));
@@ -236,25 +236,25 @@ public class GradeBookGUI extends JFrame {
       error("You must open a grade book before importing a student");
       return;
     }
-
+    
     JFileChooser chooser = this.getFileChooser();
     chooser.setDialogTitle("Import student XML file");
     chooser.setDialogType(JFileChooser.OPEN_DIALOG);
     int response = chooser.showOpenDialog(this);
-
-   if(response == JFileChooser.APPROVE_OPTION) {
-     // Read the student from the selected file and add it to the
-     // grade book
-     File file = chooser.getSelectedFile();
-     try {
-       Student student = XmlParser.parseStudent(null, file);
-       this.book.addStudent(student);
-
-     } catch(ParserException ex) {
-       error("While parsing file " + file.getName(), ex);
-       return;
-     }
-   }
+    
+    if(response == JFileChooser.APPROVE_OPTION) {
+      // Read the student from the selected file and add it to the
+      // grade book
+      File file = chooser.getSelectedFile();
+      try {
+        Student student = XmlParser.parseStudent(null, file);
+        this.book.addStudent(student);
+        
+      } catch(ParserException ex) {
+        error("While parsing file " + file.getName(), ex);
+        return;
+      }
+    }
   }
 
   /**
@@ -315,6 +315,34 @@ public class GradeBookGUI extends JFrame {
    */
   public static void main(String[] args) {
     GradeBookGUI gui = new GradeBookGUI("CS410J Grade Book Program");
+
+    if(args.length > 0) {
+      PrintStream err = System.err;
+      File file = new File(args[0]);
+      if(!file.exists()) {
+        err.println("** " + file + " does not exist");
+
+      } else if(!file.isFile()) {
+        err.println("** " + file + " is not a file");
+
+      } else {
+        try {
+          XmlParser parser = new XmlParser(file);
+          GradeBook book = parser.parse();
+          gui.displayGradeBook(book);
+          gui.file = file;
+
+        } catch(IOException ex) {
+          err.println("While parsing file " + file.getName());
+          System.exit(1);
+
+        } catch(ParserException ex) {
+          err.println("While parsing file " + file.getName());
+          System.exit(1);
+        }
+      }
+    }
+
     gui.pack();
     gui.setVisible(true);
   }
