@@ -50,7 +50,8 @@ public class Submit {
   /**
    * Prints usage information about this program.
    */
-  private static void usage() {
+  private static void usage(String s) {
+    err.println("\n** " + s + "\n");
     err.println("usage: java Submit [options] args file+");
     err.println("  args are (in this order):");
     err.println("    project      What project is being submitted");
@@ -537,8 +538,7 @@ public class Submit {
       // Check for options first
       if (args[i].equals("-smtp")) {
 	if(++i >= args.length) {
-	  err.println("** No SMTP server specified");
-	  usage();
+	  usage("No SMTP server specified");
 	}
 
 	serverName = args[i];
@@ -551,8 +551,7 @@ public class Submit {
 
       } else if (args[i].equals("-comment")) {
         if (++i >= args.length) {
-          err.println("** No comment specified");
-          usage();
+          usage("No comment specified");
         }
 
         comment = args[i];
@@ -577,23 +576,19 @@ public class Submit {
 
     // Make sure that user entered enough information
     if (projName == null) {
-      err.println("** Missing project name");
-      usage();
+      usage("Missing project name");
     }
 
     if (userName == null) {
-      err.println("** Missing student name");
-       usage();
+      usage("Missing student name");
     }
 
     if (userId == null) {
-      err.println("** Missing login id");
-      usage();
+      usage("Missing login id");
     }
 
     if (userEmail == null) {
-      err.println("** Missing email address");
-      usage();
+      usage("Missing email address");
 
     } else {
       // Make sure user's email is okay
