@@ -14,6 +14,9 @@ import org.xml.sax.*;
  * This class dumps the contents of a <code>GradeBook</code> to an XML
  * file.  By default, the students in the grade book are dumped to XML
  * files in the same directory as the grade book's XML file.
+ *
+ * @author David Whitlock
+ * @since Fall 2000
  */
 public class XmlDumper extends XmlHelper {
 
@@ -182,7 +185,7 @@ public class XmlDumper extends XmlHelper {
 
       // Suppress warnings about "Declared encoding not matching
       // actual one
-      xform.setOutputProperty(OutputKeys.ENCODING, "ASCII");
+      xform.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
       xform.transform(src, res);
 
     } catch (TransformerException ex) {
