@@ -24,6 +24,8 @@
 
   <!-- Sets up properties used during building -->
   <target name="props">
+    <property file="build.properties"/>
+
     <property environment="myenv"/>
 
     <property name="src.dir" value="${basedir}"/>
@@ -65,21 +67,7 @@
     <delete dir="${tests.results.dir}"/>
   </target>
 
-  <target name="junit-src" depends="props">
-    <description>Compiles the JUnit and JFCUnit source code</description>
-    <mkdir dir="${classes.dir}"/>
-
-    <!-- Have to compile with -target 1.3 because JUnit has deprecated
-         methods named "assert" -->
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includeAntRuntime="false"
-           debug="off" source="1.3">
-      <include name="junit/**/*.java"/>
-    </javac>
-  </target>	
-
-  <target name="compile-src" depends="props, junit-src">
+  <target name="compile-src" depends="props">
     <description>Compiles Java source code</description> 
 
     <mkdir dir="${classes.dir}"/>
@@ -94,10 +82,11 @@
       <exclude name="edu/pdx/cs399J/fall2000/**"/>
       <include name="edu/pdx/cs410G/**/*.java"/>
       <classpath>
-        <pathelement location="${daves.jars.dir}/junit.jar"/>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
         <pathelement location="${daves.jars.dir}/mail.jar"/>
         <pathelement location="${daves.jars.dir}/jnlp.jar"/>
+        <pathelement location="${daves.jars.dir}/jfcunit.jar"/>
+        <pathelement location="${myenv.ANT_HOME}/lib/junit.jar"/>
       </classpath>
     </javac>
 
@@ -407,7 +396,17 @@
 
       <formatter type="plain" usefile="true"/>
 
-      <batchtest fork="yes" todir="${tests.results.dir}">
+      <!-- Run a custom subset of the tests -->
+      <batchtest fork="yes" todir="${tests.results.dir}"
+                 if="junit.testcase">
+        <fileset dir="${src.dir}">
+          <include name="${junit.testcase}"/>
+        </fileset>
+      </batchtest>
+
+      <!-- Run all of the standard tests -->
+      <batchtest fork="yes" todir="${tests.results.dir}"
+                 unless="junit.testcase">
         <fileset dir="${src.dir}">
           <include name="edu/pdx/cs399J/**/*Test.java"/>
           <exclude name="edu/pdx/cs399J/LRUMapTest.java"/>
@@ -432,20 +431,20 @@
              splitindex="yes"
              windowtitle="CS399J Docs"
              overview="${src.dir}/overview.html"
-             additionalparam="-linksource -breakiterator -Xwerror"
+             additionalparam="-source 1.4 -linksource -breakiterator -Xwerror"
     >
       <classpath>
         <pathelement location="${classes.dir}"/>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
         <pathelement location="${daves.jars.dir}/mail.jar"/>
-        <pathelement location="${daves.jars.dir}/junit.jar"/>
+        <pathelement location="${myenv.ANT_HOME}/lib/junit.jar"/>
         <pathelement location="${myenv.ANT_HOME}/lib/ant.jar"/>
       </classpath>
       <link href="http://java.sun.com/j2se/1.4.1/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>
       <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
       <link href="http://www.junit.org/junit/javadoc/3.7"/>
-      <link href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs"/>
+      <!-- link href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs"/ -->
     </javadoc>
 
     <!-- Make it so that everyone can see the javadocs -->

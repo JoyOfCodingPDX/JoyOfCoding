@@ -44,7 +44,7 @@ public abstract class RemoteTestCase extends TestCase {
       this.bind(tree);
 
     } catch (Exception ex) {
-      fail("While getting creating remote family tree: " + ex);
+      fail("While getting creating remote family tree", ex);
     }
   }
 
@@ -54,30 +54,6 @@ public abstract class RemoteTestCase extends TestCase {
   public void tearDown() {
     this.unbind();
   }
-
-//   ////////  Helper methods
-
-//   /**
-//    * Creates a new {@link XmlRemoteFamilyTree} and bind it into the
-//    * registry. 
-//    */
-//   protected void setUp() {
-//     try {
-//       File file = File.createTempFile(this.getName(), ".xml");
-//       file.delete();
-//       bind(new XmlRemoteFamilyTree(file));
-
-//     } catch (Exception ex) {
-//       fail("While creating XmlRemoteFamilyTree: " + ex);
-//     }
-//   }
-
-//   /**
-//    * Unbinds the {@link XmlRemoteFamilyTree}
-//    */
-//   protected void tearDown() {
-//     unbind();
-//   }
 
   /**
    * Returns the name that the <code>RemoteFamilyTree</code> is bound
@@ -102,19 +78,18 @@ public abstract class RemoteTestCase extends TestCase {
       }
 
       try {
-        registry = LocateRegistry.getRegistry(RMI_PORT);
+        registry = LocateRegistry.createRegistry(RMI_PORT);
 
       } catch (RemoteException ex) {
         try {
           registry = LocateRegistry.createRegistry(RMI_PORT);
 
         } catch (RemoteException ex1) {
-          StringWriter sw = new StringWriter();
-          ex1.printStackTrace(new PrintWriter(sw, true));
-          fail("Couldn't create local registry: " + sw);
+          fail("Couldn't create local registry", ex);
         }
       }
 
+      assertNotNull(registry);
       return registry;
     }
   }
@@ -132,8 +107,7 @@ public abstract class RemoteTestCase extends TestCase {
       return (RemoteFamilyTree) registry.lookup(this.getName());
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getName() +
-           ": " + ex);
+      fail("While getting remote family tree on " + this.getName(), ex);
       return null;
     }
   }
@@ -147,13 +121,13 @@ public abstract class RemoteTestCase extends TestCase {
 //       System.setSecurityManager(new RMISecurityManager());
 //     }
 
+    Registry registry = getRegistry();
     try {
-      getRegistry().rebind(this.getName(), tree);
+      registry.rebind(this.getName(), tree);
       System.out.println("Successfully bound RemoteFamilyTree");
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getName() +
-           ": " + ex);
+      fail("While getting remote family tree on " + this.getName(), ex);
     }
   }
 
@@ -166,16 +140,16 @@ public abstract class RemoteTestCase extends TestCase {
 //       System.setSecurityManager(new RMISecurityManager());
 //     }
 
+    Registry registry = getRegistry();
     try {
       RemoteFamilyTree tree = 
-        (RemoteFamilyTree) getRegistry().lookup(this.getName());
+        (RemoteFamilyTree) registry.lookup(this.getName());
       tree.shutdown();
-      getRegistry().unbind(this.getName());
+      registry.unbind(this.getName());
       System.out.println("Successfully unbound RemoteFamilyTree");
 
     } catch (Exception ex) {
-      fail("While getting remote family tree on " + this.getName() +
-           ": " + ex);
+      fail("While getting remote family tree on " + this.getName(), ex);
     }
   }
 
@@ -193,6 +167,22 @@ public abstract class RemoteTestCase extends TestCase {
     assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
                  cal2.get(Calendar.DAY_OF_YEAR));
     assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
+  }
+
+  /**
+   * A JUnit failure that is caused by an exception.  This method
+   * provides us with a nice strack trace for the failure.
+   *
+   * @since Winter 2004
+   */
+  public static void fail(String message, Throwable cause) {
+    StringWriter sw = new StringWriter();
+    sw.write(message);
+    sw.write("\nCaused by: ");
+
+    PrintWriter pw = new PrintWriter(sw, true);
+    cause.printStackTrace(pw);
+    fail(sw.toString());
   }
 
 }

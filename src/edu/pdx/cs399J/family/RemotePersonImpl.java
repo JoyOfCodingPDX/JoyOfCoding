@@ -81,7 +81,7 @@ class RemotePersonImpl extends java.rmi.server.UnicastRemoteObject
       (RemotePersonImpl) this.tree.getPerson(fatherId);
     if (rPerson == null) {
       String s = "Could not find person with id " + fatherId;
-      throw new IllegalArgumentException(s);
+      throw new FamilyTreeException(s);
     }
     this.person.setFather(rPerson.person);
   }
@@ -95,7 +95,7 @@ class RemotePersonImpl extends java.rmi.server.UnicastRemoteObject
       (RemotePersonImpl) this.tree.getPerson(motherId);
     if (rPerson == null) {
       String s = "Could not find person with id " + motherId;
-      throw new IllegalArgumentException(s);
+      throw new FamilyTreeException(s);
     }
     this.person.setMother(rPerson.person);
   }
