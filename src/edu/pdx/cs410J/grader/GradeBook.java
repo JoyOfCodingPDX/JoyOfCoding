@@ -81,8 +81,17 @@ public class GradeBook {
    * Adds a <code>Student</code> to this <code>GradeBook</code>
    */
   public void addStudent(Student student) {
-    this.dirty = true;
+    this.setDirty(true);
     this.students.put(student.getId(), student);
+  }
+
+  /**
+   * Removes a <code>Student</code> from this <code>GradeBook</code>
+   */
+  public void removeStudent(Student student) {
+    if(this.students.remove(student.getId()) != null) {
+      this.setDirty(true);
+    }
   }
 
   /**
@@ -90,6 +99,27 @@ public class GradeBook {
    */
   public void setDirty(boolean dirty) {
     this.dirty = dirty;
+  }
+
+  /**
+   * Marks this <code>GradeBook</code> as being clean
+   */
+  public void makeClean() {
+    this.setDirty(false);
+
+    // Mark all of the assignments as clean
+    Iterator iter = this.assignments.values().iterator();
+    while(iter.hasNext()) {
+      Assignment assign = (Assignment) iter.next();
+      assign.makeClean();
+    }
+
+    // Mark all of the students as clean
+    iter = this.students.values().iterator();
+    while(iter.hasNext()) {
+      Student student = (Student) iter.next();
+      student.makeClean();
+    }
   }
 
   /**

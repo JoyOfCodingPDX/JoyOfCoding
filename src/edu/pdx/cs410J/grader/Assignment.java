@@ -132,6 +132,13 @@ public class Assignment implements Notable {
   }
 
   /**
+   * Marks this <code>Assignment</code> as being clean
+   */
+  public void makeClean() {
+    this.setDirty(false);
+  }
+
+  /**
    * Returns a brief textual description of this
    * <code>Assignment</code>
    */

@@ -245,6 +245,13 @@ public class Student implements Notable {
   }
   
   /**
+   * Marks this <code>Student</code> as being clean
+   */
+  public void makeClean() {
+    this.setDirty(false);
+  }
+
+  /**
    * Returns a complete textual description of this
    * <code>Student</code>.
    */
