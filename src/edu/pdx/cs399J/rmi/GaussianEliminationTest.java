@@ -5,7 +5,7 @@ import junit.framework.*;
 
 /**
  * This is a JUnit test that tests solving a system of equations using
- * {@link GaussianElmination}.
+ * {@link GaussianElimination}.
  */
 public class GaussianEliminationTest extends TestCase {
 
