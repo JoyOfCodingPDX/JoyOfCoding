@@ -241,10 +241,16 @@ public class InvokeStatic {
     Class c = Class.forName(className);
     Method m = c.getDeclaredMethod(methodName, types);
     m.setAccessible(true);
-    Object value = m.invoke(null, params.toArray());
 
-    if (!m.getReturnType().equals(Void.TYPE)) {
-      System.out.println("\nMethod returned: " + value);
+    try {
+      Object value = m.invoke(null, params.toArray());
+
+      if (!m.getReturnType().equals(Void.TYPE)) {
+	System.out.println("\nMethod returned: " + value);
+      }
+
+    } catch (InvocationTargetException ex) {
+      throw ex.getTargetException();
     }
   }
 }
