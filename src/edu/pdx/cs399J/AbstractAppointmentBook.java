@@ -22,6 +22,11 @@ public abstract class AbstractAppointmentBook {
   public abstract Collection getAppointments();
 
   /**
+   * Adds an appointment to this appointment book
+   */
+  public abstract void addAppointment(AbstractAppointment appt);
+
+  /**
    * Returns a brief textual description of this appointment book
    */
   public String toString() {
