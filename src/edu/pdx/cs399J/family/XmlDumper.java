@@ -78,6 +78,9 @@ public class XmlDumper extends XmlHelper implements Dumper {
 
   /**
    * Dumps the contents of a family tree to the desired destination.
+   *
+   * @throws FamilyTreeException
+   *         An error occurred while dumping the family tree
    */
   public void dump(FamilyTree tree) {
     // First we create a DOM tree that represents the family tree
@@ -99,13 +102,12 @@ public class XmlDumper extends XmlHelper implements Dumper {
       doc = dom.createDocument(null, "family-tree", docType);
 
     } catch (ParserConfigurationException ex) {
-      ex.printStackTrace(System.err);
-      System.exit(1);
+      String s = "Illconfigured XML parser";
+      throw new FamilyTreeException(s, ex);
 
     } catch (DOMException ex) {
-      // Eep, this is bad
-      ex.printStackTrace(System.err);
-      System.exit(1);
+      String s = "While creating XML Document";
+      throw new FamilyTreeException(s, ex);
     }
     
     // Keep track of all of the marriages
@@ -208,14 +210,14 @@ public class XmlDumper extends XmlHelper implements Dumper {
       }
 
     } catch (DOMException ex) {
-      err.println("** Exception while building DOM tree: " + ex);
-      ex.printStackTrace(err);
-      System.exit(1);
+      String s = "** Exception while building DOM tree";
+      throw new FamilyTreeException(s, ex);
     }
 
     // Then we simply write the DOM tree to the destination
     try {
       Source src = new DOMSource(doc);
+      assert this.pw != null;
       Result res = new StreamResult(this.pw);
 
       TransformerFactory xFactory = TransformerFactory.newInstance();
@@ -226,9 +228,11 @@ public class XmlDumper extends XmlHelper implements Dumper {
       xform.transform(src, res);
 
     } catch (TransformerException ex) {
-      ex.printStackTrace(System.err);
-      System.exit(1);
+      String s = "While transforming XML";
+      throw new FamilyTreeException(s, ex);
     }
+
+    this.pw.flush();
   }
   
 

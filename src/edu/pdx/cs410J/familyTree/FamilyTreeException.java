@@ -4,7 +4,7 @@ package edu.pdx.cs410J.familyTree;
  * This exception is thrown when something is wrong with a family tree
  * or a data source from which a family tree is read.
  */
-public class FamilyTreeException extends Exception {
+public class FamilyTreeException extends RuntimeException {
 
   /** The exception being wrapped by this FamilyTreeException */
   private Throwable nested;

@@ -18,7 +18,9 @@ public class Marriage {
   private String location;
 
   /**
-   * Creates a marriage between a husband and a wife.
+   * Creates a marriage between a husband and a wife.  It is the
+   * responsibility of the caller to invoke {@link
+   * Person@addMarriage(Marriage)}.
    *
    * @throws IllegalArgumentException
    *         The <code>husband</code> is not {@link Person#MALE} or
@@ -40,7 +42,7 @@ public class Marriage {
   }
 
   /**
-   * Returns the husband in his marriage.
+   * Returns the husband in this marriage.
    */
   public Person getHusband() {
     return this.husband;

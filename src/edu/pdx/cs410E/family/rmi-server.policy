@@ -1,0 +1,15 @@
+// Policy file for running the family tree RMI servers
+
+grant codeBase "file:/home/davidw/PSU/jars/*" {
+  permission java.net.SocketPermission "*:1024-65535", "connect,accept";
+
+  // Family tree file
+  permission java.io.FilePermission "/home/davidw/PSU/-", "read,write";
+
+  // XML code
+  permission java.io.FilePermission 
+    "${java.home}/lib/jaxp.properties", "read";
+  permission java.io.FilePermission 
+    "${java.home}/lib/rt.jar", "read";
+  permission java.util.PropertyPermission "*", "read";
+}; 

@@ -162,4 +162,45 @@
   </java>
   </target>
 
+  <!-- Builds the family tree examples -->
+
+  <target name="familyTree" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410E/familyTree/**"
+           includeAntRuntime="false"
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/junit.jar"/>
+      </classpath>
+    </javac>
+
+    <!-- Generate "stubs" for remote classes -->
+    <rmic includes=
+            "edu/pdx/cs410E/familyTree/RemoteMarriageImpl.class,
+             edu/pdx/cs410E/familyTree/RemotePersonImpl.class,
+             edu/pdx/cs410E/familyTree/XmlRemoteFamilyTree.class"
+          classpath="${classes.dir}"
+          base="${classes.dir}"/>
+
+    <jar jarfile="${jars.dir}/${familyTree.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+         <include name="edu/pdx/cs410E/familyTree/**"/>
+         <!-- Server doesn't need client code -->
+         <exclude name="edu/pdx/cs410E/rmi/GetMoviesInYear*.class"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="${jars.dir}/${client.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+         <include name="edu/pdx/cs410E/rmi/ShutdownMovieDatabase.class"/>
+      </fileset>
+    </jar>
+
+  </target>
+
+
 </project>

@@ -31,6 +31,7 @@
     <property name="cs410J.jar" value="cs410J.jar"/>
     <property name="familyTree.jar" value="familyTree.jar"/>
     <property name="grader.jar" value="grader.jar"/>
+  </target>
 
   <!-- Removes byproducts of building -->
   <target name="clean" depends="props">
@@ -170,7 +171,8 @@
            destdir="${classes.dir}"
            includes="edu/pdx/cs410J/familyTree/**"
            includeAntRuntime="false"
-           debug="on">
+           debug="on"
+           source="1.4">
       <classpath>
         <pathelement location="${jars.dir}/junit.jar"/>
       </classpath>

@@ -29,6 +29,14 @@ public class FamilyTree {
   }
 
   /**
+   * Returns whether or not this family tree contains a person with
+   * the given id.
+   */
+  public boolean containsPerson(int id) {
+    return this.people.containsKey(new Integer(id));
+  }
+
+  /**
    * Returns a person in this family tree with a given id.  If no
    * person with that id exists in this family tree, then
    * <code>null</code> is returned.
