@@ -8,6 +8,9 @@ import javax.swing.*;
  * This class demonstrates Java's text and shape drawing
  * capabilities.  When you click the window, the coordinates of the
  * click are printed.
+ * 
+ * @author David Whitlock
+ * @version $Revision: 1.3 $
  */
 public class DrawCoords extends JPanel {
 
