@@ -18,6 +18,9 @@ public class GradeBookGUI extends JFrame {
   private GradeBookPanel bookPanel;
   private File file;       // Where the grade book lives
 
+  /** An action for exiting the GUI */
+  private Action exitAction;
+
   /**
    * Create and lay out a new <code>GradeBookGUI</code>
    */
@@ -83,7 +86,7 @@ public class GradeBookGUI extends JFrame {
       });
     fileMenu.add(saveAsItem);
 
-    JMenuItem saveItem = new JMenuItem("Save...");
+    JMenuItem saveItem = new JMenuItem("Save");
     saveItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           save();

@@ -178,6 +178,10 @@ public class XmlDumper extends XmlHelper {
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
       xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
+
+      // Suppress warnings about "Declared encoding not matching
+      // actual one
+      xform.setOutputProperty(OutputKeys.ENCODING, "ASCII");
       xform.transform(src, res);
 
     } catch (TransformerException ex) {
