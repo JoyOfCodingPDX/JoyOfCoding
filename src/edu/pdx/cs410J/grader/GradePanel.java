@@ -210,6 +210,9 @@ public class GradePanel extends JPanel {
     this.studentNameLabel.setText(name);
     this.lateList.setListData(new Vector(student.getLate()));
     this.resubmitList.setListData(new Vector(student.getResubmitted()));
+
+    // Might as well refresh assignments list
+    this.displayAssignmentsFor(this.book);
   }
 
   /**
