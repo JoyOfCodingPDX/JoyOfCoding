@@ -4,7 +4,12 @@ import java.util.*;
 import javax.swing.table.*;
 
 /**
- * This {@link TabelModel} represents the {@link Check}s in a checkbook.
+ * This {@link javax.swing.table.TableModel} represents the {@link
+ * Check}s in a checkbook.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.4 $
+ * @since Summer 2002
  */
 public class CheckbookTableModel extends AbstractTableModel
   implements CheckbookConstants {

@@ -14,7 +14,7 @@ import javax.swing.*;
 public class MultipleThreads extends JPanel {
 
   /** The total number of counts to make */
-  private static final int TOTAL = 10000;
+  public static final int TOTAL = 10000;
 
   /** The number of concurrent threads */
   private static final int THREAD_COUNT = 4;
@@ -29,8 +29,8 @@ public class MultipleThreads extends JPanel {
 
   /**
    * The GUI consists of two {@link JProgressBar}s that are updated by
-   * the {@link Counter} threads.  When you click on one of the
-   * progress bars its thread will stop.
+   * the {@link MultipleThreads.Counter} threads.  When you click on
+   * one of the progress bars its thread will stop.
    */
   public MultipleThreads() {
     this.threads = new Thread[THREAD_COUNT];
@@ -70,10 +70,10 @@ public class MultipleThreads extends JPanel {
   //////////////////////  Inner Classes  ///////////////////////
 
   /**
-   * This thread counts to {@link TOTAL} in random increments.
+   * This thread counts to {@link #TOTAL} in random increments.
    * Between each increment it rests.
    */
-  class Counter extends Thread {
+  public class Counter extends Thread {
 
     /** The id of this counter */
     private int id;

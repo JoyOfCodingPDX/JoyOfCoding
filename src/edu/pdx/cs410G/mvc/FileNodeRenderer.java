@@ -10,7 +10,7 @@ import javax.swing.tree.*;
 /**
  * This class draws a node in a {@link JTree}.  More specifically, if
  * the node is a {@link FileNode} and the node represents a hidden
- * file, the node will be {@link Color.RED}.
+ * file, the node will be {@link Color#RED}.
  */
 public class FileNodeRenderer extends DefaultTreeCellRenderer {
 

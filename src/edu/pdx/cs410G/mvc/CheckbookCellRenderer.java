@@ -6,9 +6,14 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 /**
- * This {@link TableCellRender} is responsible for drawing a given
- * element in a <code>JTable</code>.  Specifically, it will draw the
- * balance of a checkbook in red if it is less than zero.
+ * This {@link javax.swing.table.TableCellRender} is responsible for
+ * drawing a given element in a <code>JTable</code>.  Specifically, it
+ * will draw the balance of a checkbook in red if it is less than
+ * zero.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.2 $
+ * @since Summer 2002
  */
 public class CheckbookCellRenderer extends DefaultTableCellRenderer {
 

@@ -12,13 +12,14 @@ import javax.swing.filechooser.FileFilter;
 /**
  * This program demonstrates Swing's facilities for a Multiple
  * Document Interface (MDI) using a {@link JDesktopPane} and multiple
- * {@link JInternalPane}s.
+ * {@link javax.swing.JInternalPane}s.
  */
 public class MDIExample extends JFrame {
 
   /**
    * Create a {@link JFrame} that contains a {@link JDesktopPane}.
-   * Let the user populate with multiple {@link JInternalPanes}s.
+   * Let the user populate with multiple {@link
+   * javax.swing.JInternalPane}s.
    */
   public MDIExample() {
     super("MDI Example");

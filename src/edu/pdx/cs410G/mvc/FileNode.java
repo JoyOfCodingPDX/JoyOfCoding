@@ -5,8 +5,12 @@ import java.util.*;
 import javax.swing.tree.*;
 
 /**
- * This class provides a model (to be viewed by a {@link JTree}) of a
- * {@link File} on a file system.
+ * This class provides a model (to be viewed by a {@link
+ * javax.swing.JTree}) of a {@link File} on a file system.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.2 $
+ * @since Summer 2002
  */
 public class FileNode implements TreeNode {
 
