@@ -15,7 +15,7 @@ public class SayWhat {
    * Prints an animal's name and what it says.
    */
   private static void saysWhat(Animal animal) {
-    System.out.println(animal.name() + " says \"" +
+    System.out.println(animal.getName() + " says \"" +
 		       animal.says() + "\"");
   }
 

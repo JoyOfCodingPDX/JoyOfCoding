@@ -5,8 +5,8 @@ package edu.pdx.cs410J.examples;
  */
 public class Turkey extends Bird {
 
-  public String name() {
-    return("turkey");
+  public Turkey(String name) {
+    this.name = name;
   }
 
   public String says() {

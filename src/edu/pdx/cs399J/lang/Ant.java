@@ -5,6 +5,10 @@ package edu.pdx.cs410J.examples;
  */
 public class Ant extends Insect {
 
+  public Ant(String name) {
+    this.name = name;
+  }
+
   public String name() {
     return("ant");
   }

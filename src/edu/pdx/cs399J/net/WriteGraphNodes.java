@@ -6,21 +6,21 @@ import java.io.*;
  * This program constructs a graph of <code>Node</code>s and
  * serializes them to a file.
  */
-public class WriteNodes {
+public class WriteGraphNodes {
 
   /**
-   * Creates a graph of <code>Node</code>s and serializes them to a
+   * Creates a graph of <code>GraphNode</code>s and serializes them to a
    * file whose name is given on the command line.
    */
   public static void main(String[] args) {
     String fileName = args[0];
 
     // Make a graph of nodes
-    Node a = new Node();
-    Node b = new Node();
-    Node c = new Node();
-    Node d = new Node();
-    Node e = new Node();
+    GraphNode a = new GraphNode();
+    GraphNode b = new GraphNode();
+    GraphNode c = new GraphNode();
+    GraphNode d = new GraphNode();
+    GraphNode e = new GraphNode();
 
     a.addChild(b);
     a.addChild(c);

@@ -5,8 +5,8 @@ package edu.pdx.cs410J.examples;
  */
 public class Sheep extends Mammal {
 
-  public String name() {
-    return("sheep");
+  public Sheep(String name) {
+    this.name = name;
   }
 
   public String says() {

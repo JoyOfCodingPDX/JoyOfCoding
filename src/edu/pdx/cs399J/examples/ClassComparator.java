@@ -26,9 +26,9 @@ public class ClassComparator implements Comparator {
   public static void main(String[] args) {
     Set set = new TreeSet(new ClassComparator());
     set.add("Hello");
-    set.add(new Cow());
+    set.add(new Cow("Betty"));
     set.add(new Vector());
-    set.add(new Ant());
+    set.add(new Ant("Richard"));
 
     // Print out the set
     Iterator iter = set.iterator();

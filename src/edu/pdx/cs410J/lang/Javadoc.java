@@ -1,3 +1,5 @@
+package edu.pdx.cs410J.examples;
+
 /**
  * This class demonstrates Javadoc comments
  *

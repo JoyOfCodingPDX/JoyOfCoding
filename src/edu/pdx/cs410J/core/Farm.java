@@ -27,10 +27,10 @@ public class Farm {
    */
   public static void main(String[] args) {
     Map farm = new HashMap();
-    farm.put("Old MacDonald", new Human());
-    farm.put("Bossie", new Cow());
-    farm.put("Clyde", new Sheep());
-    farm.put("Louise", new Duck());
+    farm.put("Old MacDonald", new Human("Old MacDonald"));
+    farm.put("Bossie", new Cow("Bossie"));
+    farm.put("Clyde", new Sheep("Clyde"));
+    farm.put("Louise", new Duck("Louise"));
 
     print(farm);
   }

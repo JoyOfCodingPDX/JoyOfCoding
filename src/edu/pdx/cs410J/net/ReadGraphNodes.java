@@ -4,12 +4,12 @@ import java.io.*;
 
 /**
  * This class demonstrates serialization support for referential
- * integrity by deserializing a graph of <code>Node</code>s.
+ * integrity by deserializing a graph of <code>GraphNode</code>s.
  */
-public class ReadNodes {
+public class ReadGraphNodes {
 
   /**
-   * Reads a graph of <code>Node</code>s from a file whose name is
+   * Reads a graph of <code>GraphNode</code>s from a file whose name is
    * specified on the command line.
    */ 
   public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class ReadNodes {
     try {
       FileInputStream fis = new FileInputStream(fileName);
       ObjectInputStream in = new ObjectInputStream(fis);
-      Node root = (Node) in.readObject();
+      GraphNode root = (GraphNode) in.readObject();
       System.out.println("Graph has " + root.traverse() + " nodes");
 
     } catch(ClassNotFoundException ex) {

@@ -6,14 +6,14 @@ import java.util.*;
  * This class is used to demonstrate object serialization support for
  * referential integrity.
  */
-public class Node implements java.io.Serializable {
+public class GraphNode implements java.io.Serializable {
   private Collection children = new ArrayList();
   private transient boolean beenVisited = false;
 
   /**
    * Adds a child node to this node
    */
-  public void addChild(Node child) {
+  public void addChild(GraphNode child) {
     this.children.add(child);
   }
 
@@ -26,7 +26,7 @@ public class Node implements java.io.Serializable {
 
     Iterator iter = children.iterator();
     while(iter.hasNext()) {
-      Node child = (Node) iter.next();
+      GraphNode child = (GraphNode) iter.next();
       if(!child.beenVisited) {
 	total += child.traverse();
       }

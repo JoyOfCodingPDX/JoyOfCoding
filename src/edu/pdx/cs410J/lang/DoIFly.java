@@ -16,7 +16,7 @@ public class DoIFly {
    */
   private static void doIFly(Animal animal) {
     boolean iFly = (animal instanceof Flies);
-    System.out.print("Does " + animal.name() + " fly?  ");
+    System.out.print("Does " + animal.getName() + " fly?  ");
     System.out.println((iFly ? "Yes." : "No."));
   }
 

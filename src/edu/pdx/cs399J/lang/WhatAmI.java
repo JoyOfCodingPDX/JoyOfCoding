@@ -18,7 +18,7 @@ public class WhatAmI {
     whatAmI("Hello");
     whatAmI(new Integer(4));
     whatAmI(new Double(2.7));
-    whatAmI(new Cow());
+    whatAmI(new Cow("Tootie"));
   }
 
 }
