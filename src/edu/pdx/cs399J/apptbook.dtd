@@ -11,8 +11,8 @@
 <!-- An appointment has a begin, end, and text -->
 <!ELEMENT appt (begin, end, text)>
 
-<!ELEMENT begin (day, time)>
-<!ELEMENT end (day, time)>
+<!ELEMENT begin (date, time)>
+<!ELEMENT end (date, time)>
 <!ELEMENT text (#PCDATA)>
 
 <!-- A date has a month, day, and a year specified by Calendar.DATE,
