@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
+    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -154,12 +154,8 @@
     </genkey>
   </target>
 
-  <target name="src" depends="props, compile-src, build-keystore">
-    <description>Compiles the Java source code and place it in jar
-                 files</description> 
-
-    <!-- Build the various jar files -->
-    <mkdir dir="${jars.dir}"/>
+  <target name="-cs399J-jar" unless="cs399J-jar-uptodate">
+    <description>Creates the cs399J.jar</description>
 
     <jar jarfile="${jars.dir}/${cs399J.jar}"
          update="yes">
@@ -175,6 +171,10 @@
     <signjar jar="${jars.dir}/${cs399J.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
 -->
+  </target>
+
+  <target name="-family-jar" unless="family-jar-uptodate">
+    <description>Creates the family tree jar</description>
 
     <jar jarfile="${jars.dir}/${family.jar}"
          update="yes">
@@ -187,6 +187,10 @@
     </jar>
     <signjar jar="${jars.dir}/${family.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
+  </target>
+
+  <target name="-grader-jar" unless="grader-jar-uptodate">
+    <description>Creates the grader jar</description>
 
     <jar jarfile="${jars.dir}/${grader.jar}"
          manifest="edu/pdx/cs399J/grader/Manifest.mf"
@@ -200,6 +204,10 @@
     </jar>
     <signjar jar="${jars.dir}/${grader.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
+  </target>
+
+  <target name="-examples-jar" unless="examples-jar-uptodate">
+    <description>Creates the examples jar</description>
 
     <jar jarfile="${jars.dir}/${examples.jar}" update="yes">
       <fileset dir="${classes.dir}">
@@ -208,7 +216,7 @@
         <exclude name="edu/pdx/cs399J/grader/*"/>
         <exclude name="edu/pdx/cs399J/family/**"/>
 
-        <!-- Server doesn't need client code -->
+        <!-- Server doesn't need RMI client code -->
         <exclude name="edu/pdx/cs399J/rmi/EquationClient.class"/>
         <exclude name="edu/pdx/cs399J/rmi/CreateMovie.class"/>
         <exclude name="edu/pdx/cs399J/rmi/NoteCharacter.class"/>
@@ -218,6 +226,10 @@
     </jar>    
     <signjar jar="${jars.dir}/${examples.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
+  </target>
+
+  <target name="-rmi-client-jar" unless="rmi-client-jar-uptodate">
+    <description>Creates the RMI client jar</description>
 
     <jar jarfile="${jars.dir}/${client.jar}"
          update="yes">
@@ -234,6 +246,10 @@
          <include name="edu/pdx/cs399J/rmi/ShutdownMovieDatabase.class"/>
       </fileset>
     </jar>
+  </target>
+
+  <target name="-cs410G-jar" unless="cs410G-jar-uptodate">
+    <description>Creates the CS410J jar</description>
 
     <jar jarfile="${jars.dir}/${cs410G.jar}"
          update="yes">
@@ -243,6 +259,96 @@
     </jar>
     <signjar jar="${jars.dir}/${cs410G.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
+  </target>
+
+  <target name="src" depends="props, compile-src, build-keystore">
+    <description>Compiles the Java source code and place it in jar
+                 files</description> 
+
+    <!-- Build the various jar files -->
+    <mkdir dir="${jars.dir}"/>
+
+    <uptodate property="cs399J-jar-uptodate"
+              targetfile="${jars.dir}/${cs399J.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/*.class"/>
+      </srcfiles>
+      <srcfiles dir="${src.dir}">
+        <include name="edu/pdx/cs399J/*.dtd"/>
+        <include name="edu/pdx/cs399J/reflect/doi.txt"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-cs399J-jar"/>
+
+    <uptodate property="family-jar-uptodate"
+              targetfile="${jars.dir}/${family.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/family/**"/>
+      </srcfiles>
+      <srcfiles dir="${src.dir}">
+        <include name="edu/pdx/cs399J/family/familytree.dtd"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-family-jar"/>
+
+    <uptodate property="grader-jar-uptodate"
+              targetfile="${jars.dir}/${grader.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/grader/**"/>
+      </srcfiles>
+      <srcfiles dir="${src.dir}">
+        <include name="edu/pdx/cs399J/grader/gradebook.dtd"/>
+        <include name="edu/pdx/cs399J/grader/Manifest.mf"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-grader-jar"/>
+
+    <uptodate property="examples-jar-uptodate"
+              targetfile="${jars.dir}/${examples.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/**/*.class"/>
+        <exclude name="edu/pdx/cs399J/*.class"/>
+        <exclude name="edu/pdx/cs399J/grader/*"/>
+        <exclude name="edu/pdx/cs399J/family/**"/>
+
+        <!-- Server doesn't need RMI client code -->
+        <exclude name="edu/pdx/cs399J/rmi/EquationClient.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/CreateMovie.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/NoteCharacter.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/GetFilmography.class"/>
+        <exclude name="edu/pdx/cs399J/rmi/GetMoviesInYear*.class"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-examples-jar"/>
+
+    <uptodate property="rmi-client-jar-uptodate"
+              targetfile="${jars.dir}/${client.jar}">
+      <srcfiles dir="${classes.dir}">
+         <include name="edu/pdx/cs399J/rmi/EquationClient.class"/>
+         <include name="edu/pdx/cs399J/rmi/EquationSolver.class"/>
+         <include name="edu/pdx/cs399J/rmi/Movie.class"/>
+         <include name="edu/pdx/cs399J/rmi/MovieDatabase.class"/>
+         <include name="edu/pdx/cs399J/rmi/Query.class"/>
+         <include name="edu/pdx/cs399J/rmi/CreateMovie.class"/>
+         <include name="edu/pdx/cs399J/rmi/NoteCharacter.class"/>
+         <include name="edu/pdx/cs399J/rmi/GetFilmography.class"/>
+         <include name="edu/pdx/cs399J/rmi/GetMoviesInYear*.class"/>
+         <include name="edu/pdx/cs399J/rmi/ShutdownMovieDatabase.class"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-rmi-client-jar"/>
+
+    <uptodate property="cs410G-jar-uptodate"
+              targetfile="${jars.dir}/${cs410G.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs410G/**/*.class"/>
+      </srcfiles>
+    </uptodate>
 
     <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
   </target>
@@ -326,7 +432,7 @@
              splitindex="yes"
              windowtitle="CS399J Docs"
              overview="${src.dir}/overview.html"
-             additionalparam="-linksource -breakiterator"
+             additionalparam="-linksource -breakiterator -Xwerror"
     >
       <classpath>
         <pathelement location="${classes.dir}"/>
