@@ -13,8 +13,8 @@ public class Check {
   /** The date on which the check was written */
   private Date date;
 
-  /** To whom the check was written */
-  private String receiver;
+  /** A description of the check */
+  private String description;
 
   /** The amount of the check.  Negative means withdrawl. */
   private double amount;
@@ -59,15 +59,15 @@ public class Check {
   /**
    * Returns the party to which the check was issued
    */
-  public String getReceiver() {
-    return this.receiver;
+  public String getDescription() {
+    return this.description;
   }
 
   /**
    * Sets the party to which this check was issued
    */
-  public void setReceiver(String receiver) {
-    this.receiver = receiver;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /**
