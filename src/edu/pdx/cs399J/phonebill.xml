@@ -2,7 +2,7 @@
 
 <!-- A sample phone bill XML file -->
 <!DOCTYPE phone-bill
-          SYSTEM "phonebill.dtd">
+          SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/phonebill.dtd">
 <phone-bill>
   <customer>Dave</customer>
   <call>
