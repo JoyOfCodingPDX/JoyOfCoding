@@ -1,10 +1,12 @@
 package edu.pdx.cs410E.familyTree;
 
+import edu.pdx.cs410J.familyTree.Person;
 import java.rmi.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.util.Date;  // Not to be confused with java.sql.Date
 
 /**
@@ -40,6 +42,20 @@ class RdbRemotePerson extends java.rmi.server.UnicastRemoteObject
     return this.id;
   }
 
+  public int getGender() throws RemoteException {
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT gender FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return rs.getInt("gender");
+
+    } catch (SQLException ex) {
+      String s = "While getting gender for " + this.id;
+      throw new RemoteException(s, ex);
+    }
+  }
+
   public String getFirstName() throws RemoteException {
     try {
       Statement stmt = this.conn.createStatement();
@@ -71,16 +87,50 @@ class RdbRemotePerson extends java.rmi.server.UnicastRemoteObject
   }
 
   public String getMiddleName() throws RemoteException {
-    throw new UnsupportedOperationException("getMiddleName() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s =
+        "SELECT middle_name FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return rs.getString(1);
+
+    } catch (SQLException ex) {
+      String s = "While getting middle name of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setMiddleName(String middleName) 
     throws RemoteException {
-    throw new UnsupportedOperationException("setMiddleName() Not implemented yet");
+
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = 
+        "UPDATE people SET middle_name = '" + middleName + 
+        "' WHERE id = " + this.id;
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While setting middle name of " + this.id + " to \"" +
+        middleName + "\": " + ex;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public String getLastName() throws RemoteException {
-    throw new UnsupportedOperationException("getLastName() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s =
+        "SELECT last_name FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return rs.getString(1);
+
+    } catch (SQLException ex) {
+      String s = "While getting last name of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setLastName(String lastName) throws RemoteException {
@@ -99,35 +149,153 @@ class RdbRemotePerson extends java.rmi.server.UnicastRemoteObject
   }
 
   public int getFatherId() throws RemoteException {
-    throw new UnsupportedOperationException("getFatherId() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT father FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return rs.getInt("father");
+
+    } catch (SQLException ex) {
+      String s = "While getting father id of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setFatherId(int fatherId) throws RemoteException {
-    throw new UnsupportedOperationException("setFatherId() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String q = "SELECT id, gender FROM people WHERE id = " +
+        fatherId;
+      ResultSet rs = stmt.executeQuery(q);
+      if (!rs.next()) {
+        String s = "Could not find person with id " + fatherId;
+        throw new IllegalArgumentException(s);
+
+      } else if (rs.getInt("gender") != Person.MALE) {
+        String s = "A father cannot be FEMALE";
+        throw new IllegalArgumentException(s);
+      }
+
+    } catch (SQLException ex) {
+      String s = "While examining father with id " + fatherId;
+      throw new RemoteException(s, ex);
+    }
+
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "UPDATE people SET father = " + fatherId +
+        " WHERE id = " + this.id;
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While setting father id of " + this.id + " to " +
+        fatherId;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public int getMotherId() throws RemoteException {
-    throw new UnsupportedOperationException("getMotherId() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT mother FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return rs.getInt("mother");
+
+    } catch (SQLException ex) {
+      String s = "While getting mother id of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setMotherId(int motherId) throws RemoteException {
-    throw new UnsupportedOperationException("setMotherId() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String q = "SELECT id, gender FROM people WHERE id = " +
+        motherId;
+      ResultSet rs = stmt.executeQuery(q);
+      if (!rs.next()) {
+        String s = "Could not find person with id " + motherId;
+        throw new IllegalArgumentException(s);
+
+      } else if (rs.getInt("gender") != Person.FEMALE) {
+        String s = "A mother cannot be MALE";
+        throw new IllegalArgumentException(s);
+      }
+
+    } catch (SQLException ex) {
+      String s = "While examining mother with id " + motherId;
+      throw new RemoteException(s, ex);
+    }
+
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "UPDATE people SET mother = " + motherId +
+        " WHERE id = " + this.id;
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While setting mother id of " + this.id + " to " +
+        motherId;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public Date getDateOfBirth() throws RemoteException {
-    throw new UnsupportedOperationException("getDob() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT dob FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return new Date(rs.getDate("dob").getTime());
+
+    } catch (SQLException ex) {
+      String s = "While getting date of birth of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setDateOfBirth(Date dob) throws RemoteException {
-    throw new UnsupportedOperationException("setDob() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "UPDATE people SET dob = '" + 
+        (new java.sql.Date(dob.getTime())) + "' WHERE id = " +
+        this.id;
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While setting date of birth of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public Date getDateOfDeath() throws RemoteException {
-    throw new UnsupportedOperationException("getDod() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT dod FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      return new Date(rs.getDate("dod").getTime());
+
+    } catch (SQLException ex) {
+      String s = "While getting date of death of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   public void setDateOfDeath(Date dod) throws RemoteException {
-    throw new UnsupportedOperationException("setDod() Not implemented yet");
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "UPDATE people SET dod = '" + 
+        (new java.sql.Date(dod.getTime())) + "' WHERE id = " +
+        this.id;
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While setting date of death of " + this.id;
+      throw new RemoteException(s, ex);
+    }
   }
 
   /**
@@ -165,13 +333,41 @@ class RdbRemotePerson extends java.rmi.server.UnicastRemoteObject
   }
 
   public String getDescription() throws RemoteException {
-    try {
-      return getFullName(this.id);
+    DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
-//       Statement stmt = this.conn.createStatement();
-//       String s = "SELECT * FROM people WHERE id = " + this.id;
-//       ResultSet rs = stmt.executeQuery(s);
-//       rs.next();
+    try {
+      StringBuffer sb = new StringBuffer("Person ");
+      sb.append(this.id);
+      sb.append(": ");
+      sb.append(getFullName(this.id));
+
+      Statement stmt = this.conn.createStatement();
+      String s = "SELECT dob, dod, mother, father " +
+        "FROM people WHERE id = " + this.id;
+      ResultSet rs = stmt.executeQuery(s);
+      rs.next();
+      Date dob = rs.getDate("dob");
+      if (dob != null) {
+        sb.append("\nBorn: " + df.format(dob));
+      }
+      Date dod = rs.getDate("dod");
+      if (dod != null) {
+        sb.append("\nDied: " + df.format(dod));
+      }
+
+      int motherId = rs.getInt("mother");
+      if (!rs.wasNull()) {
+        sb.append("\nMother: ");
+        sb.append(getFullName(motherId));
+      }
+
+      int fatherId = rs.getInt("father");
+      if (!rs.wasNull()) {
+        sb.append("\nFather: ");
+        sb.append(getFullName(fatherId));
+      }
+
+      return sb.toString();
 
     } catch (SQLException ex) {
       String s = "While getting description of " + this.id;

@@ -29,6 +29,7 @@ POLICY_FILE=`pwd`/rmi-server.policy
 CLOUD_LIB=${J2EE_HOME}/lib/cloudscape
 
 CLASSPATH=${JAR_DIR}/familyTree.jar
+CLASSPATH=${CLASSPATH}:${JAR_DIR}/junit.jar
 CLASSPATH=${CLASSPATH}:${CLOUD_LIB}/RmiJdbc.jar
 CLASSPATH=${CLASSPATH}:${CLOUD_LIB}/cloudclient.jar
 

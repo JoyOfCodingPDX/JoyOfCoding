@@ -12,6 +12,38 @@ public class CreateFamilyTreeTables {
   private static PrintStream out = System.out;
   private static PrintStream err = System.err;
 
+  //////////////////////  Static Methods  //////////////////////
+
+  /**
+   * Helper method that creates the family tree tables.  If the tables
+   * already exist, they are dropped.
+   */
+  static void createTables(Connection conn) throws SQLException {
+    // Drop the people table
+    try {
+      Statement stmt = conn.createStatement();
+      String s = "DROP TABLE people";
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      System.out.println("Ignoring: " + ex);
+    }
+
+    // Create the people table
+    Statement stmt = conn.createStatement();
+
+    String s = "CREATE TABLE people" +
+      " (id INTEGER CONSTRAINT pk_people PRIMARY KEY, " +
+      "  gender INTEGER CONSTRAINT valid_gender CHECK (gender IN(" +
+      Person.MALE + ", " + Person.FEMALE + "))," +
+      "  first_name VARCHAR(20), middle_name VARCHAR(20), " +
+      "  last_name VARCHAR(20), " +
+      "  father INTEGER CONSTRAINT fk_father REFERENCES people (id), " +
+      "  mother INTEGER CONSTRAINT fk_mother REFERENCES people (id), " +
+      "  dob DATE, dod DATE)";
+    stmt.executeUpdate(s);
+  }
+
   ///////////////////////  Main Program  ///////////////////////
 
   private static void usage(String s) {
@@ -67,30 +99,8 @@ public class CreateFamilyTreeTables {
       System.exit(1);
     }
 
-    // Drop the people table
     try {
-      Statement stmt = conn.createStatement();
-      String s = "DROP TABLE people";
-      stmt.executeUpdate(s);
-
-    } catch (SQLException ex) {
-      // Ignore...
-    }
-
-    // Create the people table
-    try {
-      Statement stmt = conn.createStatement();
-
-      String s = "CREATE TABLE people" +
-        " (id INTEGER CONSTRAINT pk_people PRIMARY KEY, " +
-        "  gender INTEGER CONSTRAINT valid_gender CHECK (gender IN(" +
-        Person.MALE + ", " + Person.FEMALE + "))," +
-        "  first_name VARCHAR(20), middle_name VARCHAR(20), " +
-        "  last_name VARCHAR(20), " +
-        "  father INTEGER CONSTRAINT fk_father REFERENCES people (id), " +
-        "  mother INTEGER CONSTRAINT fk_mother REFERENCES people (id), " +
-        "  dob DATE, dod DATE)";
-      stmt.executeUpdate(s);
+      createTables(conn);
 
     } catch (SQLException ex) {
       err.println("While creating tables: " + ex);

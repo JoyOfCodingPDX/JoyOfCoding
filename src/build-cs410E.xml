@@ -171,18 +171,28 @@
            includes="edu/pdx/cs410E/familyTree/**"
            includeAntRuntime="false"
            debug="on">
-      <classpath>
-        <pathelement location="${jars.dir}/junit.jar"/>
-      </classpath>
     </javac>
 
     <!-- Generate "stubs" for remote classes -->
     <rmic includes=
-            "edu/pdx/cs410E/familyTree/RemoteMarriageImpl.class,
+            "edu/pdx/cs410E/familyTree/RdbRemoteFamilyTree.class,
+             edu/pdx/cs410E/familyTree/RdbRemotePerson.class,
+             edu/pdx/cs410E/familyTree/RemoteMarriageImpl.class,
              edu/pdx/cs410E/familyTree/RemotePersonImpl.class,
              edu/pdx/cs410E/familyTree/XmlRemoteFamilyTree.class"
           classpath="${classes.dir}"
           base="${classes.dir}"/>
+
+    <!-- Build the tests -->
+    <javac srcdir="${src.dir}/tests"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410E/familyTree/**"
+           includeAntRuntime="false"
+           debug="on">
+      <classpath>
+        <pathelement location="${jars.dir}/junit.jar"/>
+      </classpath>
+    </javac>
 
     <jar jarfile="${jars.dir}/${familyTree.jar}"
          update="yes">
@@ -200,6 +210,14 @@
       </fileset>
     </jar>
 
+  </target>
+
+  <target name="familyTree-create-tables" depends="props">
+  <java classname="COM.cloudscape.tools.ij" fork="yes" >
+     <jvmarg line="${cloud-jvmargs}"/>
+     <arg value="${src.dir}/edu/pdx/cs410E/familyTree/create-tables.sql"/>
+     <classpath path="${cloud-path}"/>
+  </java>
   </target>
 
 

@@ -14,12 +14,12 @@ public interface RemotePerson extends Remote {
    */
   public int getId() throws RemoteException;
 
-//   /**
-//    * Returns this person's gender
-//    *
-//    * @see edu.pdx.cs410J.familyTree.Person#MALE
-//    */
-//   public int getGender() throws RemoteException;
+  /**
+   * Returns this person's gender (either {@link
+   * edu.pdx.cs410J.familyTree.Person#MALE} or 
+   * {@link edu.pdx.cs410J.familyTree.Person#FEMALE}.
+   */
+  public int getGender() throws RemoteException;
 
 //   /**
 //    * Sets this person's gender
@@ -65,7 +65,8 @@ public interface RemotePerson extends Remote {
    * Sets the id of this person's father
    *
    * @throw IllegalArgumentException
-   *        The person with the given id cannot be found
+   *        The person with the given id cannot be found or the person
+   *        with that id is not {@link Person#MALE}
    */
   public void setFatherId(int fatherId) throws RemoteException;
 
@@ -78,7 +79,8 @@ public interface RemotePerson extends Remote {
    * Sets the id of this person's mother
    *
    * @throw IllegalArgumentException
-   *        The person with the given id cannot be found
+   *        The person with the given id cannot be found or the person
+   *        with that id is not {@link Person#FEMALE}
    */
   public void setMotherId(int motherId) throws RemoteException;
 

@@ -91,6 +91,11 @@ class RdbRemoteFamilyTree extends UnicastRemoteObject
   public RemotePerson createPerson(int gender)
     throws RemoteException {
 
+    if (gender != Person.MALE && gender != Person.FEMALE) {
+      String s = "Invalid gender: " + gender;
+      throw new IllegalArgumentException(s);
+    }
+
     // Add a new row to the people table and create a new
     // RdbRemotePerson 
     int id = ++this.highestId;

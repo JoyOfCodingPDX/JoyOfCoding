@@ -308,20 +308,26 @@ public class Person {
 
     sb.append("Person " + this.id + ": " + this.getFullName());
     if (this.dob != null) {
-      sb.append("\nBorn: " + df.format(this.dob));
+      sb.append("\nBorn: ");
+      sb.append(df.format(this.dob));
     }
     if (this.dod != null) {
-      sb.append(", Died: " + df.format(this.dod));
+      sb.append(", Died: ");
+      sb.append(df.format(this.dod));
     }
 
     if (this.mother != null) {
-      sb.append("\nMother: " + this.mother.getFullName());
+      sb.append("\nMother: ");
+      sb.append(this.mother.getFullName());
     }
     if (this.father != null) {
-      sb.append(", Father: " + this.father.getFullName());
+      sb.append(", Father: ");
+      sb.append(this.father.getFullName());
     }
 
-    sb.append("\nMarried " + this.marriages.size() + " times");
+    sb.append("\nMarried ");
+    sb.append(this.marriages.size());
+    sb.append(" times");
 
     return sb.toString();
   }
