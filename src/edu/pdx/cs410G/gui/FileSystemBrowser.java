@@ -19,8 +19,6 @@ public class FileSystemBrowser extends JPanel {
    * it.
    */
   public FileSystemBrowser(File dir) {
-    System.out.println("Dir: " + dir);
-
     File[] fileRoots = null;
 
     if(dir == null) {
@@ -32,7 +30,6 @@ public class FileSystemBrowser extends JPanel {
 
     TreeNode[] rootNodes = new FileSystemNode[fileRoots.length];
     for(int i = 0; i < fileRoots.length; i++) {
-      System.out.println("Root: " + fileRoots[i]);
       rootNodes[i] = new FileSystemNode(fileRoots[i]);
     }
 
