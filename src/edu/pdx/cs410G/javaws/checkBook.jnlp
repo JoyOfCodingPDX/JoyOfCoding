@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A Java Network Launching Protocol configuration file for the 
+    check book application -->
+<jnlp
+  spec="1.0+"
+  codebase="http://www.cs.pdx.edu/~whitlock/jars"
+  href="../src/edu/pdx/cs410G/javaws/checkBook.jnlp"
+>
+  <information>
+    <title>Check Book Application</title>
+    <vendor>CS410G Examples</vendor>
+    <homepage href="http://www.cs.pdx.edu/~whitlock"/>
+    <description kind="one-line">
+      A simple program that demonstrates JTables and the MVC design pattern
+    </description>
+    <icon href="http://www.cs.pdx.edu/~whitlock/checkbook_icon.gif"/>
+    <offline-allowed/>
+  </information>
+  <!-- We don't need any security -->
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="cs410G.jar"/>
+    <!-- Property for demonstration purposes only -->
+    <property name="DEBUG" value="true"/>
+  </resources>
+  <application-desc 
+    main-class="edu.pdx.cs410G.mvc.CheckbookGUI">
+    <!-- Arg for demonstration purposes only -->
+    <argument>4.35</argument>
+  </application>
+</jnlp>
