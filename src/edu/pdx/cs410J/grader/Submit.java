@@ -37,6 +37,7 @@ public class Submit {
   private static String userEmail = null;
   private static String userId = null;
   private static String serverName = "mailhost.pdx.edu";
+  private static String comment = null;
   private static boolean DEBUG = false;
   private static boolean SAVEJAR = false;
   private static Date submitTime = null;
@@ -62,6 +63,7 @@ public class Submit {
     err.println("  -smtp serverName   Name of SMTP server " +
 		"(optional)");
     err.println("  -verbose           Debugging output (optional)");
+    err.println("  -comment comment   Info for the Grader (optional)");
     System.exit(1);
   }
 
@@ -204,6 +206,10 @@ public class Submit {
     while(iter.hasNext()) {
       File file = (File) iter.next();
       out.println("  " + file);
+    }
+
+    if(comment != null) {
+      out.println("\nComment: " + comment + "\n");
     }
 
     out.println("A receipt will be sent to: " + userEmail + "\n");
@@ -392,6 +398,9 @@ public class Submit {
       DateFormat.getDateTimeInstance(DateFormat.FULL,
 				     DateFormat.FULL);
     text.append("Submitted on: " + df.format(submitTime) + "\n");
+    if(comment != null) {
+      text.append("Comment: " + comment);
+    }
     text.append("Contents:\n");
     
     Iterator iter = sourceFiles.iterator();
@@ -564,6 +573,14 @@ public class Submit {
 
       } else if(args[i].equals("-savejar")) {
 	SAVEJAR = true;
+
+      } else if(args[i].equals("-comment")) {
+        if(++i >= args.length) {
+          err.println("** No comment specified");
+          usage();
+        }
+
+        comment = args[i];
 
       } else {
         // The name of a source file
