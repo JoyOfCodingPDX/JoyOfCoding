@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE familytree SYSTEM 'http://www.cs.pdx.edu/~whitlock/dtds/familytree.dtd'>
+
+<familytree>
+  <person>
+    <id>7</id>
+    <firstname>Doris</firstname>
+    <middlename>Arlene</middlename>
+    <lastname>Hartwell</lastname>
+    <dob>
+      <date>
+	<month>7</month>
+	<day>27</day>
+	<year>1914</year>
+      </date>
+    </dob>
+    <dod>
+      <date>
+	<month>10</month>
+	<day>15</day>
+	<year>2000</year>
+      </date>
+    </dod>
+  </person>
+  <person>
+    <id>6</id>
+    <firstname>Ralph</firstname>
+    <middlename>Hawthorn</middlename>
+    <lastname>Granger</lastname>
+    <dob>
+      <date>
+	<month>5</month>
+	<day>30</day>
+	<year>1911</year>
+      </date>
+    </dob>
+  </person>
+  <person>
+    <id>3</id>
+    <firstname>Carolyn</firstname>
+    <middlename>Joyce</middlename>
+    <lastname>Granger</lastname>
+    <dob>
+      <date>
+	<month>4</month>
+	<day>17</day>
+	<year>1945</year>
+      </date>
+    </dob>
+    <father-id>6</father-id>
+    <mother-id>7</mother-id>
+  </person>
+  <person>
+    <id>2</id>
+    <firstname>Stanley</firstname>
+    <middlename>Jay</middlename>
+    <lastname>Whitlock</lastname>
+    <dob>
+      <date>
+	<month>1</month>
+	<day>27</day>
+	<year>1948</year>
+      </date>
+    </dob>
+  </person>
+  <person>
+    <id>1</id>
+    <firstname>David</firstname>
+    <middlename>Michael</middlename>
+    <lastname>Whitlock</lastname>
+    <father-id>2</father-id>
+    <mother-id>3</mother-id>
+  </person>
+  <marriage husband-id="2" wife-id="3">
+    <date>
+      <month>6</month>
+      <day>12</day>
+      <year>1969</year>
+    </date>
+    <location>Durham, NH</location>
+  </marriage>
+  <marriage husband-id="6" wife-id="7">
+    <date>
+      <month>5</month>
+      <day>30</day>
+      <year>1939</year>
+    </date>
+    <location>Worcestor, MA</location>
+  </marriage>
+</familytree>
+

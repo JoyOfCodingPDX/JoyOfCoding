@@ -1,0 +1,12 @@
+grant codeBase "file:/u/whitlock/jars/gameConsole.jar" {
+  permission java.util.PropertyPermission "user.home", "read";
+  permission java.io.FilePermission 
+    "${user.home}${/}.games", "write, read";
+  permission java.io.FilePermission 
+    "${user.home}${/}.games${/}-", "write, read";
+
+  // Needed to load remote classes
+  permission java.lang.RuntimePermission "createClassLoader";
+  permission java.net.SocketPermission "*", "connect, accept";
+};
+
