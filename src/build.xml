@@ -86,7 +86,7 @@
         <pathelement location="${daves.jars.dir}/mail.jar"/>
         <pathelement location="${daves.jars.dir}/jnlp.jar"/>
         <pathelement location="${daves.jars.dir}/jfcunit.jar"/>
-        <pathelement location="${myenv.ANT_HOME}/lib/junit.jar"/>
+        <pathelement location="${ant.home}/lib/junit.jar"/>
       </classpath>
     </javac>
 
@@ -437,8 +437,8 @@
         <pathelement location="${classes.dir}"/>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
         <pathelement location="${daves.jars.dir}/mail.jar"/>
-        <pathelement location="${myenv.ANT_HOME}/lib/junit.jar"/>
-        <pathelement location="${myenv.ANT_HOME}/lib/ant.jar"/>
+        <pathelement location="${ant.home}/lib/junit.jar"/>
+        <pathelement location="${ant.home}/lib/ant.jar"/>
       </classpath>
       <link href="http://java.sun.com/j2se/1.4.1/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>
