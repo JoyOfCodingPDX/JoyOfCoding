@@ -48,7 +48,7 @@ public class Survey {
       sb.append("Email: " + student.getEmail() + "\n");
     }
     if (student.getSsn() != null) {
-      sb.append("SSN: " + student.getSsn() + "\n");
+      sb.append("Student id: " + student.getSsn() + "\n");
     }
     if (student.getMajor() != null) {
       sb.append("Major: " + student.getMajor() + "\n");
@@ -130,7 +130,7 @@ public class Survey {
 
     String email = ask("What is your email address (doesn't have " +
                        "to be PSU)?");
-    String ssn = ask("What is your social security number (XXX-XX-XXXX)?");
+    String ssn = ask("What is your student id (XXX-XX-XXXX)?");
     String major = ask("What is your major?");
     String learn = ask("What do you hope to learn in CS399J?");
     String comments = ask("What else would you like to tell me?");
