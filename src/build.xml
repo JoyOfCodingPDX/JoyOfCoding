@@ -10,7 +10,7 @@
     <echo message="Building PSU Java source code:"/>
     <echo message=""/>
     <echo message="Targets are:"/>
-    <echo message="  cs410J      Builds code for CS410J assignments"/>
+    <echo message="  cs399J      Builds code for CS399J assignments"/>
     <echo message="  examples    Builds example code"/>
     <echo message="  grader      Builds code for grading"/>
     <echo message="  familyTree  Builds the family tree example code"/>
@@ -28,7 +28,7 @@
     <property name="classes.dir" value="./classes"/>
 
     <property name="examples.jar" value="examples.jar"/>
-    <property name="cs410J.jar" value="cs410J.jar"/>
+    <property name="cs399J.jar" value="cs399J.jar"/>
     <property name="familyTree.jar" value="familyTree.jar"/>
     <property name="grader.jar" value="grader.jar"/>
   </target>
@@ -37,7 +37,7 @@
   <target name="clean" depends="props">
     <delete dir="${classes.dir}"/>
     <delete file="${jars.dir}/${examples.jar}"/>
-    <delete file="${jars.dir}/${cs410J.jar}"/>
+    <delete file="${jars.dir}/${cs399J.jar}"/>
     <delete file="${jars.dir}/${familyTree.jar}"/>
     <delete file="${jars.dir}/${grader.jar}"/>
     <delete dir="${api.docs.dir}"/>
@@ -52,13 +52,13 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/core/**"
+           includes="edu/pdx/cs399J/core/**"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/core/**"/>
+         includes="edu/pdx/cs399J/core/**"/>
   </target>
 
   <!-- Builds the Java Language examples -->
@@ -66,13 +66,13 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/lang/**"
+           includes="edu/pdx/cs399J/lang/**"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/lang/**"/>
+         includes="edu/pdx/cs399J/lang/**"/>
   </target>
 
   <!-- Builds the XML examples -->
@@ -80,13 +80,13 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/xml/**"
+           includes="edu/pdx/cs399J/xml/**"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/xml/**"/>
+         includes="edu/pdx/cs399J/xml/**"/>
   </target>
 
   <!-- Builds the JUnit examples -->
@@ -94,7 +94,7 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/junit/**"
+           includes="edu/pdx/cs399J/junit/**"
            includeAntRuntime="false"
            debug="on">
       <classpath>
@@ -104,7 +104,7 @@
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/junit/**"/>
+         includes="edu/pdx/cs399J/junit/**"/>
   </target>
 
   <!-- Builds the Networking examples -->
@@ -112,13 +112,13 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/net/**"
+           includes="edu/pdx/cs399J/net/**"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/net/**"/>
+         includes="edu/pdx/cs399J/net/**"/>
   </target>
 
   <!-- Builds the GUI examples -->
@@ -126,14 +126,14 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/gui/**"
-           excludes="edu/pdx/cs410J/gui/DrawText.java"
+           includes="edu/pdx/cs399J/gui/**"
+           excludes="edu/pdx/cs399J/gui/DrawText.java"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/gui/**"/>
+         includes="edu/pdx/cs399J/gui/**"/>
   </target>
 
   <!-- Builds the security examples -->
@@ -141,27 +141,27 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/security/**"
+           includes="edu/pdx/cs399J/security/**"
            includeAntRuntime="false"
            debug="on"/>
     <jar jarfile="${jars.dir}/${examples.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/security/**"/>
+         includes="edu/pdx/cs399J/security/**"/>
   </target>
 
-  <!-- Builds the source code for projects in CS410J -->
-  <target name="cs410J" depends="props">
+  <!-- Builds the source code for projects in CS399J -->
+  <target name="cs399J" depends="props">
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/*.java"
+           includes="edu/pdx/cs399J/*.java"
            includeAntRuntime="false"
            debug="on"/>
-    <jar jarfile="${jars.dir}/${cs410J.jar}"
+    <jar jarfile="${jars.dir}/${cs399J.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/*.class"/>
+         includes="edu/pdx/cs399J/*.class"/>
   </target>
 
   <!-- Builds the family tree code -->
@@ -169,7 +169,7 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/familyTree/**"
+           includes="edu/pdx/cs399J/familyTree/**"
            includeAntRuntime="false"
            debug="on"
            source="1.4">
@@ -177,21 +177,21 @@
         <pathelement location="${jars.dir}/junit.jar"/>
       </classpath>
     </javac>
-    <copy file="${src.dir}/edu/pdx/cs410J/familyTree/familytree.dtd" 
-          toDir="${classes.dir}/edu/pdx/cs410J/familyTree"/>
+    <copy file="${src.dir}/edu/pdx/cs399J/familyTree/familytree.dtd" 
+          toDir="${classes.dir}/edu/pdx/cs399J/familyTree"/>
     <jar jarfile="${jars.dir}/${familyTree.jar}"
          basedir="${classes.dir}"
          update="yes"
-         includes="edu/pdx/cs410J/familyTree/**"/>
+         includes="edu/pdx/cs399J/familyTree/**"/>
   </target>
 
   <!-- Runs the junit unit tests for the family tree code -->
   <target name="familyTree-tests" depends="familyTree">
     <junit printsummary="yes">
       <formatter type="plain" usefile="false"/>
-      <test name="edu.pdx.cs410J.familyTree.tests.PersonTest" />
-      <test name="edu.pdx.cs410J.familyTree.tests.MarriageTest" />
-      <test name="edu.pdx.cs410J.familyTree.tests.XmlTest" />
+      <test name="edu.pdx.cs399J.familyTree.tests.PersonTest" />
+      <test name="edu.pdx.cs399J.familyTree.tests.MarriageTest" />
+      <test name="edu.pdx.cs399J.familyTree.tests.XmlTest" />
       <classpath>
         <pathelement location="${jars.dir}/familyTree.jar"/>
       </classpath>
@@ -203,7 +203,7 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs410J/grader/**"
+           includes="edu/pdx/cs399J/grader/**"
            includeAntRuntime="false"
            debug="on">
       <classpath>
@@ -211,27 +211,27 @@
         <pathelement location="${jars.dir}/mail.jar"/>
       </classpath>
     </javac>
-    <copy file="${src.dir}/edu/pdx/cs410J/grader/gradebook.dtd" 
-          toDir="${classes.dir}/edu/pdx/cs410J/grader"/>
+    <copy file="${src.dir}/edu/pdx/cs399J/grader/gradebook.dtd" 
+          toDir="${classes.dir}/edu/pdx/cs399J/grader"/>
     <jar jarfile="${jars.dir}/${grader.jar}"
          basedir="${classes.dir}"
-         manifest="edu/pdx/cs410J/grader/Manifest.mf"
+         manifest="edu/pdx/cs399J/grader/Manifest.mf"
          update="yes"
-         includes="edu/pdx/cs410J/grader/*"/>
+         includes="edu/pdx/cs399J/grader/*"/>
   </target>
 
   <!-- Builds the Javadocs for all my code -->
   <target name="docs" 
-          depends="props, cs410J, examples, grader, familyTree">
+          depends="props, cs399J, examples, grader, familyTree">
     <mkdir dir="${api.docs.dir}"/>
-    <javadoc packagenames="edu.pdx.cs410J.*"
+    <javadoc packagenames="edu.pdx.cs399J.*"
              destdir="${api.docs.dir}"
              sourcepath="${src.dir}"
-             excludepackagenames="edu.pdx.cs410J.fall2000, edu.pdx.cs410J.whitlock"
+             excludepackagenames="edu.pdx.cs399J.fall2000, edu.pdx.cs399J.whitlock"
              nohelp="yes"
              use="yes"
              splitindex="yes"
-             windowtitle="CS410J Docs"
+             windowtitle="CS399J Docs"
     >
       <classpath>
         <pathelement location="${classes.dir}"/>

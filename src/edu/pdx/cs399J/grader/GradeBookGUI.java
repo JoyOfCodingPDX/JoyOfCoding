@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs410J.*;
+import edu.pdx.cs399J.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -10,7 +10,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 /**
- * This class is a main GUI for manipulate the grade book for CS410J.
+ * This class is a main GUI for manipulate the grade book for CS399J.
  */
 public class GradeBookGUI extends JFrame {
 
@@ -319,7 +319,7 @@ public class GradeBookGUI extends JFrame {
    * Main program.  Create and show a <code>GradeBookGUI</code>
    */
   public static void main(String[] args) {
-    GradeBookGUI gui = new GradeBookGUI("CS410J Grade Book Program");
+    GradeBookGUI gui = new GradeBookGUI("CS399J Grade Book Program");
 
     if (args.length > 0) {
       PrintStream err = System.err;

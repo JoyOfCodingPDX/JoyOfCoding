@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.junit;
+package edu.pdx.cs399J.junit;
 
 /**
  * This class represent a course taught at a university.

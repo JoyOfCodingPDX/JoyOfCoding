@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.lang;
+package edu.pdx.cs399J.lang;
 
 /**
  * This class demonstrates throwing exceptions.  It reads two

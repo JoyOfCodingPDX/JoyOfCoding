@@ -1,8 +1,8 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.util.*;
-import edu.pdx.cs410J.*;
+import edu.pdx.cs399J.*;
 
 /**
  * This program generates a .mailrc file containing a mail alias for

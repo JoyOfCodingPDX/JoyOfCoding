@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 /**
  * Transfers money between two <code>BankAccount</code>s.

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.lang;
+package edu.pdx.cs399J.lang;
 
 /**
  * This class has a main method that demonstrates the effects of

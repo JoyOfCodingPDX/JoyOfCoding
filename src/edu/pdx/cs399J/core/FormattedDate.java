@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.core;
+package edu.pdx.cs399J.core;
 
 import java.text.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.util.*;
  * four formats.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/core/FormattedDate.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/core/FormattedDate.java">
  * View Source</A></EM></P>
  */
 public class FormattedDate {

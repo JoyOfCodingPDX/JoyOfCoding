@@ -1,13 +1,13 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.util.*;
 
-import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs399J.ParserException;
 
 /**
  * This class represents a grade book that contains information about
- * a CS410J class: the assignments, the students and their grades.
+ * a CS399J class: the assignments, the students and their grades.
  */
 public class GradeBook {
 

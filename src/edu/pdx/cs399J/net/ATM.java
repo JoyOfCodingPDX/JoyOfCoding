@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.PrintStream;
 
@@ -8,7 +8,7 @@ import java.io.PrintStream;
  * always correct.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/ATM.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/ATM.java">
  * View Source</A></EM></P>
  */
 public class ATM implements Runnable {

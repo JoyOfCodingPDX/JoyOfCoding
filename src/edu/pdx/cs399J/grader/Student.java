@@ -1,12 +1,12 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.util.*;
 
-import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs399J.ParserException;
 
 /**
- * This class represents a student who is taking CS410J.
+ * This class represents a student who is taking CS399J.
  */
 public class Student implements Notable {
 

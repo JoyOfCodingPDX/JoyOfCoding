@@ -1,4 +1,4 @@
-package edu.pdx.cs410J;
+package edu.pdx.cs399J;
 
 /**
  * This interface is to be implemented by classes that create an

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.*;
 import java.net.*;
@@ -9,7 +9,7 @@ import java.net.*;
  * "bye".
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/Listener.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/Listener.java">
  * View Source</A></EM></P>
  */
 public class Listener {

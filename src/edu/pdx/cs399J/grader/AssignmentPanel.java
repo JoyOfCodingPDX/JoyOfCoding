@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs410J.*;
+import edu.pdx.cs399J.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;

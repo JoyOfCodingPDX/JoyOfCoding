@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.familyTree;
+package edu.pdx.cs399J.familyTree;
 
 /**
  * Classes that implement this interface create a family tree from

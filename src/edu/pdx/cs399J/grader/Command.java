@@ -1,11 +1,11 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.util.*;
 import org.w3c.dom.*;
 
 /**
  * A <code>Command</code> is something that is executed as part of
- * grading an assignment in CS410J.
+ * grading an assignment in CS399J.
  */
 public abstract class Command {
 

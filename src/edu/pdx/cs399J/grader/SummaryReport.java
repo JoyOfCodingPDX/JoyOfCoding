@@ -1,10 +1,10 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs399J.ParserException;
 
 /**
  * Class that creates a pretty report that summarizes a student's

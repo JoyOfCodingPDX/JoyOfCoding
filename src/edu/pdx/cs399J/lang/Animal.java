@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.lang;
+package edu.pdx.cs399J.lang;
 
 /**
  * This class is the base class in our animal hierarchy.  Each animal

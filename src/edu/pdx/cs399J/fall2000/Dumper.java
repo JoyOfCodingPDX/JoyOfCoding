@@ -1,4 +1,4 @@
-package edu.pdx.cs410J;
+package edu.pdx.cs399J;
 
 /**
  * This interface allows the contents of an appointment book to be

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.*;
 import java.util.*;
@@ -10,7 +10,7 @@ import java.net.*;
  * <code>ChatListener</code> that run in their own threads.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/ChatCommunicator.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatCommunicator.java">
  * View Source</A></EM></P>
  */
 public class ChatCommunicator implements Runnable {

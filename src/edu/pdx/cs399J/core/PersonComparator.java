@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.core;
+package edu.pdx.cs399J.core;
 
-import edu.pdx.cs410J.lang.*;
+import edu.pdx.cs399J.lang.*;
 import java.util.*;
 
 /**

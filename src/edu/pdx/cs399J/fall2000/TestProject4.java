@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.net.*;
@@ -14,7 +14,7 @@ public class TestProject4 {
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
-  private static final String PACKAGE = "edu.pdx.cs410J.";
+  private static final String PACKAGE = "edu.pdx.cs399J.";
   private static final String CLIENT = ".Project4";
   private static final String SERVER = ".AppointmentBookServer";
 
@@ -158,7 +158,7 @@ public class TestProject4 {
       Tester tester = new Tester(id, logDir);
       tester.setURLs(urls);
 
-      tester.printBanner("CS410J Project 4: " + clientName, '-');
+      tester.printBanner("CS399J Project 4: " + clientName, '-');
       tester.println("");
       
       Thread server;
@@ -301,7 +301,7 @@ public class TestProject4 {
       File cwd = new File(userDir);
       Tester tester = new Tester("testProject1", cwd);
 
-      tester.executeMain("edu.pdx.cs410J.grader.TestProject1",
+      tester.executeMain("edu.pdx.cs399J.grader.TestProject1",
 			 testArgs[2]);
 
     } else {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.core;
+package edu.pdx.cs399J.core;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import java.util.*;
  * <code>Date</code> and <code>Calendar</code> classes.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/core/Today.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/core/Today.java">
  * View Source</A></EM></P>
  */
 public class Today {

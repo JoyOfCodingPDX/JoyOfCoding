@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.familyTree.tests;
+package edu.pdx.cs399J.familyTree.tests;
 
-import edu.pdx.cs410J.familyTree.*;
+import edu.pdx.cs399J.familyTree.*;
 import java.util.*;
 import junit.framework.*;
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.util.*;
@@ -15,7 +15,7 @@ public class TestProject3 {
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
-  private static final String PACKAGE = "edu.pdx.cs410J.";
+  private static final String PACKAGE = "edu.pdx.cs399J.";
   private static final String PROJECT = ".Project3";
 
   private static String[] testDescriptions = {
@@ -132,7 +132,7 @@ public class TestProject3 {
       Tester tester = new Tester(id, logDir);
       tester.setURLs(urls);
 
-      tester.printBanner("CS410J Project 3: " + className, '-');
+      tester.printBanner("CS399J Project 3: " + className, '-');
       tester.println("");
       
       // Test 1
@@ -215,7 +215,7 @@ public class TestProject3 {
       File cwd = new File(userDir);
       Tester tester = new Tester("testProject1", cwd);
 
-      tester.executeMain("edu.pdx.cs410J.grader.TestProject1",
+      tester.executeMain("edu.pdx.cs399J.grader.TestProject1",
 			 testArgs[2]);
 
     } else {

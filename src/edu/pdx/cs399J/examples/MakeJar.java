@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs399J.examples;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.zip.*;
  * line.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/MakeJar.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/examples/MakeJar.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock
@@ -32,7 +32,7 @@ public class MakeJar {
     err.println("usage: MakeJar [options] jarFile [file]+");
     err.println("  Where [options] are:");
     err.println("  -nocompress    Don't compress Jar file");
-    err.println("  -author name   Author of Jar file (default: CS410J)");
+    err.println("  -author name   Author of Jar file (default: CS399J)");
     err.println("  -version n     Version of Jar file " +
 		"(default: 1.0)");
     System.exit(1);
@@ -46,7 +46,7 @@ public class MakeJar {
     String jarFileName = null;
     Set fileNames = new HashSet();
     boolean compress = true;
-    String author = "CS410J";   // Author of Jar file
+    String author = "CS399J";   // Author of Jar file
     String version = "1.0";     // Version of Jar file
 
     // Parse the command line

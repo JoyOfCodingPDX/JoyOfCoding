@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.xml;
+package edu.pdx.cs399J.xml;
 
 import java.io.*;
 import java.net.*;
@@ -13,7 +13,7 @@ import org.w3c.dom.*;
  * writes it to a file.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/xml/BuildPhonebook.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/xml/BuildPhonebook.java">
  * View Source</A></EM></P>
  */
 public class BuildPhonebook {

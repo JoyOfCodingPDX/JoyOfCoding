@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.Serializable;
 import java.text.*;
@@ -9,7 +9,7 @@ import java.util.*;
  * <code>ChatSession</code>s.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/ChatMessage.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatMessage.java">
  * View Source</A></EM></P>
  */
 public class ChatMessage implements Serializable {

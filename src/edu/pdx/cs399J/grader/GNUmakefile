@@ -1,12 +1,12 @@
 #
-# $Id: GNUmakefile,v 1.8 2001-07-26 01:14:44 whitlock Exp $
+# $Id: GNUmakefile,v 1.9 2002-03-02 23:40:58 whitlock Exp $
 #
 
 # example leaf node for building a java package
 default: all
 
 TOPDIR=../../../..
-PACKAGE=edu.pdx.cs410J.grader
+PACKAGE=edu.pdx.cs399J.grader
 JAR_FILE=grader.jar
 MANIFEST=Manifest.mf
 

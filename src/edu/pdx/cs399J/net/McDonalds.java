@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 /**
  * This class models a <code>McDonalds</code>.  There are a bunch of
@@ -8,7 +8,7 @@ package edu.pdx.cs410J.net;
  * <code>McEmployee</code> runs in his or her own thread.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/McDonalds.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/McDonalds.java">
  * View Source</A></EM></P>
  */
 public class McDonalds {

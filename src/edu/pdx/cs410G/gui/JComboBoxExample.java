@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.gui;
+package edu.pdx.cs399J.gui;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.text.*;
@@ -15,19 +15,19 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 
 /**
- * This program presents a survey that all students in CS410J should
+ * This program presents a survey that all students in CS399J should
  * answer.  It emails the results of the survey to the TA and emails a
  * receipt back to the student.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/grader/Survey.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/grader/Survey.java">
  * View Source</A></EM></P>
  */
 public class Survey {
   private static final String systemID = 
     "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
   private static final String publicID = 
-    "-//Portland State University//DTD CS410J Grade Book//EN";
+    "-//Portland State University//DTD CS399J Grade Book//EN";
 
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
@@ -108,7 +108,7 @@ public class Survey {
     }
 
     // Ask the student a bunch of questions
-    out.println("\nWelcome to the CS410J Survey Program.  I'd like " +
+    out.println("\nWelcome to the CS399J Survey Program.  I'd like " +
                 "to ask you a couple of");
     out.println("questions about yourself.  Except for your UNIX " +
                 "login id, no question");
@@ -132,7 +132,7 @@ public class Survey {
                        "to be PSU)?");
     String ssn = ask("What is your social security number (XXX-XX-XXXX)?");
     String major = ask("What is your major?");
-    String learn = ask("What do you hope to learn in CS410J?");
+    String learn = ask("What do you hope to learn in CS399J?");
     String comments = ask("What else would you like to tell me?");
 
     // Create a Student instance based on the response
@@ -178,7 +178,7 @@ public class Survey {
     File xmlFile = null;
 
     try {
-      xmlFile = File.createTempFile("CS410J-Survey", ".xml");
+      xmlFile = File.createTempFile("CS399J-Survey", ".xml");
       Document xmlDoc = XmlDumper.toXml(student);
 
       PrintWriter pw = new PrintWriter(new FileWriter(xmlFile), true);
@@ -223,7 +223,7 @@ public class Survey {
         message.setRecipients(Message.RecipientType.CC, cc);
       }
 
-      message.setSubject("CS410J Survey for " + student.getFullName());
+      message.setSubject("CS399J Survey for " + student.getFullName());
 
     } catch (AddressException ex) {
       err.println("** Exception with email address " + ex);
@@ -237,9 +237,9 @@ public class Survey {
 
     // Create the text portion of the message
     StringBuffer text = new StringBuffer();
-    text.append("Results of CS410J Survey:\n\n");
+    text.append("Results of CS399J Survey:\n\n");
     text.append(summary);
-    text.append("\n\nWhat do you hope to learn in CS410J?\n\n");
+    text.append("\n\nWhat do you hope to learn in CS399J?\n\n");
     text.append(learn);
     text.append("\n\nIs there anything else you'd like to tell me?\n\n");
     text.append(comments);

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.gui;
+package edu.pdx.cs399J.gui;
 
 import java.applet.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.util.*;
  * This class uses the AWT to display a clock.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/gui/Clock.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/gui/Clock.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock

@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs399J.ParserException;
 import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;

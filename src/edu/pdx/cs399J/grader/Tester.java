@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * This class contains a number of helper methods for testing projects
- * in CS410J.
+ * in CS399J.
  *
  * @author David Whitlock
  */

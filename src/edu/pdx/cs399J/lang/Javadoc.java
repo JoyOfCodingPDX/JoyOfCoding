@@ -1,10 +1,10 @@
-package edu.pdx.cs410J.lang;
+package edu.pdx.cs399J.lang;
 
 /**
  * <P>This class demonstrates Javadoc comments</P>
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/lang/Javadoc.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/lang/Javadoc.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock

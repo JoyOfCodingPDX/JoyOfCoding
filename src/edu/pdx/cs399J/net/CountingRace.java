@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 /**
  * This class demonstrates concurrency in Java by having Big Bird and

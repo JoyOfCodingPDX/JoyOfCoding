@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.security;
+package edu.pdx.cs399J.security;
 
 import java.security.*;
 
@@ -7,7 +7,7 @@ import java.security.*;
  * command line.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/security/PrintDigest.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/security/PrintDigest.java">
  * View Source</A></EM></P>
  */
 public class PrintDigest {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs399J.examples;
 
 import java.io.*;
 import java.text.*;
@@ -9,7 +9,7 @@ import java.util.*;
  * capabilities using the <code>Locale</code> class.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/AroundTheWorld.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/examples/AroundTheWorld.java">
  * View Source</A></EM></P>
  */
 public class AroundTheWorld {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.xml;
+package edu.pdx.cs399J.xml;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ import org.w3c.dom.*;
  * demonstrate how XML DOM trees can be turned into Java objects.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/xml/PhoneBookEntry.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/xml/PhoneBookEntry.java">
  * View Source</A></EM></P>
  */
 public abstract class PhoneBookEntry {

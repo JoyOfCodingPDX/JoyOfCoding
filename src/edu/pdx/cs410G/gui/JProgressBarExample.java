@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.gui;
+package edu.pdx.cs399J.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.*;

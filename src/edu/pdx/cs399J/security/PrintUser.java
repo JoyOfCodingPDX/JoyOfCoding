@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.security;
+package edu.pdx.cs399J.security;
 
 /**
  * <P>This class demonstrates <code>SecurityManager</code>s and
@@ -20,7 +20,7 @@ package edu.pdx.cs410J.security;
  * </OL>
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/security/PrintUser.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/security/PrintUser.java">
  * View Source</A></EM></P>
  */
 public class PrintUser {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs399J.examples;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import javax.mail.internet.*;
  * API is available from http://java.sun.com/products/javamail.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/MailFile.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/examples/MailFile.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock

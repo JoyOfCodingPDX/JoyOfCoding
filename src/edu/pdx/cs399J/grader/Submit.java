@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.net.*;
@@ -11,7 +11,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 /**
- * This class is used to submit assignments in CS410J.  The user
+ * This class is used to submit assignments in CS399J.  The user
  * specified his or her email address as well as the base directory
  * for his/her source files on the command line.  The directory is
  * searched recursively for files ending in .java.  Those files are
@@ -80,7 +80,7 @@ public class Submit {
    * Searches for the files given on the command line.  Ignores files
    * that do not end in .java, or that appear on the "no subit" list.
    * Files must reside in a directory named
-   * edu/pdx/cs410J/<studentId>.
+   * edu/pdx/cs399J/<studentId>.
    */
   private static Set searchForSourceFiles(Set fileNames) {
     // Compute the "no submit" list
@@ -158,10 +158,10 @@ public class Submit {
       }
 
       parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("cs410J")) {
+      if (parent == null || !parent.getName().equals("cs399J")) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
-                    "cs410J" + File.separator + userId);
+                    "cs399J" + File.separator + userId);
         continue;
       }
 
@@ -169,7 +169,7 @@ public class Submit {
       if (parent == null || !parent.getName().equals("pdx")) {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
-                    "pdx" + File.separator + "cs410J" + File.separator
+                    "pdx" + File.separator + "cs399J" + File.separator
                     + userId);
         continue;
       }
@@ -179,7 +179,7 @@ public class Submit {
         err.println("** Not submitting file " + fileName + 
                     ": it does not reside in a directory named " +
                     "edu" + File.separator + "pdx" + File.separator +
-                    "cs410J" + File.separator + userId);
+                    "cs399J" + File.separator + userId);
         continue;
       }
 
@@ -257,7 +257,7 @@ public class Submit {
    */
   private static String getRelativeName(File file) {
     // We already know that the file is in the correct directory
-    return "edu/pdx/cs410J/" + userId + "/" + file.getName();
+    return "edu/pdx/cs399J/" + userId + "/" + file.getName();
   }
 
   /**
@@ -373,7 +373,7 @@ public class Submit {
       message.setRecipients(Message.RecipientType.TO, to);
 
       StringBuffer subject = new StringBuffer();
-      subject.append("CS410J-SUBMIT ");
+      subject.append("CS399J-SUBMIT ");
       subject.append(userName);
       subject.append("'s ");
       subject.append(projName);
@@ -474,7 +474,7 @@ public class Submit {
       message.setRecipients(Message.RecipientType.TO, to);
 
       StringBuffer subject = new StringBuffer();
-      subject.append("CS410J ");
+      subject.append("CS399J ");
       subject.append(projName);
       subject.append(" submission");
       message.setSubject(subject.toString());

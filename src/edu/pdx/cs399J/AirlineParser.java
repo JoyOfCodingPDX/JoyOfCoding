@@ -1,4 +1,4 @@
-package edu.pdx.cs410J;
+package edu.pdx.cs399J;
 
 /**
  * Classes that implement this interface read some source and from it

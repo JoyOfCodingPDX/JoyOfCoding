@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.*;
 import java.text.*;
@@ -9,7 +9,7 @@ import java.util.*;
  * of <code>Date</code> from a file.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/core/ReadDate.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/core/ReadDate.java">
  * View Source</A></EM></P>
  */
 public class ReadDate {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs399J.grader;
 
 import java.io.*;
 import java.net.URL;
@@ -18,7 +18,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 
   /** The Public ID for the Grade Bookd DTD */
   protected static final String publicID = 
-    "-//Portland State University//DTD CS410J Grade Book//EN";
+    "-//Portland State University//DTD CS399J Grade Book//EN";
 
   ////////////////////  EntityResolver Methods  //////////////////
 
@@ -34,7 +34,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
       // We're resolving the external entity for the Grade Book's
       // DTD.  Check to see if its in the jar file.  This way we don't
       // need to go all the way to the website to find the DTD.
-      String location = "/edu/pdx/cs410J/grader/gradebook.dtd";
+      String location = "/edu/pdx/cs399J/grader/gradebook.dtd";
       InputStream stream =
         this.getClass().getResourceAsStream(location);
       if (stream != null) {

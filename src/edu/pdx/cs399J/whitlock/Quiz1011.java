@@ -1,11 +1,11 @@
-package edu.pdx.cs410J.whitlock;
+package edu.pdx.cs399J.whitlock;
 
 import java.io.*;
 import java.util.*;
 
-import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.grader.*;
-import edu.pdx.cs410J.familyTree.*;
+import edu.pdx.cs399J.ParserException;
+import edu.pdx.cs399J.grader.*;
+import edu.pdx.cs399J.familyTree.*;
 
 /**
  * This class implements the questions on the quiz given in class on
@@ -82,7 +82,7 @@ public class Quiz1011 {
   private static PrintWriter err = new PrintWriter(System.err, true);
   private static PrintWriter out = new PrintWriter(System.out, true);
 
-  private static final String PACKAGE = "edu.pdx.cs410J.";
+  private static final String PACKAGE = "edu.pdx.cs399J.";
   private static final String QUIZ = ".Quiz1011";
 
   /**

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.familyTree;
+package edu.pdx.cs399J.familyTree;
 
 /**
  * This exception is thrown when something is wrong with a family tree

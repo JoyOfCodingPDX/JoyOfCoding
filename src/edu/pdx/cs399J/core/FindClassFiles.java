@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.core;
+package edu.pdx.cs399J.core;
 
 import java.io.*;
 
@@ -9,7 +9,7 @@ import java.io.*;
  * for <code>.class</code> files.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/core/FindClassFiles.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/core/FindClassFiles.java">
  * View Source</A></EM></P>
  */
 public class FindClassFiles {

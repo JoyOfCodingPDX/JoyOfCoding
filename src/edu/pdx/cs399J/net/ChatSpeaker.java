@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.net.*;
  * <code>ChatMessage</code>s over a <code>Socket</code>.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/ChatSpeaker.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatSpeaker.java">
  * View Source</A></EM></P>
  */
 public class ChatSpeaker implements Runnable {

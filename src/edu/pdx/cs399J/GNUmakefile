@@ -1,13 +1,13 @@
 #
-# $Id: GNUmakefile,v 1.2 2001-07-26 01:14:40 whitlock Exp $
+# $Id: GNUmakefile,v 1.3 2002-03-02 23:40:43 whitlock Exp $
 #
 
 # example top level makefile... This will just descend to a directory.
 default: all
 
 TOPDIR=../../..
-PACKAGE=edu.pdx.cs410J
-JAR_FILE=cs410J.jar
+PACKAGE=edu.pdx.cs399J
+JAR_FILE=cs399J.jar
 
 JAVA_CLASSES= \
         AbstractAirline \

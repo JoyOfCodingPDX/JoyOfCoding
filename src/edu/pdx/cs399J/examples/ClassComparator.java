@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs399J.examples;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import java.util.*;
  * <code>Object</code>s based on the name of their classes.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/ClassComparator.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/examples/ClassComparator.java">
  * View Source</A></EM></P>
  */
 public class ClassComparator implements Comparator {

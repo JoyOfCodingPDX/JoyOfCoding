@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs399J.examples;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -9,7 +9,7 @@ import java.lang.reflect.*;
  * methods.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/Reflect.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/examples/Reflect.java">
  * View Source</A></EM></P>
  *
  * @author David Whitlock

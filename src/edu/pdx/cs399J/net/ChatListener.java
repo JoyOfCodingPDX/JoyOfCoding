@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.net.*;
  * messages on a socket on localhost.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/ChatListener.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatListener.java">
  * View Source</A></EM></P>
  */
 public class ChatListener implements Runnable {

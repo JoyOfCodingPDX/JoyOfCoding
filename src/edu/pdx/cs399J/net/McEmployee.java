@@ -1,11 +1,11 @@
-package edu.pdx.cs410J.net;
+package edu.pdx.cs399J.net;
 
 /**
  * This class represents an employee of a <code>McDonalds</code> who
  * makes BigMacs(tm).
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/net/McEmployee.java">
+ * "{@docRoot}/../src/edu/pdx/cs399J/net/McEmployee.java">
  * View Source</A></EM></P>
  */
 public class McEmployee implements Runnable {
