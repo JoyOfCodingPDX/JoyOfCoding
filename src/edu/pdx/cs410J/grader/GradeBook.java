@@ -14,6 +14,7 @@ public class GradeBook {
   private String className;
   private Map assignments;  // name -> Assignment
   private Map students;     // id -> Student
+  private boolean dirty;    // Has the grade book been modified?
   
   /**
    * Creates a new <code>GradeBook</code> for a given class
@@ -22,6 +23,7 @@ public class GradeBook {
     this.className = className;
     this.assignments = new TreeMap();
     this.students = new TreeMap();
+    this.dirty = false;
   }
 
   /**
@@ -50,6 +52,7 @@ public class GradeBook {
    * Adds an <code>Assignment</code> to this class
    */
   public void addAssignment(Assignment assign) {
+    this.dirty = true;
     this.assignments.put(assign.getName(), assign);
   }
 
@@ -69,7 +72,7 @@ public class GradeBook {
     Student student = (Student) this.students.get(id);
     if(student == null) {
       student = new Student(id);
-      this.students.put(id, student);
+      this.addStudent(student);
     }
     return(student);
   }
@@ -78,7 +81,45 @@ public class GradeBook {
    * Adds a <code>Student</code> to this <code>GradeBook</code>
    */
   public void addStudent(Student student) {
+    this.dirty = true;
     this.students.put(student.getId(), student);
+  }
+
+  /**
+   * Sets the dirtiness of this <code>GradeBook</code>
+   */
+  public void setDirty(boolean dirty) {
+    this.dirty = dirty;
+  }
+
+  /**
+   * Returns <code>true</code> if this <code>GradeBook</code> has been
+   * modified.
+   */
+  public boolean isDirty() {
+    if(this.dirty) {
+      return(true);
+    }
+
+    // Are any of the Assignments dirty?
+    Iterator iter = this.assignments.values().iterator();
+    while(iter.hasNext()) {
+      Assignment assign = (Assignment) iter.next();
+      if(assign.isDirty()) {
+        return(true);
+      }
+    }
+
+    // Are any of the Students dirty?
+    iter = this.students.values().iterator();
+    while(iter.hasNext()) {
+      Student student = (Student) iter.next();
+      if(student.isDirty()) {
+        return(true);
+      }
+    }
+
+    return(false);
   }
 
   /**
@@ -97,8 +138,10 @@ public class GradeBook {
    * Prints usage information about the main program.
    */
   private static void usage() {
-    err.println("\nusage: java GradeBook -file xmlFile" +
-                " -name className");
+    err.println("\nusage: java GradeBook -file xmlFile [options]");
+    err.println("Where [options] are:");
+    err.println("  -name className      Create new class file");
+    err.println("  -import xmlName      Import a student from a file");
     err.println("\n");
     System.exit(1);
   }
@@ -109,6 +152,7 @@ public class GradeBook {
   public static void main(String[] args) {
     String xmlFile = null;
     String name = null;
+    String importName = null;
 
     // Parse the command line
     for(int i = 0; i < args.length; i++) {
@@ -127,6 +171,14 @@ public class GradeBook {
         }
 
         name = args[i];
+
+      } else if(args[i].equals("-import")) {
+        if(++i >= args.length) {
+          err.println("** Missing import file name");
+          usage();
+        }
+
+        importName = args[i];
 
       } else {
         err.println("** Spurious command line option: " + args[i]);
@@ -159,6 +211,25 @@ public class GradeBook {
       } catch(ParserException ex) {
         err.println("** Error during parsing: " + ex.getMessage());
         System.exit(1);
+      }
+
+      // Do we import?
+      if(importName != null) {
+        File importFile = new File(importName);
+        if(!importFile.exists()) {
+          err.println("** Import file " + importFile.getName() + 
+                      " does not exist");
+          System.exit(1);
+        }
+
+        try {
+          Student student = XmlParser.parseStudent(null, importFile);
+          book.addStudent(student);
+
+        } catch(ParserException ex) {
+          err.println("** Error during parsing: " + ex.getMessage());
+          System.exit(1);
+        }
       }
 
     } else if(name == null) {

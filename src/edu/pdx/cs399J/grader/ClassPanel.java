@@ -104,7 +104,7 @@ public class ClassPanel extends JPanel {
     p.add(updateButton);
     infoPanel.add(p, BorderLayout.SOUTH);
 
-    assignmentsPanel.add(infoPanel, BorderLayout.EAST);
+    assignmentsPanel.add(infoPanel, BorderLayout.CENTER);
 
     this.add(assignmentsPanel, BorderLayout.CENTER);
 

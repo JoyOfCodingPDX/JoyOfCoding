@@ -59,9 +59,13 @@ public class GradeBookPanel extends JPanel {
           }
           
           int index = students.getSelectedIndex();
-          if(index > 0) {
+
+          if(index >= 0) {
             String id = model.getIdAt(index);
             displayStudent(id);
+
+          } else {
+            GradeBookPanel.this.studentPanel.clearContents();
           }
         }
       });
@@ -126,6 +130,7 @@ public class GradeBookPanel extends JPanel {
     this.displayStudents(BY_ID);
     this.classPanel.displayGradeBook(book);
     this.gradePanel.displayAssignmentsFor(book);
+    this.studentPanel.clearContents();
   }
 
   /**
@@ -190,18 +195,53 @@ class StudentsModel extends AbstractListModel {
   private ArrayList data; // displayed names in order
 
   public StudentsModel(final GradeBook book, final int sortedOrder) {
-    SortedSet sorted = new TreeSet(new Comparator() {
+    this.ids = new ArrayList();
+    this.data = new ArrayList();
+
+    SortedSet sortedStudents = new TreeSet(new Comparator() {
         public int compare(Object o1, Object o2) {
-          String id1 = (String) o1;
-          String id2 = (String) o2;
+          Student s1 = (Student) o1;
+          Student s2 = (Student) o2;
 
           if(sortedOrder == GradeBookPanel.BY_ID) {
-            return(id1.compareTo(id2));
+            // Sort by id
+            return(s1.getId().compareTo(s2.getId()));
 
           } else if(sortedOrder == GradeBookPanel.BY_NAME) {
-            Student s1 = book.getStudent(id1);
-            Student s2 = book.getStudent(id2);
-            return(s1.getFullName().compareTo(s2.getFullName()));
+            // Sort by last name
+            String name1 = s1.getLastName();
+            String name2 = s2.getLastName();
+
+            if(name1 == null) {
+              name1 = s1.getId();
+            }
+
+            if(name2 == null) {
+              name2 = s2.getId();
+            }
+
+            if(name1.equals(name2)) {
+              name1 = s1.getFirstName();
+              name2 = s2.getFirstName();
+
+              if(name1 == null) {
+                name1 = s1.getId();
+              }
+
+              if(name2 == null) {
+                name2 = s2.getId();
+              }
+
+            } else {
+              return(name1.compareTo(name2));
+            }
+
+            if(name1.equals(name2)) {
+              return(s1.getId().compareTo(s2.getId()));
+
+            } else {
+              return(name1.compareTo(name2));
+            }
 
           } else {
             throw new IllegalArgumentException("Unknown sort order: "
@@ -210,25 +250,39 @@ class StudentsModel extends AbstractListModel {
         }
 
         public boolean equals(Object o) {
-          return(false);
+          return(o == this);
         }
       });
-    sorted.addAll(book.getStudentIds());
-    this.data = new ArrayList(sorted);
 
-    sorted = new TreeSet(new Comparator() {
-        public int compare(Object o1, Object o2) {
-          String id1 = (String) o1;
-          String id2 = (String) o2;
-          return(id1.compareTo(id2));
-        }
+    Iterator iter = book.getStudentIds().iterator();
+    while(iter.hasNext()) {
+      String id = (String) iter.next();
+      sortedStudents.add(book.getStudent(id));
+    }
 
-        public boolean equals(Object o) {
-          return(false);
+    iter = sortedStudents.iterator();
+    while(iter.hasNext()) {
+      Student student = (Student) iter.next();
+      this.ids.add(student.getId());
+
+      if(sortedOrder == GradeBookPanel.BY_ID) {
+        // Display id
+        this.data.add(student.getId());
+
+      } else if(sortedOrder == GradeBookPanel.BY_NAME) {
+        // Display full name
+        String name = student.getFullName();
+        if(name == null || name.equals("")) {
+          name = student.getId();
         }
-      });
-    sorted.addAll(book.getStudentIds());
-    this.ids = new ArrayList(sorted);
+        this.data.add(name);
+
+      } else {
+        throw new IllegalArgumentException("Unknown sort order: "
+                                           + sortedOrder);
+      }
+    }
+
   }
 
   /**

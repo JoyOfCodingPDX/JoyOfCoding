@@ -42,7 +42,10 @@ public class NewAssignmentDialog extends JDialog {
           // Create a new Assignment from the contents of assignment
           // panel
           assignment = assignmentPanel.createAssignment();
-          NewAssignmentDialog.this.dispose();
+          if(assignment != null) {
+            // Assignment is okay
+            NewAssignmentDialog.this.dispose();
+          }
         }
       });
     buttons.add(ok);

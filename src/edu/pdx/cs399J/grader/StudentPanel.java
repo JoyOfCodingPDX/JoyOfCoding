@@ -92,11 +92,26 @@ public class StudentPanel extends JPanel {
   }
 
   /**
+   * Clears the contents of the student fields
+   */
+  void clearContents() {
+    this.idField.setText("");
+    this.firstNameField.setText("");
+    this.lastNameField.setText("");
+    this.nickNameField.setText("");
+    this.emailField.setText("");
+    this.ssnField.setText("");
+    this.majorField.setText("");
+    this.notes.clearNotes();
+  }
+
+  /**
    * Displays a <code>Student</code> in this
    * <code>StudentPanel</code>.
    */
   public void displayStudent(Student student) {
     this.student = student;
+    this.clearContents();
 
 //     System.out.println("Displaying student: " +
 //                        student.getDescription());

@@ -160,7 +160,7 @@ public class XmlParser {
   /**
    * Extracts a <code>Grade</code> from a chuck of a DOM tree
    */ 
-  private Grade extractGradeFrom(Element root) throws ParserException {
+  private static Grade extractGradeFrom(Element root) throws ParserException {
     String name = null;
     String score = null;
     List notes = null;
@@ -205,18 +205,10 @@ public class XmlParser {
   }
 
   /**
-   * Searches for the XML file that represents the student, parses it,
-   * and fills in the <code>Student</code> accordingly.
+   * Creates a new <code>Student</code> from the contents of a file.
    */
-  private void fillInStudent(Student student) 
+  static Student parseStudent(String id, File file) 
     throws ParserException {
-
-    // Locate the XML file for the Student
-    File file = new File(this.studentDir, student.getId() + ".xml");
-    if(!file.exists()) {
-      throw new IllegalArgumentException("No XML file for " +
-                                         student.getId());
-    }
 
     // Parse the XML file
     DOMParser parser = null;
@@ -259,6 +251,8 @@ public class XmlParser {
                                 " does not contain a student");
     }
 
+    Student student = null;
+
     NodeList children = root.getChildNodes();
     for(int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
@@ -268,12 +262,14 @@ public class XmlParser {
 
       Element child = (Element) node;
       if(child.getTagName().equals("id")) {
-        String id = extractTextFrom(child);
-        if(!id.equals(student.getId())) {
+        String idFromFile = extractTextFrom(child);
+        if(id != null && !id.equals(idFromFile)) {
           throw new ParserException(file + 
                                     " does not contain student " +
                                     student.getId());
         }
+
+        student = new Student(idFromFile);
 
       } else if(child.getTagName().equals("firstName")) {
         String firstName = extractTextFrom(child);
@@ -349,8 +345,9 @@ public class XmlParser {
           student.addNote(note);
         }
       }
-      
     }
+
+    return(student);
   }
 
   /**
@@ -425,10 +422,18 @@ public class XmlParser {
             continue;
           }
               
-          Element id = (Element) student;
-          if(id.getTagName().equals("id")) {
-            Student stu = new Student(extractTextFrom(id));
-            fillInStudent(stu);
+          Element idElement = (Element) student;
+          if(idElement.getTagName().equals("id")) {
+            String id = extractTextFrom(idElement);
+                // Locate the XML file for the Student
+            File file = 
+              new File(this.studentDir, id + ".xml");
+            if(!file.exists()) {
+              throw new IllegalArgumentException("No XML file for " +
+                                                 id);
+            }
+
+            Student stu = parseStudent(id, file);
             this.book.addStudent(stu);
           }         
         }

@@ -27,6 +27,7 @@ public class Assignment implements Notable {
   private double points;
   private int type;
   private List notes = new ArrayList();
+  private boolean dirty;  // Has this assignment been modified?
   
   /**
    * Creates a new <code>Assignment</code> with the given name and
@@ -35,6 +36,7 @@ public class Assignment implements Notable {
   public Assignment(String name, double points) {
     this.name = name;
     this.points = points;
+    this.dirty = false;
   }
 
   /**
@@ -57,6 +59,7 @@ public class Assignment implements Notable {
    * worth.
    */
   public void setPoints(double points) {
+    this.dirty = true;
     this.points = points;
   }
 
@@ -71,6 +74,7 @@ public class Assignment implements Notable {
    * Sets the description of this <code>Assignment</code>
    */
   public void setDescription(String description) {
+    this.dirty = true;
     this.description = description;
   }
 
@@ -93,6 +97,7 @@ public class Assignment implements Notable {
    * @see #OTHER
    */
   public void setType(int type) {
+    this.dirty = true;
     this.type = type;
   }
 
@@ -107,7 +112,23 @@ public class Assignment implements Notable {
    * Adds a note about this <code>Assignment</code>
    */
   public void addNote(String note) {
+    this.dirty = true;
     this.notes.add(note);
+  }
+
+  /**
+   * Sets the dirtiness of this <code>Assignment</code>
+   */
+  public void setDirty(boolean dirty) {
+    this.dirty = dirty;
+  }
+
+  /**
+   * Returns <code>true</code> if this <code>Assignment</code> has been
+   * modified.
+   */
+  public boolean isDirty() {
+    return(this.dirty);
   }
 
   /**
