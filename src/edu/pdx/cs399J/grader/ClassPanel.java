@@ -184,7 +184,9 @@ public class ClassPanel extends JPanel {
     this.newStudentButton.setEnabled(true);
 
     // Display name of the class
-    this.classNameLabel.setText(book.getClassName());
+    this.classNameLabel.setText(book.getClassName() + " (" +
+                                book.getStudentIds().size() + 
+                                " students)");
 
     this.displayAssignments(book);
     this.assignmentsList.clearSelection();  // No initial selection
