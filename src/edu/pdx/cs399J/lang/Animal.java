@@ -5,7 +5,7 @@ package edu.pdx.cs410J.examples;
  * has a name and it makes a sound.
  */
 public abstract class Animal {
-  private String name;
+  protected String name;
 
   /**
    * Returns the name of this animal.
