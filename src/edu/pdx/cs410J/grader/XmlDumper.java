@@ -166,6 +166,9 @@ public class XmlDumper {
     XMLSerializer serial = new XMLSerializer(this.pw, format);
     serial.asDOMSerializer();
     serial.serialize(doc);
+
+    // Mark the grade book as being clean
+    book.makeClean();
   }
 
   /**
