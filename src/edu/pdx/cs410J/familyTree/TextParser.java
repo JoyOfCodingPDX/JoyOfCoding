@@ -55,8 +55,8 @@ public class TextParser implements Parser {
    * Parses the specified input source and from it creates a family
    * tree.
    *
-   * @throw ParserException
-   *        The data source is malformatted
+   * @throws ParserException
+   *         The data source is malformatted
    */
   public FamilyTree parse() throws ParserException {
     this.tree = new FamilyTree();

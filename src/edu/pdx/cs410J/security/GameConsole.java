@@ -11,7 +11,7 @@ public class GameConsole {
   /**
    * Called from the Game to write a game's preferences file.
    *
-   * @returns <code>true</code> if the preferences were sucessfully
+   * @return <code>true</code> if the preferences were sucessfully
    * written (note that we don't want the name of the preferences file
    * escaping!)
    */
@@ -39,7 +39,7 @@ public class GameConsole {
   /**
    * Called from the Game to read a game's preferences file.
    *
-   * @returns <code>null</code> if the preferences could not be read
+   * @return <code>null</code> if the preferences could not be read
    */
   public String readPreferences(Game game) {
     String home = System.getProperty("user.home");

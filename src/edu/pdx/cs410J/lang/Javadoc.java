@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.lang;
 
 /**
- * This class demonstrates Javadoc comments
+ * <P>This class demonstrates Javadoc comments</P>
  *
  * <P align="center"><EM><A href =
  * "{@docRoot}/../src/edu/pdx/cs410J/lang/Javadoc.java">
