@@ -1,5 +1,7 @@
 package edu.pdx.cs410J;
 
+import java.util.Collection;
+
 /**
  * This class represents an airline.  Each airline has a name and
  * consists of multiple flights.
@@ -14,7 +16,7 @@ public abstract class AbstractAirline {
   /**
    * Adds a flight to this airline.
    */
-  public abstract addFlight(AbstractFlight flight);
+  public abstract void addFlight(AbstractFlight flight);
 
   /**
    * Returns all of this airline's flights.
