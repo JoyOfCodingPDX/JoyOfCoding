@@ -94,7 +94,7 @@ public class XmlTest extends TestCase {
     tree.addPerson(child);
 
     String xml = getXmlFor(tree);
-    System.out.println(xml);
+//     System.out.println(xml);
     FamilyTree tree2 = null;
 
     try {

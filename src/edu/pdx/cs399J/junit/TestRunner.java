@@ -1,0 +1,53 @@
+package edu.pdx.cs399J.junit;
+
+import java.io.*;
+import java.util.*;
+import junit.framework.*;
+
+/**
+ * This program Java relfection to run some number of test methods in
+ * a given test case class.
+ */
+public class TestRunner {
+  private static final PrintStream out = System.out;
+  private static final PrintStream err = System.err;
+
+  /**
+   * Prints usage information for this program
+   */
+  private static void usage(String s) {
+    err.println("\n** " + s + "\n");
+    err.println("usage: java TestRunner className (methodName)*");
+    err.println("  className    The name of the TestCase class");
+    err.println("  methodName   The name of a test method to run");
+    err.println("");
+    err.println("This program runs some number of test methods in " +
+                "a given test class.  If no method is provided, " +
+                "then all of the methods are run");
+    err.println("");
+    System.exit(1);
+  }
+
+  /**
+   * The main program
+   */
+  public static void main(String[] args) {
+    String className = null;
+    List methodNames = new ArrayList();
+
+    for (int i = 0; i < args.length; i++) {
+      if (className == null) {
+        className = args[i];
+
+      } else {
+        methodNames.add(args[i]);
+      }
+    }
+
+    if (className == null) {
+      usage("Missing class name");
+    }
+
+  }
+
+}

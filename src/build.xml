@@ -10,10 +10,8 @@
     <echo message="Building PSU Java source code:"/>
     <echo message=""/>
     <echo message="Targets are:"/>
-    <echo message="  cs399J      Builds code for CS399J assignments"/>
-    <echo message="  examples    Builds example code"/>
-    <echo message="  grader      Builds code for grading"/>
-    <echo message="  family      Builds the family tree example code"/>
+    <echo message="  src         Compiles java source code and builds jars"/>
+    <echo message="  unit-tests  Runs the JUnit unit tests"/>
     <echo message="  docs        Builds the Javadocs for all this code"/>
     <echo message="  release     Builds tar file containing source code"/>
     <echo message="  clean       Removes all byproducts of building"/>
@@ -23,10 +21,11 @@
   <target name="props">
     <property environment="myenv"/>
 
-    <property name="src.dir" value="."/>
-    <property name="jars.dir" value="../jars"/>
-    <property name="api.docs.dir" value="../docs"/>
-    <property name="classes.dir" value="./classes"/>
+    <property name="src.dir" value="${basedir}"/>
+    <property name="jars.dir" value="${basedir}/../jars"/>
+    <property name="api.docs.dir" value="${basedir}/../docs"/>
+    <property name="classes.dir" value="${basedir}/classes"/>
+    <property name="tests.results.dir" value="${basedir}/results"/>
 
     <property name="examples.jar" value="examples.jar"/>
     <property name="cs399J.jar" value="cs399J.jar"/>
@@ -42,190 +41,103 @@
     <delete file="${jars.dir}/${family.jar}"/>
     <delete file="${jars.dir}/${grader.jar}"/>
     <delete dir="${api.docs.dir}"/>
+    <delete dir="${tests.results.dir}"/>
   </target>
 
-  <!-- Builds the example code -->
-  <target name="examples" 
-          depends="props, lang, core, xml, net, gui, security"/>
-  
-  <!-- Builds the Code API examples -->
-  <target name="core" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/core/**"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/core/**"/>
-  </target>
+  <target name="src" depends="props">
+    <description>Compiles the Java source code and place it in jar
+                 files</description> 
 
-  <!-- Builds the Java Language examples -->
-  <target name="lang" depends="props">
     <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/lang/**"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/lang/**"/>
-  </target>
 
-  <!-- Builds the XML examples -->
-  <target name="xml" depends="props">
-    <mkdir dir="${classes.dir}"/>
+    <!-- Compile the source code -->
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/xml/**"
            includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/xml/**"/>
-  </target>
-
-  <!-- Builds the JUnit examples -->
-  <target name="junit" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/junit/**"
-           includeAntRuntime="false"
-           debug="on">
+           debug="on" source="1.4">
+      <include name="edu/pdx/cs399J/**/*.java"/>
+      <exclude name="edu/pdx/cs399J/whitlock/**"/>
+      <exclude name="edu/pdx/cs399J/fall2000/**"/>
       <classpath>
         <pathelement location="${jars.dir}/junit.jar"/>
-      </classpath>
-    </javac>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/junit/**"/>
-  </target>
-
-  <!-- Builds the Networking examples -->
-  <target name="net" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/net/**"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/net/**"/>
-  </target>
-
-  <!-- Builds the GUI examples -->
-  <target name="gui" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/gui/**"
-           excludes="edu/pdx/cs399J/gui/DrawText.java"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/gui/**"/>
-  </target>
-
-  <!-- Builds the security examples -->
-  <target name="security" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/security/**"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${examples.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/security/**"/>
-  </target>
-
-  <!-- Builds the source code for projects in CS399J -->
-  <target name="cs399J" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/*.java"
-           includeAntRuntime="false"
-           debug="on"/>
-    <jar jarfile="${jars.dir}/${cs399J.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/*.class"/>
-  </target>
-
-  <!-- Builds the family tree code -->
-  <target name="family" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/family/**"
-           includeAntRuntime="false"
-           debug="on"
-           source="1.4">
-      <classpath>
-        <pathelement location="${jars.dir}/junit.jar"/>
-      </classpath>
-    </javac>
-    <copy file="${src.dir}/edu/pdx/cs399J/family/familytree.dtd" 
-          toDir="${classes.dir}/edu/pdx/cs399J/family"/>
-    <jar jarfile="${jars.dir}/${family.jar}"
-         basedir="${classes.dir}"
-         update="yes"
-         includes="edu/pdx/cs399J/family/**"/>
-  </target>
-
-  <!-- Runs the junit unit tests for the family tree code -->
-  <target name="family-tests" depends="family">
-    <junit printsummary="yes">
-      <formatter type="plain" usefile="false"/>
-      <test name="edu.pdx.cs399J.family.tests.PersonTest" />
-      <test name="edu.pdx.cs399J.family.tests.MarriageTest" />
-      <test name="edu.pdx.cs399J.family.tests.XmlTest" />
-      <classpath>
-        <pathelement location="${jars.dir}/family.jar"/>
-      </classpath>
-    </junit>
-  </target>
-
-  <!-- Builds the grader's code -->
-  <target name="grader" depends="props">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}"
-           destdir="${classes.dir}"
-           includes="edu/pdx/cs399J/grader/**"
-           includeAntRuntime="false"
-           debug="on">
-      <classpath>
         <pathelement location="${jars.dir}/activation.jar"/>
         <pathelement location="${jars.dir}/mail.jar"/>
       </classpath>
     </javac>
-    <copy file="${src.dir}/edu/pdx/cs399J/grader/gradebook.dtd" 
-          toDir="${classes.dir}/edu/pdx/cs399J/grader"/>
+
+    <!-- Build the various jar files -->
+
+    <jar jarfile="${jars.dir}/${cs399J.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/*.class"/>
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="edu/pdx/cs399J/*.dtd"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="${jars.dir}/${family.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/family/**"/>
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="edu/pdx/cs399J/family/familytree.dtd"/>
+      </fileset>
+    </jar>
+
     <jar jarfile="${jars.dir}/${grader.jar}"
-         basedir="${classes.dir}"
          manifest="edu/pdx/cs399J/grader/Manifest.mf"
-         update="yes"
-         includes="edu/pdx/cs399J/grader/*"/>
-    <chmod file="${jars.dir}/${grader.jar}" perm="a+r"/>
+         update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/grader/**"/>
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="edu/pdx/cs399J/grader/gradebook.dtd"/>
+      </fileset>
+    </jar>
+
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         update="yes">
+      <fileset dir="${classes.dir}">
+        <include name="edu/pdx/cs399J/**/*.class"/>
+        <exclude name="edu/pdx/cs399J/*.class"/>
+        <exclude name="edu/pdx/cs399J/grader/*"/>
+        <exclude name="edu/pdx/cs399J/family/**"/>
+      </fileset>
+    </jar>    
+
+    <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
   </target>
 
-  <!-- Builds the Javadocs for all my code -->
-  <target name="docs" 
-          depends="props, cs399J, examples, grader, family">
+  <target name="unit-tests" depends="src">
+    <description>Runs the JUnit unit tests for my code.  Output is
+         placed in the ${tests.results.dir} directory.</description>
+
+    <mkdir dir="${tests.results.dir}"/>
+
+    <junit haltOnFailure="false" dir="${tests.results.dir}">
+      <classpath>
+        <pathelement location="${jars.dir}/examples.jar"/>
+        <pathelement location="${jars.dir}/family.jar"/>
+      </classpath>
+      <formatter type="plain" usefile="true"/>
+
+      <batchtest fork="yes" todir="${tests.results.dir}">
+        <fileset dir="${src.dir}">
+          <include name="edu/pdx/cs399J/**/*Test.java"/>
+          <exclude name="edu/pdx/cs399J/grader/Test.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="docs" depends="props, src">
+    <description>Builds the Javadocs for all my code</description>
+
     <mkdir dir="${api.docs.dir}"/>
+
     <javadoc packagenames="edu.pdx.cs399J.*"
              destdir="${api.docs.dir}"
              sourcepath="${src.dir}"
@@ -246,16 +158,26 @@
       <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
       <link href="http://www.junit.org/junit/javadoc/3.7"/>
     </javadoc>
+
+    <!-- Make it so that everyone can see the javadocs -->
+    <chmod perm="a+rX" dir="${api.docs.dir}" includes="**"/>
+
   </target>
 
   <!-- Builds a gzipped tar file containing all of the source code -->
   <target name="release" depends="props">
-    <tar tarfile="${src.dir}/cs399J-src.tar" longfile="gnu" 
-         basedir="${src.dir}"
-         includes="edu/pdx/cs399J/**/*.java, edu/pdx/cs399J/**/*.dtd"/>
+    <tar tarfile="${src.dir}/cs399J-src.tar" longfile="gnu">
+      <tarfileset dir="${src.dir}">
+        <include name="edu/pdx/cs399J/**/*.java"/>
+        <include name="edu/pdx/cs399J/**/*.dtd"/>
+        <include name="build.xml"/>
+      </tarfileset>
+    </tar>
+
     <gzip zipfile="${src.dir}/cs399J-src.tgz"
           src="${src.dir}/cs399J-src.tar"/>
     <delete file="${src.dir}/cs399J-src.tar"/>
+    <chmod perm="a+r" dir="${src.dir}" includes="cs399J-src.tgz"/>
   </target>
 
 </project>
