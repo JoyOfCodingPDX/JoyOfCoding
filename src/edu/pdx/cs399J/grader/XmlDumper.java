@@ -296,37 +296,42 @@ public class XmlDumper {
         } else if(grade.getScore() == Grade.NOGRADE) {
           gradeNode.setAttribute("type", "NOGRADE");
         }
-        
-        List late = student.getLate();
-        if(!late.isEmpty()) {
-          Element lateNode = doc.createElement("late");
-          
-          for(int i = 0; i < late.size(); i++) {
-            String name = (String) late.get(i);
-            Element lateName = doc.createElement("name");
-            lateName.appendChild(doc.createTextNode(name));
-          }
-        
-          gradeNode.appendChild(lateNode);
-        }
 
-        List resubmitted = student.getResubmitted();
-        if(!resubmitted.isEmpty()) {
-          Element resubNode = doc.createElement("resubmitted");
-          
-          for(int i = 0; i < resubmitted.size(); i++) {
-            String name = (String) resubmitted.get(i);
-            Element resubName = doc.createElement("name");
-            resubName.appendChild(doc.createTextNode(name));
-          }
-
-          gradeNode.appendChild(resubNode);
-        }
-        
         gradesNode.appendChild(gradeNode);
       }
 
       root.appendChild(gradesNode);
+    }
+
+    List late = student.getLate();
+    if(!late.isEmpty()) {
+      Element lateNode = doc.createElement("late");
+      
+      for(int i = 0; i < late.size(); i++) {
+        String name = (String) late.get(i);
+        Element lateName = doc.createElement("name");
+        lateName.appendChild(doc.createTextNode(name));
+      }
+      
+      root.appendChild(lateNode);
+    }
+
+    List resubmitted = student.getResubmitted();
+    if(!resubmitted.isEmpty()) {
+      Element resubNode = doc.createElement("resubmitted");
+          
+      for(int i = 0; i < resubmitted.size(); i++) {
+        String name = (String) resubmitted.get(i);
+        Element resubName = doc.createElement("name");
+        resubName.appendChild(doc.createTextNode(name));
+      }
+
+      root.appendChild(resubNode);
+    }
+
+    List notes = student.getNotes();
+    if(!notes.isEmpty()) {
+      doNotes(doc, root, notes);
     }
 
     return(doc);

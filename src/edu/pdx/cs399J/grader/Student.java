@@ -245,6 +245,41 @@ public class Student implements Notable {
   }
   
   /**
+   * Returns a complete textual description of this
+   * <code>Student</code>.
+   */
+  String getDescription() {
+    Student student = this;
+
+    StringBuffer sb = new StringBuffer();
+    sb.append(student.getId() + ": ");
+    sb.append(student.getFullName());
+
+    String email = student.getEmail();
+    if(email != null && !email.equals("")) {
+      sb.append(", " + email);
+    }
+
+    String ssn = student.getSsn();
+    if(ssn != null && !ssn.equals("")) {
+      sb.append(", " + ssn);
+    }
+
+    String major = student.getMajor();
+    if(major != null && !major.equals("")) {
+      sb.append(", " + major);
+    }
+
+    Iterator iter = this.getNotes().iterator();
+    while(iter.hasNext()) {
+      String note = (String) iter.next();
+      sb.append(", \"" + note + "\"");
+    }
+
+    return(sb.toString());
+  }
+
+  /**
    * Returns a brief textual description of this <code>Student</code>
    */
   public String toString() {
@@ -297,7 +332,7 @@ public class Student implements Notable {
 
         id = args[i];
 
-      } else if(args[i].equals("-xmlFile")) {
+      } else if(args[i].equals("-xmlFile") || args[i].equals("-file")) {
         if(++i >= args.length) {
           err.println("** Missing xml file name");
           usage();
