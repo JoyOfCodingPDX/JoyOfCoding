@@ -80,6 +80,7 @@
       <include name="edu/pdx/cs399J/**/*.java"/>
       <exclude name="edu/pdx/cs399J/whitlock/**"/>
       <exclude name="edu/pdx/cs399J/fall2000/**"/>
+      <exclude name="edu/pdx/cs399J/j2se15/*.java"/>
       <include name="edu/pdx/cs410G/**/*.java"/>
       <classpath>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
@@ -87,6 +88,7 @@
         <pathelement location="${daves.jars.dir}/jnlp.jar"/>
         <pathelement location="${daves.jars.dir}/jfcunit.jar"/>
         <pathelement location="${ant.home}/lib/junit.jar"/>
+        <pathelement location="${java.home}/../lib/tools.jar"/>
       </classpath>
     </javac>
 
@@ -381,6 +383,7 @@
          placed in the ${tests.results.dir} directory.</description>
 
     <mkdir dir="${tests.results.dir}"/>
+    <property name="junit.format" value="plain"/>
 
     <junit haltOnFailure="false" dir="${tests.results.dir}"
            maxmemory="256M" showoutput="false">
@@ -394,7 +397,7 @@
       <sysproperty key="java.security.policy"
                    value="${basedir}/unit-tests.policy"/>
 
-      <formatter type="plain" usefile="true"/>
+      <formatter type="${junit.format}" usefile="true"/>
 
       <!-- Run a custom subset of the tests -->
       <batchtest fork="yes" todir="${tests.results.dir}"
@@ -425,7 +428,7 @@
     <javadoc packagenames="edu.pdx.cs399J.*"
              destdir="${api.docs.dir}"
              sourcepath="${src.dir}"
-             excludepackagenames="edu.pdx.cs399J.fall2000, edu.pdx.cs399J.whitlock"
+             excludepackagenames="edu.pdx.cs399J.fall2000, edu.pdx.cs399J.whitlock, edu.pdx.cs399J.j2se15"
              nohelp="yes"
              use="yes"
              splitindex="yes"
