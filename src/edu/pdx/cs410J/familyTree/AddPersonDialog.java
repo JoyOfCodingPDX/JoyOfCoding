@@ -31,13 +31,23 @@ public class AddPersonDialog extends JDialog {
     pane.setLayout(new BorderLayout());
 
     JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new GridLayout(8, 2));
+    infoPanel.setLayout(new GridLayout(0, 2));
     Border infoBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5); 
     infoPanel.setBorder(infoBorder);
 
     infoPanel.add(new JLabel("id:"));
     final JTextField idField = new JTextField();
     infoPanel.add(idField);
+
+    final ButtonGroup group = new ButtonGroup();
+
+    final JRadioButton male = new JRadioButton("male", true);
+    group.add(male);
+    infoPanel.add(male);
+    
+    final JRadioButton female = new JRadioButton("female");
+    group.add(female);
+    infoPanel.add(female);
 
     infoPanel.add(new JLabel("First name:"));
     final JTextField firstNameField = new JTextField();
@@ -130,16 +140,30 @@ public class AddPersonDialog extends JDialog {
               return;
             }
           }
+
+          int gender;
+          if (group.getSelection().equals(male)) {
+            gender = Person.MALE;
+
+          } else {
+            gender = Person.FEMALE;
+          }
           
           // Okay, everything parsed alright
-          newPerson = new Person(id);
+          newPerson = new Person(id, gender);
           newPerson.setFirstName(firstNameField.getText());
           newPerson.setMiddleName(middleNameField.getText());
           newPerson.setLastName(lastNameField.getText());
           newPerson.setDateOfBirth(dob);
           newPerson.setDateOfDeath(dod);
-          newPerson.setMother(mother);
-          newPerson.setFather(father);
+
+          if (mother != null) {
+            newPerson.setMother(mother);
+          }
+
+          if (father != null) {
+            newPerson.setFather(father);
+          }
 
           // We're all happy
 	  AddPersonDialog.this.dispose();

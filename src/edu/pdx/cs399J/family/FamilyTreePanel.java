@@ -214,7 +214,7 @@ public class FamilyTreePanel extends JPanel {
     
     InputStream stream = url.openStream();
 
-    XmlParser parser = new XmlParser(stream);
+    XmlParser parser = new XmlParser(new InputStreamReader(stream));
     return parser.parse();
   }
 

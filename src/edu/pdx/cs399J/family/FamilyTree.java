@@ -30,22 +30,11 @@ public class FamilyTree {
 
   /**
    * Returns a person in this family tree with a given id.  If no
-   * person with that id exists in this family tree, than a new
-   * <code>Person</code> instance is created.  That is, this method
-   * should never return null.
+   * person with that id exists in this family tree, then
+   * <code>null</code> is returned.
    */
   public Person getPerson(int id) {
-    Person person;
-    Integer key = new Integer(id);
-    if (this.people.containsKey(key)) {
-      person = (Person) this.people.get(key);
-
-    } else {
-      person = new Person(id);
-      this.people.put(key, person);
-    }
-
-    return person;
+    return (Person) this.people.get(new Integer(id));
   }
 
   /**

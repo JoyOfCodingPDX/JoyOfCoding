@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XmlParser extends XmlHelper implements Parser {
 
   private FamilyTree tree;  // The family tree we're building
-  private InputStream in;  // Read XML file from here
+  private Reader reader;    // Read XML file from here
 
   /**
    * Creates a new XML parser that reads its input from a file of a
@@ -32,16 +32,16 @@ public class XmlParser extends XmlHelper implements Parser {
    * file.
    */
   public XmlParser(File file) throws FileNotFoundException {
-    this(new FileInputStream(file));
+    this(new FileReader(file));
   }
 
   /**
    * Creates a new XML parser that reads itsinput from the given
-   * <code>InputStream</code>.  This lets us read from a source other
+   * <code>Reader</code>.  This lets us read from a source other
    * than a file.
    */
-  XmlParser(InputStream in) {
-    this.in = in;
+  public XmlParser(Reader reader) {
+    this.reader = reader;
   }
 
   /**
@@ -122,6 +122,30 @@ public class XmlParser extends XmlHelper implements Parser {
     }
 
     Person person = null;
+    int id;
+    try {
+      id = Integer.parseInt(root.getAttribute("id"));
+
+    } catch (NumberFormatException ex) {
+      String s = "Person id \"" + root.getAttribute("id") +
+        "\" is not a valid id";
+      throw new FamilyTreeException(s);
+    }
+
+    int gender = (root.getAttribute("gender").equals("male") 
+                  ? Person.MALE : Person.FEMALE);
+    person = this.tree.getPerson(id);
+    if (person == null) {
+      person = new Person(id, gender);
+      this.tree.addPerson(person);
+
+    } else {
+      if (gender != person.getGender()) {
+        String s = "Expecting " + person + " to be " +
+          (gender == Person.MALE ? "MALE" : " FEMALE");
+        throw new FamilyTreeException(s);
+      }
+    }
 
     NodeList elements = root.getChildNodes();
     for (int i = 0; i < elements.getLength(); i++) {
@@ -131,18 +155,14 @@ public class XmlParser extends XmlHelper implements Parser {
       }
 
       Element element = (Element) node;
-      if (element.getNodeName().equals("id")) {
-	int id = extractInteger(element);
-	person = this.tree.getPerson(id);
-	continue;
 
-      } else if (element.getNodeName().equals("firstname")) {
+      if (element.getNodeName().equals("first-name")) {
 	person.setFirstName(extractString(element));
 
-      } else if (element.getNodeName().equals("lastname")) {
+      } else if (element.getNodeName().equals("last-name")) {
 	person.setLastName(extractString(element));
 
-      } else if (element.getNodeName().equals("middlename")) {
+      } else if (element.getNodeName().equals("middle-name")) {
 	person.setMiddleName(extractString(element));
 
       } else if (element.getNodeName().equals("dob")) {
@@ -183,27 +203,37 @@ public class XmlParser extends XmlHelper implements Parser {
 
       } else if (element.getNodeName().equals("father-id")) {
 	String s = extractString(element);
-	int id = 0;
+	int fid = 0;
 	try {
-	  id = Integer.parseInt(s);
+	  fid = Integer.parseInt(s);
 
 	} catch (NumberFormatException ex) {
 	  throw new FamilyTreeException("Bad father-id: " + s);
 	}
 
-	person.setFather(this.tree.getPerson(id));
+        Person father = this.tree.getPerson(fid);
+        if (father == null) {
+          father = new Person(fid, Person.MALE);
+          this.tree.addPerson(father);
+        }
+	person.setFather(father);
 
       } else if (element.getNodeName().equals("mother-id")) {
         String s = extractString(element);
-        int id = 0;
+        int mid = 0;
         try {
-          id = Integer.parseInt(s);
+          mid = Integer.parseInt(s);
 
         } catch (NumberFormatException ex) {
           throw new FamilyTreeException("Bad mother-id: " + s);
         }
 
-        person.setMother(this.tree.getPerson(id));
+        Person mother = this.tree.getPerson(mid);
+        if (mother == null) {
+          mother = new Person(mid, Person.FEMALE);
+          this.tree.addPerson(mother);
+        }
+	person.setMother(mother);
       }
     }
   }
@@ -290,22 +320,22 @@ public class XmlParser extends XmlHelper implements Parser {
       builder.setErrorHandler(this);
       builder.setEntityResolver(this);
 
-      doc = builder.parse(new InputSource(this.in));
+      doc = builder.parse(new InputSource(this.reader));
 
     } catch (ParserConfigurationException ex) {
-      throw new FamilyTreeException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex, ex);
 
     } catch (SAXException ex) {
-      throw new FamilyTreeException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex, ex);
 
     } catch (IOException ex) {
-      throw new FamilyTreeException("While parsing XML source: " + ex);
+      throw new FamilyTreeException("While parsing XML source: " + ex, ex);
     }
 
     Element root = (Element) doc.getChildNodes().item(1);
 
     // Make sure that we are really dealing with a family tree
-    if (!root.getNodeName().equals("familytree")) {
+    if (!root.getNodeName().equals("family-tree")) {
       throw new FamilyTreeException("Not a family tree XML source: " +
                                 root.getNodeName());
     }
@@ -361,7 +391,7 @@ public class XmlParser extends XmlHelper implements Parser {
       System.err.println("** Could not find file " + fileName);
 
     } catch (FamilyTreeException ex) {
-      System.err.println("** " + ex.getMessage());
+      ex.printStackTrace(System.err);
     }
   }
   

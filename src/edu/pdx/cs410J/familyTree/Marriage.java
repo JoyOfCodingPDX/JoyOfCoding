@@ -19,8 +19,22 @@ public class Marriage {
 
   /**
    * Creates a marriage between a husband and a wife.
+   *
+   * @throws IllegalArgumentException
+   *         The <code>husband</code> is not {@link Person#MALE} or
+   *         the <code>wife</code> is not {@link Person#FEMALE}.
    */
   public Marriage(Person husband, Person wife) {
+    if (husband.getGender() != Person.MALE) {
+      String s = "The husband in a Marriage must be MALE";
+      throw new IllegalArgumentException(s);
+    }
+
+    if (wife.getGender() != Person.FEMALE) {
+      String s = "The wife in a Marriage must be FEMALE";
+      throw new IllegalArgumentException(s);
+    }
+
     this.husband = husband;
     this.wife = wife;
   }
@@ -57,7 +71,12 @@ public class Marriage {
    * Returns the location at which the husband and wife were married.
    */
   public String getLocation() {
-    return this.location.trim();
+    if (this.location == null) {
+      return null;
+
+    } else {
+      return this.location.trim();
+    }
   }
 
   /**

@@ -14,7 +14,17 @@ import java.util.*;
  */
 public class Person {
 
+  /** A constant representing the id of an unknown person */
+  public static final int UNKNOWN = -1;
+
+  /** A constant representing the female gender */
+  public static final int FEMALE = 1;
+
+  /** A constant representing the male gender */
+  public static final int MALE = 2;
+
   private int id;
+  private int gender;
   private String firstName;
   private String middleName;
   private String lastName;
@@ -25,18 +35,26 @@ public class Person {
   private Date dod;             // Date of death
 
   /**
-   * Creates a new <code>Person</code> with a given id.
+   * Creates a new <code>Person</code> with a given id and gender.
+   * An {@link #UNKNOWN} person cannot be created. 
    *
-   * @param id
-   *        A unique number greater than 0 identifying this person.
+   * @throws IllegalArgumentException
+   *         <code>id</code> is less than 1 or <code>gender</code> is
+   *         neither {@link #MALE} nor {@link #FEMALE}
    */
-  public Person(int id) {
+  public Person(int id, int gender) {
     if (id < 1) {
       String m = "A person's id must be greater than 1: " + id;
       throw new IllegalArgumentException(m);
     }
 
+    if (gender != MALE && gender != FEMALE) {
+      String s = "Gender must be MALE or FEMALE";
+      throw new IllegalArgumentException(s);
+    }
+
     this.id = id;
+    this.gender = gender;
     this.marriages = new ArrayList();
   }
 
@@ -45,6 +63,13 @@ public class Person {
    */
   public int getId() {
     return this.id;
+  }
+
+  /**
+   * Returns this person's gender
+   */
+  public int getGender() {
+    return this.gender;
   }
 
   /**
@@ -114,17 +139,31 @@ public class Person {
 
   /**
    * Sets this person's father.
+   *
+   * @throw IllegalArgumentException
+   *        <code>father</code> is not {@link #MALE}
    */
   public void setFather(Person father) {
+    if (father.getGender() != Person.MALE) {
+      String s = "Father " + father + " must be MALE";
+      throw new IllegalArgumentException(s);
+    }
+
     this.father = father;
   }
 
   /**
    * Returns the id of this person's father.
+   *
+   * @return {@link #UNKNOWN}, if this person's father is not known
    */
   public int getFatherId() {
-    // Father's id is always twice of this person's id
-    return this.id * 2;
+    if (this.father == null) {
+      return UNKNOWN;
+
+    } else {
+      return this.father.getId();
+    }
   }
 
   /**
@@ -136,17 +175,31 @@ public class Person {
 
   /**
    * Sets this person's mother.
+   *
+   * @throws IllegalArgumentException
+   *         <code>mother</code>'s gender is not {@link #FEMALE}
    */
   public void setMother(Person mother) {
+    if (mother.getGender() != Person.FEMALE) {
+      String s = "Mother " + mother + " must be FEMALE";
+      throw new IllegalArgumentException(s);
+    }
+
     this.mother = mother;
   }
 
   /**
    * Returns the id of this person's mother.
+   *
+   * @return {@link #UNKNOWN}, if this person's father is not known
    */
   public int getMotherId() {
-    // Mother's id is always one more than the father's
-    return this.getFatherId() + 1;
+    if (this.mother == null) {
+      return UNKNOWN;
+
+    } else {
+      return this.mother.getId();
+    }
   }
 
   /**
@@ -172,8 +225,18 @@ public class Person {
 
   /**
    * Sets this person's date of death.
+   *
+   * @throw IllegalArgumentException
+   *        If this person's data of birth is known and
+   *        <code>dod</code> occurs before it.
    */
   public void setDateOfDeath(Date dod) {
+    if (this.dob != null && this.dob.after(dod)) {
+      String s = "Date of death (" + dod + 
+        ") cannot occur before date of birth (" + this.dob + ")";
+      throw new IllegalArgumentException(s);
+    }
+
     this.dod = dod;
   }
 
@@ -186,8 +249,26 @@ public class Person {
 
   /**
    * Makes note of a marriage this person was involved in.
+   *
+   * @throw IllegalArgumentException
+   *        If this person is not one of the spouses in the marriage
    */
   public void addMarriage(Marriage marriage) {
+    if (this.getGender() == Person.MALE) {
+      if (!marriage.getHusband().equals(this)) {
+        String s = "This person (" + this.getFullName() + 
+          ") is not the husband in " + marriage;
+        throw new IllegalArgumentException(s);
+      }
+
+    } else {
+      if (!marriage.getWife().equals(this)) {
+        String s = "This person (" + this.getFullName() + 
+          ") is not the wife in " + marriage;
+        throw new IllegalArgumentException(s);
+      }
+    }
+
     this.marriages.add(marriage);
   }
 
@@ -196,6 +277,26 @@ public class Person {
    */
   public Collection getMarriages() {
     return this.marriages;
+  }
+
+  //////////////////////  Utility Methods  ////////////////////////
+
+  /**
+   * Determines whether or not this <code>Person</code> is equal to
+   * another <code>Person</code>. Two <code>Person</code>s are
+   * considered equal if they have the same id.
+   */
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+
+    if (!(o instanceof Person)) {
+      return false;
+    }
+
+    Person other = (Person) o;
+    return this.getId() == other.getId();
   }
 
   /**
@@ -210,7 +311,7 @@ public class Person {
       sb.append("\nBorn: " + df.format(this.dob));
     }
     if (this.dod != null) {
-      sb.append("Died: " + df.format(this.dod));
+      sb.append(", Died: " + df.format(this.dod));
     }
 
     if (this.mother != null) {
@@ -224,6 +325,8 @@ public class Person {
 
     return sb.toString();
   }
+
+  ///////////////////////  Main Program  ////////////////////////////
 
   /**
    * A simple test program.
@@ -248,7 +351,7 @@ public class Person {
    * Returns a Person representing me.
    */
   static Person me() {
-    Person me = new Person(1);
+    Person me = new Person(1, Person.MALE);
     me.setFirstName("David");
     me.setMiddleName("Michael");
     me.setLastName("Whitlock");
@@ -260,7 +363,7 @@ public class Person {
    * Returns a Person representing my mom.
    */
   static Person mom(Person me) {
-    Person mom = new Person(me.getMotherId());
+    Person mom = new Person(2, Person.FEMALE);
     mom.setFirstName("Carolyn");
     mom.setMiddleName("Joyce");
     mom.setLastName("Granger");
@@ -281,7 +384,7 @@ public class Person {
    * Returns a Person representing my dad.
    */
   static Person dad(Person me) {
-    Person dad = new Person(me.getFatherId());
+    Person dad = new Person(3, Person.MALE);
     dad.setFirstName("Stanley");
     dad.setMiddleName("Jay");
     dad.setLastName("Whitlock");

@@ -32,6 +32,8 @@ public class EditPersonDialog extends JDialog {
   private JTextField fatherField = new JTextField("Click to choose");
   private JTextField motherField = new JTextField("Click to choose");
   private JTextField childField = new JTextField("Click to choose");
+  private JRadioButton male = new JRadioButton("male", true);
+  private JRadioButton female = new JRadioButton("female");
 
 
   /**
@@ -59,6 +61,20 @@ public class EditPersonDialog extends JDialog {
     // Fill in information about the person
     this.idField.setText("" + person.getId());
     this.idField.setEditable(false);
+
+    if (this.person.getGender() == Person.FEMALE) {
+      female.setSelected(true);
+      female.setEnabled(true);
+      male.setEnabled(false);
+      male.setSelected(false);
+    }
+    
+    if (this.person.getGender() == Person.MALE) {
+      male.setSelected(true);
+      male.setEnabled(true);
+      female.setSelected(false);
+      female.setEnabled(false);
+    }
 
     this.firstNameField.setText(person.getFirstName());
     this.middleNameField.setText(person.getMiddleName());
@@ -102,12 +118,22 @@ public class EditPersonDialog extends JDialog {
     pane.setLayout(new BorderLayout());
 
     JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new GridLayout(9, 2));
+    infoPanel.setLayout(new GridLayout(0, 2));
     Border infoBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5); 
     infoPanel.setBorder(infoBorder);
 
     infoPanel.add(new JLabel("id:"));
     infoPanel.add(idField);
+
+    final ButtonGroup group = new ButtonGroup();
+
+    group.add(male);
+    male.setActionCommand("male");
+    infoPanel.add(male);
+    
+    group.add(female);
+    female.setActionCommand("female");
+    infoPanel.add(female);
 
     infoPanel.add(new JLabel("First name:"));
     infoPanel.add(firstNameField);
@@ -233,9 +259,17 @@ public class EditPersonDialog extends JDialog {
             }
           }
           
+          int gender;
+          if (group.getSelection().getActionCommand().equals("male")) {
+            gender = Person.MALE;
+
+          } else {
+            gender = Person.FEMALE;
+          }
+ 
           // Okay, everything parsed alright
           if (person == null) {
-            person = new Person(id);
+            person = new Person(id, gender);
           }
 
           person.setFirstName(firstNameField.getText());
@@ -243,11 +277,17 @@ public class EditPersonDialog extends JDialog {
           person.setLastName(lastNameField.getText());
           person.setDateOfBirth(dob);
           person.setDateOfDeath(dod);
-          person.setMother(mother);
-          person.setFather(father);
+
+          if (mother != null) {
+            person.setMother(mother);
+          }
+
+          if (father != null) {
+            person.setFather(father);
+          }
 
           if (child != null) {
-            if (person.getId() % 2 == 0) {
+            if (person.getGender() == Person.MALE) {
               child.setFather(person);
 
             } else {

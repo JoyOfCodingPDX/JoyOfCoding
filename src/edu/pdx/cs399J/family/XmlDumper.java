@@ -41,7 +41,7 @@ public class XmlDumper extends XmlHelper implements Dumper {
    * <code>PrintWriter</code>.  This way, we can dump to destinations
    * other than files.
    */
-  private XmlDumper(PrintWriter pw) {
+  public XmlDumper(PrintWriter pw) {
     this.pw = pw;
   }
 
@@ -123,11 +123,11 @@ public class XmlDumper extends XmlHelper implements Dumper {
 	
 	// Create the person element
 	Element p = doc.createElement("person");
+        p.setAttribute("id", Integer.toString(person.getId()));
+        p.setAttribute("gender", 
+                       (person.getGender() == Person.MALE ? "male" :
+                        "female"));
 	ft.appendChild(p);
-
-	Element id = doc.createElement("id");
-	p.appendChild(id);
-	id.appendChild(doc.createTextNode(person.getId() + ""));
 
 	String firstName = person.getFirstName();
 	if(firstName != null) {

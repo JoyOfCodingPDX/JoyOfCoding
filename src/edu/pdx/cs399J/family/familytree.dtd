@@ -18,8 +18,12 @@ All Grade Book XML data must include a DOCTYPE of the following form:
 <!-- A person consists of a required id and optional first, middle,
      and last name, date of birth, date of death, mother id, and 
      father id -->
-<!ELEMENT person (id, first-name?, middle-name?, last-name?, dob?,
+<!ELEMENT person (first-name?, middle-name?, last-name?, dob?,
                   dod?, father-id?, mother-id?)>
+<!ATTLIST person
+   id     CDATA           #REQUIRED
+   gender (male | female) #REQUIRED
+>
 
 <!-- These guys are just text -->
 <!ELEMENT id (#PCDATA)>
