@@ -60,17 +60,17 @@ public class XmlDumper extends XmlHelper implements Dumper {
     int month = cal.get(Calendar.MONTH);
     Element m = doc.createElement("month");
     d.appendChild(m);
-    m.appendChild(doc.createTextNode(month + ""));
+    m.appendChild(doc.createTextNode(String.valueOf(month)));
 
     int day = cal.get(Calendar.DATE);
     Element dy = doc.createElement("day");
     d.appendChild(dy);
-    dy.appendChild(doc.createTextNode(day + ""));
+    dy.appendChild(doc.createTextNode(String.valueOf(day)));
 
     int year = cal.get(Calendar.YEAR);
     Element y = doc.createElement("year");
     d.appendChild(y);
-    y.appendChild(doc.createTextNode(year + ""));
+    y.appendChild(doc.createTextNode(String.valueOf(year)));
 
     // Return the date Element
     return d;
@@ -170,14 +170,14 @@ public class XmlDumper extends XmlHelper implements Dumper {
 	if(father != null) {
 	  Element f = doc.createElement("father-id");
 	  p.appendChild(f);
-	  f.appendChild(doc.createTextNode(father.getId() + ""));
+	  f.appendChild(doc.createTextNode(String.valueOf(father.getId())));
 	}
 
 	Person mother = person.getMother();
 	if(mother != null) {
 	  Element m = doc.createElement("mother-id");
 	  p.appendChild(m);
-	  m.appendChild(doc.createTextNode(mother.getId() + ""));
+	  m.appendChild(doc.createTextNode(String.valueOf(mother.getId())));
 	}
 
 	// Make note of all marriages
@@ -191,8 +191,10 @@ public class XmlDumper extends XmlHelper implements Dumper {
 	Marriage marriage = (Marriage) iter.next();
 	
 	Element m = doc.createElement("marriage");
-	m.setAttribute("husband-id", marriage.getHusband().getId() + "");
-	m.setAttribute("wife-id", marriage.getWife().getId() + "");
+	m.setAttribute("husband-id",
+                       String.valueOf(marriage.getHusband().getId()));
+	m.setAttribute("wife-id",
+                       String.valueOf(marriage.getWife().getId()));
 	ft.appendChild(m);
 	
 	Date date = marriage.getDate();
@@ -224,6 +226,10 @@ public class XmlDumper extends XmlHelper implements Dumper {
       xform.setOutputProperty(OutputKeys.INDENT, "yes");
       xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
       xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
+
+      // Set stupid internal-xalan property to get a non-zero indent.
+      // Or modify output_xml.properties in $JAVA_HOME/jre/lib/rt.jar
+      xform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
       // Suppress warnings about "Declared encoding not matching
       // actual one
