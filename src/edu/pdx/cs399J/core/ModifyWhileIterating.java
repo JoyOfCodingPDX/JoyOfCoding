@@ -1,0 +1,25 @@
+package edu.pdx.cs399J.core;
+
+import java.util.*;
+
+/**
+ * This program demonstrates what happens when you modify a collection
+ * while iterating over it.
+ */
+public class ModifyWhileIterating {
+
+  public static void main(String[] args) {
+    List list = new ArrayList();
+    list.add("one");
+    list.add("two");
+
+    Iterator iter = list.iterator();
+    while (iter.hasNext()) {
+      String s = (String) iter.next();
+      if (s.equals("one")) {
+        list.add(0, "start");
+      }
+    }
+  }
+
+}
