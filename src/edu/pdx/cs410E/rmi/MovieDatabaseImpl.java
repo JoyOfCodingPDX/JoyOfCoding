@@ -23,7 +23,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * Creates a new <code>MovieDatabaseImpl</code>.
    */
   MovieDatabaseImpl() throws RemoteException {
-    // Sort movies by their id, so the lookup is O(n)
+    // Sort movies by their id, so the lookup is O(lg n)
     this.movies = new TreeMap(new Comparator() {
         public int compare(Object o1, Object o2) {
           Long id1 = (Long) o1;
@@ -99,8 +99,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
 
     Comparator sorter = new SortMoviesByReleaseDate();
 
-    SortedSet films = executeQuery(query, sorter);
-    return films;
+    return executeQuery(query, sorter);
   }
 
   /**
@@ -164,7 +163,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
       System.setSecurityManager(new RMISecurityManager());
     }
 
-    String name = "//" + host + ":" + port + "/MovieDatabase";
+    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
 
     try {
       MovieDatabase db  = new MovieDatabaseImpl();

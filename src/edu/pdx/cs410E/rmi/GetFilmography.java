@@ -1,6 +1,5 @@
 package edu.pdx.cs410E.rmi;
 
-import java.io.PrintStream;
 import java.net.*;
 import java.rmi.*;
 import java.util.*;
@@ -22,7 +21,7 @@ public class GetFilmography {
       System.setSecurityManager(new RMISecurityManager());
     }
 
-    String name = "//" + host + ":" + port + "/MovieDatabase";
+    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
 
     try {
       MovieDatabase db = 

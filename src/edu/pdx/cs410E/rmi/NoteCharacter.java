@@ -27,7 +27,7 @@ public class NoteCharacter {
       System.setSecurityManager(new RMISecurityManager());
     }
 
-    String name = "//" + host + ":" + port + "/MovieDatabase";
+    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
 
     try {
       MovieDatabase db = 
