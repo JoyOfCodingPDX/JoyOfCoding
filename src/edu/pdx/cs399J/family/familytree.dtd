@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- DTD for describing a family tree, people, and marriages -->
+
+<!-- A family tree consists of some number of people and some number
+     of marriages -->
+<!ELEMENT familytree (person*, marriage*)>
+
+<!-- A person consists of a required id and optional first, middle,
+     and last name, date of birth, date of death, mother id, and 
+     father id -->
+<!ELEMENT person (id, firstname?, middlename?, lastname?, dob?, dod?, 
+          father-id?, mother-id?)>
+
+<!-- These guys are just text -->
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT firstname (#PCDATA)>
+<!ELEMENT middlename (#PCDATA)>
+<!ELEMENT lastname (#PCDATA)>
+<!ELEMENT father-id (#PCDATA)>
+<!ELEMENT mother-id (#PCDATA)>
+
+<!-- These guys are dates -->
+<!ELEMENT dob (date)>
+<!ELEMENT dod (date)>
+
+<!-- Only a year is required -->
+<!ELEMENT date (month?, day?, year)>
+
+<!-- These guys are just numerical text.  Their values are determined
+     by Calendar.MONTH, Calendar.DATE, and Calendar.YEAR -->
+<!ELEMENT month (#PCDATA)>
+<!ELEMENT day (#PCDATA)>
+<!ELEMENT year (#PCDATA)>
+
+<!-- A marriage has a husband id and wife id attributes, an optional
+     date and location --> 
+<!ELEMENT marriage (date?, location?)>
+<!ATTLIST marriage
+          husband-id  CDATA  #REQUIRED
+          wife-id     CDATA  #REQUIRED
+>
+
+<!ELEMENT location (#PCDATA)>
