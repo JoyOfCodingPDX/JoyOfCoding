@@ -8,13 +8,26 @@ import edu.pdx.cs399J.ParserException;
 /**
  * This class represents a grade book that contains information about
  * a CS399J class: the assignments, the students and their grades.
+ *
+ * @author David Whitlock
+ * @since Fall 2000
  */
 public class GradeBook {
 
+  /** The name of the class */
   private String className;
-  private Map assignments;  // name -> Assignment
-  private Map students;     // id -> Student
-  private boolean dirty;    // Has the grade book been modified?
+
+  /** Maps the name of an assignment to an <code>Assignment</code> */
+  private Map assignments;
+
+  /** Maps the id of a student to a <code>Student</code> object */
+  private Map students;
+
+  /** Has the grade book been modified? */
+  private boolean dirty;
+
+  /** The Course Request Number (CRN) for this gradebook */
+  private int crn;
   
   /**
    * Creates a new <code>GradeBook</code> for a given class
@@ -24,6 +37,7 @@ public class GradeBook {
     this.assignments = new TreeMap();
     this.students = new TreeMap();
     this.dirty = true;
+    this.crn = 0;
   }
 
   /**
@@ -42,6 +56,25 @@ public class GradeBook {
   }
 
   /**
+   * Sets the Course Request Number (CRN) for this grade book.
+   *
+   * @since Spring 2005
+   */
+  public void setCRN(int crn) {
+    this.setDirty(true);
+    this.crn = crn;
+  }
+
+  /**
+   * Returns the Course Request Number (CRN) for this grade book.
+   *
+   * @since Spring 2005
+   */
+  public int getCRN() {
+    return this.crn;
+  }
+
+  /**
    * Returns the <code>Assignment</code> of a given name
    */
   public Assignment getAssignment(String name) {
@@ -52,7 +85,7 @@ public class GradeBook {
    * Adds an <code>Assignment</code> to this class
    */
   public void addAssignment(Assignment assign) {
-    this.dirty = true;
+    this.setDirty(true);
     this.assignments.put(assign.getName(), assign);
   }
 

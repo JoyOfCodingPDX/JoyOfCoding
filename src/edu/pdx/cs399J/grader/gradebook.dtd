@@ -15,6 +15,9 @@ All Grade Book XML data must include a DOCTYPE of the following form:
 in the class, the ids of the students in the class, and an optional
 number of late days allowed in the class -->
 <!ELEMENT gradebook (name, assignments, students, lateDays?)>
+<!ATTLIST gradebook
+          crn CDATA #IMPLIED
+>
 
 <!ELEMENT name (#PCDATA)>
 
