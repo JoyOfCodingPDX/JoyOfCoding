@@ -37,6 +37,31 @@ public class InvokeStatic {
 
     } else {
       // The type must have a constructor that takes a string argument
+      if (type.equals(Character.TYPE)) {
+	type = Character.class;
+
+      } else if (type.equals(Boolean.TYPE)) {
+	type = Boolean.class;
+
+      } else if (type.equals(Byte.TYPE)) {
+	type = Byte.class;
+
+      } else if (type.equals(Short.TYPE)) {
+	type = Short.class;
+
+      } else if (type.equals(Integer.TYPE)) {
+	type = Integer.class;
+
+      } else if (type.equals(Long.TYPE)) {
+	type = Long.class;
+
+      } else if (type.equals(Float.TYPE)) {
+	type = Float.class;
+
+      } else if (type.equals(Double.TYPE)) {
+	type = Double.class;
+      }
+
       Constructor init = 
         type.getConstructor(new Class[] { String.class });
       return init.newInstance(new Object[] { param });
@@ -53,17 +78,58 @@ public class InvokeStatic {
     int lastBracket = name.lastIndexOf('[');
     if (lastBracket == -1) {
       // Not an array type
-      return Class.forName(name);
+
+      if (name.equals("char")) {
+	return Character.TYPE;
+
+      } else if (name.equals("boolean")) {
+	return Boolean.TYPE;
+
+      } else if (name.equals("byte")) {
+	return Byte.TYPE;
+
+      } else if (name.equals("short")) {
+	return Short.TYPE;
+
+      } else if (name.equals("int")) {
+	return Integer.TYPE;
+
+      } else if (name.equals("long")) {
+	return Long.TYPE;
+
+      } else if (name.equals("float")) {
+	return Float.TYPE;
+
+      } else if (name.equals("double")) {
+	return Double.TYPE;
+
+      } else {
+	return Class.forName(name);
+      }
 
     } else {
       // Array type
       String className = name.substring(lastBracket + 1);
-      Class elementType = Class.forName(className);
+      Class elementType = parseType(className);
       int[] dimensions = new int[lastBracket + 1];
       for (int i = 0; i < dimensions.length; i++) {
         dimensions[i] = 0;
       }
       return Array.newInstance(elementType, dimensions).getClass();
+    }
+  }
+
+  /**
+   * Returns a default value for a given type.  If the type is an
+   * array type, then it returns an empty array of that type.
+   * Otherwise, it returns <code>null</code>.
+   */
+  private static Object getDefaultValueFor(Class type) {
+    if (type.isArray()) {
+      return Array.newInstance(type.getComponentType(), 0);
+
+    } else {
+      return null;
     }
   }
 
@@ -119,12 +185,12 @@ public class InvokeStatic {
     }
 
     if (paramTypes == null) {
-      paramTypes = "[java.lang.String";
+      paramTypes = ""; // "[java.lang.String";
     }
 
-    if (params.isEmpty()) {
-      params.add("");
-    }
+//      if (params.isEmpty()) {
+//        params.add("");
+//      }
 
     // Translate the methodArgsTypes into types
     List argsTypes = new ArrayList();
@@ -137,7 +203,7 @@ public class InvokeStatic {
 
     // Make sure that the number of parameter types equals the number
     // of parameters
-    if (types.length != params.size()) {
+    if (!params.isEmpty() && types.length != params.size()) {
       err.println("Param mismatch: " + types.length + 
                   " param types and " + params.size() + " params");
     }
@@ -145,8 +211,13 @@ public class InvokeStatic {
     // Translate the parameters into objects
     for (int i = 0; i < types.length; i++) {
       Class type = types[i];
-      String param = (String) params.get(i);
-      params.set(i, parseParam(param, type));
+      if (params.isEmpty()) {
+	params.add(i, getDefaultValueFor(type));
+
+      } else {
+	String param = (String) params.get(i);
+	params.set(i, parseParam(param, type));
+      }
     }
 
     if (VERBOSE) {
@@ -170,6 +241,10 @@ public class InvokeStatic {
     Class c = Class.forName(className);
     Method m = c.getDeclaredMethod(methodName, types);
     m.setAccessible(true);
-    m.invoke(null, params.toArray());
+    Object value = m.invoke(null, params.toArray());
+
+    if (!m.getReturnType().equals(Void.TYPE)) {
+      System.out.println("\nMethod returned: " + value);
+    }
   }
 }
