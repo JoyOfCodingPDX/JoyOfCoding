@@ -12,7 +12,7 @@ import java.util.*;
  * saved to an XML file.  It extends <code>UnicastRemoteObject</code>
  * because it is going to be bound into the RMI registry.
  */
-class XmlRemoteFamilyTree extends UnicastRemoteObject 
+public class XmlRemoteFamilyTree extends UnicastRemoteObject 
   implements RemoteFamilyTree {
 
   /** The underlying family tree whose contents this remote family
@@ -42,7 +42,7 @@ class XmlRemoteFamilyTree extends UnicastRemoteObject
    * @throws ParserException
    *         A problem occurred while parsing the XML file
    */
-  XmlRemoteFamilyTree(File xmlFile) 
+  public XmlRemoteFamilyTree(File xmlFile) 
     throws RemoteException, IOException, FamilyTreeException {
     super();   // Register this object with RMI runtime
 

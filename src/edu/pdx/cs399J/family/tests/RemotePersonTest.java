@@ -115,9 +115,9 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setFatherId(40000);
-      fail("Should have thrown IllegalARgumentException");
+      fail("Should have thrown FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -129,9 +129,9 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setFatherId(father.getId());
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -150,9 +150,9 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setMotherId(40000);
-      fail("Should have thrown IllegalARgumentException");
+      fail("Should have thrown FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }
@@ -164,9 +164,9 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setMotherId(mother.getId());
-      fail("Should have thrown an IllegalArgumentException");
+      fail("Should have thrown an FamilyTreeException");
 
-    } catch (IllegalArgumentException ex) {
+    } catch (FamilyTreeException ex) {
       // pass...
     }
   }

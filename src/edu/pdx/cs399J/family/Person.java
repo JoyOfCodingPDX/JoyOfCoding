@@ -344,7 +344,7 @@ public class Person {
    *         <code>dod</code> occurs before it.
    */
   public void setDateOfDeath(Date dod) {
-    if (this.dob != null && this.dob.after(dod)) {
+    if (this.dob != null && dod != null && this.dob.after(dod)) {
       String s = "Date of death (" + dod + 
         ") cannot occur before date of birth (" + this.dob + ")";
       throw new FamilyTreeException(s);

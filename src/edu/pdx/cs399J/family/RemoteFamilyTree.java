@@ -14,7 +14,7 @@ public interface RemoteFamilyTree extends Remote {
   /**
    * Creates a new <code>Person</code> of a given gender
    *
-   * @throws IllegalArgumentException
+   * @throws FamilyTreeException
    *         If <code>gender</code> is neither {@link Person#MALE} nor
    *         {@link Person#FEMALE}.
    */

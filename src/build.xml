@@ -168,8 +168,10 @@
         <include name="edu/pdx/cs399J/*.dtd"/>
       </fileset>
     </jar>
+<!--
     <signjar jar="${jars.dir}/${cs399J.jar}" alias="${dave.alias}"
         keystore="${keystore}" storepass="${storepass}" />
+-->
 
     <jar jarfile="${jars.dir}/${family.jar}"
          update="yes">
@@ -282,17 +284,26 @@
 
     <mkdir dir="${tests.results.dir}"/>
 
-    <junit haltOnFailure="false" dir="${tests.results.dir}">
+    <junit haltOnFailure="false" dir="${tests.results.dir}"
+           maxmemory="256M" showoutput="false">
       <classpath>
         <pathelement location="${jars.dir}/examples.jar"/>
         <pathelement location="${jars.dir}/family.jar"/>
       </classpath>
+      <sysproperty key="RemoteTestCase.PORT" value="${rmi.port}"/>
+      <sysproperty key="java.rmi.server.codebase"
+                   value="file:${jars.dir}/family.jar"/>
+      <sysproperty key="java.security.policy"
+                   value="${basedir}/unit-tests.policy"/>
+
       <formatter type="plain" usefile="true"/>
 
       <batchtest fork="yes" todir="${tests.results.dir}">
         <fileset dir="${src.dir}">
           <include name="edu/pdx/cs399J/**/*Test.java"/>
+          <exclude name="edu/pdx/cs399J/LRUMapTest.java"/>
           <exclude name="edu/pdx/cs399J/grader/Test.java"/>
+          <include name="edu/pdx/cs399J/**/Remote*Test.java"/>
         </fileset>
       </batchtest>
     </junit>

@@ -2,6 +2,7 @@ package edu.pdx.cs399J.family.tests;
 
 import edu.pdx.cs399J.family.*;
 
+import java.io.*;
 import java.rmi.*;
 import java.util.*;
 import junit.framework.*;
@@ -24,6 +25,32 @@ public abstract class RemoteTestCase extends TestCase {
 
   public RemoteTestCase(String name) {
     super(name);
+  }
+
+  ////////  Test life cycle methods
+
+  /**
+   * Creates an empty <code>RemoteFamilyTree</code> and binds it into
+   * the RMI namespace.
+   */
+  public void setUp() {
+    try {
+      File file = File.createTempFile("familyTree", "xml");
+      file.delete();
+      file.deleteOnExit();
+      RemoteFamilyTree tree = new XmlRemoteFamilyTree(file);
+      this.bind(tree);
+
+    } catch (Exception ex) {
+      fail("While getting creating remote family tree: " + ex);
+    }
+  }
+
+  /**
+   * Unbinds the remote family tree from the RMI namespace
+   */
+  public void tearDown() {
+    this.unbind();
   }
 
   ////////  Helper methods
