@@ -209,7 +209,7 @@ public class Submit {
     }
 
     if(comment != null) {
-      out.println("\nComment: " + comment + "\n");
+      out.println("\nComment: " + comment + "\n\n");
     }
 
     out.println("A receipt will be sent to: " + userEmail + "\n");
@@ -504,7 +504,7 @@ public class Submit {
     }
 
     if(comment != null) {
-      text.append("\nComment: " + comment + "\n");
+      text.append("\nComment: " + comment + "\n\n");
     }
 
     text.append("\n\n");
