@@ -23,6 +23,7 @@ public class GradePanel extends JPanel {
   private JLabel studentNameLabel;
   private JList assignmentsList;
   private JLabel gradeLabel;
+  private JLabel assignmentLabel;
   private JTextField gradeField;
   private NotesPanel notes;
   private JList lateList;
@@ -78,10 +79,13 @@ public class GradePanel extends JPanel {
     JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
     
+    this.assignmentLabel = new JLabel("Assignment");
+    p.add(this.assignmentLabel, BorderLayout.NORTH);
+
     JPanel labels = new JPanel();
     labels.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
     labels.setLayout(new GridLayout(0, 1));
-    this.gradeLabel = new JLabel("Grade (out of ):");
+    this.gradeLabel = new JLabel("Grade (out of ):", JLabel.CENTER);
     labels.add(this.gradeLabel);
 
     JPanel fields = new JPanel();
@@ -203,6 +207,7 @@ public class GradePanel extends JPanel {
     Vector names = new Vector(book.getAssignmentNames());
     this.assignmentsList.setListData(names);
 
+    this.assignmentLabel.setText("Assignment");
     this.gradeLabel.setText("Grade (out of ):");
     this.gradeField.setText("");
   }
@@ -212,6 +217,7 @@ public class GradePanel extends JPanel {
    */
   public void displayStudent(Student student) {
     // Clear any grade info
+    this.assignmentLabel.setText("Assignment");
     this.gradeLabel.setText("Grade (out of ):");
     this.gradeField.setText("");
     this.notes.clearNotes();
@@ -233,6 +239,8 @@ public class GradePanel extends JPanel {
    * Displays the current students grade for a given assignment
    */
   private void displayGradeFor(Assignment assign) {
+    this.assignmentLabel.setText("Assignment " + assign.getName() +
+                                 " (" + assign.getDescription() + ")");
     this.gradeLabel.setText("Grade (out of " + assign.getPoints() +
                             "):");
     
