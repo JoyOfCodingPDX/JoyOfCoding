@@ -16,6 +16,8 @@ public class AirportNames {
    * names.
    */
   private AirportNames() {
+    this.names = new java.util.HashMap();
+
     this.names.put("ABE", "Allentown, PA");
     this.names.put("ABQ", "Albuquerque, NM");
     this.names.put("ABI", "Abilene, TX");
@@ -329,6 +331,16 @@ public class AirportNames {
     }
 
     return((String) airportNames.names.get(code));
+  }
+
+  /**
+   * Quick test program
+   */
+  public static void main(String[] args) {
+    for(int i = 0; i < args.length; i++) {
+      String name = AirportNames.getName(args[i]);
+      System.out.println(args[i] + ": " + name);
+    }
   }
 
 }
