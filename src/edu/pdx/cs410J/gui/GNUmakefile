@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.2 2001-07-29 04:54:27 whitlock Exp $
+# $Id: GNUmakefile,v 1.3 2001-08-11 03:38:11 whitlock Exp $
 #
 
 # example leaf node for building a java package
@@ -14,7 +14,9 @@ JAVA_CLASSES= \
         ActionEventExample \
         ActionEventExample2 \
         AdjustGridLayoutGaps \
+        BorderExample \
         BorderLayoutExample \
+        BoxLayoutExample \
         CheckboxExample \
         CheckboxGroupExample \
         CheckboxMenuItemExample \
@@ -35,6 +37,17 @@ JAVA_CLASSES= \
         FlowLayoutExample \
         Fonts \
         GridLayoutExample \
+        HeatIndex \
+        JButtonExample \
+        JComboBoxExample \
+        JMenuExample \
+        JSplitPaneExample \
+        JTabbedPaneExample \
+        JTextExample \
+        JToolBarExample \
+        JToolTipExample \
+        JProgressBarExample \
+        JWebBrowser \
         LabelExample \
         MenuExample \
         MenuShortcutExample \
