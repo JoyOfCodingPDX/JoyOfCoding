@@ -1,0 +1,26 @@
+#
+# $Id: subdirs.gmk,v 1.1 2001-02-19 23:47:33 whitlock Exp $
+#
+
+INCLUDED_SUBDIRS=true
+
+ifndef INCLUDED_PLATFORM
+  include $(TOPDIR)/makefiles/platform.gmk
+endif
+
+all:: descend
+
+clean_SUBDIRS:=$(foreach dir,$(SUBDIRS),clean_$(dir))
+
+clean:: $(clean_SUBDIRS)
+
+$(clean_SUBDIRS):
+	@$(MAKE) -C $(subst clean_,,$@) clean
+
+descend: $(SUBDIRS)
+
+$(SUBDIRS):
+	@$(MAKE) -C $@
+
+.PHONY: all descend clean $(SUBDIRS) $(clean_SUBDIRS)
+

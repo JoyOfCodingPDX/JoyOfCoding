@@ -1,0 +1,188 @@
+# 
+# $Id: java.gmk,v 1.1 2001-02-19 23:47:33 whitlock Exp $
+#
+
+INCLUDED_JAVA=true
+
+#
+# Include platform variables
+#
+ifndef INCLUDED_PLATFORM
+  include $(TOPDIR)/makefiles/platform.gmk
+endif
+
+#
+# Include subdir rules
+#
+ifndef INCLUDED_SUBDIRS
+  include $(TOPDIR)/makefiles/subdirs.gmk
+endif
+
+#
+# Class destination directory
+#
+CLASSDIR:=$(TOPDIR)/classes
+
+#
+# Translate package to relative directory
+#
+ifdef PACKAGE
+  PACKAGEDIR:=$(CLASSDIR)/$(subst .,/,$(PACKAGE))
+else
+  PACKAGEDIR:=$(CLASSDIR)
+endif
+
+#
+# If there are Java Classes defined, generate target file names.
+#
+ifdef JAVA_CLASSES
+  Class_Files=$(foreach item,$(JAVA_CLASSES),$(PACKAGEDIR)/$(item).class)
+  Targets += do_classes
+endif
+
+#
+# Create a jar file if desired
+#
+ifdef JAR_FILE
+  Targets += do_jar
+  ifdef MANIFEST
+    JAR_FLAGS=cvfm
+    MANIFEST_FILE=$(cwd)$(DS)$(MANIFEST)
+  else
+    JAR_FLAGS=cvf
+  endif
+
+  PKG_AS_DIR=$(subst .,$(DS),$(PACKAGE))
+  
+  # Only make jar if we've recompiled or if it doesn't already exist
+
+  define Jarfile_Action
+    if [ -f ".compile.list" -o ! -f $(JAR_DIR)$(DS)$(JAR_FILE) ]; then \
+      cd $(CLASSDIR) && \
+      $(JAR) $(JAR_FLAGS) $(JAR_DIR)$(DS)$(JAR_FILE) \
+             $(MANIFEST_FILE) $(PKG_AS_DIR)$(DS)*.class ; \
+    fi
+  endef
+endif
+
+ifeq ($(OSTYPE),cygwin)
+# if on cygwin, the external variable may be set with '\'s and need fixing.
+  JAVA_HOME:=$(subst \,/,$(JAVA_HOME))
+endif
+
+ifndef JAVA_HOME
+  # Look for java along the PATH
+  JAVA_HOME=$(shell dirname $(shell dirname $(shell which java)))
+endif
+
+JAVAC=$(JAVA_HOME)/bin/javac
+JAR=$(JAVA_HOME)/bin/jar
+
+JAR_DIR=/puma2/users/davidw/jars
+
+ifdef EXTRA_JARS
+  # Add extra jar files to the classpath
+  JARS_PATH=$(foreach item,$(EXTRA_JARS),$(JAR_DIR)$(DS)$(item))
+  EMPTY:=
+  SPACE:=$(EMPTY) $(EMPTY)
+  EXTRA_CLASSPATH=$(subst $(SPACE),$(pathsep),$(JARS_PATH))
+  CLASSPATH=$(CLASSDIR)$(pathsep)$(EXTRA_CLASSPATH)
+else
+  CLASSPATH=$(CLASSDIR)
+endif
+
+JAVAC_ARGS:=-sourcepath $(TOPDIR) -classpath $(CLASSPATH) -d $(CLASSDIR)
+
+ifdef DEBUG
+  DEBUGFLAG=-g
+endif
+
+COMPILE_LIST=$(shell $(cat) .compile.list 2>$(devnull))
+
+#
+# Conditionalize this so we won't say 'compiling' and such when there is 
+# nothing to be done.
+#
+define Javac_Action
+  if [ -f ".compile.list" ]; then \
+    echo compiling $(DEBUGFLAG) $(COMPILE_LIST) && \
+    $(JAVAC) $(JAVAC_ARGS) @.compile.list ; \
+  fi
+endef
+
+all:: $(Targets)
+
+#
+# Debugging target
+#
+show_java:
+	@echo "Class_Files=$(Class_Files)"
+	@echo "PACKAGEDIR=$(PACKAGEDIR)"
+	@echo "Javac_Action=$(Javac_Action)"
+	@echo "COMPILE_LIST=$(COMPILE_LIST)"
+	@echo "SHELL=$(SHELL)"
+
+do_classes: cleanlist $(Class_Files) compile_classes
+
+do_jar: $(CLASSDIR) $(JAR_DIR)$(DS)$(JAR_FILE)
+
+$(JAR_DIR)$(DS)$(JAR_FILE): compile_classes
+	@$(Jarfile_Action)
+
+cleanlist:
+	@$(rm) .compile.list $(quiet)
+
+$(PACKAGEDIR)/%.class: %.java
+	@echo $< >> .compile.list
+
+compile_classes: $(CLASSDIR)
+	@$(Javac_Action)
+
+clean::
+	@echo cleaning .compile.list and $(PACKAGEDIR)/*.class
+	@$(rm) .compile.list $(quiet)
+	@$(rm) $(PACKAGEDIR)/*.class $(quiet)
+
+$(CLASSDIR):
+	@mkdir $@
+
+#
+# Javadocs
+#
+
+# Clear the list at the top dir.
+ifdef JAVADOCS
+  DOCPACKAGE:=$(shell echo "" > $(TOPDIR)/.javadoc.list)
+endif
+
+# Append the dir's package to the list.
+ifdef PACKAGE
+  DOCPACKAGE:=$(shell echo "$(PACKAGE)" >> $(TOPDIR)/.javadoc.list)
+else
+  ifdef JAVA_CLASSES
+    DOCPACKAGE:=$(shell echo "$(JAVA_CLASSES)" >> $(TOPDIR)/.javadoc.list)
+  endif
+endif
+
+JAVADOCDIR:=$(TOPDIR)/docs
+JAVADOC:=$(JAVA_HOME)/bin/javadoc
+JAVADOC_ARGS:=-sourcepath $(TOPDIR) -classpath $(CLASSDIR) -d $(JAVADOCDIR)
+
+Javadoc_Action=$(JAVADOC) $(JAVADOC_ARGS) \
+  $(shell $(cat) $(TOPDIR)/.javadoc.list)
+
+javadocs: $(JAVADOCDIR) descend
+	@$(Javadoc_Action)
+
+$(JAVADOCDIR):
+	@mkdir $@
+
+clean::
+	@echo cleaning .javadoc.list and $(JAVADOCDIR)
+	@$(rm) .javadoc.list $(quiet) 
+	@$(rmtree) $(JAVADOCDIR) $(quiet)
+
+#
+# List targets that never exist as files.
+#
+.PHONY: default all do_classes clean javadocs compile_classes cleanlist

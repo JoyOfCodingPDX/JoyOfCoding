@@ -1,0 +1,92 @@
+#
+# $Id: platform.gmk,v 1.1 2001-02-19 23:47:33 whitlock Exp $
+#
+
+INCLUDED_PLATFORM:=true
+
+#
+# Figure out what platform we are on, and set the variables accordingly.
+#
+PLAT:=$(shell uname)
+
+# if uname came up with nothing, then try an OS environment variable.
+ifeq ($(PLAT),)
+  ifdef OS
+    PLAT:=$(OS)
+  endif
+endif
+
+#
+# Now set some vars based on PLAT
+#
+
+#
+# For the specific platform type, 
+#
+ifeq ($(PLAT),Linux)
+  OSTYPE:=unix
+endif
+ifeq ($(PLAT),SunOS)
+  OSTYPE:=unix
+endif
+ifeq ($(PLAT),CYGWIN_NT-4.0)
+  # require cygwin and make --unix or MAKE_MODE=UNIX
+  OSTYPE:=cygwin
+endif
+ifeq ($(PLAT),Windows_NT)
+  ifeq ($(MAKE_MODE),UNIX)
+    # if make mode is unix, then assume we have cygwin even though we
+    # may have been invoked from outside of bash.
+    OSTYPE:=cygwin
+  else
+    OSTYPE:=dos
+  endif
+endif
+
+ifeq ($(OSTYPE),unix)
+  DS:=/
+  rm:=rm
+  rmtree:=rm -r
+  cp:=cp
+  cat:=cat
+  and:=&&
+  or:=||
+  cont:=;
+  true:=true
+  touch:=touch
+  devnull:=/dev/null
+  pathsep:=:
+  cwd=$(shell pwd)
+  # put quiet at the end of a line to supress ...Error 1 (ignored) messages
+  quiet:=>$(devnull) 2>&1 $(or) $(true)
+endif
+
+ifeq ($(OSTYPE),cygwin)
+  DS:=/
+  rm:=rm
+  rmtree:=rm -r
+  cp:=cp
+  cat:=cat
+  and:=&&
+  or:=||
+  cont:=;
+  true:=true
+  touch:=touch
+  devnull:=/dev/null
+  pathsep:=;
+  cwd=$(shell pwd)
+  # put quiet at the end of a line to supress ...Error 1 (ignored) messages
+  quiet:=>$(devnull) 2>&1 $(or) $(true)
+endif
+
+# we must not have found a known OSTYPE, so blow up.
+ifndef DS
+  +++ Stop, this is a syntax error. What OSTYPE is this PLAT? +++
+endif
+
+#
+# Debugging target. 
+#
+show_platform:
+	@echo "Platform vars: $(and) $(true) $(DS) $(RM) $(CP) $(CAT) $(PLAT)"
+
