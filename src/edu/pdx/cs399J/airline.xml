@@ -20,8 +20,8 @@
     </arrive>
   </flight>
   <flight>
-    <number></number>
-    <src>JNP</src>
+    <number>7865</number>
+    <src>JNB</src>
     <depart>
       <day day="15" month="5" year="2001"/>
       <time hour="7" minute="24"/>
