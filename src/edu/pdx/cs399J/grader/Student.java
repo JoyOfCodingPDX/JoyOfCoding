@@ -329,7 +329,7 @@ public class Student implements Notable {
    * Returns a brief textual description of this <code>Student</code>
    */
   public String toString() {
-    return this.getId() + ": " + this.getFullName();
+    return this.getId() + " (" + this.getFullName() + ")";
   }
 
   ///////////////////////  Main Program  ///////////////////////

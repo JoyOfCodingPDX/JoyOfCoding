@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
+    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -44,6 +44,7 @@
     <property name="storepass" value="mystorepass"/>
     <property name="game.console" value="gameConsole"/>
     <property name="dave.alias" value="dave"/>
+    <available property="keystore.exists" file="${keystore}"/>
 
     <!-- Sanity check -->
     <available type="dir" file="${daves.jars.dir}" 
@@ -121,7 +122,8 @@
 
   </target>
 
-  <target name="build-keystore" depends="props">
+  <target name="build-keystore" depends="props"
+          unless="${keystore.exists}">
     <description>Builds a keystore that contains certificates for 
                  signing jar files</description>
     <!-- Always create from scratch -->
@@ -166,6 +168,7 @@
       </fileset>
       <fileset dir="${src.dir}">
         <include name="edu/pdx/cs399J/*.dtd"/>
+        <include name="edu/pdx/cs399J/reflect/doi.txt"/>
       </fileset>
     </jar>
 <!--

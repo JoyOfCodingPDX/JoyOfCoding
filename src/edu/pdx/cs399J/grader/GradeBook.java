@@ -79,6 +79,8 @@ public class GradeBook {
 
   /**
    * Adds a <code>Student</code> to this <code>GradeBook</code>
+   *
+   * @see #containsStudent
    */
   public void addStudent(Student student) {
     this.setDirty(true);
@@ -92,6 +94,14 @@ public class GradeBook {
     if (this.students.remove(student.getId()) != null) {
       this.setDirty(true);
     }
+  }
+
+  /**
+   * Returns whether or not this grade book contains a student with
+   * the given id.
+   */
+  public boolean containsStudent(String id) {
+    return this.students.containsKey(id);
   }
 
   /**
