@@ -187,7 +187,41 @@ class RdbRemoteFamilyTree extends UnicastRemoteObject
 
   public RemoteMarriage createMarriage(int husbandId, int wifeId) 
     throws RemoteException {
-    throw new UnsupportedOperationException("createMarriage() Not implemented yet");
+    
+    RemotePerson husband = getPerson(husbandId);
+    if (husband == null) {
+      String s = "Husband " + husbandId + " does not exist";
+      throw new IllegalArgumentException(s);
+
+    } else if (husband.getGender() != Person.MALE) {
+      String s = "Husband " + husbandId + " must be MALE";
+      throw new IllegalArgumentException(s);
+    }
+
+    RemotePerson wife = getPerson(wifeId);
+    if (wife == null) {
+      String s = "Wife " + wifeId + " does not exist";
+      throw new IllegalArgumentException(s);
+
+    } else if (husband.getGender() != Person.FEMALE) {
+      String s = "Wife " + wifeId + " must be FEMALE";
+      throw new IllegalArgumentException(s);
+    }
+
+    // Everybody is okay, make an entry in the table
+    try {
+      Statement stmt = this.conn.createStatement();
+      String s = "INSERT INTO marriages (husband, wife) " +
+        "VALUES (" + husbandId + ", " + wifeId + ")";
+      stmt.executeUpdate(s);
+
+    } catch (SQLException ex) {
+      String s = "While creating a marriage between " + husbandId + 
+        " and " + wifeId;
+      throw new RemoteException(s, ex);
+    }
+
+    return new RdbRemoteMarriage(husbandId, wifeId, this.conn);
   }
 
   public Collection getLiving() throws RemoteException {

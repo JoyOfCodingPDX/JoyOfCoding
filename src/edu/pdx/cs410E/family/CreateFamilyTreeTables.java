@@ -19,10 +19,13 @@ public class CreateFamilyTreeTables {
    * already exist, they are dropped.
    */
   static void createTables(Connection conn) throws SQLException {
-    // Drop the people table
+    // Drop tables in the reverse order from which they were created
     try {
       Statement stmt = conn.createStatement();
-      String s = "DROP TABLE people";
+      String s = "DROP TABLE marriages";
+      stmt.executeUpdate(s);
+
+      s = "DROP TABLE people";
       stmt.executeUpdate(s);
 
     } catch (SQLException ex) {
@@ -41,6 +44,14 @@ public class CreateFamilyTreeTables {
       "  father INTEGER CONSTRAINT fk_father REFERENCES people (id), " +
       "  mother INTEGER CONSTRAINT fk_mother REFERENCES people (id), " +
       "  dob DATE, dod DATE)";
+    stmt.executeUpdate(s);
+
+    // Create the marriages table
+    s = "CREATE TABLE marriages" +
+      " (husband INTEGER CONSTRAINT pk_husband " +
+      "    REFERENCES people (id)," +
+      "  wife INTEGER CONSTRAINT pk_wife REFERENCES people (id), " +
+      "  anniversary DATE, location VARCHAR(30))";
     stmt.executeUpdate(s);
   }
 

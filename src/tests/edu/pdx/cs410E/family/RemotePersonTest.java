@@ -11,11 +11,9 @@ import junit.framework.*;
  * <code>RemotePerson</code>.  Note that it just looks up a
  * <code>RemotePerson</code> in the RMI namespace.  It doesn't pay any
  * matter what the concrete implementation of
- * <code>RemotePerson</code> is.  It is up to the concrete subclass to
- * bind the appropriate <code>RemoteFamilyTree</code> object into the
- * RMI namespace.
+ * <code>RemotePerson</code> is.
  */
-public class RemotePersonTest extends RemoteFamilyTreeTest {
+public class RemotePersonTest extends RemoteTest {
 
   ////////  Constructors
 
@@ -47,24 +45,6 @@ public class RemotePersonTest extends RemoteFamilyTreeTest {
     }
 
     junit.textui.TestRunner.run(suite);
-  }
-
-  ////////  Helper methods
-
-  /**
-   * Asserts the equality of two dates.  Only takes the month, day,
-   * and year into account.
-   */
-  protected void assertEquals(Date d1, Date d2) {
-    Calendar cal1 = Calendar.getInstance();
-    cal1.setTime(d1);
-
-    Calendar cal2 = Calendar.getInstance();
-    cal1.setTime(d2);
-
-    assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
-                 cal2.get(Calendar.DAY_OF_YEAR));
-    assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
   }
 
   ////////  Test cases

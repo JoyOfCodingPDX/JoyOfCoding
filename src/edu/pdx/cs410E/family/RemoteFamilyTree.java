@@ -47,7 +47,7 @@ public interface RemoteFamilyTree extends Remote {
 
   /**
    * Returns the marriage between two people.  If the two people have
-   * never been marriage, then <code>null</code> is returned.
+   * never been married, then <code>null</code> is returned.
    *
    * @throws IllegalArgumentException
    *         If no person with husbandId or no person with wifeId
@@ -58,6 +58,11 @@ public interface RemoteFamilyTree extends Remote {
 
   /**
    * Creates a new marriage between two people
+   * 
+   * @throws IllegalArgumentException
+   *         If no person with husbandId or no person with wifeId
+   *         exists in the family tree or if either spouse does not
+   *         have the proper gender.
    */
   public RemoteMarriage createMarriage(int husbandId, int wifeId) 
     throws RemoteException;
