@@ -4,7 +4,7 @@ package edu.pdx.cs410J;
  * Classes that implement this interface read some source and from it
  * create an airline.
  */
-public interface Parser {
+public interface AirlineParser {
   /**
    * Parses some source and returns an airline.
    *
