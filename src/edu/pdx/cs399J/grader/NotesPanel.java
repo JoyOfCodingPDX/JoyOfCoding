@@ -9,22 +9,24 @@ import javax.swing.event.*;
 
 /**
  * This panel displays and edits notes.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.5 $
+ * @since Fall 2000
  */
 public class NotesPanel extends JPanel {
 
-  private Vector notes;
   private Notable notable;
 
   // GUI components we care about
   private JList notesList;
+  private JButton add;
 
   /**
    * Creates a new <code>NotePanel</code> for displaying the notes of
    * some <code>Notable</code> object.
    */
   public NotesPanel() {
-    this.notes = new Vector();
-
     this.setLayout(new BorderLayout());
 
     Border notesBorder = BorderFactory.createTitledBorder("Notes");
@@ -39,23 +41,50 @@ public class NotesPanel extends JPanel {
     final JTextField field = new JTextField(20);
     panel.add(field);
 
-    JButton button = new JButton("Add");
-    button.addActionListener(new ActionListener() {
+    ActionListener action = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String note = field.getText();
-          if (note != null && !note.equals("")) {
-            notes.add(note);
-            notesList.setListData(notes);
-          }
-
-          if (notable != null) {
+          if (note != null && !note.equals("") && notable != null) {
             notable.addNote(note);
+            setNotable(notable);
           }
 
           field.setText("");
         }
+      };
+    field.addActionListener(action);
+
+    this.add = new JButton("Add");
+    this.add.setEnabled(false);
+    this.add.addActionListener(action);
+    panel.add(this.add);
+
+    final JButton delete = new JButton("Delete");
+    delete.setEnabled(false);
+    delete.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          String note = (String) notesList.getSelectedValue();
+          if (note == null) {
+            return;
+          }
+
+          if (notable != null) {
+            notable.removeNote(note);
+            setNotable(notable);
+          }
+        }
       });
-    panel.add(button);
+    notesList.addListSelectionListener(new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+          if (notesList.isSelectionEmpty()) {
+            delete.setEnabled(false);
+
+          } else {
+            delete.setEnabled(true);
+          }
+        }
+      });
+    panel.add(delete);
 
     this.add(panel, BorderLayout.SOUTH);
   }
@@ -68,7 +97,15 @@ public class NotesPanel extends JPanel {
     clearNotes();   // Start from scratch
     this.notable = notable;
     this.notesList.setListData(notable.getNotes().toArray());
-    this.notes.addAll(notable.getNotes());
+    this.add.setEnabled(true);
+  }
+
+  /**
+   * Returns the <code>Notable</code> edited by this
+   * <code>NotesPanel</code>. 
+   */
+  public Notable getNotable() {
+    return this.notable;
   }
 
   /**
@@ -76,21 +113,7 @@ public class NotesPanel extends JPanel {
    */
   public void clearNotes() {
     this.notesList.setListData(new Vector());
-    this.notes = new Vector();
     this.notable = null;
-  }
-
-  /**
-   * Adds all notes from this <code>NotesPanel</code> to a
-   * <code>Notable</code>.  This method is intended to be called when
-   * we are creating a <code>Notable</code>.
-   */
-  public void addAllNotesTo(Notable notable) {
-    Iterator iter = this.notes.iterator();
-    while (iter.hasNext()) {
-      notable.addNote((String) iter.next());
-    }
-    this.setNotable(notable);
   }
 
 }

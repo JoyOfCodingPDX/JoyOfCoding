@@ -12,6 +12,10 @@ import javax.swing.event.*;
 
 /**
  * This class is a main GUI for manipulate the grade book for CS399J.
+ *
+ * @author David Whitlock
+ * @version $Revision: 1.9 $
+ * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
 

@@ -74,6 +74,11 @@ public class Grade implements Notable {
     this.setDirty(true);
   }
 
+  public void removeNote(String note) {
+    this.notes.remove(note);
+    this.setDirty(true);
+  }
+
   /**
    * Marks this <code>Grade</code> as dirty.
    */

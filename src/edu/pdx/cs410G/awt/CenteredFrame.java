@@ -28,8 +28,8 @@ public class CenteredFrame extends Panel {
     Toolkit tk = p.getToolkit();
     Dimension screenSize = tk.getScreenSize();
     
-    int x = (pSize.width / 2) + (screenSize.width / 2);
-    int y = (pSize.height / 2) + (screenSize.height / 2);
+    int x = (screenSize.width / 2) - (pSize.width / 2);
+    int y = (screenSize.height / 2) - (pSize.height / 2);
 
     Frame f = new Frame("Frame in the Center");
     f.add(p);

@@ -116,6 +116,11 @@ public class Assignment implements Notable {
     this.notes.add(note);
   }
 
+  public void removeNote(String note) {
+    this.setDirty(true);
+    this.notes.remove(note);
+  }
+
   /**
    * Sets the dirtiness of this <code>Assignment</code>
    */

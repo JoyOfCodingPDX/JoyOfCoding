@@ -232,6 +232,11 @@ public class Student implements Notable {
     this.notes.add(note);
   }
 
+  public void removeNote(String note) {
+    this.setDirty(true);
+    this.notes.remove(note);
+  }
+
   /**
    * Returns the "dirtiness" of this <code>Student</code>.  That is,
    * has the <code>Student</code> been modified.

@@ -71,6 +71,21 @@ public class AssignmentPanel extends JPanel {
 
     // Add a NotePanel
     this.notes = new NotesPanel();
+    this.notes.setNotable(new Notable() {
+        private ArrayList notes = new ArrayList();
+
+        public java.util.List getNotes() {
+          return notes;
+        }
+
+        public void addNote(String note) {
+          notes.add(note);
+        }
+
+        public void removeNote(String note) {
+          notes.remove(note);
+        }
+      });
     this.add(notes, BorderLayout.CENTER);
   }
 
@@ -104,8 +119,13 @@ public class AssignmentPanel extends JPanel {
     try {
       double d = Double.parseDouble(points);
       Assignment newAssign = new Assignment(name, d);
+      for (Iterator iter = this.notes.getNotable().getNotes().iterator();
+           iter.hasNext(); ) {
+        newAssign.addNote((String) iter.next());
+      }
+
       updateAssignment(newAssign);
-      this.notes.addAllNotesTo(newAssign);
+      this.notes.setNotable(newAssign);
       return newAssign;
       
     } catch (NumberFormatException ex) {

@@ -23,7 +23,7 @@
   </target>
 
   <!-- Sets up properties used during building -->
-  <target name="props">
+  <target name="-props">
     <property file="build.properties"/>
 
     <property environment="myenv"/>
@@ -56,7 +56,7 @@
   </target>
 
   <!-- Removes byproducts of building -->
-  <target name="clean" depends="props">
+  <target name="clean" depends="-props">
     <delete dir="${classes.dir}"/>
     <delete file="${jars.dir}/${examples.jar}"/>
     <delete file="${jars.dir}/${cs399J.jar}"/>
@@ -67,8 +67,8 @@
     <delete dir="${tests.results.dir}"/>
   </target>
 
-  <target name="compile-src" depends="props">
-    <description>Compiles Java source code</description> 
+  <target description="Compiles Java source code"
+          name="compile-src" depends="-props"> 
 
     <mkdir dir="${classes.dir}"/>
 
@@ -113,7 +113,7 @@
 
   </target>
 
-  <target name="build-keystore" depends="props"
+  <target name="-build-keystore" depends="-props"
           unless="keystore.exists">
     <description>Builds a keystore that contains certificates for 
                  signing jar files</description>
@@ -240,7 +240,7 @@
   </target>
 
   <target name="-cs410G-jar" unless="cs410G-jar-uptodate">
-    <description>Creates the CS410J jar</description>
+    <description>Creates the CS410G jar</description>
 
     <jar jarfile="${jars.dir}/${cs410G.jar}"
          update="yes">
@@ -252,9 +252,8 @@
         keystore="${keystore}" storepass="${storepass}" />
   </target>
 
-  <target name="src" depends="props, compile-src, build-keystore">
-    <description>Compiles the Java source code and place it in jar
-                 files</description> 
+  <target name="src" depends="-props, compile-src, -build-keystore"
+          description="Compiles the Java source code and place it in signed jar files"> 
 
     <!-- Build the various jar files -->
     <mkdir dir="${jars.dir}"/>
@@ -271,6 +270,15 @@
     </uptodate>
 
     <antcall target="-cs399J-jar"/>
+
+    <uptodate property="cs410G-jar-uptodate"
+              targetfile="${jars.dir}/${cs410G.jar}">
+      <srcfiles dir="${classes.dir}">
+        <include name="edu/pdx/cs410G/**/*.class"/>
+      </srcfiles>
+    </uptodate>
+
+    <antcall target="-cs410G-jar"/>
 
     <uptodate property="family-jar-uptodate"
               targetfile="${jars.dir}/${family.jar}">
@@ -344,9 +352,8 @@
     <chmod perm="a+r" dir="${jars.dir}" includes="*.jar"/>
   </target>
 
-  <target name="game-console" depends="props, build-keystore, src" >
-    <description>Builds the keystore, certificates, etc. for running
-        the game console security example</description>
+  <target name="game-console" depends="-props, -build-keystore, src"
+          description="Builds the keystore, certificates, etc. for running the game console security example">
 
     <!-- Build the (trusted) game console jar -->
     <jar jarfile="${jars.dir}/gameConsole.jar" update="yes">
@@ -378,9 +385,8 @@
 
   </target>
 
-  <target name="unit-tests" depends="src">
-    <description>Runs the JUnit unit tests for my code.  Output is
-         placed in the ${tests.results.dir} directory.</description>
+  <target name="unit-tests" depends="src"
+          description="Runs the JUnit unit tests for my code.  Output is placed in the ${tests.results.dir} directory.">
 
     <mkdir dir="${tests.results.dir}"/>
     <property name="junit.format" value="plain"/>
@@ -420,8 +426,8 @@
     </junit>
   </target>
 
-  <target name="docs" depends="props, src">
-    <description>Builds the Javadocs for all my code</description>
+  <target name="docs" depends="-props, src"
+          description="Builds the Javadocs for all my code">
 
     <mkdir dir="${api.docs.dir}"/>
 
@@ -458,7 +464,7 @@
   </target>
 
   <!-- Builds a gzipped tar file containing all of the source code -->
-  <target name="release" depends="props">
+  <target name="release" depends="-props">
     <tar tarfile="${src.dir}/cs399J-src.tar" longfile="gnu">
       <tarfileset dir="${src.dir}">
         <include name="edu/pdx/cs399J/**/*.java"/>

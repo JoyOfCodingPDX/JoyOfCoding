@@ -73,6 +73,7 @@ public class ClassPanel extends JPanel {
                   BorderLayout.CENTER);
 
     this.newAssignmentButton = new JButton("Add Assignment");
+    this.newAssignmentButton.setEnabled(false);
     this.newAssignmentButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           createAssignment();
@@ -115,6 +116,7 @@ public class ClassPanel extends JPanel {
     final JTextField newStudentField = new JTextField(12);
     newStudentPanel.add(newStudentField);
     this.newStudentButton = new JButton("Add");
+    this.newStudentButton.setEnabled(false);
     this.newStudentButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String id = newStudentField.getText();
@@ -138,6 +140,7 @@ public class ClassPanel extends JPanel {
 
           Student student = new Student(id);
           ClassPanel.this.book.addStudent(student);
+          newStudentField.setText("");
         }
       });
     newStudentPanel.add(this.newStudentButton);

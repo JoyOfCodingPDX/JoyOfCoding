@@ -288,7 +288,7 @@ public class GradePanel extends JPanel {
     try {
       double d = Double.parseDouble(score);
       Grade grade = new Grade(assign.getName(), d);
-      this.notes.addAllNotesTo(grade);
+      this.notes.setNotable(grade);
       this.student.setGrade(assign.getName(), grade);
       return grade;
 
