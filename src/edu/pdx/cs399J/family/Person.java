@@ -140,8 +140,8 @@ public class Person {
   /**
    * Sets this person's father.
    *
-   * @throw IllegalArgumentException
-   *        <code>father</code> is not {@link #MALE}
+   * @throws IllegalArgumentException
+   *         <code>father</code> is not {@link #MALE}
    */
   public void setFather(Person father) {
     if (father.getGender() != Person.MALE) {
@@ -226,9 +226,9 @@ public class Person {
   /**
    * Sets this person's date of death.
    *
-   * @throw IllegalArgumentException
-   *        If this person's data of birth is known and
-   *        <code>dod</code> occurs before it.
+   * @throws IllegalArgumentException
+   *         If this person's data of birth is known and
+   *         <code>dod</code> occurs before it.
    */
   public void setDateOfDeath(Date dod) {
     if (this.dob != null && this.dob.after(dod)) {
@@ -250,8 +250,8 @@ public class Person {
   /**
    * Makes note of a marriage this person was involved in.
    *
-   * @throw IllegalArgumentException
-   *        If this person is not one of the spouses in the marriage
+   * @throws IllegalArgumentException
+   *         If this person is not one of the spouses in the marriage
    */
   public void addMarriage(Marriage marriage) {
     if (this.getGender() == Person.MALE) {

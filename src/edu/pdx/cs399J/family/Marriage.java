@@ -20,7 +20,7 @@ public class Marriage {
   /**
    * Creates a marriage between a husband and a wife.  It is the
    * responsibility of the caller to invoke {@link
-   * Person@addMarriage(Marriage)}.
+   * Person#addMarriage(Marriage)}.
    *
    * @throws IllegalArgumentException
    *         The <code>husband</code> is not {@link Person#MALE} or

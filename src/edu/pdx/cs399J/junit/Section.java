@@ -40,11 +40,11 @@ public class Section {
    * Creates a new section of a course being offered in the given term
    * and year.  Initially, no students are enrolled.
    *
-   * @throw IllegalArgumentException
-   *        If the <code>term</code> is not one of {@link #WINTER},
-   *        {@link #SPRING}, {@link #SUMMER}, or {@link #FALL}.
-   *        (Great, now I've got that James Taylor song going through
-   *        my head.) 
+   * @throws IllegalArgumentException
+   *         If the <code>term</code> is not one of {@link #WINTER},
+   *         {@link #SPRING}, {@link #SUMMER}, or {@link #FALL}.
+   *         (Great, now I've got that James Taylor song going through
+   *         my head.) 
    */
   public Section(Course course, int term, int year) {
     if (term != WINTER && term != SPRING && term != SUMMER && 
@@ -71,8 +71,8 @@ public class Section {
   /**
    * Drops a student from this section
    *
-   * @throw IllegalArgumentException
-   *        The <code>student</code> is not enrolled in this section
+   * @throws IllegalArgumentException
+   *         The <code>student</code> is not enrolled in this section
    */
   public void dropStudent(Student student) {
     if (!this.students.remove(student)) {
