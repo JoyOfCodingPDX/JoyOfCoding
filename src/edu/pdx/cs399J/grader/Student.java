@@ -256,6 +256,13 @@ public class Student implements Notable {
    */
   public void makeClean() {
     this.setDirty(false);
+
+    // Make all Grades clean
+    Iterator iter = this.grades.values().iterator();
+    while(iter.hasNext()) {
+      Grade grade = (Grade) iter.next();
+      grade.makeClean();
+    }
   }
 
   /**

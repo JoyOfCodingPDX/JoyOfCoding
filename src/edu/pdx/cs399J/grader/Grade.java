@@ -82,6 +82,13 @@ public class Grade implements Notable {
   }
 
   /**
+   * Makes this <code>Grade</code> clean
+   */
+  void makeClean() {
+    this.setDirty(false);
+  }
+
+  /**
    * Returns the "dirtiness" of this <code>Grade</code>
    */
   boolean isDirty() {
