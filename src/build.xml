@@ -199,6 +199,20 @@
     </jar>
   </target>
 
+  <!-- Builds the reflection examples -->
+  <target name="reflect" depends="props">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${classes.dir}"
+           includes="edu/pdx/cs410E/reflect/**"
+           includeAntRuntime="false"
+           debug="on"/>
+    <jar jarfile="${jars.dir}/${examples.jar}"
+         basedir="${classes.dir}"
+         update="yes"
+         includes="edu/pdx/cs410E/reflect/**"/>
+  </target>
+
   <!-- Builds the source code for projects in CS410J -->
   <target name="cs410J" depends="props">
     <mkdir dir="${classes.dir}"/>
