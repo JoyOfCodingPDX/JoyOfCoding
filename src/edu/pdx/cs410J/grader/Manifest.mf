@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Created-By: David Whitlock
-Class-Path: http://www.cs.pdx.edu/~whitlock/jars/cs410J.jar 
-            http://www.cs.pdx.edu/~whitlock/jars/mail.jar 
-            http://www.cs.pdx.edu/~whitlock/jars/activation.jar
