@@ -13,7 +13,7 @@ import java.util.*;
 public abstract class AbstractLRUMap extends AbstractMap {
 
   /** The maximum number of mappings that this map can hold */
-  protected int maxMappings;
+  protected int capacity;
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -21,15 +21,15 @@ public abstract class AbstractLRUMap extends AbstractMap {
    * Creates a new LRU Map that will hold a given number of mappings
    *
    * @throws IllegalArgumentException
-   *         <code>maxMappings</code> is negative
+   *         <code>capacity</code> is negative
    */
-  protected AbstractLRUMap(int maxMappings) {
-    if (maxMappings < 0) {
+  protected AbstractLRUMap(int capacity) {
+    if (capacity < 0) {
       String s = "Max mappings must be greater than 0";
       throw new IllegalArgumentException(s);
     }
 
-    this.maxMappings = maxMappings;
+    this.capacity = capacity;
   }
 
   ///////////////////////  Static Methods  //////////////////////
@@ -43,7 +43,7 @@ public abstract class AbstractLRUMap extends AbstractMap {
    * @param className
    *        The name of a class that implements
    *        <code>AbstractLRUMap</code>. 
-   * @param maxMappings
+   * @param capacity
    *        The maximum number of mappings in the newly-created LRU
    *        map 
    *
@@ -51,7 +51,7 @@ public abstract class AbstractLRUMap extends AbstractMap {
    *         A map cannot be created
    */
   public static AbstractLRUMap createLRUMap(String className, 
-                                            int maxMappings) {
+                                            int capacity) {
     // First, load the class
     Class c;
     try {
@@ -88,7 +88,7 @@ public abstract class AbstractLRUMap extends AbstractMap {
 
     // Invoke the constructor
     try {
-      Object[] args = new Object[] { new Integer(maxMappings) };
+      Object[] args = new Object[] { new Integer(capacity) };
       return (AbstractLRUMap) init.newInstance(args);
 
     } catch (InstantiationException ex) {
