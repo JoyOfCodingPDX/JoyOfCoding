@@ -49,14 +49,21 @@ public class SummaryReport {
         score = grade.getScore();
       }
 
+//       System.out.println("Examining " + assign + ", score: " + score);
+
       if(assign.getType() == Assignment.QUIZ) {
         if(lowestQuiz == null) {
           lowestQuiz = assign;
+//           System.out.println("Lowest quiz: " + lowestQuiz + 
+//                              ", score: " + score);
 
         } else {
           Grade lowestGrade = student.getGrade(lowestQuiz.getName());
-          if(lowestGrade == null || score < lowestGrade.getScore()) {
+          if(lowestGrade != null && score < lowestGrade.getScore()) {
             lowestQuiz = assign;
+//             System.out.println("Lowest quiz: " + lowestQuiz + ", score: "
+//                                + score + ", lowest grade: " +
+//                                student.getGrade(lowestQuiz.getName()));
           }
         }
       }
@@ -101,7 +108,7 @@ public class SummaryReport {
     }
     pw.println();
 
-    pw.println("Resubmitted assignments");
+    pw.println("Resubmitted assignments:");
     Iterator resubmit = student.getResubmitted().iterator();
     while(resubmit.hasNext()) {
       pw.println("  " + resubmit.next());
@@ -174,7 +181,17 @@ public class SummaryReport {
     }
 
     // Create a SummaryReport for every student
-    Iterator ids = book.getStudentIds().iterator();
+    Iterator ids;
+
+    if(args.length > 2) {
+      List l = new ArrayList();
+      l.add(args[2]);
+      ids = l.iterator();
+
+    } else {
+      ids = book.getStudentIds().iterator();
+    }
+
     while(ids.hasNext()) {
       String id = (String) ids.next();
 
