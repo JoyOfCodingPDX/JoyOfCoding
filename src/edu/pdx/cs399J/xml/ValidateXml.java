@@ -14,15 +14,18 @@ public class ValidateXml extends DefaultHandler {
   private static PrintStream err = System.err;
 
   public void error(SAXParseException ex) {
-    err.println("ERROR: " + ex);
+    err.println("ERROR at (" + ex.getLineNumber() + ":" +
+                ex.getColumnNumber() + "): " + ex.getMessage());
   }
 
   public void fatalError(SAXParseException ex) {
-    err.println("FATAL: " + ex);
+    err.println("FATAL at (" + ex.getLineNumber() + ":" +
+                ex.getColumnNumber() + "): " + ex.getMessage());
   }
 
   public void warning(SAXParseException ex) {
-    err.println("WARNING: " + ex);
+    err.println("WARNING at (" + ex.getLineNumber() + ":" +
+                ex.getColumnNumber() + "): " + ex.getMessage());
   }
 
   public static void main(String[] args) {
