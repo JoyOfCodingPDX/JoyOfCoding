@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.java;
+package edu.pdx.cs410J.lang;
 
 /**
  * This class represents a duck.  Ducks fly.
