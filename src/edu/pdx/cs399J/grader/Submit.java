@@ -502,6 +502,11 @@ public class Submit {
       File file = (File) iter.next();
       text.append("  " + file.getAbsolutePath() + "\n");
     }
+
+    if(comment != null) {
+      text.append("\nComment: " + comment + "\n");
+    }
+
     text.append("\n\n");
     text.append("Have a nice day.");
 
