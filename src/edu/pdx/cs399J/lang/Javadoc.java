@@ -14,7 +14,7 @@ public class Javadoc {
 
   /**
    * Returns the inverse of a <code>double</code>
-   * @param f
+   * @param d
    *        The <code>double</code> to invert
    * @return The inverse of a <code>double</code>
    * @throws IllegalArgumentException
