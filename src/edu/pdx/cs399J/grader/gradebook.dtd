@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- A DTD for a grade book, students, and their grades -->
+
+<!-- A grade book consists of the name of the class, the assignments
+in the class, the ids of the students in the class, and an optional
+number of late days allowed in the class -->
+<!ELEMENT gradebook (name, assignments, students, lateDays?)>
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT assignments (assignment*)>
+
+<!ELEMENT students (id*)>
+
+<!ELEMENT lateDays (#PCDATA)>
+
+<!-- An assignment has a name, description, a required number of
+points it is worth, a type, and some optional notes -->
+<!ELEMENT assignment (name, description?, points, notes*)>
+<!ATTLIST assignment
+  type  (PROJECT | QUIZ | OTHER)  #REQUIRED
+>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT points (#PCDATA)>
+
+<!ELEMENT notes (note*)>
+<!ELEMENT note (#PCDATA)>
+
+<!-- A student has an id, first and last name, a nick name, email
+address, social security number, a major, some grades, some late
+assignments, and some notes -->
+<!ELEMENT student (id, firstName?, lastName?, nickName?, email?, ssn?,
+                   major?, grades?, late?, resubmitted?, notes?)>
+
+<!ELEMENT id (#PCDATA)>
+
+<!ELEMENT firstName (#PCDATA)>
+<!ELEMENT lastName (#PCDATA)>
+<!ELEMENT nickName (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT ssn (#PCDATA)>  <!-- xxx-xx-xxxx -->
+<!ELEMENT major (#PCDATA)>
+<!ELEMENT grades (grade*)>
+<!ELEMENT late (name*)>
+<!ELEMENT resubmitted (name*)>
+
+<!-- A grade has an assignment name, a score, and some notes -->
+<!ELEMENT grade (name, score, notes?)>
+<!ATTLIST grade
+  type (INCOMPLETE | NOGRADE) #IMPLIED
+>
+
+<!ELEMENT score (#PCDATA)>
