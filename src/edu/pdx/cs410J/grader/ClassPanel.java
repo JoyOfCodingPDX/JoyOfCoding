@@ -127,6 +127,15 @@ public class ClassPanel extends JPanel {
             return;
           }
 
+	  if(ClassPanel.this.book == null) {
+            String s = "No grade book opened";
+            JOptionPane.showMessageDialog(ClassPanel.this, 
+                                          new String[] {s},
+                                          "Error",
+                                          JOptionPane.ERROR_MESSAGE);
+            return;
+	  }
+
           Student student = new Student(id);
           ClassPanel.this.book.addStudent(student);
         }
