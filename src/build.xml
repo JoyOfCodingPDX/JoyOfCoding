@@ -15,6 +15,7 @@
     <echo message="  grader      Builds code for grading"/>
     <echo message="  family      Builds the family tree example code"/>
     <echo message="  docs        Builds the Javadocs for all this code"/>
+    <echo message="  release     Builds tar file containing source code"/>
     <echo message="  clean       Removes all byproducts of building"/>
   </target>
 
@@ -244,6 +245,16 @@
       <link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
       <link href="http://www.junit.org/junit/javadoc/3.7"/>
     </javadoc>
+  </target>
+
+  <!-- Builds a gzipped tar file containing all of the source code -->
+  <target name="release" depends="props">
+    <tar tarfile="${src.dir}/cs399J-src.tar" longfile="gnu" 
+         basedir="${src.dir}"
+         includes="edu/pdx/cs399J/**/*.java, edu/pdx/cs399J/**/*.dtd"/>
+    <gzip zipfile="${src.dir}/cs399J-src.tgz"
+          src="${src.dir}/cs399J-src.tar"/>
+    <delete file="${src.dir}/cs399J-src.tar"/>
   </target>
 
 </project>
