@@ -29,7 +29,7 @@ public class ClassPanel extends JPanel {
   /**
    * Creats a <code>ClassPanel</code> and initializes its components.
    */
-  public ClassPanel(JFrame fram) {
+  public ClassPanel(JFrame frame) {
     this.frame = frame;
     this.setLayout(new BorderLayout());
     this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -169,7 +169,7 @@ public class ClassPanel extends JPanel {
    * Sets the <code>GradeBook</code> that is displayed and edited in
    * this <code>ClassPanel</code>.
    */
-  void setGradeBook(GradeBook book) {
+  void displayGradeBook(GradeBook book) {
     this.book = book;
     this.newAssignmentButton.setEnabled(true);
     this.newStudentButton.setEnabled(true);
@@ -231,7 +231,7 @@ public class ClassPanel extends JPanel {
 
     JFrame frame = new JFrame("ClassPanel test");
     ClassPanel classPanel = new ClassPanel(frame);
-    classPanel.setGradeBook(book);
+    classPanel.displayGradeBook(book);
 
     final GradeBook theBook = book;
     frame.addWindowListener(new WindowAdapter() {

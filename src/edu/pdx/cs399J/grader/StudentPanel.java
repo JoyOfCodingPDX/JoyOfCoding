@@ -98,8 +98,8 @@ public class StudentPanel extends JPanel {
   public void displayStudent(Student student) {
     this.student = student;
 
-    System.out.println("Displaying student: " +
-                       student.getDescription());
+//     System.out.println("Displaying student: " +
+//                        student.getDescription());
 
     // Fill in GUI components
     this.idField.setText(student.getId());
@@ -174,8 +174,8 @@ public class StudentPanel extends JPanel {
     
     // The NotesPanel takes care of adding notes
 
-    System.out.println("Updated student: " +
-                       student.getDescription());
+//     System.out.println("Updated student: " +
+//                        student.getDescription());
   }
 
   /**
