@@ -28,7 +28,7 @@
 
     <property name="src.dir" value="${basedir}"/>
     <property name="jars.dir" value="${basedir}/../jars"/>
-    <property name="daves.jars.dir" value="/home/davidw/PSU/jars"/>
+    <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/../docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
     <property name="tests.results.dir" value="${basedir}/results"/>
@@ -311,6 +311,7 @@
              use="yes"
              splitindex="yes"
              windowtitle="CS399J Docs"
+             overview="${src.dir}/overview.html"
     >
       <classpath>
         <pathelement location="${classes.dir}"/>
@@ -336,7 +337,11 @@
         <include name="edu/pdx/cs399J/**/*.java"/>
         <include name="edu/pdx/cs399J/**/*.dtd"/>
         <include name="edu/pdx/cs399J/**/*.xml"/>
+        <include name="edu/pdx/cs399J/**/*.txt"/>
+        <include name="edu/pdx/cs399J/**/*.policy"/>
+        <include name="edu/pdx/cs399J/**/package.html"/>
         <include name="build.xml"/>
+        <include name="overview.html"/>
       </tarfileset>
     </tar>
 
