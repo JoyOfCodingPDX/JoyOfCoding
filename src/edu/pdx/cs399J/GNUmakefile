@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.1 2001-02-19 23:46:43 whitlock Exp $
+# $Id: GNUmakefile,v 1.2 2001-07-26 01:14:40 whitlock Exp $
 #
 
 # example top level makefile... This will just descend to a directory.
@@ -17,7 +17,7 @@ JAVA_CLASSES= \
         Parser \
         ParserException \
 
-# SUBDIRS=examples familyTree grader
+SUBDIRS= java core xml net security gui familyTree grader
 
 include $(TOPDIR)/makefiles/java.gmk
 include $(TOPDIR)/makefiles/subdirs.gmk

@@ -1,11 +1,11 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.net;
 
 /**
  * A <code>McCustomer</code> arrives a <code>McDonalds</code> and
  * waits for a BigMac.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/McCustomer.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/net/McCustomer.java">
  * View Source</A></EM></P>
  */
 public class McCustomer implements Runnable {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.gui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,7 +11,7 @@ import javax.swing.*;
  * field is placed into the label.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/SimpleGUI.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/gui/SimpleGUI.java">
  * View Source</A></EM></P>
  */
 public class SimpleGUI extends JFrame {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.java;
 
 /**
  * This program uses Java's reflection mechanism to print the name of

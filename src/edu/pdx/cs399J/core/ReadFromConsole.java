@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 import java.io.*;
 
@@ -10,7 +10,7 @@ import java.io.*;
  * classes.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/ReadFromConsole.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/core/ReadFromConsole.java">
  * View Source</A></EM></P>
  */
 public class ReadFromConsole {

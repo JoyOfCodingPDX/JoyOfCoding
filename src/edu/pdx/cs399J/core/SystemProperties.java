@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import java.util.*;
  * how to use the JVM's system properties.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/SystemProperties.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/core/SystemProperties.java">
  * View Source</A></EM></P>
  */
 public class SystemProperties {

@@ -1,11 +1,11 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.java;
 
 /**
  * This program demonstrates exception handling by reading two
  * integers from the command line and prints their sum.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/AddTwo.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/java/AddTwo.java">
  * View Source</A></EM></P>
  */
 public class AddTwo {

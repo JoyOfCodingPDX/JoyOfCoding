@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 import java.text.*;
 import java.util.*;
@@ -8,7 +8,7 @@ import java.util.*;
  * facilities. 
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/DateDemo.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/core/DateDemo.java">
  * View Source</A></EM></P>
  */
 public class DateDemo {

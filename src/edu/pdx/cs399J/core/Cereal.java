@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 /**
  * This class represents a box of cereal.  It has a name and a price.

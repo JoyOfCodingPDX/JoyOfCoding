@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.java;
 
 /**
  * Demonstrates Java's pass by value mechanism

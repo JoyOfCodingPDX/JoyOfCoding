@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.java;
 
 /**
  * This class is the base class in our animal hierarchy.  Each animal

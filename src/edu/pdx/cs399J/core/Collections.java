@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 // All classes not in java.lang must be imported
 import java.util.*;

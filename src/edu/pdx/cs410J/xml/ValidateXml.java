@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.xml;
 
 import java.io.*;
 import org.apache.xerces.parsers.DOMParser;

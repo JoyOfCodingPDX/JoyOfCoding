@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.gui;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.gui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,7 +10,7 @@ import javax.swing.*;
  * click are printed.
  * 
  * @author David Whitlock
- * @version $Revision: 1.5 $, $Date: 2001-07-25 21:39:13 $
+ * @version $Revision: 1.6 $, $Date: 2001-07-26 01:14:44 $
  */
 public class DrawCoords extends JPanel {
 

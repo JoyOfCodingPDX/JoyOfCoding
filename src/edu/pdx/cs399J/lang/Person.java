@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.java;
 
 /**
  * This class demonstrates constructors, the toString method, and
@@ -19,7 +19,7 @@ public class Person {
   /**
    * Returns this <code>Person</code>'s shoe size.
    */
-  double shoeSize() {
+  public double shoeSize() {
     return this.shoeSize;
   }
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.net;
 
 /**
  * Synchronized methods ensure that the data in the balance is

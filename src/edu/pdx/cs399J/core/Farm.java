@@ -1,5 +1,6 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
+import edu.pdx.cs410J.java.*;
 import java.util.*;
 
 /**

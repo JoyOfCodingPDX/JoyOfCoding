@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.core;
 
 import java.io.*;
 
@@ -7,7 +7,7 @@ import java.io.*;
  * file.  It demonstrates the <code>FileWriter</code> class.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/WriteToFile.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/core/WriteToFile.java">
  * View Source</A></EM></P>
  */
 public class WriteToFile {

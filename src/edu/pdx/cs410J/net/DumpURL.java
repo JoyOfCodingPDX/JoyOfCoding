@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.net;
 
 import java.io.*;
 import java.net.*;
@@ -7,7 +7,7 @@ import java.net.*;
  * This program dumps the contents of a URL to standard out.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/DumpURL.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/net/DumpURL.java">
  * View Source</A></EM></P>
  */
 public class DumpURL {

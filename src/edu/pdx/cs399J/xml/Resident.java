@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.xml;
 
 import org.w3c.dom.*;
 
@@ -10,7 +10,7 @@ import org.w3c.dom.*;
  * <code>Resident</code> and filling in its fields.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/Resident.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/xml/Resident.java">
  * View Source</A></EM></P>
  */
 public class Resident extends PhoneBookEntry {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.gui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,7 +10,7 @@ import javax.swing.*;
  * allowing the user to graphically edit a text file.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/TextEditor.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/gui/TextEditor.java">
  * View Source</A></EM></P>
  */
 public class TextEditor extends JFrame {

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.xml;
 
 import org.w3c.dom.*;
 
@@ -10,7 +10,7 @@ import org.w3c.dom.*;
  * filling in its fields.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/Business.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/xml/Business.java">
  * View Source</A></EM></P>
  */
 public class Business extends PhoneBookEntry {

@@ -1,5 +1,5 @@
 #
-# $Id: GNUmakefile,v 1.7 2001-07-25 21:39:30 whitlock Exp $
+# $Id: GNUmakefile,v 1.8 2001-07-26 01:14:44 whitlock Exp $
 #
 
 # example leaf node for building a java package
@@ -21,10 +21,6 @@ JAVA_CLASSES= \
 	AssignmentPanel \
 	ClassPanel \
 	CloseStream \
-	Command \
-	CatCommand \
-	CopyCommand \
-	FixMidterm \
 	GenerateMailrc \
 	Grade \
 	GradeBook \
@@ -35,15 +31,12 @@ JAVA_CLASSES= \
 	Notable \
 	NotesPanel \
 	ParseTextFile \
-	Report \
-	RunCommand \
 	Student \
 	StudentPanel \
 	StudentsList \
 	Submit \
 	SummaryReport \
 	Survey \
-	Test \
 	Tester \
 	TesterExitException \
 	TesterSecurityManager \

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.xml;
 
 import java.io.*;
 import java.util.*;
@@ -15,7 +15,7 @@ import org.xml.sax.*;
  * is just an example.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/PhoneBook.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/xml/PhoneBook.java">
  * View Source</A></EM></P>
  */
 public class PhoneBook {

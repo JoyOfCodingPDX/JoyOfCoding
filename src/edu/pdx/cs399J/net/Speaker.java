@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.examples;
+package edu.pdx.cs410J.net;
 
 import java.io.*;
 import java.net.*;
@@ -8,7 +8,7 @@ import java.net.*;
  * a <code>Listener</code>.
  *
  * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs410J/examples/Speaker.java">
+ * "{@docRoot}/../src/edu/pdx/cs410J/net/Speaker.java">
  * View Source</A></EM></P>
  */
 public class Speaker {
