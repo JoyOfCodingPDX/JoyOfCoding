@@ -323,7 +323,7 @@ public class AirportNames {
   /**
    * Returns the name of an airport with a given three-letter code.
    */
-  public String getName(String code) {
+  public static String getName(String code) {
     if(airportNames == null) {
       airportNames = new AirportNames();
     }
