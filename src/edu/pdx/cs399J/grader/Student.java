@@ -18,7 +18,11 @@ public class Student implements Notable {
   private String ssn;
   private String major;
 
-  private Map grades;  // Maps name of Assignment to Grade
+  /** Maps name of Assignment to Grade.  The grades are sorted so that
+   * they will appear in a canonical order in the student's XML
+   * file. */
+  private SortedMap grades;
+
   private List late;   // Names of late Assignments
   private List resubmitted;  // Names of resubmitted Assignments
 
@@ -34,7 +38,7 @@ public class Student implements Notable {
    */
   public Student(String id) {
     this.id = id;
-    this.grades = new HashMap();
+    this.grades = new TreeMap();
     this.late = new ArrayList();
     this.resubmitted = new ArrayList();
     this.notes = new ArrayList();
