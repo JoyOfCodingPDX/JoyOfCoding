@@ -69,6 +69,7 @@
       <include name="edu/pdx/cs399J/**/*.java"/>
       <exclude name="edu/pdx/cs399J/whitlock/**"/>
       <exclude name="edu/pdx/cs399J/fall2000/**"/>
+      <include name="edu/pdx/cs410G/**/*.java"/>
       <classpath>
         <pathelement location="${daves.jars.dir}/junit.jar"/>
         <pathelement location="${daves.jars.dir}/activation.jar"/>
@@ -220,7 +221,7 @@
     </javadoc>
 
     <!-- Make it so that everyone can see the javadocs -->
-    <chmod perm="a+rX" dir="${api.docs.dir}" includes="**"/>
+    <chmod perm="a+rX" dir="${api.docs.dir}" includes="**" type="both"/>
 
   </target>
 
