@@ -1,9 +1,5 @@
 package edu.pdx.cs410J.grader;
 
-import org.apache.xerces.dom.*;
-import org.apache.xml.serialize.*;
-import org.w3c.dom.*;
-
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -12,6 +8,11 @@ import java.util.zip.*;
 import javax.activation.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.*;
 
 /**
  * This program presents a survey that all students in CS410J should
@@ -23,6 +24,11 @@ import javax.mail.internet.*;
  * View Source</A></EM></P>
  */
 public class Survey {
+  private static final String systemID = 
+    "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
+  private static final String publicID = 
+    "-//Portland State University//DTD CS410J Grade Book//EN";
+
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
   private static BufferedReader in = 
@@ -175,15 +181,22 @@ public class Survey {
       xmlFile = File.createTempFile("CS410J-Survey", ".xml");
       Document xmlDoc = XmlDumper.toXml(student);
 
-      OutputFormat format = new OutputFormat(xmlDoc);
-      format.setIndenting(true);
-      format.setIndent(2);
-      format.setLineWidth(70);
-    
       PrintWriter pw = new PrintWriter(new FileWriter(xmlFile), true);
-      XMLSerializer serial = new XMLSerializer(pw, format);
-      serial.asDOMSerializer();
-      serial.serialize(xmlDoc);  
+
+      try {
+        Source src = new DOMSource(xmlDoc);
+        Result res = new StreamResult(pw);
+        
+        TransformerFactory xFactory = TransformerFactory.newInstance();
+        Transformer xform = xFactory.newTransformer();
+        xform.setOutputProperty(OutputKeys.INDENT, "yes");
+        xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+        xform.transform(src, res);
+        
+      } catch (TransformerException ex) {
+        ex.printStackTrace(System.err);
+        System.exit(1);
+      }
 
     } catch (IOException ex) {
       err.println("** While saving XML file: " + ex);

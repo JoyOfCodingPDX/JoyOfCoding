@@ -3,9 +3,12 @@ package edu.pdx.cs410J.grader;
 import java.io.*;
 import java.util.*;
 
-import org.apache.xerces.dom.*;
-import org.apache.xml.serialize.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
+import org.xml.sax.*;
 
 /**
  * This class dumps the contents of a <code>GradeBook</code> to an XML
@@ -71,18 +74,28 @@ public class XmlDumper {
     Document doc = null;
 
     try {
+      DocumentBuilderFactory factory =
+        DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
       DOMImplementation dom =
-        DOMImplementationImpl.getDOMImplementation();
-      DocumentType dtd = 
+        builder.getDOMImplementation();
+      DocumentType docType = 
         dom.createDocumentType("gradebook", publicID, systemID);
-      doc = dom.createDocument(null, "gradebook", dtd);
+      doc = dom.createDocument(null, "gradebook", docType);
+
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
 
     } catch (DOMException ex) {
       // Eep, this is bad
       ex.printStackTrace(System.err);
       System.exit(1);
     }
-    
+ 
     Element root = doc.getDocumentElement();
     
     // name node
@@ -158,14 +171,20 @@ public class XmlDumper {
     root.appendChild(studentsNode);
 
     // Finally serialize the DOM tree to a Writer
-    OutputFormat format = new OutputFormat(doc);
-    format.setIndenting(true);
-    format.setIndent(2);
-    format.setLineWidth(70);
-    
-    XMLSerializer serial = new XMLSerializer(this.pw, format);
-    serial.asDOMSerializer();
-    serial.serialize(doc);
+    try {
+      Source src = new DOMSource(doc);
+      Result res = new StreamResult(this.pw);
+
+      TransformerFactory xFactory = TransformerFactory.newInstance();
+      Transformer xform = xFactory.newTransformer();
+      xform.setOutputProperty(OutputKeys.INDENT, "yes");
+      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.transform(src, res);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
+    }
 
     // Mark the grade book as being clean
     book.makeClean();
@@ -200,14 +219,20 @@ public class XmlDumper {
     File studentFile = new File(studentDir, student.getId() + ".xml");
     PrintWriter pw = new PrintWriter(new FileWriter(studentFile), true);
 
-    OutputFormat format = new OutputFormat(doc);
-    format.setIndenting(true);
-    format.setIndent(2);
-    format.setLineWidth(70);
-    
-    XMLSerializer serial = new XMLSerializer(pw, format);
-    serial.asDOMSerializer();
-    serial.serialize(doc);  
+    try {
+      Source src = new DOMSource(doc);
+      Result res = new StreamResult(pw);
+
+      TransformerFactory xFactory = TransformerFactory.newInstance();
+      Transformer xform = xFactory.newTransformer();
+      xform.setOutputProperty(OutputKeys.INDENT, "yes");
+      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.transform(src, res);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
+    }
   }
 
   /**
@@ -218,11 +243,21 @@ public class XmlDumper {
     Document doc = null;
 
     try {
+      DocumentBuilderFactory factory =
+        DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
       DOMImplementation dom =
-        DOMImplementationImpl.getDOMImplementation();
-      DocumentType dtd = 
+        builder.getDOMImplementation();
+      DocumentType docType = 
         dom.createDocumentType("student", publicID, systemID);
-      doc = dom.createDocument(null, "student", dtd);
+      doc = dom.createDocument(null, "student", docType);
+
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
 
     } catch (DOMException ex) {
       // Eep, this is bad

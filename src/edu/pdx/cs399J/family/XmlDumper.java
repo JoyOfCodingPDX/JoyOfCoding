@@ -5,9 +5,9 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
-
-import org.apache.xerces.dom.*;
-import org.apache.xml.serialize.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -86,14 +86,24 @@ public class XmlDumper implements Dumper {
    */
   public void dump(FamilyTree tree) {
     // First we create a DOM tree that represents the family tree
-        Document doc = null;
+    Document doc = null;
 
     try {
+      DocumentBuilderFactory factory =
+        DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
       DOMImplementation dom =
-        DOMImplementationImpl.getDOMImplementation();
-      DocumentType dtd = 
+        builder.getDOMImplementation();
+      DocumentType docType = 
         dom.createDocumentType("familytree", publicID, systemID);
-      doc = dom.createDocument(null, "familytree", dtd);
+      doc = dom.createDocument(null, "familytree", docType);
+
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
 
     } catch (DOMException ex) {
       // Eep, this is bad
@@ -208,17 +218,17 @@ public class XmlDumper implements Dumper {
 
     // Then we simply write the DOM tree to the destination
     try {
-      OutputFormat format = new OutputFormat(doc);
-      format.setIndenting(true);
-      format.setIndent(2);
-      format.setLineWidth(70);
-    
-      XMLSerializer serial = new XMLSerializer(this.pw, format);
-      serial.asDOMSerializer();
-      serial.serialize(doc);
+      Source src = new DOMSource(doc);
+      Result res = new StreamResult(this.pw);
 
-    } catch (IOException ex) {
-      err.println("** IOException while writing XML: " + ex);
+      TransformerFactory xFactory = TransformerFactory.newInstance();
+      Transformer xform = xFactory.newTransformer();
+      xform.setOutputProperty(OutputKeys.INDENT, "yes");
+      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.transform(src, res);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
       System.exit(1);
     }
   }

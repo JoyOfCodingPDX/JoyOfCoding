@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*;
 
 import edu.pdx.cs410J.ParserException;
-
-import org.apache.xerces.parsers.*;
+import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This class creates a <code>GradeBook</code> from the contents of an
@@ -211,24 +211,19 @@ public class XmlParser {
     throws ParserException {
 
     // Parse the XML file
-    DOMParser parser = null;
+    Document doc = null;
     try {
-      InputSource source = new InputSource(new FileReader(file));
-      parser = new DOMParser();
-      try {
-        String f = "http://apache.org/xml/features/dom/defer-node-expansion";
-        parser.setFeature(f, false);
-        parser.setFeature("http://xml.org/sax/features/validation", true);
-        
-        // Since we traverse all the nodes, its more efficient to not
-        // use deferred nodes, but the exceptions are ignorable if
-        // there's a glitch.
-        
-      } catch (SAXNotRecognizedException snr) {
-      } catch (SAXNotSupportedException sns) {
-      }
-      
-      parser.parse(source);
+      DocumentBuilderFactory factory =
+	DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = 
+	factory.newDocumentBuilder();
+      builder.setErrorHandler(new DefaultHandler());
+      doc = builder.parse(new InputSource(new FileReader(file)));
+
+    } catch (ParserConfigurationException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
 
     } catch (SAXException ex) {
       throw new ParserException("While parsing XML source: " + ex);
@@ -237,7 +232,6 @@ public class XmlParser {
       throw new ParserException("While parsing XML source: " + ex);
     }
 
-    Document doc = parser.getDocument();
     Element root = null;
     if (doc != null) {
       root = doc.getDocumentElement();
@@ -360,22 +354,21 @@ public class XmlParser {
    */
   public GradeBook parse() throws ParserException {
     // Parse the source
-    DOMParser parser = new DOMParser();
+    Document doc = null;
+
+    // Create a DOM tree from the XML source
     try {
-      String f = "http://apache.org/xml/features/dom/defer-node-expansion";
-      parser.setFeature(f, false);
-      parser.setFeature("http://xml.org/sax/features/validation", true);
+      DocumentBuilderFactory factory =
+	DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
 
-      // Since we traverse all the nodes, its more efficient to not
-      // use deferred nodes, but the exceptions are ignorable if
-      // there's a glitch.
+      DocumentBuilder builder = 
+	factory.newDocumentBuilder();
+      builder.setErrorHandler(new DefaultHandler());
+      doc = builder.parse(new InputSource(this.in));
 
-    } catch (SAXNotRecognizedException snr) {
-    } catch (SAXNotSupportedException sns) {
-    }
-
-    try {
-      parser.parse(new InputSource(in));
+    } catch (ParserConfigurationException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
 
     } catch (SAXException ex) {
       throw new ParserException("While parsing XML source: " + ex);
@@ -384,7 +377,6 @@ public class XmlParser {
       throw new ParserException("While parsing XML source: " + ex);
     }
 
-    Document doc = parser.getDocument();
     Element root = null;
     if (doc != null) {
       root = doc.getDocumentElement();
