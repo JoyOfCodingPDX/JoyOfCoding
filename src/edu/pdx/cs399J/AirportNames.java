@@ -23,7 +23,7 @@ public class AirportNames {
    * names.
    */
   private AirportNames() {
-    Map names = new java.util.HashMap();
+    Map names = new java.util.TreeMap();
 
     names.put("ABE", "Allentown, PA");
     names.put("ABQ", "Albuquerque, NM");
