@@ -6,7 +6,7 @@ package edu.pdx.cs399J;
  *
  * @author David Whitlock
  */
-public interface Dumper {
+public interface AppointmentBookDumper {
 
   /**
    * Dumps an appointment book to some destination.

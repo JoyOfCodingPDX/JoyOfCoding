@@ -64,7 +64,7 @@ public interface RemotePerson extends Remote {
   /**
    * Sets the id of this person's father
    *
-   * @throw IllegalArgumentException
+   * @throws IllegalArgumentException
    *        The person with the given id cannot be found or the person
    *        with that id is not {@link Person#MALE}
    */
@@ -78,7 +78,7 @@ public interface RemotePerson extends Remote {
   /**
    * Sets the id of this person's mother
    *
-   * @throw IllegalArgumentException
+   * @throws IllegalArgumentException
    *        The person with the given id cannot be found or the person
    *        with that id is not {@link Person#FEMALE}
    */

@@ -7,6 +7,8 @@ import java.util.Date;
  * phone number of the person who originates the call) and callee (the
  * phone number of the person whose receives the phone call).  Phone
  * calls begin and end at given times.
+ *
+ * @author David Whitlock
  */
 public abstract class AbstractPhoneCall {
 
@@ -24,7 +26,7 @@ public abstract class AbstractPhoneCall {
 
   /**
    * Returns the time that this phone call was originated as a
-   * <code>Date</code>. 
+   * {@link Date}. 
    */
   public Date getStartTime() {
     return null;
@@ -38,7 +40,7 @@ public abstract class AbstractPhoneCall {
 
   /**
    * Returns the time that this phone call was completed as a
-   * <code>Date</code>.
+   * {@link Date}.
    */
   public Date getEndTime() {
     return null;
@@ -51,7 +53,7 @@ public abstract class AbstractPhoneCall {
   public abstract String getEndTimeString();
 
   /**
-   * Returns a bried textual description of this phone call.
+   * Returns a brief textual description of this phone call.
    */
   public String toString() {
     return "Phone call from " + this.getCaller() + " to " +

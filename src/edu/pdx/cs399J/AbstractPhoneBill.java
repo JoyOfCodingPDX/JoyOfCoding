@@ -5,6 +5,8 @@ import java.util.Collection;
 /**
  * This abstract class represents a customer's phone bill that
  * consists of multiple phone calls.
+ *
+ * @author David Whitlock
  */
 public abstract class AbstractPhoneBill {
 

@@ -1,12 +1,12 @@
 package edu.pdx.cs399J;
 
 /**
- * This interface is to be implemented by classes that create an
- * appointment book from the contents of a file.
+ * This interface is to be implemented by classes that read some
+ * source and from it create an appointment book.
  *
  * @author David Whitlock
  */
-public interface Parser {
+public interface AppointmentBookParser {
 
   /**
    * Parses the contents of a file or other input source and returns

@@ -16,8 +16,16 @@ public abstract class AbstractAppointmentBook {
   public abstract String getOwnerName();
 
   /**
-   * Returns all of the appointments in this appointment book.
+   * Returns all of the appointments in this appointment book as a
+   * collection of {@link AbstractAppointment}s.
    */
   public abstract Collection getAppointments();
 
+  /**
+   * Returns a brief textual description of this appointment book
+   */
+  public String toString() {
+    return this.getOwnerName() + "'s appointment book with " +
+      this.getAppointments().size() + " appointments";
+  }
 }
