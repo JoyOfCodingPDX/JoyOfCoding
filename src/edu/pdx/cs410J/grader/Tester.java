@@ -189,10 +189,13 @@ public class Tester {
   public Object executeStatic(String className, String methodName, 
 			      Class[] paramTypes, Object[] params,
 			      boolean printBanner) {
+
+    ClassLoader loader = new URLClassLoader(this.urls);
+
     // First load the class and the desired method
     Class c = null;
     try {
-      c = Class.forName(className);
+      c = Class.forName(className, true, loader);
 
     } catch(ClassNotFoundException ex) {
       System.err.println("** Could not load " + className);
