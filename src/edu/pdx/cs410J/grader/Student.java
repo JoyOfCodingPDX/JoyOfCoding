@@ -233,6 +233,13 @@ public class Student implements Notable {
    * has the <code>Student</code> been modified.
    */
   boolean isDirty() {
+    Iterator iter = this.grades.values().iterator();
+    while(iter.hasNext()) {
+      Grade grade = (Grade) iter.next();
+      if(grade.isDirty()) {
+        return(true);
+      }
+    }
     return(this.dirty);
   }
 

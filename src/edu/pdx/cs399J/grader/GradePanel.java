@@ -134,11 +134,11 @@ public class GradePanel extends JPanel {
           Assignment assign = getSelectedAssignment();
           if(assign != null && student != null) {
             java.util.List late = student.getLate();
-            if(!late.contains(assign.getName())) {
+//             if(!late.contains(assign.getName())) {
               student.addLate(assign.getName());
               Vector v = new Vector(student.getLate());
               lateList.setListData(v);
-            }
+//             }
           }
         }
       });
@@ -158,12 +158,12 @@ public class GradePanel extends JPanel {
           Assignment assign = getSelectedAssignment();
           if(assign != null && student != null) {
             java.util.List resubmit = student.getResubmitted();
-            if(!resubmit.contains(assign.getName())) {
+//             if(!resubmit.contains(assign.getName())) {
               student.addResubmitted(assign.getName());
               Vector v = new Vector(student.getResubmitted());
               resubmitList.setListData(v);
             }
-          }
+//           }
         }
       });
     resubmitButtons.add(addResubmit);
@@ -257,7 +257,15 @@ public class GradePanel extends JPanel {
   private Grade createGrade() {
     Assignment assign = getSelectedAssignment();
 
-    if(assign == null || this.student == null) {
+    if(this.student == null) {
+      return(null);
+
+    } else if(assign == null) {
+      String s = "Please select an assignment";
+      JOptionPane.showMessageDialog(this, 
+                                    new String[] {s},
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
       return(null);
     }
 

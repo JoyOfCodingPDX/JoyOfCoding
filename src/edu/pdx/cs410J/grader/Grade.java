@@ -22,6 +22,7 @@ public class Grade implements Notable {
   private String assignmentName;
   private double score;         // Score student received
   List notes;
+  private boolean isDirty;
   
 
   /**
@@ -31,6 +32,7 @@ public class Grade implements Notable {
     this.assignmentName = assignmentName;
     this.score = score;
     this.notes = new ArrayList();
+    this.setDirty(true);  // Initially dirty
   }
 
   /**
@@ -53,6 +55,7 @@ public class Grade implements Notable {
    */
   public void setScore(double score) {
     this.score = score;
+    this.setDirty(true);
   }
 
   /**
@@ -68,6 +71,21 @@ public class Grade implements Notable {
    */
   public void addNote(String note) {
     this.notes.add(note);
+    this.setDirty(true);
+  }
+
+  /**
+   * Marks this <code>Grade</code> as dirty.
+   */
+  void setDirty(boolean isDirty) {
+    this.isDirty = isDirty;
+  }
+
+  /**
+   * Returns the "dirtiness" of this <code>Grade</code>
+   */
+  boolean isDirty() {
+    return(this.isDirty);
   }
 
   private static PrintWriter out = new PrintWriter(System.out, true);
