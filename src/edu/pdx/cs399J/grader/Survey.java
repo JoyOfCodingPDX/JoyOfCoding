@@ -174,32 +174,30 @@ public class Survey {
       System.exit(1);
     }
 
-    // Create a temporary file to hold the Student's XML file
-    File xmlFile = null;
+    // Create a temporary "file" to hold the Student's XML file.  We
+    // use a byte array so that potentially sensitive data (SSN, etc.)
+    // is not written to disk
+    byte[] bytes = null;
+
+    Document xmlDoc = XmlDumper.toXml(student);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw =
+      new PrintWriter(new OutputStreamWriter(baos), true);
+    bytes = baos.toByteArray();
 
     try {
-      xmlFile = File.createTempFile("CS399J-Survey", ".xml");
-      Document xmlDoc = XmlDumper.toXml(student);
-
-      PrintWriter pw = new PrintWriter(new FileWriter(xmlFile), true);
-
-      try {
-        Source src = new DOMSource(xmlDoc);
-        Result res = new StreamResult(pw);
+      Source src = new DOMSource(xmlDoc);
+      Result res = new StreamResult(pw);
         
-        TransformerFactory xFactory = TransformerFactory.newInstance();
-        Transformer xform = xFactory.newTransformer();
-        xform.setOutputProperty(OutputKeys.INDENT, "yes");
-        xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-        xform.transform(src, res);
+      TransformerFactory xFactory = TransformerFactory.newInstance();
+      Transformer xform = xFactory.newTransformer();
+      xform.setOutputProperty(OutputKeys.INDENT, "yes");
+      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+      xform.transform(src, res);
         
-      } catch (TransformerException ex) {
-        ex.printStackTrace(System.err);
-        System.exit(1);
-      }
-
-    } catch (IOException ex) {
-      err.println("** While saving XML file: " + ex);
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
       System.exit(1);
     }
 
@@ -258,7 +256,9 @@ public class Survey {
     }
     
     // Attach the XML file
-    DataSource ds = new FileDataSource(xmlFile);
+    // @todo whitlock Use a custom data source so that this
+    // (potentially sensitive) information is not written to disk
+    DataSource ds = new ByteArrayDataSource(bytes);
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
     try {
@@ -288,6 +288,61 @@ public class Survey {
 		  ex);
       System.exit(1);
     }
+  }
+
+  //////////////////////  Inner Classes  //////////////////////
+
+  /**
+   * A <code>DataSource</code> that is built around a byte array
+   * containing XML data.
+   *
+   * @since Winter 2004
+   */
+  static class ByteArrayDataSource implements DataSource {
+
+    /** The byte array containing the XML data */
+    private byte[] bytes;
+
+    //////////////////////  Constructors  //////////////////////
+
+    /**
+     * Creates a new <code>ByteArrayDataSource</code> for a given
+     * <code>byte</code> array.
+     */
+    public ByteArrayDataSource(byte[] bytes) {
+      this.bytes = bytes;
+    }
+
+    ////////////////////  Instance Methods  ////////////////////
+
+    public InputStream getInputStream() throws IOException {
+      return new ByteArrayInputStream(this.bytes);
+    }
+
+    /**
+     * We do not support writing to a
+     * <code>ByteArrayDataSource</code>.
+     *
+     * @throw UnsupportedOperationException
+     *        If this method is invoked
+     */
+    public OutputStream getOutputStream() throws IOException {
+      String s = "We do not support writing to a ByteArrayDataSource";
+      throw new UnsupportedOperationException(s);
+    }
+
+    /**
+     * The content type for a <code>ByteArrayDataSource</code> is
+     * <code>text/xml</code>.
+     */
+    public String getContentType() {
+      return "text/xml";
+    }
+
+    public java.lang.String getName() {
+      return "XML Data";
+    }
+
   }
 
 }
