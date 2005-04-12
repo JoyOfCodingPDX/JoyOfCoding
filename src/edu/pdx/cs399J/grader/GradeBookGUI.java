@@ -15,7 +15,7 @@ import javax.swing.event.*;
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
@@ -78,7 +78,7 @@ public class GradeBookGUI extends JFrame {
       if (recent != null) {
         File file = new File(recent);
         if (file.exists()) {
-          this.recentFiles.add(recent);
+          this.recentFiles.add(0, recent);
         }
       }
     }
