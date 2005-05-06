@@ -11,7 +11,8 @@ import junit.framework.*;
 public class LRUMapTest extends TestCase {
 
   /** The name of the LRU Map Class */
-  private static String LRU_MAP_CLASS_NAME;
+  private static String LRU_MAP_CLASS_NAME =
+    System.getProperty("LRU_MAP_CLASS_NAME");
 
   ///////////////////////  Constructors  ///////////////////////
 
