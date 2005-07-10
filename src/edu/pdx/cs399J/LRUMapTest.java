@@ -132,6 +132,45 @@ public class LRUMapTest extends TestCase {
     assertEquals(maxMappings, map.size());
   }
 
+  /** 
+   * Makes sure that entrySet() Iterator iterates
+   * 
+   * @see AbstractMap#contains(key)
+   */
+  public void testLRUMappingIterates() {
+    int maxMappings = 4; 
+    AbstractLRUMap map = 
+      AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings); 
+    assertEquals(0, map.size()); 
+ 
+    for (int i = 0; i < maxMappings; i++) { 
+      map.put(new Integer(i), String.valueOf(i)); 
+      assertEquals(i+1, map.size()); 
+    } 
+ 
+    try { 
+      // get the iterator for this map's mappings 
+      Iterator iter = map.entrySet().iterator(); 
+      
+      // iterate through the mappings 
+      for (int i = 0; i < maxMappings; i++) { 
+        iter.next(); 
+      } 
+ 
+      // there should be no more mappings so this should              
+      // throw a NoSuchElementException error                         
+      iter.next();                                                    
+      System.out.println("Bad iterator returned by entrySet()."       
+                         + "\nFix before continuing unit tests."); 
+      System.exit(1); 
+      
+    } catch (IndexOutOfBoundsException ex) { 
+      // pass 
+    } catch (NoSuchElementException ex) { 
+      // pass 
+    } 
+  } 
+
   /**
    * Makes sure that the LRU mapping is removed
    *

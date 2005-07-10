@@ -17,11 +17,12 @@
     <echo message="Targets are:"/>
     <echo message="  compile-src Compiles java source code"/>
     <echo message="  docs        Builds the Javadocs for all this code"/>
+    <echo message="  lru-tests   Runs the JUnit test for the LRU map"/>
     <echo message="  clean       Removes all byproducts of building"/>
   </target>
 
   <!-- Sets up properties used during building -->
-  <target name="props">
+  <target name="-props">
     <property environment="myenv"/>
 
     <!-- Uncomment and set to your login id
@@ -32,6 +33,7 @@
     <property name="daves.jars.dir" value="/u/whitlock/jars"/>
     <property name="api.docs.dir" value="${basedir}/docs"/>
     <property name="classes.dir" value="${basedir}/classes"/>
+    <property name="tests.results.dir" value="${basedir}/test_results"/>
 
     <property name="cs399J.jar" value="cs399J.jar"/>
 
@@ -45,13 +47,15 @@
   </target>
 
   <!-- Removes byproducts of building -->
-  <target name="clean" depends="props">
+  <target name="clean" depends="-props"
+          description="Cleans all build artifacts">
     <delete dir="${classes.dir}"/>
     <delete dir="${api.docs.dir}"/>
+    <delete dir="${tests.results.dir}"/>
   </target>
 
-  <target name="compile-src" depends="props">
-    <description>Compiles Java source code</description> 
+  <target name="compile-src" depends="-props" 
+          description="Compiles Java source code"> 
 
     <mkdir dir="${classes.dir}"/>
 
@@ -59,7 +63,7 @@
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
            includeAntRuntime="false"
-           debug="on" source="1.4">
+           debug="on" source="1.5">
       <include name="edu/pdx/cs399J/${user.id}/**"/>
       <classpath>
         <pathelement location="${daves.jars.dir}/cs399J.jar"/>
@@ -68,8 +72,8 @@
 
   </target>
 
-  <target name="docs" depends="props, compile-src">
-    <description>Builds the Javadocs for all my code</description>
+  <target name="docs" depends="-props, compile-src"
+          description="Builds the Javadocs for all the code">
 
     <mkdir dir="${api.docs.dir}"/>
 
@@ -86,9 +90,28 @@
         <pathelement location="${classes.dir}"/>
         <pathelement location="${daves.jars.dir}/cs399J.jar"/>
       </classpath>
-      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+      <link href="http://java.sun.com/j2se/1.5/docs/api"/>
       <link href="http://www.junit.org/junit/javadoc/3.7"/>
     </javadoc>
+  </target>
+
+  <target name="lru-tests" depends="-props, compile-src"
+          description="Runs the JUnit tests for the LRU map">
+    <mkdir dir="${tests.results.dir}"/>
+    
+    <junit haltOnFailure="false" dir="${tests.results.dir}"
+           maxmemory="256M" showoutput="true">
+      <classpath>
+        <pathelement location="${daves.jars.dir}/cs399J.jar"/>
+        <pathelement location="${classes.dir}"/>
+      </classpath>
+      <sysproperty key="LRU_MAP_CLASS_NAME" 
+                   value="edu.pdx.cs399J.${user.id}.LRUMap"/>
+      <formatter type="plain" usefile="true"/>
+
+      <test fork="yes" todir="${tests.results.dir}"
+            name="edu.pdx.cs399J.LRUMapTest"/>
+    </junit>
   </target>
 
 </project>
