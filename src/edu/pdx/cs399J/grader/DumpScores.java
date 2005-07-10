@@ -110,7 +110,8 @@ public class DumpScores {
       }
     }
 
-    out.println("\nGrades for " + assign);
+    out.println("\nGrades for " + assign + ": " +
+                assign.getDescription());
 
     Iterator iter = scores.iterator();
     while (iter.hasNext()) {

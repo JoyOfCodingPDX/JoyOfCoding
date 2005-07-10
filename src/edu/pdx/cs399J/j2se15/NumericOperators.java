@@ -4,13 +4,12 @@ package edu.pdx.cs399J.j2se15;
  * Demonstrates adding behavior to enumerated types.
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @since Summer 2004
  */
 public class NumericOperators {
 
   private enum Operation {
-
     PLUS {
       double eval(double x, double y) {
         return x + y;
