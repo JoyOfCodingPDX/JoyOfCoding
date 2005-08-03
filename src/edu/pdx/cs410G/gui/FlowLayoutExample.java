@@ -1,7 +1,8 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.FlowLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates the {@link FlowLayout} layout manager
@@ -9,14 +10,14 @@ import java.awt.event.*;
 public class FlowLayoutExample  {
 
   public static void main(String[] args) {
-    Frame f = new Frame("FlowLayout Example");
+    JFrame f = new JFrame("FlowLayout Example");
     f.setLayout(new FlowLayout());
-    f.add(new Label("One"));
-    f.add(new Label("Two"));
-    f.add(new Label("Three"));
-    f.add(new Label("Four"));
-    f.add(new Label("Five"));
-    f.add(new Label("Six"));
+    f.add(new JLabel("One"));
+    f.add(new JLabel("Two"));
+    f.add(new JLabel("Three"));
+    f.add(new JLabel("Four"));
+    f.add(new JLabel("Five"));
+    f.add(new JLabel("Six"));
 
     f.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {

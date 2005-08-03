@@ -1,21 +1,21 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This class demonstrates handling mouse and key events
  */
-public class MouseAndKeyEvents extends Panel {
+public class MouseAndKeyEvents extends JPanel {
 
   /**
-   * Create a {@link java.awt.Button button} so that there is
-   * something in the panel
+   * Create a {@link JButton button} so that there is something in the
+   * panel
    */
   public MouseAndKeyEvents() {
-    final TextField x = new TextField(3);
-    final TextField y = new TextField(3);
-    final TextField c = new TextField(1);
+    final JTextField x = new JTextField(3);
+    final JTextField y = new JTextField(3);
+    final JTextField c = new JTextField(1);
 
     this.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
@@ -24,7 +24,7 @@ public class MouseAndKeyEvents extends Panel {
         }
       });
 
-    Button button = new Button("Type Here");
+    JButton button = new JButton("Type Here");
     button.addKeyListener(new KeyAdapter() {
         public void keyTyped(KeyEvent e) {
           c.setText(e.getKeyChar() + "");
@@ -42,7 +42,7 @@ public class MouseAndKeyEvents extends Panel {
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("Mouse and key events");
+    JFrame frame = new JFrame("Mouse and key events");
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
           // The frame is being closed, exit the JVM

@@ -1,7 +1,9 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates the interaction between a {@link
@@ -10,21 +12,21 @@ import java.awt.event.*;
 public class FlowLayoutInSouth  {
 
   public static void main(String[] args) {
-    Panel p = new Panel();
-    p.add(new Label("One"));
-    p.add(new Label("Two"));
-    p.add(new Label("Three"));
-    p.add(new Label("Four"));
-    p.add(new Label("Five"));
-    p.add(new Label("Six"));
+    JPanel p = new JPanel();
+    p.add(new JLabel("One"));
+    p.add(new JLabel("Two"));
+    p.add(new JLabel("Three"));
+    p.add(new JLabel("Four"));
+    p.add(new JLabel("Five"));
+    p.add(new JLabel("Six"));
 
-    Frame f = new Frame("FlowLayout in the SOUTH");
+    JFrame f = new JFrame("FlowLayout in the SOUTH");
     f.setLayout(new BorderLayout());
-    f.add(new Label("North"), BorderLayout.NORTH);
+    f.add(new JLabel("North"), BorderLayout.NORTH);
     f.add(p, BorderLayout.SOUTH);
-    f.add(new Button("East"), BorderLayout.EAST);
-    f.add(new Button("West"), BorderLayout.WEST);
-    f.add(new Label("Center"), BorderLayout.CENTER);
+    f.add(new JButton("East"), BorderLayout.EAST);
+    f.add(new JButton("West"), BorderLayout.WEST);
+    f.add(new JLabel("Center"), BorderLayout.CENTER);
 
     f.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {

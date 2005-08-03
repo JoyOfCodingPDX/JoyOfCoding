@@ -1,7 +1,10 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
  * This program demonstrates {@link CardLayout} and provides biting
@@ -15,34 +18,33 @@ public class DavesSocialLife {
 
   public static void main(String[] args) {
 
-    final Panel calendar = new Panel();
+    final JPanel calendar = new JPanel();
     final CardLayout layout = new CardLayout();
     calendar.setLayout(layout);
-    final List list = new List(daysOfTheWeek.length, false);
+    final JList list = new JList(daysOfTheWeek);
     
     for (int i = 0; i < daysOfTheWeek.length; i++) {
       String day = daysOfTheWeek[i];
-      list.add(day);
 
-      Panel p = new Panel();
+      JPanel p = new JPanel();
       p.setLayout(new BorderLayout());
-      p.add(new Label(day, Label.CENTER), BorderLayout.NORTH);
+      p.add(new JLabel(day, JLabel.CENTER), BorderLayout.NORTH);
       calendar.add(p, day);
     }
 
-    list.addItemListener(new ItemListener() {
-        public void itemStateChanged(ItemEvent e) {
-          String day = list.getSelectedItem();
+    list.addListSelectionListener(new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+          String day = (String) list.getSelectedValue();
           layout.show(calendar, day);
         }
       });
 
-    Panel p = new Panel();
+    JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
     p.add(list, BorderLayout.WEST);
     p.add(calendar, BorderLayout.CENTER);
 
-    Frame f = new Frame("Daves Social Calendar");
+    JFrame f = new JFrame("Daves Social Calendar");
     f.setLayout(new BorderLayout());
     f.add(p, BorderLayout.CENTER);
 

@@ -1,30 +1,30 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates an AWT text area widget
+ * This class demonstrates a text area widget
  */
-public class TextAreaExample extends Panel {
+public class TextAreaExample extends JPanel {
 
   /**
-   * Create a {@link java.awt.TextArea text area} and add it to this
+   * Create a {@link JTextArea text area} and add it to this
    * panel 
    */
   public TextAreaExample() {
-    TextArea area = 
-      new TextArea("Initial Text", 5, 10, TextArea.SCROLLBARS_BOTH);
+    JTextArea area = 
+      new JTextArea("Initial Text", 5, 10);
     area.append("Appended text");
     area.replaceRange("Words", 8, 12);
     this.add(area);
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a TextAreaExample
+   * Create a new {@link JFrame} and add a TextAreaExample
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("TextArea example");
+    JFrame frame = new JFrame("JTextArea example");
     frame.add(new TextAreaExample());
     frame.pack();
     frame.setVisible(true);

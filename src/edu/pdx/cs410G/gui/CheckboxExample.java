@@ -1,21 +1,21 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates an AWT checkbox
+ * This class demonstrates Swing's {@link JCheckBox}
  */
-public class CheckboxExample extends Panel {
+public class CheckboxExample extends JPanel {
 
   /**
-   * Create some {@link java.awt.Checkbox checkboxes} and add them to
+   * Create some {@link JCheckBox checkboxes} and add them to
    * this panel
    */
   public CheckboxExample() {
-    Checkbox cb1 = new Checkbox("No");
-    Checkbox cb2 = new Checkbox("Yes", true);
-    Checkbox cb3 = new Checkbox("Maybe");
-    cb3.setState(true);
+    JCheckBox cb1 = new JCheckBox("No");
+    JCheckBox cb2 = new JCheckBox("Yes", true);
+    JCheckBox cb3 = new JCheckBox("Maybe");
+    cb3.setSelected(true);
     this.add(cb1);
     this.add(cb2);
     this.add(cb3);
@@ -25,7 +25,7 @@ public class CheckboxExample extends Panel {
    * Create a new Frame and add a CheckboxExample to it
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("Checkbox example");
+    JFrame frame = new JFrame("Checkbox example");
     frame.add(new CheckboxExample());
     frame.pack();
     frame.setVisible(true);

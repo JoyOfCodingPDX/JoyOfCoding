@@ -1,22 +1,21 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates handling an AWT action event using an
+ * This class demonstrates handling an action event using an
  * anonymous inner class
  */
-public class ActionEventExample2 extends Panel {
+public class ActionEventExample2 extends JPanel {
 
   /**
-   * Create a {@link java.awt.Button button}, register this as its
-   * {@link java.awt.event.ActionListener ActionListener} and add it
-   * to this panel
+   * Create a {@link JButton button}, register this as its {@link
+   * ActionListener} and add it to this panel
    */
   public ActionEventExample2() {
-    final Label label = new Label("Not clicked");
-    Button button = new Button("Click me");
+    final JLabel label = new JLabel("Not clicked");
+    JButton button = new JButton("Click me");
     button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           label.setText("Clicked");
@@ -32,7 +31,7 @@ public class ActionEventExample2 extends Panel {
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("ActionEvent example with inner class");
+    JFrame frame = new JFrame("ActionEvent example with inner class");
     frame.add(new ActionEventExample2());
     frame.pack();
     frame.setVisible(true);

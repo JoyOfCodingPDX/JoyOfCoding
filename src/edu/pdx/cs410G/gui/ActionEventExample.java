@@ -1,26 +1,26 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates handling an AWT action event
+ * This class demonstrates handling an action event
  */
-public class ActionEventExample extends Panel 
+public class ActionEventExample extends JPanel 
   implements ActionListener {
 
-  private Button button;
-  private Label label;
+  private JButton button;
+  private JLabel label;
 
   /**
-   * Create a {@link java.awt.Button button}, register this as its
+   * Create a {@link java.awt.JButton button}, register this as its
    * {@link java.awt.event.ActionListener ActionListener} and add it
    * to this panel
    */
   public ActionEventExample() {
-    this.button = new Button("Click me");
+    this.button = new JButton("Click me");
     this.button.addActionListener(this);
-    this.label = new Label("Not clicked");
+    this.label = new JLabel("Not clicked");
     this.add(this.button);
     this.add(this.label);
   }
@@ -35,11 +35,11 @@ public class ActionEventExample extends Panel
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a ActionEventExample
-   * to it 
+   * Create a new {@link java.awt.JFrame JFrame} and add a
+   * ActionEventExample to it
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("ActionEvent example");
+    JFrame frame = new JFrame("ActionEvent example");
     frame.add(new ActionEventExample());
     frame.pack();
     frame.setVisible(true);

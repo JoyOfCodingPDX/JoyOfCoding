@@ -1,56 +1,55 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates using AWT checkbox menus
+ * This class demonstrates using Swing radio button menus
  */
-public class MenuShortcutExample extends Frame {
+public class JRadioButtonMenuItemExample extends JFrame {
 
   /**
-   * Create a label whose color is selected using a {@link
-   * java.awt.Menu Menu}
+   * Create a label whose color is selected using a {@link JMenu}
    */
-  public MenuShortcutExample(String title) {
+  public JRadioButtonMenuItemExample(String title) {
     super(title);
 
-    final Label label = new Label("Your text here");
+    final JLabel label = new JLabel("Your text here");
+    label.setOpaque(true);
     
-    Menu menu = new Menu("Colors");
+    JMenu menu = new JMenu("Colors");
 
-    MenuItem item = new MenuItem("Blue");
+    JMenuItem item = new JMenuItem("Blue");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           label.setBackground(Color.blue);
         }
       });
-    item.setShortcut(new MenuShortcut(KeyEvent.VK_B));
 
-    item = new MenuItem("Red");
+    item = new JMenuItem("Red");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           label.setBackground(Color.red);
         }
       });
-    item.setShortcut(new MenuShortcut(KeyEvent.VK_R));
 
-    item = new MenuItem("Yellow");
+    item = new JMenuItem("Yellow");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           label.setBackground(Color.yellow);
         }
       });
-    item.setShortcut(new MenuShortcut(KeyEvent.VK_Y));
 
-    Menu styleMenu = new Menu("Style");
+    JMenu styleMenu = new JMenu("Style");
     
-    CheckboxMenuItem cbitem = new CheckboxMenuItem("Bold", false);
-    styleMenu.add(cbitem);
-    cbitem.addItemListener(new ItemListener() {
+    JRadioButtonMenuItem rbitem = new JRadioButtonMenuItem("Bold", false);
+    styleMenu.add(rbitem);
+    rbitem.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
           int style = label.getFont().getStyle();
           if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -62,11 +61,10 @@ public class MenuShortcutExample extends Frame {
           label.setFont(label.getFont().deriveFont(style));
         }
       });
-    cbitem.setShortcut(new MenuShortcut(KeyEvent.VK_B, true));
 
-    cbitem = new CheckboxMenuItem("Italic", false);
-    styleMenu.add(cbitem);
-    cbitem.addItemListener(new ItemListener() {
+    rbitem = new JRadioButtonMenuItem("Italic", false);
+    styleMenu.add(rbitem);
+    rbitem.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
           int style = label.getFont().getStyle();
           if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -78,24 +76,22 @@ public class MenuShortcutExample extends Frame {
           label.setFont(label.getFont().deriveFont(style));
         }
       });
-    cbitem.setShortcut(new MenuShortcut(KeyEvent.VK_I, true));
 
-    MenuBar menuBar = new MenuBar();
+    JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
     menuBar.add(styleMenu);
-    this.setMenuBar(menuBar);
+    this.setJMenuBar(menuBar);
 
-    Panel panel = new Panel();
+    JPanel panel = new JPanel();
     panel.add(label);
     this.add(panel);
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a MenuExample
-   * to it 
+   * Create a new {@link JFrame} and add a MenuExample to it
    */
   public static void main(String[] args) {
-    Frame frame = new MenuShortcutExample("MenuShortcut Example");
+    JFrame frame = new JRadioButtonMenuItemExample("JRadioButtonMenuItem Example");
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
           // The frame is being closed, exit the JVM

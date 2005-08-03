@@ -1,7 +1,9 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates the effects of adjusting the
@@ -17,7 +19,7 @@ public class AdjustGridLayoutGaps  {
       gap = Integer.parseInt(args[0]);
     }
 
-    final Panel grid = new Panel();
+    final JPanel grid = new JPanel();
     int rows = 4;
     int columns = 3;
     GridLayout layout;
@@ -32,11 +34,11 @@ public class AdjustGridLayoutGaps  {
 
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
-        grid.add(new Button("(" + i + ", " + j + ")"));
+        grid.add(new JButton("(" + i + ", " + j + ")"));
       }
     }
 
-    Frame f = new Frame("Adjusting GridLayout Gaps");
+    JFrame f = new JFrame("Adjusting GridLayout Gaps");
     f.setLayout(new BorderLayout());
     f.add(grid, BorderLayout.CENTER);
 

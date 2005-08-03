@@ -1,28 +1,27 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates an AWT text field widget
+ * This class demonstrates a text field widget
  */
-public class TextFieldExample extends Panel {
+public class TextFieldExample extends JPanel {
 
   /**
-   * Create a {@link java.awt.TextField text field} and add it to this
-   * panel 
+   * Create a {@link JTextField text field} and add it to this panel
    */
   public TextFieldExample() {
-    TextField field = new TextField(20);  // 20 columns
+    JTextField field = new JTextField(20);  // 20 columns
     field.setText("Initial contents");
     this.add(field);
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a TextFieldExample
+   * Create a new {@link JFrame JFrame} and add a TextFieldExample
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("TextField example");
+    JFrame frame = new JFrame("JTextField example");
     frame.add(new TextFieldExample());
     frame.pack();
     frame.setVisible(true);

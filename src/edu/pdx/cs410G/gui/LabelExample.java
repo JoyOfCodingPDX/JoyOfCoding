@@ -1,22 +1,24 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates an AWT choice widget
+ * This class demonstrates a Swing {@link Label} widget
  */
-public class LabelExample extends Panel {
+public class LabelExample extends JPanel {
 
   /**
-   * Create some {@link java.awt.Label labels} and adds them to this
-   * panel 
+   * Create some {@link JLabel labels} and adds them to this panel
    */
   public LabelExample() {
-    Label l1 = new Label("A label");
-    Label l2 = new Label("Left justified", Label.LEFT);
-    Label l3 = new Label("Right", Label.RIGHT);
-    Label l4 = new Label("Centered");
-    l4.setAlignment(Label.CENTER);
+    JLabel l1 = new JLabel("A label");
+    JLabel l2 = new JLabel("Left justified", JLabel.LEFT);
+    JLabel l3 = new JLabel("Right", JLabel.RIGHT);
+    JLabel l4 = new JLabel("Centered");
+    l4.setAlignmentX(JLabel.CENTER);
+
+    this.setLayout(new java.awt.GridLayout(0, 1));
+
     this.add(l1);
     this.add(l2);
     this.add(l3);
@@ -24,11 +26,11 @@ public class LabelExample extends Panel {
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a LabelExample
+   * Create a new {@link JFrame JFrame} and add a LabelExample
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new Frame("Label example");
+    JFrame frame = new JFrame("JLabel example");
     frame.add(new LabelExample());
     frame.pack();
     frame.setVisible(true);

@@ -1,7 +1,9 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates {@link GridLayout}.
@@ -9,18 +11,18 @@ import java.awt.event.*;
 public class GridLayoutExample  {
 
   public static void main(String[] args) {
-    Panel p = new Panel();
+    JPanel p = new JPanel();
     int rows = 4;
     int columns = 3;
     p.setLayout(new GridLayout(rows, columns));
 
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
-        p.add(new Label("(" + i + ", " + j + ")"));
+        p.add(new JLabel("(" + i + ", " + j + ")"));
       }
     }
 
-    Frame f = new Frame("GridLayout Example");
+    JFrame f = new JFrame("GridLayout Example");
     f.setLayout(new BorderLayout());
     f.add(p, BorderLayout.CENTER);
 

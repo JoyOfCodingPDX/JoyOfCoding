@@ -1,8 +1,9 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.*;
 
 /**
  * This program is a simple GUI for evaluating arithmetic expressions
@@ -63,11 +64,11 @@ public class PostfixCalculator {
       return;
     }
 
-    Panel p = new Panel();
+    JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
-    final Button b = new Button("Calculate");
+    final JButton b = new JButton("Calculate");
     p.add(b, BorderLayout.WEST);
-    final TextField expr = new TextField(15);
+    final JTextField expr = new JTextField(15);
     p.add(expr, BorderLayout.CENTER);
 
     final PostfixCalculator calc = new PostfixCalculator();
@@ -79,7 +80,7 @@ public class PostfixCalculator {
         }
       });
 
-    Frame f = new Frame("Postfix Calculator");
+    JFrame f = new JFrame("Postfix Calculator");
     f.setLayout(new BorderLayout());
     f.add(p, BorderLayout.CENTER);
 

@@ -1,12 +1,12 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates using AWT dialog boxes
+ * This class demonstrates using Swing dialog boxes
  */
-public class DialogExample extends Frame {
+public class DialogExample extends JFrame {
 
   /**
    * Create a button that pops up a modal {@link
@@ -15,24 +15,24 @@ public class DialogExample extends Frame {
   public DialogExample(String title) {
     super(title);
 
-    Button button = new Button("Show dialog");
+    JButton button = new JButton("Show dialog");
     button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           (new DialogBox(DialogExample.this)).show();
         }
       });
 
-    Panel panel = new Panel();
+    JPanel panel = new JPanel();
     panel.add(button);
     this.add(panel);
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a MouseAndKeyEvents
+   * Create a new {@link JFrame} and add a DialogExample
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new DialogExample("Dialog Example");
+    JFrame frame = new DialogExample("Dialog Example");
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
           // The frame is being closed, exit the JVM
@@ -48,12 +48,12 @@ public class DialogExample extends Frame {
 /**
  * An example modal dialog box
  */
-class DialogBox extends Dialog {
+class DialogBox extends JDialog {
 
-  DialogBox(Frame owner) {
+  DialogBox(JFrame owner) {
     super(owner, "Example dialog box", true /*modal*/);
 
-    Button button = new Button("Go away");
+    JButton button = new JButton("Go away");
     button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           DialogBox.this.dispose();

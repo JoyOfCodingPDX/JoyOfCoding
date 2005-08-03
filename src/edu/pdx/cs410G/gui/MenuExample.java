@@ -1,25 +1,26 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * This class demonstrates using AWT menus
+ * This class demonstrates Swing menus
  */
-public class MenuExample extends Frame {
+public class MenuExample extends JFrame {
 
   /**
-   * Create a label whose color is selected using a {@link
-   * java.awt.Menu Menu}
+   * Create a label whose color is selected using a {@link JMenu}
    */
   public MenuExample(String title) {
     super(title);
 
-    final Label label = new Label("Your text here");
+    final JLabel label = new JLabel("Your text here");
+    label.setOpaque(true);      // Swing needs opaque
     
-    Menu menu = new Menu("Colors");
+    JMenu menu = new JMenu("Colors");
 
-    MenuItem item = new MenuItem("Blue");
+    JMenuItem item = new JMenuItem("Blue");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -27,7 +28,7 @@ public class MenuExample extends Frame {
         }
       });
 
-    item = new MenuItem("Red");
+    item = new JMenuItem("Red");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -35,7 +36,7 @@ public class MenuExample extends Frame {
         }
       });
 
-    item = new MenuItem("Yellow");
+    item = new JMenuItem("Yellow");
     menu.add(item);
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -43,21 +44,21 @@ public class MenuExample extends Frame {
         }
       });
 
-    MenuBar menuBar = new MenuBar();
+    JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
-    this.setMenuBar(menuBar);
+    this.setJMenuBar(menuBar);
 
-    Panel panel = new Panel();
+    JPanel panel = new JPanel();
     panel.add(label);
     this.add(panel);
   }
 
   /**
-   * Create a new {@link java.awt.Frame Frame} and add a MenuExample
+   * Create a new {@link JFrame} and add a MenuExample
    * to it 
    */
   public static void main(String[] args) {
-    Frame frame = new MenuExample("Menu Example");
+    JFrame frame = new MenuExample("Menu Example");
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
           // The frame is being closed, exit the JVM

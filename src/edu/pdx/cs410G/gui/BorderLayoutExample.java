@@ -1,7 +1,8 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates the {@link BorderLayout} layout manager.
@@ -9,13 +10,13 @@ import java.awt.event.*;
 public class BorderLayoutExample  {
 
   public static void main(String[] args) {
-    Frame f = new Frame("BorderLayout Example");
+    JFrame f = new JFrame("BorderLayout Example");
     f.setLayout(new BorderLayout());
-    f.add(new Label("North"), BorderLayout.NORTH);
-    f.add(new Label("South"), BorderLayout.SOUTH);
-    f.add(new Button("East"), BorderLayout.EAST);
-    f.add(new Button("West"), BorderLayout.WEST);
-    f.add(new Label("Center"), BorderLayout.CENTER);
+    f.add(new JLabel("North"), BorderLayout.NORTH);
+    f.add(new JLabel("South"), BorderLayout.SOUTH);
+    f.add(new JButton("East"), BorderLayout.EAST);
+    f.add(new JButton("West"), BorderLayout.WEST);
+    f.add(new JLabel("Center"), BorderLayout.CENTER);
 
     f.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {

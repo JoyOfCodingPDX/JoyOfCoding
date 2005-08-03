@@ -1,7 +1,8 @@
 package edu.pdx.cs399J.gui;
 
-import java.awt.*;
+import java.awt.FlowLayout;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This program demonstrates what happens when you have one {@link
@@ -10,16 +11,16 @@ import java.awt.event.*;
 public class NestedFlowLayouts  {
 
   public static void main(String[] args) {
-    Frame f = new Frame("Nested FlowLayouts");
+    JFrame f = new JFrame("Nested FlowLayouts");
     f.setLayout(new FlowLayout());
 
-    Panel p = new Panel();
-    p.add(new Label("One"));
-    p.add(new Label("Two"));
-    p.add(new Label("Three"));
-    p.add(new Label("Four"));
-    p.add(new Label("Five"));
-    p.add(new Label("Six"));
+    JPanel p = new JPanel();
+    p.add(new JLabel("One"));
+    p.add(new JLabel("Two"));
+    p.add(new JLabel("Three"));
+    p.add(new JLabel("Four"));
+    p.add(new JLabel("Five"));
+    p.add(new JLabel("Six"));
 
     f.add(p);
 
