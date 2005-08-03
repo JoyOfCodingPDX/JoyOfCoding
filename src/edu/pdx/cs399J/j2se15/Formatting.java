@@ -2,7 +2,6 @@ package edu.pdx.cs399J.j2se15;
 
 import java.io.PrintStream;
 import java.util.Calendar;
-import java.util.Random;
 
 /**
  * Demonstrated J2SE 1.5's facilities for <code>printf</code>-style
@@ -11,7 +10,7 @@ import java.util.Random;
  * @see java.util.Formatter
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @since Summer 2004
  */
 public class Formatting {
