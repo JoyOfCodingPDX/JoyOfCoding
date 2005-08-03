@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.gui;
+package edu.pdx.cs410G.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -10,7 +10,7 @@ public class DialogExample extends JFrame {
 
   /**
    * Create a button that pops up a modal {@link
-   * edu.pdx.cs399J.gui.DialogBox DialogBox}
+   * edu.pdx.cs410G.gui.DialogBox DialogBox}
    */
   public DialogExample(String title) {
     super(title);

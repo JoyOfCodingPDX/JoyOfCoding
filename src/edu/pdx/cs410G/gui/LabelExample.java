@@ -1,9 +1,9 @@
-package edu.pdx.cs399J.gui;
+package edu.pdx.cs410G.gui;
 
 import javax.swing.*;
 
 /**
- * This class demonstrates a Swing {@link Label} widget
+ * This class demonstrates a Swing {@link JLabel} widget
  */
 public class LabelExample extends JPanel {
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.gui;
+package edu.pdx.cs410G.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -6,8 +6,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * This program uses the {@link Toolkit} to display a {@link Frame} in
- * the center of the screen.
+ * This program uses the {@link Toolkit} to display a {@link JFrame}
+ * in the center of the screen.
  */
 public class CenteredFrame extends JPanel {
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.gui;
+package edu.pdx.cs410G.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
