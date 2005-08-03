@@ -34,7 +34,7 @@ public class Resident extends PhoneBookEntry {
 
       Element element = (Element) node;
 
-      if (element.getNodeName().equals("firstname")) {
+      if (element.getNodeName().equals("first-name")) {
 	Node name = element.getFirstChild();
 	Node text = name.getFirstChild();
 	this.firstName = text.getNodeValue();
@@ -43,7 +43,7 @@ public class Resident extends PhoneBookEntry {
 	Node text = element.getFirstChild();
 	this.middleInitial = text.getNodeValue();
 
-      } else if (element.getNodeName().equals("lastname")) {
+      } else if (element.getNodeName().equals("last-name")) {
 	Node name = element.getFirstChild();
 	Node text = name.getFirstChild();
 	this.lastName = text.getNodeValue();

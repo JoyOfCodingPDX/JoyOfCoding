@@ -8,7 +8,7 @@
 
 <!-- A resident has a first and last name, an optional middle initial,
      an address, and a phone number. -->
-<!ELEMENT resident (firstname, initial?, lastname, address,
+<!ELEMENT resident (first-name, initial?, last-name, address,
                     phone)>
 <!ATTLIST resident
             unlisted (true | false) #IMPLIED
@@ -19,8 +19,8 @@
 
 <!-- A name is just text -->
 <!ELEMENT name (#PCDATA)>
-<!ELEMENT firstname (name)>
-<!ELEMENT lastname (name)>
+<!ELEMENT first-name (name)>
+<!ELEMENT last-name (name)>
 <!ELEMENT initial (#PCDATA)>
 
 <!-- An adress is has multiple lines of street names, an optional 

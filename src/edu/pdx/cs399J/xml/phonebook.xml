@@ -4,9 +4,9 @@
 
 <phonebook>
   <resident>
-    <firstname><name>David</name></firstname>
+    <first-name><name>David</name></first-name>
     <initial>M</initial>
-    <lastname><name>Whitlock</name></lastname>
+    <last-name><name>Whitlock</name></last-name>
     <address>
       <street>PSU CS Department</street>
       <street>P.O. Box 751</street>
