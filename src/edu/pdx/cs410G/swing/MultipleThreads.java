@@ -69,6 +69,13 @@ public class MultipleThreads extends JPanel {
 
   //////////////////////  Inner Classes  ///////////////////////
 
+  /** The random number generator used by all threads.  We don't
+   * want each thread to have its own Random, because then they
+   * would have the same seed and the demo wouldn't be very
+   * effective.  
+   */
+  private static Random random = new Random();
+
   /**
    * This thread counts to {@link #TOTAL} in random increments.
    * Between each increment it rests.
@@ -78,12 +85,12 @@ public class MultipleThreads extends JPanel {
     /** The id of this counter */
     private int id;
 
+
     Counter(int id) {
       this.id = id;
     }
 
     public void run() {
-      Random random = new Random();
       int count = 0;
       while (count < TOTAL) {
 	int work = random.nextInt(TOTAL/20);

@@ -135,7 +135,7 @@ public class LRUMapTest extends TestCase {
   /** 
    * Makes sure that entrySet() Iterator iterates
    * 
-   * @see AbstractMap#contains(key)
+   * @see AbstractMap#containsKey(Object)
    */
   public void testLRUMappingIterates() {
     int maxMappings = 4; 

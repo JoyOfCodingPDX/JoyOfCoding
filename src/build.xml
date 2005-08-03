@@ -119,8 +119,12 @@
           base="${classes.dir}"/>
 
     <!-- Copy resources -->
-    <copy file="${src.dir}/edu/pdx/cs399J/reflect/doi.txt"
-          toDir="${classes.dir}/edu/pdx/cs399J/reflect"/>
+    <copy toDir="${classes.dir}">
+      <fileset dir="${src.dir}">
+        <include name="**/doi.txt"/>
+        <include name="**/*.jpg"/>
+      </fileset>
+    </copy>
 
   </target>
 
@@ -461,6 +465,7 @@
         <exclude name="edu/pdx/cs399J/j2se15/**"/>
         <exclude name="edu/pdx/cs410G/jfcunit/**"/>
         <exclude name="edu/pdx/cs410G/javaws/**"/>
+        <exclude name="edu/pdx/cs410G/awt/**"/>
       </packageset>
       <classpath>
         <pathelement location="${classes.dir}"/>
