@@ -37,7 +37,7 @@ public class Submit {
   private static String userName = null;
   private static String userEmail = null;
   private static String userId = null;
-  private static String serverName = "mailhost.pdx.edu";
+  private static String serverName = "mailhost.cs.pdx.edu";
   private static String comment = null;
   private static boolean DEBUG = false;
   private static boolean SAVEJAR = false;
