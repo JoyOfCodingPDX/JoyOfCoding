@@ -516,4 +516,24 @@
     <chmod perm="a+r" dir="${src.dir}" includes="cs399J-src.tgz"/>
   </target>
 
+  <target name="glimpse" depends="-props"
+          description="Builds a glimpse data for the source code">
+    <!-- See http://www.webglimpse.net -->
+
+    <echo file=".glimpse_exclude">
+/CVS/
+/classes/
+/results
+*.class$
+*.glimpse*
+build*.log
+*.~*
+    </echo>
+
+    <exec executable="glimpseindex">
+      <arg line="-H ."/>
+      <arg line="."/>
+    </exec>
+  </target>            
+
 </project>
