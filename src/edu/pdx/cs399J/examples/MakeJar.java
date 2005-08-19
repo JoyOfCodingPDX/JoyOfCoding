@@ -11,10 +11,6 @@ import java.util.zip.*;
  * by creating a jar file whose contents are specified on the command
  * line.
  *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/examples/MakeJar.java">
- * View Source</A></EM></P>
- *
  * @author David Whitlock
  */
 public class MakeJar {

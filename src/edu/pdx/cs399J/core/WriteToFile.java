@@ -5,10 +5,6 @@ import java.io.*;
 /**
  * This program writes the arguments from the command line to a text
  * file.  It demonstrates the <code>FileWriter</code> class.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/WriteToFile.java">
- * View Source</A></EM></P>
  */
 public class WriteToFile {
   private static PrintWriter err;

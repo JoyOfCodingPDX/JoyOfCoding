@@ -8,14 +8,10 @@ import java.io.*;
  * and {@link FilenameFilter} interfaces that find all files whose
  * name ends with <code>.class</code>.
  *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/reflect/FindClassFiles.java"> View
- * Source</A></EM></P>
- *
  * @see edu.pdx.cs399J.core.FindJavaFiles
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
  * @since Spring 2003
  */

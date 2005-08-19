@@ -6,10 +6,6 @@ import java.util.*;
 /**
  * This class is a <code>Comparator</code> that compares
  * <code>Object</code>s based on the name of their classes.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/examples/ClassComparator.java">
- * View Source</A></EM></P>
  */
 public class ClassComparator implements Comparator {
   public int compare(Object o1, Object o2) {

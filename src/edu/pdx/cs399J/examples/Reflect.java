@@ -8,10 +8,6 @@ import java.lang.reflect.*;
  * class and then printing out information about its fields and
  * methods.
  *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/examples/Reflect.java">
- * View Source</A></EM></P>
- *
  * @author David Whitlock
  */
 public class Reflect {

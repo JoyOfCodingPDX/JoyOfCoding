@@ -7,10 +7,6 @@ import java.io.*;
  * and reads <code>double</code>s from it.  It demonstrates the
  * <code>FileInputStream</code> and <code>DataInputStream</code>
  * classes.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/ReadDoubles.java">
- * View Source</A></EM></P>
  */
 public class ReadDoubles {
   static PrintStream out = System.out;

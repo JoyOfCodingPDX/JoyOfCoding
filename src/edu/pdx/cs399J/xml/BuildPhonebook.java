@@ -11,10 +11,6 @@ import org.w3c.dom.*;
 /**
  * This program builds a DOM tree that represents a phone book and
  * writes it to a file.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/xml/BuildPhonebook.java">
- * View Source</A></EM></P>
  */
 public class BuildPhonebook {
   private static PrintStream err = System.err;

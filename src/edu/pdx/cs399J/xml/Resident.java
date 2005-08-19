@@ -8,10 +8,6 @@ import org.w3c.dom.*;
  * A <code>Resident</code> is constructed from an XML DOM tree.  If we
  * were doing this for real, we'd want a way of constructing an empty
  * <code>Resident</code> and filling in its fields.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/xml/Resident.java">
- * View Source</A></EM></P>
  */
 public class Resident extends PhoneBookEntry {
   protected String firstName;

@@ -6,10 +6,6 @@ import java.io.PrintStream;
  * This class demonstrates how concurrent access to a bank account
  * needs to be synchronized in order to guarantee the balance is
  * always correct.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ATM.java">
- * View Source</A></EM></P>
  */
 public class ATM implements Runnable {
   protected static PrintStream out = System.out;

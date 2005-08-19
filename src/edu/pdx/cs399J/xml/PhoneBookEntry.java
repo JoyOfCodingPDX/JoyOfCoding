@@ -7,10 +7,6 @@ import org.w3c.dom.*;
 /**
  * This class represents an entry in a phone book.  It is used to
  * demonstrate how XML DOM trees can be turned into Java objects.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/xml/PhoneBookEntry.java">
- * View Source</A></EM></P>
  */
 public abstract class PhoneBookEntry {
   protected List streetLines = new ArrayList();

@@ -18,10 +18,6 @@ package edu.pdx.cs399J.security;
  * </PRE>
  * </LI>
  * </OL>
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/security/PrintUser.java">
- * View Source</A></EM></P>
  */
 public class PrintUser {
   public static void main(String[] args) {

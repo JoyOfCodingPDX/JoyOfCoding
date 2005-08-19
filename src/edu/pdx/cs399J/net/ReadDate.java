@@ -7,10 +7,6 @@ import java.util.*;
 /**
  * This class demonstrates object serialization by reading an instance
  * of <code>Date</code> from a file.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/ReadDate.java">
- * View Source</A></EM></P>
  */
 public class ReadDate {
 

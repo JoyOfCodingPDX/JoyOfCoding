@@ -3,10 +3,6 @@ package edu.pdx.cs399J.net;
 /**
  * A <code>McCustomer</code> arrives a <code>McDonalds</code> and
  * waits for a BigMac.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/McCustomer.java">
- * View Source</A></EM></P>
  */
 public class McCustomer implements Runnable {
   private String name;

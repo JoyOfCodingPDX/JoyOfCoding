@@ -7,10 +7,6 @@ import java.net.*;
  * This program listens to a socket.  It expects strings from a
  * <code>Speaker</code>.  The conversation terminates with the word
  * "bye".
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/Listener.java">
- * View Source</A></EM></P>
  */
 public class Listener {
   private static PrintStream out = System.out;

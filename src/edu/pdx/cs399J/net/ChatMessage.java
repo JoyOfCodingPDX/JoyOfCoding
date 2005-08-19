@@ -7,10 +7,6 @@ import java.util.*;
 /**
  * This class represents a message that is passed between two
  * <code>ChatSession</code>s.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatMessage.java">
- * View Source</A></EM></P>
  */
 public class ChatMessage implements Serializable {
 

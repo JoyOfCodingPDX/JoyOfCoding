@@ -6,10 +6,6 @@ import java.util.*;
 /**
  * Demonstrates serialization by writing an instance of
  * <code>Date</code> to a file.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/WriteDate.java">
- * View Source</A></EM></P>
  */
 public class WriteDate {
 

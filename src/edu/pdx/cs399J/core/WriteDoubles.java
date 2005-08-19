@@ -7,10 +7,6 @@ import java.io.*;
  * writes them to a file.  It demonstrates the
  * <code>FileOutputStream</code> and <code>DataOutputStream</code>
  * classes.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/WriteDate.java">
- * View Source</A></EM></P>
  */
 public class WriteDoubles {
 

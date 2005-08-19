@@ -5,10 +5,6 @@ import java.util.*;
 /**
  * This class demonstrates the <code>Properties</code> class and shows
  * how to use the JVM's system properties.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/SystemProperties.java">
- * View Source</A></EM></P>
  */
 public class SystemProperties {
 

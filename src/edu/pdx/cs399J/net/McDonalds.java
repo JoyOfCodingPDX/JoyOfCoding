@@ -6,10 +6,6 @@ package edu.pdx.cs399J.net;
  * bunch of liberal arts majors, er, <code>McEmployee</code>s who cook
  * the BigMacs(tm).  Each <code>McCustomer</code> and
  * <code>McEmployee</code> runs in his or her own thread.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/McDonalds.java">
- * View Source</A></EM></P>
  */
 public class McDonalds {
   private static java.io.PrintStream err = System.err;

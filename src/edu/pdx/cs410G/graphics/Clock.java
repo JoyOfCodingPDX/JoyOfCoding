@@ -10,10 +10,6 @@ import java.util.*;
 /**
  * This class uses the AWT to display a clock.
  *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/gui/Clock.java">
- * View Source</A></EM></P>
- *
  * @author David Whitlock
  */
 public class Clock extends Canvas {

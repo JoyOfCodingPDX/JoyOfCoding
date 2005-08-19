@@ -7,10 +7,6 @@ import java.util.*;
 /**
  * This class shows off some of Java's internationalization (i18n)
  * capabilities using the <code>Locale</code> class.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/examples/AroundTheWorld.java">
- * View Source</A></EM></P>
  */
 public class AroundTheWorld {
 

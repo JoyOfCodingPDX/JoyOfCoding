@@ -5,10 +5,6 @@ import java.security.*;
 /**
  * This program computes the MD5 digest of a sentence specified on the
  * command line.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/security/PrintDigest.java">
- * View Source</A></EM></P>
  */
 public class PrintDigest {
 

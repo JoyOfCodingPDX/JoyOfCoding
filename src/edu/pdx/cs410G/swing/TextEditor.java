@@ -8,10 +8,6 @@ import javax.swing.*;
 /**
  * This application shows off a number of Swing's basic features by
  * allowing the user to graphically edit a text file.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/gui/TextEditor.java">
- * View Source</A></EM></P>
  */
 public class TextEditor extends JFrame {
   private File file;    // The File being edited

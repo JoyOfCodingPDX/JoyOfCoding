@@ -7,10 +7,6 @@ import java.net.*;
 /**
  * A <code>ChatSpeaker</code> runs in the background and sends
  * <code>ChatMessage</code>s over a <code>Socket</code>.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatSpeaker.java">
- * View Source</A></EM></P>
  */
 public class ChatSpeaker implements Runnable {
   private static PrintStream err = System.err;

@@ -9,10 +9,6 @@ import javax.swing.*;
  * <code>JButton</code>, a <code>JTextField</code>, and a
  * <code>JLabel</code>.  When the button is clicked, the text from the
  * field is placed into the label.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/gui/SimpleGUI.java">
- * View Source</A></EM></P>
  */
 public class SimpleGUI extends JFrame {
 

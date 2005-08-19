@@ -3,10 +3,6 @@ package edu.pdx.cs399J.lang;
 /**
  * This program demonstrates exception handling by reading two
  * integers from the command line and prints their sum.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/java/AddTwo.java">
- * View Source</A></EM></P>
  */
 public class AddTwo {
 

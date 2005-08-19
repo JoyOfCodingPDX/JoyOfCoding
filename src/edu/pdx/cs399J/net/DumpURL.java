@@ -5,10 +5,6 @@ import java.net.*;
 
 /**
  * This program dumps the contents of a URL to standard out.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/DumpURL.java">
- * View Source</A></EM></P>
  */
 public class DumpURL {
   private static PrintStream err = System.err;

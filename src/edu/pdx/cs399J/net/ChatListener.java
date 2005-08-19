@@ -7,10 +7,6 @@ import java.net.*;
 /**
  * A <code>ChatListener</code> runs in the background and listens for
  * messages on a socket on localhost.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatListener.java">
- * View Source</A></EM></P>
  */
 public class ChatListener implements Runnable {
   private static PrintStream err = System.err;

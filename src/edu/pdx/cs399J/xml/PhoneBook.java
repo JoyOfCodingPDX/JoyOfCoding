@@ -13,10 +13,6 @@ import org.xml.sax.*;
  * If we doing this for real, we'd want to be able to construct an
  * empty <code>PhoneBook</code> and add entries.  But, come on, this
  * is just an example.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/xml/PhoneBook.java">
- * View Source</A></EM></P>
  */
 public class PhoneBook {
   private static PrintStream err = System.err;

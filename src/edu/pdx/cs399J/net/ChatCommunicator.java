@@ -8,10 +8,6 @@ import java.net.*;
  * A <code>ChatCommunicator</code> obtains a <code>Socket</code> and
  * then creates a <code>ChatSpeaker</code> and a
  * <code>ChatListener</code> that run in their own threads.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatCommunicator.java">
- * View Source</A></EM></P>
  */
 public class ChatCommunicator implements Runnable {
   private static PrintStream err = System.err;

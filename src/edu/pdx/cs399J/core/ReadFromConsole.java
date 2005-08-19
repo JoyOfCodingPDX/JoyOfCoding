@@ -8,10 +8,6 @@ import java.io.*;
  * It demonstrates the <code>BufferedReader</code>,
  * <code>InputStreamReader</code>, and <code>StringWriter</code>
  * classes.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/ReadFromConsole.java">
- * View Source</A></EM></P>
  */
 public class ReadFromConsole {
 

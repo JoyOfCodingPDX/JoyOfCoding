@@ -6,10 +6,6 @@ import java.net.*;
 /**
  * A <code>Speaker</code> sends strings over a <code>Socket</code> to
  * a <code>Listener</code>.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/Speaker.java">
- * View Source</A></EM></P>
  */
 public class Speaker {
   private static PrintStream err = System.err;

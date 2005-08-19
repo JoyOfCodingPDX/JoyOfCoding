@@ -6,10 +6,6 @@ import java.util.*;
 
 /**
  * This class allows two people to chat.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/net/ChatSession.java">
- * View Source</A></EM></P>
  */
 public class ChatSession {
   private static PrintStream out = System.out;

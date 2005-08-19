@@ -11,10 +11,6 @@ import javax.mail.internet.*;
  * MIME attachment to an email.  More information about the JavaMail
  * API is available from http://java.sun.com/products/javamail.
  *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/examples/MailFile.java">
- * View Source</A></EM></P>
- *
  * @author David Whitlock
  */
 public class MailFile {

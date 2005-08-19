@@ -18,10 +18,6 @@ import org.w3c.dom.*;
  * This program presents a survey that all students in CS399J should
  * answer.  It emails the results of the survey to the TA and emails a
  * receipt back to the student.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/grader/Survey.java">
- * View Source</A></EM></P>
  */
 public class Survey {
   private static final String systemID = 

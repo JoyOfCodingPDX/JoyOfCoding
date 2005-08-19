@@ -5,10 +5,6 @@ import java.util.*;
 /**
  * Prints out information about today's date.  Demonstrates the
  * <code>Date</code> and <code>Calendar</code> classes.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/Today.java">
- * View Source</A></EM></P>
  */
 public class Today {
 

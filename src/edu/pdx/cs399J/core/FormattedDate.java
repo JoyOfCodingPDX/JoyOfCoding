@@ -7,10 +7,6 @@ import java.util.*;
  * This program reads a date and time from the command in
  * <code>DateFormat.MEDIUM</code> format and prints it back out in all
  * four formats.
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/FormattedDate.java">
- * View Source</A></EM></P>
  */
 public class FormattedDate {
 

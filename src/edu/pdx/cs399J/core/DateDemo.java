@@ -6,10 +6,6 @@ import java.util.*;
 /**
  * This class demonstrates how to use the Java's day and time
  * facilities. 
- *
- * <P align="center"><EM><A href =
- * "{@docRoot}/../src/edu/pdx/cs399J/core/DateDemo.java">
- * View Source</A></EM></P>
  */
 public class DateDemo {
 
