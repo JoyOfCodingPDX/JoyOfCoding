@@ -1,4 +1,4 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
 import java.rmi.*;
 import junit.framework.*;

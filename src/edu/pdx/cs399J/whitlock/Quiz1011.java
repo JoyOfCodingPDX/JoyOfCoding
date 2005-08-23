@@ -5,7 +5,7 @@ import java.util.*;
 
 import edu.pdx.cs399J.ParserException;
 import edu.pdx.cs399J.grader.*;
-import edu.pdx.cs399J.familyTree.*;
+import edu.pdx.cs399J.family.*;
 
 /**
  * This class implements the questions on the quiz given in class on
@@ -139,10 +139,6 @@ public class Quiz1011 {
     } catch (FileNotFoundException ex) {
       err.println("** Could not find file: " + ex);
       System.exit(1);
-
-    } catch (ParserException ex) {
-      err.println("** Couldn't build family tree: " + ex);
-      System.exit(1);
     }
 
     // Before we start using Tester...
@@ -157,7 +153,7 @@ public class Quiz1011 {
     // Grade each student's submission
     Iterator ids = null;
     if (names.isEmpty()) {
-      ids = grades.getUserIds().iterator();
+      ids = grades.getStudentIds().iterator();
 
     } else {
       ids = names.iterator();

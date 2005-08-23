@@ -1,6 +1,6 @@
-package edu.pdx.cs410E.familyTree;
+package edu.pdx.cs410E.family;
 
-import edu.pdx.cs410J.familyTree.Person;
+import edu.pdx.cs399J.family.Person;
 import java.rmi.*;
 import junit.framework.*;
 
