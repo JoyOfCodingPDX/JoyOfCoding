@@ -62,20 +62,25 @@ public class BuildPhonebook {
 
       Element name = doc.createElement("name");
       biz.appendChild(name);
-      String br = "GemStone Systems, Inc.";
+      String br = "CollegeNET, Inc.";
       name.appendChild(doc.createTextNode(br));
       
       Element address = doc.createElement("address");
       biz.appendChild(address);
 
-      Element street = doc.createElement("street");
-      address.appendChild(street);
-      String vn = "20575 NW von Neumann Drive";
-      street.appendChild(doc.createTextNode(vn));
+      Element street1 = doc.createElement("street");
+      address.appendChild(street1);
+      String st1 = "805 SW Broadway";
+      street1.appendChild(doc.createTextNode(st1));
       
+      Element street2 = doc.createElement("street");
+      address.appendChild(street2);
+      String st2 = "Suite 1600";
+      street2.appendChild(doc.createTextNode(st2));
+
       Element city = doc.createElement("city");
       address.appendChild(city);
-      city.appendChild(doc.createTextNode("Beaverton"));
+      city.appendChild(doc.createTextNode("Portland"));
 
       Element state = doc.createElement("state");
       address.appendChild(state);
@@ -83,12 +88,12 @@ public class BuildPhonebook {
 
       Element zip = doc.createElement("zip");
       address.appendChild(zip);
-      zip.appendChild(doc.createTextNode("97006"));
+      zip.appendChild(doc.createTextNode("97205"));
 
       Element phone = doc.createElement("phone");
       biz.appendChild(phone);
       phone.setAttribute("areacode", "503");
-      phone.setAttribute("number", "533-3000");
+      phone.setAttribute("number", "973-5200");
 
     } catch (DOMException ex) {
       ex.printStackTrace(err);
