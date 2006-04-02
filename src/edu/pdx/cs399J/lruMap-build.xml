@@ -44,6 +44,14 @@
                property="found.daves.jars.dir"/>
     <fail unless="found.daves.jars.dir"
           message="Could not find daves.jars.dir: ${daves.jars.dir}"/>
+
+    <taskdef name="submit" classname="edu.pdx.cs399J.grader.SubmitTask">
+      <classpath>
+        <pathelement location="${daves.jars.dir}/grader.jar"/>
+        <pathelement location="${daves.jars.dir}/mail.jar"/>
+        <pathelement location="${daves.jars.dir}/activation.jar"/>
+      </classpath>
+    </taskdef>
   </target>
 
   <!-- Removes byproducts of building -->

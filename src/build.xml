@@ -93,7 +93,7 @@
     <!-- Compile the source code -->
     <javac srcdir="${src.dir}"
            destdir="${classes.dir}"
-           includeAntRuntime="false"
+           includeAntRuntime="true"
            debug="on" source="${javac.source}">
       <include name="edu/pdx/cs399J/**/*.java"/>
       <exclude name="edu/pdx/cs399J/whitlock/**"/>
@@ -462,14 +462,14 @@
              windowtitle="CS399J Docs"
              overview="${src.dir}/overview.html"
              failonerror="true"
-             additionalparam="-source 1.4 -linksource -breakiterator -Xwerror"
+             additionalparam="-source ${javac.source} -linksource -breakiterator -Xwerror"
     >
       <packageset defaultexcludes="yes" dir="${src.dir}">
         <include name="edu/pdx/cs399J/**"/>
         <include name="edu/pdx/cs410G/**"/>
         <exclude name="edu/pdx/cs399J/fall2000/**"/>
         <exclude name="edu/pdx/cs399J/whitlock/**"/>
-        <exclude name="edu/pdx/cs399J/j2se15/**"/>
+        <exclude name="edu/pdx/cs399J/j2se15/**" unless="jdk1.5"/>
         <exclude name="edu/pdx/cs410G/jfcunit/**"/>
         <exclude name="edu/pdx/cs410G/javaws/**"/>
         <exclude name="edu/pdx/cs410G/awt/**"/>
@@ -482,12 +482,12 @@
         <pathelement location="${ant.home}/lib/ant.jar"/>
         <pathelement location="${java.home}/../lib/tools.jar"/>
       </classpath>
-      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+      <link href="http://java.sun.com/j2se/1.5/docs/api"/>
       <link href="http://java.sun.com/products/javamail/javadocs"/>
       <!-- link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/ -->
       <link href="http://www.junit.org/junit/javadoc/3.7"/>
       <link href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/doclet"/>
-      <!-- link href="http://nagoya.apache.org/gump/javadoc/ant/build/javadocs"/ -->
+      <link href="http://www.jajakarta.org/ant/ant-1.6.1/docs/en/manual/api"/>
     </javadoc>
 
     <!-- Make it so that everyone can see the javadocs -->
