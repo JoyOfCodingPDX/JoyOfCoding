@@ -31,7 +31,7 @@ public class Survey {
     new BufferedReader(new InputStreamReader(System.in));
 
   private static final String TA_EMAIL = "sjavata@cs.pdx.edu";
-  private static String serverName = "mailhost.pdx.edu";
+  private static String serverName = "mailhost.cs.pdx.edu";
 
   /**
    * Returns a textual summary of a <code>Student</code>
@@ -126,7 +126,7 @@ public class Survey {
 
     String email = ask("What is your email address (doesn't have " +
                        "to be PSU)?");
-    String ssn = ask("What is your student id (XXX-XX-XXXX)?");
+    String ssn = ask("What is your student id (XXXXXXXXX)?");
     String major = ask("What is your major?");
     String learn = ask("What do you hope to learn in CS399J?");
     String comments = ask("What else would you like to tell me?");
