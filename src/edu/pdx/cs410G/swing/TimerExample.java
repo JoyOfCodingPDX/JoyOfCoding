@@ -12,6 +12,8 @@ import javax.swing.*;
  */
 public class TimerExample extends JPanel {
 
+  private final Timer timer;
+
   public TimerExample() {
     this.setLayout(new BorderLayout());
     final JTextField text = new JTextField(20);
@@ -23,18 +25,20 @@ public class TimerExample extends JPanel {
 	  text.setText(new Date().toString());
 	}
       };
-    Timer timer = new Timer(1000, listener);
-    timer.setInitialDelay(0);
-    timer.start();
+    this.timer = new Timer(1000, listener);
+    this.timer.setInitialDelay(0);
   }
 
   public static void main(String[] args) {
     JFrame frame = new JFrame("A Timer");
-    JPanel panel = new TimerExample();
-    frame.getContentPane().add(panel);
+    TimerExample example = new TimerExample();
+    frame.getContentPane().add(example);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.pack();
     frame.setVisible(true);
+
+    // Start timer after GUI is visible
+    example.timer.start();
   }
 
 }
