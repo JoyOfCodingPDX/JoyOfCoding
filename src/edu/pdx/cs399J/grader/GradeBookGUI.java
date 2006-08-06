@@ -15,7 +15,7 @@ import javax.swing.event.*;
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
@@ -39,7 +39,7 @@ public class GradeBookGUI extends JFrame {
   private Preferences prefs;
 
   /** A menu listing the recently visited gradebook files */
-  private JMenuItem recentFilesMenu;
+  private JMenu recentFilesMenu;
 
   /** A label that displays status messages */
   private JLabel status;
@@ -77,7 +77,7 @@ public class GradeBookGUI extends JFrame {
       String recent = this.prefs.get(RECENT_FILE + i, null);
       if (recent != null) {
         File file = new File(recent);
-        if (file.exists()) {
+        if (file.exists() && file.isFile()) {
           this.recentFiles.add(0, recent);
         }
       }
@@ -342,7 +342,7 @@ public class GradeBookGUI extends JFrame {
     assert this.file != null;
     String name = this.file.getAbsolutePath();
     this.recentFiles.remove(name);
-    this.recentFiles.add(name);
+    this.recentFiles.add(0, name);
     while (this.recentFiles.size() > MAX_RECENT_FILES) {
       this.recentFiles.remove(this.recentFiles.size() - 1);
     }
@@ -362,6 +362,16 @@ public class GradeBookGUI extends JFrame {
    */
   private void updateRecentFilesMenu() {
     this.recentFilesMenu.removeAll();
+    JMenuItem clear = new JMenuItem("Clear recent files");
+    clear.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          GradeBookGUI.this.recentFiles.clear();
+          updateRecentFilesMenu();
+        }
+      });
+    this.recentFilesMenu.add(clear);
+    this.recentFilesMenu.addSeparator();
+
     for (int i = 0; i < this.recentFiles.size(); i++) {
       String fileName = (String) this.recentFiles.get(i);
       final File file = new File(fileName);
