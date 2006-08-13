@@ -31,7 +31,7 @@ number of late days allowed in the class -->
 points it is worth, a type, and some optional notes -->
 <!ELEMENT assignment (name, description?, points, notes*)>
 <!ATTLIST assignment
-  type  (PROJECT | QUIZ | OTHER)  #REQUIRED
+  type  (PROJECT | QUIZ | OTHER | OPTIONAL)  #REQUIRED
 >
 
 <!ELEMENT description (#PCDATA)>

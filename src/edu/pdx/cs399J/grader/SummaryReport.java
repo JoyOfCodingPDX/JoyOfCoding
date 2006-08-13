@@ -84,7 +84,12 @@ public class SummaryReport {
 
       pw.println(line);
 
-      best += assign.getPoints();
+      // Don't count optional assignments toward the maximum point
+      // total
+      if (assign.getType() != Assignment.OPTIONAL) {
+        best += assign.getPoints();
+      }
+
       total += score;
     }
 

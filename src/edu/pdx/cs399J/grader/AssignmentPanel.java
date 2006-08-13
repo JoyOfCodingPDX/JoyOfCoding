@@ -16,6 +16,7 @@ public class AssignmentPanel extends JPanel {
   private static final String QUIZ = "Quiz";
   private static final String PROJECT = "Project";
   private static final String OTHER = "Other";
+  private static final String OPTIONAL = "Optional";
 
   // GUI components we care about
   private JTextField nameField;
@@ -55,6 +56,7 @@ public class AssignmentPanel extends JPanel {
     this.typeBox.addItem(QUIZ);
     this.typeBox.addItem(PROJECT);
     this.typeBox.addItem(OTHER);
+    this.typeBox.addItem(OPTIONAL);
     fields.add(this.typeBox);
 
     this.descriptionField = new JTextField(20);
@@ -154,6 +156,9 @@ public class AssignmentPanel extends JPanel {
     } else if (assign.getType() == Assignment.OTHER) {
       this.typeBox.setSelectedItem(OTHER);
 
+    } else if (assign.getType() == Assignment.OPTIONAL) {
+      this.typeBox.setSelectedItem(OPTIONAL);
+
     } else {
       String s = "Invalid assignment type: " + assign.getType();
       throw new IllegalArgumentException(s);
@@ -205,6 +210,9 @@ public class AssignmentPanel extends JPanel {
 
     } else if (type.equals(OTHER)) {
       assign.setType(Assignment.OTHER);
+
+    } else if (type.equals(OPTIONAL)) {
+      assign.setType(Assignment.OPTIONAL);
 
     } else {
       String s = "Unknown assignment type: " + type;

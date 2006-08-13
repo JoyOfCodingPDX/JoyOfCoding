@@ -121,6 +121,9 @@ public class XmlGradeBookParser extends XmlHelper {
       
     } else if (type.equals("OTHER")) {
       assign.setType(Assignment.OTHER);
+
+    } else if (type.equals("OPTIONAL")) {
+      assign.setType(Assignment.OPTIONAL);
     }
 
     return assign;

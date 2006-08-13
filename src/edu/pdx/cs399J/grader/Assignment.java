@@ -20,7 +20,12 @@ public class Assignment implements Notable {
    * The assignment is a quiz
    */
   public static final int QUIZ = 1;
+
+  /** The assignment is some other kind of grade (POA, etc.) */
   public static final int OTHER = 2;
+
+  /** The assignment is optional (awarded as extra credit) */
+  public static final int OPTIONAL = 3;
 
   private String name;
   private String description;
@@ -233,6 +238,9 @@ public class Assignment implements Notable {
 
         } else if (args[i].equals("OTHER")) {
           type = new Integer(Assignment.OTHER);
+
+        } else if (args[i].equals("OPTIONAL")) {
+          type = new Integer(Assignment.OPTIONAL);
 
         } else {
           err.println("** Invalid type: " + args[i]);

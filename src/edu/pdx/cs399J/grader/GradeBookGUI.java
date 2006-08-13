@@ -15,7 +15,7 @@ import javax.swing.event.*;
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * @since Fall 2000
  */
 public class GradeBookGUI extends JFrame {
@@ -442,7 +442,7 @@ public class GradeBookGUI extends JFrame {
           return "XML files";
         }
       });
-    chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     chooser.setMultiSelectionEnabled(false);
 
     return chooser;
