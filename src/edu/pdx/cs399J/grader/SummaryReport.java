@@ -68,18 +68,28 @@ public class SummaryReport {
         }
       }
 
-      String line = "  " + assign.getName() + " (" +
-        assign.getDescription() + "): " + format.format(score) + "/" +
-        format.format(assign.getPoints());
+      StringBuffer line = new StringBuffer();
+      line.append("  ");
+      line.append(assign.getName());
+      line.append(" (");
+      line.append(assign.getDescription());
+      line.append(")");
+      if (assign.getType() == Assignment.OPTIONAL) {
+        line.append(" (OPTIONAL)");
+      }
+      line.append(": ");
+      line.append(format.format(score));
+      line.append("/");
+      line.append(format.format(assign.getPoints()));
 
 
       // Skip incompletes and no grades
       if (grade == null) {
-        line += " (MISSING GRADE)";
+        line.append(" (MISSING GRADE)");
 
       } else if (grade.getScore() == Grade.INCOMPLETE || 
                 grade.getScore() == Grade.NO_GRADE) {
-        line += " (INCOMPLETE)";
+        line.append(" (INCOMPLETE)");
       }
 
       pw.println(line);
