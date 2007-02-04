@@ -334,7 +334,8 @@ public class AirportNames {
   /////////////////////////  Static Methods  ////////////////////////
 
   /**
-   * Returns the name of an airport with a given three-letter code.
+   * Returns the name of an airport with a given three-letter code or
+   * <code>null</code> if no airport with <code>code</code> exists.
    */
   public static String getName(String code) {
     if (airportNames == null) {
