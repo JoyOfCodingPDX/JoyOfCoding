@@ -194,8 +194,10 @@ public class Submit {
 	 *
 	 * @throws IllegalStateException
 	 *         If no source files were found
+	 *
+	 * @return Whether or not the submission actually occurred
 	 */
-	public void submit(boolean verify) throws AddressException, IOException, MessagingException {
+	public boolean submit(boolean verify) throws AddressException, IOException, MessagingException {
     // Recursively search the source directory for .java files
     Set sourceFiles = searchForSourceFiles(fileNames);
 
@@ -209,7 +211,7 @@ public class Submit {
     // Verify submission with user
     if (verify && !verifySubmission(sourceFiles)) {
       // User does not want to submit
-      return;
+      return false;
     }
 
     // Timestamp
@@ -223,6 +225,8 @@ public class Submit {
 
     // Send a receipt to the user
     mailReceipt(sourceFiles);
+
+		return true;
 	}
 
   /**
@@ -704,20 +708,28 @@ public class Submit {
       }
     }
 
+		boolean submitted;
+
 		try {
 			// Make sure that user entered enough information
 			submit.validate();
 
 			submit.db("Command line successfully parsed.");
 
-			submit.submit(true);
+			submitted = submit.submit(true);
 
 		} catch (IllegalStateException ex) {
 			usage(ex.getMessage());
+			return;
 		}
 
     // All done.
-    out.println(submit.projName + " submitted successfully.  Thank you.");
+		if (submitted) {
+			out.println(submit.projName + " submitted successfully.  Thank you.");
+
+		} else {
+			out.println(submit.projName + " not submitted.");
+		}
   }
 
 }
