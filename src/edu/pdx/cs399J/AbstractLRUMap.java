@@ -122,10 +122,18 @@ public abstract class AbstractLRUMap<K, V> extends AbstractMap<K, V> {
   public abstract V put(K key, V value);
 
   /**
-   * Getting an element from a map marks the mapping as "used"
+   * Getting an element from a map marks the mapping as "used".  Note
+   * that the type of <code>key</code> must be <code>Object</code>
+   * so that, after type erasure, it will be compatible with the
+   * pre-generic API.
    */
   public abstract V get(Object key);
 
+	/**
+	 * Removes the given key from this map.  Note that the type of
+	 * <code>key</code> must be <code>Object</code> so that, after type
+	 * erasure, it will be compatible with the pre-generic API.
+	 */
   public abstract V remove(Object key);
 
   public void putAll(Map<? extends K, ? extends V> map) {
