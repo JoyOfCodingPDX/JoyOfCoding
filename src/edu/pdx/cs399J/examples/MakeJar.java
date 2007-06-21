@@ -15,11 +15,7 @@ import java.util.zip.*;
  */
 public class MakeJar {
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
-
-  private static final String MANIFEST = JarFile.MANIFEST_NAME;
-  private static final String MANIFEST_DIR = "META-INF/";
 
   /**
    * Prints out information about how this program is used.
@@ -40,7 +36,7 @@ public class MakeJar {
    */
   public static void main(String[] args) {
     String jarFileName = null;
-    Set fileNames = new HashSet();
+    Set<String> fileNames = new HashSet<String>();
     boolean compress = true;
     String author = "CS399J";   // Author of Jar file
     String version = "1.0";     // Version of Jar file

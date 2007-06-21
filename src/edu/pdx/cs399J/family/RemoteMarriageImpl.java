@@ -9,6 +9,7 @@ import java.util.Date;
  * Basically, it delegates all of its behavior to an underlying {@link
  * edu.pdx.cs399J.Marriage} that lives only on the server.
  */
+@SuppressWarnings("serial")
 class RemoteMarriageImpl extends java.rmi.server.UnicastRemoteObject
   implements RemoteMarriage {
 

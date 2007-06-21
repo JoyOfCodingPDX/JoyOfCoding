@@ -1,9 +1,18 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
-import java.io.*;
-import java.util.*;
-import junit.framework.*;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import edu.pdx.cs399J.family.Dumper;
+import edu.pdx.cs399J.family.FamilyTree;
+import edu.pdx.cs399J.family.FamilyTreeException;
+import edu.pdx.cs399J.family.Parser;
+import edu.pdx.cs399J.family.Person;
+import edu.pdx.cs399J.family.TextDumper;
+import edu.pdx.cs399J.family.TextParser;
 
 /**
  * This class tests the functionality of the <code>TextDumper</code>

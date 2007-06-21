@@ -1,18 +1,14 @@
 package edu.pdx.cs399J.family;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import java.net.*;
-
-import java.io.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.JApplet;
 
 /**
  * This class is an applet that displays an immutable family tree.  
  */
+@SuppressWarnings("serial")
 public class FamilyTreeApplet extends JApplet {
 
   /**

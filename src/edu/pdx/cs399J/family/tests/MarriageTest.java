@@ -1,8 +1,9 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
-import java.util.*;
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import edu.pdx.cs399J.family.Marriage;
+import edu.pdx.cs399J.family.Person;
 
 /**
  * This class tests the functionality of the <code>Marriage</code>
@@ -60,7 +61,7 @@ public class MarriageTest extends FamilyTestCase {
     Person husband = new Person(1, Person.FEMALE);
     Person wife = new Person(2, Person.FEMALE);
     try {
-      Marriage m = new Marriage(husband, wife);
+      new Marriage(husband, wife);
       fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
@@ -72,7 +73,7 @@ public class MarriageTest extends FamilyTestCase {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.MALE);
     try {
-      Marriage m = new Marriage(husband, wife);
+      new Marriage(husband, wife);
       fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {

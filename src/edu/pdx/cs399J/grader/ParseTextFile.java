@@ -7,7 +7,6 @@ import java.util.*;
  * Quicky program that parses a text file containing student's grades.
  */
 public class ParseTextFile {
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**
@@ -37,7 +36,7 @@ public class ParseTextFile {
     try {
       in = new BufferedReader(new FileReader(textFile));
 
-      List assignments = new ArrayList();
+      List<String> assignments = new ArrayList<String>();
 
       // First line of file contains names of assignments
       String line = in.readLine();

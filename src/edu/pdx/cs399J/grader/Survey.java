@@ -1,18 +1,38 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import javax.activation.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Properties;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.*;
+
+import org.w3c.dom.Document;
 
 /**
  * This program presents a survey that all students in CS399J should
@@ -22,9 +42,6 @@ import org.w3c.dom.*;
 public class Survey {
   private static final String systemID = 
     "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
-  private static final String publicID = 
-    "-//Portland State University//DTD CS399J Grade Book//EN";
-
   private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
   private static BufferedReader in = 

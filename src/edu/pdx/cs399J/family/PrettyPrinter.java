@@ -47,7 +47,7 @@ public class PrettyPrinter implements Dumper {
     // We want to print the contents of the family tree sorted by id
     // number.  We'll use an instance of PersonSorter along with a
     // TreeSet to sort the Persons.
-    SortedSet sortedTree = new TreeSet(new PersonSorter());
+    SortedSet<Person> sortedTree = new TreeSet<Person>(new PersonSorter());
     sortedTree.addAll(tree.getPeople());
 
     // Print a banner
@@ -133,7 +133,7 @@ public class PrettyPrinter implements Dumper {
    * Inner class used only by the dump method.  It is used to sort
    * <code>Person</code>s by their id.
    */
-  class PersonSorter implements Comparator {
+  class PersonSorter implements Comparator<Person> {
 
     /**
      * Compares two <code>Person</code>s.  If the id of person one is less
@@ -143,26 +143,7 @@ public class PrettyPrinter implements Dumper {
      * person one is equal to the id of person two, then the two
      * persons are equal.
      */
-    public int compare(Object one, Object two) {
-      Person p1 = null;
-      Person p2 = null;
-
-      if (one instanceof Person) {
-	p1 = (Person) one;
-
-      } else {
-	throw new IllegalArgumentException("Can't compare a " +
-					   one.getClass());
-      }
-
-      if (two instanceof Person) {
-	p2 = (Person) two;
-
-      } else {
-	throw new IllegalArgumentException("Can't compare a " +
-					   two.getClass());
-      }
-
+    public int compare(Person p1, Person p2) {
       return p1.getId() - p2.getId();
     }
 

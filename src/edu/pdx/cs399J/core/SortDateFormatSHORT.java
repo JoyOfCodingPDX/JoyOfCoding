@@ -12,7 +12,7 @@ import java.util.*;
  * will see if she was right.
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SortDateFormatSHORT {
 
@@ -25,7 +25,7 @@ public class SortDateFormatSHORT {
                        df.format(new Date()));
     System.out.println("\nEnter some dates to sort:");
 
-    SortedSet sorted = new TreeSet();
+    SortedSet<Date> sorted = new TreeSet<Date>();
     BufferedReader br =
       new BufferedReader(new InputStreamReader(System.in));
     while (true) {

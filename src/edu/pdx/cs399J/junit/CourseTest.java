@@ -46,12 +46,12 @@ public class CourseTest extends TestCase {
   ////////  Test cases
 
   public void testGoodCourse() {
-    Course c = new Course("Computer Science", 410, 4);
+    new Course("Computer Science", 410, 4);
   }
 
   public void testCourseNumberLessThan100() {
     try {
-      Course c = new Course("Computer Science", 17, 4);
+      new Course("Computer Science", 17, 4);
       fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
@@ -61,7 +61,7 @@ public class CourseTest extends TestCase {
 
   public void testCreditLessThanZero() {
     try {
-      Course c = new Course("Computer Science", 410, -3);
+      new Course("Computer Science", 410, -3);
       fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {

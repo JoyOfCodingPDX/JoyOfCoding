@@ -13,6 +13,7 @@ import javax.swing.event.*;
  * This panel displays and edits information about a class stored in a
  * <code>GradeBook</code>.
  */
+@SuppressWarnings("serial")
 public class ClassPanel extends JPanel {
   private GradeBook book;
 
@@ -201,7 +202,7 @@ public class ClassPanel extends JPanel {
    */
   void displayAssignments(GradeBook book) {
     // Display all of the assignments
-    Vector assignmentNames = new Vector();
+    Vector<String> assignmentNames = new Vector<String>();
     assignmentNames.addAll(book.getAssignmentNames());
     this.assignmentsList.setListData(assignmentNames);
   }

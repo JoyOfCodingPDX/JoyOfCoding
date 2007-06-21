@@ -1,14 +1,44 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.net.*;
-import java.text.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import javax.activation.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  * This class is used to submit assignments in CS399J.  The user
@@ -32,10 +62,8 @@ public class Submit {
 
   private static final PrintWriter out = new PrintWriter(System.out, true);
   private static final PrintWriter err = new PrintWriter(System.err, true);
-  private static final String MANIFEST = JarFile.MANIFEST_NAME;
-  private static final String MANIFEST_DIR = "META-INF/";
 
-	/** THe grader's email address */
+  /** The grader's email address */
   private static final String TA_EMAIL = "sjavata@cs.pdx.edu";
 
 	/** A URL containing a list of files that should not be submitted */
@@ -72,7 +100,7 @@ public class Submit {
   private Date submitTime = null;
 
 	/** The names of the files to be submitted */
-	private Set fileNames = new HashSet();
+	private Set<String> fileNames = new HashSet<String>();
 
 	///////////////////////  Constructors  /////////////////////////
 
@@ -246,7 +274,7 @@ public class Submit {
    */
   private Set searchForSourceFiles(Set fileNames) {
     // Compute the "no submit" list
-    Set noSubmit = new HashSet();
+    Set<String> noSubmit = new HashSet<String>();
 
     try {
       URL url = new URL(NO_SUBMIT_LIST_URL);
@@ -266,19 +294,12 @@ public class Submit {
     }
 
     // Files should be sorted by name
-    Set files = new TreeSet(new Comparator() {
-	public int compare(Object o1, Object o2) {
-	  if ((o1 instanceof File) && (o2 instanceof File)) {
+    Set<File> files = new TreeSet<File>(new Comparator<File>() {
+	public int compare(File o1, File o2) {
 	    String name1 = o1.toString();
 	    String name2 = o2.toString();
 
 	    return name1.compareTo(name2);
-
-	  } else {
-	    String m = "Cannot compare a " + o1.getClass() + " and a " +
-	      o2.getClass();
-	    throw new IllegalArgumentException(m);
-	  }
 	}
       });
 

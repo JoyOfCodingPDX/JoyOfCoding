@@ -104,11 +104,6 @@ public class Tester {
      * result in this file stream being closed. 
      */
     class CheckedPrintStream extends PrintStream {
-      public CheckedPrintStream(OutputStream stream, 
-				boolean autoFlush) {
-	super(stream, autoFlush);
-      }
-
       public CheckedPrintStream(OutputStream stream) {
 	super(stream);
       }
@@ -139,7 +134,8 @@ public class Tester {
    * Parses a file path and creates an array of <code>URL</code>s
    * representing each file on the path.
    */
-  public static URL[] parseURLPath(String path) {
+  @SuppressWarnings("deprecation")
+public static URL[] parseURLPath(String path) {
     if (path == null) {
       return new URL[0];
     }
@@ -320,7 +316,6 @@ public class Tester {
     // way the class is initialized each time this method is invoked
     // and we don't need to worry about the old values of static
     // fields.
-    ClassLoader sysLoader = ClassLoader.getSystemClassLoader();
     ClassLoader loader = new URLClassLoader(urls);
 //      ClassLoader loader = sysLoader;
 
@@ -427,7 +422,7 @@ public class Tester {
    *         expanded
    */
   String[] expandMacros(String[] args) {
-    Map map = new HashMap();
+    Map<String, String> map = new HashMap<String, String>();
     map.put("{STUDENT}", this.id);
 
     args = (String[]) args.clone();

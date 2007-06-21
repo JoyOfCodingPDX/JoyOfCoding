@@ -9,7 +9,6 @@ import java.util.*;
  * POA into account when grading.
  */
 public class AdjustProjectGrade {
-  private static PrintStream out = System.out;
   private static PrintStream err = System.err;
   
   /**

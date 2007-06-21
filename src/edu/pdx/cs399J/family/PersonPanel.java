@@ -1,23 +1,36 @@
 package edu.pdx.cs399J.family;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.text.*;
-import java.util.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 /**
  * This class is a <code>JPanel</code> that displays a
  * <code>Person</code>.
  */
+@SuppressWarnings("serial")
 public class PersonPanel extends JPanel {
   private FamilyTreePanel familyGUI;  // Used for callbacks
 
   private Person person;  // Who are we displaying?
-  private ArrayList marriages = new ArrayList();
+  private ArrayList<Marriage> marriages = new ArrayList<Marriage>();
 
   // Some GUI components we care about
   private JLabel name;
@@ -219,12 +232,9 @@ public class PersonPanel extends JPanel {
       this.motherName.setText("Mother: " + mother.getFullName());
     }
 
-    this.marriages = new ArrayList(person.getMarriages());
-    Vector list = new Vector();
-    Iterator iter = person.getMarriages().iterator();
-    while (iter.hasNext()) {
-      Marriage marriage = (Marriage) iter.next();
-
+    this.marriages = new ArrayList<Marriage>(person.getMarriages());
+    Vector<String> list = new Vector<String>();
+    for (Marriage marriage : person.getMarriages()) {
       StringBuffer sb = new StringBuffer();
       Person spouse = (marriage.getHusband().getId() == person.getId()
 		       ? marriage.getWife() 

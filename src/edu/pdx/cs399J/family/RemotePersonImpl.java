@@ -14,6 +14,7 @@ import java.util.*;
  * it is a <code>UnicastRemoteObject</code> allows the client to
  * execute its methods remotely.</P>
  */
+@SuppressWarnings("serial")
 class RemotePersonImpl extends java.rmi.server.UnicastRemoteObject
   implements RemotePerson {
 

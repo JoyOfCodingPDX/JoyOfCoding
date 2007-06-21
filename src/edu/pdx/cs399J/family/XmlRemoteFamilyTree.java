@@ -1,17 +1,27 @@
 package edu.pdx.cs399J.family;
 
-import edu.pdx.cs399J.family.*;
-import java.io.*;
-import java.net.*;
-import java.rmi.*;
-import java.rmi.server.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
+import edu.pdx.cs399J.ParserException;
 
 /**
  * This class is a remote family tree whose contents are read from and
  * saved to an XML file.  It extends <code>UnicastRemoteObject</code>
  * because it is going to be bound into the RMI registry.
  */
+@SuppressWarnings("serial")
 public class XmlRemoteFamilyTree extends UnicastRemoteObject 
   implements RemoteFamilyTree {
 
@@ -27,11 +37,11 @@ public class XmlRemoteFamilyTree extends UnicastRemoteObject
 
   /** Maps ids to their RemotePerson.  This way there is always a
    * one-to-one correspondence between a Person and a RemotePerson */
-  private Map remotePersons = new TreeMap();
+  private Map<Integer, RemotePerson> remotePersons = new TreeMap<Integer, RemotePerson>();
 
   /** Maps a Long that represents the husband and wife to their
    * RemoteMarriage */
-  private Map remoteMarriages = new TreeMap();
+  private Map<Long, RemoteMarriage> remoteMarriages = new TreeMap<Long, RemoteMarriage>();
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -201,8 +211,8 @@ public class XmlRemoteFamilyTree extends UnicastRemoteObject
     return getRemoteMarriage(marriage);
   }
 
-  public Collection getLiving() throws RemoteException {
-    Collection living = new ArrayList();
+  public Collection<RemotePerson> getLiving() throws RemoteException {
+    Collection<RemotePerson> living = new ArrayList<RemotePerson>();
 
     Iterator people = this.tree.getPeople().iterator();
     while (people.hasNext()) {
@@ -216,8 +226,8 @@ public class XmlRemoteFamilyTree extends UnicastRemoteObject
     return living;
   }
 
-  public Collection getLiving(Date date) throws RemoteException {
-    Collection alive = new ArrayList();
+  public Collection<RemotePerson> getLiving(Date date) throws RemoteException {
+    Collection<RemotePerson> alive = new ArrayList<RemotePerson>();
 
     Iterator people = this.tree.getPeople().iterator();
     while (people.hasNext()) {

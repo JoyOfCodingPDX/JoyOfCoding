@@ -1,13 +1,17 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.io.*;
-import java.net.*;
-import java.rmi.*;
-import java.rmi.registry.*;
-import java.util.*;
-import junit.framework.*;
+import junit.framework.TestCase;
+import edu.pdx.cs399J.family.RemoteFamilyTree;
+import edu.pdx.cs399J.family.XmlRemoteFamilyTree;
 
 /**
  * This is the abstract superclass for all of the remote family

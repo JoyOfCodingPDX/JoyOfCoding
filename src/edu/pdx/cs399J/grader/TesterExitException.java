@@ -8,6 +8,7 @@ package edu.pdx.cs399J.grader;
  * <code>RuntimeException</code>.  If it didn't we'd have to
  * explicitly declare it in the <code>throws</code> clause.
  */
+@SuppressWarnings("serial")
 public class TesterExitException extends RuntimeException {
 
   /**

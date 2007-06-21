@@ -1,11 +1,14 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
-
-import java.rmi.*;
-import java.util.Calendar;
+import java.rmi.RemoteException;
 import java.util.Date;
-import junit.framework.*;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import edu.pdx.cs399J.family.FamilyTreeException;
+import edu.pdx.cs399J.family.Person;
+import edu.pdx.cs399J.family.RemoteFamilyTree;
+import edu.pdx.cs399J.family.RemotePerson;
 
 /**
  * This class tests the functionality of implementors of

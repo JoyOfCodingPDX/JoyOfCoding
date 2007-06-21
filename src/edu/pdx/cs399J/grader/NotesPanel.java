@@ -11,9 +11,10 @@ import javax.swing.event.*;
  * This panel displays and edits notes.
  *
  * @author David Whitlock
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * @since Fall 2000
  */
+@SuppressWarnings("serial")
 public class NotesPanel extends JPanel {
 
   private Notable notable;

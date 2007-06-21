@@ -18,10 +18,10 @@ public class GradeBook {
   private String className;
 
   /** Maps the name of an assignment to an <code>Assignment</code> */
-  private Map assignments;
+  private Map<String, Assignment> assignments;
 
   /** Maps the id of a student to a <code>Student</code> object */
-  private Map students;
+  private Map<String, Student> students;
 
   /** Has the grade book been modified? */
   private boolean dirty;
@@ -34,8 +34,8 @@ public class GradeBook {
    */
   public GradeBook(String className) {
     this.className = className;
-    this.assignments = new TreeMap();
-    this.students = new TreeMap();
+    this.assignments = new TreeMap<String, Assignment>();
+    this.students = new TreeMap<String, Student>();
     this.dirty = true;
     this.crn = 0;
   }
@@ -51,7 +51,7 @@ public class GradeBook {
   /**
    * Returns the names of the assignments for this class
    */
-  public Set getAssignmentNames() {
+  public Set<String> getAssignmentNames() {
     return this.assignments.keySet();
   }
 
@@ -92,7 +92,7 @@ public class GradeBook {
   /**
    * Returns the ids of all of the students in this class
    */
-  public Set getStudentIds() {
+  public Set<String> getStudentIds() {
     return this.students.keySet();
   }
 
@@ -204,7 +204,6 @@ public class GradeBook {
            this.getStudentIds().size() + " students";
   }
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**

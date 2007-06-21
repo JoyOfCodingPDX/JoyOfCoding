@@ -32,7 +32,7 @@ public class Section {
   private int year;
 
   /** The student enrolled in the course */
-  private Set students;
+  private Set<Student> students;
 
   //////////////////////  Constructors  //////////////////////////
 
@@ -56,7 +56,7 @@ public class Section {
     this.course = course;
     this.term = term;
     this.year = year;
-    this.students = new HashSet();
+    this.students = new HashSet<Student>();
   }
 
   /////////////////////  Accessor Methods  ////////////////////////
@@ -87,4 +87,33 @@ public class Section {
   public int getClassSize() {
     return this.students.size();
   }
+
+  /**
+   * Returns the course being offered
+   */
+  public Course getCourse() {
+    return course;
+  }
+
+  /**
+   * Returns the students enrolled in this section
+   */
+  public Set<Student> getStudents() {
+    return students;
+  }
+
+  /**
+   * Returns the term in which this section is offered
+   */
+  public int getTerm() {
+    return term;
+  }
+
+  /**
+   * Returns the year in which this section is offered
+   */
+  public int getYear() {
+    return year;
+  }
+
 }

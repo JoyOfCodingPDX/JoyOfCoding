@@ -1,18 +1,35 @@
 package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs399J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+
+import edu.pdx.cs399J.ParserException;
 
 /**
  * A <code>StudentsList</code> is a <code>JList</code> that lists all
  * of the students in a <code>GradeBook</code> sorted alphabetically
  * by their last name.
  */
+@SuppressWarnings("serial")
 public class StudentsList extends JPanel {
   private static final int SORT_BY_NAME = 1;
   private static final int SORT_BY_ID = 2;
@@ -20,8 +37,8 @@ public class StudentsList extends JPanel {
   private JList list;
 
   private int howSorted;
-  private ArrayList studentsByName;
-  private ArrayList studentsById;
+  private ArrayList<Student> studentsByName;
+  private ArrayList<Student> studentsById;
 
   
 
@@ -84,11 +101,11 @@ public class StudentsList extends JPanel {
    * <code>Student</code>s accordingly.
    */
   public void setGradeBook(GradeBook book) {
-    SortedSet sortedByName = new TreeSet(new Comparator() {
+    SortedSet<Student> sortedByName = new TreeSet<Student>(new Comparator<Student>() {
         // Sort by last names
-        public int compare(Object o1, Object o2) {
-          String lastName1 = ((Student) o1).getLastName();
-          String lastName2 = ((Student) o2).getLastName();
+        public int compare(Student o1, Student o2) {
+          String lastName1 = o1.getLastName();
+          String lastName2 = o2.getLastName();
 
           if (!lastName1.equalsIgnoreCase(lastName2)) {
             return lastName1.compareTo(lastName2);            
@@ -111,11 +128,11 @@ public class StudentsList extends JPanel {
         }
       });
 
-    SortedSet sortedById = new TreeSet(new Comparator() {
+    SortedSet<Student> sortedById = new TreeSet<Student>(new Comparator<Student>() {
         // Sort by ids
-        public int compare(Object o1, Object o2) {
-          String id1 = ((Student) o1).getId();
-          String id2 = ((Student) o2).getId();
+        public int compare(Student o1, Student o2) {
+          String id1 = o1.getId();
+          String id2 = o2.getId();
           return id1.compareTo(id2);
         }
 
@@ -132,10 +149,10 @@ public class StudentsList extends JPanel {
       sortedById.add(student);
     }
 
-    this.studentsByName = new ArrayList();
+    this.studentsByName = new ArrayList<Student>();
     this.studentsByName.addAll(sortedByName);
 
-    this.studentsById = new ArrayList();
+    this.studentsById = new ArrayList<Student>();
     this.studentsById.addAll(sortedById);
 
     this.displayStudents();

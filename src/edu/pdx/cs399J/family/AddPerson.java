@@ -15,7 +15,6 @@ import java.util.*;
 public class AddPerson {
 
   // Save you fingers from typing "System.out" all the time
-  private static final PrintStream out = System.out;
   private static final PrintStream err = System.err;
 
   // Data for a person

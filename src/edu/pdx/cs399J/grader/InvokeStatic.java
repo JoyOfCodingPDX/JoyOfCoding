@@ -24,7 +24,7 @@ public class InvokeStatic {
     if (type.isArray()) {
       Class elementType = type.getComponentType();
       StringTokenizer st = new StringTokenizer(param, " ");
-      List elements = new ArrayList();
+      List<Object> elements = new ArrayList<Object>();
       while (st.hasMoreTokens()) {
         elements.add(parseParam(st.nextToken(), elementType));
       }
@@ -157,7 +157,7 @@ public class InvokeStatic {
     String className = null;
     String methodName = null;
     String paramTypes = null;
-    List params = new ArrayList();
+    List<String> params = new ArrayList<String>();
 
     // Parse the command line
     for (int i = 0; i < args.length; i++) {
@@ -193,14 +193,14 @@ public class InvokeStatic {
 //      }
 
     // Translate the methodArgsTypes into types
-    List argsTypes = new ArrayList();
+    List<Object> argsTypes = new ArrayList<Object>();
     StringTokenizer st = new StringTokenizer(paramTypes, ";");
     while (st.hasMoreTokens()) {
       argsTypes.add(parseType(st.nextToken()));
     }
 
     Class[] types = (Class[]) argsTypes.toArray(new Class[0]);
-    List actuals = new ArrayList();
+    List<Object> actuals = new ArrayList<Object>();
 
     // Translate the parameters into objects
     for (int i = 0; i < types.length; i++) {

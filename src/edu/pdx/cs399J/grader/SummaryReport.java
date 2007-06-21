@@ -11,7 +11,7 @@ import edu.pdx.cs399J.ParserException;
  * grades.
  */
 public class SummaryReport {
-  private static HashMap allTotals = new HashMap();  // Students -> Double
+  private static HashMap<Student, Double> allTotals = new HashMap<Student, Double>();
 
   /**
    * Computes the student's final average and makes a pretty report.
@@ -22,7 +22,6 @@ public class SummaryReport {
     format.setMinimumFractionDigits(1);
     format.setMaximumFractionDigits(1);
 
-    Set grades = new HashSet();
     Assignment lowestQuiz = null;
     double best = 0.0;
     double total = 0.0;
@@ -33,10 +32,7 @@ public class SummaryReport {
     pw.println("Generated on: " + df.format(new Date()));
     pw.println("");
 
-    Iterator allGradeNames = 
-      (new TreeSet(book.getAssignmentNames())).iterator();
-    while (allGradeNames.hasNext()) {
-      String gradeName = (String) allGradeNames.next();
+    for (String gradeName : (new TreeSet<String>(book.getAssignmentNames()))) {
       Grade grade = student.getGrade(gradeName);
       Assignment assign = book.getAssignment(gradeName);
 
@@ -160,7 +156,7 @@ public class SummaryReport {
   public static void main(String[] args) {
     String xmlFileName = null;
     String outputDirName = null;
-    Collection students = new ArrayList();
+    Collection<String> students = new ArrayList<String>();
 
     for (int i = 0; i < args.length; i++) {
       if (xmlFileName == null) {
@@ -247,12 +243,10 @@ public class SummaryReport {
     }
 
     // Sort students by totals and print out results:
-    TreeSet sorted = new TreeSet(new Comparator() {
-        public int compare(Object o1, Object o2) {
-          Student s1 = (Student) o1;
-          Student s2 = (Student) o2;
-          Double d1 = (Double) allTotals.get(s1);
-          Double d2 = (Double) allTotals.get(s2);
+    TreeSet<Student> sorted = new TreeSet<Student>(new Comparator<Student>() {
+        public int compare(Student s1, Student s2) {
+          Double d1 = allTotals.get(s1);
+          Double d2 = allTotals.get(s2);
           return d2.compareTo(d1);
         }
 

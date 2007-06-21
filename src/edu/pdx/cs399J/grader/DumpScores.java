@@ -97,7 +97,7 @@ public class DumpScores {
     }
 
     // Maps score to the student
-    SortedSet scores = new TreeSet();
+    SortedSet<Tuple> scores = new TreeSet<Tuple>();
 
     Iterator ids = book.getStudentIds().iterator();
     while (ids.hasNext()) {

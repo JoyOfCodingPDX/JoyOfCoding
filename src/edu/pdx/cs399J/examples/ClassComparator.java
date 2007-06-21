@@ -7,7 +7,7 @@ import java.util.*;
  * This class is a <code>Comparator</code> that compares
  * <code>Object</code>s based on the name of their classes.
  */
-public class ClassComparator implements Comparator {
+public class ClassComparator implements Comparator<Object> {
   public int compare(Object o1, Object o2) {
     String name1 = o1.getClass().getName();
     String name2 = o2.getClass().getName();
@@ -21,7 +21,7 @@ public class ClassComparator implements Comparator {
    * <code>ClassComparator</code>. 
    */
   public static void main(String[] args) {
-    Set set = new TreeSet(new ClassComparator());
+    Set<Object> set = new TreeSet<Object>(new ClassComparator());
     set.add("Hello");
     set.add(new Cow("Betty"));
     set.add(new Vector());

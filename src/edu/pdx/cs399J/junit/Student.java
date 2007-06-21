@@ -13,7 +13,7 @@ public class Student {
 
   /** The grades that the student received in the sections of courses
    * that he was enrolled in */
-  private Map grades;
+  private Map<Section, Grade> grades;
 
   /////////////////////////  Constructors  //////////////////////////
 
@@ -22,7 +22,7 @@ public class Student {
    */
   public Student(String id) {
     this.id = id;
-    this.grades = new HashMap();
+    this.grades = new HashMap<Section, Grade>();
   }
 
   //////////////////////  Accessor Methods  ////////////////////////
@@ -41,5 +41,19 @@ public class Student {
    */
   public Grade getGrade(Section section) {
     return (Grade) this.grades.get(section);
+  }
+
+  /**
+   * Returns the grades that this student received 
+   */
+  public Map<Section, Grade> getGrades() {
+    return grades;
+  }
+
+  /**
+   * Returns the id of this student
+   */
+  public String getId() {
+    return id;
   }
 }

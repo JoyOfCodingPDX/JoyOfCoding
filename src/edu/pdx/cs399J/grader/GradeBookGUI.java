@@ -1,23 +1,45 @@
 package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs399J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
-import java.util.*;
-import java.util.prefs.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.prefs.Preferences;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+
+import edu.pdx.cs399J.ParserException;
 
 /**
  * This class is a main GUI for manipulate the grade book for CS399J.
  *
  * @author David Whitlock
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  * @since Fall 2000
  */
+@SuppressWarnings("serial")
 public class GradeBookGUI extends JFrame {
 
   /** The prefix for the "recent file" preference */
@@ -33,7 +55,7 @@ public class GradeBookGUI extends JFrame {
   private File file;       // Where the grade book lives
 
   /** The most recently visited files (by name) */
-  private ArrayList recentFiles;
+  private ArrayList<String> recentFiles;
 
   /** Preferences for using this application */
   private Preferences prefs;
@@ -72,7 +94,7 @@ public class GradeBookGUI extends JFrame {
 
     // Read preference information
     this.prefs = Preferences.userNodeForPackage(this.getClass());
-    this.recentFiles = new ArrayList();
+    this.recentFiles = new ArrayList<String>();
     for (int i = 0; i < MAX_RECENT_FILES; i++) {
       String recent = this.prefs.get(RECENT_FILE + i, null);
       if (recent != null) {

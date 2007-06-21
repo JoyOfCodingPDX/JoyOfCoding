@@ -13,8 +13,6 @@ import java.util.*;
  */
 public class NoteMarriage {
 
-  // Save your fingers from typing "System.out" all the time
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   private static int husbandId = 0;

@@ -13,6 +13,7 @@ import javax.swing.border.*;
  * This is a dialog for editing a <code>Person</code>.  The
  * <code>Person</code> may or may not already exist.
  */
+@SuppressWarnings("serial")
 public class EditPersonDialog extends JDialog {
 
   // The person we're editing

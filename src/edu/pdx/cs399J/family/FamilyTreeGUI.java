@@ -1,16 +1,31 @@
 package edu.pdx.cs399J.family;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import java.io.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This class is a graphical user interface that lets the user edit a
  * family tree.
  */
+@SuppressWarnings("serial")
 public class FamilyTreeGUI extends FamilyTreePanel {
   private File file;        // Where FamilyTree lives
   private boolean isDirty = false;  // Has the family tree been modified?

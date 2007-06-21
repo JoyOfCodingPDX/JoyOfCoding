@@ -62,7 +62,7 @@ public class TextDumper implements Dumper {
     // after all of the people.
 
     // Keep track of all of the marriages we've encountered
-    Set marriages = new HashSet();
+    Set<Marriage> marriages = new HashSet<Marriage>();
 
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 

@@ -10,7 +10,7 @@ import java.util.*;
  * files using the {@link Survey} program.
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImportStudents {
   private static final PrintStream out = System.out;
@@ -34,7 +34,7 @@ public class ImportStudents {
 
   public static void main(String[] args) throws Throwable {
     String xmlFileName = null;
-    List studentXmlNames = new ArrayList();
+    List<String> studentXmlNames = new ArrayList<String>();
 
     for (int i = 0; i < args.length; i++) {
       if (xmlFileName == null) {

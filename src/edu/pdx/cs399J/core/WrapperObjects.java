@@ -11,6 +11,7 @@ import java.util.*;
  */
 public class WrapperObjects {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		Collection c = new ArrayList();
 		c.add(new Integer(4));

@@ -1,21 +1,36 @@
 package edu.pdx.cs399J.family;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 /**
  * This is a dialog for editing a <code>Marriage</code>.
  *
  * @author David Whitlock
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * @since Fall 2000
  */
+@SuppressWarnings("serial")
 public class EditMarriageDialog extends JDialog {
 
   // The Marriage we're editing

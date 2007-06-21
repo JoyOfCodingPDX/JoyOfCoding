@@ -1,9 +1,12 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
+import java.rmi.RemoteException;
 
-import java.rmi.*;
-import junit.framework.*;
+import edu.pdx.cs399J.family.FamilyTreeException;
+import edu.pdx.cs399J.family.Person;
+import edu.pdx.cs399J.family.RemoteFamilyTree;
+import edu.pdx.cs399J.family.RemoteMarriage;
+import edu.pdx.cs399J.family.RemotePerson;
 
 /**
  * This class tests the functionality of the various implementation of
@@ -23,7 +26,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
 
   public void testCreatePerson() throws RemoteException {
     RemoteFamilyTree tree = getTree();
-    RemotePerson person = tree.createPerson(Person.MALE);
+    tree.createPerson(Person.MALE);
   }
 
   public void testCreatePersonBadGender() throws RemoteException {

@@ -7,11 +7,11 @@ import java.util.*;
  * This class is a <code>Comparator</code> that compares
  * <code>Person</code>s based on their shoe size.
  */
-public class PersonComparator implements Comparator {
+public class PersonComparator implements Comparator<Person> {
 
-  public int compare(Object o1, Object o2) {
-    double size1 = ((Person) o1).shoeSize();
-    double size2 = ((Person) o2).shoeSize();
+  public int compare(Person o1, Person o2) {
+    double size1 = o1.shoeSize();
+    double size2 = o2.shoeSize();
 
     if (size1 > size2) {
       return 1;
@@ -29,7 +29,7 @@ public class PersonComparator implements Comparator {
    * contents.
    */
   public static void main(String[] args) {
-    Set set = new TreeSet(new PersonComparator());
+    Set<Person> set = new TreeSet<Person>(new PersonComparator());
     set.add(new Person("Quan", 10.5));
     set.add(new Person("Jerome", 11.0));
     set.add(new Person("Dave", 10.5));

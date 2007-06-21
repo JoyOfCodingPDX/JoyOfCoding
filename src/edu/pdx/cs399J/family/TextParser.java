@@ -18,7 +18,6 @@ public class TextParser implements Parser {
   ///////////////////////  Static Methods  ///////////////////////
 
   private static final PrintStream out = System.out;
-  private static final PrintStream err = System.err;
 
   private static void db(String s) {
     if (Boolean.getBoolean("TextParser.DEBUG")) {

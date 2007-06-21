@@ -1,15 +1,34 @@
 package edu.pdx.cs399J.family;
 
-import java.net.*;
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.*;
-import org.xml.sax.*;
+
+import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
 
 /**
  * This class dumps a family tree to a destination (for example, a
@@ -111,7 +130,7 @@ public class XmlDumper extends XmlHelper implements Dumper {
     }
     
     // Keep track of all of the marriages
-    Set marriages = new HashSet();
+    Set<Marriage> marriages = new HashSet<Marriage>();
 
     // Construct the DOM tree
     try {

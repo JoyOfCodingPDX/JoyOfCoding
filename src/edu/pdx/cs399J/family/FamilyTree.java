@@ -11,20 +11,20 @@ import java.util.*;
  */
 public class FamilyTree {
   
-  private Map people;     // Maps Integer ids to Persons
+  private Map<Integer, Person> people;     // Maps Integer ids to Persons
 
   /**
    * Creates an empty family tree.
    */
   public FamilyTree() {
-    this.people = new HashMap();
+    this.people = new HashMap<Integer, Person>();
   }
 
   /**
    * Returns a collection of <code>Person</code>s that are in this family
    * tree.
    */
-  public Collection getPeople() {
+  public Collection<Person> getPeople() {
     return this.people.values();
   }
 

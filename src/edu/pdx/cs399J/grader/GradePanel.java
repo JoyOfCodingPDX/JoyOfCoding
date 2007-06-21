@@ -13,6 +13,7 @@ import javax.swing.event.*;
  * This panel is used to display and edit a <code>Student</code>'s
  * <code>Grade</code>s.
  */
+@SuppressWarnings("serial")
 public class GradePanel extends JPanel {
 
   private Grade grade;       // The Grade being edited/displayed
@@ -156,12 +157,9 @@ public class GradePanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
           Assignment assign = getSelectedAssignment();
           if (assign != null && student != null) {
-            java.util.List late = student.getLate();
-//             if (!late.contains(assign.getName())) {
               student.addLate(assign.getName());
-              Vector v = new Vector(student.getLate());
+              Vector<String> v = new Vector<String>(student.getLate());
               lateList.setListData(v);
-//             }
           }
         }
       });
@@ -180,13 +178,10 @@ public class GradePanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
           Assignment assign = getSelectedAssignment();
           if (assign != null && student != null) {
-            java.util.List resubmit = student.getResubmitted();
-//             if (!resubmit.contains(assign.getName())) {
               student.addResubmitted(assign.getName());
-              Vector v = new Vector(student.getResubmitted());
+              Vector<String> v = new Vector<String>(student.getResubmitted());
               resubmitList.setListData(v);
             }
-//           }
         }
       });
     resubmitButtons.add(addResubmit);
@@ -209,7 +204,7 @@ public class GradePanel extends JPanel {
     this.book = book;
 
     // Clear grade fields
-    Vector names = new Vector(book.getAssignmentNames());
+    Vector<String> names = new Vector<String>(book.getAssignmentNames());
     this.assignmentsList.setListData(names);
 
     this.assignmentLabel.setText("Assignment");
@@ -233,8 +228,8 @@ public class GradePanel extends JPanel {
       name = student.getId();
     }
     this.studentNameLabel.setText(name + " (" + student.getId() + ")");
-    this.lateList.setListData(new Vector(student.getLate()));
-    this.resubmitList.setListData(new Vector(student.getResubmitted()));
+    this.lateList.setListData(new Vector<String>(student.getLate()));
+    this.resubmitList.setListData(new Vector<String>(student.getResubmitted()));
 
     // Might as well refresh assignments list
     this.displayAssignmentsFor(this.book);

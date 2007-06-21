@@ -1,17 +1,28 @@
 package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs399J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import edu.pdx.cs399J.ParserException;
 
 /**
  * This panel is used to display and edit <code>Assignment</code>s.
  */
+@SuppressWarnings("serial")
 public class AssignmentPanel extends JPanel {
   private static final String QUIZ = "Quiz";
   private static final String PROJECT = "Project";
@@ -74,9 +85,9 @@ public class AssignmentPanel extends JPanel {
     // Add a NotePanel
     this.notes = new NotesPanel();
     this.notes.setNotable(new Notable() {
-        private ArrayList notes = new ArrayList();
+        private ArrayList<String> notes = new ArrayList<String>();
 
-        public java.util.List getNotes() {
+        public java.util.List<String> getNotes() {
           return notes;
         }
 

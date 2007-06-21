@@ -53,7 +53,7 @@ public class PersonTest extends TestCase {
    */
   public void testInvalidPersonId() {
     try {
-      Person p = new Person(-7, Person.FEMALE);
+      new Person(-7, Person.FEMALE);
       fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
@@ -67,7 +67,7 @@ public class PersonTest extends TestCase {
    */
   public void testInvalidGender() {
     try {
-      Person p = new Person(1, 3);
+      new Person(1, 3);
       fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {

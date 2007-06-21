@@ -17,16 +17,15 @@ public class GenerateMailrc {
     mailrc.println("# Mail aliases for " + book.getClassName());
 
     // Sort all of the students by their id
-    SortedSet sorted = new TreeSet(new Comparator() {
-	public int compare(Object o1, Object o2) {
-	  String id1 = ((Student) o1).getId();
-	  String id2 = ((Student) o2).getId();
+    SortedSet<Student> sorted = new TreeSet<Student>(new Comparator<Student>() {
+	public int compare(Student o1, Student o2) {
+	  String id1 = o1.getId();
+	  String id2 = o2.getId();
 	  return id1.compareTo(id2);
 	}
       });
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      sorted.add(book.getStudent((String) ids.next()));
+    for (String id : book.getStudentIds()) {
+      sorted.add(book.getStudent(id));
     }
 
     Iterator iter = sorted.iterator();

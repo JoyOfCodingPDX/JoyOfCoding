@@ -9,6 +9,7 @@ import javax.swing.border.*;
  * A <code>ChoosePersonDialog</code> is used to select a person from a
  * family tree.
  */
+@SuppressWarnings("serial")
 public class ChoosePersonDialog extends JDialog {
 
   private Person person;  // The chosen person

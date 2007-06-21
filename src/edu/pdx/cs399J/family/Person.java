@@ -1,8 +1,10 @@
 package edu.pdx.cs399J.family;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * This class represents a person in a family tree.  Each person has a
@@ -33,7 +35,7 @@ public class Person {
   private String lastName;
   private Person father;
   private Person mother;
-  private Collection marriages;
+  private Collection<Marriage> marriages;
   private Date dob;             // Date of birth
   private Date dod;             // Date of death
 
@@ -66,7 +68,7 @@ public class Person {
 
     this.id = id;
     this.gender = gender;
-    this.marriages = new ArrayList();
+    this.marriages = new ArrayList<Marriage>();
   }
 
   /**
@@ -82,7 +84,7 @@ public class Person {
 
     this.id = id;
     this.gender = UNKNOWN_GENDER;
-    this.marriages = new ArrayList();
+    this.marriages = new ArrayList<Marriage>();
   }
 
   ///////////////////////  Instance Methods  ///////////////////////
@@ -388,7 +390,7 @@ public class Person {
   /**
    * Returns the marriages that this person was involved in.
    */
-  public Collection getMarriages() {
+  public Collection<Marriage> getMarriages() {
     return this.marriages;
   }
 

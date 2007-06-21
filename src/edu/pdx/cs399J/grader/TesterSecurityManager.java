@@ -1,7 +1,5 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.security.*;
 
 /**
  * <P>This class allows us to call a <code>main</code> method multiple

@@ -58,4 +58,18 @@ public class Course {
     return this.credits;
   }
 
+  /**
+   * Returns the department that offers this course
+   */
+  public String getDepartment() {
+    return department;
+  }
+
+  /**
+   * Returns the number of this course
+   */
+  public int getNumber() {
+    return number;
+  }
+
 }

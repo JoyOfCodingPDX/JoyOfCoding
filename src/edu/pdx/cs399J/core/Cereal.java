@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * This class represents a box of cereal.  It has a name and a price.
  */
-public class Cereal implements Comparable {
+public class Cereal implements Comparable<Cereal> {
   private String name;
   private double price;
 
@@ -38,8 +38,7 @@ public class Cereal implements Comparable {
   /**
    * Compares two <code>Cereal</code>s based on their name
    */
-  public int compareTo(Object o) {
-    Cereal c2 = (Cereal) o;
+  public int compareTo(Cereal c2) {
     return this.getName().compareTo(c2.getName());
   }
 
@@ -68,12 +67,12 @@ public class Cereal implements Comparable {
    * adding a bunch of cereals to a {@link SortedSet}
    */
   public static void main(String[] args) {
-    SortedSet set = new TreeSet();
+    SortedSet<Cereal> set = new TreeSet<Cereal>();
     set.add(new Cereal("Total", 3.56));
     set.add(new Cereal("Raisin Bran", 2.65));
     set.add(new Cereal("Sugar Crisps", 2.38));
 
-    Iterator iter = set.iterator();
+    Iterator<Cereal> iter = set.iterator();
     while (iter.hasNext()) {
       System.out.println(iter.next());
     }

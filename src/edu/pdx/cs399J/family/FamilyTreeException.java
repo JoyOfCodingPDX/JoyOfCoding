@@ -4,6 +4,7 @@ package edu.pdx.cs399J.family;
  * This exception is thrown when something is wrong with a family tree
  * or a data source from which a family tree is read.
  */
+@SuppressWarnings("serial")
 public class FamilyTreeException extends RuntimeException {
 
   ///////////////////////  Constructors  ///////////////////////

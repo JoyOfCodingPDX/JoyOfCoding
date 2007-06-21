@@ -71,12 +71,12 @@ public interface RemoteFamilyTree extends Remote {
    * Returns the people in the family tree that are living
    * (i&#46;e&#46; have a date of birth, but no date of death)
    */
-  public Collection getLiving() throws RemoteException;
+  public Collection<RemotePerson> getLiving() throws RemoteException;
 
   /**
    * Returns the people in the family tree were alive at a certain
    * time 
    */
-  public Collection getLiving(Date date) throws RemoteException;
+  public Collection<RemotePerson> getLiving(Date date) throws RemoteException;
 
 }

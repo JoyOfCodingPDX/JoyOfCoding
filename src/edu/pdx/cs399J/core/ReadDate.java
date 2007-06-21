@@ -1,8 +1,9 @@
 package edu.pdx.cs399J.core;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Date;
 
 /**
  * This class demonstrates object serialization by reading an instance

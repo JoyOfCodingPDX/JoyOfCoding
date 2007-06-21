@@ -22,9 +22,6 @@ public class Report {
   /** Write output of tests and other stuff to here. */
   private PrintWriter log;
 
-  /** The student's id for whom we are reporting. */
-  private String id;
-
   /** Are we finished? */
   private boolean done = false;
 
@@ -37,7 +34,6 @@ public class Report {
    * <code>"writer"</code>.
    */
   public Report(PrintWriter pw) {
-    this.id = "writer";
     this.log = pw;
   }
   
@@ -52,8 +48,6 @@ public class Report {
    *        Directory into which the log file is placed.
    */
   public Report(final String id, File logDir) {
-    this.id = id;
-
     if (!logDir.isDirectory()) {
       throw new IllegalArgumentException(logDir + 
 					 " is not a directory");
@@ -84,11 +78,6 @@ public class Report {
      * result in this file stream being closed. 
      */
     class CheckedPrintStream extends PrintStream {
-      public CheckedPrintStream(OutputStream stream, 
-				boolean autoFlush) {
-	super(stream, autoFlush);
-      }
-
       public CheckedPrintStream(OutputStream stream) {
 	super(stream);
       }

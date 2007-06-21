@@ -7,7 +7,7 @@ import java.util.*;
  * them.
  *
  * @author David Whitlock
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * @since Fall 2000
  */
 public interface Notable {
@@ -15,7 +15,7 @@ public interface Notable {
   /**
    * Returns notes about this object.
    */
-  public List getNotes();
+  public List<String> getNotes();
 
   /**
    * Adds a note about this object.

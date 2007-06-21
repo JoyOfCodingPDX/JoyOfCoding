@@ -1,17 +1,21 @@
 package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs399J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * This dialog is used to create a new <code>Assignment</code>
  */
+@SuppressWarnings("serial")
 public class NewAssignmentDialog extends JDialog {
 
   private Assignment assignment;

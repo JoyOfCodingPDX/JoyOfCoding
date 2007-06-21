@@ -1,9 +1,13 @@
 package edu.pdx.cs399J.family.tests;
 
-import edu.pdx.cs399J.family.*;
-import java.io.*;
-import java.util.*;
-import junit.framework.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
+
+import edu.pdx.cs399J.family.FamilyTree;
+import edu.pdx.cs399J.family.FamilyTreeException;
+import edu.pdx.cs399J.family.Marriage;
+import edu.pdx.cs399J.family.Person;
 
 /**
  * This is the abstract superclass that tests the conversion of a

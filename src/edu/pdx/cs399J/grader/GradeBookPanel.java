@@ -1,13 +1,34 @@
 package edu.pdx.cs399J.grader;
 
-import edu.pdx.cs399J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import edu.pdx.cs399J.ParserException;
 
 /**
  * This panel displays the contents of a grade book.  On the left-hand
@@ -15,6 +36,7 @@ import javax.swing.event.*;
  * center of the panel is a tabbed pane that lets you view/edit
  * information about the class, a student, or a student's grades.
  */
+@SuppressWarnings("serial")
 public class GradeBookPanel extends JPanel {
   static final int BY_ID = 1;
   static final int BY_NAME = 2;
@@ -191,20 +213,18 @@ public class GradeBookPanel extends JPanel {
  * Class used for displaying either student ids or their full names in
  * a <code>JList</code> 
  */
+@SuppressWarnings("serial")
 class StudentsModel extends AbstractListModel {
 
-  private ArrayList ids;  // ids in order
-  private ArrayList data; // displayed names in order
+  private ArrayList<String> ids;  // ids in order
+  private ArrayList<String> data; // displayed names in order
 
   public StudentsModel(final GradeBook book, final int sortedOrder) {
-    this.ids = new ArrayList();
-    this.data = new ArrayList();
+    this.ids = new ArrayList<String>();
+    this.data = new ArrayList<String>();
 
-    SortedSet sortedStudents = new TreeSet(new Comparator() {
-        public int compare(Object o1, Object o2) {
-          Student s1 = (Student) o1;
-          Student s2 = (Student) o2;
-
+    SortedSet<Student> sortedStudents = new TreeSet<Student>(new Comparator<Student>() {
+        public int compare(Student s1, Student s2) {
           if (sortedOrder == GradeBookPanel.BY_ID) {
             // Sort by id
             return s1.getId().compareTo(s2.getId());

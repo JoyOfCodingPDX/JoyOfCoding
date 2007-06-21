@@ -7,8 +7,9 @@ import javax.swing.*;
  * A <code>FamilyTreeList</code> is a <code>JList</code> that contains
  * the names of the people in a family tree.
  */
+@SuppressWarnings("serial")
 public class FamilyTreeList extends JList {
-  private Map indexToPerson = new HashMap();
+  private Map<Integer, Person> indexToPerson = new HashMap<Integer, Person>();
 
   /**
    * Creates a <code>JList</code> populates it with the name of 
@@ -23,12 +24,10 @@ public class FamilyTreeList extends JList {
    * <code>FamilyTree</code>.
    */
   public void fillInList(FamilyTree tree) {
-    SortedSet sortedPeople = new TreeSet(new Comparator() {
+    SortedSet<Person> sortedPeople = new TreeSet<Person>(new Comparator<Person>() {
         // Sort id's from lowest to highest
 
-        public int compare(Object o1, Object o2) {
-          Person p1 = (Person) o1;
-          Person p2 = (Person) o2;
+        public int compare(Person p1, Person p2) {
           return p1.getId() - p2.getId();
         }
 

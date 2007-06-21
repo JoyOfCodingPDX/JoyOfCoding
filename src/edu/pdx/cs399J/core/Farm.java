@@ -27,7 +27,7 @@ public class Farm {
    * Create a <code>Map</code> and print it.
    */
   public static void main(String[] args) {
-    Map farm = new HashMap();
+    Map<String, Animal> farm = new HashMap<String, Animal>();
     farm.put("Old MacDonald", new Human("Old MacDonald"));
     farm.put("Bossie", new Cow("Bossie"));
     farm.put("Clyde", new Sheep("Clyde"));

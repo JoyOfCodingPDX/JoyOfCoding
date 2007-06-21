@@ -80,8 +80,8 @@ class XmlHelper implements EntityResolver, ErrorHandler {
   /**
    * Extracts a bunch of notes from an <code>Element</code>
    */
-  protected static List extractNotesFrom(Element element) {
-    List list = new ArrayList();
+  protected static List<String> extractNotesFrom(Element element) {
+    List<String> list = new ArrayList<String>();
 
     NodeList children = element.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {

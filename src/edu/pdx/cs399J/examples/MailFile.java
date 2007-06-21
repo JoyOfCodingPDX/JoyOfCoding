@@ -15,7 +15,6 @@ import javax.mail.internet.*;
  */
 public class MailFile {
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**

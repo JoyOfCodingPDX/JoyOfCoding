@@ -14,6 +14,7 @@ import javax.swing.event.*;
  * This class is a <code>JPanel</code> that can be used to display a
  * family tree. 
  */
+@SuppressWarnings("serial")
 public class FamilyTreePanel extends JPanel {
   protected FamilyTree tree = new FamilyTree();
 
@@ -25,7 +26,7 @@ public class FamilyTreePanel extends JPanel {
   /**
    * Creates a new <code>FamilyTreePanel</code>
    */
-  public void FamilyTreePanel() {
+  public FamilyTreePanel() {
     this.addComponents();
   }
 

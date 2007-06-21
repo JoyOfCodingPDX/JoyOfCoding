@@ -12,6 +12,7 @@ import javax.swing.border.*;
 /**
  * This is a dialog for creating a new <code>Person</code>.
  */
+@SuppressWarnings("serial")
 public class AddPersonDialog extends JDialog {
 
   // The person we're creating

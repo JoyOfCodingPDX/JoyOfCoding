@@ -10,7 +10,6 @@ import junit.framework.*;
  * a given test case class.
  */
 public class TestRunner {
-  private static final PrintStream out = System.out;
   private static final PrintStream err = System.err;
 
   /**
@@ -32,9 +31,10 @@ public class TestRunner {
   /**
    * The main program
    */
+  @SuppressWarnings("unchecked")
   public static void main(String[] args) throws Throwable {
     String className = null;
-    List methodNames = new ArrayList();
+    List<String> methodNames = new ArrayList<String>();
 
     for (int i = 0; i < args.length; i++) {
       if (className == null) {
@@ -49,7 +49,7 @@ public class TestRunner {
       usage("Missing class name");
     }
 
-    Class c = Class.forName(className);
+    Class<TestCase> c = (Class<TestCase>) Class.forName(className);
     TestSuite suite;
 
     if (methodNames.isEmpty()) {

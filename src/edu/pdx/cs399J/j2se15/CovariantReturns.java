@@ -42,9 +42,11 @@ public class CovariantReturns {
    */
   public static void main(String[] args) {
     Human human = new Human();
+    @SuppressWarnings("unused")
     Human human2 = human.clone();
 
     Student student = new Student();
+    @SuppressWarnings("unused")
     Student student2 = student.clone();
   }
 
