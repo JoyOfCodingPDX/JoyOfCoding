@@ -8,7 +8,7 @@ import edu.pdx.cs399J.ParserException;
 /**
  * This class represents a student who is taking CS399J.
  */
-public class Student implements Notable {
+public class Student extends NotableImpl {
 
   private String id;
   private String firstName;
@@ -21,14 +21,10 @@ public class Student implements Notable {
   /** Maps name of Assignment to Grade.  The grades are sorted so that
    * they will appear in a canonical order in the student's XML
    * file. */
-  private SortedMap grades;
+  private SortedMap<String, Grade> grades;
 
-  private List late;   // Names of late Assignments
-  private List resubmitted;  // Names of resubmitted Assignments
-
-  private List notes;  // Notes about the student
-
-  private boolean dirty;
+  private List<String> late;   // Names of late Assignments
+  private List<String> resubmitted;  // Names of resubmitted Assignments
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -38,11 +34,9 @@ public class Student implements Notable {
    */
   public Student(String id) {
     this.id = id;
-    this.grades = new TreeMap();
-    this.late = new ArrayList();
-    this.resubmitted = new ArrayList();
-    this.notes = new ArrayList();
-    this.setDirty(true);
+    this.grades = new TreeMap<String, Grade>();
+    this.late = new ArrayList<String>();
+    this.resubmitted = new ArrayList<String>();
   }
 
   ///////////////////////  Instance Methods  ///////////////////////
@@ -194,7 +188,7 @@ public class Student implements Notable {
   /**
    * Returns the names of all of the assignments that are late.
    */
-  public List getLate() {
+  public List<String> getLate() {
     return this.late;
   }
 
@@ -209,7 +203,7 @@ public class Student implements Notable {
   /**
    * Returns the names of all of the assignments that are resubmitted.
    */
-  public List getResubmitted() {
+  public List<String> getResubmitted() {
     return this.resubmitted;
   }
 
@@ -220,55 +214,12 @@ public class Student implements Notable {
     this.setDirty(true);
     this.resubmitted.add(assignmentName);
   }
-
-  /**
-   * Returns all of the notes about this <code>Student</code>
-   */
-  public List getNotes() {
-    return this.notes;
-  }
-
-  /**
-   * Adds a note about this <code>Student</code>
-   */
-  public void addNote(String note) {
-    this.setDirty(true);
-    this.notes.add(note);
-  }
-
-  public void removeNote(String note) {
-    this.setDirty(true);
-    this.notes.remove(note);
-  }
-
-  /**
-   * Returns the "dirtiness" of this <code>Student</code>.  That is,
-   * has the <code>Student</code> been modified.
-   */
-  boolean isDirty() {
-    Iterator iter = this.grades.values().iterator();
-    while (iter.hasNext()) {
-      Grade grade = (Grade) iter.next();
-      if (grade.isDirty()) {
-        return true;
-      }
-    }
-    return this.dirty;
-  }
-
-  /**
-   * Sets the "dirtiness" of this <code>Student</code>.  That is, has
-   * the <code>Student</code> been modified.
-   */
-  void setDirty(boolean dirty) {
-    this.dirty = dirty;
-  }
   
   /**
    * Marks this <code>Student</code> as being clean
    */
   public void makeClean() {
-    this.setDirty(false);
+	super.makeClean();
 
     // Make all Grades clean
     Iterator iter = this.grades.values().iterator();
@@ -343,7 +294,6 @@ public class Student implements Notable {
 
   ///////////////////////  Main Program  ///////////////////////
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**

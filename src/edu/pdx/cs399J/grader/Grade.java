@@ -1,14 +1,16 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import edu.pdx.cs399J.ParserException;
 
 /**
  * This class represent the grade a student got on an assignment.
  */
-public class Grade implements Notable {
+public class Grade extends NotableImpl {
   /**
    * The assignment is not complete
    */
@@ -21,8 +23,6 @@ public class Grade implements Notable {
 
   private String assignmentName;
   private double score;         // Score student received
-  List notes;
-  private boolean isDirty;
   
 
   /**
@@ -31,7 +31,6 @@ public class Grade implements Notable {
   public Grade(String assignmentName, double score) {
     this.assignmentName = assignmentName;
     this.score = score;
-    this.notes = new ArrayList();
     this.setDirty(true);  // Initially dirty
   }
 
@@ -58,49 +57,6 @@ public class Grade implements Notable {
     this.setDirty(true);
   }
 
-  /**
-   * Returns the notes that have been made about this
-   * <code>Grade</code>
-   */
-  public List getNotes() {
-    return this.notes;
-  }
-
-  /**
-   * Adds a notes about this <code>Grade</code>
-   */
-  public void addNote(String note) {
-    this.notes.add(note);
-    this.setDirty(true);
-  }
-
-  public void removeNote(String note) {
-    this.notes.remove(note);
-    this.setDirty(true);
-  }
-
-  /**
-   * Marks this <code>Grade</code> as dirty.
-   */
-  void setDirty(boolean isDirty) {
-    this.isDirty = isDirty;
-  }
-
-  /**
-   * Makes this <code>Grade</code> clean
-   */
-  void makeClean() {
-    this.setDirty(false);
-  }
-
-  /**
-   * Returns the "dirtiness" of this <code>Grade</code>
-   */
-  boolean isDirty() {
-    return this.isDirty;
-  }
-
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**

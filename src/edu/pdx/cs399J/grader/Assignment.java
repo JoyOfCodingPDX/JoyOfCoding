@@ -1,7 +1,9 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import edu.pdx.cs399J.ParserException;
 
@@ -10,7 +12,7 @@ import edu.pdx.cs399J.ParserException;
  *
  * @author David Whitlock
  */
-public class Assignment implements Notable {
+public class Assignment extends NotableImpl {
   /**
    * The assignment is a project
    */
@@ -31,9 +33,6 @@ public class Assignment implements Notable {
   private String description;
   private double points;
   private int type;
-  private List notes = new ArrayList();
-  private boolean dirty;  // Has this assignment been modified?
-  
   /**
    * Creates a new <code>Assignment</code> with the given name and
    * point value.
@@ -41,7 +40,7 @@ public class Assignment implements Notable {
   public Assignment(String name, double points) {
     this.name = name;
     this.points = points;
-    this.dirty = false;
+    this.setDirty(false);
   }
 
   /**
@@ -64,7 +63,7 @@ public class Assignment implements Notable {
    * worth.
    */
   public void setPoints(double points) {
-    this.dirty = true;
+    this.setDirty(true);
     this.points = points;
   }
 
@@ -79,7 +78,7 @@ public class Assignment implements Notable {
    * Sets the description of this <code>Assignment</code>
    */
   public void setDescription(String description) {
-    this.dirty = true;
+    this.setDirty(true);
     this.description = description;
   }
 
@@ -102,50 +101,8 @@ public class Assignment implements Notable {
    * @see #OTHER
    */
   public void setType(int type) {
-    this.dirty = true;
-    this.type = type;
-  }
-
-  /**
-   * Returns notes about this <code>Assignment</code>
-   */
-  public List getNotes() {
-    return this.notes;
-  }
-
-  /**
-   * Adds a note about this <code>Assignment</code>
-   */
-  public void addNote(String note) {
-    this.dirty = true;
-    this.notes.add(note);
-  }
-
-  public void removeNote(String note) {
     this.setDirty(true);
-    this.notes.remove(note);
-  }
-
-  /**
-   * Sets the dirtiness of this <code>Assignment</code>
-   */
-  public void setDirty(boolean dirty) {
-    this.dirty = dirty;
-  }
-
-  /**
-   * Returns <code>true</code> if this <code>Assignment</code> has been
-   * modified.
-   */
-  public boolean isDirty() {
-    return this.dirty;
-  }
-
-  /**
-   * Marks this <code>Assignment</code> as being clean
-   */
-  public void makeClean() {
-    this.setDirty(false);
+    this.type = type;
   }
 
   /**
@@ -158,7 +115,6 @@ public class Assignment implements Notable {
   }
   
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
   private static PrintWriter err = new PrintWriter(System.err, true);
 
   /**
