@@ -7,6 +7,7 @@ package edu.pdx.cs399J;
  *
  * @author David Whitlock
  */
+@SuppressWarnings("serial")
 public class ParserException extends Exception {
 
   /**

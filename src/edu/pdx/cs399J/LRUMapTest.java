@@ -117,7 +117,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testMapSizeIsBounded() {
     int maxMappings = 4;
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings);
     assertEquals(0, map.size());
 
@@ -139,7 +139,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testLRUMappingIterates() {
     int maxMappings = 4; 
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings); 
     assertEquals(0, map.size()); 
  
@@ -178,7 +178,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testLRUMappingIsRemoved() {
     int maxMappings = 4;
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings);
     assertEquals(0, map.size());
 
@@ -203,7 +203,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testGetFromMap() {
     int maxMappings = 4;
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings);
     assertEquals(0, map.size());
 
@@ -240,7 +240,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testRemoveFromMap() {
     int maxMappings = 4;
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings);
     assertEquals(0, map.size());
 
@@ -281,7 +281,7 @@ public class LRUMapTest extends TestCase {
    */
   public void testClear() {
     int maxMappings = 4;
-    AbstractLRUMap map = 
+    AbstractLRUMap<Integer, String> map = 
       AbstractLRUMap.createLRUMap(LRU_MAP_CLASS_NAME, maxMappings);
     assertEquals(0, map.size());
 
@@ -331,7 +331,6 @@ public class LRUMapTest extends TestCase {
 
   ///////////////////////  Main Program  ///////////////////////
 
-  private static PrintStream out = System.out;
   private static PrintStream err = System.err;
 
   /**
@@ -353,7 +352,7 @@ public class LRUMapTest extends TestCase {
    */
   public static void main(String[] args) {
     String className = null;
-    List testNames = new ArrayList();
+    List<String> testNames = new ArrayList<String>();
     
     for (int i = 0; i < args.length; i++) {
       if (className == null) {

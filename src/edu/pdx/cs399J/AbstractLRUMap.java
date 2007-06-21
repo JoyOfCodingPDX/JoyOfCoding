@@ -50,12 +50,13 @@ public abstract class AbstractLRUMap<K, V> extends AbstractMap<K, V> {
    * @throws IllegalArgumentException
    *         A map cannot be created
    */
-  public static AbstractLRUMap createLRUMap(String className, 
+  @SuppressWarnings("unchecked")
+public static <K, V> AbstractLRUMap<K, V> createLRUMap(String className, 
                                             int capacity) {
     // First, load the class
-    Class c;
+    Class<AbstractLRUMap<K, V>> c;
     try {
-      c = Class.forName(className);
+      c = (Class<AbstractLRUMap<K, V>>) Class.forName(className);
       if (c.isInterface()) {
         String s = "Cannot create an LRU Map from an interface: " +
           className;
@@ -75,7 +76,7 @@ public abstract class AbstractLRUMap<K, V> extends AbstractMap<K, V> {
     }
 
     // Get the one-argument constructor
-    Constructor init;
+    Constructor<AbstractLRUMap<K, V>> init;
     try {
       init = c.getConstructor(new Class[] { int.class });
       init.setAccessible(true);
@@ -89,7 +90,7 @@ public abstract class AbstractLRUMap<K, V> extends AbstractMap<K, V> {
     // Invoke the constructor
     try {
       Object[] args = new Object[] { new Integer(capacity) };
-      return (AbstractLRUMap) init.newInstance(args);
+      return init.newInstance(args);
 
     } catch (InstantiationException ex) {
       String s = "While creating a \"" + className + "\": " + ex;

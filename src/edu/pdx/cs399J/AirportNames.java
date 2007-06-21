@@ -14,7 +14,7 @@ public class AirportNames {
   ////////////////////////  Instance Fields  /////////////////////////
 
   /** Maps three-letter code to airport name */
-  private Map names;
+  private Map<String, String> names;
 
   /////////////////////////  Constructors  //////////////////////////
 
@@ -23,7 +23,7 @@ public class AirportNames {
    * names.
    */
   private AirportNames() {
-    Map names = new java.util.TreeMap();
+    Map<String, String> names = new java.util.TreeMap<String, String>();
 
     names.put("ABE", "Allentown, PA");
     names.put("ABQ", "Albuquerque, NM");
