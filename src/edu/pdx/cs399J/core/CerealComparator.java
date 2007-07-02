@@ -27,9 +27,7 @@ public class CerealComparator implements Comparator<Cereal> {
     set.add(new Cereal("Froot Loops", 2.45));
 
     // Print out the cereals
-    Iterator<Cereal> iter = set.iterator();
-    while (iter.hasNext()) {
-      Cereal c = iter.next();
+    for (Cereal c : set) {
       System.out.println(c);
     }
   }

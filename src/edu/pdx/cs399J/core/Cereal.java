@@ -72,9 +72,8 @@ public class Cereal implements Comparable<Cereal> {
     set.add(new Cereal("Raisin Bran", 2.65));
     set.add(new Cereal("Sugar Crisps", 2.38));
 
-    Iterator<Cereal> iter = set.iterator();
-    while (iter.hasNext()) {
-      System.out.println(iter.next());
+    for (Cereal c : set ) {
+      System.out.println(c);
     }
   }
 

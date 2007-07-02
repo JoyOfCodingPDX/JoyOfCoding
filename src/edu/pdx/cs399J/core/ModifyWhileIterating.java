@@ -13,9 +13,9 @@ public class ModifyWhileIterating {
     list.add("one");
     list.add("two");
 
-    Iterator iter = list.iterator();
+    Iterator<String> iter = list.iterator();
     while (iter.hasNext()) {
-      String s = (String) iter.next();
+      String s = iter.next();
       if (s.equals("one")) {
         list.add(0, "start");
       }

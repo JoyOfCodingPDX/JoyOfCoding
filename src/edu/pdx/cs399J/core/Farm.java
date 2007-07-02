@@ -12,10 +12,8 @@ public class Farm {
   /**
    * Prints the contents of a <code>Map</code>.
    */
-  private static void print(Map map) {
-    Iterator keys = map.keySet().iterator();
-    while (keys.hasNext()) {
-      Object key = keys.next();
+  private static void print(Map<String, Animal> map) {
+    for (String key : map.keySet()) {
       Object value = map.get(key);
 
       String s = key + " -> " + value;
