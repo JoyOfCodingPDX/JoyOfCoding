@@ -56,7 +56,10 @@
 
     <!-- Are we running JDK 1.5? -->
     <condition property="jdk1.5">
-      <equals arg1="${java.specification.version}" arg2="1.5"/>
+      <or>
+        <equals arg1="${java.specification.version}" arg2="1.5"/>
+        <equals arg1="${java.specification.version}" arg2="1.6"/>
+      </or>
     </condition>
 
     <condition property="javac.source" value="1.5">
