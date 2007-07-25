@@ -230,6 +230,25 @@ public class Student extends NotableImpl {
   }
 
   /**
+   * If any of its grades is dirty, then the student is dirty
+   */
+  @Override
+  public boolean isDirty() {
+    if (super.isDirty()) {
+      return true;
+      
+    } else {
+      for (Grade grade : this.grades.values()) {
+        if (grade.isDirty()) {
+          return true;
+        }
+      }
+      
+      return false;
+    }
+  }
+
+  /**
    * Returns a complete textual description of this
    * <code>Student</code>.
    */
