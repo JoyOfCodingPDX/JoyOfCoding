@@ -26,7 +26,7 @@ public abstract class NotableImpl implements Notable {
 	   * Adds a note about this <code>Assignment</code>
 	   */
 	public void addNote(String note) {
-	    this.dirty = true;
+	    this.setDirty(true);
 	    this.notes.add(note);
 	  }
 
