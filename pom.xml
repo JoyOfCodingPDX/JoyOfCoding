@@ -8,5 +8,6 @@
   <modules>
     <module>family</module>
     <module>examples</module>
+    <module>cs399J</module>
   </modules>
 </project>
