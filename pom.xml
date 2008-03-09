@@ -10,6 +10,7 @@
     <module>family</module>
     <module>grader</module>
     <module>examples</module>
+    <module>web</module>
   </modules>
   <reporting>
     <plugins>
