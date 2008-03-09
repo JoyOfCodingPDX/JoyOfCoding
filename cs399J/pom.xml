@@ -1,15 +1,15 @@
 <?xml version="1.0"?><project>
   <parent>
     <artifactId>CS399J</artifactId>
-    <groupId>com.mycompany.app</groupId>
-    <version>Summer 2008</version>
+    <groupId>edu.pdx.cs399J</groupId>
+    <version>Summer2008</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>cs399J</artifactId>
   <name>cs399J</name>
-  <version>1.0-SNAPSHOT</version>
-  <url>http://maven.apache.org</url>
+  <version>Summer2008</version>
+  <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -26,6 +26,15 @@
         <configuration>
            <source>1.5</source>
            <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/LRUMapTest.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
