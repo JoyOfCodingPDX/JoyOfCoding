@@ -31,4 +31,11 @@
       </plugin>
     </plugins>
   </reporting>
+  <distributionManagement>
+    <repository>
+      <id>whitlock-repository</id>
+      <name>David Whitlock's PSU Repository</name>
+      <url>scp://cs.pdx.edu/u/whitlock/repository/maven2</url>
+    </repository>
+  </distributionManagement>
 </project>
