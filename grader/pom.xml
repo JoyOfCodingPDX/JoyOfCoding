@@ -8,7 +8,7 @@
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>Summer2008</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
@@ -41,6 +41,19 @@
         <configuration>
            <source>1.5</source>
            <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
+              <mainClass>edu.pdx.cs399J.grader.GradeBookGUI</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>

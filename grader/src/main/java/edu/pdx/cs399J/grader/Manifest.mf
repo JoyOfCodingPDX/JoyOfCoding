@@ -1,6 +1,0 @@
-Manifest-Version: 1.1
-Created-By: David Whitlock
-Class-Path: http://www.cs.pdx.edu/~whitlock/jars/jlfgr-1_0.jar
-            http://www.cs.pdx.edu/~whitlock/jars/mail.jar 
-            http://www.cs.pdx.edu/~whitlock/jars/activation.jar
-Main-Class: edu.pdx.cs399J.grader.GradeBookGUI
