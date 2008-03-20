@@ -9,7 +9,7 @@
   <artifactId>examples</artifactId>
   <name>examples</name>
   <version>Summer2008</version>
-  <url>http://maven.apache.org</url>
+  <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
@@ -28,16 +28,4 @@
       <version>1.4</version>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-           <source>1.5</source>
-           <target>1.5</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
