@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <version>Summer2008</version>
   <artifactId>CS399J</artifactId>
   <packaging>pom</packaging>
+  <name>CS399J Java Example Code</name>
+  <description>Example Java Code for CS399J: Advanced Java Programming at Portland State Univeristy</description>
+  <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
     <module>cs399J</module>
     <module>family</module>
@@ -12,16 +16,93 @@
     <module>examples</module>
     <module>web</module>
   </modules>
-  <reporting>
+  <inceptionYear>2000</inceptionYear>
+  <organization>
+    <name>Portland State University</name>
+    <url>http://www.pdx.edu</url>
+  </organization>
+  <developers>
+    <developer>
+      <id>whitlock</id>
+      <name>David Whitlock</name>
+      <email>whitlock@cs.pdx.edu</email>
+      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <organization>PSU Department of Computer Science</organization>
+      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <roles>
+        <role>Professor</role>
+      </roles>
+      <timezone>-7</timezone>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS399J</connection>
+    <tag>HEAD</tag>
+    <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
+  </scm>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-           <source>1.5</source>
-           <target>1.5</target>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <!--
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>1.5f</targetJdk>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <configuration>
+          <xmlOutput>true</xmlOutput>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+      </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -31,19 +112,51 @@
           <links>
             <link>http://java.sun.com/javase/6/docs/api</link>
             <link>http://java.sun.com/javaee/5/docs/api</link>
-            <link>http://www.junit.org/junit/javadoc/3.7</link>
+            <link>http://junit.sourceforge.net/javadoc</link>
             <link>http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/doclet</link>
             <link>http://www.jakarta.org/ant/ant-1.6.1/docs/en/manual/api</link>
           </links>
-          </configuration>
+        </configuration>
       </plugin>
+      <!--
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javancss-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>summary</report>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>license</report>
+              <report>issue-tracking</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <!- - The dashboard report should be last - ->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>dashboard-maven-plugin</artifactId>
+      </plugin>
+    -->
     </plugins>
   </reporting>
   <distributionManagement>
     <repository>
-      <id>whitlock-repository</id>
+      <id>whitlock-PSU</id>
       <name>David Whitlock's PSU Repository</name>
-      <url>scp://cs.pdx.edu/u/whitlock/repository/maven2</url>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
     </repository>
+    <site>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Web Site</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/site</url>
+    </site>
   </distributionManagement>
 </project>
