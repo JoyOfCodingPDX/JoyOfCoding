@@ -118,7 +118,7 @@
       <formatter type="plain" usefile="true"/>
 
       <test fork="yes" todir="${tests.results.dir}"
-            name="edu.pdx.cs399J.LRUMapTest"/>
+            name="edu.pdx.cs399J.LRUMapTestCase"/>
     </junit>
   </target>
 
