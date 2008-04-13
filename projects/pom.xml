@@ -6,8 +6,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
-  <artifactId>cs399J</artifactId>
-  <name>cs399J</name>
+  <artifactId>projects</artifactId>
+  <name>projects</name>
   <version>Summer2008</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>

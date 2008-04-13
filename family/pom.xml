@@ -21,7 +21,7 @@
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
-      <artifactId>cs399J</artifactId>
+      <artifactId>projects</artifactId>
       <version>Summer2008</version>
     </dependency>
   </dependencies>

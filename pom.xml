@@ -10,7 +10,7 @@
   <description>Example Java Code for CS399J: Advanced Java Programming at Portland State Univeristy</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
-    <module>cs399J</module>
+    <module>projects</module>
     <module>family</module>
     <module>grader</module>
     <module>examples</module>
