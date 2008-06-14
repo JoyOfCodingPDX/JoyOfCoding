@@ -54,9 +54,7 @@ public class FamilyTreeList extends JList {
    * Returns the currently selected person.
    */
   public Person getSelectedPerson() {
-    int index = this.getSelectedIndex();
-    Person person = (Person) this.indexToPerson.get(new Integer(index));
-    return person;
+    return this.indexToPerson.get(this.getSelectedIndex());
   }
 
   /**

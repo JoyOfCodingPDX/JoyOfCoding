@@ -53,7 +53,7 @@ public class PersonPanel extends JPanel {
     JPanel infoPanel = new JPanel();
     infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
-    this.name = new JLabel("Name");
+    this.name = new JLabel("Name: ");
     this.name.setToolTipText("The name of this person");
     this.name.setAlignmentX(Component.LEFT_ALIGNMENT);
     infoPanel.add(this.name);

@@ -179,9 +179,9 @@ public class TextDumper implements Dumper {
     String fileName = args[0];
 
     // Make some people
-    Person me = Person.me();
-    Person mom = Person.mom(me);
-    Person dad = Person.dad(me);
+    Person me = PersonMain.me();
+    Person mom = PersonMain.mom(me);
+    Person dad = PersonMain.dad(me);
 
     me.setMother(mom);
     me.setFather(dad);

@@ -1,6 +1,5 @@
 package edu.pdx.cs399J.family;
 
-import java.text.*;
 import java.util.*;
 
 /**
@@ -97,44 +96,13 @@ public class Marriage {
 	      this.wife.getFullName() + " were married");
 
     if (this.date != null) {
-      DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
-      sb.append(" on " + df.format(this.date));
+      sb.append(" on " + this.date);
     }
     if (this.location != null) {
       sb.append(" in " + this.location);
     }
 
     return sb.toString();
-  }
-
-  /**
-   * A simple test program.
-   */
-  public static void main(String[] args) {
-    // Create my parent's marriage
-    Person me = Person.me();
-    Person mom = Person.mom(me);
-    Person dad = Person.dad(me);
-
-    Marriage marriage = new Marriage(dad, mom);
-    marriage.setLocation("Durham, NH");
-
-    try {
-      DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
-      marriage.setDate(df.parse("Jul 12, 1969"));
-
-    } catch (ParseException ex) {
-      System.err.println("** Malformatted wedding day?");
-      System.exit(1);
-    }
-
-    mom.addMarriage(marriage);
-    dad.addMarriage(marriage);
-
-    // Print out some info
-    System.out.println(mom + "\n");
-    System.out.println(dad + "\n");
-    System.out.println(marriage + "\n");
   }
 
 }

@@ -25,4 +25,28 @@
       <version>Summer2008</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
+              <mainClass>edu.pdx.cs399J.family.FamilyTreeGUI</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

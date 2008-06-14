@@ -1,10 +1,9 @@
 package edu.pdx.cs399J.family;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * This class represents a person in a family tree.  Each person has a
@@ -14,7 +13,7 @@ import java.util.Date;
  *
  * @author David Whitlock
  */
-public class Person {
+public class Person implements Serializable {
 
   /** A constant representing the id of an unknown person */
   public static final int UNKNOWN = -1;
@@ -419,16 +418,15 @@ public class Person {
    */
   public String toString() {
     StringBuffer sb = new StringBuffer();
-    DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
     sb.append("Person " + this.id + ": " + this.getFullName());
     if (this.dob != null) {
       sb.append("\nBorn: ");
-      sb.append(df.format(this.dob));
+      sb.append(this.dob);
     }
     if (this.dod != null) {
       sb.append(", Died: ");
-      sb.append(df.format(this.dod));
+      sb.append(this.dod);
     }
 
     if (this.mother != null) {
@@ -445,81 +443,6 @@ public class Person {
     sb.append(" times");
 
     return sb.toString();
-  }
-
-  ///////////////////////  Main Program  ////////////////////////////
-
-  /**
-   * A simple test program.
-   */
-  public static void main(String[] args) {
-    // Make some people and fill in information
-    Person me = me();
-    Person dad = dad(me);
-    Person mom = mom(me);
-
-    me.setMother(mom);
-    me.setFather(dad);
-
-    // Print out descriptions of these people
-    System.out.println(me + "\n");
-    System.out.println(mom + "\n");
-    System.out.println(dad + "\n");
-    
-  }
-
-  /**
-   * Returns a Person representing me.
-   */
-  static Person me() {
-    Person me = new Person(1, Person.MALE);
-    me.setFirstName("David");
-    me.setMiddleName("Michael");
-    me.setLastName("Whitlock");
-
-    return me;
-  }
-
-  /**
-   * Returns a Person representing my mom.
-   */
-  static Person mom(Person me) {
-    Person mom = new Person(2, Person.FEMALE);
-    mom.setFirstName("Carolyn");
-    mom.setMiddleName("Joyce");
-    mom.setLastName("Granger");
-
-    try {
-      DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
-      mom.setDateOfBirth(df.parse("May 17, 1945"));
-
-    } catch (ParseException ex) {
-      System.err.println("** Malformatted mom's birthday?");
-      System.exit(1);
-    }
-
-    return mom;
-  }
-
-  /**
-   * Returns a Person representing my dad.
-   */
-  static Person dad(Person me) {
-    Person dad = new Person(3, Person.MALE);
-    dad.setFirstName("Stanley");
-    dad.setMiddleName("Jay");
-    dad.setLastName("Whitlock");
-
-    try {
-      DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
-      dad.setDateOfBirth(df.parse("Feb 27, 1948"));
-
-    } catch (ParseException ex) {
-      System.err.println("** Malformatted dad's birthday?");
-      System.exit(1);
-    }
-
-    return dad;
   }
 
 }
