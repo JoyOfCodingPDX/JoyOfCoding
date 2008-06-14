@@ -28,6 +28,71 @@
           <stopPort>9999</stopPort>
         </configuration>
       </plugin>
+      <plugin>
+        <!-- skip unit test run, tests to be executed during integration-test -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>surefire-it</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <skip>false</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <container>
+            <containerId>jetty6x</containerId>
+            <type>embedded</type>
+            <systemProperties>
+              <org.apache.commons.logging.Log>
+                org.apache.commons.logging.impl.SimpleLog
+              </org.apache.commons.logging.Log>
+            </systemProperties>
+          </container>
+          <wait>false</wait>
+          <configuration>
+            <properties>
+              <cargo.servlet.port>8080</cargo.servlet.port>
+            </properties>
+            <deployables>
+              <deployable>
+                <location>
+                  ${project.build.directory}/${project.build.finalName}.${project.packaging}
+                </location>
+                <pingURL>http://localhost:8080/${project.build.finalName}/web/info</pingURL>
+              </deployable>
+            </deployables>
+          </configuration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
