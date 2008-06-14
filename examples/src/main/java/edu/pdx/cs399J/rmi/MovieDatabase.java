@@ -40,14 +40,14 @@ public interface MovieDatabase extends Remote {
    * Returns the movie in which a given actor acted.  The movies are
    * sorted by release date.
    */
-  public SortedSet getFilmography(String actor) 
+  public SortedSet<Movie> getFilmography(String actor) 
     throws RemoteException;
 
   /**
    * Performs a query on the database.  The movies that match the
    * query are sorted using the given comparator.
    */
-  public SortedSet executeQuery(Query query, Comparator sorter) 
+  public SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter) 
     throws RemoteException;
 
   /**

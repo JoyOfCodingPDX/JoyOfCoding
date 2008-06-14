@@ -29,4 +29,27 @@
       <version>1.4</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rmic-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>rmic-process-classes</id>
+            <goals>
+              <goal>rmic</goal>
+            </goals>
+            <configuration>
+              <verbose>true</verbose>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <includes>
+                <include>edu/pdx/cs399J/rmi/*Impl.class</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
