@@ -107,5 +107,10 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs399J</groupId>
+      <artifactId>examples</artifactId>
+      <version>Summer2008</version>
+    </dependency>
   </dependencies>
 </project>

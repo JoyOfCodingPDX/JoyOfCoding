@@ -33,14 +33,14 @@ public interface MovieDatabase extends Remote {
    * @throws IllegalArgumentException
    *         The character is already played by someone else
    */
-  public void noteCharacter(long movieId, String character, String actor) 
+  public void noteCharacter(long movieId, String character, long actorId) 
     throws RemoteException;
 
   /**
    * Returns the movie in which a given actor acted.  The movies are
    * sorted by release date.
    */
-  public SortedSet<Movie> getFilmography(String actor) 
+  public SortedSet<Movie> getFilmography(long actorId) 
     throws RemoteException;
 
   /**
@@ -57,4 +57,8 @@ public interface MovieDatabase extends Remote {
    */
   public void shutdown() throws RemoteException;
 
+  /**
+   * Returns all of the movies in the database
+   */
+  public Collection<Movie> getMovies() throws RemoteException;
 }

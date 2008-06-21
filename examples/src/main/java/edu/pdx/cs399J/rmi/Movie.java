@@ -26,9 +26,9 @@ public class Movie implements Serializable {
   /** The year the movie was released */
   private int year;
 
-  /** A map of the characters in a movie to the actor who played
+  /** A map of the characters in a movie to the id of the actor who played
    * them. */
-  private Map characters;
+  private Map<String, Long> characters;
 
   /////////////////////////  Constructors  ////////////////////////
 
@@ -40,7 +40,7 @@ public class Movie implements Serializable {
     this.id = Movie.nextId++;
     this.title = title;
     this.year = year;
-    this.characters = new HashMap();
+    this.characters = new HashMap<String, Long>();
   }
 
   //////////////////////  Accessor Methods  ///////////////////////
@@ -60,6 +60,13 @@ public class Movie implements Serializable {
   }
 
   /**
+   * Sets the title of this <code>Movie</code>
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  /**
    * Returns the year in which this movie was released
    */
   public int getYear() {
@@ -67,18 +74,25 @@ public class Movie implements Serializable {
   }
 
   /**
+   * Sets the year in which this movie was released
+   */
+  public void setYear(int year) {
+    this.year = year;
+  }
+
+  /**
    * Returns a map of character names to the actor that played
    * them.
    */
-  public Map getCharacters() {
+  public Map<String, Long> getCharacters() {
     return this.characters;
   }
 
   /**
-   * Returns the actors that are in this movie
+   * Returns the ids of the actors that are in this movie
    */
-  public Set getActors() {
-    return new HashSet(this.characters.values());
+  public Set<Long> getActors() {
+    return new HashSet<Long>(this.characters.values());
   }
 
   /**
@@ -89,10 +103,10 @@ public class Movie implements Serializable {
    *         There is a character by that name that is played by a
    *         different actor.
    */
-  void addCharacter(String character, String actor) {
-    String a = (String) this.characters.get(character);
+  void addCharacter(String character, long actor) {
+    Long a = this.characters.get(character);
     if (a != null && !a.equals(actor)) {
-      String s = "The character " + character + 
+      String s = "The character " + character +
         " is already played by " + a;
       throw new IllegalArgumentException(s);
     }
@@ -106,7 +120,7 @@ public class Movie implements Serializable {
    * Returns a brief textual representation of this <code>Movie</code>
    */
   public String toString() {
-    return "Movie " + this.getId() + " \"" + this.getTitle() + 
+    return "Movie " + this.getId() + " \"" + this.getTitle() +
       "\" (" + this.getYear() + ")";
   }
 
@@ -121,5 +135,4 @@ public class Movie implements Serializable {
 
     return false;
   }
-
 }

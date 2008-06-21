@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * Tests the behavior of the {@link MovieDatabase} class.
  */
-public class MoveDatabaseTest extends TestCase {
+public class MovieDatabaseTest extends TestCase {
 
   private MovieDatabase getMovieDatabase() throws RemoteException {
     return new MovieDatabaseImpl();
@@ -24,12 +24,12 @@ public class MoveDatabaseTest extends TestCase {
     assertNotNull(movie);
     assertEquals(title, movie.getTitle());
     assertEquals(year, movie.getYear());
-    assertEquals(0, db.getFilmography("Bob").size());
+    assertEquals(0, db.getFilmography(99L).size());
   }
 
   public void testFilmography() throws RemoteException {
-    String bob = "Bob";
-    String bill = "Bill";
+    long bobId = 56l;
+    long billId = 57l;
 
     String title1 = "Bob's Movie 1";
     int year1 = 2007;
@@ -39,13 +39,13 @@ public class MoveDatabaseTest extends TestCase {
     MovieDatabase db = getMovieDatabase();
     long id1 = db.createMovie(title1, year1);
     long id2 = db.createMovie(title2, year2);
-    db.noteCharacter(id1, "Joe", bob);
-    db.noteCharacter(id2, "Frank", bob);
-    db.noteCharacter(id2, "Henry", bill);
+    db.noteCharacter(id1, "Joe", bobId);
+    db.noteCharacter(id2, "Frank", bobId);
+    db.noteCharacter(id2, "Henry", billId);
 
-    assertEquals(0, db.getFilmography("Stan").size());
+    assertEquals(0, db.getFilmography(78L).size());
 
-    SortedSet<Movie> bobMovies = db.getFilmography(bob);
+    SortedSet<Movie> bobMovies = db.getFilmography(bobId);
     assertEquals(2, bobMovies.size());
     Iterator<Movie> bobIter = bobMovies.iterator();
     Movie bobMovie1 = bobIter.next();
@@ -55,7 +55,7 @@ public class MoveDatabaseTest extends TestCase {
     assertEquals(title2, bobMovie2.getTitle());
     assertEquals(year2, bobMovie2.getYear());
 
-    SortedSet<Movie> billMovies = db.getFilmography(bill);
+    SortedSet<Movie> billMovies = db.getFilmography(billId);
     assertEquals(1, billMovies.size());
     Movie billMovie = billMovies.iterator().next();
     assertEquals(title2, billMovie.getTitle());

@@ -19,7 +19,7 @@ public class NoteCharacter {
     int port = Integer.parseInt(args[1]);
     long id = Long.parseLong(args[2]);
     String character = args[3];
-    String actor = args[4];
+    long actorId = Long.parseLong(args[4]);
 
     // Install an RMISecurityManager, if there is not a
     // SecurityManager already installed
@@ -32,7 +32,7 @@ public class NoteCharacter {
     try {
       MovieDatabase db = 
         (MovieDatabase) Naming.lookup(name);
-      db.noteCharacter(id, character, actor);
+      db.noteCharacter(id, character, actorId);
 
       Movie movie = db.getMovie(id);
       out.println(movie.getTitle());

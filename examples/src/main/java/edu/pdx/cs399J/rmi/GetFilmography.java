@@ -13,7 +13,7 @@ public class GetFilmography {
   public static void main(String[] args) {
     String host = args[0];
     int port = Integer.parseInt(args[1]);
-    String actor = args[2];
+    Long actor = Long.parseLong(args[2]);
 
     // Install an RMISecurityManager, if there is not a
     // SecurityManager already installed

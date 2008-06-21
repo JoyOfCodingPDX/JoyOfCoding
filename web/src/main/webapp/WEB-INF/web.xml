@@ -8,9 +8,21 @@
     <servlet-name>ServletInfo</servlet-name>
     <servlet-class>edu.pdx.cs399J.servlets.ServletInfoServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>MovieDatabase</servlet-name>
+    <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ServletInfo</servlet-name>
     <url-pattern>/info</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MovieDatabase</servlet-name>
+    <url-pattern>/movies</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MovieDatabase</servlet-name>
+    <url-pattern>/movies/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Movie Database</title>
+</head>
+<body>
+
+<h1>Movie Database</h1>
+
+<p>This page contains HTML forms that submit requests to the
+  <code>MovieDatabaseServlet</code>.  Normally, these requests would be made
+programmatically.  This page is used mostly for testing and debugging.</p>
+
+<h2>Create a new movie</h2>
+<form action="movies" method="post">
+<label for="title">Title:</label> <input id="title" type="text" name="title"/><br/>
+<label for="year">Year:</label> <input id="year" type="text" name="year"/><br/>
+<input type="submit"/>
+</form>
+
+</body>
+</html>

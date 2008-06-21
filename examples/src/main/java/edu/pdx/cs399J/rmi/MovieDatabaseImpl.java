@@ -70,7 +70,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    *         There is no movie with <code>movieId</code> or the
    *         character is already played by someone else
    */
-  public void noteCharacter(long movieId, String character, String actor) 
+  public void noteCharacter(long movieId, String character, long actorId)
     throws RemoteException {
 
     // Note local call of remote method
@@ -80,19 +80,19 @@ public class MovieDatabaseImpl implements MovieDatabase {
       throw new IllegalArgumentException(s);
     }
 
-    movie.addCharacter(character, actor);
+    movie.addCharacter(character, actorId);
   }
 
   /**
    * Returns the movie in which a given actor acted.  The movies are
    * sorted by release date.
    */
-  public SortedSet getFilmography(final String actor) 
+  public SortedSet<Movie> getFilmography(final long actorId)
     throws RemoteException {
 
     Query query = new Query() {
         public boolean satisfies(Movie movie) {
-          return movie.getActors().contains(actor);
+          return movie.getActors().contains(actorId);
         }
       };
 
@@ -144,6 +144,10 @@ public class MovieDatabaseImpl implements MovieDatabase {
     System.out.println("Shutting down Movie Database");
     UnicastRemoteObject.unexportObject(this, false /* force */);
     System.exit(0);
+  }
+
+  public Collection<Movie> getMovies() throws RemoteException {
+    return this.movies.values();
   }
 
   ///////////////////////  Main Program  /////////////////////////
