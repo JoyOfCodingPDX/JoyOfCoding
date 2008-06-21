@@ -24,13 +24,6 @@ public class UrlHttpGet {
     URL url = new URL(urlString);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
-    conn.setRequestProperty("Hello", "World");
-
-    conn.setDoOutput(true);
-    PrintWriter pw = new PrintWriter(conn.getOutputStream(), true);
-    pw.print("Hello=World");
-    pw.flush();
-
     conn.connect();
 
     PrintStream out = System.out;
@@ -38,7 +31,10 @@ public class UrlHttpGet {
 
     Map<String,List<String>> headers = conn.getHeaderFields();
     for (String key : headers.keySet() ) {
-      out.print("  " + key + ": ");
+      out.print("  ");
+      if (key != null) {
+        out.print(key + ": ");
+      }
       for (String value : headers.get(key)) {
         out.print(value);
       }
