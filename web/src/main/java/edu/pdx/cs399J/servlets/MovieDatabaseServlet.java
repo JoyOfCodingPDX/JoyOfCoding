@@ -71,7 +71,6 @@ public class MovieDatabaseServlet extends HttpServlet {
 
     response.setContentType("text/plain");
     DataType dataType = getDataType(request);
-    System.out.println(dataType);
     switch (dataType) {
       case MOVIE:
         createMovie(parameters, response);
