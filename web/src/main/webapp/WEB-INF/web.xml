@@ -6,7 +6,14 @@
   <display-name>CS399J Examples Web Application</display-name>
   <servlet>
     <servlet-name>ServletInfo</servlet-name>
+    <display-name>Servlet Info</display-name>
+    <description>Summarizes information about a servlet request</description>
     <servlet-class>edu.pdx.cs399J.servlets.ServletInfoServlet</servlet-class>
+    <init-param>
+      <param-name>param1</param-name>
+      <param-value>Hello Param</param-value>
+      <description>Example servlet parameter</description>
+    </init-param>
   </servlet>
   <servlet>
     <servlet-name>MovieDatabase</servlet-name>
