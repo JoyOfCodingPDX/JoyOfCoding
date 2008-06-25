@@ -133,25 +133,13 @@ public class HttpRequestHelper {
    */
   public static class Response {
 
-    public int getCode() {
-      return code;
-    }
-
-    public String getContent() {
-      return content;
-    }
-
-    public int getContentLines() {
-      return contentLines;
-    }
-
     private final int code;
 
     private final String content;
 
     private int contentLines = 0;
 
-    public Response(HttpURLConnection conn) throws IOException {
+    private Response(HttpURLConnection conn) throws IOException {
       this.code = conn.getResponseCode();
       if (this.code != java.net.HttpURLConnection.HTTP_OK) {
         this.content = conn.getResponseMessage();
@@ -170,6 +158,60 @@ public class HttpRequestHelper {
 
       this.content = content.toString().trim();
     }
+
+    /**
+     * Returns the HTTP status code of the response
+     * @see java.net.HttpURLConnection#getResponseCode()
+     */
+    public int getCode() {
+      return code;
+    }
+
+    /**
+     * Returns the (presumably textual) response from the URL
+     * @return
+     */
+    public String getContent() {
+      return content;
+    }
+
+    /**
+     * Returns the number of lines in the response's content
+     */
+    public int getContentLines() {
+      return contentLines;
+    }
+  }
+
+  /**
+   * A main method that requests a resource from a URL using a given HTTP method
+   */
+  public static void main(String[] args) throws IOException {
+    String method = args[0];
+    String url = args[1];
+    String[] parameters = new String[args.length - 2];
+    System.arraycopy(args, 2, parameters, 0, parameters.length);
+
+    HttpRequestHelper helper = new HttpRequestHelper();
+
+    Response response;
+    if (method.equalsIgnoreCase("PUT")) {
+      response = helper.put(url, parameters);
+
+    } else if (method.equalsIgnoreCase("GET")) {
+      response = helper.get(url, parameters);
+
+    } else if (method.equalsIgnoreCase("POST")) {
+      response = helper.post(url, parameters);
+
+    } else {
+      System.err.println("** Unknown method: " + method);
+      return;
+    }
+
+    System.out.println("Returned code " + response.getCode() + " and " +
+      response.getContentLines() + " lines of content\n");
+    System.out.println(response.getContent());
 
   }
 }
