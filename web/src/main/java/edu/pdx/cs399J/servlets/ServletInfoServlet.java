@@ -42,6 +42,7 @@ public class ServletInfoServlet extends HttpServlet {
 
     out.println("<h1>Servlet Information " + (new Date()) + "</h1>");
 
+    dump(this.getServletConfig(), out);
     dump(this.getServletConfig().getServletContext(), out);
 
     dump(request, out);
@@ -185,6 +186,20 @@ public class ServletInfoServlet extends HttpServlet {
     tableRow("Major version", String.valueOf(context.getMajorVersion()), out);
     tableRow("Minor version", String.valueOf(context.getMinorVersion()), out);
 
+
+    endTable(out);
+  }
+
+  private static void dump(ServletConfig config, PrintWriter out) {
+    startTable("ServletConfig", out);
+
+    tableRow("Name", config.getServletName(), out);
+
+    for (Enumeration initParams = config.getInitParameterNames(); initParams.hasMoreElements();) {
+      String name = (String) initParams.nextElement();
+      String param = config.getInitParameter(name);
+      tableRow("Init parameter \"" + name + "\"", param, out);
+    }
 
     endTable(out);
   }
