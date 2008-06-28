@@ -17,7 +17,7 @@
   </servlet>
   <servlet>
     <servlet-name>MovieDatabase</servlet-name>
-    <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseServlet</servlet-class>
+    <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseRestServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ServletInfo</servlet-name>
