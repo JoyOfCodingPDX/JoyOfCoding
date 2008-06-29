@@ -16,7 +16,7 @@
     </init-param>
   </servlet>
   <servlet>
-    <servlet-name>MovieDatabase</servlet-name>
+    <servlet-name>MovieDatabaseRest</servlet-name>
     <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseRestServlet</servlet-class>
   </servlet>
   <servlet-mapping>
@@ -24,12 +24,12 @@
     <url-pattern>/info</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>MovieDatabase</servlet-name>
-    <url-pattern>/movies</url-pattern>
+    <servlet-name>MovieDatabaseRest</servlet-name>
+    <url-pattern>/movies/rest</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>MovieDatabase</servlet-name>
-    <url-pattern>/movies/*</url-pattern>
+    <servlet-name>MovieDatabaseRest</servlet-name>
+    <url-pattern>/movies/rest/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

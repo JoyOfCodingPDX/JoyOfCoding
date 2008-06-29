@@ -40,7 +40,7 @@ public class MovieDatabaseRestServlet extends HttpServlet {
    */
   private DataType getDataType(HttpServletRequest request) {
     String uri = request.getRequestURI();
-    if (uri.endsWith("movies")) {
+    if (uri.endsWith("rest")) {
       return DataType.MOVIE;
 
     } else if (uri.endsWith("actors")) {
@@ -74,6 +74,10 @@ public class MovieDatabaseRestServlet extends HttpServlet {
     switch (dataType) {
       case MOVIE:
         createMovie(parameters, response);
+        break;
+      case UNKNOWN:
+        response.sendError(SC_BAD_REQUEST, "Unknown dataType: " + dataType);
+        break;
     }
   }
 
@@ -84,6 +88,7 @@ public class MovieDatabaseRestServlet extends HttpServlet {
    */
   private void createMovie(Map<String, String> parameters, HttpServletResponse response) throws IOException {
     String title = parameters.get("title");
+    System.out.println("Title is \"" + title + "\"");
     if (title == null) {
       response.sendError(SC_BAD_REQUEST, "Missing title");
       return;

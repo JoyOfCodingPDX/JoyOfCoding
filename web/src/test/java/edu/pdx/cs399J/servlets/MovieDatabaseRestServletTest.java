@@ -15,7 +15,7 @@ public class MovieDatabaseRestServletTest extends HttpRequestHelper {
   /**
    * The URL for accessing the Movie database application
    */
-  private static final String DATABASE_URL = "http://localhost:8080/web/movies";
+  private static final String DATABASE_URL = "http://localhost:8080/web/movies/rest";
 
   private final String MOVIES = "";
 
