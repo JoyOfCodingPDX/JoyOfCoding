@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>Movie Database</title>
@@ -9,15 +9,24 @@
 <h1>Movie Database</h1>
 
 <p>This page contains HTML forms that submit requests to the
-  <code>MovieDatabaseServlet</code>.  Normally, these requests would be made
-programmatically.  This page is used mostly for testing and debugging.</p>
+  <code>MovieDatabaseServlet</code>. Normally, these requests would be made
+  programmatically. This page is used mostly for testing and debugging.</p>
 
 <h2>Create a new movie</h2>
+
 <form action="movies" method="post">
-<label for="title">Title:</label> <input id="title" type="text" name="title"/><br/>
-<label for="year">Year:</label> <input id="year" type="text" name="year"/><br/>
-<input type="submit"/>
+  <label for="title">Title:</label> <input id="title" type="text" name="title"/><br/>
+  <label for="year">Year:</label> <input id="year" type="text" name="year"/><br/>
+  <input type="submit" value="Create"/>
 </form>
 
+<h2>Search for movies</h2>
+
+<form action="movies" method="get">
+  <label for="movieId">Id:</label> <input id="movieId" type="text" name="id"/><br/>
+  <label for="titleSearch">Title:</label> <input id="titleSearch" type="text" name="title"/><br/>
+  <label for="yearSearch">Year:</label> <input id="yearSearch" type="text" name="year"/><br/>
+  <input type="submit" value="Search"/>
+</form>
 </body>
 </html>
