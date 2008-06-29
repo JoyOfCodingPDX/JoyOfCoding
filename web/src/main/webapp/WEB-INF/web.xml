@@ -19,6 +19,10 @@
     <servlet-name>MovieDatabaseRest</servlet-name>
     <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseRestServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LastVisitServlet</servlet-name>
+    <servlet-class>edu.pdx.cs399J.servlets.LastVisitServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ServletInfo</servlet-name>
     <url-pattern>/info</url-pattern>
@@ -30,6 +34,10 @@
   <servlet-mapping>
     <servlet-name>MovieDatabaseRest</servlet-name>
     <url-pattern>/movies/rest/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LastVisitServlet</servlet-name>
+    <url-pattern>/visit</url-pattern>
   </servlet-mapping>
 
 </web-app>
