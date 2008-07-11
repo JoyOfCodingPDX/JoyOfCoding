@@ -19,7 +19,7 @@ public interface RemotePerson extends Remote {
    * edu.pdx.cs399J.family.Person#MALE} or 
    * {@link edu.pdx.cs399J.family.Person#FEMALE}.
    */
-  public int getGender() throws RemoteException;
+  public Person.Gender getGender() throws RemoteException;
 
 //   /**
 //    * Sets this person's gender

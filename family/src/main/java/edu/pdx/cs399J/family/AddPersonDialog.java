@@ -142,7 +142,7 @@ public class AddPersonDialog extends JDialog {
             }
           }
 
-          int gender;
+          Person.Gender gender;
           if (group.getSelection().equals(male)) {
             gender = Person.MALE;
 

@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -10,8 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import edu.pdx.cs399J.family.RemoteFamilyTree;
-import edu.pdx.cs399J.family.XmlRemoteFamilyTree;
 
 /**
  * This is the abstract superclass for all of the remote family

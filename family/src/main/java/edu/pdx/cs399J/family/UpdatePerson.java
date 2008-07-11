@@ -41,7 +41,7 @@ public class UpdatePerson {
     String familyName = null;
     String host = null;
     int port = -1;
-    int gender = Person.UNKNOWN;
+    Person.Gender gender = null;
     String firstName = null;
     String lastName = null;
     String middleName = null;
@@ -122,7 +122,7 @@ public class UpdatePerson {
           usage("Invalid port: " + args[i]);
         }
 
-      } else if (gender == Person.UNKNOWN) {
+      } else if (gender == null) {
         if (args[i].equalsIgnoreCase("male")) {
           gender = Person.MALE;
 
@@ -153,7 +153,7 @@ public class UpdatePerson {
     } else if (port == -1) {
       usage("Missing port");
 
-    } else if (gender == Person.UNKNOWN) {
+    } else if (gender == null) {
       usage("Missing gender");
 
     } else if (firstName == null) {

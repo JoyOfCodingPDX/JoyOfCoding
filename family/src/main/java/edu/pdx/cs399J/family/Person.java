@@ -14,21 +14,16 @@ import java.io.Serializable;
  * @author David Whitlock
  */
 public class Person implements Serializable {
+  public static Gender MALE = Gender.MALE;
+  public static Gender FEMALE = Gender.FEMALE;
+
+  enum Gender { FEMALE, MALE, UNKNOWN };
 
   /** A constant representing the id of an unknown person */
   public static final int UNKNOWN = -1;
 
-  /** A constant representing the female gender */
-  public static final int FEMALE = 1;
-
-  /** A constant representing the male gender */
-  public static final int MALE = 2;
-
-  /** A constant representing an unknown gender */
-  private static final int UNKNOWN_GENDER = 3;
-
   private int id;
-  private int gender;
+  private Gender gender;
   private String firstName;
   private String middleName;
   private String lastName;
@@ -54,7 +49,7 @@ public class Person implements Serializable {
    *         <code>id</code> is less than 1 or <code>gender</code> is
    *         neither {@link #MALE} nor {@link #FEMALE}
    */
-  public Person(int id, int gender) {
+  public Person(int id, Gender gender) {
     if (id < 1) {
       String m = "A person's id must be greater than 1: " + id;
       throw new FamilyTreeException(m);
@@ -82,7 +77,7 @@ public class Person implements Serializable {
     }
 
     this.id = id;
-    this.gender = UNKNOWN_GENDER;
+    this.gender = Gender.UNKNOWN;
     this.marriages = new ArrayList<Marriage>();
   }
 
@@ -105,7 +100,7 @@ public class Person implements Serializable {
    * 
    * @see #Person(int)
    */
-  void setGender(int gender) {
+  void setGender(Gender gender) {
     if (gender == MALE || gender == FEMALE) {
       this.gender = gender;
 
@@ -118,9 +113,7 @@ public class Person implements Serializable {
   /**
    * Returns this person's gender
    */
-  public int getGender() {
-//     assert this.gender != UNKNOWN_GENDER : 
-//       "Forgot to set gender of " + this.getId();
+  public Gender getGender() {
     return this.gender;
   }
 
@@ -317,7 +310,7 @@ public class Person implements Serializable {
       this.setMother(mother);
     }
 
-    if (this.gender == UNKNOWN_GENDER) {
+    if (this.gender == Gender.UNKNOWN) {
       String s = "Gender has not been set yet!";
       throw new FamilyTreeException(s);
     }
@@ -419,7 +412,7 @@ public class Person implements Serializable {
   public String toString() {
     StringBuffer sb = new StringBuffer();
 
-    sb.append("Person " + this.id + ": " + this.getFullName());
+    sb.append("Person ").append(this.id).append(": ").append(this.getFullName());
     if (this.dob != null) {
       sb.append("\nBorn: ");
       sb.append(this.dob);

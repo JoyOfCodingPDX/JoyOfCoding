@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.family;
 
+import edu.pdx.cs399J.family.Person.Gender;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -69,7 +71,7 @@ public class XmlParser extends XmlHelper implements Parser {
    * Examines a chunk of a DOM tree and extracts an int from its
    * text.
    */
-  private static int extractInteger(Node node) 
+  private static int extractInteger(Node node)
     throws FamilyTreeException {
 
     String text = extractString(node);
@@ -85,14 +87,14 @@ public class XmlParser extends XmlHelper implements Parser {
    * Examines a chunk of a DOM tree and extracts a <code>Date</code>
    * from it.
    */
-  private static Date extractDate(Element root) 
+  private static Date extractDate(Element root)
     throws FamilyTreeException {
 
     // Make sure we're dealing with a data
     if (!root.getNodeName().equals("date")) {
       throw new FamilyTreeException("Not a <date>: " +
-				root.getNodeName() + ", '" +
-				root.getNodeValue() + "'");
+        root.getNodeName() + ", '" +
+        root.getNodeValue() + "'");
     }
 
     Calendar cal = Calendar.getInstance();
@@ -101,23 +103,23 @@ public class XmlParser extends XmlHelper implements Parser {
     for (int i = 0; i < children.getLength(); i++) {
       Node node = children.item(i);
       if (!(node instanceof Element)) {
-	continue;
+        continue;
       }
 
       Element element = (Element) node;
       if (element.getNodeName().equals("month")) {
-	cal.set(Calendar.MONTH, extractInteger(element));
+        cal.set(Calendar.MONTH, extractInteger(element));
 
       } else if (element.getNodeName().equals("day")) {
-	cal.set(Calendar.DATE, extractInteger(element));
+        cal.set(Calendar.DATE, extractInteger(element));
 
       } else if (element.getNodeName().equals("year")) {
-	cal.set(Calendar.YEAR, extractInteger(element));
+        cal.set(Calendar.YEAR, extractInteger(element));
 
       } else {
-	String s = "Invalidate element in date: " +
-	  element.getNodeName();
-	throw new FamilyTreeException(s);
+        String s = "Invalidate element in date: " +
+          element.getNodeName();
+        throw new FamilyTreeException(s);
       }
     }
 
@@ -145,7 +147,7 @@ public class XmlParser extends XmlHelper implements Parser {
       throw new FamilyTreeException(s);
     }
 
-    int gender = (root.getAttribute("gender").equals("male") 
+    Gender gender = (root.getAttribute("gender").equals("male")
                   ? Person.MALE : Person.FEMALE);
     person = this.tree.getPerson(id);
     if (person == null) {
@@ -164,37 +166,37 @@ public class XmlParser extends XmlHelper implements Parser {
     for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
       if (!(node instanceof Element)) {
-	continue;
+        continue;
       }
 
       Element element = (Element) node;
 
       if (element.getNodeName().equals("first-name")) {
-	person.setFirstName(extractString(element));
+        person.setFirstName(extractString(element));
 
       } else if (element.getNodeName().equals("last-name")) {
-	person.setLastName(extractString(element));
+        person.setLastName(extractString(element));
 
       } else if (element.getNodeName().equals("middle-name")) {
-	person.setMiddleName(extractString(element));
+        person.setMiddleName(extractString(element));
 
       } else if (element.getNodeName().equals("dob")) {
-	Element dob = null;
+        Element dob = null;
 
-	NodeList list = element.getChildNodes();
-	for(int j = 0; j < list.getLength(); j++) {
-	  Node n = list.item(j);
-	  if (n instanceof Element) {
-	    dob = (Element) n;
-	    break;
-	  }
-	}
-	
-	if(dob == null) {
-	  throw new FamilyTreeException("No <date> in <dob>?");
-	}
+        NodeList list = element.getChildNodes();
+        for (int j = 0; j < list.getLength(); j++) {
+          Node n = list.item(j);
+          if (n instanceof Element) {
+            dob = (Element) n;
+            break;
+          }
+        }
 
-	person.setDateOfBirth(extractDate(dob));
+        if (dob == null) {
+          throw new FamilyTreeException("No <date> in <dob>?");
+        }
+
+        person.setDateOfBirth(extractDate(dob));
 
       } else if (element.getNodeName().equals("dod")) {
         Element dod = null;
@@ -212,24 +214,24 @@ public class XmlParser extends XmlHelper implements Parser {
           throw new FamilyTreeException("No <date> in <dod>?");
         }
 
-	person.setDateOfDeath(extractDate(dod));
+        person.setDateOfDeath(extractDate(dod));
 
       } else if (element.getNodeName().equals("father-id")) {
-	String s = extractString(element);
-	int fid = 0;
-	try {
-	  fid = Integer.parseInt(s);
+        String s = extractString(element);
+        int fid = 0;
+        try {
+          fid = Integer.parseInt(s);
 
-	} catch (NumberFormatException ex) {
-	  throw new FamilyTreeException("Bad father-id: " + s);
-	}
+        } catch (NumberFormatException ex) {
+          throw new FamilyTreeException("Bad father-id: " + s);
+        }
 
         Person father = this.tree.getPerson(fid);
         if (father == null) {
           father = new Person(fid, Person.MALE);
           this.tree.addPerson(father);
         }
-	person.setFather(father);
+        person.setFather(father);
 
       } else if (element.getNodeName().equals("mother-id")) {
         String s = extractString(element);
@@ -246,13 +248,13 @@ public class XmlParser extends XmlHelper implements Parser {
           mother = new Person(mid, Person.FEMALE);
           this.tree.addPerson(mother);
         }
-	person.setMother(mother);
+        person.setMother(mother);
       }
     }
   }
 
   /**
-   * Examines a chunk of a DOM tree and makes note of a marriage. 
+   * Examines a chunk of a DOM tree and makes note of a marriage.
    */
   private void handleMarriage(Element root) throws FamilyTreeException {
     // Make sure we're dealing with a marriage
@@ -268,23 +270,23 @@ public class XmlParser extends XmlHelper implements Parser {
     for (int i = 0; i < attrs.getLength(); i++) {
       Node attr = attrs.item(i);
       if (attr.getNodeName().equals("husband-id")) {
-	String id = attr.getNodeValue();
+        String id = attr.getNodeValue();
 
-	try {
-	  husband_id = Integer.parseInt(id);
+        try {
+          husband_id = Integer.parseInt(id);
 
-	} catch (NumberFormatException ex) {
-	  throw new FamilyTreeException("Bad husband id: " + id);
-	}
+        } catch (NumberFormatException ex) {
+          throw new FamilyTreeException("Bad husband id: " + id);
+        }
 
       } else if (attr.getNodeName().equals("wife-id")) {
-	String id = attr.getNodeValue();
+        String id = attr.getNodeValue();
 
-	try {
-	  wife_id = Integer.parseInt(id);
-	} catch (NumberFormatException ex) {
-	  throw new FamilyTreeException("Bad wife id: " + id);
-	}
+        try {
+          wife_id = Integer.parseInt(id);
+        } catch (NumberFormatException ex) {
+          throw new FamilyTreeException("Bad wife id: " + id);
+        }
       }
     }
 
@@ -301,15 +303,15 @@ public class XmlParser extends XmlHelper implements Parser {
     for (int i = 0; i < elements.getLength(); i++) {
       Node node = elements.item(i);
       if (!(node instanceof Element)) {
-	continue;
+        continue;
       }
 
       Element element = (Element) node;
       if (element.getNodeName().equals("location")) {
-	marriage.setLocation(extractString(element));
+        marriage.setLocation(extractString(element));
 
       } else if (element.getNodeName().equals("date")) {
-	marriage.setDate(extractDate(element));
+        marriage.setDate(extractDate(element));
       }
     }
   }
@@ -325,11 +327,11 @@ public class XmlParser extends XmlHelper implements Parser {
     Document doc = null;
     try {
       DocumentBuilderFactory factory =
-	DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory.newInstance();
       factory.setValidating(true);
 
-      DocumentBuilder builder = 
-	factory.newDocumentBuilder();
+      DocumentBuilder builder =
+        factory.newDocumentBuilder();
       builder.setErrorHandler(this);
       builder.setEntityResolver(this);
 
@@ -350,7 +352,7 @@ public class XmlParser extends XmlHelper implements Parser {
     // Make sure that we are really dealing with a family tree
     if (!root.getNodeName().equals("family-tree")) {
       throw new FamilyTreeException("Not a family tree XML source: " +
-                                root.getNodeName());
+        root.getNodeName());
     }
 
     NodeList stuff = root.getChildNodes();
@@ -358,22 +360,22 @@ public class XmlParser extends XmlHelper implements Parser {
       Node node = stuff.item(i);
 
       if (!(node instanceof Element)) {
-	// Ignore whitespace text and other stuff
-	continue;
+        // Ignore whitespace text and other stuff
+        continue;
       }
 
       Element element = (Element) node;
 
       if (element.getNodeName().equals("person")) {
-	handlePerson(element);
+        handlePerson(element);
 
       } else if (element.getNodeName().equals("marriage")) {
-	handleMarriage(element);
+        handleMarriage(element);
 
       } else {
-	String s = "A family tree should not have a " +
-	  element.getNodeName();
-	throw new FamilyTreeException(s);
+        String s = "A family tree should not have a " +
+          element.getNodeName();
+        throw new FamilyTreeException(s);
       }
     }
 
@@ -407,5 +409,5 @@ public class XmlParser extends XmlHelper implements Parser {
       ex.printStackTrace(System.err);
     }
   }
-  
+
 }

@@ -44,7 +44,7 @@ class RemotePersonImpl extends java.rmi.server.UnicastRemoteObject
     return this.person.getId();
   }
 
-  public int getGender() throws RemoteException {
+  public Person.Gender getGender() throws RemoteException {
     return this.person.getGender();
   }
 

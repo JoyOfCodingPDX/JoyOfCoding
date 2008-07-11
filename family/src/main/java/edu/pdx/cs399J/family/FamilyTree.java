@@ -42,7 +42,7 @@ public class FamilyTree {
    * <code>null</code> is returned.
    */
   public Person getPerson(int id) {
-    return (Person) this.people.get(new Integer(id));
+    return this.people.get(new Integer(id));
   }
 
   /**
@@ -51,7 +51,7 @@ public class FamilyTree {
    * old person is removed and replaced with the new.
    */
   public void addPerson(Person person) {
-    this.people.put(new Integer(person.getId()), person);
+    this.people.put(person.getId(), person);
   }
 
   //////////////////////// Utility Methods  ///////////////////////

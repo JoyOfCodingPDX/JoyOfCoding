@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

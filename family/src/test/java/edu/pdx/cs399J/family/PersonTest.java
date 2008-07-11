@@ -1,6 +1,5 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
-import edu.pdx.cs399J.family.*;
 import java.util.*;
 import junit.framework.*;
 
@@ -67,7 +66,7 @@ public class PersonTest extends TestCase {
    */
   public void testInvalidGender() {
     try {
-      new Person(1, 3);
+      new Person(1, Person.Gender.UNKNOWN);
       fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
@@ -82,13 +81,13 @@ public class PersonTest extends TestCase {
   }
 
   public void testGetGenderMale() {
-    int gender = Person.MALE;
+    Person.Gender gender = Person.MALE;
     Person p = new Person(4, gender);
     assertEquals(gender, p.getGender());
   }
 
   public void testGetGenderFemale() {
-    int gender = Person.FEMALE;
+    Person.Gender gender = Person.FEMALE;
     Person p = new Person(4, gender);
     assertEquals(gender, p.getGender());
   }

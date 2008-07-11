@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.family;
 
+import edu.pdx.cs399J.family.Person.Gender;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -260,7 +262,7 @@ public class EditPersonDialog extends JDialog {
             }
           }
           
-          int gender;
+          Gender gender;
           if (group.getSelection().getActionCommand().equals("male")) {
             gender = Person.MALE;
 

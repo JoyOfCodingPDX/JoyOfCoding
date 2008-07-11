@@ -107,7 +107,7 @@ public class XmlRemoteFamilyTree extends UnicastRemoteObject
     return rPerson;
   }
 
-  public RemotePerson createPerson(int gender) throws RemoteException {
+  public RemotePerson createPerson(Person.Gender gender) throws RemoteException {
     Person person = new Person(++this.highestId, gender);
     this.tree.addPerson(person);
     return getRemotePerson(person);

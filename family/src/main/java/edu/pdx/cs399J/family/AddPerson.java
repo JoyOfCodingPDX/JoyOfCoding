@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.family;
 
+import edu.pdx.cs399J.family.Person.Gender;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -250,13 +252,13 @@ public class AddPerson {
     Person person = tree.getPerson(id);
 
     if (person == null) {
-      int g;
+      Gender g;
 
       if (gender == null) {
         String s = "Must specify a gender when creating a new person";
         err.println(s);
         System.exit(1);
-        g = -1;                 // Keep compiler from complaining
+        g = null;                 // Keep compiler from complaining
 
       } else if (gender.equalsIgnoreCase("male")) {
         g = Person.MALE;
@@ -267,7 +269,7 @@ public class AddPerson {
       } else {
         err.println("** Illegal gender: " + gender);
         System.exit(1);
-        g = -1;
+        g = null;
       }
 
       person = new Person(id, g);

@@ -229,11 +229,11 @@ public class TextParser implements Parser {
         // gender
         if (person != null) {
           try {
-            int gender = Integer.parseInt(value);
+            Person.Gender gender = Person.Gender.valueOf(value);
             person.setGender(gender);
             db("Set gender of " + person + " to " + gender);
 
-          } catch (NumberFormatException ex) {
+          } catch (IllegalArgumentException ex) {
             error("Malformed gender: " + value);
           }
 

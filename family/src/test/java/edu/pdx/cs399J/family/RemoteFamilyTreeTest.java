@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import java.rmi.RemoteException;
 
@@ -32,7 +32,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
   public void testCreatePersonBadGender() throws RemoteException {
     try {
       RemoteFamilyTree tree = getTree();
-      tree.createPerson(42);
+      tree.createPerson(Person.Gender.UNKNOWN);
       fail("Should have thrown a FamilyTreeException");
 
     } catch (FamilyTreeException ex) {

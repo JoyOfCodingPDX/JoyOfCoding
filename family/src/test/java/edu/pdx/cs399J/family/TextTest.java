@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -6,13 +6,6 @@ import java.io.StringWriter;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import edu.pdx.cs399J.family.Dumper;
-import edu.pdx.cs399J.family.FamilyTree;
-import edu.pdx.cs399J.family.FamilyTreeException;
-import edu.pdx.cs399J.family.Parser;
-import edu.pdx.cs399J.family.Person;
-import edu.pdx.cs399J.family.TextDumper;
-import edu.pdx.cs399J.family.TextParser;
 
 /**
  * This class tests the functionality of the <code>TextDumper</code>
@@ -166,7 +159,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
 
   public void testFemaleGender() {
     int id = 1;
-    int gender = Person.FEMALE;
+    Person.Gender gender = Person.FEMALE;
 
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -182,7 +175,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
 
   public void testMaleGender() {
     int id = 1;
-    int gender = Person.MALE;
+    Person.Gender gender = Person.MALE;
 
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -329,12 +322,12 @@ public class TextTest extends FamilyTreeConversionTestCase {
     PrintWriter pw = new PrintWriter(sw, true);
     pw.println("P 4");
     pw.println("id: 1");
-    pw.println("g: 1");
+    pw.println("g: " + Person.Gender.FEMALE);
     pw.println("m: 3");
     pw.println("f: 2");
     pw.println("P 2");
     pw.println("id: 2");
-    pw.println("g: 2");
+    pw.println("g: " + Person.Gender.MALE);
     
     try {
       getFamilyTreeFor(sw.toString());

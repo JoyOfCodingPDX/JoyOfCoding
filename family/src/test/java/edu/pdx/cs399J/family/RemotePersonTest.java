@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import java.rmi.RemoteException;
 import java.util.Date;

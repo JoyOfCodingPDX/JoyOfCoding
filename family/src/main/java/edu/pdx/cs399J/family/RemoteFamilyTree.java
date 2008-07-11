@@ -18,7 +18,7 @@ public interface RemoteFamilyTree extends Remote {
    *         If <code>gender</code> is neither {@link Person#MALE} nor
    *         {@link Person#FEMALE}.
    */
-  public RemotePerson createPerson(int gender) 
+  public RemotePerson createPerson(Person.Gender gender)
     throws RemoteException;
 
   /**

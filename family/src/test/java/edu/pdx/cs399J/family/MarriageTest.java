@@ -1,9 +1,7 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import edu.pdx.cs399J.family.Marriage;
-import edu.pdx.cs399J.family.Person;
 
 /**
  * This class tests the functionality of the <code>Marriage</code>

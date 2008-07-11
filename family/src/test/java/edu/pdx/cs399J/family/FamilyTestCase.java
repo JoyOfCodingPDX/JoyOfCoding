@@ -1,6 +1,5 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
-import edu.pdx.cs399J.family.*;
 import java.util.*;
 import junit.framework.*;
 

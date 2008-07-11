@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.family.tests;
+package edu.pdx.cs399J.family;
 
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -6,10 +6,6 @@ import java.io.StringWriter;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import edu.pdx.cs399J.family.FamilyTree;
-import edu.pdx.cs399J.family.FamilyTreeException;
-import edu.pdx.cs399J.family.XmlDumper;
-import edu.pdx.cs399J.family.XmlParser;
 
 /**
  * This class tests the functionality of the <code>XmlDumper</code>
