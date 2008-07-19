@@ -17,7 +17,7 @@ public class Person implements Serializable {
   public static Gender MALE = Gender.MALE;
   public static Gender FEMALE = Gender.FEMALE;
 
-  enum Gender { FEMALE, MALE, UNKNOWN };
+  public enum Gender { FEMALE, MALE, UNKNOWN };
 
   /** A constant representing the id of an unknown person */
   public static final int UNKNOWN = -1;

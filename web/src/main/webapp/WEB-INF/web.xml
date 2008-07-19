@@ -20,6 +20,10 @@
     <servlet-class>edu.pdx.cs399J.servlets.MovieDatabaseServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>FamilyTree</servlet-name>
+    <servlet-class>edu.pdx.cs399J.servlets.FamilyTreeServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>LastVisitServlet</servlet-name>
     <servlet-class>edu.pdx.cs399J.servlets.LastVisitServlet</servlet-class>
   </servlet>
@@ -38,6 +42,10 @@
   <servlet-mapping>
     <servlet-name>MovieDatabase</servlet-name>
     <url-pattern>/movies/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FamilyTree</servlet-name>
+    <url-pattern>/family/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>LastVisitServlet</servlet-name>
