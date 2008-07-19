@@ -15,7 +15,7 @@
     <module>examples</module>
     <module>web</module>
     <!-- module>gwt</module -->
-    <module>familyweb</module>
+    <module>familygwt</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
