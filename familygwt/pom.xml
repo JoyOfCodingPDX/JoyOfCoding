@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
-  <artifactId>familyget</artifactId>
+  <artifactId>familygwt</artifactId>
   <packaging>war</packaging>
   <version>Summer2008</version>
   <name>Family Tree Web Applications</name>
