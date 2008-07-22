@@ -83,7 +83,7 @@ public class ServletInfoServlet extends HttpServlet {
    * Dumps information about a <code>HttpServletRequest</code> to the
    * given <code>PrintWriter</code>.
    */
-  private static void dump(HttpServletRequest request, PrintWriter out) {
+  static void dump(HttpServletRequest request, PrintWriter out) {
     startTable("HttpServletRequest", out);
 
     for (Enumeration attrs = request.getAttributeNames(); attrs.hasMoreElements();) {
