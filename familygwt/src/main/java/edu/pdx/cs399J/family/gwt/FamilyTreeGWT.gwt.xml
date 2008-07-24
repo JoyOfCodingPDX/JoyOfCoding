@@ -2,4 +2,6 @@
 	<inherits name="com.google.gwt.user.User"/>
   <inherits name="edu.pdx.cs399J.family.FamilyTreeCore"/>
   <entry-point class="edu.pdx.cs399J.family.gwt.client.FamilyTreeGWT"/>
+
+  <servlet path="/tree" class="edu.pdx.cs399J.family.gwt.server.FamilyTreeServiceImpl"/>
 </module>

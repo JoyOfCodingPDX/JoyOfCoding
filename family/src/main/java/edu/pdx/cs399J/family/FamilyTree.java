@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.family;
 
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * This class represents a family tree.  Essentially, it is a
@@ -9,7 +10,7 @@ import java.util.*;
  *
  * @author David Whitlock
  */
-public class FamilyTree {
+public class FamilyTree implements Serializable {
   
   private Map<Integer, Person> people;     // Maps Integer ids to Persons
 

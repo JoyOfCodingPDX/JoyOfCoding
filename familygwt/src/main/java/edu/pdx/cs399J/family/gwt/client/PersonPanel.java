@@ -35,6 +35,7 @@ public class PersonPanel extends DockPanel {
     fillInLabels();
 
     VerticalPanel panel = new VerticalPanel();
+    panel.setSpacing(3);
 
     this.name.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     panel.add(this.name);
@@ -67,6 +68,8 @@ public class PersonPanel extends DockPanel {
     this.marriagesList.setWidth("100%");
     ScrollPanel scroll = new ScrollPanel(this.marriagesList);
     panel.add(scroll);
+    panel.setWidth("100%");
+    panel.setCellWidth(panel, "100%");
  
     this.add(panel, DockPanel.NORTH);
   }

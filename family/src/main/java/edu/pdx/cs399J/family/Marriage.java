@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.family;
 
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * This class represents a marriage between two people.  Ain't love
@@ -9,7 +10,7 @@ import java.util.*;
  *
  * @author David Whitlock
  */
-public class Marriage {
+public class Marriage implements Serializable {
 
   private Person husband;
   private Person wife;
@@ -38,6 +39,13 @@ public class Marriage {
 
     this.husband = husband;
     this.wife = wife;
+  }
+
+  /**
+   * Zero-argument constructor used when deserializing
+   */
+  private Marriage() {
+    
   }
 
   /**

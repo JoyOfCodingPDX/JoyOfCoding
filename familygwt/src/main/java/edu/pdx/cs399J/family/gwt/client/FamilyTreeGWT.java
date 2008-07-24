@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import edu.pdx.cs399J.family.Person;
 import edu.pdx.cs399J.family.FamilyTree;
 
@@ -14,8 +15,12 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
   private FamilyTreeList treeList;
   private FamilyTree tree = new FamilyTree();
   private boolean isDirty = false;
+  private final FamilyTreeServiceAsync service;
+  private final PersonPanel personPanel;
 
   public FamilyTreeGWT() {
+    service = FamilyTreeServiceAsync.Factory.create();
+
     treeList = new FamilyTreeList();
     treeList.addChangeListener(new ChangeListener() {
 
@@ -41,7 +46,7 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
     left.add(buttons, DockPanel.SOUTH);
     left.setCellHorizontalAlignment(buttons, DockPanel.ALIGN_CENTER);
 
-    PersonPanel personPanel = new PersonPanel(this);
+    personPanel = new PersonPanel(this);
     personPanel.setSize("100%", "100%");
 
     HorizontalSplitPanel split = new HorizontalSplitPanel();
@@ -63,6 +68,19 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
 
 
     setWidget(panel);
+
+    getFamilyTreeService().getFamilyTree(new AsyncCallback<FamilyTree>() {
+
+      public void onFailure(Throwable throwable) {
+        Window.alert("While invoking remote method: " + throwable.getMessage());
+      }
+
+      public void onSuccess(FamilyTree tree) {
+        FamilyTreeGWT.this.tree = tree;
+        treeList.fillInList(tree);
+      }
+    });
+
   }
 
   private void addPersonMenu(MenuBar menuBar) {
@@ -91,7 +109,71 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
   }
 
   private void open() {
-    Window.alert("Opening an family tree file");
+    final DialogBox open = new DialogBox(false, true);
+    open.setText("Open Family Tree XML File");
+
+    final FormPanel form = new FormPanel();
+    form.setAction("/upload");
+    form.setMethod(FormPanel.METHOD_POST);
+    form.setEncoding(FormPanel.ENCODING_MULTIPART);
+
+    VerticalPanel panel = new VerticalPanel();
+    panel.add(new Label("Choose a file to upload"));
+
+    final FileUpload upload = new FileUpload();
+    upload.setName("xmlFile");
+    panel.add(upload);
+
+    HorizontalPanel buttons = new HorizontalPanel();
+
+    buttons.add(new Button("Upload", new ClickListener() {
+      public void onClick(Widget sender) {
+        form.submit();
+      }
+    }));
+    buttons.add(new Button("Cancel", new ClickListener() {
+      public void onClick(Widget widget) {
+        open.hide();
+      }
+    }));
+
+    panel.add(buttons);
+
+    form.addFormHandler(new FormHandler() {
+
+      public void onSubmit(FormSubmitEvent event) {
+        if (upload.getFilename().length() == 0) {
+          Window.alert("No file name specified");
+          event.setCancelled(true);
+        }
+      }
+
+      public void onSubmitComplete(FormSubmitCompleteEvent event) {
+        getFamilyTreeService().getFamilyTree(new AsyncCallback<FamilyTree>() {
+
+          public void onFailure(Throwable throwable) {
+            Window.alert("While invoking remote method: " + throwable.getMessage());
+          }
+
+          public void onSuccess(FamilyTree tree) {
+            FamilyTreeGWT.this.tree = tree;
+            treeList.fillInList(tree);
+            open.hide();
+          }
+        }); 
+      }
+    });
+
+    form.add(panel);
+
+    open.add(form);
+
+    open.center();
+    open.show();
+  }
+
+  private FamilyTreeServiceAsync getFamilyTreeService() {
+    return service;
   }
 
   private void newPerson() {
@@ -100,7 +182,7 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
   }
 
   private void showPerson(Person person) {
-    //To change body of created methods use File | Settings | File Templates.
+    personPanel.showPerson(person); 
   }
 
   public void onModuleLoad() {

@@ -81,6 +81,13 @@ public class Person implements Serializable {
     this.marriages = new ArrayList<Marriage>();
   }
 
+  /**
+   * Default constructor for deserialization
+   */
+  private Person() {
+    
+  }
+
   ///////////////////////  Instance Methods  ///////////////////////
 
   /**
