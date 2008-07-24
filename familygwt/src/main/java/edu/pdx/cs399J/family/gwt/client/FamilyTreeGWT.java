@@ -76,8 +76,10 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
       }
 
       public void onSuccess(FamilyTree tree) {
-        FamilyTreeGWT.this.tree = tree;
-        treeList.fillInList(tree);
+        if (tree != null) {
+          FamilyTreeGWT.this.tree = tree;
+          treeList.fillInList(tree);
+        }
       }
     });
 
@@ -190,11 +192,25 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
   }
 
   public void displayFather() {
-    //To change body of created methods use File | Settings | File Templates.
+    Person person = this.treeList.getSelectedPerson();
+    if (person != null) {
+      Person father = person.getFather();
+      if (father != null) {
+        this.treeList.setSelectedPerson(father);
+        showPerson(father);
+      }
+    }
   }
 
   public void displayMother() {
-    //To change body of created methods use File | Settings | File Templates.
+    Person person = this.treeList.getSelectedPerson();
+    if (person != null) {
+      Person mother = person.getMother();
+      if (mother != null) {
+        this.treeList.setSelectedPerson(mother);
+        showPerson(mother);
+      }
+    }
   }
 
   public void update(Person person) {

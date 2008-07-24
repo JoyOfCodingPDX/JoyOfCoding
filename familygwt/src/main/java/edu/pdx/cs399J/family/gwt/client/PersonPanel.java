@@ -13,18 +13,18 @@ import java.util.Date;
  * Displays information about a {@link Person}
  */
 public class PersonPanel extends DockPanel {
-  private FamilyTreeGWT familyUI;
+  private final FamilyTreeGWT familyUI;
 
   private Person person;
   private List<Marriage> marriages = new ArrayList<Marriage>();
 
 
-  private Label name;
-  private Label dob;
-  private Label dod;
-  private Label fatherName;
-  private Label motherName;
-  private ListBox marriagesList;
+  private final Label name;
+  private final Label dob;
+  private final Label dod;
+  private final Label fatherName;
+  private final Label motherName;
+  private final ListBox marriagesList;
 
   /**
    * Creates a <code>PersonPanel</code> for displaying
@@ -32,20 +32,23 @@ public class PersonPanel extends DockPanel {
    * @param familyUI
    */
   public PersonPanel(FamilyTreeGWT familyUI) {
-    fillInLabels();
-
+    this.familyUI = familyUI;
     VerticalPanel panel = new VerticalPanel();
     panel.setSpacing(3);
 
+    this.name = new Label();
     this.name.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     panel.add(this.name);
 
+    this.dob = new Label();
     this.dob.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     panel.add(this.dob);
 
+    this.dod = new Label();
     this.dod.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     panel.add(this.dod);
 
+    this.fatherName = new Label();
     this.fatherName.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     this.fatherName.addClickListener(new ClickListener() {
       public void onClick(Widget widget) {
@@ -54,6 +57,7 @@ public class PersonPanel extends DockPanel {
     });
     panel.add(this.fatherName);
 
+    this.motherName = new Label();
     this.motherName.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
     this.motherName.addClickListener(new ClickListener() {
       public void onClick(Widget widget) {
@@ -61,6 +65,8 @@ public class PersonPanel extends DockPanel {
       }
     });
     panel.add(this.motherName);
+
+    fillInLabels();
 
     panel.add(new Label("Marriages:"));
     this.marriagesList = new ListBox();
@@ -75,11 +81,11 @@ public class PersonPanel extends DockPanel {
   }
 
   private void fillInLabels() {
-    this.name = new Label("Name:");
-    this.dob = new Label("Born:");
-    this.dod = new Label("Died:");
-    this.fatherName = new Label("Father:");
-    this.motherName = new Label("Mother:");
+    this.name.setText("Name:");
+    this.dob.setText("Born:");
+    this.dod.setText("Died:");
+    this.fatherName.setText("Father:");
+    this.motherName.setText("Mother:");
   }
 
   /**
@@ -98,7 +104,7 @@ public class PersonPanel extends DockPanel {
 
     DateTimeFormat df = DateTimeFormat.getLongDateFormat();
 
-    this.name.setText(person.getFullName());
+    this.name.setText("Name: " + person.getFullName());
 
     Date dob = person.getDateOfBirth();
     if (dob != null) {
