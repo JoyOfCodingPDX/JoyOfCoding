@@ -2,10 +2,10 @@ package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * The main entry point to GWT examples
@@ -13,12 +13,22 @@ import com.google.gwt.user.client.ui.Widget;
 public class Examples implements EntryPoint {
 
   public void onModuleLoad() {
-    Button b = new Button("Click me", new ClickListener() {
-      public void onClick(Widget sender) {
-        Window.alert("Hello, AJAX");
-      }
-    });
+    TabPanel allExamples = new TabPanel();
+    for (Example example : getExamples()) {
+      allExamples.add(example, example.getName());
+    }
+    allExamples.selectTab(0);
 
-    RootPanel.get().add(b);
+    RootPanel.get().add(allExamples);
+  }
+
+  private List<? extends Example> getExamples() {
+    return Arrays.asList(
+      new LabelExample(),
+      new ListBoxExample(),
+      new TextBoxExample(),
+      new TextAreaExample(),
+      new ButtonsExample()
+    );
   }
 }
