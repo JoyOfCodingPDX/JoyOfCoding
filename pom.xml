@@ -143,6 +143,14 @@
             <link>http://www.jakarta.org/ant/ant-1.6.1/docs/en/manual/api</link>
           </links>
         </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+              <!-- <report>test-javadoc</report> -->
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <!--
       <plugin>
