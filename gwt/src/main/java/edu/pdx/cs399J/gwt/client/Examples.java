@@ -51,7 +51,13 @@ public class Examples implements EntryPoint {
     examples.put("Events",
       Arrays.asList(
         new ClickListenerExample(),
-        new FocusPanelExample()
+        new FocusPanelExample(),
+        new DialogBoxExample()
+      ));
+    examples.put("Client/Server",
+      Arrays.asList(
+        new TimerExample(),
+        new DivisionServiceExample()
       ));
     return examples;
   }

@@ -15,38 +15,47 @@ public class FocusPanelExample extends Example {
     dock.add(label, DockPanel.NORTH);
     dock.setCellHorizontalAlignment(label, DockPanel.ALIGN_CENTER);
 
-    Label status = new Label();
+    final Label status = new Label("Status");
     dock.add(status, DockPanel.SOUTH);
+    dock.setCellHorizontalAlignment(status, DockPanel.ALIGN_CENTER);
 
     FocusPanel panel = new FocusPanel(new Label("Mouse me!"));
-    panel.setSize("200px", "200px");
     panel.addFocusListener(new FocusListener() {
 
       public void onFocus(Widget widget) {
-        label.setText("Got focus");
+        status.setText("Got focus");
       }
 
       public void onLostFocus(Widget widget) {
-        label.setText("Lost focus");
+        status.setText("Lost focus");
       }
     });
     panel.addKeyboardListener(new KeyboardListener() {
 
       public void onKeyDown(Widget widget, char c, int modifier) {
-        label.setText("Key down " + getModifierString(modifier) + c);
+        status.setText("Key down " + getModifierString(modifier) + c);
       }
 
       public void onKeyPress(Widget widget, char c, int modifier) {
-        label.setText("Key press " + getModifierString(modifier) + c);
+        status.setText("Key press " + getModifierString(modifier) + c);
       }
 
       public void onKeyUp(Widget widget, char c, int modifier) {
-        label.setText("Key up " + getModifierString(modifier) + c);
+        status.setText("Key up " + getModifierString(modifier) + c);
       }
     });
+    panel.addMouseWheelListener(new MouseWheelListener() {
+      public void onMouseWheel(Widget widget, MouseWheelVelocity velocity) {
+        String dir = velocity.isNorth() ? "North" : "South";
+        status.setText("Mouse wheel " + dir + " at " + velocity.getDeltaY());
+      }
+    });
+
     dock.add(panel, DockPanel.CENTER);
     dock.setCellHeight(panel, "200px");
     dock.setCellWidth(panel, "200px");
+    dock.setCellHorizontalAlignment(panel, DockPanel.ALIGN_CENTER);
+    dock.setCellVerticalAlignment(panel, DockPanel.ALIGN_MIDDLE);
 
     add(dock);
   }
@@ -70,9 +79,9 @@ public class FocusPanelExample extends Example {
     }
 
     if ((modifier & KeyboardListener.MODIFIER_SHIFT) != 0) {
-      sb.append("SHIFT");
+      sb.append("SHIFT ");
     }
 
-    return sb.toString().trim();
+    return sb.toString();
   }
 }
