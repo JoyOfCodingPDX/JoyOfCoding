@@ -13,10 +13,7 @@ public class DivisionServiceExample extends Example {
   public DivisionServiceExample() {
     super("Division Service");
 
-    final DivisionServiceAsync service = GWT.create(DivisionService.class);
-    ServiceDefTarget endpoint = (ServiceDefTarget) service;
-    String url = GWT.getModuleBaseURL() + "division";
-    endpoint.setServiceEntryPoint(url);
+    final DivisionServiceAsync service = DivisionService.Helper.getAsync();
 
     final TextBox dividend = new TextBox();
     dividend.setVisibleLength(3);
