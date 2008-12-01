@@ -27,6 +27,35 @@
     </pluginRepository> 
   </pluginRepositories>
   <dependencies>
+
+    <!--  GWT deps (from central repo) -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwtVersion}</version>
+      <classifier>${platform}-libs</classifier>
+      <type>zip</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwtVersion}</version>
+      <classifier>${platform}</classifier>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -40,36 +69,143 @@
       <plugin>
         <groupId>com.totsp.gwt</groupId>
         <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
+        <version>2.0-beta26</version>
         <configuration>
-          <gwtVersion>1.5.0-rc1</gwtVersion>
-          <runTarget>edu.pdx.cs399J.gwt.hello.Hello/Hello.html</runTarget>
+          <!--
+            this parameter is VERY important with automatic mode - has to
+            match the version in your declared deps
+          -->
+          <!--
+            if this is set incorrect, or left out and default does not match
+            (default is 1.5.3) you will have mysterious errors
+          -->
+          <gwtVersion>${gwtVersion}</gwtVersion>
           <compileTargets>
-            <param>edu.pdx.cs399J.gwt.hello.Hello</param>
+            <value>edu.pdx.cs399J.gwt.hello.Hello</value>
+            <value>edu.pdx.cs399J.gwt.Examples</value>
           </compileTargets>
-          <extraJvmArgs>-Xmx512M</extraJvmArgs>
-<!--
-          <generatorRootClasses>
-            <value>org.example.SomeClass</value>
-          </generatorRootClasses>
-          <overwriteGeneratedClasses>true</overwriteGeneratedClasses>
-          <generatorDestinationPackage>org.example.SomeClass.client.beans</generatorDestinationPackage>
--->
+          <runTarget>edu.pdx.cs399J.gwt.hello.Hello/Hello.html</runTarget>
+          <style>DETAILED</style>
+          <noServer>false</noServer>
+          <extraJvmArgs>-Xmx512m</extraJvmArgs>
         </configuration>
         <executions>
           <execution>
             <goals>
-<!--
-              <goal>generateClientBeans</goal>
--->
               <goal>mergewebxml</goal>
               <goal>compile</goal>
-              <goal>setup</goal>
-              <goal>extractGwt</goal>
-              <goal>testGwt</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
+      <!--  Use the dependency plugin to unpack gwt-dev-PLATFORM-libs.zip -->
+      <!--
+        (this is a replacement for the old "automatic" mode - useful if you
+        don't have GWT installed already, or you just want a maven way to
+        handle gwt deps)
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.google.gwt</groupId>
+                  <artifactId>gwt-dev</artifactId>
+                  <version>${gwtVersion}</version>
+                  <classifier>${platform}-libs</classifier>
+                  <type>zip</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${settings.localRepository}/com/google/gwt/gwt-dev/${gwtVersion}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--
+        If you want to use the target/web.xml file mergewebxml produces,
+        tell the war plugin to use it.
+        Also, exclude what you want from the final artifact here.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webXml>target/web.xml</webXml>
+          <warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+        <configuration>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+              <port>8080</port>
+            </connector>
+          </connectors>
+          <stopKey>stop-key</stopKey>
+          <stopPort>9999</stopPort>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+          <argLine>-XstartOnFirstThread</argLine>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+    
+  <!--  profiles (with activation per platform) -->
+  <profiles>
+    <profile>
+      <id>gwt-dev-windows</id>
+      <properties>
+        <platform>windows</platform>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+    </profile>
+    <profile>
+      <id>gwt-dev-mac</id>
+      <properties>
+        <platform>mac</platform>
+      </properties>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+    </profile>
+    <profile>
+      <id>gwt-dev-linux</id>
+      <properties>
+        <platform>linux</platform>
+      </properties>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <os>
+          <name>linux</name>
+        </os>
+      </activation>
+    </profile>
+  </profiles>
 </project>

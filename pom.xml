@@ -41,6 +41,10 @@
     <tag>HEAD</tag>
     <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
+  <!--  convenience to define GWT version in one place -->
+  <properties>
+    <gwtVersion>1.5.3</gwtVersion>
+  </properties>
   <pluginRepositories>
     <pluginRepository>
       <id>Codehaus Snapshots</id>
@@ -52,7 +56,22 @@
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
+    <!--  include pluginRepository and repository for GWT-Maven -->
+    <pluginRepository>
+      <id>gwt-maven-plugins</id>
+      <url>
+        http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/
+      </url>
+    </pluginRepository>
   </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>gwt-maven</id>
+      <url>
+        http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/
+      </url>
+    </repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -141,6 +160,7 @@
             <link>http://junit.sourceforge.net/javadoc</link>
             <link>http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/doclet</link>
             <link>http://www.jakarta.org/ant/ant-1.6.1/docs/en/manual/api</link>
+            <link>http://google-web-toolkit-doc-1-5.googlecode.com/svn/javadoc/1.5</link>
           </links>
         </configuration>
         <reportSets>

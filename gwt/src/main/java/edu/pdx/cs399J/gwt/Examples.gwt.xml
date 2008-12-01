@@ -1,5 +1,6 @@
 <module>
 	<inherits name="com.google.gwt.user.User"/>
-	<entry-point class="edu.pdx.cs399J.gwt.client.Examples"/>
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <entry-point class="edu.pdx.cs399J.gwt.client.Examples"/>
   <servlet path="/division" class="edu.pdx.cs399J.gwt.server.DivisionServiceImpl"/>
 </module>
