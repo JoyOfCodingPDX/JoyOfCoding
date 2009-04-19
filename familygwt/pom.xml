@@ -46,28 +46,13 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwtVersion}</version>
-      <classifier>${platform}-libs</classifier>
-      <type>zip</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwtVersion}</version>
-      <classifier>${platform}</classifier>
+      <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -75,68 +60,24 @@
     <finalName>familygwt</finalName>
     <plugins>
       <plugin>
-        <groupId>com.totsp.gwt</groupId>
-        <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
-        <version>2.0-beta26</version>
-        <configuration>
-          <!--
-            this parameter is VERY important with automatic mode - has to
-            match the version in your declared deps
-          -->
-          <!--
-            if this is set incorrect, or left out and default does not match
-            (default is 1.5.3) you will have mysterious errors
-          -->
-          <gwtVersion>${gwtVersion}</gwtVersion>
-          <compileTargets>
-            <value>edu.pdx.cs399J.family.gwt.FamilyTreeGWT</value>
-          </compileTargets>
-          <runTarget>edu.pdx.cs399J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
-          <style>DETAILED</style>
-          <noServer>false</noServer>
-          <extraJvmArgs>-Xmx512m</extraJvmArgs>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>mergewebxml</goal>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!--  Use the dependency plugin to unpack gwt-dev-PLATFORM-libs.zip -->
-      <!--
-        (this is a replacement for the old "automatic" mode - useful if you
-        don't have GWT installed already, or you just want a maven way to
-        handle gwt deps)
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>com.google.gwt</groupId>
-                  <artifactId>gwt-dev</artifactId>
-                  <version>${gwtVersion}</version>
-                  <classifier>${platform}-libs</classifier>
-                  <type>zip</type>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${settings.localRepository}/com/google/gwt/gwt-dev/${gwtVersion}</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>1.1-SNAPSHOT</version>
+          <configuration>
+            <runTarget>edu.pdx.cs399J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
+            <module>edu.pdx.cs399J.family.gwt.FamilyTreeGWT</module>
+            <extraJvmArgs>-Xmx512m</extraJvmArgs>
+            <style>DETAILED</style>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile</goal>
+                <goal>mergewebxml</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       <!--
         If you want to use the target/web.xml file mergewebxml produces,
         tell the war plugin to use it.
@@ -165,44 +106,4 @@
       </plugin>
     </plugins>
   </build>
-  
-  <!--  profiles (with activation per platform) -->
-  <profiles>
-    <profile>
-      <id>gwt-dev-windows</id>
-      <properties>
-        <platform>windows</platform>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-    </profile>
-    <profile>
-      <id>gwt-dev-mac</id>
-      <properties>
-        <platform>mac</platform>
-      </properties>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-    </profile>
-    <profile>
-      <id>gwt-dev-linux</id>
-      <properties>
-        <platform>linux</platform>
-      </properties>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <os>
-          <name>linux</name>
-        </os>
-      </activation>
-    </profile>
-  </profiles>
 </project>
