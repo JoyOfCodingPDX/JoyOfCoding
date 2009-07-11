@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+    spec="$jnlpspec"
+    codebase="$project.Url/jnlp"
+    href="$outputFile">
+  <information>
+    <title>Grade Book</title>
+    <vendor>$project.Organization.Name</vendor>
+    <homepage href="$project.Url"/>
+    <description>David Whitlock's Grade Book Application</description>
+#if($offlineAllowed)
+    <offline-allowed/>
+#end
+  </information>
+#if($allPermissions)
+  <security>
+     <all-permissions/>
+  </security>
+#end
+  <resources>
+    <j2se version="$j2seVersion"/>
+     $dependencies
+  </resources>
+  <application-desc main-class="$mainClass"/>
+</jnlp>
+

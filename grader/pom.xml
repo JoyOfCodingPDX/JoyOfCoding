@@ -2,13 +2,14 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2008</version>
+    <version>Summer2009</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>Summer2008</version>
+  <version>Summer2009</version>
+  <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
@@ -30,7 +31,7 @@
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2008</version>
+      <version>Summer2009</version>
     </dependency>
   </dependencies>
   <profiles>
@@ -68,6 +69,48 @@
           </archive>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo.webstart</groupId>
+            <artifactId>webstart-maven-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>install</phase>
+                    <goals>
+                        <goal>jnlp</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <jnlp>
+                    <inputTemplate>src/main/jnlp/jnlp.vm</inputTemplate>
+                    <outputFile>grader.jnlp</outputFile>
+                    <mainClass>edu.pdx.cs399J.grader.GradeBookGUI</mainClass>
+                </jnlp>
+                <!--
+                 defining this will automatically sign the jar and its dependencies
+                -->
+                <sign>
+                    <keystore>${java.io.tmpdir}${file.separator}keystore</keystore>
+                    <keypass>m2m2m2</keypass>
+                    <storepass>m2m2m2</storepass>
+                    <!--sigfile>m2m2m2</sigfile-->
+                    <alias>grader</alias>
+                    <validity>180</validity>
+                    <dnameCn>David Whitlock</dnameCn>
+                    <dnameO>Portland State University</dnameO>
+                    <dnameL>Portland</dnameL>
+                    <dnameSt>Oregon</dnameSt>
+                    <dnameC>US</dnameC>
+                    <verify>true</verify>
+                    <keystoreConfig>
+                        <delete>true</delete>
+                        <gen>true</gen>
+                    </keystoreConfig>
+                </sign>
+                <verbose>false</verbose>
+            </configuration>
+        </plugin>
+
     </plugins>
   </build>
 </project>
