@@ -1,45 +1,17 @@
 package edu.pdx.cs399J.rmi;
 
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
 import java.util.Arrays;
-import junit.framework.*;
 
 /**
  * This is a JUnit test that tests solving a system of equations using
  * {@link GaussianElimination}.
  */
-public class GaussianEliminationTest extends TestCase {
+public class GaussianEliminationTest {
 
-  public static Test suite() {
-    return(new TestSuite(GaussianEliminationTest.class));
-  }
-
-  public GaussianEliminationTest(String name) {
-    super(name);
-  }
-
-  //////// main program
-
-  /**
-   * Run one test method from this class
-   */
-  public static void main(String[] args) {
-    TestSuite suite = new TestSuite();
-
-    if (args.length == 0) {
-      suite.addTest(suite());
-
-    } else {
-      for (int i = 0; i < args.length; i++) {
-        suite.addTest(new GaussianEliminationTest(args[i]));
-      }
-    }
-
-    junit.textui.TestRunner.run(suite);
-  }
-
-
-  ////////  Test cases
- 
+  @Test
   public void testTwoEquations() {
     double[][] a = { { 4.0, 3.0 }, { 3.0, 2.0 } };
     double[] b = { 31.0, 22.0 };
@@ -49,6 +21,7 @@ public class GaussianEliminationTest extends TestCase {
     assertTrue(Arrays.equals(expected, actual));
   }
 
+  @Test
   public void testThreeEquations() {
     double[][] a = { { 4.0, 3.0, 1.0 }, 
                      { 2.0, -6.0, 4.0 },

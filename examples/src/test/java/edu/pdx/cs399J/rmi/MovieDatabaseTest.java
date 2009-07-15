@@ -1,20 +1,23 @@
 package edu.pdx.cs399J.rmi;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
-import java.util.SortedSet;
 import java.util.Iterator;
+import java.util.SortedSet;
 
 /**
  * Tests the behavior of the {@link MovieDatabase} class.
  */
-public class MovieDatabaseTest extends TestCase {
+public class MovieDatabaseTest {
 
   private MovieDatabase getMovieDatabase() throws RemoteException {
     return new MovieDatabaseImpl();
   }
 
+  @Test
   public void testCreateMovie() throws RemoteException {
     MovieDatabase db = getMovieDatabase();
     String title = "Moive 1";
@@ -27,6 +30,7 @@ public class MovieDatabaseTest extends TestCase {
     assertEquals(0, db.getFilmography(99L).size());
   }
 
+  @Test
   public void testFilmography() throws RemoteException {
     long bobId = 56l;
     long billId = 57l;

@@ -1,16 +1,13 @@
 package edu.pdx.cs399J.junit;
 
-import junit.framework.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  * This program runs all of the unit tests in the junit package
  */
+@RunWith(Suite.class)
+@Suite.SuiteClasses({SectionTest.class, CourseTest.class})
 public class AllTests {
-
-  public static void main(String[] args) {
-    TestSuite suite = new TestSuite();
-    suite.addTest(new TestSuite(SectionTest.class));
-    junit.textui.TestRunner.run(suite);
-  }
 
 }
