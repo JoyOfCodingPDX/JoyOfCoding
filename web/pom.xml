@@ -3,14 +3,14 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2008</version>
+    <version>Summer2009</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>web</name>
-  <version>Summer2008</version>
+  <version>Summer2009</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <build>
     <finalName>web</finalName>
@@ -104,7 +104,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.4</version>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,7 +120,7 @@
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2008</version>
+      <version>Summer2009</version>
     </dependency>
   </dependencies>
 </project>
