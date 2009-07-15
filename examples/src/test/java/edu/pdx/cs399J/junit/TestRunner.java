@@ -1,9 +1,12 @@
 package edu.pdx.cs399J.junit;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import junit.framework.*;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This program Java relfection to run some number of test methods in
@@ -36,14 +39,14 @@ public class TestRunner {
     String className = null;
     List<String> methodNames = new ArrayList<String>();
 
-    for (int i = 0; i < args.length; i++) {
-      if (className == null) {
-        className = args[i];
+      for ( String arg : args ) {
+          if ( className == null ) {
+              className = arg;
 
-      } else {
-        methodNames.add(args[i]);
+          } else {
+              methodNames.add( arg );
+          }
       }
-    }
 
     if (className == null) {
       usage("Missing class name");
@@ -58,15 +61,13 @@ public class TestRunner {
     } else {
       suite = new TestSuite();
 
-      Constructor init =
+      Constructor<TestCase> init =
         c.getConstructor(new Class[] { String.class });
-      Iterator iter = methodNames.iterator();
-      while (iter.hasNext()) {
-        String methodName = (String) iter.next();
-        TestCase tc =
-          (TestCase) init.newInstance(new Object[] { methodName });
-        suite.addTest(tc);
-      }
+        for ( String methodName : methodNames )
+        {
+            TestCase tc = init.newInstance( methodName );
+            suite.addTest( tc );
+        }
     }
 
     junit.textui.TestRunner.run(suite);
