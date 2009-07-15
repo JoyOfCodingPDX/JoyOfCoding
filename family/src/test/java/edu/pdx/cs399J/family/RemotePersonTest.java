@@ -1,14 +1,12 @@
 package edu.pdx.cs399J.family;
 
+import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
+
 import java.rmi.RemoteException;
 import java.util.Date;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import edu.pdx.cs399J.family.FamilyTreeException;
-import edu.pdx.cs399J.family.Person;
-import edu.pdx.cs399J.family.RemoteFamilyTree;
-import edu.pdx.cs399J.family.RemotePerson;
 
 /**
  * This class tests the functionality of implementors of
@@ -19,112 +17,90 @@ import edu.pdx.cs399J.family.RemotePerson;
  */
 public class RemotePersonTest extends RemoteTestCase {
 
-  ////////  Constructors
-
-  /**
-   * Creates a new <code>RemotePersonTest</code> for running the
-   * test of a given name
-   */
-  public RemotePersonTest(String name) {
-    super(name);
-  }
-
-  public static Test suite() {
-    return(new TestSuite(RemotePersonTest.class));
-  }
-
-  /**
-   * Run one test method from this class
-   */
-  public static void main(String[] args) throws Throwable {
-    TestSuite suite = new TestSuite();
-
-    if (args.length == 0) {
-      suite.addTest(suite());
-
-    } else {
-      for (int i = 0; i < args.length; i++) {
-        suite.addTest(new RemotePersonTest(args[i]));
-      }
-    }
-
-    junit.textui.TestRunner.run(suite);
-  }
-
-  ////////  Test cases
-
+  @Test
   public void testGetId() throws RemoteException{
     RemoteFamilyTree tree = getTree();
     assertTrue(tree.createPerson(Person.MALE).getId() >= 0);
   }
 
+  @Test
   public void testGetGenderMale() throws RemoteException {
     RemotePerson male = getTree().createPerson(Person.MALE);
-    assertEquals(Person.MALE, male.getGender());
+    Assert.assertEquals(Person.MALE, male.getGender());
   }
 
+  @Test
   public void testGetGenderFemale() throws RemoteException {
     RemotePerson female = getTree().createPerson(Person.FEMALE);
-    assertEquals(Person.FEMALE, female.getGender());
+    Assert.assertEquals(Person.FEMALE, female.getGender());
   }
 
+  @Test
   public void testGetFirstName() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String firstName = "firstName";
     person.setFirstName(firstName);
-    assertEquals(firstName, person.getFirstName());
+    Assert.assertEquals(firstName, person.getFirstName());
   }
 
+  @Test
   public void testGetFirstNameNull() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     assertNull(person.getFirstName());
   }
 
+  @Test
   public void testGetMiddleName() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String middleName = "middleName";
     person.setMiddleName(middleName);
-    assertEquals(middleName, person.getMiddleName());
+    Assert.assertEquals(middleName, person.getMiddleName());
   }
 
+  @Test
   public void testGetMiddleNameNull() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     assertNull(person.getMiddleName());
   }
 
+  @Test
   public void testGetLastName() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String lastName = "lastName";
     person.setLastName(lastName);
-    assertEquals(lastName, person.getLastName());
+    Assert.assertEquals(lastName, person.getLastName());
   }
 
+  @Test
   public void testGetLastNameNull() throws RemoteException {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     assertNull(person.getLastName());
   }
 
+  @Test
   public void testGetFatherId() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
     RemotePerson father = tree.createPerson(Person.MALE);
     person.setFatherId(father.getId());
 
-    assertEquals(father.getId(), person.getFatherId());
+    Assert.assertEquals(father.getId(), person.getFatherId());
   }
 
+  @Test
   public void testSetFatherIdBadId() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setFatherId(40000);
-      fail("Should have thrown FamilyTreeException");
+      Assert.fail("Should have thrown FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
     }
   }
 
+  @Test
   public void testSetFatherIdNotMale() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
@@ -132,34 +108,37 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setFatherId(father.getId());
-      fail("Should have thrown an FamilyTreeException");
+      Assert.fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
     }
   }
 
+  @Test
   public void testGetMotherId() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
     RemotePerson mother = tree.createPerson(Person.FEMALE);
     person.setMotherId(mother.getId());
 
-    assertEquals(mother.getId(), person.getMotherId());
+    Assert.assertEquals(mother.getId(), person.getMotherId());
   }
 
+  @Test
   public void testSetMotherIdBadId() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setMotherId(40000);
-      fail("Should have thrown FamilyTreeException");
+      Assert.fail("Should have thrown FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
     }
   }
 
+  @Test
   public void testSetMotherIdNotFemale() throws RemoteException {
     RemoteFamilyTree tree = getTree();
     RemotePerson person = tree.createPerson(Person.MALE);
@@ -167,13 +146,14 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setMotherId(mother.getId());
-      fail("Should have thrown an FamilyTreeException");
+      Assert.fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
     }
   }
 
+  @Test
   public void testSetDateOfBirth() throws RemoteException {
     Date dob = new Date();
     RemotePerson person = getTree().createPerson(Person.MALE);
@@ -181,6 +161,7 @@ public class RemotePersonTest extends RemoteTestCase {
     assertEquals(dob, person.getDateOfBirth());
   }
 
+  @Test
   public void testSetDateOfDeath() throws RemoteException {
     Date dob = new Date();
     RemotePerson person = getTree().createPerson(Person.MALE);

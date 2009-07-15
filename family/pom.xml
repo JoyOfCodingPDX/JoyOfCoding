@@ -3,26 +3,26 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2008</version>
+    <version>Summer2009</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
-  <version>Summer2008</version>
+  <version>Summer2009</version>
   <name>family</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2008</version>
+      <version>Summer2009</version>
     </dependency>
   </dependencies>
   <build>
@@ -39,6 +39,13 @@
             </manifest>
           </archive>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

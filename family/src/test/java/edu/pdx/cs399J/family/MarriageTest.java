@@ -1,7 +1,7 @@
 package edu.pdx.cs399J.family;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import static org.junit.Assert.fail;
 
 /**
  * This class tests the functionality of the <code>Marriage</code>
@@ -9,44 +9,7 @@ import junit.framework.TestSuite;
  */
 public class MarriageTest extends FamilyTestCase {
 
-  /**
-   * Returns a suite containing all of the tests in this class
-   */
-  public static Test suite() {
-    return(new TestSuite(MarriageTest.class));
-  }
-
-  /**
-   * Creates a new <code>MarriageTest</code> for running the test of a
-   * given name
-   */
-  public MarriageTest(String name) {
-    super(name);
-  }
-
-  //////// main program
-
-  /**
-   * A program that allow the user to run tests as named on the
-   * command line.
-   */
-  public static void main(String[] args) {
-    TestSuite suite = new TestSuite();
-
-    if (args.length == 0) {
-      suite.addTest(suite());
-
-    } else {
-      for (int i = 0; i < args.length; i++) {
-        suite.addTest(new MarriageTest(args[i]));
-      }
-    }
-
-    junit.textui.TestRunner.run(suite);
-  }
-
-  ////////  Test cases
-
+  @Test
   public void testMarriage() {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.FEMALE);
@@ -55,6 +18,7 @@ public class MarriageTest extends FamilyTestCase {
     assertEquals(wife, m.getWife());
   }
 
+  @Test
   public void testMarriageHusbandNotMale() {
     Person husband = new Person(1, Person.FEMALE);
     Person wife = new Person(2, Person.FEMALE);
@@ -67,6 +31,7 @@ public class MarriageTest extends FamilyTestCase {
     }
   }
 
+  @Test
   public void testMarriageWifeNotFemale() {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.MALE);

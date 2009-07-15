@@ -1,5 +1,8 @@
 package edu.pdx.cs399J.family;
 
+import org.junit.Test;
+import static org.junit.Assert.fail;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -12,10 +15,6 @@ import java.util.Date;
  */
 public abstract class FamilyTreeConversionTestCase
   extends FamilyTestCase {
-
-  public FamilyTreeConversionTestCase(String name) {
-    super(name);
-  }
 
   ////////  Helper methods
 
@@ -31,6 +30,7 @@ public abstract class FamilyTreeConversionTestCase
 
   ////////  Test methods
 
+    @Test
   public void testConformingData() {
     Person father = new Person(1, Person.MALE);
     father.setDateOfBirth(new Date());

@@ -4,31 +4,12 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * This class tests the functionality of the <code>XmlDumper</code>
  * and <code>XmlParser</code> classes.
  */
 public class XmlTest extends FamilyTreeConversionTestCase {
-
-  /**
-   * Returns a suite containing all of the tests in this class
-   */
-  public static Test suite() {
-    return(new TestSuite(XmlTest.class));
-  }
-
-  /**
-   * Creates a new <code>XmlTest</code> for running the test of a
-   * given name
-   */
-  public XmlTest(String name) {
-    super(name);
-  }
-
-  ////////  Helper Methods
 
   /**
    * Converts a FamilyTree to XML and returns the XML as a String.

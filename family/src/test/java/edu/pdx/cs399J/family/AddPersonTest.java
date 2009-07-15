@@ -1,9 +1,15 @@
 package edu.pdx.cs399J.family;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import junit.framework.*;
+import org.junit.Test;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.StringTokenizer;
 
 /**
  * This class tests the behavior of the {@link AddPerson} program to
@@ -11,22 +17,10 @@ import junit.framework.*;
  * suffered in the Spring of 2002 when my students found a bunch of
  * bugs in my code.
  */
-public class AddPersonTest extends TestCase {
+public class AddPersonTest {
 
   private static final boolean DEBUG =
     Boolean.getBoolean("AddPersonTest.DEBUG");
-
-  public AddPersonTest(String name) {
-    super(name);
-  }
-
-  ////////  Abstract methods
-
-  /**
-   * Returns the option for what kind of file to use
-   */
-
-  ////////  Helper methods
 
   /**
    * Invokes the main method of AddPerson with the given command line
@@ -82,25 +76,25 @@ public class AddPersonTest extends TestCase {
       field.set(null, Boolean.FALSE);
 
     } else if (type.equals(char.class)) {
-      field.set(null, new Character('\0'));
+      field.set(null, '\0' );
 
     } else if (type.equals(byte.class)) {
-      field.set(null, new Byte((byte) 0));
+      field.set(null, (byte) 0 );
 
     } else if (type.equals(short.class)) {
-      field.set(null, new Short((short) 0));
+      field.set(null, (short) 0 );
 
     } else if (type.equals(int.class)) {
-      field.set(null, new Integer(0));
+      field.set(null, 0 );
 
     } else if (type.equals(long.class)) {
-      field.set(null, new Long(0L));
+      field.set(null, 0L );
 
     } else if (type.equals(float.class)) {
-      field.set(null, new Float(0.0f));
+      field.set(null, 0.0f );
 
     } else if (type.equals(double.class)) {
-      field.set(null, new Double(0.0));
+      field.set(null, 0.0 );
 
     } else {
       assert Object.class.isAssignableFrom(type) : type;
@@ -170,10 +164,12 @@ public class AddPersonTest extends TestCase {
 
   ////////  Test cases
 
+  @Test
   public void testText() {
     createDavesFamily("");
   }
 
+  @Test
   public void testXml() {
     createDavesFamily("-xml ");
   }

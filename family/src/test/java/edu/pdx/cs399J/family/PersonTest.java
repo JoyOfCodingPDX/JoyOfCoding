@@ -1,55 +1,22 @@
 package edu.pdx.cs399J.family;
 
-import java.util.*;
-import junit.framework.*;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
 
 /**
  * This class tests the functionality of the <code>Person</code> class.
  */
-public class PersonTest extends TestCase {
-
-  /**
-   * Returns a suite containing all of the tests in this class
-   */
-  public static Test suite() {
-    return(new TestSuite(PersonTest.class));
-  }
-
-  /**
-   * Creates a new <code>PersonTest</code> for running the test of a
-   * given name
-   */
-  public PersonTest(String name) {
-    super(name);
-  }
-
-  //////// main program
-
-  /**
-   * A program that allow the user to run tests as named on the
-   * command line.
-   */
-  public static void main(String[] args) {
-    TestSuite suite = new TestSuite();
-
-    if (args.length == 0) {
-      suite.addTest(suite());
-
-    } else {
-      for (int i = 0; i < args.length; i++) {
-        suite.addTest(new PersonTest(args[i]));
-      }
-    }
-
-    junit.textui.TestRunner.run(suite);
-  }
-
-  ////////  Test cases
+public class PersonTest {
 
   /**
    * Create a person with an invalid id.  Make sure it throws an
    * FamilyTreeException. 
    */
+  @Test
   public void testInvalidPersonId() {
     try {
       new Person(-7, Person.FEMALE);
@@ -64,6 +31,7 @@ public class PersonTest extends TestCase {
    * Create a person with an invalid gender.  Make sure it throws an
    * FamilyTreeException. 
    */
+  @Test
   public void testInvalidGender() {
     try {
       new Person(1, Person.Gender.UNKNOWN);
@@ -74,24 +42,28 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testGetId() {
     int id = 4;
     Person p = new Person(id, Person.MALE);
     assertEquals(id, p.getId());
   }
 
+  @Test
   public void testGetGenderMale() {
     Person.Gender gender = Person.MALE;
     Person p = new Person(4, gender);
     assertEquals(gender, p.getGender());
   }
 
+  @Test
   public void testGetGenderFemale() {
     Person.Gender gender = Person.FEMALE;
     Person p = new Person(4, gender);
     assertEquals(gender, p.getGender());
   }
 
+  @Test
   public void testFirstName() {
     String name = "Bob";
     Person p = new Person(4, Person.MALE);
@@ -99,6 +71,7 @@ public class PersonTest extends TestCase {
     assertEquals(name, p.getFirstName());
   }
 
+  @Test
   public void testLastName() {
     String name = "Bob";
     Person p = new Person(4, Person.MALE);
@@ -106,6 +79,7 @@ public class PersonTest extends TestCase {
     assertEquals(name, p.getLastName());
   }
 
+  @Test
   public void testMiddleName() {
     String name = "Bob";
     Person p = new Person(4, Person.MALE);
@@ -113,6 +87,7 @@ public class PersonTest extends TestCase {
     assertEquals(name, p.getMiddleName());
   }
 
+  @Test
   public void testFullName() {
     String first = "First";
     String middle = "Middle";
@@ -127,6 +102,7 @@ public class PersonTest extends TestCase {
     assertEquals(full, p.getFullName());
   }
 
+  @Test
   public void testFather() {
     int id = 2;
     Person child = new Person(1, Person.FEMALE);
@@ -136,6 +112,7 @@ public class PersonTest extends TestCase {
     assertEquals(id, child.getFatherId());
   }
 
+  @Test
   public void testFemaleFather() {
     Person child = new Person(1, Person.FEMALE);
     Person father = new Person(2, Person.FEMALE);
@@ -148,11 +125,13 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testGetFatherIdUnknownFather() {
     Person child = new Person(1, Person.FEMALE);
     assertEquals(Person.UNKNOWN, child.getFatherId());
   }
 
+  @Test
   public void testMother() {
     int id = 2;
     Person child = new Person(1, Person.FEMALE);
@@ -162,6 +141,7 @@ public class PersonTest extends TestCase {
     assertEquals(id, child.getMotherId());
   }
 
+  @Test
   public void testMaleMother() {
     Person child = new Person(1, Person.FEMALE);
     Person mother = new Person(2, Person.MALE);
@@ -174,11 +154,13 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testGetMotherIdUnknownMother() {
     Person child = new Person(1, Person.FEMALE);
     assertEquals(Person.UNKNOWN, child.getMotherId());
   }
 
+  @Test
   public void testDateOfBirth() {
     Date dob = new Date(123456L);
     Person p = new Person(1, Person.FEMALE);
@@ -186,6 +168,7 @@ public class PersonTest extends TestCase {
     assertEquals(dob, p.getDateOfBirth());
   }
 
+  @Test
   public void testDateOfDeath() {
     Date dod = new Date(123456L);
     Person p = new Person(1, Person.FEMALE);
@@ -193,6 +176,7 @@ public class PersonTest extends TestCase {
     assertEquals(dod, p.getDateOfDeath());
   }
 
+  @Test
   public void testDateOfDeathBeforeDateOfBirth() {
     Date dob = new Date(120000L);
     Date dod = new Date(100000L);
@@ -207,6 +191,7 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testAddMarriage() {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.FEMALE);
@@ -215,6 +200,7 @@ public class PersonTest extends TestCase {
     assertTrue(husband.getMarriages().contains(m));
   }
 
+  @Test
   public void testMaleNotInMarriage() {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.FEMALE);
@@ -230,6 +216,7 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testFemaleNotInMarriage() {
     Person husband = new Person(1, Person.MALE);
     Person wife = new Person(2, Person.FEMALE);
@@ -245,12 +232,14 @@ public class PersonTest extends TestCase {
     }
   }
 
+  @Test
   public void testEquals() {
     Person p1 = new Person(1, Person.MALE);
     Person p2 = new Person(1, Person.MALE);
     assertEquals(p1, p2);
   }
 
+  @Test
   public void testNotEquals() {
     Person p1 = new Person(1, Person.MALE);
     Person p2 = new Person(2, Person.MALE);

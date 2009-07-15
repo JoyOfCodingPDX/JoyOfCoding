@@ -1,5 +1,10 @@
 package edu.pdx.cs399J.family;
 
+import org.junit.After;
+import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Before;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -9,13 +14,12 @@ import java.rmi.registry.Registry;
 import java.util.Calendar;
 import java.util.Date;
 
-import junit.framework.TestCase;
 
 /**
  * This is the abstract superclass for all of the remote family
  * tree tests.
  */
-public abstract class RemoteTestCase extends TestCase {
+public abstract class RemoteTestCase {
 
   /** The port on which the RMI registry runs */
   private static final int RMI_PORT =
@@ -25,18 +29,14 @@ public abstract class RemoteTestCase extends TestCase {
    * runs */
   private static Registry registry;
 
-  ////////  Constructors
+  /** The name of this test */
+  private String name = "RemoteTestCase" + System.currentTimeMillis();
 
-  public RemoteTestCase(String name) {
-    super(name);
-  }
-
-  ////////  Test life cycle methods
-
-  /**
+    /**
    * Creates an empty <code>RemoteFamilyTree</code> and binds it into
    * the RMI namespace.
    */
+  @Before
   public void setUp() {
     try {
       File file = File.createTempFile("familyTree", "xml");
@@ -53,6 +53,7 @@ public abstract class RemoteTestCase extends TestCase {
   /**
    * Unbinds the remote family tree from the RMI namespace
    */
+  @After
   public void tearDown() {
     this.unbind();
   }
@@ -155,7 +156,12 @@ public abstract class RemoteTestCase extends TestCase {
     }
   }
 
-  /**
+  private String getName()
+  {
+    return name;
+  }
+
+    /**
    * Asserts the equality of two dates.  Only takes the month, day,
    * and year into account.
    */
@@ -166,9 +172,9 @@ public abstract class RemoteTestCase extends TestCase {
     Calendar cal2 = Calendar.getInstance();
     cal1.setTime(d2);
 
-    assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
+    Assert.assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
                  cal2.get(Calendar.DAY_OF_YEAR));
-    assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
+    Assert.assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
   }
 
   /**
@@ -184,7 +190,7 @@ public abstract class RemoteTestCase extends TestCase {
 
     PrintWriter pw = new PrintWriter(sw, true);
     cause.printStackTrace(pw);
-    fail(sw.toString());
+    Assert.fail(sw.toString());
   }
 
 }

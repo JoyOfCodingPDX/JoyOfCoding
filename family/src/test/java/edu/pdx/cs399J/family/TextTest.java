@@ -1,11 +1,13 @@
 package edu.pdx.cs399J.family;
 
+import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import org.junit.Test;
+
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * This class tests the functionality of the <code>TextDumper</code>
@@ -13,26 +15,11 @@ import junit.framework.TestSuite;
  */
 public class TextTest extends FamilyTreeConversionTestCase {
 
-  /**
-   * Returns a suite containing all of the tests in this class
-   */
-  public static Test suite() {
-    return(new TestSuite(TextTest.class));
-  }
-
-  /**
-   * Creates a new <code>TextTest</code> for running the test of a
-   * given name
-   */
-  public TextTest(String name) {
-    super(name);
-  }
-
-  ////////  Helper Methods
 
   /**
    * Converts a FamilyTree to text and returns the text as a String.
    */
+  @Override
   protected String getStringFor(FamilyTree tree) {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -48,7 +35,8 @@ public class TextTest extends FamilyTreeConversionTestCase {
   /**
    * Parsers a FamilyTree from a String containing XML
    */
-  protected FamilyTree getFamilyTreeFor(String s) 
+  @Override
+  protected FamilyTree getFamilyTreeFor(String s)
     throws FamilyTreeException {
 
     // Parse the XML from the String
@@ -62,6 +50,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
   /**
    * Files contains person with same id multiple times
    */
+  @Test
   public void testSameIdMultipleTimes() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -79,6 +68,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -94,6 +84,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testGenderBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -110,6 +101,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadGender() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -126,6 +118,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testInvalidGender() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -142,6 +135,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testMissingGender() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -157,6 +151,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testFemaleGender() {
     int id = 1;
     Person.Gender gender = Person.FEMALE;
@@ -170,9 +165,10 @@ public class TextTest extends FamilyTreeConversionTestCase {
     FamilyTree tree = getFamilyTreeFor(sw.toString());
     Person p = tree.getPerson(id);
     assertNotNull(p);
-    assertEquals(gender, p.getGender());
+    Assert.assertEquals(gender, p.getGender());
   }
 
+    @Test
   public void testMaleGender() {
     int id = 1;
     Person.Gender gender = Person.MALE;
@@ -186,9 +182,10 @@ public class TextTest extends FamilyTreeConversionTestCase {
     FamilyTree tree = getFamilyTreeFor(sw.toString());
     Person p = tree.getPerson(id);
     assertNotNull(p);
-    assertEquals(gender, p.getGender());
+    Assert.assertEquals(gender, p.getGender());
   }
 
+    @Test
   public void testFirstNameBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -205,6 +202,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testMiddleNameBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -221,6 +219,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testLastNameBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -237,6 +236,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testFatherBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -253,6 +253,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadFatherId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -269,6 +270,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testNonExistentFatherId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -285,6 +287,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testMotherBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -301,6 +304,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadMotherId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -317,6 +321,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testNonExistentMotherId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -339,6 +344,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testDOBBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -355,6 +361,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadDOB() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -371,6 +378,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testDODBeforeId() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
@@ -387,6 +395,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     }
   }
 
+    @Test
   public void testBadDOD() {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
