@@ -48,19 +48,18 @@ public class EnumeratedTypes {
    * Enum#toString()} method and in Spanish.
    */
   public static void main(String[] args) {
-    SortedSet set = new TreeSet();
+    SortedSet<Day> set = new TreeSet<Day>();
     set.add(Day.WEDNESDAY);
     set.add(Day.MONDAY);
     set.add(Day.FRIDAY);
 
     System.out.print("Sorted days: ");
-    for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-      System.out.print(iter.next() + " ");
+    for (Day day : set) {
+      System.out.print(day + " ");
     }
 
     System.out.print("\nEn espanol: ");
-    for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-      Day day = (Day) iter.next();
+    for (Day day : set) {
       System.out.print(enEspanol(day) + " ");
     }
     System.out.println("");
