@@ -1,14 +1,19 @@
 package edu.pdx.cs399J;
 
-import java.util.*;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
-import junit.framework.*;
+import java.util.AbstractMap;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * This is a set of JUnit unit tests that test the functionality of an
  * {@link AbstractLRUMap LRU Map}.
  */
-public abstract class LRUMapTestCase extends TestCase {
+public abstract class LRUMapTestCase {
 
   /**
    * A factory method that creates a new instance of the LRU Map to be tested.
@@ -25,6 +30,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see LRUMapTestCase#createLRUMap(int)
    */
+  @Test
   public void testCreate() {
     createLRUMap(4);
   }
@@ -32,6 +38,7 @@ public abstract class LRUMapTestCase extends TestCase {
   /**
    * Tests the {@link AbstractLRUMap#getStudentNames()} methods
    */
+  @Test
   public void testGetStudentNames() {
     AbstractLRUMap map =
       createLRUMap(4);
@@ -48,6 +55,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#put(Object, Object)
    */
+  @Test
   public void testMapSizeIsBounded() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
@@ -70,6 +78,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractMap#containsKey(Object)
    */
+  @Test
   public void testLRUMappingIterates() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
@@ -109,6 +118,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#put(Object, Object)
    */
+  @Test
   public void testLRUMappingIsRemoved() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
@@ -134,6 +144,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#get(Object)
    */
+  @Test
   public void testGetFromMap() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
@@ -159,6 +170,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#get(Object)
    */
+  @Test
   public void testGetNonExistent() {
     int maxMappings = 4;
     AbstractLRUMap map =
@@ -171,6 +183,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#remove(Object)
    */
+  @Test
   public void testRemoveFromMap() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
@@ -200,6 +213,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#remove(Object)
    */
+  @Test
   public void testRemoveNonExistent() {
     int maxMappings = 4;
     AbstractLRUMap map =
@@ -212,6 +226,7 @@ public abstract class LRUMapTestCase extends TestCase {
    *
    * @see AbstractLRUMap#clear()
    */
+  @Test
   public void testClear() {
     int maxMappings = 4;
     AbstractLRUMap<Integer, String> map =
