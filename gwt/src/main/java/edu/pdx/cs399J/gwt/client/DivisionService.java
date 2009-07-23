@@ -1,12 +1,13 @@
 package edu.pdx.cs399J.gwt.client;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 /**
  * A GWT remote service that divides two <code>double</code>s
  */
+@RemoteServiceRelativePath("division")
 public interface DivisionService extends RemoteService {
 
   /**
@@ -26,9 +27,6 @@ public interface DivisionService extends RemoteService {
     public static DivisionServiceAsync getAsync() {
       if (instance == null) {
         instance = GWT.create(DivisionService.class);
-        ServiceDefTarget endpoint = (ServiceDefTarget) instance;
-        String url = GWT.getModuleBaseURL() + "division";
-        endpoint.setServiceEntryPoint(url);
       }
       return instance;
     }

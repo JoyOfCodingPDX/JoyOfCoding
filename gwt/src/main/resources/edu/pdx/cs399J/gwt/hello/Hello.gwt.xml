@@ -1,4 +1,4 @@
-<module>
+<module rename-to="hello">
 	<inherits name="com.google.gwt.user.User"/>
 	<entry-point class="edu.pdx.cs399J.gwt.hello.client.Hello"/>
 </module>

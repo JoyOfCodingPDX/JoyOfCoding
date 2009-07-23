@@ -4,13 +4,13 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2008</version>
+    <version>Summer2009</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2008</version>
+  <version>Summer2009</version>
   <name>Example GWT Application</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -30,21 +30,22 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
     <finalName>gwt</finalName>
+    <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
     <plugins>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.1-SNAPSHOT</version>
             <configuration>
-                <runTarget>edu.pdx.cs399J.gwt.hello.Hello/Hello.html</runTarget>
+                <runTarget>edu.pdx.cs399J.gwt.Examples/Examples.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs399J.gwt.hello.Hello</module>
+                  <!-- module>edu.pdx.cs399J.gwt.hello.Hello</module -->
                   <module>edu.pdx.cs399J.gwt.Examples</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
@@ -54,30 +55,25 @@
             <execution>
               <goals>
                 <goal>compile</goal>
-                <goal>mergewebxml</goal>
                 <goal>test</goal>
               </goals>
             </execution>
           </executions>
         </plugin>
-      <!--
-        If you want to use the target/web.xml file mergewebxml produces,
-        tell the war plugin to use it.
-        Also, exclude what you want from the final artifact here.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <webXml>target/web.xml</webXml>
-          <warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-        </configuration>
-      </plugin>
+        <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-war-plugin</artifactId>
+             <configuration>
+             	<warSourceDirectory>${basedir}/war</warSourceDirectory>
+             	<webappDirectory>${basedir}/war</webappDirectory>
+             </configuration>
+         </plugin>
 
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
         <configuration>
+          <!-- webAppSourceDirectory>${basedir}/war</webAppSourceDirectory -->
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
               <port>8080</port>
