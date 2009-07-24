@@ -19,6 +19,9 @@ public class Hello implements EntryPoint {
 		}
     	
     });
-    RootPanel.get().add(button);
+      RootPanel rootPanel = RootPanel.get("hello");
+      if (rootPanel != null) {
+        rootPanel.add(button);
+      }
   }
 }

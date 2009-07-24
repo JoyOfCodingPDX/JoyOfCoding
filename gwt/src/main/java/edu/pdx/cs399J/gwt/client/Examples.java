@@ -1,12 +1,13 @@
 package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
-import java.util.List;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The main entry point to GWT examples
@@ -14,6 +15,12 @@ import java.util.LinkedHashMap;
 public class Examples implements EntryPoint {
 
   public void onModuleLoad() {
+    RootPanel rootPanel = RootPanel.get("examplesDiv");
+
+    if (rootPanel == null) {
+        return;
+    }
+
     TabPanel allExamples = new TabPanel();
     Map<String, List<? extends Example>> examples = getExamples();
     for (String title : examples.keySet()) {
@@ -27,7 +34,7 @@ public class Examples implements EntryPoint {
     allExamples.selectTab(0);
 
 
-    RootPanel.get().add(allExamples);
+    rootPanel.add(allExamples);
   }
 
   private Map<String, List<? extends Example>> getExamples() {
