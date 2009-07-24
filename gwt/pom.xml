@@ -43,9 +43,8 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.1-SNAPSHOT</version>
             <configuration>
-                <runTarget>edu.pdx.cs399J.gwt.Examples/Examples.html</runTarget>
+                <runTarget>edu.pdx.cs399J.gwt.Examples/Hello.html</runTarget>
                 <modules>
-                  <!-- module>edu.pdx.cs399J.gwt.hello.Hello</module -->
                   <module>edu.pdx.cs399J.gwt.Examples</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>

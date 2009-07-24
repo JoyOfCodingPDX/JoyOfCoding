@@ -1,4 +1,4 @@
-package edu.pdx.cs399J.gwt.hello.client;
+package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;

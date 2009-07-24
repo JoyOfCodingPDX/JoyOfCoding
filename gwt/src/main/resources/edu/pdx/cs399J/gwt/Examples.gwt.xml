@@ -2,4 +2,5 @@
 	<inherits name="com.google.gwt.user.User"/>
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
   <entry-point class="edu.pdx.cs399J.gwt.client.Examples"/>
+  <entry-point class="edu.pdx.cs399J.gwt.client.Hello"/>
 </module>
