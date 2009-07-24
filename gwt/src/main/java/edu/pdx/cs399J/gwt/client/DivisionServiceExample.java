@@ -1,10 +1,13 @@
 package edu.pdx.cs399J.gwt.client;
 
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Demonstrates GWT's remote services
@@ -24,8 +27,8 @@ public class DivisionServiceExample extends Example {
     quotient.setReadOnly(true);
 
     Button equals = new Button("=");
-    equals.addClickListener(new ClickListener() {
-      public void onClick(Widget widget) {
+    equals.addClickHandler(new ClickHandler() {
+      public void onClick( ClickEvent event) {
         try {
           int d1 = Integer.parseInt(dividend.getText());
           int d2 = Integer.parseInt(divisor.getText());

@@ -6,6 +6,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 /**
  * A basic GWT class
@@ -13,11 +15,11 @@ import com.google.gwt.user.client.ui.Widget;
 public class Hello implements EntryPoint {
   public void onModuleLoad() {
     Button button = new Button("Hello World");
-    button.addClickListener(new ClickListener() {
-		public void onClick(Widget arg0) {
-			Window.alert("Hello from GWT");
-		}
-    	
+    button.addClickHandler(new ClickHandler() {
+        public void onClick( ClickEvent clickEvent )
+        {
+            Window.alert("Hello from GWT");
+        }
     });
       RootPanel rootPanel = RootPanel.get("hello");
       if (rootPanel != null) {

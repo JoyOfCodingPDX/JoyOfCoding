@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.gwt.client;
 
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -12,11 +14,12 @@ public class DeckPanelExample extends Example {
     DockPanel dock = new DockPanel();
     final DeckPanel deck = new DeckPanel();
     final ListBox list = new ListBox();
-    list.addChangeListener(new ChangeListener() {
-      public void onChange(Widget widget) {
-        int index = list.getSelectedIndex();
-        deck.showWidget(index);
-      }
+    list.addChangeHandler(new ChangeHandler() {
+        public void onChange( ChangeEvent changeEvent )
+        {
+            int index = list.getSelectedIndex();
+            deck.showWidget(index);
+        }
     });
 
     for (String label : new String[] { "One", "Two", "Three", "Four"}) {
