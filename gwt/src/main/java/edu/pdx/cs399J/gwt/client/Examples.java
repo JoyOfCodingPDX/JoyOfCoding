@@ -1,7 +1,6 @@
 package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
 import java.util.Arrays;
@@ -57,7 +56,7 @@ public class Examples implements EntryPoint {
       ));
     examples.put("Events",
       Arrays.asList(
-        new ClickListenerExample(),
+        new ClickHandlerExample(),
         new FocusPanelExample(),
         new DialogBoxExample()
       ));

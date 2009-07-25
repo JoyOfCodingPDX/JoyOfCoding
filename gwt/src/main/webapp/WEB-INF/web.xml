@@ -4,11 +4,6 @@
 
 <web-app>
 
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Hello.html</welcome-file>
-  </welcome-file-list>
-  
   <!-- Servlets -->
   <servlet>
     <servlet-name>divisionServlet</servlet-name>
@@ -19,4 +14,9 @@
     <servlet-name>divisionServlet</servlet-name>
     <url-pattern>/examples/division</url-pattern>
   </servlet-mapping>
+
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Hello.html</welcome-file>
+  </welcome-file-list>
 </web-app>

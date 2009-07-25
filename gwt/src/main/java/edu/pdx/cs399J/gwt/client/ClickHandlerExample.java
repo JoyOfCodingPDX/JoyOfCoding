@@ -6,10 +6,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 
 /**
+ * A simple class that pops up a dialog when a button is clicked
  */
-public class ClickListenerExample extends Example {
-  public ClickListenerExample() {
-    super("Click Listener");
+public class ClickHandlerExample extends Example {
+  public ClickHandlerExample() {
+    super("Click Handler");
 
     Button button = new Button("Click me");
     button.addClickHandler(new ClickHandler() {
