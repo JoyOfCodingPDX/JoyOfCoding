@@ -48,6 +48,7 @@
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>
+                <webappDirectory>${basedir}/war</webappDirectory>
             </configuration>
           <executions>
             <execution>
