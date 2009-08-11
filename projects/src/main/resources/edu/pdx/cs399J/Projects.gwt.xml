@@ -1,0 +1,8 @@
+<module>
+  <source>
+    <include name="*Airline*.*"/>
+    <include name="AirportNames.*"/>
+    <include name="ParserException*.*"/>
+    <include name="*Phone*.*"/>
+  </source>
+</module>
