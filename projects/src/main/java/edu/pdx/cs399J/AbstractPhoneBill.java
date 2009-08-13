@@ -1,5 +1,6 @@
 package edu.pdx.cs399J;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Collection;
  *
  * @author David Whitlock
  */
-public abstract class AbstractPhoneBill {
+public abstract class AbstractPhoneBill implements Serializable {
 
   /**
    * Returns the name of the customer whose phone bill this is

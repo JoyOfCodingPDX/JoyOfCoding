@@ -1,8 +1,8 @@
 <module>
   <source>
-    <include name="*Airline*.*"/>
+    <include name="Abstract*.*"/>
+    <exclude name="AbstractLRUMap*.*"/>
     <include name="AirportNames.*"/>
     <include name="ParserException*.*"/>
-    <include name="*Phone*.*"/>
   </source>
 </module>

@@ -1,6 +1,7 @@
 package edu.pdx.cs399J;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class represents an appointment found in an appointment book.
@@ -9,7 +10,8 @@ import java.util.*;
  *
  * @author David Whitlock
  */
-public abstract class AbstractAppointment {
+public abstract class AbstractAppointment implements Serializable
+{
 
   /**
    * Returns a String describing the beginning date and time of this

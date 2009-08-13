@@ -1,12 +1,14 @@
 package edu.pdx.cs399J;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * This class represents an airline.  Each airline has a name and
  * consists of multiple flights.
  */
-public abstract class AbstractAirline {
+public abstract class AbstractAirline implements Serializable
+{
 
   /**
    * Returns the name of this airline.

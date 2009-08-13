@@ -1,5 +1,6 @@
 package edu.pdx.cs399J;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  *
  * @author David Whitlock
  */
-public abstract class AbstractPhoneCall {
+public abstract class AbstractPhoneCall implements Serializable {
 
   /**
    * Returns the phone number of the person who originated this phone

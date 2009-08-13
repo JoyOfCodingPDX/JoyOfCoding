@@ -1,6 +1,7 @@
 package edu.pdx.cs399J;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * This class represents an appointment book that holds multiple
@@ -8,7 +9,7 @@ import java.util.*;
  *
  * @author David Whitlock
  */
-public abstract class AbstractAppointmentBook {
+public abstract class AbstractAppointmentBook implements Serializable {
 
   /**
    * Returns the name of the owner of this appointment book.

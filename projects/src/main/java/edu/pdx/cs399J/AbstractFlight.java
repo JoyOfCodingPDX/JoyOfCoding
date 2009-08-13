@@ -1,5 +1,6 @@
 package edu.pdx.cs399J;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * airport identified by the airport's three-letter code, and an
  * arrival time.
  */
-public abstract class AbstractFlight {
+public abstract class AbstractFlight implements Serializable {
 
   /**
    * Returns a number that uniquely identifies this flight.
