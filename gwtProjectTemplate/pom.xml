@@ -12,6 +12,13 @@
   <packaging>war</packaging>
   <version>Summer2009</version>
   <name>CS399J Project 6</name>
+  <repositories>
+    <repository>
+      <id>CS399J</id>
+      <name>CS399J Maven Repository </name>
+      <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
+    </repository>
+  </repositories>
   <dependencies>
       <!--  GWT dependencies (from central repo) -->
     <dependency>
@@ -25,6 +32,18 @@
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs399J</groupId>
+      <artifactId>projects</artifactId>
+      <version>Summer2009</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs399J</groupId>
+      <artifactId>projects</artifactId>
+      <version>Summer2009</version>
+      <classifier>sources</classifier>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
