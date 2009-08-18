@@ -1,10 +1,11 @@
 package edu.pdx.cs399J.grader;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
-
 import edu.pdx.cs399J.ParserException;
+
+import java.io.*;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Class that creates a pretty report that summarizes a student's
@@ -247,7 +248,11 @@ public class SummaryReport {
         public int compare(Student s1, Student s2) {
           Double d1 = allTotals.get(s1);
           Double d2 = allTotals.get(s2);
-          return d2.compareTo(d1);
+          if ( d2.compareTo( d1 ) == 0 ) {
+            return s1.getId().compareTo( s2.getId() );
+          } else {
+            return d2.compareTo(d1);
+          }
         }
 
         public boolean equals(Object o) {
