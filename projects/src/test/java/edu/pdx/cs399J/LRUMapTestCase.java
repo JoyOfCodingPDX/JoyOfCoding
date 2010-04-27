@@ -1,9 +1,7 @@
 package edu.pdx.cs399J;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.AbstractMap;
 import java.util.Iterator;
@@ -241,5 +239,57 @@ public abstract class LRUMapTestCase {
     map.clear();
     assertEquals(0, map.size());
   }
+    /**                                                                                       
+     * An obscure and amusing edge case.  Parent's method signature throws no exception, so this
+     * method will accept any exception.                                                      
+     */                                                                                       
+    public void testNegativeSize()                                                            
+    {                                                                                         
+        try                                                                                   
+        {                                                                                     
+            createLRUMap( -1 );
+            fail( "Negative sizes should not be accepted" );                                  
+        }                                                                                     
+        catch( Exception e )  // we don't know what kind of exception the implementor will throw
+        {                                                                                     
+            // success                                                                        
+        }                                                                                     
+    }  
+
+    /**
+     * This will accept EITHER an exception being thrown, or the creation of map that never stores data.
+     */
+    public void testZeroSize()
+    {
+        AbstractLRUMap<Integer, String> zmap;
+        try
+        {
+            zmap = createLRUMap(0);
+        }
+        catch (Exception e)  // we don't know what kind of exception the implementor will throw
+        {
+            // success
+            return;
+        }
+        assertEquals( 0, zmap.size() );
+        zmap.put( 3, "Three" );
+        assertEquals(0, zmap.size());
+        assertNull( zmap.get( 3 ) );
+        assertEquals( 0, zmap.entrySet().size() );
+        assertNull( zmap.remove( 3 ) );
+
+    }
+
+    /*
+    I wrote this to make sure I matched the behavior of a regular map.
+    public void testRegMapCompare() {
+        HashMap<Integer, String> zmap;
+        zmap = new HashMap<Integer, String>(0);
+        assertEquals(0, zmap.size());
+        assertNull(zmap.get(3));
+        assertEquals(0, zmap.entrySet().size());
+        assertNull(zmap.remove(3));
+    }
+    */   
 
 }
