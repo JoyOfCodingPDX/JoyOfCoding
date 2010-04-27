@@ -63,7 +63,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2</version>
           <configuration>
             <runTarget>edu.pdx.cs399J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
             <module>edu.pdx.cs399J.family.gwt.FamilyTreeGWT</module>
@@ -74,6 +74,7 @@
             <execution>
               <goals>
                 <goal>compile</goal>
+                <goal>clean</goal>
               </goals>
             </execution>
           </executions>

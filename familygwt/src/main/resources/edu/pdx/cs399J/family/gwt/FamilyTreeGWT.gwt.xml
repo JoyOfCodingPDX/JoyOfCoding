@@ -1,5 +1,5 @@
-<module>
-	<inherits name="com.google.gwt.user.User"/>
+<module rename-to="family">
+  <inherits name="com.google.gwt.user.User"/>
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
   <inherits name="edu.pdx.cs399J.family.FamilyTreeCore"/>
   <entry-point class="edu.pdx.cs399J.family.gwt.client.FamilyTreeGWT"/>

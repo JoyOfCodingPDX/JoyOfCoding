@@ -29,7 +29,7 @@ public class PersonPanel extends DockPanel {
   /**
    * Creates a <code>PersonPanel</code> for displaying
    * <code>Person</code>s
-   * @param familyUI
+   * @param familyUI The parent
    */
   public PersonPanel(FamilyTreeGWT familyUI) {
     this.familyUI = familyUI;
@@ -75,7 +75,7 @@ public class PersonPanel extends DockPanel {
     ScrollPanel scroll = new ScrollPanel(this.marriagesList);
     panel.add(scroll);
     panel.setWidth("100%");
-    panel.setCellWidth(panel, "100%");
+//    panel.setCellWidth(scroll, "100%");
  
     this.add(panel, DockPanel.NORTH);
   }

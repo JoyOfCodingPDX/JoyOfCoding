@@ -18,6 +18,6 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>familyTreeServiceImpl</servlet-name>
-    <url-pattern>/edu.pdx.cs399J.family.gwt.FamilyTreeGWT/tree</url-pattern>
+    <url-pattern>/family/tree</url-pattern>
   </servlet-mapping>    
 </web-app>
