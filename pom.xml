@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
-  <version>Summer2009</version>
+  <version>Summer2010</version>
   <artifactId>CS399J</artifactId>
   <packaging>pom</packaging>
   <name>CS399J Java Example Code</name>
@@ -42,11 +42,10 @@
     <tag>HEAD</tag>
     <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
-  <!--  convenience to define GWT version in one place -->
     <properties>
 
         <!-- convenience to define GWT version in one place -->
-        <gwt.version>1.7.0</gwt.version>
+        <gwt.version>2.0.3</gwt.version>
 
         <!--  tell the compiler we can use 1.5 -->
         <maven.compiler.source>1.5</maven.compiler.source>

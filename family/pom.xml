@@ -3,13 +3,13 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2009</version>
+    <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
-  <version>Summer2009</version>
+  <version>Summer2010</version>
   <name>family</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2009</version>
+      <version>Summer2010</version>
     </dependency>
   </dependencies>
   <build>

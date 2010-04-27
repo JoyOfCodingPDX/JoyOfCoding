@@ -4,13 +4,13 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2009</version>
+    <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J.YOU</groupId>
   <artifactId>proj6</artifactId>
   <packaging>war</packaging>
-  <version>Summer2009</version>
+  <version>Summer2010</version>
   <name>CS399J Project 6</name>
   <repositories>
     <repository>
@@ -36,12 +36,12 @@
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2009</version>
+      <version>Summer2010</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2009</version>
+      <version>Summer2010</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
@@ -113,7 +113,7 @@
               <docletArtifact>                                                      
                 <groupId>edu.pdx.cs399J</groupId>                                   
                 <artifactId>grader</artifactId>                                     
-                <version>Summer2009</version>                                       
+                <version>Summer2010</version>                                       
               </docletArtifact>                                                     
             </configuration>                                                        
          </plugin>                                                                  

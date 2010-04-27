@@ -4,13 +4,13 @@
   <parent>
     <artifactId>CS399J</artifactId>
     <groupId>edu.pdx.cs399J</groupId>
-    <version>Summer2009</version>
+    <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2009</version>
+  <version>Summer2010</version>
   <name>Example GWT Application</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -41,7 +41,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>1.1-SNAPSHOT</version>
+          <version>1.2</version>
             <configuration>
                 <runTarget>edu.pdx.cs399J.gwt.Examples/Hello.html</runTarget>
                 <modules>
