@@ -74,7 +74,6 @@
             <execution>
               <goals>
                 <goal>compile</goal>
-                <goal>clean</goal>
               </goals>
             </execution>
           </executions>
@@ -105,6 +104,16 @@
           </connectors>
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>war</directory>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
     </plugins>
