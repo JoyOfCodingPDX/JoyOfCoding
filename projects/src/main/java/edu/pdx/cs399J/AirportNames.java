@@ -14,7 +14,7 @@ public class AirportNames {
   ////////////////////////  Instance Fields  /////////////////////////
 
   /** Maps three-letter code to airport name */
-  private Map<String, String> names;
+  private final Map<String, String> names;
 
   /////////////////////////  Constructors  //////////////////////////
 
@@ -342,7 +342,7 @@ public class AirportNames {
       airportNames = new AirportNames();
     }
 
-    return (String) airportNames.names.get(code);
+    return airportNames.names.get(code);
   }
 
   /**
@@ -350,8 +350,9 @@ public class AirportNames {
    * to their names.
    *
    * @since Fall 2004
+   * @return a map of airport codes to their names
    */
-  public static Map getNamesMap() {
+  public static Map<String, String> getNamesMap() {
     if (airportNames == null) {
       airportNames = new AirportNames();
     }
@@ -360,13 +361,16 @@ public class AirportNames {
   }
 
   /**
-   * Quick test program
+   * Prints the names of the airports with the given codes to standard out
+   * @param args Airport codes
    */
   public static void main(String[] args) {
-    for (int i = 0; i < args.length; i++) {
-      String name = AirportNames.getName(args[i]);
-      System.out.println(args[i] + ": " + name);
+    for ( String arg : args ) {
+      String name = AirportNames.getName( arg );
+      System.out.println( arg + ": " + name );
     }
+
+    System.exit(0);
   }
 
 }
