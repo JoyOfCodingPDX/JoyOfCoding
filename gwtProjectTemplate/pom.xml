@@ -59,7 +59,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>1.1-SNAPSHOT</version>
+          <version>1.2</version>
             <configuration>
                 <runTarget>edu.pdx.cs399J.YOU.Project6/Project6.html</runTarget>
                 <modules>
@@ -101,6 +101,18 @@
           <stopPort>9999</stopPort>
         </configuration>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>war</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
    <reporting>                                                                      
