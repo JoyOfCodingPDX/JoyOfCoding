@@ -1,6 +1,0 @@
-// Policy file for running RMI clients
-
-grant {
-  permission java.net.SocketPermission "*:1024-65535", "connect,accept";
-  permission java.io.FilePermission "/home/davidw/PSU/jars/-", "read";
-}; 
