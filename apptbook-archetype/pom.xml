@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>edu.pdx.cs399J</groupId>
+  <artifactId>apptbook-archetype</artifactId>
+  <version>Summer2010</version>
+  <packaging>maven-archetype</packaging>
+  <name>apptbook-archetype</name>
+  <description>A Maven Archetype for creating the Appointment Book Project</description>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>2.0-alpha-4</version>
+      </extension>
+    </extensions>
+    <plugins>
+      <plugin>
+        <artifactId>maven-archetype-plugin</artifactId>
+        <version>2.0-alpha-4</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Repository</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
+    </repository>
+    <site>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Web Site</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/site</url>
+    </site>
+  </distributionManagement>
+</project>
