@@ -7,16 +7,23 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/javadoc</directory>
+      <includes>
+        <include>**/*.html</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
       <directory>src/test/java</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory></directory>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/javadoc</directory>
       <includes>
-        <include>apptbook.iml</include>
+        <include>**/*.html</include>
       </includes>
     </fileSet>
+
   </fileSets>
 </archetype-descriptor>

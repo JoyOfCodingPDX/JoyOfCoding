@@ -11,7 +11,23 @@
   <packaging>jar</packaging>
   <version>${version}</version>
   <name>CS399J Appointment Book Project</name>
+  <description>An Appointment Book application for CS399J at Portland State University</description>
+  <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
+  <developers>
+    <developer>
+      <id>YOU</id>
+      <name>Your name here</name>
+      <email>you@youremail.com</email>
+      <url>http://www.cs.pdx.edu/~YOU</url>
+      <organization>PSU Department of Computer Science</organization>
+      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <roles>
+        <role>Student</role>
+      </roles>
+      <timezone>-7</timezone>
+    </developer>
+  </developers>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -45,19 +61,65 @@
   </build>
   <reporting>
     <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <linksource>true</linksource>
+            <links>
+              <link>http://java.sun.com/javase/6/docs/api</link>
+              <link>http://java.sun.com/javaee/5/docs/api</link>
+              <link>http://junit.sourceforge.net/javadoc</link>
+              <link>http://web.cecs.pdx.edu/~whitlock/docs</link>
+            </links>
+          </configuration>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>javadoc</report>
+                <report>test-javadoc</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <linkJavadoc>true</linkJavadoc>
+          </configuration>
+        </plugin>
       <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-javadoc-plugin</artifactId>
-         <configuration>
-           <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>
-           <docletArtifact>
-             <groupId>edu.pdx.cs399J</groupId>
-             <artifactId>grader</artifactId>
-             <version>Summer2010</version>
-           </docletArtifact>
-         </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
       </plugin>
-    </plugins>                                                                    
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.3.1</version>
+      </plugin>
+      <plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>javancss-maven-plugin</artifactId>
+         <version>2.0-beta-2</version>
+       </plugin>
+       <plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>jdepend-maven-plugin</artifactId>
+       </plugin>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-checkstyle-plugin</artifactId>
+         <version>2.5</version>
+       </plugin>
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-pmd-plugin</artifactId>
+         <version>2.5</version>
+       </plugin>
+    </plugins>
   </reporting>
 
 </project>
