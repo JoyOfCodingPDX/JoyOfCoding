@@ -9,6 +9,7 @@ public class CreditCardTransactionException extends RuntimeException
 
     public CreditCardTransactionException( CreditTransactionCode code )
     {
+        super(code.name());
         this.code = code;
     }
 
