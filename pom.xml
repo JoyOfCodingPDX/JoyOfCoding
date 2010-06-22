@@ -6,7 +6,7 @@
   <artifactId>CS399J</artifactId>
   <packaging>pom</packaging>
   <name>CS399J Java Example Code</name>
-  <description>Example Java Code for CS399J: Advanced Java Programming at Portland State Univeristy</description>
+  <description>Example Java Code for CS399J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
     <module>projects</module>
@@ -16,7 +16,8 @@
     <module>web</module>
     <module>gwt</module>
     <module>familygwt</module>
-    <module>gwtProjectTemplate</module>
+    <module>gwt-archetype</module>
+    <module>apptbook-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
