@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>proj6</id>
+  <sources>
+    <source>src/main/java/client/PhoneBill.java</source>
+    <source>src/main/java/client/PhoneCall.java</source>
+    <source>src/main/java/client/PingService.java</source>
+    <source>src/main/java/client/PingServiceAsync.java</source>
+    <source>src/main/java/client/Project6.java</source>
+    <source>src/main/java/public/Project6.html</source>
+    <source>src/main/java/server/PingServiceImpl.java</source>
+  </sources>
+  <resources>
+    <resource>src/main/resources/edu/pdx/cs399J/YOU/Project6.gwt.xml</resource>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+  </resources>
+</archetype>

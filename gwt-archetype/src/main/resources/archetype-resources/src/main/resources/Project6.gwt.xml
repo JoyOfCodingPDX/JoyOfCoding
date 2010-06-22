@@ -1,0 +1,9 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <inherits name='edu.pdx.cs399J.Projects'/>
+  <entry-point class="${package}.client.Project6"/>
+</module>
