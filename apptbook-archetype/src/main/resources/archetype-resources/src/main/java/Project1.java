@@ -13,6 +13,9 @@ public class Project1 {
   public static void main(String[] args) {
     AbstractAppointmentBook book;
     System.err.println("Missing command line arguments");
+    for (String arg : args) {
+      System.out.println(arg);
+    }
     System.exit(1);
   }
 
