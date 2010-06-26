@@ -11,7 +11,7 @@ import edu.pdx.cs399J.AbstractAppointmentBook;
 public class Project1 {
 
   public static void main(String[] args) {
-    AbstractAppointmentBook book;
+    Class c = AbstractAppointmentBook.class;  // Refer to one of Dave's classes so that we can be sure it is on the classpath
     System.err.println("Missing command line arguments");
     for (String arg : args) {
       System.out.println(arg);

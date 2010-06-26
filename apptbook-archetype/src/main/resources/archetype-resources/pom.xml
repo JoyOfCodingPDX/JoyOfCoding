@@ -28,6 +28,13 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
+  <repositories>
+    <repository>
+      <id>CS399J</id>
+      <name>CS399J Maven Repository</name>
+      <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -55,6 +62,21 @@
         <artifactId>maven-source-plugin</artifactId>
         <configuration>
           <attach>true</attach>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
+                <classpathLayoutType>repository</classpathLayoutType>
+              <mainClass>${package}.Project1</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
