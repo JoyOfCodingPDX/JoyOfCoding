@@ -1,16 +1,24 @@
 package edu.pdx.cs399J.di;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  * A book in a book store
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Book
 {
-    private final String title;
+    private String title;
 
-    private final String author;
+    private String author;
 
-    private final double price;
+    private double price;
 
+    public Book() {
+
+    }
+    
     public Book( String title, String author, double price )
     {
         this.title = title;
@@ -31,6 +39,12 @@ public class Book
     public double getPrice()
     {
         return price;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.title;
     }
 
     @Override

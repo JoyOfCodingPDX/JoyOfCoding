@@ -1,6 +1,8 @@
 package edu.pdx.cs399J.di;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * A main program that launches a book store using the "production" {@link edu.pdx.cs399J.di.BookInventory} and
@@ -8,7 +10,8 @@ import java.io.File;
  */
 public class BookStoreApp
 {
-   public static void main(String... args) {
+   public static void main(String... args) throws JAXBException, IOException
+   {
        String tmpdir = System.getProperty( "java.io.tmpdir" );
        File directory = new File( tmpdir );
        BookInventory inventory = new BookDatabase( directory, "books.txt" );
