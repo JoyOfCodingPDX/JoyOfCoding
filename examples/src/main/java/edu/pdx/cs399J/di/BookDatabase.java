@@ -7,10 +7,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -113,6 +110,11 @@ public class BookDatabase implements BookInventory
         } else {
             return count.get();
         }
+    }
+
+    public Set<Book> getBooks()
+    {
+        return inventory.keySet();
     }
 
     /**
