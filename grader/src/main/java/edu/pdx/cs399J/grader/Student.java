@@ -173,7 +173,7 @@ public class Student extends NotableImpl {
    * assignment, <code>null</code> is returned.
    */
   public Grade getGrade(String assignmentName) {
-    return (Grade) this.grades.get(assignmentName);
+    return this.grades.get(assignmentName);
   }
 
   /**
