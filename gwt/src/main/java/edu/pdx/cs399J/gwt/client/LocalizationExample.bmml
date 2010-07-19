@@ -1,0 +1,25 @@
+<mockup version="1.0" skin="sketch" measuredW="610" measuredH="393">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TabBar" x="60" y="10" w="540" h="373" measuredW="432" measuredH="100" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Widgets%2C%20Panels%2C%20Events%2C%20Client/Server%2C%20Localization</text>
+        <selectedIndex>4</selectedIndex>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::DateChooser" x="247" y="51" w="-1" h="-1" measuredW="105" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>3/15/1981</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="75" y="54" w="-1" h="-1" measuredW="157" measuredH="23" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Select%20your%20date%20of%20birth</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Label" x="75" y="86" w="-1" h="-1" measuredW="219" measuredH="23" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>You%20have%20been%20alive%20for%2023487%20days</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

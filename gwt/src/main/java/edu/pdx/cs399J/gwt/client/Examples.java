@@ -65,6 +65,10 @@ public class Examples implements EntryPoint {
         new TimerExample(),
         new DivisionServiceExample()
       ));
+    examples.put("Localization",
+      Arrays.asList(
+        new DateLocalizationExample()
+      ));
     return examples;
   }
 
