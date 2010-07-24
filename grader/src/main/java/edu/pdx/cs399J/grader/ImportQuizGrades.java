@@ -1,6 +1,8 @@
 package edu.pdx.cs399J.grader;
 
 import au.com.bytecode.opencsv.CSVReader;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import edu.pdx.cs399J.ParserException;
 
 import java.io.*;
@@ -84,6 +86,11 @@ public class ImportQuizGrades
                 Double score = bbStudent.getGrade( quizName );
                 if (score != null) {
                     Assignment assignment = quizzes.get( quizName );
+                    if (score.doubleValue() == Double.MAX_VALUE) {
+                      // The quiz is a survey, so if it's complete, we give the student a full score
+                      score = new Double(assignment.getPoints());
+                    }
+
                     Grade grade = student.getGrade( assignment.getName() );
                     if (grade != null) {
                         if (grade.getScore() == score.doubleValue()) {
@@ -93,11 +100,8 @@ public class ImportQuizGrades
                         } else {
                             System.out.println("*** Changing existing grade for " + assignment.getName() + " for " + student.getFullName() + " from " + grade.getScore() + " to " + score);
                         }
-
-                    } else {
-                        grade = new Grade( assignment.getName(), score );
                     }
-                    student.setGrade( assignment.getName(), grade );
+                    student.setGrade( assignment.getName(), new Grade( assignment.getName(), score ) );
                 }
             }
         }
@@ -120,7 +124,7 @@ public class ImportQuizGrades
 
     private static Map<String, Assignment> findKnownQuizzes( BlackBoardClass bb, GradeBook book )
     {
-        Map<String, Assignment> knownQuizzes = new HashMap<String, Assignment>();
+        Map<String, Assignment> knownQuizzes = Maps.newHashMap();
 
         NEXT_QUIZ:
         for (String quizName : bb.getQuizNames()) {
@@ -206,7 +210,7 @@ public class ImportQuizGrades
             BlackBoardStudent student = builder.create();
 
             for (int i = ROLE_INDEX + 1; i < firstLine.length; i++) {
-                student.setGrade(firstLine[i], studentLine[i]);
+                student.setGrade(firstLine[i], studentLine[i].trim());
             }
 
             bb.addStudent( student );
@@ -227,8 +231,8 @@ public class ImportQuizGrades
      * A class imported from the BlackBoard export
      */
     static class BlackBoardClass {
-        private List<String> quizNames = new ArrayList<String>();
-        private List<BlackBoardStudent> students = new ArrayList<BlackBoardStudent>();
+        private List<String> quizNames = Lists.newArrayList();
+        private List<BlackBoardStudent> students = Lists.newArrayList();
 
         void addQuizName(String quizName) {
             if (quizNames.contains( quizName )) {
@@ -260,7 +264,7 @@ public class ImportQuizGrades
         private final String firstName;
         private final String lastName;
         private final String id;
-        private final Map<String, Double> grades = new HashMap<String, Double>();
+        private final Map<String, Double> grades = Maps.newHashMap();
 
         private BlackBoardStudent( Builder builder )
         {
@@ -314,11 +318,19 @@ public class ImportQuizGrades
                 throw new IllegalStateException( "Already have a grade of " + grades.get(quiz) + " for quiz " + quiz);
             }
 
-            if (grade == null || "".equals( grade.trim() ) || "Not completed".equals( grade.trim() )) {
+            if (grade == null || "".equals( grade ) || "Not completed".equals( grade )) {
                 return;
             }
 
-            grades.put(quiz, Double.parseDouble( grade ));
+            double score;
+            if ("Completed".equals(grade)) {
+              score = new Double(Double.MAX_VALUE);
+
+            } else {
+               score = Double.parseDouble( grade );
+            }
+
+            grades.put(quiz, score );
         }
 
         public Double getGrade( String quizName )
