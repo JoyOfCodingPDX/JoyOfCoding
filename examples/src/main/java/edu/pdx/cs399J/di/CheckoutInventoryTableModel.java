@@ -42,7 +42,7 @@ class CheckoutInventoryTableModel extends BookInventoryTableModel
         }
     }
 
-    private boolean isLastColumn( int column )
+    public boolean isLastColumn( int column )
     {
         return column == this.getColumnCount() -1;
     }

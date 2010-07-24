@@ -16,7 +16,7 @@ public class BookInventoryTableModel extends AbstractTableModel
     private static final int QUANTITY_COLUMN = 3;
 
 
-    private final BookInventory inventory;
+    protected final BookInventory inventory;
 
     public BookInventoryTableModel( BookInventory inventory )
     {
@@ -77,5 +77,13 @@ public class BookInventoryTableModel extends AbstractTableModel
             iter.next();
         }
         return iter.next();
+    }
+
+    public Book decrementInventry( int row )
+    {
+        Book book = getBook( row );
+        inventory.remove( book );
+        fireTableCellUpdated( row, QUANTITY_COLUMN );
+        return book;
     }
 }
