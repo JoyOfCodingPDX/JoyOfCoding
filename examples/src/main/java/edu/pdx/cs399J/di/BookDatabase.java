@@ -1,9 +1,6 @@
 package edu.pdx.cs399J.di;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
@@ -13,15 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An implementation of {@link BookInventory} that stores a database of books in a flat file
  */
-public class BookDatabase implements BookInventory
+public class BookDatabase extends JaxbDatabase implements BookInventory
 {
-    private final File directory;
-
-    private final String fileName;
 
     private final Map<Book, AtomicInteger> inventory;
-
-    private final JAXBContext xmlContext;
 
     /**
      * Creates a new database of books
@@ -38,25 +30,12 @@ public class BookDatabase implements BookInventory
      */
     public BookDatabase( File directory, String fileName ) throws IOException, JAXBException
     {
-        this.directory = directory;
-        this.fileName = fileName;
+        super( directory, fileName, BookDatabase.XmlBookDatabase.class,
+               BookDatabase.XmlBookDatabase.BookCount.class, Book.class );
 
-        this.directory.mkdirs();
-        if (!this.directory.exists()) {
-          throw new IOException( "Could not create data directory: " + this.directory);
-        }
-
-        this.xmlContext = JAXBContext.newInstance( XmlBookDatabase.class, XmlBookDatabase.BookCount.class, Book.class );
-
-        File file = new File(this.directory, this.fileName);
-
-        System.out.println("Opening book database in " + file);
-
-        if (file.exists()) {
-          Unmarshaller unmarshaller = this.xmlContext.createUnmarshaller();
-          XmlBookDatabase xml = (XmlBookDatabase) unmarshaller.unmarshal( file );
-          this.inventory = xml.getMap();
-
+        XmlBookDatabase xml = (XmlBookDatabase) readFile();
+        if (xml != null) {
+            this.inventory = xml.getMap();
         } else {
           this.inventory = new HashMap<Book, AtomicInteger>();
         }
@@ -89,16 +68,7 @@ public class BookDatabase implements BookInventory
 
     private synchronized void writeInventory()
     {
-        XmlBookDatabase xml = new XmlBookDatabase(this.inventory);
-        try
-        {
-            Marshaller marshaller = this.xmlContext.createMarshaller();
-            marshaller.marshal( xml, new File(this.directory, this.fileName) );
-        }
-        catch ( JAXBException ex )
-        {
-            throw new IllegalStateException( "Could not save inventory", ex);
-        }
+        writeXml( new XmlBookDatabase( this.inventory) );
     }
 
     public int getCopies( Book book )

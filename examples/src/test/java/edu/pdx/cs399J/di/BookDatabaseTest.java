@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.di;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
@@ -20,13 +22,27 @@ public class BookDatabaseTest
      */
     private final File directory = new File( System.getProperty( "user.dir" ) );
 
+    private String fileName;
+
+
+    @Before
+    public void setUp() {
+
+      this.fileName = generateFileName();
+    }
+
+    @After
+    public void tearDown() {
+      File dataFile = new File(directory, fileName);
+      dataFile.delete();
+    }
+
     /**
      * Tests that a book can be added to a book database and is persisted
      */
     @Test
     public void testAddBook() throws JAXBException, IOException
     {
-        String fileName = generateFileName();
         BookDatabase db = new BookDatabase( this.directory, fileName );
         Book book = new Book( "TestTitle", "TestAuthor", 1.23 );
         db.add( book );
@@ -42,7 +58,6 @@ public class BookDatabaseTest
     @Test
     public void testAddSameBook() throws JAXBException, IOException
     {
-        String fileName = generateFileName();
         BookDatabase db = new BookDatabase( this.directory, fileName );
         Book book = new Book( "TestTitle", "TestAuthor", 1.23 );
         db.add( book );
@@ -60,7 +75,6 @@ public class BookDatabaseTest
     @Test
     public void testAddMultipleBooks() throws JAXBException, IOException
     {
-        String fileName = generateFileName();
         BookDatabase db = new BookDatabase( this.directory, fileName );
         Book book1 = new Book( "TestTitle1", "TestAuthor1", 1.23 );
         db.add( book1, book1, book1 );

@@ -20,7 +20,7 @@ public class BookStoreApp
        CreditCardService cardService = new FirstBankOfPSU( "localhost", 8080 );
        BookStore store = new BookStore(inventory, cardService);
 
-       BookStoreGUI gui = new BookStoreGUI(new CheckoutPanel( inventory ));
+       BookStoreGUI gui = new BookStoreGUI(new CheckoutPanel( inventory, cardService ));
        gui.pack();
        gui.setVisible( true );
    }

@@ -2,6 +2,7 @@ package edu.pdx.cs399J.di;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class CartTableModel extends AbstractTableModel
     private static final int PRICE_COLUMN = 1;
 
     private List<Book> books = new ArrayList<Book>();
+    private NumberFormat PRICE_FORMAT = NumberFormat.getCurrencyInstance();
 
     public int getRowCount()
     {
@@ -36,7 +38,7 @@ public class CartTableModel extends AbstractTableModel
                     for (Book book : books) {
                         total += book.getPrice();
                     }
-                    return NumberFormat.getCurrencyInstance().format( total );
+                    return PRICE_FORMAT.format( total );
                 default:
                     throw new IllegalArgumentException( "Unknown column " + column );
             }
@@ -76,6 +78,21 @@ public class CartTableModel extends AbstractTableModel
                 return "Price";
             default:
                 throw new IllegalArgumentException( "Unknown column: " + index );
+        }
+    }
+
+    /**
+     * Returns the total amount of the items in the cart
+     */
+    public double getTotal() {
+        String total = (String) getValueAt( getRowCount() - 1, PRICE_COLUMN );
+        try
+        {
+            return PRICE_FORMAT.parse( total ).doubleValue();
+        }
+        catch ( ParseException e )
+        {
+            throw new IllegalStateException( "Unparsable total: " + total );
         }
     }
 }
