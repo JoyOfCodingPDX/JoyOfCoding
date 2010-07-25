@@ -4,6 +4,25 @@
 
 <web-app>
   <display-name>CS399J Examples Web Application</display-name>
+  <context-param>
+    <!-- Register REST services bound into these modules with resteasy -->
+    <param-name>resteasy.guice.modules</param-name>
+    <param-value>edu.pdx.cs399J.di.RestModule</param-value>
+  </context-param>
+  <filter>
+    <!-- Filter all requests through the Guice -->
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>guiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <listener>
+    <listener-class>
+      org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener
+    </listener-class>
+  </listener>
   <servlet>
     <servlet-name>ServletInfo</servlet-name>
     <display-name>Servlet Info</display-name>
