@@ -18,6 +18,7 @@
     <module>familygwt</module>
     <module>gwt-archetype</module>
     <module>apptbook-archetype</module>
+    <module>apptbook-gwt-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
