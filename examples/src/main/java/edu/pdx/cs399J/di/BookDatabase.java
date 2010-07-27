@@ -1,5 +1,8 @@
 package edu.pdx.cs399J.di;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import java.io.File;
@@ -10,13 +13,30 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An implementation of {@link BookInventory} that stores a database of books in a flat file
  */
+@Singleton
 public class BookDatabase extends JaxbDatabase implements BookInventory
 {
 
     private final Map<Book, AtomicInteger> inventory;
 
     /**
-     * Creates a new database of books
+     * Creates a new database of books stored in a file named "books.xml"
+     *
+     * @param directory
+     *        The directory in which the data file will reside
+     * @throws IOException
+     *         If the data file cannot be created
+     * @throws JAXBException
+     *         If we cannot create the XML context
+     */
+    @Inject
+    public BookDatabase( @DataDirectory File directory ) throws JAXBException, IOException
+    {
+      this( directory, "books.xml" );
+    }
+
+    /**
+     * Creates a new database of books.  This method is package-protected for testing purposes.
      *
      * @param directory
      *        The directory in which the data file will reside
@@ -28,7 +48,7 @@ public class BookDatabase extends JaxbDatabase implements BookInventory
      * @throws JAXBException
      *         If we cannot create the XML context
      */
-    public BookDatabase( File directory, String fileName ) throws IOException, JAXBException
+    BookDatabase( File directory, String fileName ) throws IOException, JAXBException
     {
         super( directory, fileName, BookDatabase.XmlBookDatabase.class,
                BookDatabase.XmlBookDatabase.BookCount.class, Book.class );
@@ -103,7 +123,7 @@ public class BookDatabase extends JaxbDatabase implements BookInventory
         public XmlBookDatabase() {
 
         }
-        
+
         public XmlBookDatabase( Map<Book, AtomicInteger> inventory )
         {
             counts = new ArrayList<BookCount>(inventory.size());

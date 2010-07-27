@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.PARAMETER, ElementType.FIELD })
+@Target( { ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD })
 @Documented
 public @interface DataDirectory
 {

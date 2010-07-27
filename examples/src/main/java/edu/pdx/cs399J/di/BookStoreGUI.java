@@ -1,5 +1,7 @@
 package edu.pdx.cs399J.di;
 
+import com.google.inject.Inject;
+
 import javax.swing.*;
 
 /**
@@ -7,6 +9,7 @@ import javax.swing.*;
  */
 public class BookStoreGUI extends JFrame
 {
+    @Inject
     public BookStoreGUI(CheckoutPanel checkout) {
         super("Bookstore Terminal");
 

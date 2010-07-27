@@ -1,18 +1,25 @@
 package edu.pdx.cs399J.di;
 
+import com.google.inject.Inject;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 public class CheckoutPanel extends JPanel
 {
     private final CartTableModel cartTableModel;
 
-    public CheckoutPanel( BookInventory inventory, CreditCardService cardService ) {
+    private final Logger logger;
+
+    @Inject
+    public CheckoutPanel( BookInventory inventory, CreditCardService cardService, Logger logger ) {
         setLayout( new BoxLayout( this, BoxLayout.Y_AXIS ) );
+        this.logger = logger;
 
         this.cartTableModel = new CartTableModel();
 
@@ -40,7 +47,7 @@ public class CheckoutPanel extends JPanel
     }
 
     private void addToCart(Book book) {
-//        System.out.println("Adding " + book + " to cart");
+        logger.fine("Adding " + book + " to cart");
         this.cartTableModel.addBook(book);
     }
 

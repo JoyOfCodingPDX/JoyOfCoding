@@ -4,6 +4,9 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * A main program that launches a book store using the "production" {@link edu.pdx.cs399J.di.BookInventory} and
@@ -15,17 +18,20 @@ public class BookStoreApp
    {
        String tmpdir = System.getProperty( "java.io.tmpdir" );
        File directory = new File( tmpdir );
-       BookInventory inventory = new BookDatabase( directory, "books.txt" );
+       BookInventory inventory = new BookDatabase( directory );
        addBooks(inventory);
        CreditCardService cardService = new FirstBankOfPSU( "localhost", 8080 );
-       BookStore store = new BookStore(inventory, cardService);
 
-       BookStoreGUI gui = new BookStoreGUI(new CheckoutPanel( inventory, cardService ));
+       Logger logger = Logger.getLogger( "edu.pdx.cs399J.Logger" );
+       logger.setLevel( Level.INFO );
+
+       CheckoutPanel panel = new CheckoutPanel( inventory, cardService, logger );
+       BookStoreGUI gui = new BookStoreGUI( panel );
        gui.pack();
        gui.setVisible( true );
    }
 
-    private static void addBooks( BookInventory inventory )
+    protected static void addBooks( BookInventory inventory )
     {
         addBook( inventory, new Book( "The Pragmatic Programmer", "Andrew Hunt", 29.95 ), 4 );
         addBook( inventory, new Book("Winning", "Jack Welch", 15.95), 3 );

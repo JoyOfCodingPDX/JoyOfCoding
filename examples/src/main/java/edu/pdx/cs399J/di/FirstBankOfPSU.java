@@ -1,5 +1,8 @@
 package edu.pdx.cs399J.di;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * A {@link CreditCardService} that makes REST calls to access the First Bank of Portland State.
  */
@@ -9,7 +12,8 @@ public class FirstBankOfPSU implements CreditCardService
 
     private final int serverPort;
 
-    public FirstBankOfPSU( String serverHost, int serverPort )
+    @Inject
+    public FirstBankOfPSU( @Named("ServerHost") String serverHost, @Named("ServerPort") int serverPort )
     {
         this.serverHost = serverHost;
         this.serverPort = serverPort;
