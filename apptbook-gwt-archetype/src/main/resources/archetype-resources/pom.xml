@@ -60,9 +60,9 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.2</version>
             <configuration>
-                <runTarget>edu.pdx.cs399J.YOU.AppointmentBookGwt/AppointmentBookGwt.html</runTarget>
+                <runTarget>${package}.AppointmentBookGwt/AppointmentBookGwt.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs399J.YOU.AppointmentBookGwt</module>
+                  <module>${package}.AppointmentBookGwt</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>
