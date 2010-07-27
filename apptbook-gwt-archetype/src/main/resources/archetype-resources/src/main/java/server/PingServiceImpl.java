@@ -4,9 +4,9 @@
 package ${package}.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs399J.AbstractPhoneBill;
-import ${package}.client.PhoneBill;
-import ${package}.client.PhoneCall;
+import edu.pdx.cs399J.AbstractAppointmentBook;
+import ${package}.client.AppointmentBook;
+import ${package}.client.Appointment;
 import ${package}.client.PingService;
 
 /**
@@ -14,10 +14,10 @@ import ${package}.client.PingService;
  */
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
-    public AbstractPhoneBill ping()
+    public AbstractAppointmentBook ping()
     {
-        PhoneBill bill = new PhoneBill();
-        bill.addPhoneCall( new PhoneCall() );
-        return bill;
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment( new Appointment() );
+        return book;
     }
 }

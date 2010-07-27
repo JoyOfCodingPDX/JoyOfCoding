@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<archetype-descriptor name="proj6">
+<?xml version="1.0" encoding="UTF-8"?><archetype-descriptor name="apptbook-gwt">
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">
       <directory>src/main/java</directory>
       <includes>
-        <include>**/*.java</include>
         <include>**/*.html</include>
+        <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
@@ -14,19 +13,11 @@
         <include>**/*.xml</include>
       </includes>
     </fileSet>
-    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/resources</directory>
       <includes>
         <include>**/*.xml</include>
       </includes>
     </fileSet>
   </fileSets>
-  <requiredProperties>
-    <requiredProperty key="gwtVersion">
-      <defaultValue>2.0.3</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="cs399JTerm">
-      <defaultValue>Summer2010</defaultValue>
-    </requiredProperty>
-  </requiredProperties>
 </archetype-descriptor>

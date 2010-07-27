@@ -12,14 +12,14 @@
     <servlet-name>pingServlet</servlet-name>
     <servlet-class>${package}.server.PingServiceImpl</servlet-class>
   </servlet>
-  
+
   <servlet-mapping>
     <servlet-name>pingServlet</servlet-name>
-    <url-pattern>/${package}.Project6/ping</url-pattern>
+    <url-pattern>/apptbook/ping</url-pattern>
   </servlet-mapping>
 
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Project6.html</welcome-file>
+    <welcome-file>AppointmentBookGwt.html</welcome-file>
   </welcome-file-list>
 </web-app>

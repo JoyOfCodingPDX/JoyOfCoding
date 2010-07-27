@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>CS399J</artifactId>
+    <groupId>edu.pdx.cs399J</groupId>
+    <version>Summer2010</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
   <packaging>war</packaging>
   <version>${version}</version>
-  <name>CS399J Project 6 -- Google Web Toolkit</name>
+  <name>Appointment Book GWT Application</name>
   <repositories>
     <repository>
       <id>CS399J</id>
@@ -18,24 +23,24 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>${cs399JTerm}</version>
+      <version>Summer2010</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>projects</artifactId>
-      <version>${cs399JTerm}</version>
+      <version>Summer2010</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
@@ -55,9 +60,9 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.2</version>
             <configuration>
-                <runTarget>edu.pdx.cs399J.YOU.Project6/Project6.html</runTarget>
+                <runTarget>edu.pdx.cs399J.YOU.AppointmentBookGwt/AppointmentBookGwt.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs399J.YOU.Project6</module>
+                  <module>edu.pdx.cs399J.YOU.AppointmentBookGwt</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>
@@ -109,20 +114,20 @@
 
     </plugins>
   </build>
-   <reporting> 
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>
-              <docletArtifact>
-                <groupId>edu.pdx.cs399J</groupId>
-                <artifactId>grader</artifactId>
-                <version>${cs399JTerm}</version>
-              </docletArtifact>
-            </configuration>
-         </plugin>
+   <reporting>                                                                      
+      <plugins>                                                                     
+         <plugin>                                                                   
+            <groupId>org.apache.maven.plugins</groupId>                             
+            <artifactId>maven-javadoc-plugin</artifactId>                           
+            <configuration>                                                         
+              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>         
+              <docletArtifact>                                                      
+                <groupId>edu.pdx.cs399J</groupId>                                   
+                <artifactId>grader</artifactId>                                     
+                <version>Summer2010</version>                                       
+              </docletArtifact>                                                     
+            </configuration>                                                        
+         </plugin>                                                                  
       </plugins>                                                                    
    </reporting>       
 </project>
