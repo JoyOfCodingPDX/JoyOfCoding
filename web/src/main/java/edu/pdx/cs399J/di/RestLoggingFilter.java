@@ -26,6 +26,7 @@ public class RestLoggingFilter implements Filter
 
     public void init( FilterConfig config ) throws ServletException
     {
+      // Initialize some credit cards for testing purposes.  This probably isn't the best place to do this. 
       for (int i = 1; i <= 10; i++) {
           CreditCard card = new CreditCard(String.valueOf(i));
           cards.setBalance( card, 100.0 );

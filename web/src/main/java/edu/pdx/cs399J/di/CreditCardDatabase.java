@@ -44,6 +44,8 @@ public class CreditCardDatabase extends JaxbDatabase
 
     synchronized void setBalance(CreditCard card, double balance) {
         this.balances.put(card, balance);
+
+        writeDatabase();
     }
 
     public synchronized void debit(CreditCard card, double amount) {
