@@ -43,7 +43,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>apptbook-web</finalName>
+    <finalName>${artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -129,7 +129,7 @@
               <addClasspath>true</addClasspath>
               <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
               <classpathLayoutType>repository</classpathLayoutType>
-              <mainClass>edu.pdx.cs399J.YOU.Project4</mainClass>
+              <mainClass>${package}.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>

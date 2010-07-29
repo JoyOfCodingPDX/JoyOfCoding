@@ -7,7 +7,7 @@
   <version>Summer2010</version>
   <packaging>maven-archetype</packaging>
   <name>apptbook-web-archetype</name>
-  <description>Maven Archetype for Appointment Book Web/REST Project</description>
+  <description> Maven Archetype for creating a Web/REST Project for the Appointment Book</description>
   <build>
     <extensions>
       <extension>
