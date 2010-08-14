@@ -114,20 +114,26 @@
 
     </plugins>
   </build>
-   <reporting>                                                                      
-      <plugins>                                                                     
-         <plugin>                                                                   
-            <groupId>org.apache.maven.plugins</groupId>                             
-            <artifactId>maven-javadoc-plugin</artifactId>                           
-            <configuration>                                                         
-              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>         
-              <docletArtifact>                                                      
-                <groupId>edu.pdx.cs399J</groupId>                                   
-                <artifactId>grader</artifactId>                                     
-                <version>Summer2010</version>                                       
-              </docletArtifact>                                                     
-            </configuration>                                                        
-         </plugin>                                                                  
-      </plugins>                                                                    
-   </reporting>       
+  <profiles>
+    <profile>
+      <id>grader</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>
+              <docletArtifact>
+                <groupId>edu.pdx.cs399J</groupId>
+                <artifactId>grader</artifactId>
+                <version>Summer2010</version>
+              </docletArtifact>
+              <useStandardDocletOptions>false</useStandardDocletOptions>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
