@@ -33,6 +33,17 @@
       <version>4.5</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>r06</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>gwt</finalName>
@@ -48,7 +59,7 @@
                   <module>edu.pdx.cs399J.gwt.Examples</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
-                <style>DETAILED</style>
+                <style>PRETTY</style>
             </configuration>
           <executions>
             <execution>
@@ -56,6 +67,17 @@
                 <goal>compile</goal>
                 <goal>test</goal>
               </goals>
+            </execution>
+            <execution>
+              <id>surefire-it</id>
+              <phase>integration-test</phase>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <skip>false</skip>
+                <includes>**/*GwtTest.*</includes>
+              </configuration>
             </execution>
           </executions>
         </plugin>
@@ -88,24 +110,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
-          <argLine>-XstartOnFirstThread</argLine>
+          <excludes>
+            <exclude>**/*GwtTest.java</exclude>
+          </excludes>
         </configuration>
-        <executions>
-          <execution>
-            <id>surefire-it</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <skip>false</skip>
-              <includes>
-                 <include>**/*GwtTest.*</include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

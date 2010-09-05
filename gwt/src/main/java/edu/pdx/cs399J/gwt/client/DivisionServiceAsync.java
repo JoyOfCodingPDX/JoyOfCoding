@@ -10,5 +10,5 @@ public interface DivisionServiceAsync {
   /**
    * Divides two numbers and returns their quotient
    */
-  void divide(int dividend, int divisor, AsyncCallback async);
+  void divide(int dividend, int divisor, AsyncCallback<Integer> async);
 }

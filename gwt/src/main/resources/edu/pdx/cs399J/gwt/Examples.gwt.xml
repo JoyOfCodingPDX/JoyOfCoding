@@ -6,4 +6,7 @@
   <entry-point class="edu.pdx.cs399J.gwt.client.Hello"/>
 
   <extend-property name="locale" values="es"/>
+
+  <!-- Need to define the servlet in .gwt.xml in order to use service in a GwtTest -->
+  <servlet path="/division" class="edu.pdx.cs399J.gwt.server.DivisionServiceImpl"/>
 </module>
