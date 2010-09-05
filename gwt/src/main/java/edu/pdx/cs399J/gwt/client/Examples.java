@@ -1,7 +1,10 @@
 package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
+import edu.pdx.cs399J.gwt.client.mvp.DivisionPresenter;
+import edu.pdx.cs399J.gwt.client.mvp.DivisionView;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -68,6 +71,13 @@ public class Examples implements EntryPoint {
     examples.put("Localization",
       Arrays.asList(
         new DateLocalizationExample()
+      ));
+
+    DivisionView view = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
+    new DivisionPresenter( view, DivisionService.Helper.getAsync() );
+    examples.put("Model/View/Presenter",
+      Arrays.asList(
+        view
       ));
     return examples;
   }

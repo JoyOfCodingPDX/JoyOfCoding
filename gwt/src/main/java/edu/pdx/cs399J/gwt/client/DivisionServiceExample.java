@@ -32,15 +32,14 @@ public class DivisionServiceExample extends Example {
         try {
           int d1 = Integer.parseInt(dividend.getText());
           int d2 = Integer.parseInt(divisor.getText());
-          service.divide(d1, d2, new AsyncCallback() {
+          service.divide(d1, d2, new AsyncCallback<Integer>() {
 
             public void onFailure(Throwable ex) {
               ex = ex.getCause() != null ? ex.getCause() : ex;
               Window.alert(ex.toString());
             }
 
-            public void onSuccess(Object o) {
-              int result = (Integer) o;
+            public void onSuccess(Integer result) {
               quotient.setText(String.valueOf(result));
             }
           });

@@ -10,6 +10,9 @@ import edu.pdx.cs399J.gwt.client.DivisionServiceAsync;
 
 /**
  * A presenter that manages the state (model) of a division UI and interacts with the division view
+ *
+ * @author David Whitlock
+ * @since Summer 2010
  */
 public class DivisionPresenter
 {
@@ -149,5 +152,7 @@ public class DivisionPresenter
         view.setDivisorValid( divisorValid );
 
         view.setDivisionEnabled( dividendValid && divisorValid );
+
+        view.setQuotient( "" );
     }
 }

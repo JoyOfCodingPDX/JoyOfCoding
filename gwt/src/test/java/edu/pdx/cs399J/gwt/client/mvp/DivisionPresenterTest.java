@@ -1,9 +1,7 @@
 package edu.pdx.cs399J.gwt.client.mvp;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -26,6 +24,9 @@ import static org.mockito.Mockito.*;
 
 /**
  * Tests the functionality of the {@link DivisionPresenter}}
+ *
+ * @author David Whitlock
+ * @since Summer 2010
  */
 public class DivisionPresenterTest
 {
@@ -78,6 +79,8 @@ public class DivisionPresenterTest
         Integer dividend = presenter.getDividend();
         assertNotNull(dividend);
         assertEquals(value, dividend.intValue());
+
+        verify(view).setQuotient( "" );
     }
 
     /**
@@ -97,6 +100,8 @@ public class DivisionPresenterTest
         verify( view, times(2) ).setDivisionEnabled( false );
 
         assertNull( presenter.getDividend() );
+
+        verify(view).setQuotient( "" );
     }
 
     /**
@@ -119,6 +124,8 @@ public class DivisionPresenterTest
         Integer dividend = presenter.getDivisor();
         assertNotNull(dividend);
         assertEquals(value, dividend.intValue());
+
+        verify(view).setQuotient( "" );
     }
 
     /**
@@ -138,6 +145,8 @@ public class DivisionPresenterTest
         verify( view, times(2) ).setDivisionEnabled( false );
 
         assertNull( presenter.getDivisor() );
+
+        verify(view).setQuotient( "" );
     }
 
     /**
@@ -156,6 +165,8 @@ public class DivisionPresenterTest
         fireValueChangeEvent( String.valueOf( 234 ), captor2.getValue() );
 
         verify( view ).setDivisionEnabled( true );
+
+        verify(view, times( 2 )).setQuotient( "" );
     }
 
     /**
@@ -287,13 +298,5 @@ public class DivisionPresenterTest
             return manager.addHandler( ValueChangeEvent.getType(), handler );
         }
 
-    }
-
-    private class MockHasClickHandlers extends MockHasHandlers implements HasClickHandlers
-    {
-        public HandlerRegistration addClickHandler( ClickHandler handler )
-        {
-            return manager.addHandler( ClickEvent.getType(), handler );
-        }
     }
 }
