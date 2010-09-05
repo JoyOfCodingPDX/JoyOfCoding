@@ -188,9 +188,15 @@ public class ClassPanel extends JPanel {
     this.newStudentButton.setEnabled(true);
 
     // Display name of the class
-    this.classNameLabel.setText(book.getClassName() + " (" +
-                                book.getStudentIds().size() + 
-                                " students)");
+    double points = 0.0d;
+    for (String name : book.getAssignmentNames()) {
+      Assignment assign = book.getAssignment( name );
+      points += assign.getPoints();
+    }
+
+    String className =
+      String.format( "%s (%d students, %.2f points)", book.getClassName(), book.getStudentIds().size(), points );
+    this.classNameLabel.setText(className);
 
     this.displayAssignments(book);
     this.assignmentsList.clearSelection();  // No initial selection
