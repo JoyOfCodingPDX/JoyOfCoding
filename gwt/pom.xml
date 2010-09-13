@@ -44,6 +44,18 @@
       <artifactId>guava</artifactId>
       <version>r06</version>
     </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs399J</groupId>
+      <artifactId>examples</artifactId>
+      <version>Summer2010</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs399J</groupId>
+      <artifactId>examples</artifactId>
+      <version>Summer2010</version>
+      <classifier>sources</classifier>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>gwt</finalName>
