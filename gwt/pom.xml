@@ -43,6 +43,7 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>r06</version>
+      <!-- Can't use guava in GWT client code yet -->
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs399J</groupId>
@@ -88,7 +89,7 @@
               </goals>
               <configuration>
                 <skip>false</skip>
-                <includes>**/*GwtTest.*</includes>
+                <includes>**/*GwtTest.java</includes>
               </configuration>
             </execution>
           </executions>
@@ -138,7 +139,49 @@
           </filesets>
         </configuration>
       </plugin>
-        
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>add-it-sources</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/it/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>add-it-resources</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+            <resources>
+              <resource>
+                <directory>src/it/resources</directory>
+              </resource>
+            </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 </project>

@@ -10,7 +10,7 @@ public class DivisionServiceGwtTest extends GWTTestCase {
   
 
   public String getModuleName() {
-    return "edu.pdx.cs399J.gwt.Examples";
+    return "edu.pdx.cs399J.gwt.IntegrationTests";
   }
 
   public void testSimpleDivision() {
