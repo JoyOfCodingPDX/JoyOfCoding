@@ -1,5 +1,6 @@
 package edu.pdx.cs399J.gwt.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -13,20 +14,34 @@ import com.google.gwt.user.client.ui.TextBox;
  * Demonstrates GWT's remote services
  */
 public class DivisionServiceExample extends Example {
+  @VisibleForTesting
+  TextBox dividend;
+
+  @VisibleForTesting
+  TextBox divisor;
+
+  @VisibleForTesting
+  TextBox quotient;
+
+  @VisibleForTesting
+  Button equals;
+
   public DivisionServiceExample() {
     super("Division Service");
 
     final DivisionServiceAsync service = DivisionService.Helper.getAsync();
 
-    final TextBox dividend = new TextBox();
+    dividend = new TextBox();
     dividend.setVisibleLength(3);
-    final TextBox divisor = new TextBox();
+
+    divisor = new TextBox();
     divisor.setVisibleLength(3);
-    final TextBox quotient = new TextBox();
+
+    quotient = new TextBox();
     quotient.setVisibleLength(3);
     quotient.setReadOnly(true);
 
-    Button equals = new Button("=");
+    equals = new Button("=");
     equals.addClickHandler(new ClickHandler() {
       public void onClick( ClickEvent event) {
         try {

@@ -28,6 +28,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwt.version}</version>
+      <scope>test</scope><!-- Needed for running GwtTests in IntelliJ -->
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.5</version>
@@ -71,7 +77,6 @@
                 <modules>
                   <module>edu.pdx.cs399J.gwt.Examples</module>
                 </modules>
-                <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>PRETTY</style>
             </configuration>
           <executions>
@@ -90,6 +95,10 @@
               <configuration>
                 <skip>false</skip>
                 <includes>**/*GwtTest.java</includes>
+                <!--
+                <extraJvmArgs>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</extraJvmArgs>
+                <testTimeOut>3600</testTimeOut>
+                -->
               </configuration>
             </execution>
           </executions>
