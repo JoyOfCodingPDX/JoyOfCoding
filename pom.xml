@@ -100,6 +100,15 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-idea-plugin</artifactId>
+        <configuration>
+          <downloadJavadocs>true</downloadJavadocs>
+          <downloadSources>true</downloadSources>
+          <overwrite>true</overwrite>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <reporting>
