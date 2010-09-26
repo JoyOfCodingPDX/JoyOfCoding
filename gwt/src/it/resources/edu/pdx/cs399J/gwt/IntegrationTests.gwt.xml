@@ -11,8 +11,14 @@
   <inherits name='edu.pdx.cs399J.gwt.Examples'/>
 
   <source path="client">
-        <include name="**/*.java"/>
-        <exclude name="**/mvp/*Test*.java" />
+    <include name="**/*.java"/>
+    <exclude name="**/mvp/*Test*.java" />
+
+    <!-- Apparently, GWTTestSuite cannot be compiled into JavaScript
+
+         http://code.google.com/p/google-web-toolkit/issues/detail?id=2486
+     -->
+    <exclude name="**/*GwtTestSuite.java" /> 
   </source>
 
   <!-- Need to define the servlet in .gwt.xml in order to use service in a GwtTest -->
