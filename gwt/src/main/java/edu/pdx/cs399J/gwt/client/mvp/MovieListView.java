@@ -17,6 +17,7 @@ public class MovieListView extends Composite implements MovieListPresenter.Displ
 
   public MovieListView() {
     this.movies = new ListBox();
+    this.movies.setVisibleItemCount(10);
     initWidget(this.movies);
   }
 

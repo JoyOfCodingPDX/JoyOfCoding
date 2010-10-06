@@ -3,6 +3,7 @@ package edu.pdx.cs399J.gwt.server.di;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 import edu.pdx.cs399J.gwt.client.mvp.MovieService;
+import edu.pdx.cs399J.gwt.server.DivisionServiceImpl;
 import edu.pdx.cs399J.gwt.server.mvp.MovieServiceImpl;
 
 /**

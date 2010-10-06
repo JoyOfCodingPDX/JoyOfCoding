@@ -9,11 +9,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 /**
  * A GWT remote service that uses Guice to serve GWT-RPC requests.  This means that remote service
  * implementations do not need to extend {@link RemoteServiceServlet}
  */
+@Singleton
 public class GuiceRemoteServiceServlet extends RemoteServiceServlet {
   private final Provider<Injector> injector;
 

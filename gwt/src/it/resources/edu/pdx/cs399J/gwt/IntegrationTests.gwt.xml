@@ -23,6 +23,6 @@
 
   <!-- Need to define the servlet in .gwt.xml in order to use service in a GwtTest -->
   <servlet path="/division" class="edu.pdx.cs399J.gwt.server.DivisionServiceImpl"/>
-  <servlet path="/GWT.rpc" class="edu.pdx.cs399J.gwt.server.di.TestGuiceRemoteServiceServlet"/>
+  <servlet path="/GWT.rpc" class="edu.pdx.cs399J.gwt.server.di.GuiceRemoteServiceServletForTesting"/>
 
 </module>

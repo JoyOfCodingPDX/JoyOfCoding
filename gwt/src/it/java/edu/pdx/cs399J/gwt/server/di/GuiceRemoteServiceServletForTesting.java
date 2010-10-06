@@ -6,7 +6,7 @@ import com.google.inject.Injector;
 /**
  * A subclass of the {@link GuiceRemoteServiceServlet} that creates the Guice injector.
  */
-public class TestGuiceRemoteServiceServlet extends GuiceRemoteServiceServlet {
+public class GuiceRemoteServiceServletForTesting extends GuiceRemoteServiceServlet {
   private final Injector injector = Guice.createInjector(new GwtExamplesModule());
 
   @Override

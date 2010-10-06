@@ -127,18 +127,19 @@ public class Examples implements EntryPoint {
     DivisionView division = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
     new DivisionPresenter( division, DivisionService.Helper.getAsync() );
 
-    MovieDatabaseExample movies = createMovieDatabase();
 
-    examples.put("Model/View/Presenter",
+    HandlerManager bus = new HandlerManager(null);
+    new ExceptionPresenter(new ExceptionDialog(), bus);
+
+      examples.put("Model/View/Presenter",
       Arrays.asList(
         division,
-        movies
+        createMovieDatabase(bus)
       ));
     return examples;
   }
 
-  private MovieDatabaseExample createMovieDatabase() {
-    HandlerManager bus = new HandlerManager(null);
+  private MovieDatabaseExample createMovieDatabase(HandlerManager bus) {
     MovieServiceAsync service = GWT.create(MovieService.class);
     MovieListPresenter.Display list = new MovieListView();
     new MovieListPresenter(list, service, bus);

@@ -12,6 +12,6 @@ import javax.servlet.ServletContextEvent;
 public class GwtExamplesServletContextListener extends GuiceServletContextListener {
   @Override
   protected Injector getInjector() {
-    return Guice.createInjector(new GwtExamplesModule());
+    return Guice.createInjector(new GwtExamplesModule(), new GwtExamplesServletModule());
   }
 }
