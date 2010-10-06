@@ -3,6 +3,7 @@ package edu.pdx.cs399J.gwt.client.mvp;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import edu.pdx.cs399J.gwt.client.Example;
 
 /**
@@ -10,6 +11,7 @@ import edu.pdx.cs399J.gwt.client.Example;
  */
 public class MovieDatabaseExample extends Example {
 
+  @Inject
   public MovieDatabaseExample(MovieListPresenter.Display list) {
     super("Custom Events");
 

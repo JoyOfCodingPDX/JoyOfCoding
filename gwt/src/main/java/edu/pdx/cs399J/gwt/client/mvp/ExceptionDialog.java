@@ -35,7 +35,6 @@ public class ExceptionDialog extends DialogBox implements ExceptionPresenter.Dis
     panel.add(ok, DockPanel.SOUTH);
 
     setWidget(panel);
-    center();
   }
 
   @Override
@@ -56,9 +55,15 @@ public class ExceptionDialog extends DialogBox implements ExceptionPresenter.Dis
     this.details.setText(sb.toString());
   }
 
+  private boolean noRecursion;  // Hack?
+
   @Override
   public void show() {
+    if (noRecursion) {
+      noRecursion = false;
+      center();
+      noRecursion = true;
+    }
     super.show();
-    center();
   }
 }

@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.gwt.client.mvp;
 
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.inject.Inject;
 
 /**
  * Handles the logic for displaying an exception to the user
@@ -18,6 +19,7 @@ public class ExceptionPresenter {
 
   private final HandlerManager eventBus;
 
+  @Inject
   public ExceptionPresenter(final Display view, HandlerManager hm) {
     this.view = view;
     this.eventBus = hm;

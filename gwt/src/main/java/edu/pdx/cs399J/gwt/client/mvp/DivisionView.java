@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.inject.Inject;
 import edu.pdx.cs399J.gwt.client.Example;
 
 /**
@@ -43,6 +44,7 @@ public class DivisionView extends Example implements DivisionPresenter.Display
     @UiField
     DivisionStyle style;
 
+    @Inject
     public DivisionView(Binder binder) {
         super("Division with MVP");
 

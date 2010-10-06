@@ -8,7 +8,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
 import edu.pdx.cs399J.gwt.client.mvp.*;
@@ -124,26 +123,18 @@ public class Examples implements EntryPoint {
         new DateLocalizationExample()
       ));
 
+    ExamplesGinjector injector = GWT.create(ExamplesGinjector.class);
+    GWT.setUncaughtExceptionHandler(injector.getUncaughtExceptionHandler());
+
     DivisionView division = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
     new DivisionPresenter( division, DivisionService.Helper.getAsync() );
-
 
       examples.put("Model/View/Presenter",
       Arrays.asList(
         division,
-        createMovieDatabase()
+        injector.getMovieDatabaseExample()
       ));
     return examples;
-  }
-
-  private MovieDatabaseExample createMovieDatabase() {
-    HandlerManager bus = new HandlerManager(null);
-    new ExceptionPresenter(new ExceptionDialog(), bus);
-
-    MovieServiceAsync service = GWT.create(MovieService.class);
-    MovieListPresenter.Display list = new MovieListView();
-    new MovieListPresenter(list, service, bus);
-    return new MovieDatabaseExample(list);
   }
 
   private class ExamplePanel extends DockPanel {

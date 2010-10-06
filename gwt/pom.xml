@@ -68,6 +68,11 @@
       <version>2.0</version>
     </dependency>
     <dependency>
+      <groupId>com.googlecode.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>examples</artifactId>
       <version>Summer2010</version>

@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.gwt.client.mvp;
 
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.inject.Inject;
 import edu.pdx.cs399J.rmi.Movie;
 
 import java.util.Map;               
@@ -30,6 +31,7 @@ public class MovieEditorPresenter {
 
   private Movie movie;
 
+  @Inject
   public MovieEditorPresenter(Display view, HandlerManager hm, final MovieServiceAsync service) {
     this.view = view;
     this.eventBus = hm;

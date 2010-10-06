@@ -3,6 +3,7 @@ package edu.pdx.cs399J.gwt.client.mvp;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import edu.pdx.cs399J.rmi.Movie;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class MovieListPresenter {
 
   private final HandlerManager eventBus;
 
+  @Inject
   public MovieListPresenter(Display view, MovieServiceAsync service, final HandlerManager hm) {
     this.view = view;
     this.eventBus = hm;
