@@ -8,11 +8,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import org.junit.Test;
 
-public class DivisionServiceExampleGwtTest extends GWTTestCase {
-  @Override
-  public String getModuleName() {
-    return "edu.pdx.cs399J.gwt.IntegrationTests";
-  }
+public class DivisionServiceExampleGwtTest extends IntegrationGwtTestCase{
 
   /**
    * Tests that the division service UI
