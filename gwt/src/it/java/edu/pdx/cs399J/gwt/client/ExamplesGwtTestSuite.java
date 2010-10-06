@@ -15,6 +15,7 @@ public class ExamplesGwtTestSuite extends TestCase {
 
     suite.addTestSuite(DivisionServiceGwtTest.class);
     suite.addTestSuite(DivisionServiceExampleGwtTest.class);
+    suite.addTestSuite(MovieServiceGwtTest.class);
 
     return suite;
   }

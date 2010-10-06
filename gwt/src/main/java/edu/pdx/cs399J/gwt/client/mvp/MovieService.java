@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Provides access to Movies in the database
  */
-@RemoteServiceRelativePath("movies")
+@RemoteServiceRelativePath("GWT.rpc")
 public interface MovieService extends RemoteService {
   public ArrayList<Movie> getAllMovies();
 

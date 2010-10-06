@@ -52,6 +52,22 @@
       <!-- Can't use guava in GWT client code yet -->
     </dependency>
     <dependency>
+      <groupId>com.google.code.guice</groupId>
+      <artifactId>guice</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <!-- Make Guice happy -->
+      <groupId>aopalliance</groupId>
+      <artifactId>aopalliance</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.guice</groupId>
+      <artifactId>guice-servlet</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
       <groupId>edu.pdx.cs399J</groupId>
       <artifactId>examples</artifactId>
       <version>Summer2010</version>
