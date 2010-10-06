@@ -53,6 +53,14 @@ public class Movie implements Serializable {
   }
 
   /**
+   * Package-protected method for setting the id
+   * @param id The id for this movie
+   */
+  void setId(long id) {
+    this.id = id;
+  }
+
+  /**
    * Returns the title of this <code>Movie</code>
    */
   public String getTitle() {

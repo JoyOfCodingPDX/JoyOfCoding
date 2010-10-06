@@ -1,0 +1,5 @@
+<module>
+  <source>
+    <include name="Movie.*"/>
+  </source>
+</module>
