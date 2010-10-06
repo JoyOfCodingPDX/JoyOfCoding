@@ -47,10 +47,10 @@ public class MovieEditorPresenter {
       @Override
       public void onNewCharacter(String character, long actorId) {
         final HandlerManager eventBus1 = eventBus;
-        service.addCharacter(movie.getId(), character, actorId, new MvpCallback<Void>(eventBus1) {
+        service.addCharacter(movie.getId(), character, actorId, new MvpCallback<Movie>(eventBus1) {
           @Override
-          public void onSuccess(Void value) {
-            // No return value
+          public void onSuccess(Movie movie) {
+            edit(movie);
           }
         });
       }

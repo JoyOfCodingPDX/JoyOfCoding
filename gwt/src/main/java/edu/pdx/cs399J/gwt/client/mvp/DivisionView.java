@@ -49,11 +49,13 @@ public class DivisionView extends Example implements DivisionPresenter.Display
         add( binder.createAndBindUi( this ));
     }
 
+    @Override
     public void setDividendChangeHandler( ValueChangeHandler<String> handler )
     {
         dividend.addValueChangeHandler( handler );
     }
 
+    @Override
     public void setDividendValid( boolean valid )
     {
         if (valid) {
@@ -64,21 +66,25 @@ public class DivisionView extends Example implements DivisionPresenter.Display
         }
     }
 
+    @Override
     public void setDivisionClickHandler( ClickHandler handler )
     {
        equals.addClickHandler( handler );
     }
 
+    @Override
     public void setDivisionEnabled( boolean enabled )
     {
         equals.setEnabled( enabled );
     }
 
+    @Override
     public void setDivisorChangeHandler( ValueChangeHandler<String> handler )
     {
        divisor.addValueChangeHandler( handler );
     }
 
+    @Override
     public void setDivisorValid( boolean valid )
     {
         if (valid) {
@@ -89,11 +95,13 @@ public class DivisionView extends Example implements DivisionPresenter.Display
         }
     }
 
+    @Override
     public void setErrorMessage( String message )
     {
         Window.alert( message );
     }
 
+    @Override
     public void setQuotient( String quotient )
     {
         this.quotient.setValue( quotient );

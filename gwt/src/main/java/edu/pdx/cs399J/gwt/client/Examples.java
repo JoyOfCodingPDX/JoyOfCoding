@@ -8,10 +8,10 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.*;
-import edu.pdx.cs399J.gwt.client.mvp.DivisionPresenter;
-import edu.pdx.cs399J.gwt.client.mvp.DivisionView;
+import edu.pdx.cs399J.gwt.client.mvp.*;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -69,6 +69,8 @@ public class Examples implements EntryPoint {
           for (Widget w : tabs) {
             ExamplePanel panel = (ExamplePanel) w;
             if (panel.getTitle().equals(tabName)) {
+              // Select the tab again only if it is not already selected
+
               int index = tabs.getWidgetIndex(panel);
               if (tabs.getTabBar().getSelectedTab() != index) {
                 tabs.selectTab(index);
@@ -122,13 +124,25 @@ public class Examples implements EntryPoint {
         new DateLocalizationExample()
       ));
 
-    DivisionView view = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
-    new DivisionPresenter( view, DivisionService.Helper.getAsync() );
+    DivisionView division = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
+    new DivisionPresenter( division, DivisionService.Helper.getAsync() );
+
+    MovieDatabaseExample movies = createMovieDatabase();
+
     examples.put("Model/View/Presenter",
       Arrays.asList(
-        view
+        division,
+        movies
       ));
     return examples;
+  }
+
+  private MovieDatabaseExample createMovieDatabase() {
+    HandlerManager bus = new HandlerManager(null);
+    MovieServiceAsync service = GWT.create(MovieService.class);
+    MovieListPresenter.Display list = new MovieListView();
+    new MovieListPresenter(list, service, bus);
+    return new MovieDatabaseExample(list);
   }
 
   private class ExamplePanel extends DockPanel {

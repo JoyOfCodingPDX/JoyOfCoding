@@ -1,6 +1,7 @@
 package edu.pdx.cs399J.gwt.client.mvp;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import edu.pdx.cs399J.rmi.Movie;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 /**
  * Provides remote access to the movie database
  */
+@RemoteServiceRelativePath("movies")
 public interface MovieServiceAsync {
 
   /**
@@ -16,5 +18,5 @@ public interface MovieServiceAsync {
    */
   public void getAllMovies(AsyncCallback<ArrayList<Movie>> callback);
 
-  void addCharacter(long id, String character, long actorId, AsyncCallback<Void> callback);
+  void addCharacter(long movieId, String character, long actorId, AsyncCallback<Movie> callback);
 }
