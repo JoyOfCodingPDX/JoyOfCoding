@@ -1,6 +1,5 @@
 package edu.pdx.cs399J.gwt.client;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
