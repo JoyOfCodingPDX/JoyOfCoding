@@ -9,7 +9,6 @@ import java.util.ArrayList;
 /**
  * Provides remote access to the movie database
  */
-@RemoteServiceRelativePath("movies")
 public interface MovieServiceAsync {
 
   /**

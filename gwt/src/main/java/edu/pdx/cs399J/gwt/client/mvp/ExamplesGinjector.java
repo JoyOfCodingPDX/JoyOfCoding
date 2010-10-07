@@ -1,6 +1,6 @@
 package edu.pdx.cs399J.gwt.client.mvp;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
@@ -14,5 +14,7 @@ public interface ExamplesGinjector extends Ginjector {
 
 //  DivisionView getDivisionView();
 
-  UncaughtExceptionHandlerReporter getUncaughtExceptionHandler();
+  UncaughtExceptionReporter getUncaughtExceptionHandler();
+
+  HandlerManager getEventBus();
 }

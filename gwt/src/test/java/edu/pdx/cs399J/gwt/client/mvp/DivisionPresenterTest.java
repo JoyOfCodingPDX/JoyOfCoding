@@ -46,10 +46,16 @@ public class DivisionPresenterTest {
    */
   @Captor
   private ArgumentCaptor<AsyncCallback<Integer>> callbackCaptor;
+  private HandlerManager eventBus;
 
   @Before
   public void initializeMockito() {
     MockitoAnnotations.initMocks(this);
+  }
+
+  @Before
+  public void initializeDependencies() {
+    eventBus = new HandlerManager(null);
   }
 
   /**
@@ -59,7 +65,7 @@ public class DivisionPresenterTest {
   public void testInitialView() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    new DivisionPresenter(view, null);
+    new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDivisionEnabled(false);
   }
@@ -71,7 +77,7 @@ public class DivisionPresenterTest {
   public void testValidDividend() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, null);
+    DivisionPresenter presenter = new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDividendChangeHandler(captor.capture());
 
@@ -95,7 +101,7 @@ public class DivisionPresenterTest {
   public void testInvalidDividend() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, null);
+    DivisionPresenter presenter = new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDividendChangeHandler(captor.capture());
 
@@ -116,7 +122,7 @@ public class DivisionPresenterTest {
   public void testValidDivisor() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, null);
+    DivisionPresenter presenter = new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDivisorChangeHandler(captor.capture());
 
@@ -140,7 +146,7 @@ public class DivisionPresenterTest {
   public void testInvalidDivisor() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, null);
+    DivisionPresenter presenter = new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDivisorChangeHandler(captor.capture());
 
@@ -161,7 +167,7 @@ public class DivisionPresenterTest {
   public void testValidDivisorAndDividend() {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
 
-    new DivisionPresenter(view, null);
+    new DivisionPresenter(view, null, eventBus);
 
     verify(view).setDivisorChangeHandler(captor.capture());
     verify(view).setDividendChangeHandler(captor2.capture());
@@ -182,7 +188,7 @@ public class DivisionPresenterTest {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
     DivisionServiceAsync service = mock(DivisionServiceAsync.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, service);
+    DivisionPresenter presenter = new DivisionPresenter(view, service, eventBus);
     ArgumentCaptor<ClickHandler> captor = ArgumentCaptor.forClass(ClickHandler.class);
     verify(view).setDivisionClickHandler(captor.capture());
 
@@ -205,7 +211,7 @@ public class DivisionPresenterTest {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
     DivisionServiceAsync service = mock(DivisionServiceAsync.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, service);
+    DivisionPresenter presenter = new DivisionPresenter(view, service, eventBus);
     ArgumentCaptor<ClickHandler> clickCaptor = ArgumentCaptor.forClass(ClickHandler.class);
     verify(view).setDivisionClickHandler(clickCaptor.capture());
 
@@ -232,7 +238,7 @@ public class DivisionPresenterTest {
     DivisionPresenter.Display view = mock(DivisionPresenter.Display.class);
     DivisionServiceAsync service = mock(DivisionServiceAsync.class);
 
-    DivisionPresenter presenter = new DivisionPresenter(view, service);
+    DivisionPresenter presenter = new DivisionPresenter(view, service, eventBus);
     ArgumentCaptor<ClickHandler> clickCaptor = ArgumentCaptor.forClass(ClickHandler.class);
     verify(view).setDivisionClickHandler(clickCaptor.capture());
 

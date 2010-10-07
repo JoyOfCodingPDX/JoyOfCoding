@@ -127,7 +127,7 @@ public class Examples implements EntryPoint {
     GWT.setUncaughtExceptionHandler(injector.getUncaughtExceptionHandler());
 
     DivisionView division = new DivisionView( GWT.<DivisionView.Binder>create( DivisionView.Binder.class ));
-    new DivisionPresenter( division, DivisionService.Helper.getAsync() );
+    new DivisionPresenter( division, DivisionService.Helper.getAsync(), injector.getEventBus());
 
       examples.put("Model/View/Presenter",
       Arrays.asList(

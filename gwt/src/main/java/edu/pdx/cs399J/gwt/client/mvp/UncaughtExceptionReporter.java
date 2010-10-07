@@ -7,11 +7,11 @@ import com.google.inject.Inject;
 /**
  * Puts an uncaught exception on the event bus so that the error dialog can be popped up
  */
-public class UncaughtExceptionHandlerReporter implements GWT.UncaughtExceptionHandler {
+public class UncaughtExceptionReporter implements GWT.UncaughtExceptionHandler {
   private final HandlerManager eventBus;
 
   @Inject
-  public UncaughtExceptionHandlerReporter(HandlerManager eventBus) {
+  public UncaughtExceptionReporter(HandlerManager eventBus) {
     this.eventBus = eventBus;
   }
 

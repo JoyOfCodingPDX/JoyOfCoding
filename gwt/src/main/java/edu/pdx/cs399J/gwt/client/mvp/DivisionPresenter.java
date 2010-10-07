@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.event.shared.HandlerManager;
 import edu.pdx.cs399J.gwt.client.DivisionServiceAsync;
 
 /**
@@ -34,6 +34,7 @@ public class DivisionPresenter {
    * The dividend
    */
   private Integer dividend = null;
+  private final HandlerManager eventBus;
 
   @VisibleForTesting
   Integer getDividend() {
@@ -77,10 +78,11 @@ public class DivisionPresenter {
     void setQuotient(String quotient);
   }
 
-  public DivisionPresenter(Display view, DivisionServiceAsync service) {
+  public DivisionPresenter(Display view, DivisionServiceAsync service, HandlerManager eventBus) {
 
     this.view = view;
     this.service = service;
+    this.eventBus = eventBus;
 
     this.bind();
   }
@@ -125,15 +127,18 @@ public class DivisionPresenter {
           throw new RuntimeException("Shouldn't be able to perform division with a null dividend");
         }
 
-        service.divide(dividend, divisor, new AsyncCallback<Integer>() {
-          public void onFailure(Throwable failure) {
-            view.setErrorMessage(failure.toString());
-          }
-
+        service.divide(dividend, divisor, new MvpCallback<Integer>(eventBus) {
           public void onSuccess(Integer quotient) {
             view.setQuotient(String.valueOf(quotient));
           }
         });
+      }
+    });
+
+    eventBus.addHandler(ExceptionEvent.TYPE, new ExceptionEvent.Handler() {
+      @Override
+      public void onException(Throwable ex) {
+        view.setErrorMessage(ex.toString());
       }
     });
   }
