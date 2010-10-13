@@ -9,16 +9,16 @@
   <description>Example Java Code for CS399J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
-    <module>projects</module>
-    <module>family</module>
-    <module>grader</module>
     <module>examples</module>
     <module>web</module>
     <module>gwt</module>
+    <module>projects</module>
+    <module>family</module>
+    <module>grader</module>
     <module>familygwt</module>
     <module>apptbook-archetype</module>
-    <module>apptbook-gwt-archetype</module>
     <module>apptbook-web-archetype</module>
+    <module>apptbook-gwt-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
