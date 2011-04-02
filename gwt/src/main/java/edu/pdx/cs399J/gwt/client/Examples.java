@@ -2,6 +2,7 @@ package edu.pdx.cs399J.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -17,19 +18,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.gwt.dom.client.Style.Unit;
+
 /**
  * The main entry point to GWT examples
  */
 public class Examples implements EntryPoint {
 
   public void onModuleLoad() {
-    RootPanel rootPanel = RootPanel.get("examplesDiv");
+    RootLayoutPanel rootPanel = RootLayoutPanel.get();
 
-    if (rootPanel == null) {
-        return;
-    }
-
-    TabPanel allExamples = new TabPanel();
+    TabLayoutPanel allExamples = new TabLayoutPanel(1.5, Unit.EM);
     Map<String, List<? extends Example>> examples = getExamples();
     for (String title : examples.keySet()) {
       ExamplePanel panel = new ExamplePanel(title);
@@ -51,7 +50,7 @@ public class Examples implements EntryPoint {
     /**
      * Adds a new GWT history token whenever a new tab is selected
      */
-  private void addHistoryListener( final TabPanel tabs ) {
+  private void addHistoryListener( final TabLayoutPanel tabs ) {
     tabs.addSelectionHandler( new SelectionHandler<Integer>() {
         public void onSelection( SelectionEvent<Integer> event )
         {
@@ -71,7 +70,7 @@ public class Examples implements EntryPoint {
               // Select the tab again only if it is not already selected
 
               int index = tabs.getWidgetIndex(panel);
-              if (tabs.getTabBar().getSelectedTab() != index) {
+              if (tabs.getSelectedIndex() != index) {
                 tabs.selectTab(index);
               }
             }
@@ -137,16 +136,17 @@ public class Examples implements EntryPoint {
     return examples;
   }
 
-  private class ExamplePanel extends DockPanel {
+  private class ExamplePanel extends DockLayoutPanel {
     private VerticalPanel buttons = new VerticalPanel();
     private DeckPanel deck = new DeckPanel();
     private final String title;
 
     public ExamplePanel( String title ) {
+      super(Unit.EM);
+      
       this.title = title;
-      this.setSpacing(3);
-      add(buttons, WEST);
-      add(deck, CENTER);
+      addWest(buttons, 10);
+      add(deck);
     }
 
     public void add(final Example example, final String name) {

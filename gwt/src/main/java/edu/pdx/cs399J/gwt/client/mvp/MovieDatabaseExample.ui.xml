@@ -1,0 +1,11 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'
+    xmlns:pdx='urn:import:edu.pdx.cs399J.gwt.mvp'>
+
+    <g:DockPanel>
+        <g:west>
+            <pdx:MovieListPresenter/>
+        </g:west>
+    </g:DockPanel>
+
+</ui:UiBinder>
