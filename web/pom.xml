@@ -9,7 +9,7 @@
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
-  <name>web</name>
+  <name>Web Application examples</name>
   <version>Summer2011</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>

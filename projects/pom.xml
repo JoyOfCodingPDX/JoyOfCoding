@@ -7,7 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>projects</artifactId>
-  <name>projects</name>
+  <name>CS410J Project APIs</name>
+  <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
   <version>Summer2011</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>

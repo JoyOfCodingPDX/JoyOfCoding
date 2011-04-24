@@ -10,7 +10,8 @@
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
   <version>Summer2011</version>
-  <name>family</name>
+  <name>CS410J Family Tree Application</name>
+  <description>An example Java application for CS410J: Advanced Java Programming</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
