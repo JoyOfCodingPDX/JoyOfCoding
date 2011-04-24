@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>airline</id>
+  <sources>
+    <source>src/main/java/Project1.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/Project1Test.java</source>
+  </testSources>
+  <resources>
+    <resource>src/main/javadoc/edu/pdx/cs410J/YOU/package.html</resource>
+  </resources>
+  <testResources>
+    <resource>src/test/javadoc/edu/pdx/cs410J/YOU/package.html</resource>
+  </testResources>
+</archetype>
