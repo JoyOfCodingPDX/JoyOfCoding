@@ -23,7 +23,7 @@ public abstract class RemoteTestCase {
 
   /** The port on which the RMI registry runs */
   private static final int RMI_PORT =
-    Integer.getInteger("RMI_PORT", 1099).intValue();
+    Integer.getInteger("RMI_PORT", 1999).intValue();
 
   /** An RMI Registry that is co-located in the VM in which the test
    * runs */
