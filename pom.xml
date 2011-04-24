@@ -42,9 +42,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS410J</connection>
+    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS399J</connection>
     <tag>HEAD</tag>
-    <url>https://projects.cecs.pdx.edu/svn/CS410J/</url>
+    <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
     <properties>
 
