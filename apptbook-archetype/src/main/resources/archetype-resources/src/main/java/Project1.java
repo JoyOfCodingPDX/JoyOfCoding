@@ -3,10 +3,10 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs399J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AbstractAppointmentBook;
 
 /**
- * The main class for the CS399J appointment book Project
+ * The main class for the CS410J appointment book Project
  */
 public class Project1 {
 

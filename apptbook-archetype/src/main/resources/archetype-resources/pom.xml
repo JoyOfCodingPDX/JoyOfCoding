@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>CS399J</artifactId>
-    <groupId>edu.pdx.cs399J</groupId>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2011</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -10,8 +10,8 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>jar</packaging>
   <version>${version}</version>
-  <name>CS399J Appointment Book Project</name>
-  <description>An Appointment Book application for CS399J at Portland State University</description>
+  <name>CS410J Appointment Book Project</name>
+  <description>An Appointment Book application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <developers>
@@ -30,8 +30,8 @@
   </developers>
   <repositories>
     <repository>
-      <id>CS399J</id>
-      <name>CS399J Maven Repository</name>
+      <id>CS410J</id>
+      <name>CS410J Maven Repository</name>
       <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
     </repository>
   </repositories>
@@ -43,12 +43,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2011</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2011</version>
       <classifier>tests</classifier>
@@ -157,9 +157,9 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>
+              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs399J</groupId>
+                <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
                 <version>Summer2011</version>
               </docletArtifact>

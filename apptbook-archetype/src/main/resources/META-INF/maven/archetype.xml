@@ -7,9 +7,9 @@
     <source>src/test/java/Project1Test.java</source>
   </testSources>
   <resources>
-    <resource>src/main/javadoc/edu/pdx/cs399J/YOU/package.html</resource>
+    <resource>src/main/javadoc/edu/pdx/cs410J/YOU/package.html</resource>
   </resources>
   <testResources>
-    <resource>src/test/javadoc/edu/pdx/cs399J/YOU/package.html</resource>
+    <resource>src/test/javadoc/edu/pdx/cs410J/YOU/package.html</resource>
   </testResources>
 </archetype>
