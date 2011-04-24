@@ -52,7 +52,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>proj6</finalName>
+    <finalName>airline-gwt</finalName>
     <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
     <plugins>
         <plugin>
