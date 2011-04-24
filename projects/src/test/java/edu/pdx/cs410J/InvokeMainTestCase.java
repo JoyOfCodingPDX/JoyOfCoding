@@ -82,7 +82,7 @@ public abstract class InvokeMainTestCase
             PrintStream oldOut = System.out;
             PrintStream oldErr = System.err;
             try {
-                AirportNamesTest.MainMethodResult.ExitStatusSecurityManager essm = new AirportNamesTest.MainMethodResult.ExitStatusSecurityManager( oldSecurityManager );
+                MainMethodResult.ExitStatusSecurityManager essm = new MainMethodResult.ExitStatusSecurityManager( oldSecurityManager );
                 System.setSecurityManager( essm );
 
                 ByteArrayOutputStream newOut = new ByteArrayOutputStream();

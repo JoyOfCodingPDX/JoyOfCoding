@@ -369,8 +369,6 @@ public class AirportNames {
       String name = AirportNames.getName( arg );
       System.out.println( arg + ": " + name );
     }
-
-    System.exit(0);
   }
 
 }
