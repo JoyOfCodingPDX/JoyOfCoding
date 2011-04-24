@@ -18,7 +18,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 
   /** The Public ID for the Family Tree DTD */
   protected static final String publicID = 
-    "-//Portland State University//DTD CS399J Family Tree//EN";
+    "-//Portland State University//DTD CS410J Family Tree//EN";
 
   ////////////////////  EntityResolver Methods  //////////////////
 

@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import edu.pdx.cs410J.ParserException;
 
 /**
- * This class represents an assignment give to students in CS399J.
+ * This class represents an assignment give to students in CS410J.
  *
  * @author David Whitlock
  */

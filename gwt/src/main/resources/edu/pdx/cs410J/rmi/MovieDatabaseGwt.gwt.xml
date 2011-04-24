@@ -1,6 +1,6 @@
 <module>
   <!-- In order for the GWT compiler to find the CustomFieldSerializer for Movie, we need another module  -->
-  <inherits name='edu.pdx.cs399J.rmi.MovieDatabase'/>
+  <inherits name='edu.pdx.cs410J.rmi.MovieDatabase'/>
 
   <source>
     <include name="Movie_*"/>

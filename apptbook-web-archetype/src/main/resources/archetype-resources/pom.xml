@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>CS399J</artifactId>
-    <groupId>edu.pdx.cs399J</groupId>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -14,8 +14,8 @@
   <url>http://maven.apache.org</url>
   <repositories>
     <repository>
-      <id>CS399J</id>
-      <name>CS399J Maven Repository</name>
+      <id>CS410J</id>
+      <name>CS410J Maven Repository</name>
       <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
     </repository>
   </repositories>
@@ -27,17 +27,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2010</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
       <version>Summer2010</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2010</version>
       <classifier>tests</classifier>

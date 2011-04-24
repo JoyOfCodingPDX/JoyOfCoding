@@ -10,7 +10,7 @@
     <source>src/main/java/server/PingServiceImpl.java</source>
   </sources>
   <resources>
-    <resource>src/main/resources/edu/pdx/cs399J/YOU/AppointmentBookGwt.gwt.xml</resource>
+    <resource>src/main/resources/edu/pdx/cs410J/YOU/AppointmentBookGwt.gwt.xml</resource>
     <resource>src/main/webapp/WEB-INF/web.xml</resource>
   </resources>
 </archetype>

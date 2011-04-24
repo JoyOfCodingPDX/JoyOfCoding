@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs399J</groupId>
+  <groupId>edu.pdx.cs410J</groupId>
   <version>Summer2010</version>
-  <artifactId>CS399J</artifactId>
+  <artifactId>CS410J</artifactId>
   <packaging>pom</packaging>
-  <name>CS399J Java Example Code</name>
-  <description>Example Java Code for CS399J: Advanced Java Programming at Portland State University</description>
+  <name>CS410J Java Example Code</name>
+  <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
     <module>examples</module>
@@ -40,9 +40,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS399J</connection>
+    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS410J</connection>
     <tag>HEAD</tag>
-    <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
+    <url>https://projects.cecs.pdx.edu/svn/CS410J/</url>
   </scm>
     <properties>
 

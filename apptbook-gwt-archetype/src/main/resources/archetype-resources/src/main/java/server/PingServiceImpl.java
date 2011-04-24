@@ -4,7 +4,7 @@
 package ${package}.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs399J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AbstractAppointmentBook;
 import ${package}.client.AppointmentBook;
 import ${package}.client.Appointment;
 import ${package}.client.PingService;

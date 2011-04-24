@@ -7,7 +7,7 @@ import edu.pdx.cs410J.ParserException;
 
 /**
  * This class represents a grade book that contains information about
- * a CS399J class: the assignments, the students and their grades.
+ * a CS410J class: the assignments, the students and their grades.
  *
  * @author David Whitlock
  * @since Fall 2000

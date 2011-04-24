@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs399J.InvokeMainTestCase;
+import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

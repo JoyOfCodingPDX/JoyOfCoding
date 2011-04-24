@@ -41,7 +41,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 /**
- * This class is used to submit assignments in CS399J.  The user
+ * This class is used to submit assignments in CS410J.  The user
  * specified his or her email address as well as the base directory
  * for his/her source files on the command line.  The directory is
  * searched recursively for files ending in .java.  Those files are
@@ -542,7 +542,7 @@ public class Submit {
       message.setRecipients(Message.RecipientType.TO, to);
 
       StringBuffer subject = new StringBuffer();
-      subject.append("CS399J-SUBMIT ");
+      subject.append("CS410J-SUBMIT ");
       subject.append(userName);
       subject.append("'s ");
       subject.append(projName);
@@ -620,7 +620,7 @@ public class Submit {
       message.setRecipients(Message.RecipientType.TO, to);
 
       StringBuffer subject = new StringBuffer();
-      subject.append("CS399J ");
+      subject.append("CS410J ");
       subject.append(projName);
       subject.append(" submission");
       message.setSubject(subject.toString());
@@ -676,7 +676,7 @@ public class Submit {
     err.println("    -verbose           Log debugging output");
     err.println("    -comment comment   Info for the Grader");
     err.println("");
-    err.println("Submits Java source code to the CS399J grader.");
+    err.println("Submits Java source code to the CS410J grader.");
     System.exit(1);
   }
 

@@ -18,7 +18,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 
   /** The Public ID for the Grade Bookd DTD */
   protected static final String publicID = 
-    "-//Portland State University//DTD CS399J Grade Book//EN";
+    "-//Portland State University//DTD CS410J Grade Book//EN";
 
   ////////////////////  EntityResolver Methods  //////////////////
 

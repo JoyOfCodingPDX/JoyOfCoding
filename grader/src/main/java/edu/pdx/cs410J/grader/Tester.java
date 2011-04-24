@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * This class contains a number of helper methods for testing projects
- * in CS399J.
+ * in CS410J.
  *
  * @author David Whitlock
  */

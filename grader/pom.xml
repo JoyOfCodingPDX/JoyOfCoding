@@ -1,11 +1,11 @@
 <?xml version="1.0"?><project>
   <parent>
-    <artifactId>CS399J</artifactId>
-    <groupId>edu.pdx.cs399J</groupId>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs399J</groupId>
+  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
   <version>Summer2010</version>
@@ -29,7 +29,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2010</version>
     </dependency>

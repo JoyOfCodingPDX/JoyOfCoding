@@ -7,6 +7,6 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public abstract class IntegrationGwtTestCase extends GWTTestCase {
   public String getModuleName() {
-    return "edu.pdx.cs399J.gwt.IntegrationTests";
+    return "edu.pdx.cs410J.gwt.IntegrationTests";
   }
 }

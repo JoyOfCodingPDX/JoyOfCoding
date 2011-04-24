@@ -35,7 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 /**
- * This program presents a survey that all students in CS399J should
+ * This program presents a survey that all students in CS410J should
  * answer.  It emails the results of the survey to the TA and emails a
  * receipt back to the student.
  */
@@ -121,7 +121,7 @@ public class Survey {
     }
 
     // Ask the student a bunch of questions
-    out.println("\nWelcome to the CS399J Survey Program.  I'd like " +
+    out.println("\nWelcome to the CS410J Survey Program.  I'd like " +
                 "to ask you a couple of");
     out.println("questions about yourself.  Except for your UNIX " +
                 "login id, no question");
@@ -145,7 +145,7 @@ public class Survey {
                        "to be PSU)?");
     String ssn = ask("What is your student id (XXXXXXXXX)?");
     String major = ask("What is your major?");
-    String learn = ask("What do you hope to learn in CS399J?");
+    String learn = ask("What do you hope to learn in CS410J?");
     String comments = ask("What else would you like to tell me?");
 
     // Create a Student instance based on the response
@@ -235,7 +235,7 @@ public class Survey {
         message.setRecipients(Message.RecipientType.CC, cc);
       }
 
-      message.setSubject("CS399J Survey for " + student.getFullName());
+      message.setSubject("CS410J Survey for " + student.getFullName());
 
     } catch (AddressException ex) {
       err.println("** Exception with email address " + ex);
@@ -249,9 +249,9 @@ public class Survey {
 
     // Create the text portion of the message
     StringBuffer text = new StringBuffer();
-    text.append("Results of CS399J Survey:\n\n");
+    text.append("Results of CS410J Survey:\n\n");
     text.append(summary);
-    text.append("\n\nWhat do you hope to learn in CS399J?\n\n");
+    text.append("\n\nWhat do you hope to learn in CS410J?\n\n");
     text.append(learn);
     text.append("\n\nIs there anything else you'd like to tell me?\n\n");
     text.append(comments);

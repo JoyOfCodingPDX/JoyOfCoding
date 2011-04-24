@@ -11,8 +11,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import edu.pdx.cs399J.AbstractAppointment;
-import edu.pdx.cs399J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AbstractAppointment;
+import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.Collection;
 

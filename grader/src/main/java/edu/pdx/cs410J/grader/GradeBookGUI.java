@@ -33,7 +33,7 @@ import javax.swing.border.Border;
 import edu.pdx.cs410J.ParserException;
 
 /**
- * This class is a main GUI for manipulate the grade book for CS399J.
+ * This class is a main GUI for manipulate the grade book for CS410J.
  *
  * @author David Whitlock
  * @version $Revision: 1.15 $
@@ -635,7 +635,7 @@ public class GradeBookGUI extends JFrame {
    * Main program.  Create and show a <code>GradeBookGUI</code>
    */
   public static void main(String[] args) {
-    GradeBookGUI gui = new GradeBookGUI("CS399J Grade Book Program");
+    GradeBookGUI gui = new GradeBookGUI("CS410J Grade Book Program");
 
     if (args.length > 0) {
       PrintStream err = System.err;

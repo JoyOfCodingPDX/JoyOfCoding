@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package}.client;
 
-import edu.pdx.cs399J.AbstractAppointment;
-import edu.pdx.cs399J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AbstractAppointment;
+import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -6,7 +6,7 @@ import java.util.*;
 import edu.pdx.cs410J.ParserException;
 
 /**
- * This class represents a student who is taking CS399J.
+ * This class represents a student who is taking CS410J.
  */
 public class Student extends NotableImpl {
 

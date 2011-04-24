@@ -21,8 +21,8 @@
   </build>
   <repositories>
     <repository>
-      <id>CS399J</id>
-      <name>CS399J Maven Repository </name>
+      <id>CS410J</id>
+      <name>CS410J Maven Repository </name>
       <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
     </repository>
   </repositories>

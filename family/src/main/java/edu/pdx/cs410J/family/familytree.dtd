@@ -6,7 +6,7 @@
 All Grade Book XML data must include a DOCTYPE of the following form:
 
   <!DOCTYPE family-tree PUBLIC
-        "-//Portland State University//DTD CS399J Family Tree//EN"
+        "-//Portland State University//DTD CS410J Family Tree//EN"
         "http://www.cs.pdx.edu/~whitlock/dtds/familytree.dtd">
 
 -->

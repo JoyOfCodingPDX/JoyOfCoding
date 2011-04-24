@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>CS399J</artifactId>
-    <groupId>edu.pdx.cs399J</groupId>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs399J</groupId>
+  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
   <version>Summer2010</version>
@@ -20,7 +20,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>Summer2010</version>
     </dependency>

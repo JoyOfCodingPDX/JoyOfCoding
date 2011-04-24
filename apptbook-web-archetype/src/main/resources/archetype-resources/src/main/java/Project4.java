@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs399J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;

@@ -1,7 +1,7 @@
 <BODY>
 
 <P>This package contains classes that are used to keep track of
-students, grade projects, and submit assignments in CS399J.</P>
+students, grade projects, and submit assignments in CS410J.</P>
 
 <P>When we test student code, we run a security manager to ensure that
 their code does not do anything malicious and to allow us to run
@@ -13,7 +13,7 @@ We also employ a policy file that looks like this:</P>
 
 // Dave's code
 grant
-  codeBase "file:/u/whitlock/jars/cs399J.jar",
+  codeBase "file:/u/whitlock/jars/cs410J.jar",
   codeBase "file:/u/whitlock/jars/grader.jar",
   codeBase "file:/u/whitlock/jars/xerces.jar",
   codeBase "file:/u/sjavata/classes-dave"
@@ -39,7 +39,7 @@ grant
 <PRE>
 $ java -Djava.security.policy=/u/sjavata/grader.policy \
   -cp ~/classes-dave:/u/whitlock/jars/examples.jar \
-  edu.pdx.cs399J.grader.TestProject0b \
+  edu.pdx.cs410J.grader.TestProject0b \
   -studentClasses ~/classes whitlock
 </PRE>
 

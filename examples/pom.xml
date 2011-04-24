@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <project>
   <parent>
-    <artifactId>CS399J</artifactId>
-    <groupId>edu.pdx.cs399J</groupId>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2010</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs399J</groupId>
+  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
   <version>Summer2010</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
-      <groupId>edu.pdx.cs399J</groupId>
+      <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
       <version>Summer2010</version>
     </dependency>
@@ -61,7 +61,7 @@
               <verbose>true</verbose>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <includes>
-                <include>edu/pdx/cs399J/rmi/*Impl.class</include>
+                <include>edu/pdx/cs410J/rmi/*Impl.class</include>
               </includes>
             </configuration>
           </execution>
