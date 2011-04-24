@@ -20,6 +20,7 @@
     <module>apptbook-web-archetype</module>
     <module>apptbook-gwt-archetype</module>
     <module>airline-archetype</module>
+    <module>airline-web-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
