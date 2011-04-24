@@ -65,8 +65,8 @@
         <artifactId>gwt-maven-plugin</artifactId>
         <version>1.2</version>
           <configuration>
-            <runTarget>edu.pdx.cs399J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
-            <module>edu.pdx.cs399J.family.gwt.FamilyTreeGWT</module>
+            <runTarget>edu.pdx.cs410J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
+            <module>edu.pdx.cs410J.family.gwt.FamilyTreeGWT</module>
             <extraJvmArgs>-Xmx512m</extraJvmArgs>
             <style>DETAILED</style>
           </configuration>

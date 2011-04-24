@@ -1,0 +1,29 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style type="edu.pdx.cs410J.gwt.client.mvp.DivisionView.DivisionStyle">
+        .error {
+          border-width: 3px;
+          border-color: red
+        }
+    </ui:style>
+
+    <g:HorizontalPanel spacing="2">
+        <g:cell verticalAlignment="ALIGN_MIDDLE">
+            <g:TextBox visibleLength="3" ui:field="dividend"/>
+        </g:cell>
+        <g:cell verticalAlignment="ALIGN_MIDDLE">
+            <g:Label text="/"/>
+        </g:cell>
+        <g:cell verticalAlignment="ALIGN_MIDDLE">
+            <g:TextBox visibleLength="3" ui:field="divisor"/>
+        </g:cell>
+        <g:cell verticalAlignment="ALIGN_MIDDLE">
+            <g:Button text="=" ui:field="equals"/>
+        </g:cell>
+        <g:cell verticalAlignment="ALIGN_MIDDLE">
+            <g:TextBox visibleLength="3" readOnly="true" ui:field="quotient"/>
+        </g:cell>
+    </g:HorizontalPanel>
+
+</ui:UiBinder>

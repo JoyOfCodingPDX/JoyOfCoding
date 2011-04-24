@@ -94,9 +94,9 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>1.2</version>
             <configuration>
-                <runTarget>edu.pdx.cs399J.gwt.Examples/Hello.html</runTarget>
+                <runTarget>edu.pdx.cs410J.gwt.Examples/Hello.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs399J.gwt.Examples</module>
+                  <module>edu.pdx.cs410J.gwt.Examples</module>
                 </modules>
                 <style>PRETTY</style>
             </configuration>

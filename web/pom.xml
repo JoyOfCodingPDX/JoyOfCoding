@@ -108,7 +108,7 @@
             </execution>
           </executions>
           <configuration>
-              <mainClass>edu.pdx.cs399J.web.HttpRequestHelper</mainClass>
+              <mainClass>edu.pdx.cs410J.web.HttpRequestHelper</mainClass>
           </configuration>
         </plugin>
         <plugin>
@@ -121,7 +121,7 @@
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
                 <classpathLayoutType>repository</classpathLayoutType>
-                <mainClass>edu.pdx.cs399J.di.RestfulCreditCardService</mainClass>
+                <mainClass>edu.pdx.cs410J.di.RestfulCreditCardService</mainClass>
               </manifest>
             </archive>
           </configuration>

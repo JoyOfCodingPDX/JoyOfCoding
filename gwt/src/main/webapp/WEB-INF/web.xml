@@ -15,13 +15,13 @@
   </filter-mapping>
 
    <listener>
-    <listener-class>edu.pdx.cs399J.gwt.server.di.GwtExamplesServletContextListener</listener-class>
+    <listener-class>edu.pdx.cs410J.gwt.server.di.GwtExamplesServletContextListener</listener-class>
   </listener>
 
   <!-- Servlets -->
   <servlet>
     <servlet-name>divisionServlet</servlet-name>
-    <servlet-class>edu.pdx.cs399J.gwt.server.DivisionServiceImpl</servlet-class>
+    <servlet-class>edu.pdx.cs410J.gwt.server.DivisionServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

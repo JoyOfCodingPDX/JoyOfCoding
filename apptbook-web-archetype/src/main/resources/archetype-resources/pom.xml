@@ -152,9 +152,9 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-              <doclet>edu.pdx.cs399J.grader.APIDocumentationDoclet</doclet>
+              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs399J</groupId>
+                <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
                 <version>Summer2010</version>
               </docletArtifact>

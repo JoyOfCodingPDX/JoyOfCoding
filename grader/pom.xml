@@ -74,7 +74,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
-              <mainClass>edu.pdx.cs399J.grader.GradeBookGUI</mainClass>
+              <mainClass>edu.pdx.cs410J.grader.GradeBookGUI</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -94,7 +94,7 @@
                 <jnlp>
                     <inputTemplate>src/main/jnlp/jnlp.vm</inputTemplate>
                     <outputFile>grader.jnlp</outputFile>
-                    <mainClass>edu.pdx.cs399J.grader.GradeBookGUI</mainClass>
+                    <mainClass>edu.pdx.cs410J.grader.GradeBookGUI</mainClass>
                 </jnlp>
                 <!--
                  defining this will automatically sign the jar and its dependencies
