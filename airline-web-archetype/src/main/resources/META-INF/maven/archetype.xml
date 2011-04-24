@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>airline-web</id>
+  <sources>
+    <source>src/main/java/AirlineRestClient.java</source>
+    <source>src/main/java/AirlineServlet.java</source>
+    <source>src/main/java/Messages.java</source>
+    <source>src/main/java/Project4.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/Project4Test.java</source>
+  </testSources>
+  <resources>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+  </resources>
+</archetype>
