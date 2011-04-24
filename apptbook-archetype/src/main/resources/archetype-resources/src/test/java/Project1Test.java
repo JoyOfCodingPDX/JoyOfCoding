@@ -5,7 +5,7 @@ package ${package};
 
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
-import edu.pdx.cs399J.InvokeMainTestCase;
+import edu.pdx.cs410J.InvokeMainTestCase;
 import static junit.framework.Assert.assertEquals;
 
 /**
