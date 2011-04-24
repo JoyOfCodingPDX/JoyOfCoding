@@ -2,13 +2,13 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2010</version>
+    <version>Summer2011</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>Summer2010</version>
+  <version>Summer2011</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2010</version>
+      <version>Summer2011</version>
     </dependency>
     <dependency>
       <groupId>net.sf.opencsv</groupId>

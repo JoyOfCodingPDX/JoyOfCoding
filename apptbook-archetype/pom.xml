@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs399J</groupId>
   <artifactId>apptbook-archetype</artifactId>
-  <version>Summer2010</version>
+  <version>Summer2011</version>
   <packaging>maven-archetype</packaging>
   <name>apptbook-archetype</name>
   <description>A Maven Archetype for creating the Appointment Book Project</description>
