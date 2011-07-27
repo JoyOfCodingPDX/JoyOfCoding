@@ -13,6 +13,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>AirlineServlet</servlet-name>
-    <url-pattern>/airline</url-pattern>
+    <url-pattern>/flights</url-pattern>
   </servlet-mapping>
 </web-app>
