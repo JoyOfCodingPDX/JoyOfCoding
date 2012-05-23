@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='us-ascii'?>
 
-<!DOCTYPE phonebook SYSTEM 'phonebook.dtd'>
+<!DOCTYPE phonebook SYSTEM
+        '/Users/david/PSU/svn/CS399J/trunk/examples/src/resources/java/edu/pdx/cs410J/xml/phonebook.dtd'>
 
 <phonebook>
   <resident>
