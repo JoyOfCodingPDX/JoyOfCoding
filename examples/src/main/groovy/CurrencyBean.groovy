@@ -1,4 +1,4 @@
-class Currency {
+class CurrencyBean {
   char symbol;
   double exchangeRateInDollars;
   double amount;

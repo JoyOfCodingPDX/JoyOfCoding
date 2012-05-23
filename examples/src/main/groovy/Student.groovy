@@ -12,6 +12,7 @@ class Student {
 
   def addFriend(friend) {
     friends.add(friend)
+    this
   }
 
   def getFriends() {
