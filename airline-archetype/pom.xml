@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>airline-archetype</artifactId>
-  <version>Summer2011</version>
+  <version>Summer2012</version>
   <packaging>maven-archetype</packaging>
   <name>airline-archetype</name>
   <description>A Maven Archetype for creating the Airline Project</description>
