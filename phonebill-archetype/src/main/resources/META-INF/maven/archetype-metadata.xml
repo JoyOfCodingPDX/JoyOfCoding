@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype-descriptor name="phonebill">
+  <fileSets>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/javadoc</directory>
+      <includes>
+        <include>**/*.html</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/javadoc</directory>
+      <includes>
+        <include>**/*.html</include>
+      </includes>
+    </fileSet>
+
+  </fileSets>
+</archetype-descriptor>
