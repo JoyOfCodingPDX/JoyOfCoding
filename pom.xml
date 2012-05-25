@@ -22,6 +22,7 @@
     <module>airline-archetype</module>
     <module>airline-web-archetype</module>
     <module>airline-gwt-archetype</module>
+    <module>phonebill-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
