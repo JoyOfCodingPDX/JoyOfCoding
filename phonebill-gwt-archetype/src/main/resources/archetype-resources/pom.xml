@@ -79,6 +79,7 @@
         <plugin>
              <groupId>org.apache.maven.plugins</groupId>
              <artifactId>maven-war-plugin</artifactId>
+             <version>2.2</version>
              <configuration>
              	<warSourceDirectory>${basedir}/war</warSourceDirectory>
              	<webappDirectory>${basedir}/war</webappDirectory>
@@ -89,6 +90,7 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
+        <version>6.1.22</version>
         <configuration>
           <webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
           <connectors>
@@ -103,6 +105,7 @@
 
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
         <configuration>
           <filesets>
             <fileset>
@@ -122,6 +125,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.8.1</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
