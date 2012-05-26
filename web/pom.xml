@@ -13,7 +13,7 @@
   <version>Summer2012</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>1.2.GA</resteasy.version>
+    <resteasy.version>2.3.3.Final</resteasy.version>
   </properties>
   <build>
     <finalName>web</finalName>
@@ -159,6 +159,11 @@
     <repository>
       <id>jboss</id>
       <url>http://repository.jboss.org</url>
+    </repository>
+    <repository>
+      <id>thirdparty-releases</id>
+      <name>JBoss Thirdparty Releases</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
     </repository>
   </repositories>
   <dependencies>
