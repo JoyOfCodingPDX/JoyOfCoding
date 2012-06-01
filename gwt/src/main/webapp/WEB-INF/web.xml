@@ -31,6 +31,6 @@
 
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Hello.html</welcome-file>
+    <welcome-file>Examples.html</welcome-file>
   </welcome-file-list>
 </web-app>

@@ -8,7 +8,6 @@
   <inherits name='edu.pdx.cs410J.rmi.MovieDatabaseGwt'/>
 
   <entry-point class="edu.pdx.cs410J.gwt.client.Examples"/>
-  <entry-point class="edu.pdx.cs410J.gwt.client.Hello"/>
 
   <extend-property name="locale" values="es"/>
 </module>
