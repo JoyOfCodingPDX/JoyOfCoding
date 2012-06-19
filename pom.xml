@@ -25,6 +25,7 @@
     <module>phonebill-archetype</module>
     <module>phonebill-web-archetype</module>
     <module>phonebill-gwt-archetype</module>
+    <module>java-koans-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>

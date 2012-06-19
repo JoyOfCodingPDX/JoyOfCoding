@@ -52,4 +52,11 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
+  <distributionManagement>
+    <repository>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Repository</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
+    </repository>
+  </distributionManagement>
 </project>
