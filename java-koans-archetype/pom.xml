@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>CS410J</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
+    <version>Summer2012</version>
+  </parent>
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.pdx.cs410J</groupId>
@@ -8,7 +14,7 @@
   <packaging>maven-archetype</packaging>
 
   <name>java-koans-archetype</name>
-
+  <inceptionYear>2012</inceptionYear>
   <build>
     <extensions>
       <extension>
@@ -52,11 +58,4 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
-  <distributionManagement>
-    <repository>
-      <id>whitlock-PSU</id>
-      <name>David Whitlock's PSU Repository</name>
-      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
-    </repository>
-  </distributionManagement>
 </project>
