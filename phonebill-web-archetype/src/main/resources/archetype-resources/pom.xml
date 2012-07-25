@@ -53,6 +53,12 @@
     <finalName>${artifactId}</finalName>
     <plugins>
       <plugin>
+        <!-- Need version 2.1.1 for Java 7 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version>
+      </plugin>
+      <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.22</version>
@@ -123,7 +129,7 @@
             <deployables>
               <deployable>
                 <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
-                <pingURL>http://localhost:8080/${project.build.finalName}/phonebill</pingURL>
+                <pingURL>http://localhost:8080/${project.build.finalName}/calls</pingURL>
               </deployable>
             </deployables>
           </configuration>
@@ -136,13 +142,23 @@
         <configuration>
           <archive>
             <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
-              <classpathLayoutType>repository</classpathLayoutType>
               <mainClass>${package}.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.7.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
