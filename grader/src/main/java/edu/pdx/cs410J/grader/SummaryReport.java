@@ -33,31 +33,28 @@ public class SummaryReport {
     pw.println("Generated on: " + df.format(new Date()));
     pw.println("");
 
-    for (String gradeName : (new TreeSet<String>(book.getAssignmentNames()))) {
-      Grade grade = student.getGrade(gradeName);
-      Assignment assign = book.getAssignment(gradeName);
-
-      // Average non-existent scores as zero
-      double score;
-      if (grade == null) {
-        score = 0.0;
-
-      } else {
-        score = grade.getScore();
+    for (String assignmentName : getSortedAssignmentNames(book)) {
+      Assignment assignment = book.getAssignment(assignmentName);
+      if (noStudentHasGradeFor(assignment, book)) {
+        continue;
       }
+
+      Grade grade = student.getGrade(assignmentName);
+      double score = getScore(grade);
+
 
 //       System.out.println("Examining " + assign + ", score: " + score);
 
-      if (assign.getType() == Assignment.QUIZ) {
+      if (assignment.getType() == Assignment.QUIZ) {
         if (lowestQuiz == null) {
-          lowestQuiz = assign;
+          lowestQuiz = assignment;
 //           System.out.println("Lowest quiz: " + lowestQuiz + 
 //                              ", score: " + score);
 
         } else {
           Grade lowestGrade = student.getGrade(lowestQuiz.getName());
           if (lowestGrade != null && score < lowestGrade.getScore()) {
-            lowestQuiz = assign;
+            lowestQuiz = assignment;
 //             System.out.println("Lowest quiz: " + lowestQuiz + ", score: "
 //                                + score + ", lowest grade: " +
 //                                student.getGrade(lowestQuiz.getName()));
@@ -67,17 +64,17 @@ public class SummaryReport {
 
       StringBuffer line = new StringBuffer();
       line.append("  ");
-      line.append(assign.getName());
+      line.append(assignment.getName());
       line.append(" (");
-      line.append(assign.getDescription());
+      line.append(assignment.getDescription());
       line.append(")");
-      if (assign.getType() == Assignment.OPTIONAL) {
+      if (assignment.getType() == Assignment.OPTIONAL) {
         line.append(" (OPTIONAL)");
       }
       line.append(": ");
       line.append(format.format(score));
       line.append("/");
-      line.append(format.format(assign.getPoints()));
+      line.append(format.format(assignment.getPoints()));
 
 
       // Skip incompletes and no grades
@@ -93,8 +90,8 @@ public class SummaryReport {
 
       // Don't count optional assignments toward the maximum point
       // total
-      if (assign.getType() != Assignment.OPTIONAL) {
-        best += assign.getPoints();
+      if (assignment.getType() != Assignment.OPTIONAL) {
+        best += assignment.getPoints();
       }
 
       total += score;
@@ -103,7 +100,7 @@ public class SummaryReport {
     if (lowestQuiz != null) {
       pw.println("");
       pw.println("Lowest Quiz grade dropped: " +
-		 lowestQuiz.getName());
+		  lowestQuiz.getName());
       pw.println("");
 
       // Subtract lowest quiz grade
@@ -114,16 +111,14 @@ public class SummaryReport {
 
     // Print out late and resubmitted assignments
     pw.println("Late assignments:");
-    Iterator late = student.getLate().iterator();
-    while (late.hasNext()) {
-      pw.println("  " + late.next());
+    for (String late : student.getLate()) {
+      pw.println("  " + late);
     }
     pw.println();
 
     pw.println("Resubmitted assignments:");
-    Iterator resubmit = student.getResubmitted().iterator();
-    while (resubmit.hasNext()) {
-      pw.println("  " + resubmit.next());
+    for (String resubmitted : student.getResubmitted()) {
+      pw.println("  " + resubmitted);
     }
     pw.println("");
 
@@ -131,6 +126,34 @@ public class SummaryReport {
                format.format(best));
 
     allTotals.put(student, new Double(total/best));
+  }
+
+  private static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
+    for (String studentId : book.getStudentIds()) {
+      Student student = book.getStudent(studentId);
+      Grade grade = student.getGrade(assignment.getName());
+      if (grade != null) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private static double getScore(Grade grade) {
+    // Average non-existent scores as zero
+    double score;
+    if (grade == null) {
+      score = 0.0;
+
+    } else {
+      score = grade.getScore();
+    }
+    return score;
+  }
+
+  private static SortedSet<String> getSortedAssignmentNames(GradeBook book) {
+    return new TreeSet<String>(book.getAssignmentNames());
   }
 
   private static PrintWriter out = new PrintWriter(System.out, true);
@@ -214,18 +237,16 @@ public class SummaryReport {
     }
 
     // Create a SummaryReport for every student
-    Iterator ids;
+    Iterable<String> studentIds;
 
     if (!students.isEmpty()) {
-      ids = students.iterator();
+      studentIds = students;
 
     } else {
-      ids = book.getStudentIds().iterator();
+      studentIds = book.getStudentIds();
     }
 
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-
+    for (String id : studentIds) {
       err.println(id);
 
       Student student = book.getStudent(id);
@@ -264,11 +285,8 @@ public class SummaryReport {
 
     NumberFormat format = NumberFormat.getPercentInstance();
 
-
-    Iterator iter = sorted.iterator();
-    while (iter.hasNext()) {
-      Student student = (Student) iter.next();
-      Double d = (Double) allTotals.get(student);
+    for (Student student : sorted) {
+      Double d = allTotals.get(student);
       out.println(student + ": " + format.format(d.doubleValue()));
     }
   }
