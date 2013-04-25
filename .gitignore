@@ -4,3 +4,15 @@
 *.jar
 *.war
 *.ear
+
+*.~*
+
+# IntelliJ Files should not be committed #
+*.iml
+*.ipr
+*.iws
+
+# Maven build artifacts should not be committed #
+target
+*/target
+
