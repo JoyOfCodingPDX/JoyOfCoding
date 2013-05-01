@@ -51,6 +51,9 @@
     <tag>HEAD</tag>
     <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
+    <prerequisites>
+        <maven>3.0.5</maven>
+    </prerequisites>
     <properties>
 
         <!-- convenience to define GWT version in one place -->
