@@ -3,12 +3,12 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2012</version>
+    <version>Summer2013</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>phonebill-archetype</artifactId>
-  <version>Summer2012</version>
+  <version>Summer2013</version>
   <packaging>maven-archetype</packaging>
   <name>phonebill-archetype</name>
   <description>A Maven Archetype for creating the Phone Bill Project</description>
