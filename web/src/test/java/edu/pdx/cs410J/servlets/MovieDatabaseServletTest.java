@@ -54,9 +54,11 @@ public class MovieDatabaseServletTest extends HttpRequestHelper {
     createMovie(title, "2007");
     Response response = get(getResourceURL(MOVIES));
     assertNotNull(response);
-    assertTrue(response.getContent(), response.getContent().contains(title));
+    String content = response.getContent();
+    assertTrue(content, response.getContent().contains(title));
     int lines = response.getContentLines();
-    assertTrue("Expected more than 1 lines, only got " + lines, lines > 1);
+    assertTrue("Expected more than 1 lines, only got " + lines + "\n" +
+      "In content: " + content, lines > 1);
   }
 
   @Test
