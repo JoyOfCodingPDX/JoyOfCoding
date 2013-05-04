@@ -1,11 +1,13 @@
 package edu.pdx.cs410J.servlets;
 
-import static java.net.HttpURLConnection.*;
-import java.io.*;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
 import edu.pdx.cs410J.web.HttpRequestHelper;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static org.junit.Assert.*;
 
 /**
  * Tests the functionality of the <code>MovieDatabaseRestServlet</code>
@@ -53,7 +55,8 @@ public class MovieDatabaseServletTest extends HttpRequestHelper {
     Response response = get(getResourceURL(MOVIES));
     assertNotNull(response);
     assertTrue(response.getContent(), response.getContent().contains(title));
-    assertTrue(response.getContentLines()> 1);
+    int lines = response.getContentLines();
+    assertTrue("Expected more than 1 lines, only got " + lines, lines > 1);
   }
 
   @Test
