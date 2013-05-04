@@ -50,14 +50,17 @@ public class MovieDatabaseServletTest extends HttpRequestHelper {
 
   @Test
   public void testGetAllMovies() throws IOException {
-    String title = "testGetAllMovies";
-    createMovie(title, "2007");
+    String title1 = "testGetAllMovies1";
+    createMovie(title1, "2007");
+    String title2 = "testGetAllMovies2";
+    createMovie(title2, "2013");
     Response response = get(getResourceURL(MOVIES));
     assertNotNull(response);
     String content = response.getContent();
-    assertTrue(content, response.getContent().contains(title));
+    assertTrue(content, content.contains(title1));
+    assertTrue(content, content.contains(title2));
     int lines = response.getContentLines();
-    assertTrue("Expected more than 1 lines, only got " + lines + "\n" +
+    assertTrue("Expected more than 1 line, only got " + lines + "\n" +
       "In content: " + content, lines > 1);
   }
 
