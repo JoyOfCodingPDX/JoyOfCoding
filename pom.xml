@@ -11,7 +11,7 @@
   <modules>
     <module>examples</module>
     <module>web</module>
-    <module>gwt</module>
+    <!-- module>gwt</module -->
     <module>projects</module>
     <module>family</module>
     <module>grader</module>
@@ -64,6 +64,9 @@
         <maven.compiler.target>1.5</maven.compiler.target>
 
         <groovy.version>1.8.3</groovy.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
   <pluginRepositories>
     <pluginRepository>
