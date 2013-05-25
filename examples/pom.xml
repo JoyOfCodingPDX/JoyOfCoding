@@ -3,19 +3,19 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2012</version>
+    <version>Summer2013</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>Summer2012</version>
+  <version>Summer2013</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>Summer2012</version>
+      <version>Summer2013</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -56,7 +56,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>rmic-maven-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <id>rmic-process-classes</id>
@@ -76,7 +76,7 @@
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-        <version>1.3</version>
+        <version>1.5</version>
         <executions>
           <execution>
             <goals>
