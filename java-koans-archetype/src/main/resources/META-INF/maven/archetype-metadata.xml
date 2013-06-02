@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="java-koans"
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="koans"
     xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <fileSets>
@@ -22,35 +22,47 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>i18n</directory>
+      <directory>app/data</directory>
       <includes>
-        <include>**/*.properties</include>
+        <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>config</directory>
+      <directory>app/config</directory>
       <includes>
         <include>**/*.xml</include>
         <include>**/*.properties</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>lib</directory>
+      <directory>app</directory>
+      <includes>
+        <include>**/*.gitignore</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>app/lib</directory>
       <includes>
         <include>**/*.jar</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>.settings</directory>
+      <directory>app/data</directory>
       <includes>
-        <include>**/*.prefs</include>
+        <include>**/*.jar</include>
       </includes>
     </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
-      <directory></directory>
+    <fileSet encoding="UTF-8">
+      <directory>app/config</directory>
       <includes>
-        <include>.classpath</include>
-        <include>.project</include>
+        <include>**/*.dat</include>
+        <include>**/*.gitignore</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>app/bin</directory>
+      <includes>
+        <include>**/*.class</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">

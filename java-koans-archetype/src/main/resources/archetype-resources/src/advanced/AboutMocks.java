@@ -34,10 +34,10 @@ public class AboutMocks {
 		}
 	}
 	
-	@Koan()
+	@Koan
 	public void simpleAnonymousMock(){
 		// HINT: pass a safe Collaborator implementation to constructor
-		// new ClassUnderTest(new Colloborator(){... it should not be the
+		// new ClassUnderTest(new Collaborator(){... it should not be the
 		// objective of this test to test that collaborator, so replace it
 		new ClassUnderTest().doSomething();
 	}

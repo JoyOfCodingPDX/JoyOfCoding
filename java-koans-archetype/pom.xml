@@ -34,7 +34,7 @@
     </pluginManagement>
   </build>
 
-  <url>https://github.com/matyb/java-koans</url>
+  <url>https://github.com/DavidWhitlock/java-koans</url>
 
   <developers>
     <developer>
@@ -43,6 +43,14 @@
       <url>https://github.com/matyb</url>
       <roles>
         <role>java-koans author</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dwhitlock</id>
+      <name>David Whitlock</name>
+      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <roles>
+        <role>Maven-izer</role>
       </roles>
     </developer>
     <developer>

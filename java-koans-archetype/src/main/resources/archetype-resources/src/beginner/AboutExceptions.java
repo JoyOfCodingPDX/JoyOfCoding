@@ -11,7 +11,7 @@ import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutExceptions {
 	
-	private void doSutff() throws IOException {
+	private void doStuff() throws IOException {
 		throw new IOException();
 	}
 	
@@ -19,37 +19,81 @@ public class AboutExceptions {
 	public void catchCheckedExceptions() {
 		String s;
 		try {
-			doSutff();
-			s = "code run normally";
+			doStuff();
+			s = "code ran normally";
 		} catch(IOException e) { 
 			s = "exception thrown";
 		}
-		assertEquals(s,__);
+		assertEquals(s, __);
 	}
 	
 	@Koan
 	public void useFinally() {
 		String s = "";
 		try {
-			doSutff();
-			s = "code run normally";
+			doStuff();
+			s += "code ran normally";
 		} catch(IOException e) { 
-			s = "exception thrown";
+			s += "exception thrown";
 		} finally {
 			s += " and finally ran as well";
 		}
-		assertEquals(s,__);
+		assertEquals(s, __);
 	}
 	
 	@Koan
 	public void finallyWithoutCatch() {
 		String s = "";
 		try {
-			s = "code run normally";
+			s = "code ran normally";
 		} finally {
 			s += " and finally ran as well";
 		}
-		assertEquals(s,__);
+		assertEquals(s, __);
+	}
+	
+	private void tryCatchFinallyWithVoidReturn(StringBuilder whatHappened) {
+		try {
+			whatHappened.append("did something dangerous");
+			doStuff();
+		} catch(IOException e) { 
+			whatHappened.append("; the catch block executed");
+			return;
+		} finally {
+			whatHappened.append(", but so did the finally!");
+		}
+	}
+	
+	@Koan
+	public void finallyIsAlwaysRan() {
+		StringBuilder whatHappened = new StringBuilder();
+		tryCatchFinallyWithVoidReturn(whatHappened);
+		assertEquals(whatHappened.toString(), __);
+	}
+	
+	@SuppressWarnings("finally") // this is suppressed because returning in finally block is obviously a compiler warning
+	private String returnStatementsEverywhere(StringBuilder whatHappened) {
+		try {
+			whatHappened.append("try");
+			doStuff();
+			return "from try";
+		} catch (IOException e) {
+			whatHappened.append(", catch");
+			return "from catch";
+		} finally {
+			whatHappened.append(", finally");
+			// Think about how bad an idea it is to put a return statement in the finally block
+			// DO NOT DO THIS!
+			return "from finally";
+		}
+	}
+	
+	@Koan
+	public void returnInFinallyBlock() {
+		StringBuilder whatHappened = new StringBuilder();
+		// Which value will be returned here?
+		assertEquals(returnStatementsEverywhere(whatHappened), __);
+		assertEquals(whatHappened.toString(), __);
 	}
 	
 	private void doUncheckedStuff() {
@@ -58,8 +102,7 @@ public class AboutExceptions {
 	
 	@Koan
 	public void catchUncheckedExceptions() {
-		// What do you need to do to catch the
-		// unchecked exception?
+		// What do you need to do to catch the unchecked exception?
 		doUncheckedStuff();
 	}
 	
