@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <version>${version}</version>
   <name>Java Koans</name>
-  <url>https://github.com/matyb/java-koans</url>
+  <url>https://github.com/DavidWhitlock/java-koans</url>
   <developers>
     <developer>
       <id>matyb</id>
@@ -14,6 +14,14 @@
       <url>https://github.com/matyb</url>
       <roles>
         <role>java-koans author</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dwhitlock</id>
+      <name>David Whitlock</name>
+      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <roles>
+        <role>Maven-izer</role>
       </roles>
     </developer>
     <developer>
@@ -40,7 +48,7 @@
     <dependency>
       <groupId>com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>05ea55f</version>
+      <version>Summer2013</version>
     </dependency>
   </dependencies>
   <build>
