@@ -59,9 +59,9 @@
         <!-- convenience to define GWT version in one place -->
         <gwt.version>2.5.1</gwt.version>
 
-        <!--  tell the compiler we can use 1.5 -->
-        <maven.compiler.source>1.5</maven.compiler.source>
-        <maven.compiler.target>1.5</maven.compiler.target>
+        <!--  tell the compiler we can use Java 7 -->
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
 
         <groovy.version>1.8.3</groovy.version>
 
