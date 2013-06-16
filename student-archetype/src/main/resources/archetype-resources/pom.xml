@@ -26,27 +26,25 @@
     </repository>
   </repositories>
 
-    <pluginRepositories>
-    <pluginRepository>
-        <id>maven-idea-plugin-repo</id>
-        <url>http://maven-idea-plugin.googlecode.com/svn/maven-repo</url>
-    </pluginRepository>
-    </pluginRepositories>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.googlecode</groupId>
-                <artifactId>maven-idea-plugin</artifactId>
-                <version>1.6.1</version>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <jdkLevel>JDK_1_7</jdkLevel>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
+              <classpathLayoutType>repository</classpathLayoutType>
+              <mainClass>edu.pdx.cs410J.whitlock.Student</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>
