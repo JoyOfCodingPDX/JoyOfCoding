@@ -26,6 +26,7 @@
     <module>phonebill-web-archetype</module>
     <module>phonebill-gwt-archetype</module>
     <module>java-koans-archetype</module>
+    <module>student-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>

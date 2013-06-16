@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>edu.pdx.cs410J.whitlock</groupId>
+  <artifactId>student-archetype</artifactId>
+  <version>Summer2013</version>
+  <packaging>maven-archetype</packaging>
+
+  <name>student-archetype</name>
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>2.2</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <description>Maven archetype for the Student sample project</description>
+
+  <url>http://www.cs.pdx.edu</url>
+
+  <developers>
+    <developer>
+      <id>whitlock</id>
+      <name>David Whitlock</name>
+      <email>whitlock@cs.pdx.edu</email>
+      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <organization>PSU Department of Computer Science</organization>
+      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <roles>
+        <role>Professor</role>
+      </roles>
+      <timezone>-7</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS399J/student</connection>
+    <url>https://projects.cecs.pdx.edu/svn/CS399J/student/</url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Repository</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
+    </repository>
+    <site>
+      <id>whitlock-PSU</id>
+      <name>David Whitlock's PSU Web Site</name>
+      <url>scp://cs.pdx.edu/u/whitlock/public_html/site</url>
+    </site>
+  </distributionManagement>
+</project>
