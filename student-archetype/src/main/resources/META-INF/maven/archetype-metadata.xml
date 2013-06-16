@@ -15,14 +15,5 @@
         <include>**/*.java</include>
       </includes>
     </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory></directory>
-      <includes>
-        <include>student.iml</include>
-        <include>student.ipr</include>
-        <include>student.iws</include>
-        <include>x.x</include>
-      </includes>
-    </fileSet>
   </fileSets>
 </archetype-descriptor>

@@ -38,7 +38,7 @@
               <addClasspath>true</addClasspath>
               <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
               <classpathLayoutType>repository</classpathLayoutType>
-              <mainClass>edu.pdx.cs410J.whitlock.Student</mainClass>
+              <mainClass>${package}.Student</mainClass>
             </manifest>
           </archive>
         </configuration>
