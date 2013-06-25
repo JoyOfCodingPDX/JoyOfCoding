@@ -69,6 +69,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+    <repositories>
+      <repository>
+        <id>CS410J</id>
+        <name>CS410J Maven Repository</name>
+        <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
+      </repository>
+    </repositories>
   <pluginRepositories>
     <pluginRepository>
       <id>Codehaus Snapshots</id>
