@@ -26,7 +26,7 @@ public class Formatting {
     Calendar today = Calendar.getInstance();
 
     out.printf("Today's date is: %tm/%td/%tY%n", today, today, today);
-    out.printf("The current time is: %tl:%tM %tP%n", today, today, today);
+    out.printf("The current time is: %tl:%tM %tp%n", today, today, today);
 
     out.printf("%f/%.2f = %f%n", 2.0, 3.0, (2.0/3.0));
 
