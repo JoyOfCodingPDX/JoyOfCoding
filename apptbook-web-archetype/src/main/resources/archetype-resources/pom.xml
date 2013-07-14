@@ -3,7 +3,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2011</version>
+    <version>Summer2013</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -29,17 +29,17 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2013</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2013</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2013</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -87,39 +87,42 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-          <execution>
-            <id>start-container</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>stop-container</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <container>
-            <containerId>jetty6x</containerId>
-            <type>embedded</type>
-            <systemProperties>
-              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
-            </systemProperties>
-          </container>
-          <wait>false</wait>
+        <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>1.4.0</version>
+          <executions>
+            <execution>
+              <id>start-container</id>
+              <phase>pre-integration-test</phase>
+              <goals>
+                <goal>start</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>stop-container</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>stop</goal>
+              </goals>
+            </execution>
+          </executions>
           <configuration>
-            <properties>
-              <cargo.servlet.port>8080</cargo.servlet.port>
-            </properties>
+            <container>
+              <containerId>jetty6x</containerId>
+              <type>embedded</type>
+              <systemProperties>
+                <org.apache.commons.logging.Log>
+                  org.apache.commons.logging.impl.SimpleLog
+                </org.apache.commons.logging.Log>
+              </systemProperties>
+            </container>
+            <wait>false</wait>
+            <configuration>
+              <properties>
+                <cargo.servlet.port>8080</cargo.servlet.port>
+              </properties>
+            </configuration>
             <deployables>
               <deployable>
                 <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
@@ -127,12 +130,11 @@
               </deployable>
             </deployables>
           </configuration>
-        </configuration>
-      </plugin>
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
+        <version>2.4</version>
         <configuration>
           <archive>
             <manifest>
@@ -160,7 +162,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2011</version>
+                <version>Summer2013</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
             </configuration>
