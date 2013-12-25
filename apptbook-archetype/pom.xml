@@ -4,11 +4,11 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2013</version>
+    <version>Summer2014</version>
   </parent>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>apptbook-archetype</artifactId>
-  <version>Summer2013</version>
+  <version>Summer2014</version>
   <packaging>maven-archetype</packaging>
   <name>apptbook-archetype</name>
   <description>A Maven Archetype for creating the Appointment Book Project</description>

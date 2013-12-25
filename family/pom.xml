@@ -3,13 +3,13 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2013</version>
+    <version>Summer2014</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
-  <version>Summer2013</version>
+  <version>Summer2014</version>
   <name>CS410J Family Tree Application</name>
   <description>An example Java application for CS410J: Advanced Java Programming</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2013</version>
+      <version>Summer2014</version>
     </dependency>
   </dependencies>
   <build>
