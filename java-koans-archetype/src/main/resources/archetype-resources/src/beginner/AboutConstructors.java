@@ -12,7 +12,7 @@ public class AboutConstructors {
 
 	class A {
 		String someString = "a";
-		public A() { someString+= "x"; }
+		public A() { someString += "x"; }
 		
 	}
 	
@@ -27,7 +27,7 @@ public class AboutConstructors {
 	
 	class Aa {
 		String someString = "a";
-		public Aa() { someString+= "x"; }
+		public Aa() { someString += "x"; }
 		public Aa(String s) {
 			someString += s;
 		}
