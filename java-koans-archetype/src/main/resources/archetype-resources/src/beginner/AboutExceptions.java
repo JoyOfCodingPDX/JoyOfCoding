@@ -117,7 +117,7 @@ public class AboutExceptions {
 	
 	@Koan
 	public void catchOrder() {
-		 String s = "";
+		String s = "";
 		try {
 			throwIt();
 		} catch(ChildException e) {
