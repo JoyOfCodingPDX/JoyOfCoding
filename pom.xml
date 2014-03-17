@@ -105,7 +105,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.2.1</version>
+              <version>3.0.5</version> <!-- Cloudbees only supports 3.0.5 -->
             </requireMavenVersion>
             <requireJavaVersion>
               <version>1.7</version>
