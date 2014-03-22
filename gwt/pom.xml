@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>r06</version>
+      <version>16.0.1</version>
       <!-- Can't use guava in GWT client code yet -->
     </dependency>
     <dependency>
