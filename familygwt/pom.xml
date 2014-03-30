@@ -62,7 +62,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>${gwt.version}</version>
           <configuration>
             <runTarget>edu.pdx.cs410J.family.gwt.FamilyTreeGWT/FamilyTreeGWT.html</runTarget>
             <module>edu.pdx.cs410J.family.gwt.FamilyTreeGWT</module>
