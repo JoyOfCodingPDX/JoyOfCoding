@@ -52,12 +52,6 @@
       <version>2.0</version>
     </dependency>
     <dependency>
-      <!-- Make Guice happy -->
-      <groupId>aopalliance</groupId>
-      <artifactId>aopalliance</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>${groovy.version}</version>
