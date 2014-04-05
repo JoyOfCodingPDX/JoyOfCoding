@@ -118,7 +118,9 @@
             <containerId>jetty6x</containerId>
             <type>embedded</type>
             <systemProperties>
-              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+              <org.apache.commons.logging.Log>
+                org.apache.commons.logging.impl.SimpleLog
+              </org.apache.commons.logging.Log>
             </systemProperties>
           </container>
           <wait>false</wait>
@@ -126,13 +128,16 @@
             <properties>
               <cargo.servlet.port>8080</cargo.servlet.port>
             </properties>
-            <deployables>
-              <deployable>
-                <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
-                <pingURL>http://localhost:8080/${project.build.finalName}/airline</pingURL>
-              </deployable>
-            </deployables>
           </configuration>
+          <deployables>
+            <deployable>
+              <location>
+                ${project.build.directory}/${project.build.finalName}.${project.packaging}
+              </location>
+              <pingURL>http://localhost:8080/${project.build.finalName}/flights</pingURL>
+              <pingTimeout>20000</pingTimeout>
+            </deployable>
+          </deployables>
         </configuration>
       </plugin>
       <plugin>
