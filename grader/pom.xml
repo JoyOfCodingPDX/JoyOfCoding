@@ -83,7 +83,7 @@
         <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>webstart-maven-plugin</artifactId>
-            <version>1.0-beta-3</version>
+            <version>1.0-beta-6</version>
             <executions>
                 <execution>
                     <phase>install</phase>
@@ -94,7 +94,6 @@
             </executions>
             <configuration>
                 <jnlp>
-                    <inputTemplate>src/main/jnlp/jnlp.vm</inputTemplate>
                     <outputFile>grader.jnlp</outputFile>
                     <mainClass>edu.pdx.cs410J.grader.GradeBookGUI</mainClass>
                 </jnlp>
