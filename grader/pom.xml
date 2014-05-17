@@ -84,6 +84,13 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>webstart-maven-plugin</artifactId>
             <version>1.0-beta-6</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-api-1.7</artifactId>
+                <version>1.4</version>
+              </dependency>
+            </dependencies>
             <executions>
                 <execution>
                     <phase>install</phase>
