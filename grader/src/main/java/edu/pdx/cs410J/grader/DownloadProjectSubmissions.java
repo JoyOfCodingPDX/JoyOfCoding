@@ -25,6 +25,7 @@ public class DownloadProjectSubmissions {
     }
 
     GraderEmailAccount account = new GraderEmailAccount(password);
+    account.fetchProjectSubmissions();
   }
 
   private static String readGraderEmailPasswordFromFile(String passwordFile) throws IOException {
