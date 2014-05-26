@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import javax.mail.*;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
 
@@ -30,7 +31,6 @@ public class GraderEmailAccount {
 
   private void printUnreadMessages(Folder folder) {
     try {
-      int unreadMessageCount = folder.getUnreadMessageCount();
       Message[] messages = folder.getMessages();
 
       FetchProfile profile = new FetchProfile();
@@ -43,7 +43,7 @@ public class GraderEmailAccount {
         if (isUnread(message)) {
           printMessageInformation(message);
           if (isMultipartMessage(message)) {
-
+            printMessageParts(message);
           } else {
             warnOfUnexpectedMessage(message);
           }
@@ -55,10 +55,29 @@ public class GraderEmailAccount {
     }
   }
 
-  private void warnOfUnexpectedMessage(Message message) {
+  private void printMessageParts(Message message) throws MessagingException {
+    Multipart parts;
+    try {
+      parts = (Multipart) message.getContent();
+    } catch (IOException ex) {
+      throw new MessagingException("While getting content", ex);
+    }
+
+    PrintStream out = System.out;
+    out.println("  Part count: " + parts.getCount());
+
+    for (int i = 0; i < parts.getCount(); i++) {
+      out.println("  Part " + i);
+      BodyPart part = parts.getBodyPart(i);
+      out.println("    " + part.getContentType());
+    }
+
+  }
+
+  private void warnOfUnexpectedMessage(Message message) throws MessagingException {
     PrintStream out = System.out;
     out.println("Fetched a message that wasn't multipart");
-
+    printMessageDetails(message, out);
   }
 
   private boolean isMultipartMessage(Message message) throws MessagingException {
@@ -72,12 +91,16 @@ public class GraderEmailAccount {
   private void printMessageInformation(Message message) throws MessagingException {
     PrintStream out = System.out;
     out.println("Message");
+    printMessageDetails(message, out);
+  }
+
+  private void printMessageDetails(Message message, PrintStream out) throws MessagingException {
     out.println("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
     out.println("  From: " + addresses(message.getFrom()));
     out.println("  Subject: " + message.getSubject());
+    out.println("  Sent: " + message.getSentDate());
     out.println("  Flags: " + flags(message.getFlags()));
     out.println("  Content Type: " + message.getContentType());
-
   }
 
   private StringBuilder flags(Flags flags) {
