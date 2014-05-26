@@ -1,38 +1,16 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Properties;
+import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
+import java.io.*;
+import java.util.Properties;
 
 /**
  * This program presents a survey that all students in CS410J should
@@ -47,7 +25,7 @@ public class Survey {
   private static BufferedReader in = 
     new BufferedReader(new InputStreamReader(System.in));
 
-  private static final String TA_EMAIL = "sjavata@cs.pdx.edu";
+  private static final String TA_EMAIL = "sjavata@gmail.com";
   private static String serverName = "mailhost.cs.pdx.edu";
 
   /**
