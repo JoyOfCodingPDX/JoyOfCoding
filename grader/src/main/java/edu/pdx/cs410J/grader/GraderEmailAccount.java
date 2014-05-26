@@ -1,9 +1,6 @@
 package edu.pdx.cs410J.grader;
 
-import javax.mail.Folder;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
+import javax.mail.*;
 import java.io.PrintStream;
 import java.util.Properties;
 
@@ -19,6 +16,7 @@ public class GraderEmailAccount {
     Store store = connectToGmail();
     Folder folder = openProjectSubmissionsFolder(store);
     printFolderInformation(folder);
+    printUnreadMessages(folder);
 
 
     try {
@@ -30,12 +28,55 @@ public class GraderEmailAccount {
     }
   }
 
+  private void printUnreadMessages(Folder folder) {
+    try {
+      int unreadMessageCount = folder.getUnreadMessageCount();
+      Message[] messages = folder.getMessages();
+
+      FetchProfile profile = new FetchProfile();
+      profile.add(FetchProfile.Item.ENVELOPE);
+      profile.add(FetchProfile.Item.FLAGS);
+
+      folder.fetch(messages, profile);
+
+      for (Message message : messages) {
+        printMessageInformation(message);
+      }
+
+    } catch (MessagingException ex) {
+      throw new IllegalStateException("While printing unread messages", ex);
+    }
+  }
+
+  private void printMessageInformation(Message message) throws MessagingException {
+    PrintStream out = System.out;
+    out.println("Message");
+    out.println("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
+    out.println("  From: " + addresses(message.getFrom()));
+    out.println("  Subject: " + message.getSubject());
+
+  }
+
+  private StringBuilder addresses(Address[] addresses) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < addresses.length; i++) {
+      Address address = addresses[i];
+      sb.append(address.toString());
+      if (i > addresses.length - 1) {
+        sb.append(", ");
+      }
+    }
+
+    return sb;
+  }
+
   private void printFolderInformation(Folder folder) {
     try {
       PrintStream out = System.out;
       out.println("Folder: " + folder.getFullName());
       out.println("Message count: " + folder.getMessageCount());
       out.println("Unread messages: " + folder.getUnreadMessageCount());
+      out.println("New messages: " + folder.getNewMessageCount());
 
     } catch (MessagingException ex) {
       throw new IllegalStateException("While getting folder information", ex);
@@ -47,7 +88,7 @@ public class GraderEmailAccount {
       Folder folder = store.getDefaultFolder();
       checkForValidFolder(folder, "Default");
       folder = folder.getFolder("INBOX");
-      folder.open(Folder.READ_ONLY);
+      folder.open(Folder.READ_WRITE);
       return folder;
 
     } catch (MessagingException ex) {
