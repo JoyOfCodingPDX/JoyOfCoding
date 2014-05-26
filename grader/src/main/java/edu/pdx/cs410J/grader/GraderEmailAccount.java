@@ -40,12 +40,33 @@ public class GraderEmailAccount {
       folder.fetch(messages, profile);
 
       for (Message message : messages) {
-        printMessageInformation(message);
+        if (isUnread(message)) {
+          printMessageInformation(message);
+          if (isMultipartMessage(message)) {
+
+          } else {
+            warnOfUnexpectedMessage(message);
+          }
+        }
       }
 
     } catch (MessagingException ex) {
       throw new IllegalStateException("While printing unread messages", ex);
     }
+  }
+
+  private void warnOfUnexpectedMessage(Message message) {
+    PrintStream out = System.out;
+    out.println("Fetched a message that wasn't multipart");
+
+  }
+
+  private boolean isMultipartMessage(Message message) throws MessagingException {
+    return message.isMimeType("multipart/*");
+  }
+
+  private boolean isUnread(Message message) throws MessagingException {
+    return !message.getFlags().contains(Flags.Flag.SEEN);
   }
 
   private void printMessageInformation(Message message) throws MessagingException {
@@ -54,7 +75,50 @@ public class GraderEmailAccount {
     out.println("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
     out.println("  From: " + addresses(message.getFrom()));
     out.println("  Subject: " + message.getSubject());
+    out.println("  Flags: " + flags(message.getFlags()));
+    out.println("  Content Type: " + message.getContentType());
 
+  }
+
+  private StringBuilder flags(Flags flags) {
+    StringBuilder sb = new StringBuilder();
+    systemFlags(flags, sb);
+    return sb;
+  }
+
+  private void systemFlags(Flags flags, StringBuilder sb) {
+    Flags.Flag[] systemFlags = flags.getSystemFlags();
+    for (int i = 0; i < systemFlags.length; i++) {
+      Flags.Flag flag = systemFlags[i];
+      if (flag == Flags.Flag.ANSWERED) {
+        sb.append("ANSWERED");
+
+      } else if (flag == Flags.Flag.DELETED) {
+        sb.append("DELETED");
+
+      } else if (flag == Flags.Flag.DRAFT) {
+        sb.append("DRAFT");
+
+      } else if (flag == Flags.Flag.FLAGGED) {
+        sb.append("FLAGGED");
+
+      } else if (flag == Flags.Flag.RECENT) {
+        sb.append("RECENT");
+
+      } else if (flag == Flags.Flag.SEEN) {
+        sb.append("SEEN");
+
+      } else if (flag == Flags.Flag.USER) {
+        sb.append("USER");
+
+      } else {
+        sb.append("UNKNOWN");
+      }
+
+      if (i > systemFlags.length - 1) {
+        sb.append(", ");
+      }
+    }
   }
 
   private StringBuilder addresses(Address[] addresses) {
@@ -87,7 +151,7 @@ public class GraderEmailAccount {
     try {
       Folder folder = store.getDefaultFolder();
       checkForValidFolder(folder, "Default");
-      folder = folder.getFolder("INBOX");
+      folder = folder.getFolder("Project Submissions");
       folder.open(Folder.READ_WRITE);
       return folder;
 
