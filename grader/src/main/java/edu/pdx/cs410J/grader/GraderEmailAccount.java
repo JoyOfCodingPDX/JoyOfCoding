@@ -28,7 +28,7 @@ public class GraderEmailAccount {
           if (isMultipartMessage(message)) {
             processAttachment(message, processor);
           } else {
-            warnOfUnexpectedMessage(message);
+            warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart");
           }
         }
       }
@@ -49,17 +49,32 @@ public class GraderEmailAccount {
     PrintStream out = System.out;
     out.println("  Part count: " + parts.getCount());
 
-    for (int i = 0; i < parts.getCount(); i++) {
-      out.println("  Part " + i);
-      BodyPart part = parts.getBodyPart(i);
-      out.println("    " + part.getContentType());
+    if (parts.getCount() <= 0) {
+      warnOfUnexpectedMessage(message, "Fetched a message that has no attachments");
     }
 
+    if (parts.getCount() == 1) {
+      warnOfUnexpectedMessage(message, "Fetched a message that only had one part");
+      processAttachmentFromPart(parts.getBodyPart(0), processor);
+    }
+
+    if (parts.getCount() == 2) {
+      processAttachmentFromPart(parts.getBodyPart(1), processor);
+    }
+
+    if (parts.getCount() > 2) {
+      warnOfUnexpectedMessage(message, "Fetched a message with more than two parts");
+      processAttachmentFromPart(parts.getBodyPart(1), processor);
+    }
   }
 
-  private void warnOfUnexpectedMessage(Message message) throws MessagingException {
+  private void processAttachmentFromPart(BodyPart part, EmailAttachmentProcessor processor) throws MessagingException {
+      System.out.println("    " + part.getContentType());
+  }
+
+  private void warnOfUnexpectedMessage(Message message, String description) throws MessagingException {
     PrintStream out = System.out;
-    out.println("Fetched a message that wasn't multipart");
+    out.println(description);
     printMessageDetails(message, out);
   }
 
