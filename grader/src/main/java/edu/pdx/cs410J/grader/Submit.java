@@ -99,7 +99,7 @@ public class Submit {
   /**
    * The names of the files to be submitted
    */
-  private Set<String> fileNames = new HashSet<String>();
+  private Set<String> fileNames = new HashSet<>();
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -219,9 +219,9 @@ public class Submit {
    * @return Whether or not the submission actually occurred
    * @throws IllegalStateException If no source files were found
    */
-  public boolean submit(boolean verify) throws AddressException, IOException, MessagingException {
+  public boolean submit(boolean verify) throws IOException, MessagingException {
     // Recursively search the source directory for .java files
-    Set sourceFiles = searchForSourceFiles(fileNames);
+    Set<File> sourceFiles = searchForSourceFiles(fileNames);
 
     db(sourceFiles.size() + " source files found");
 
@@ -262,33 +262,16 @@ public class Submit {
 
   /**
    * Searches for the files given on the command line.  Ignores files
-   * that do not end in .java, or that appear on the "no subit" list.
+   * that do not end in .java, or that appear on the "no submit" list.
    * Files must reside in a directory named
    * edu/pdx/cs410J/<studentId>.
    */
-  private Set searchForSourceFiles(Set fileNames) {
-    // Compute the "no submit" list
-    Set<String> noSubmit = new HashSet<String>();
-
-    try {
-      URL url = new URL(NO_SUBMIT_LIST_URL);
-      InputStreamReader isr = new InputStreamReader(url.openStream());
-      BufferedReader br = new BufferedReader(isr);
-      while (br.ready()) {
-        noSubmit.add(br.readLine().trim());
-      }
-
-    } catch (MalformedURLException ex) {
-      err.println("** WARNING: Cannot access \"no submit\" list: " +
-        ex.getMessage());
-
-    } catch (IOException ex) {
-      err.println("** WARNING: Problems while reading " +
-        "\"no submit\" list: " + ex);
-    }
+  private Set<File> searchForSourceFiles(Set<String> fileNames) {
+    Set<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
 
     // Files should be sorted by name
-    Set<File> files = new TreeSet<File>(new Comparator<File>() {
+    SortedSet<File> files = new TreeSet<>(new Comparator<File>() {
+      @Override
       public int compare(File o1, File o2) {
         String name1 = o1.toString();
         String name2 = o2.toString();
@@ -297,9 +280,7 @@ public class Submit {
       }
     });
 
-    Iterator iter = fileNames.iterator();
-    while (iter.hasNext()) {
-      String fileName = (String) iter.next();
+    for (String fileName : fileNames) {
       File file = new File(fileName);
       file = file.getAbsoluteFile();  // Full path
 
@@ -367,21 +348,41 @@ public class Submit {
     return files;
   }
 
+  private Set<String> fetchListOfFilesThatCanNotBeSubmitted() {
+    Set<String> noSubmit = new HashSet<>();
+
+    try {
+      URL url = new URL(NO_SUBMIT_LIST_URL);
+      InputStreamReader isr = new InputStreamReader(url.openStream());
+      BufferedReader br = new BufferedReader(isr);
+      while (br.ready()) {
+        noSubmit.add(br.readLine().trim());
+      }
+
+    } catch (MalformedURLException ex) {
+      err.println("** WARNING: Cannot access \"no submit\" list: " +
+        ex.getMessage());
+
+    } catch (IOException ex) {
+      err.println("** WARNING: Problems while reading " +
+        "\"no submit\" list: " + ex);
+    }
+    return noSubmit;
+  }
+
   /**
    * Prints a summary of what is about to be submitted and prompts the
    * user to verify that it is correct.
    *
    * @return <code>true</code> if the user wants to submit
    */
-  private boolean verifySubmission(Set sourceFiles) {
+  private boolean verifySubmission(Set<File> sourceFiles) {
     // Print out what is going to be submitted
     out.print("\n" + userName);
     out.print("'s submission for ");
     out.println(projName);
 
-    Iterator iter = sourceFiles.iterator();
-    while (iter.hasNext()) {
-      File file = (File) iter.next();
+    for (File file : sourceFiles) {
       out.println("  " + file);
     }
 
@@ -400,14 +401,16 @@ public class Submit {
 
       try {
         String line = in.readLine().trim();
-        if (line.equals("yes")) {
-          return true;
+        switch (line) {
+          case "yes":
+            return true;
 
-        } else if (line.equals("no")) {
-          return false;
+          case "no":
+            return false;
 
-        } else {
-          err.println("** Please enter yes or no");
+          default:
+            err.println("** Please enter yes or no");
+            break;
         }
 
       } catch (IOException ex) {
@@ -441,9 +444,9 @@ public class Submit {
    * Creates a Jar file that contains the source files.  The Jar File
    * is temporary and is deleted when the program exits.
    */
-  private File makeJarFileWith(Set sourceFiles) throws IOException {
+  private File makeJarFileWith(Set<File> sourceFiles) throws IOException {
     String jarFileName = userName.replace(' ', '_') + "-TEMP";
-    File jarFile = null;
+    File jarFile;
     {
       jarFile = File.createTempFile(jarFileName, ".jar");
       if (!saveJar) {
@@ -465,7 +468,7 @@ public class Submit {
     // Make a timestamp String
     Calendar cal = Calendar.getInstance();
     cal.setTime(submitTime);
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(doCal(cal.get(Calendar.DAY_OF_MONTH)));
     sb.append(doCal(cal.get(Calendar.MONTH) + 1));  // Grumble
     sb.append(doCal(cal.get(Calendar.YEAR)));
@@ -476,7 +479,7 @@ public class Submit {
     db("Jar file version: " + sb);
 
     // Create a JarOutputStream around the jar file
-    JarOutputStream jos = null;
+    JarOutputStream jos;
     {
       OutputStream os = new FileOutputStream(jarFile);
       jos = new JarOutputStream(os, manifest);
@@ -484,21 +487,17 @@ public class Submit {
     }
 
     // Add the source files to the Jar
-    Iterator iter = sourceFiles.iterator();
-    while (iter.hasNext()) {
+    for (File file : sourceFiles) {
       {
-        File file = (File) iter.next();
-
         String fileName = getRelativeName(file);
         out.println("Adding " + fileName + " to jar");
         JarEntry entry = new JarEntry(fileName);
         entry.setTime(file.lastModified());
         entry.setSize(file.length());
 
-        InputStream is =
-          new BufferedInputStream(new FileInputStream(file));
+        InputStream is;
         byte[] buffer = new byte[1024];
-        int read = 0;
+        int read;
 
         entry.setMethod(JarEntry.DEFLATED);
 
@@ -520,7 +519,7 @@ public class Submit {
    * Sends the Jar file to the TA as a MIME attachment.  Also includes
    * a textual summary of the contents of the Jar file.
    */
-  private void mailTA(File jarFile, Set sourceFiles) throws AddressException, MessagingException {
+  private void mailTA(File jarFile, Set<File> sourceFiles) throws MessagingException {
     // Obtain a Session for sending email
     Properties props = new Properties();
     props.put("mail.smtp.host", serverName);
@@ -535,31 +534,24 @@ public class Submit {
       InternetAddress[] to = {new InternetAddress(TA_EMAIL)};
       message.setRecipients(Message.RecipientType.TO, to);
 
-      StringBuffer subject = new StringBuffer();
-      subject.append("CS410J-SUBMIT ");
-      subject.append(userName);
-      subject.append("'s ");
-      subject.append(projName);
-      message.setSubject(subject.toString());
+      message.setSubject("CS410J-SUBMIT " + userName + "'s " + projName);
     }
 
     // Create the text portion of the message
-    StringBuffer text = new StringBuffer();
-    text.append("Student name: " + userName + " (" + userEmail + ")\n");
-    text.append("Project name: " + projName + "\n");
+    StringBuilder text = new StringBuilder();
+    text.append("Student name: ").append(userName).append(" (").append(userEmail).append(")\n");
+    text.append("Project name: ").append(projName).append("\n");
     DateFormat df =
       DateFormat.getDateTimeInstance(DateFormat.FULL,
         DateFormat.FULL);
-    text.append("Submitted on: " + df.format(submitTime) + "\n");
+    text.append("Submitted on: ").append(df.format(submitTime)).append("\n");
     if (comment != null) {
-      text.append("\nComment: " + comment + "\n\n");
+      text.append("\nComment: ").append(comment).append("\n\n");
     }
     text.append("Contents:\n");
 
-    Iterator iter = sourceFiles.iterator();
-    while (iter.hasNext()) {
-      File file = (File) iter.next();
-      text.append("  " + getRelativeName(file) + "\n");
+    for (File file : sourceFiles) {
+      text.append("  ").append(getRelativeName(file)).append("\n");
     }
     text.append("\n\n");
 
@@ -598,7 +590,7 @@ public class Submit {
   /**
    * Sends a email to the user as a receipt of the submission.
    */
-  private void mailReceipt(Set sourceFiles) throws AddressException, MessagingException {
+  private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
     // Obtain a Session for sending email
     Properties props = new Properties();
     props.put("mail.smtp.host", serverName);
@@ -613,29 +605,23 @@ public class Submit {
       InternetAddress[] to = {new InternetAddress(userEmail)};
       message.setRecipients(Message.RecipientType.TO, to);
 
-      StringBuffer subject = new StringBuffer();
-      subject.append("CS410J ");
-      subject.append(projName);
-      subject.append(" submission");
-      message.setSubject(subject.toString());
+      message.setSubject("CS410J " + projName + " submission");
     }
 
     // Create the contents of the message
     DateFormat df =
       DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-    StringBuffer text = new StringBuffer();
-    text.append("On " + df.format(submitTime) + "\n");
-    text.append(userName + " (" + userEmail + ")\n");
-    text.append("submitted the following files for " + projName + ":\n");
+    StringBuilder text = new StringBuilder();
+    text.append("On ").append(df.format(submitTime)).append("\n");
+    text.append(userName).append(" (").append(userEmail).append(")\n");
+    text.append("submitted the following files for ").append(projName).append(":\n");
 
-    Iterator iter = sourceFiles.iterator();
-    while (iter.hasNext()) {
-      File file = (File) iter.next();
-      text.append("  " + file.getAbsolutePath() + "\n");
+    for (File file : sourceFiles) {
+      text.append("  ").append(file.getAbsolutePath()).append("\n");
     }
 
     if (comment != null) {
-      text.append("\nComment: " + comment + "\n\n");
+      text.append("\nComment: ").append(comment).append("\n\n");
     }
 
     text.append("\n\n");
@@ -679,7 +665,7 @@ public class Submit {
    * to verify whether or not the settings are correct, and then sends
    * an email to the Grader.
    */
-  public static void main(String[] args) throws AddressException, IOException, MessagingException {
+  public static void main(String[] args) throws IOException, MessagingException {
     Submit submit = new Submit();
 
     // Parse the command line
