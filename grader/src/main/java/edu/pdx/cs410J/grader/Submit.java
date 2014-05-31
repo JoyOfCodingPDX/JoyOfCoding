@@ -13,10 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.*;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
 
 /**
  * This class is used to submit assignments in CS410J.  The user
@@ -704,65 +700,4 @@ public class Submit {
     }
   }
 
-  private static class JarMaker {
-    private Map<File, String> sourceFilesAndNames;
-    private File jarFile;
-    private String createdBy;
-    private String manifestVersion;
-
-    public JarMaker(Map<File, String> sourceFilesAndNames, File jarFile, String createdBy, String manifestVersion) {
-      this.sourceFilesAndNames = sourceFilesAndNames;
-      this.jarFile = jarFile;
-      this.createdBy = createdBy;
-      this.manifestVersion = manifestVersion;
-    }
-
-    public File makeJar() throws IOException {
-      // Create a Manifest for the Jar file containing the name of the
-      // author (userName) and a version that is based on the current
-      // date/time.
-      Manifest manifest = new Manifest();
-      Attributes attrs = manifest.getMainAttributes();
-      attrs.put(new Attributes.Name("Created-By"), createdBy);
-
-      attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
-
-      // Create a JarOutputStream around the jar file
-      JarOutputStream jos;
-      {
-        OutputStream os = new FileOutputStream(jarFile);
-        jos = new JarOutputStream(os, manifest);
-        jos.setMethod(JarOutputStream.DEFLATED);
-      }
-
-      // Add the source files to the Jar
-      for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
-        {
-          File file = fileEntry.getKey();
-          String fileName = fileEntry.getValue();
-          System.out.println("Adding " + fileName + " to jar");
-          JarEntry entry = new JarEntry(fileName);
-          entry.setTime(file.lastModified());
-          entry.setSize(file.length());
-
-          InputStream is;
-          byte[] buffer = new byte[1024];
-          int read;
-
-          entry.setMethod(JarEntry.DEFLATED);
-
-          // Add the entry to the JAR file
-          jos.putNextEntry(entry);
-          is = new BufferedInputStream(new FileInputStream(file));
-          while ((read = is.read(buffer, 0, buffer.length)) != -1) {
-            jos.write(buffer, 0, read);
-          }
-          is.close();
-          jos.closeEntry();
-        }
-      }
-
-      return jarFile;
-    }
-  }
 }
