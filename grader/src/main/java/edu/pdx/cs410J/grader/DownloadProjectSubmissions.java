@@ -25,7 +25,9 @@ public class DownloadProjectSubmissions {
     }
 
     GraderEmailAccount account = new GraderEmailAccount(password);
-    account.fetchProjectSubmissions();
+    account.fetchAttachmentsFromUnreadMessagesInFolder("Project Submissions", new EmailAttachmentProcessor() {
+
+    });
   }
 
   private static String readGraderEmailPasswordFromFile(String passwordFile) throws IOException {

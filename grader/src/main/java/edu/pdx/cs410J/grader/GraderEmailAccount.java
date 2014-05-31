@@ -12,24 +12,7 @@ public class GraderEmailAccount {
     this.password = password;
   }
 
-
-  public void fetchProjectSubmissions() {
-    Store store = connectToGmail();
-    Folder folder = openProjectSubmissionsFolder(store);
-    printFolderInformation(folder);
-    printUnreadMessages(folder);
-
-
-    try {
-      folder.close(false);
-      store.close();
-
-    } catch (MessagingException ex) {
-      throw new IllegalStateException("While closing folder and store", ex);
-    }
-  }
-
-  private void printUnreadMessages(Folder folder) {
+  private void fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, EmailAttachmentProcessor processor) {
     try {
       Message[] messages = folder.getMessages();
 
@@ -43,7 +26,7 @@ public class GraderEmailAccount {
         if (isUnread(message)) {
           printMessageInformation(message);
           if (isMultipartMessage(message)) {
-            printMessageParts(message);
+            processAttachment(message, processor);
           } else {
             warnOfUnexpectedMessage(message);
           }
@@ -55,7 +38,7 @@ public class GraderEmailAccount {
     }
   }
 
-  private void printMessageParts(Message message) throws MessagingException {
+  private void processAttachment(Message message, EmailAttachmentProcessor processor) throws MessagingException {
     Multipart parts;
     try {
       parts = (Multipart) message.getContent();
@@ -170,11 +153,11 @@ public class GraderEmailAccount {
     }
   }
 
-  private Folder openProjectSubmissionsFolder(Store store) {
+  private Folder openFolder(Store store, String folderName) {
     try {
       Folder folder = store.getDefaultFolder();
       checkForValidFolder(folder, "Default");
-      folder = folder.getFolder("Project Submissions");
+      folder = folder.getFolder(folderName);
       folder.open(Folder.READ_WRITE);
       return folder;
 
@@ -201,5 +184,22 @@ public class GraderEmailAccount {
     } catch (MessagingException ex) {
       throw new IllegalStateException("While connecting to Gmail", ex);
     }
+  }
+
+  public void fetchAttachmentsFromUnreadMessagesInFolder(String folderName, EmailAttachmentProcessor processor) {
+    Store store = connectToGmail();
+    Folder folder = openFolder(store, folderName);
+    printFolderInformation(folder);
+
+    fetchAttachmentsFromUnreadMessagesInFolder(folder, processor);
+
+    try {
+      folder.close(false);
+      store.close();
+
+    } catch (MessagingException ex) {
+      throw new IllegalStateException("While closing folder and store", ex);
+    }
+
   }
 }
