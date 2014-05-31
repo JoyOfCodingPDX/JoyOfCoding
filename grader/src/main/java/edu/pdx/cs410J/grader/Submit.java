@@ -423,11 +423,11 @@ public class Submit {
    * Helper method that conversion ints to Strings.  If the int is
    * only one digit, it prepends it with a 0.
    */
-  private String doCal(int i) {
+  private String padWithZero(int i) {
     if (i < 10) {
       return "0" + i;
     } else {
-      return "" + i;
+      return String.valueOf(i);
     }
   }
 
@@ -458,61 +458,19 @@ public class Submit {
     }
     db("Created Jar file: " + jarFile);
 
-    // Create a Manifest for the Jar file containing the name of the
-    // author (userName) and a version that is based on the current
-    // date/time.
-    Manifest manifest = new Manifest();
-    Attributes attrs = manifest.getMainAttributes();
-    attrs.put(new Attributes.Name("Created-By"), userName);
+    String createdBy = userName;
+    String manifestVersion = getTimestampString();
+    return new JarMaker(sourceFiles, jarFile, createdBy, manifestVersion).makeJar();
+  }
 
-    // Make a timestamp String
+  private String getTimestampString() {
     Calendar cal = Calendar.getInstance();
     cal.setTime(submitTime);
-    StringBuilder sb = new StringBuilder();
-    sb.append(doCal(cal.get(Calendar.DAY_OF_MONTH)));
-    sb.append(doCal(cal.get(Calendar.MONTH) + 1));  // Grumble
-    sb.append(doCal(cal.get(Calendar.YEAR)));
-    sb.append(doCal(cal.get(Calendar.HOUR_OF_DAY)));
-    sb.append(doCal(cal.get(Calendar.MINUTE)));
-    attrs.put(Attributes.Name.MANIFEST_VERSION, sb.toString());
-
-    db("Jar file version: " + sb);
-
-    // Create a JarOutputStream around the jar file
-    JarOutputStream jos;
-    {
-      OutputStream os = new FileOutputStream(jarFile);
-      jos = new JarOutputStream(os, manifest);
-      jos.setMethod(JarOutputStream.DEFLATED);
-    }
-
-    // Add the source files to the Jar
-    for (File file : sourceFiles) {
-      {
-        String fileName = getRelativeName(file);
-        out.println("Adding " + fileName + " to jar");
-        JarEntry entry = new JarEntry(fileName);
-        entry.setTime(file.lastModified());
-        entry.setSize(file.length());
-
-        InputStream is;
-        byte[] buffer = new byte[1024];
-        int read;
-
-        entry.setMethod(JarEntry.DEFLATED);
-
-        // Add the entry to the JAR file
-        jos.putNextEntry(entry);
-        is = new BufferedInputStream(new FileInputStream(file));
-        while ((read = is.read(buffer, 0, buffer.length)) != -1) {
-          jos.write(buffer, 0, read);
-        }
-        is.close();
-        jos.closeEntry();
-      }
-    }
-
-    return jarFile;
+    return padWithZero(cal.get(Calendar.DAY_OF_MONTH)) +
+      padWithZero(cal.get(Calendar.MONTH) + 1) +
+      padWithZero(cal.get(Calendar.YEAR)) +
+      padWithZero(cal.get(Calendar.HOUR_OF_DAY)) +
+      padWithZero(cal.get(Calendar.MINUTE));
   }
 
   /**
@@ -733,4 +691,66 @@ public class Submit {
     }
   }
 
+  private class JarMaker {
+    private Set<File> sourceFiles;
+    private File jarFile;
+    private String createdBy;
+    private String manifestVersion;
+
+    public JarMaker(Set<File> sourceFiles, File jarFile, String createdBy, String manifestVersion) {
+      this.sourceFiles = sourceFiles;
+      this.jarFile = jarFile;
+      this.createdBy = createdBy;
+      this.manifestVersion = manifestVersion;
+    }
+
+    public File makeJar() throws IOException {
+      // Create a Manifest for the Jar file containing the name of the
+      // author (userName) and a version that is based on the current
+      // date/time.
+      Manifest manifest = new Manifest();
+      Attributes attrs = manifest.getMainAttributes();
+      attrs.put(new Attributes.Name("Created-By"), createdBy);
+
+      attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
+
+      db("Jar file version: " + manifestVersion);
+
+      // Create a JarOutputStream around the jar file
+      JarOutputStream jos;
+      {
+        OutputStream os = new FileOutputStream(jarFile);
+        jos = new JarOutputStream(os, manifest);
+        jos.setMethod(JarOutputStream.DEFLATED);
+      }
+
+      // Add the source files to the Jar
+      for (File file : sourceFiles) {
+        {
+          String fileName = getRelativeName(file);
+          out.println("Adding " + fileName + " to jar");
+          JarEntry entry = new JarEntry(fileName);
+          entry.setTime(file.lastModified());
+          entry.setSize(file.length());
+
+          InputStream is;
+          byte[] buffer = new byte[1024];
+          int read;
+
+          entry.setMethod(JarEntry.DEFLATED);
+
+          // Add the entry to the JAR file
+          jos.putNextEntry(entry);
+          is = new BufferedInputStream(new FileInputStream(file));
+          while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+            jos.write(buffer, 0, read);
+          }
+          is.close();
+          jos.closeEntry();
+        }
+      }
+
+      return jarFile;
+    }
+  }
 }
