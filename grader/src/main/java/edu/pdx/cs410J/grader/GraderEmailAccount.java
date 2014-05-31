@@ -33,12 +33,12 @@ public class GraderEmailAccount {
         }
       }
 
-    } catch (MessagingException ex) {
+    } catch (MessagingException | IOException ex ) {
       throw new IllegalStateException("While printing unread messages", ex);
     }
   }
 
-  private void processAttachment(Message message, EmailAttachmentProcessor processor) throws MessagingException {
+  private void processAttachment(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
     Multipart parts;
     try {
       parts = (Multipart) message.getContent();
@@ -68,7 +68,8 @@ public class GraderEmailAccount {
     }
   }
 
-  private void processAttachmentFromPart(BodyPart part, EmailAttachmentProcessor processor) throws MessagingException {
+  private void processAttachmentFromPart(BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+    processor.processAttachment(part.getFileName(), part.getInputStream());
       System.out.println("    " + part.getContentType());
   }
 

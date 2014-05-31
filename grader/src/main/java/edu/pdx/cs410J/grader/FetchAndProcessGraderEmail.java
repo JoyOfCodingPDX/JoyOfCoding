@@ -2,7 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import java.io.*;
 
-public class DownloadProjectSubmissions {
+public class FetchAndProcessGraderEmail {
 
   public static void main(String[] args) {
     String passwordFile = null;
@@ -27,6 +27,11 @@ public class DownloadProjectSubmissions {
     GraderEmailAccount account = new GraderEmailAccount(password);
     account.fetchAttachmentsFromUnreadMessagesInFolder("Project Submissions", new EmailAttachmentProcessor() {
 
+      @Override
+      public void processAttachment(String fileName, InputStream inputStream) {
+        System.out.println("    File name: " + fileName);
+        System.out.println("    InputStream: " + inputStream);
+      }
     });
   }
 
@@ -44,7 +49,7 @@ public class DownloadProjectSubmissions {
     PrintStream err = System.err;
     err.println("** " + message);
     err.println();
-    err.println("DownloadProjectSubmissions passwordFile");
+    err.println("FetchAndProcessGraderEmail passwordFile");
     err.println("  passwordFile   File containing the password for the Grader's email account");
     err.println();
 
