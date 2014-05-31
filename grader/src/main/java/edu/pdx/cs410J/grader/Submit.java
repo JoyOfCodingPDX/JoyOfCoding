@@ -1,5 +1,8 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -460,7 +463,17 @@ public class Submit {
 
     String createdBy = userName;
     String manifestVersion = getTimestampString();
-    return new JarMaker(sourceFiles, jarFile, createdBy, manifestVersion).makeJar();
+
+    db("Jar file version: " + manifestVersion);
+
+    Map<File, String> sourceFilesWithNames = Maps.toMap(sourceFiles, new Function<File, String>() {
+      @Override
+      public String apply(File file) {
+        return getRelativeName(file);
+      }
+    });
+
+    return new JarMaker(sourceFilesWithNames, jarFile, createdBy, manifestVersion).makeJar();
   }
 
   private String getTimestampString() {
@@ -691,14 +704,14 @@ public class Submit {
     }
   }
 
-  private class JarMaker {
-    private Set<File> sourceFiles;
+  private static class JarMaker {
+    private Map<File, String> sourceFilesAndNames;
     private File jarFile;
     private String createdBy;
     private String manifestVersion;
 
-    public JarMaker(Set<File> sourceFiles, File jarFile, String createdBy, String manifestVersion) {
-      this.sourceFiles = sourceFiles;
+    public JarMaker(Map<File, String> sourceFilesAndNames, File jarFile, String createdBy, String manifestVersion) {
+      this.sourceFilesAndNames = sourceFilesAndNames;
       this.jarFile = jarFile;
       this.createdBy = createdBy;
       this.manifestVersion = manifestVersion;
@@ -714,8 +727,6 @@ public class Submit {
 
       attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
 
-      db("Jar file version: " + manifestVersion);
-
       // Create a JarOutputStream around the jar file
       JarOutputStream jos;
       {
@@ -725,10 +736,11 @@ public class Submit {
       }
 
       // Add the source files to the Jar
-      for (File file : sourceFiles) {
+      for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
         {
-          String fileName = getRelativeName(file);
-          out.println("Adding " + fileName + " to jar");
+          File file = fileEntry.getKey();
+          String fileName = fileEntry.getValue();
+          System.out.println("Adding " + fileName + " to jar");
           JarEntry entry = new JarEntry(fileName);
           entry.setTime(file.lastModified());
           entry.setSize(file.length());
