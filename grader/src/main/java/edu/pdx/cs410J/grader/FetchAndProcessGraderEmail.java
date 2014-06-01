@@ -47,36 +47,37 @@ public class FetchAndProcessGraderEmail {
     }
 
     String password = readGraderEmailPasswordFromFile(passwordFile);
-
-    assert directoryName != null;
-    final File directory = new File(directoryName);
-    if (!directory.exists()) {
-      usage("Download directory \"" + directoryName + "\" does not exist");
-    }
-
-    if (!directory.isDirectory()) {
-      usage("Download directory \"" + directoryName + "\" is not a directory");
-    }
-
-    GradeBook gradeBook = null;
-    try {
-      gradeBook = readGradeBookFromFile(gradeBookFile);
-
-    } catch (IOException ex) {
-      usage("Couldn't read grade book file \"" + gradeBookFile + "\"");
-
-    } catch (ParserException ex) {
-      usage("Couldn't parse grade book file \"" + gradeBookFile + "\"");
-    }
+    File directory = getDirectory(directoryName);
+    GradeBook gradeBook = getGradeBook(gradeBookFile);
 
     GraderEmailAccount account = new GraderEmailAccount(password);
     ProjectSubmissionsProcessor processor = new ProjectSubmissionsProcessor(directory, gradeBook);
     account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
   }
 
-  private static GradeBook readGradeBookFromFile(String fileName) throws IOException, ParserException {
-    XmlGradeBookParser parser = new XmlGradeBookParser(fileName);
-    return parser.parse();
+  private static GradeBook getGradeBook(String gradeBookFile) {
+    try {
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFile);
+      return parser.parse();
+
+    } catch (IOException ex) {
+      return usage("Couldn't read grade book file \"" + gradeBookFile + "\"");
+
+    } catch (ParserException ex) {
+      return usage("Couldn't parse grade book file \"" + gradeBookFile + "\"");
+    }
+  }
+
+  private static File getDirectory(String directoryName) {
+    File directory = new File(directoryName);
+    if (!directory.exists()) {
+      return usage("Download directory \"" + directoryName + "\" does not exist");
+    }
+
+    if (!directory.isDirectory()) {
+      return usage("Download directory \"" + directoryName + "\" is not a directory");
+    }
+    return directory;
   }
 
   private static String readGraderEmailPasswordFromFile(String passwordFile) {
