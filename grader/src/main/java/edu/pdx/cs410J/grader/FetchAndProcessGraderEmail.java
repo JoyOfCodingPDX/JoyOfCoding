@@ -51,8 +51,20 @@ public class FetchAndProcessGraderEmail {
     GradeBook gradeBook = getGradeBook(gradeBookFile);
 
     GraderEmailAccount account = new GraderEmailAccount(password);
-    ProjectSubmissionsProcessor processor = new ProjectSubmissionsProcessor(directory, gradeBook);
+    ProjectSubmissionsProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
     account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
+  }
+
+  private static ProjectSubmissionsProcessor getStudentEmailAttachmentProcessor(String whatToFetch, File directory, GradeBook gradeBook) {
+    if (whatToFetch.equalsIgnoreCase("projects")) {
+      return new ProjectSubmissionsProcessor(directory, gradeBook);
+
+    } else if (whatToFetch.equalsIgnoreCase("surveys")) {
+      throw new UnsupportedOperationException("Not implemented yet");
+
+    } else {
+      return usage("Cannot fetch \"" + whatToFetch + "\"");
+    }
   }
 
   private static GradeBook getGradeBook(String gradeBookFile) {
