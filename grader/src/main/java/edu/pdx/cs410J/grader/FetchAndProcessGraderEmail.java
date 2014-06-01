@@ -10,17 +10,20 @@ public class FetchAndProcessGraderEmail {
     String passwordFile = null;
     String directoryName = null;
     String gradeBookFile = null;
+    String whatToFetch = null;
 
     for (String arg : args) {
       if (passwordFile == null) {
         passwordFile = arg;
-
 
       } else if (directoryName == null) {
         directoryName = arg;
 
       } else if (gradeBookFile == null) {
         gradeBookFile = arg;
+
+      } else if (whatToFetch == null) {
+        whatToFetch = arg;
 
       } else {
         usage("Extraneous argument: " + arg);
@@ -39,13 +42,11 @@ public class FetchAndProcessGraderEmail {
       usage("Missing grade book file");
     }
 
-    String password = null;
-    try {
-      password = readGraderEmailPasswordFromFile(passwordFile);
-
-    } catch (IOException e) {
-      usage("Exception while reading password file");
+    if (whatToFetch == null) {
+      usage("Missing kind of email to fetch");
     }
+
+    String password = readGraderEmailPasswordFromFile(passwordFile);
 
     assert directoryName != null;
     final File directory = new File(directoryName);
@@ -78,26 +79,36 @@ public class FetchAndProcessGraderEmail {
     return parser.parse();
   }
 
-  private static String readGraderEmailPasswordFromFile(String passwordFile) throws IOException {
+  private static String readGraderEmailPasswordFromFile(String passwordFile) {
     File file = new File(passwordFile);
     if (!file.exists()) {
-      usage("Password file \"" + passwordFile + "\" does not exist");
+      return usage("Password file \"" + passwordFile + "\" does not exist");
     }
 
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    return br.readLine();
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(file));
+      return br.readLine();
+
+    } catch (IOException e) {
+      return usage("Exception while reading password file");
+    }
   }
 
-  private static void usage(String message) {
+  private static <T> T usage(String message) {
     PrintStream err = System.err;
     err.println("** " + message);
     err.println();
-    err.println("FetchAndProcessGraderEmail passwordFile directory");
+    err.println("FetchAndProcessGraderEmail passwordFile directory gradeBookFile whatToFetch");
     err.println("  passwordFile    File containing the password for the Grader's email account");
     err.println("  directory       The directory in which to download attachments");
     err.println("  gradeBookFile   Grade Book XML file related to this submission");
+    err.println("  whatToFetch     What kind of student emails should be fetched");
+    err.println("      projects    Project submissions");
+    err.println("      surveys     Student surveys");
     err.println();
 
     System.exit(1);
+
+    throw new IllegalStateException("Shouldn't reach here");
   }
 }
