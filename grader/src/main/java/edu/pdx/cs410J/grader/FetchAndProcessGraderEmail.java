@@ -51,11 +51,11 @@ public class FetchAndProcessGraderEmail {
     GradeBook gradeBook = getGradeBook(gradeBookFile);
 
     GraderEmailAccount account = new GraderEmailAccount(password);
-    ProjectSubmissionsProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
+    StudentEmailAttachmentProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
     account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
   }
 
-  private static ProjectSubmissionsProcessor getStudentEmailAttachmentProcessor(String whatToFetch, File directory, GradeBook gradeBook) {
+  private static StudentEmailAttachmentProcessor getStudentEmailAttachmentProcessor(String whatToFetch, File directory, GradeBook gradeBook) {
     if (whatToFetch.equalsIgnoreCase("projects")) {
       return new ProjectSubmissionsProcessor(directory, gradeBook);
 
