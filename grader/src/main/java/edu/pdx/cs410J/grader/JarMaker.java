@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.io.ByteStreams;
 
 import java.io.*;
 import java.util.Date;
@@ -37,12 +38,8 @@ class JarMaker {
     attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
 
     // Create a JarOutputStream around the jar file
-    JarOutputStream jos;
-    {
-      OutputStream os = new FileOutputStream(jarFile);
-      jos = new JarOutputStream(os, manifest);
-      jos.setMethod(JarOutputStream.DEFLATED);
-    }
+    JarOutputStream jos = new JarOutputStream(new FileOutputStream(jarFile), manifest);
+    jos.setMethod(JarOutputStream.DEFLATED);
 
     // Add the source files to the Jar
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
@@ -54,19 +51,13 @@ class JarMaker {
         entry.setTime(file.lastModified());
         entry.setSize(file.length());
 
-        InputStream is;
-        byte[] buffer = new byte[1024];
-        int read;
-
         entry.setMethod(JarEntry.DEFLATED);
 
         // Add the entry to the JAR file
         jos.putNextEntry(entry);
-        is = new BufferedInputStream(new FileInputStream(file));
-        while ((read = is.read(buffer, 0, buffer.length)) != -1) {
-          jos.write(buffer, 0, read);
-        }
-        is.close();
+
+        ByteStreams.copy(new FileInputStream(file), jos);
+
         jos.closeEntry();
       }
     }
