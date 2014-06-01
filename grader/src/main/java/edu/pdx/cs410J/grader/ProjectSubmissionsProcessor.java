@@ -11,7 +11,7 @@ class ProjectSubmissionsProcessor implements EmailAttachmentProcessor {
 
   private final File directory;
 
-  public ProjectSubmissionsProcessor(File directory) {
+  public ProjectSubmissionsProcessor(File directory, GradeBook gradeBook) {
     this.directory = directory;
   }
 
