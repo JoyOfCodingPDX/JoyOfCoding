@@ -445,16 +445,14 @@ public class Submit {
    */
   private File makeJarFileWith(Set<File> sourceFiles) throws IOException {
     String jarFileName = userName.replace(' ', '_') + "-TEMP";
-    File jarFile;
-    {
-      jarFile = File.createTempFile(jarFileName, ".jar");
-      if (!saveJar) {
-        jarFile.deleteOnExit();
+    File jarFile = File.createTempFile(jarFileName, ".jar");
+    if (!saveJar) {
+      jarFile.deleteOnExit();
 
-      } else {
-        out.println("Saving temporary Jar file: " + jarFile);
-      }
+    } else {
+      out.println("Saving temporary Jar file: " + jarFile);
     }
+
     db("Created Jar file: " + jarFile);
 
     String createdBy = userName;
@@ -487,23 +485,36 @@ public class Submit {
    * a textual summary of the contents of the Jar file.
    */
   private void mailTA(File jarFile, Set<File> sourceFiles) throws MessagingException {
-    // Obtain a Session for sending email
-    Properties props = new Properties();
-    props.put("mail.smtp.host", serverName);
-    db("Establishing session on " + serverName);
-    Session session = Session.getDefaultInstance(props, null);
-    session.setDebug(this.debug);
+    MimeMessage message = newEmailTo(newEmailSession(), TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
 
-    // Make a new email message
-    MimeMessage message = new MimeMessage(session);
+    MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
+    MimeBodyPart filePart = createJarAttachment(jarFile);
 
-    {
-      InternetAddress[] to = {new InternetAddress(TA_EMAIL)};
-      message.setRecipients(Message.RecipientType.TO, to);
+    Multipart mp = new MimeMultipart();
+    mp.addBodyPart(textPart);
+    mp.addBodyPart(filePart);
 
-      message.setSubject("CS410J-SUBMIT " + userName + "'s " + projName);
-    }
+    message.setContent(mp);
 
+    Transport.send(message);
+  }
+
+  private MimeBodyPart createJarAttachment(File jarFile) throws MessagingException {
+    // Now attach the Jar file
+    DataSource ds = new FileDataSource(jarFile);
+    DataHandler dh = new DataHandler(ds);
+    MimeBodyPart filePart = new MimeBodyPart();
+
+    String jarFileTitle = userName.replace(' ', '_') + ".jar";
+
+    filePart.setDataHandler(dh);
+    filePart.setFileName(jarFileTitle);
+    filePart.setDescription(userName + "'s " + projName);
+
+    return filePart;
+  }
+
+  private MimeBodyPart createTextPartOfTAEmail(Set<File> sourceFiles) throws MessagingException {
     // Create the text portion of the message
     StringBuilder text = new StringBuilder();
     text.append("Student name: ").append(userName).append(" (").append(userEmail).append(")\n");
@@ -523,57 +534,38 @@ public class Submit {
     text.append("\n\n");
 
     MimeBodyPart textPart = new MimeBodyPart();
-    {
-      textPart.setContent(text.toString(), "text/plain");
+    textPart.setContent(text.toString(), "text/plain");
 
-      // Try not to display text as separate attachment
-      textPart.setDisposition("inline");
-    }
-
-    // Now attach the Jar file
-    DataSource ds = new FileDataSource(jarFile);
-    DataHandler dh = new DataHandler(ds);
-    MimeBodyPart filePart = new MimeBodyPart();
-    {
-      String jarFileTitle = userName.replace(' ', '_') + ".jar";
-
-      filePart.setDataHandler(dh);
-      filePart.setFileName(jarFileTitle);
-      filePart.setDescription(userName + "'s " + projName);
-    }
-
-    // Finally, add the attachments to the message and send it
-    {
-      Multipart mp = new MimeMultipart();
-      mp.addBodyPart(textPart);
-      mp.addBodyPart(filePart);
-
-      message.setContent(mp);
-
-      Transport.send(message);
-    }
+    // Try not to display text as separate attachment
+    textPart.setDisposition("inline");
+    return textPart;
   }
 
-  /**
-   * Sends a email to the user as a receipt of the submission.
-   */
-  private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
+  private MimeMessage newEmailTo(Session session, String recipient, String subject) throws MessagingException {
+    // Make a new email message
+    MimeMessage message = new MimeMessage(session);
+
+    InternetAddress[] to = {new InternetAddress(recipient)};
+    message.setRecipients(Message.RecipientType.TO, to);
+    message.setSubject(subject);
+    return message;
+  }
+
+  private Session newEmailSession() {
     // Obtain a Session for sending email
     Properties props = new Properties();
     props.put("mail.smtp.host", serverName);
     db("Establishing session on " + serverName);
     Session session = Session.getDefaultInstance(props, null);
     session.setDebug(this.debug);
+    return session;
+  }
 
-    // Make a new email message
-    MimeMessage message = new MimeMessage(session);
-
-    {
-      InternetAddress[] to = {new InternetAddress(userEmail)};
-      message.setRecipients(Message.RecipientType.TO, to);
-
-      message.setSubject("CS410J " + projName + " submission");
-    }
+  /**
+   * Sends a email to the user as a receipt of the submission.
+   */
+  private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
+    MimeMessage message = newEmailTo(newEmailSession(), userEmail, "CS410J " + projName + " submission");
 
     // Create the contents of the message
     DateFormat df =
@@ -595,12 +587,10 @@ public class Submit {
     text.append("Have a nice day.");
 
     // Add the text to the message and send it
-    {
-      message.setText(text.toString());
-      message.setDisposition("inline");
+    message.setText(text.toString());
+    message.setDisposition("inline");
 
-      Transport.send(message);
-    }
+    Transport.send(message);
   }
 
   /////////////////////////  Main Program  ///////////////////////////

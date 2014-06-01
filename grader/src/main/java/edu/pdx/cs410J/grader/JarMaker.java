@@ -43,23 +43,21 @@ class JarMaker {
 
     // Add the source files to the Jar
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
-      {
-        File file = fileEntry.getKey();
-        String fileName = fileEntry.getValue();
-        System.out.println("Adding " + fileName + " to jar");
-        JarEntry entry = new JarEntry(fileName);
-        entry.setTime(file.lastModified());
-        entry.setSize(file.length());
+      File file = fileEntry.getKey();
+      String fileName = fileEntry.getValue();
+      System.out.println("Adding " + fileName + " to jar");
+      JarEntry entry = new JarEntry(fileName);
+      entry.setTime(file.lastModified());
+      entry.setSize(file.length());
 
-        entry.setMethod(JarEntry.DEFLATED);
+      entry.setMethod(JarEntry.DEFLATED);
 
-        // Add the entry to the JAR file
-        jos.putNextEntry(entry);
+      // Add the entry to the JAR file
+      jos.putNextEntry(entry);
 
-        ByteStreams.copy(new FileInputStream(file), jos);
+      ByteStreams.copy(new FileInputStream(file), jos);
 
-        jos.closeEntry();
-      }
+      jos.closeEntry();
     }
 
     jos.close();
