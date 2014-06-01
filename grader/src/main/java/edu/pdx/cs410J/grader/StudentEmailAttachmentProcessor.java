@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.grader;
 
 import java.io.File;
-import java.io.IOException;
 
 public abstract class StudentEmailAttachmentProcessor implements EmailAttachmentProcessor {
   protected final File directory;
@@ -12,10 +11,14 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
     this.gradeBook = gradeBook;
   }
 
-  protected void logException(String message, IOException ex) {
+  protected void logException(String message, Exception ex) {
     System.err.println(message);
     ex.printStackTrace(System.err);
   }
 
   public abstract String getEmailFolder();
+
+  protected void warn(String message) {
+    System.out.println(message);
+  }
 }

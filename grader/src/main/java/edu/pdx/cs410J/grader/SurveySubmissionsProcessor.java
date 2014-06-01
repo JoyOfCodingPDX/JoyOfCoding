@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
+import edu.pdx.cs410J.ParserException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,24 +20,47 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
 
   @Override
   public void processAttachment(String fileName, InputStream inputStream) {
-    System.out.println("    File name: " + fileName);
-    System.out.println("    InputStream: " + inputStream);
+    warn("    File name: " + fileName);
+    warn("    InputStream: " + inputStream);
 
+    File file = new File(directory, fileName);
     try {
-      File file = new File(directory, fileName);
 
       if (file.exists()) {
         warnOfPreExistingFile(file);
+        return;
       }
 
       ByteStreams.copy(inputStream, new FileOutputStream(file));
     } catch (IOException ex) {
       logException("While writing \"" + fileName + "\" to \"" + directory + "\"", ex);
     }
+
+    addStudentFromFileToGradeBook(file, gradeBook);
+  }
+
+  private void addStudentFromFileToGradeBook(File file, GradeBook gradeBook) {
+    Student student;
+
+    try {
+      XmlStudentParser parser = new XmlStudentParser(file);
+      student = parser.parseStudent();
+
+    } catch (IOException | ParserException ex) {
+      logException("While parsing \"" + file + "\"", ex);
+      return;
+    }
+
+    if (gradeBook.containsStudent(student.getId())) {
+      warn("Student \"" + student.getId() + "\" already exists in " + gradeBook.getClassName());
+      return;
+    }
+
+    gradeBook.addStudent(student);
   }
 
   private void warnOfPreExistingFile(File file) {
-    System.out.println("File \"" + file + "\" already exists");
+    warn("Not processing existing file \"" + file + "\"");
   }
 
 }

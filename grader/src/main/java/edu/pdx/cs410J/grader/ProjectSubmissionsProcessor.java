@@ -15,8 +15,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   @Override
   public void processAttachment(String fileName, InputStream inputStream) {
-    System.out.println("    File name: " + fileName);
-    System.out.println("    InputStream: " + inputStream);
+    warn("    File name: " + fileName);
+    warn("    InputStream: " + inputStream);
 
     try {
       File file = new File(directory, fileName);
@@ -32,7 +32,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private void warnOfPreExistingFile(File file) {
-    System.out.println("File \"" + file + "\" already exists");
+    warn("Overwriting existing file \"" + file + "\"");
   }
 
   @Override

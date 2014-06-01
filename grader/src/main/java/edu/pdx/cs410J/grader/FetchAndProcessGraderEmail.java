@@ -53,6 +53,21 @@ public class FetchAndProcessGraderEmail {
     GraderEmailAccount account = new GraderEmailAccount(password);
     StudentEmailAttachmentProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
     account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
+
+    saveGradeBookIfModified(gradeBook, gradeBookFile);
+  }
+
+  private static void saveGradeBookIfModified(GradeBook gradeBook, String gradeBookFile) {
+    if (gradeBook.isDirty()) {
+      File file = new File(gradeBookFile);
+      try {
+        XmlDumper dumper = new XmlDumper(file);
+        dumper.dump(gradeBook);
+
+      } catch (IOException e) {
+        usage("Can't write grade book in \"" + gradeBookFile + "\"");
+      }
+    }
   }
 
   private static StudentEmailAttachmentProcessor getStudentEmailAttachmentProcessor(String whatToFetch, File directory, GradeBook gradeBook) {
