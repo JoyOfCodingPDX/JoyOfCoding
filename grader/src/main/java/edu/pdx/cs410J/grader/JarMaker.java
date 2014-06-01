@@ -62,6 +62,8 @@ class JarMaker {
       }
     }
 
+    jos.close();
+
     return jarFile;
   }
 
