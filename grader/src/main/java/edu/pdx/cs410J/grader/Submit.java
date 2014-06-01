@@ -496,6 +496,8 @@ public class Submit {
 
     message.setContent(mp);
 
+    out.println("Submitting project to Grader");
+
     Transport.send(message);
   }
 
@@ -589,6 +591,8 @@ public class Submit {
     // Add the text to the message and send it
     message.setText(text.toString());
     message.setDisposition("inline");
+
+    out.println("Sending receipt to you");
 
     Transport.send(message);
   }
