@@ -60,7 +60,7 @@ public class FetchAndProcessGraderEmail {
       return new ProjectSubmissionsProcessor(directory, gradeBook);
 
     } else if (whatToFetch.equalsIgnoreCase("surveys")) {
-      throw new UnsupportedOperationException("Not implemented yet");
+      return new SurveySubmissionsProcessor(directory, gradeBook);
 
     } else {
       return usage("Cannot fetch \"" + whatToFetch + "\"");

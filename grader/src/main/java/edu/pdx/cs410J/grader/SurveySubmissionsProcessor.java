@@ -7,10 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
-
-  public ProjectSubmissionsProcessor(File directory, GradeBook gradeBook) {
+public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor {
+  public SurveySubmissionsProcessor(File directory, GradeBook gradeBook) {
     super(directory, gradeBook);
+  }
+
+  @Override
+  public String getEmailFolder() {
+    return "Student Surveys";
   }
 
   @Override
@@ -35,8 +39,4 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     System.out.println("File \"" + file + "\" already exists");
   }
 
-  @Override
-  public String getEmailFolder() {
-    return "Project Submissions";
-  }
 }
