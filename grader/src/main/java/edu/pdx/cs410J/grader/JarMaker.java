@@ -7,6 +7,7 @@ import com.google.common.io.ByteStreams;
 
 import java.io.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
@@ -17,16 +18,14 @@ import java.util.jar.Manifest;
 class JarMaker {
   public static final Attributes.Name CREATED_BY = new Attributes.Name("Created-By");
 
-  private Map<File, String> sourceFilesAndNames;
-  private File jarFile;
-  private String createdBy;
-  private String manifestVersion;
+  private final Map<Attributes.Name, String> manifestEntries;
+  private final Map<File, String> sourceFilesAndNames;
+  private final File jarFile;
 
-  public JarMaker(Map<File, String> sourceFilesAndNames, File jarFile, String createdBy, String manifestVersion) {
+  public JarMaker(Map<File, String> sourceFilesAndNames, File jarFile, Map<Attributes.Name, String> manifestEntries) {
     this.sourceFilesAndNames = sourceFilesAndNames;
     this.jarFile = jarFile;
-    this.createdBy = createdBy;
-    this.manifestVersion = manifestVersion;
+    this.manifestEntries = manifestEntries;
   }
 
   public File makeJar() throws IOException {
@@ -34,10 +33,7 @@ class JarMaker {
     // author (userName) and a version that is based on the current
     // date/time.
     Manifest manifest = new Manifest();
-    Attributes attrs = manifest.getMainAttributes();
-    attrs.put(CREATED_BY, createdBy);
-
-    attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
+    addEntriesToMainManifest(manifest);
 
     // Create a JarOutputStream around the jar file
     JarOutputStream jos = new JarOutputStream(new FileOutputStream(jarFile), manifest);
@@ -65,6 +61,14 @@ class JarMaker {
     jos.close();
 
     return jarFile;
+  }
+
+  private void addEntriesToMainManifest(Manifest manifest) {
+    Attributes attrs = manifest.getMainAttributes();
+
+    for (Map.Entry<Attributes.Name, String> entry : this.manifestEntries.entrySet()) {
+      attrs.put(entry.getKey(), entry.getValue());
+    }
   }
 
   public static void main(String[] args) throws IOException {
@@ -101,7 +105,11 @@ class JarMaker {
     assert jarFileName != null;
     File jarFile = new File(jarFileName);
 
-    new JarMaker(sourceFilesAndNames, jarFile, System.getProperty("user.name"), new Date().toString()).makeJar();
+    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
+    manifestEntries.put(JarMaker.CREATED_BY, System.getProperty("user.name"));
+    manifestEntries.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
+
+    new JarMaker(sourceFilesAndNames, jarFile, manifestEntries).makeJar();
   }
 
   private static void usage(String message) {

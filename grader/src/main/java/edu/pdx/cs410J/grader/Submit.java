@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.*;
+import java.util.jar.Attributes;
 
 /**
  * This class is used to submit assignments in CS410J.  The user
@@ -455,11 +456,6 @@ public class Submit {
 
     db("Created Jar file: " + jarFile);
 
-    String createdBy = userName;
-    String manifestVersion = getTimestampString();
-
-    db("Jar file version: " + manifestVersion);
-
     Map<File, String> sourceFilesWithNames = Maps.toMap(sourceFiles, new Function<File, String>() {
       @Override
       public String apply(File file) {
@@ -467,7 +463,11 @@ public class Submit {
       }
     });
 
-    return new JarMaker(sourceFilesWithNames, jarFile, createdBy, manifestVersion).makeJar();
+    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
+    manifestEntries.put(JarMaker.CREATED_BY, userName);
+    manifestEntries.put(Attributes.Name.MANIFEST_VERSION, getTimestampString());
+
+    return new JarMaker(sourceFilesWithNames, jarFile, manifestEntries).makeJar();
   }
 
   private String getTimestampString() {
