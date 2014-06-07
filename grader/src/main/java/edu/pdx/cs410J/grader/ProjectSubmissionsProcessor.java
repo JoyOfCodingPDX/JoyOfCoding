@@ -7,6 +7,8 @@ import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
+import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
+
 class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   public ProjectSubmissionsProcessor(File directory, GradeBook gradeBook) {
@@ -39,8 +41,70 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       return;
     }
 
-    String createdBy = manifest.getMainAttributes().getValue(new Attributes.Name("Created-By"));
-    warn("  Created by: " + createdBy);
+    try {
+      noteSubmissionInGradeBook(manifest);
+
+    } catch (SubmissionException ex) {
+      logException("While noting submission from \"" + fileName + "\"", ex);
+    }
+
+  }
+
+  private void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
+    Attributes attrs = manifest.getMainAttributes();
+
+    Student student = getStudentFromGradeBook(attrs);
+    Assignment project = getProjectFromGradeBook(attrs);
+    String note = getSubmissionNote(attrs);
+
+    Grade grade = student.getGrade(project);
+    if (grade == null) {
+      grade = new Grade(project, Grade.NO_GRADE);
+      student.setGrade(project.getName(), grade);
+    }
+    grade.addNote(note);
+  }
+
+  private String getSubmissionNote(Attributes attrs) throws SubmissionException {
+    String studentName = getManifestAttributeValue(attrs, USER_NAME, "Student name missing from manifest");
+    String submissionTime = getManifestAttributeValue(attrs, SUBMISSION_TIME, "Submission time missing from manifest");
+    String submissionComment = getManifestAttributeValue(attrs, SUBMISSION_COMMENT, "Submission comment missing from manifest");
+
+    return "Submitted by: " + studentName + "\n" +
+      "On: " + submissionTime + "\n" +
+      "With comment: " + submissionComment + "\n";
+  }
+
+  private Assignment getProjectFromGradeBook(Attributes attrs) throws SubmissionException {
+    String projectName = getManifestAttributeValue(attrs, PROJECT_NAME, "Project name missing from manifest");
+
+    Assignment assignment = this.gradeBook.getAssignment(projectName);
+    if (assignment == null) {
+      throw new SubmissionException("Assignment with name \"" + projectName + "\" is not in grade book");
+    }
+    return assignment;
+  }
+
+  private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
+    String studentId = getManifestAttributeValue(attrs, USER_ID, "Student Id missing from manifest");
+
+    Student student = this.gradeBook.getStudent(studentId);
+    if (student == null) {
+      throw new SubmissionException("Student with id \"" + studentId + "\" is not in grade book");
+    }
+    return student;
+  }
+
+  private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
+    String studentId = attrs.getValue(attribute);
+    if (studentId == null) {
+      throwSubmissionException(message);
+    }
+    return studentId;
+  }
+
+  private void throwSubmissionException(String message) throws SubmissionException {
+    throw new SubmissionException(message);
 
   }
 
@@ -56,5 +120,11 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   @Override
   public String getEmailFolder() {
     return "Project Submissions";
+  }
+
+  private class SubmissionException extends Exception {
+    public SubmissionException(String message) {
+      super(message);
+    }
   }
 }

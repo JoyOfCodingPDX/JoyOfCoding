@@ -1,11 +1,11 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import edu.pdx.cs410J.ParserException;
 
 /**
  * This class represent the grade a student got on an assignment.
@@ -32,6 +32,10 @@ public class Grade extends NotableImpl {
     this.assignmentName = assignmentName;
     this.score = score;
     this.setDirty(true);  // Initially dirty
+  }
+
+  public Grade(Assignment project, double score) {
+    this(project.getName(), score);
   }
 
   /**
@@ -70,7 +74,7 @@ public class Grade extends NotableImpl {
    * Prints usage information about the main program.
    */
   private static void usage() {
-    err.println("\njava Grade [options] -xmlFile xmFile " + 
+    err.println("\njava Grade [options] -xmlFile xmlFile " +
                 "-id id -assignment name");
     err.println("  where [options] ares:");
     err.println("  -score points          How many points student got");

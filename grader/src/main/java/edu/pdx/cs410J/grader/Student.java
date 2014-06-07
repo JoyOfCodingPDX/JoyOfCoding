@@ -1,9 +1,12 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.util.*;
-
 import edu.pdx.cs410J.ParserException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * This class represents a student who is taking CS410J.
@@ -509,5 +512,9 @@ public class Student extends NotableImpl {
       err.println("** While dumping to " + file + ": " + ex);
       System.exit(1);
     }
+  }
+
+  public Grade getGrade(Assignment project) {
+    return this.getGrade(project.getName());
   }
 }
