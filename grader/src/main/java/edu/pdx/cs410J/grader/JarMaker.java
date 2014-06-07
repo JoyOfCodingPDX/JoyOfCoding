@@ -65,6 +65,9 @@ class JarMaker {
   private void addEntriesToMainManifest(Manifest manifest) {
     Attributes attrs = manifest.getMainAttributes();
 
+    // If a manifest doesn't have a version, the other attributes won't get written out.  Lame.
+    attrs.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
+
     for (Map.Entry<Attributes.Name, String> entry : this.manifestEntries.entrySet()) {
       attrs.put(entry.getKey(), entry.getValue());
     }

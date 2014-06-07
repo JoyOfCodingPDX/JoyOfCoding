@@ -458,6 +458,10 @@ public class Submit {
   private Map<Attributes.Name, String> getManifestEntries() {
     Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(ManifestAttributes.USER_NAME, userName);
+    manifestEntries.put(ManifestAttributes.USER_ID, userId);
+    manifestEntries.put(ManifestAttributes.USER_EMAIL, userEmail);
+    manifestEntries.put(ManifestAttributes.PROJECT_NAME, projName);
+    manifestEntries.put(ManifestAttributes.SUBMISSION_COMMENT, comment);
     manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));
     return manifestEntries;
   }
@@ -678,8 +682,12 @@ public class Submit {
 
   static class ManifestAttributes {
 
-    public static final Attributes.Name USER_NAME = new Attributes.Name("Created-By");
-    public static final Attributes.Name SUBMISSION_TIME = Attributes.Name.MANIFEST_VERSION;
+    public static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
+    public static final Attributes.Name USER_ID = new Attributes.Name("Submitter-User-Id");
+    public static final Attributes.Name USER_EMAIL = new Attributes.Name("Submitter-Email");
+    public static final Attributes.Name PROJECT_NAME = new Attributes.Name("Project-Name");
+    public static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
+    public static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
 
     public static String formatSubmissionTime(Date submitTime) {
       DateFormat format = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
