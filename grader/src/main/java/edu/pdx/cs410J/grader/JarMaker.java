@@ -15,6 +15,8 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 class JarMaker {
+  public static final Attributes.Name CREATED_BY = new Attributes.Name("Created-By");
+
   private Map<File, String> sourceFilesAndNames;
   private File jarFile;
   private String createdBy;
@@ -33,7 +35,7 @@ class JarMaker {
     // date/time.
     Manifest manifest = new Manifest();
     Attributes attrs = manifest.getMainAttributes();
-    attrs.put(new Attributes.Name("Created-By"), createdBy);
+    attrs.put(CREATED_BY, createdBy);
 
     attrs.put(Attributes.Name.MANIFEST_VERSION, manifestVersion);
 
