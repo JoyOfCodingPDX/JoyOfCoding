@@ -75,7 +75,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.grader.GradeBookGUI</mainClass>
+              <mainClass>edu.pdx.cs410J.grader.GraderTools</mainClass>
             </manifest>
           </archive>
         </configuration>
