@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import com.google.common.io.ByteStreams;
 
 import java.io.*;
+import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
@@ -38,7 +39,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       return;
     }
 
-    String createdBy = manifest.getMainAttributes().getValue(JarMaker.CREATED_BY);
+    String createdBy = manifest.getMainAttributes().getValue(new Attributes.Name("Created-By"));
     warn("  Created by: " + createdBy);
 
   }

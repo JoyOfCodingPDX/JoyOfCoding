@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.Attributes;
 
@@ -420,18 +421,6 @@ public class Submit {
   }
 
   /**
-   * Helper method that conversion ints to Strings.  If the int is
-   * only one digit, it prepends it with a 0.
-   */
-  private String padWithZero(int i) {
-    if (i < 10) {
-      return "0" + i;
-    } else {
-      return String.valueOf(i);
-    }
-  }
-
-  /**
    * Returns the name of a <code>File</code> relative to the source
    * directory.
    */
@@ -463,21 +452,14 @@ public class Submit {
       }
     });
 
-    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
-    manifestEntries.put(JarMaker.CREATED_BY, userName);
-    manifestEntries.put(Attributes.Name.MANIFEST_VERSION, getTimestampString());
-
-    return new JarMaker(sourceFilesWithNames, jarFile, manifestEntries).makeJar();
+    return new JarMaker(sourceFilesWithNames, jarFile, getManifestEntries()).makeJar();
   }
 
-  private String getTimestampString() {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(submitTime);
-    return padWithZero(cal.get(Calendar.DAY_OF_MONTH)) +
-      padWithZero(cal.get(Calendar.MONTH) + 1) +
-      padWithZero(cal.get(Calendar.YEAR)) +
-      padWithZero(cal.get(Calendar.HOUR_OF_DAY)) +
-      padWithZero(cal.get(Calendar.MINUTE));
+  private Map<Attributes.Name, String> getManifestEntries() {
+    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
+    manifestEntries.put(ManifestAttributes.USER_NAME, userName);
+    manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));
+    return manifestEntries;
   }
 
   /**
@@ -691,6 +673,17 @@ public class Submit {
 
     } else {
       out.println(submit.projName + " not submitted.");
+    }
+  }
+
+  static class ManifestAttributes {
+
+    public static final Attributes.Name USER_NAME = new Attributes.Name("Created-By");
+    public static final Attributes.Name SUBMISSION_TIME = Attributes.Name.MANIFEST_VERSION;
+
+    public static String formatSubmissionTime(Date submitTime) {
+      DateFormat format = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+      return format.format(submitTime);
     }
   }
 

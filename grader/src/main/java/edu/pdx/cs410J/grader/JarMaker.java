@@ -16,7 +16,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 class JarMaker {
-  public static final Attributes.Name CREATED_BY = new Attributes.Name("Created-By");
 
   private final Map<Attributes.Name, String> manifestEntries;
   private final Map<File, String> sourceFilesAndNames;
@@ -106,7 +105,7 @@ class JarMaker {
     File jarFile = new File(jarFileName);
 
     Map<Attributes.Name, String> manifestEntries = new HashMap<>();
-    manifestEntries.put(JarMaker.CREATED_BY, System.getProperty("user.name"));
+    manifestEntries.put(new Attributes.Name("Created-By"), System.getProperty("user.name"));
     manifestEntries.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
 
     new JarMaker(sourceFilesAndNames, jarFile, manifestEntries).makeJar();
