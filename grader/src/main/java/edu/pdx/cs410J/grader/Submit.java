@@ -50,6 +50,9 @@ public class Submit {
   private static final String NO_SUBMIT_LIST_URL =
     "http://www.cs.pdx.edu/~whitlock/no-submit";
 
+  private static final String PROJECT_NAMES_LIST_URL =
+    "http://www.cs.pdx.edu/~whitlock/project-names";
+
   /////////////////////  Instance Fields  //////////////////////////
 
   /**
@@ -184,6 +187,8 @@ public class Submit {
    * @throws IllegalStateException If any state is incorrect or missing
    */
   public void validate() {
+    validateProjectName();
+
     if (projName == null) {
       throw new IllegalStateException("Missing project name");
     }
@@ -211,6 +216,18 @@ public class Submit {
         throw ex2;
       }
     }
+  }
+
+  private void validateProjectName() {
+    List<String> validProjectNames = fetchListOfValidProjectNames();
+    if (!validProjectNames.contains(projName)) {
+      String message = "\"" + projName + "\" is not in the list of valid project names: " + validProjectNames;
+      throw new IllegalStateException(message);
+    }
+  }
+
+  private List<String> fetchListOfValidProjectNames() {
+    return fetchListOfStringsFromUrl(PROJECT_NAMES_LIST_URL);
   }
 
   /**
@@ -268,7 +285,7 @@ public class Submit {
    * edu/pdx/cs410J/<studentId>.
    */
   private Set<File> searchForSourceFiles(Set<String> fileNames) {
-    Set<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
+    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
 
     // Files should be sorted by name
     SortedSet<File> files = new TreeSet<>(new Comparator<File>() {
@@ -349,11 +366,15 @@ public class Submit {
     return files;
   }
 
-  private Set<String> fetchListOfFilesThatCanNotBeSubmitted() {
-    Set<String> noSubmit = new HashSet<>();
+  private List<String> fetchListOfFilesThatCanNotBeSubmitted() {
+    return fetchListOfStringsFromUrl(NO_SUBMIT_LIST_URL);
+  }
+
+  private List<String> fetchListOfStringsFromUrl(String listUrl) {
+    List<String> noSubmit = new ArrayList<>();
 
     try {
-      URL url = new URL(NO_SUBMIT_LIST_URL);
+      URL url = new URL(listUrl);
       InputStreamReader isr = new InputStreamReader(url.openStream());
       BufferedReader br = new BufferedReader(isr);
       while (br.ready()) {
@@ -361,12 +382,11 @@ public class Submit {
       }
 
     } catch (MalformedURLException ex) {
-      err.println("** WARNING: Cannot access \"no submit\" list: " +
+      err.println("** WARNING: Cannot access " + listUrl + ": " +
         ex.getMessage());
 
     } catch (IOException ex) {
-      err.println("** WARNING: Problems while reading " +
-        "\"no submit\" list: " + ex);
+      err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
     }
     return noSubmit;
   }
@@ -592,7 +612,7 @@ public class Submit {
     err.println("\n** " + s + "\n");
     err.println("usage: java Submit [options] args file+");
     err.println("  args are (in this order):");
-    err.println("    project      What project is being submitted");
+    err.println("    project      What project is being submitted (Project1, Project2, etc.)");
     err.println("    student      Who is submitting the project?");
     err.println("    loginId      UNIX login id");
     err.println("    email        Student's email address");
