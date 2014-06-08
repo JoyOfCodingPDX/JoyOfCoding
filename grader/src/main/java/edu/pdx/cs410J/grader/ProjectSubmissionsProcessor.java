@@ -20,24 +20,30 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     warn("    File name: " + fileName);
     warn("    InputStream: " + inputStream);
 
-    File file = new File(directory, fileName);
+    byte[] bytes;
     try {
+      bytes = readAttachmentIntoByteArray(inputStream);
 
-      if (file.exists()) {
-        warnOfPreExistingFile(file);
-      }
-
-      ByteStreams.copy(inputStream, new FileOutputStream(file));
     } catch (IOException ex) {
-      logException("While writing \"" + fileName + "\" to \"" + directory + "\"", ex);
+      logException("While copying \"" + fileName + " \" to a byte buffer", ex);
+      return;
     }
+
 
     Manifest manifest;
     try {
-      manifest = getManifestFromJarFile(file);
+      manifest = getManifestFromByteArray(bytes);
 
     } catch (IOException ex) {
       logException("While reading jar file \"" + fileName + "\"", ex);
+      return;
+    }
+
+    try {
+      writeSubmissionToDisk(fileName, bytes, manifest);
+
+    } catch (IOException | SubmissionException ex) {
+      logException("While writing \"" + fileName + "\" to \"" + directory + "\"", ex);
       return;
     }
 
@@ -48,6 +54,37 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       logException("While noting submission from \"" + fileName + "\"", ex);
     }
 
+  }
+
+  private byte[] readAttachmentIntoByteArray(InputStream inputStream) throws IOException {
+    byte[] bytes;ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ByteStreams.copy(inputStream, baos);
+    bytes = baos.toByteArray();
+    return bytes;
+  }
+
+  private void writeSubmissionToDisk(String fileName, byte[] bytes, Manifest manifest) throws SubmissionException, IOException {
+    File projectDir = getProjectDirectory(manifest);
+
+    File file = new File(projectDir, fileName);
+    if (file.exists()) {
+      warnOfPreExistingFile(file);
+    }
+
+    warn("Writing " + fileName + " to " + projectDir);
+
+    ByteStreams.copy(new ByteArrayInputStream(bytes), new FileOutputStream(file));
+  }
+
+  private File getProjectDirectory(Manifest manifest) throws SubmissionException, IOException {
+    String projectName = getProjectNameFromManifest(manifest.getMainAttributes());
+    File projectDir = new File(directory, projectName);
+    if (!projectDir.exists()) {
+      if(!projectDir.mkdirs()) {
+        throw new IOException("Could not create directory: " + projectDir);
+      }
+    }
+    return projectDir;
   }
 
   private void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
@@ -76,13 +113,17 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private Assignment getProjectFromGradeBook(Attributes attrs) throws SubmissionException {
-    String projectName = getManifestAttributeValue(attrs, PROJECT_NAME, "Project name missing from manifest");
+    String projectName = getProjectNameFromManifest(attrs);
 
     Assignment assignment = this.gradeBook.getAssignment(projectName);
     if (assignment == null) {
       throw new SubmissionException("Assignment with name \"" + projectName + "\" is not in grade book");
     }
     return assignment;
+  }
+
+  private String getProjectNameFromManifest(Attributes attrs) throws SubmissionException {
+    return getManifestAttributeValue(attrs, PROJECT_NAME, "Project name missing from manifest");
   }
 
   private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
@@ -108,8 +149,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   }
 
-  private Manifest getManifestFromJarFile(File file) throws IOException {
-    JarInputStream in = new JarInputStream(new FileInputStream(file));
+  private Manifest getManifestFromByteArray(byte[] file) throws IOException {
+    JarInputStream in = new JarInputStream(new ByteArrayInputStream(file));
     return in.getManifest();
   }
 
