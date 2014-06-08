@@ -9,6 +9,7 @@
   <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
+    <module>gwt-parent</module>
     <module>examples</module>
     <module>web</module>
     <!-- module>gwt</module -->
