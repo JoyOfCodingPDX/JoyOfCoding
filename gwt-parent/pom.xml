@@ -16,6 +16,8 @@
 
     <packaging>pom</packaging>
 
+    <name>Parent Project for GWT Projects</name>
+
     <properties>
 
         <gwt.version>2.6.0</gwt.version>
