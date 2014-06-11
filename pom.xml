@@ -9,13 +9,14 @@
   <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
+    <module>gwt-parent</module>
     <module>examples</module>
     <module>web</module>
     <!--<module>gwt</module>-->
     <module>projects</module>
     <module>family</module>
     <module>grader</module>
-    <module>familygwt</module>
+    <!--<module>familygwt</module>-->
     <module>apptbook-archetype</module>
     <module>apptbook-web-archetype</module>
     <module>apptbook-gwt-archetype</module>
@@ -56,13 +57,9 @@
         <maven>3.2.1</maven>
     </prerequisites>
     <properties>
-
-        <!-- convenience to define GWT version in one place -->
-        <gwt.version>2.6.0</gwt.version>
-
         <!--  tell the compiler we can use Java 7 -->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <groovy.version>2.2.2</groovy.version>
 
