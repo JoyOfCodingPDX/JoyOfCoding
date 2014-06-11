@@ -12,7 +12,7 @@
     <module>gwt-parent</module>
     <module>examples</module>
     <module>web</module>
-    <!-- module>gwt</module -->
+    <!--<module>gwt</module>-->
     <module>projects</module>
     <module>family</module>
     <module>grader</module>
