@@ -18,6 +18,11 @@
 
     <name>Parent Project for GWT Projects</name>
 
+    <modules>
+        <module>gwt</module>
+        <module>familygwt</module>
+    </modules>
+
     <properties>
 
         <gwt.version>2.6.0</gwt.version>
