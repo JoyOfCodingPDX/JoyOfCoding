@@ -23,8 +23,8 @@ public class WriteToFile {
 
       // Write the command line arguments to the file
       for (int i = 1; i < args.length; i++) {
-      	writer.write(args[i]);
-      	writer.write('\n');
+	writer.write(args[i]);
+	writer.write('\n');
       }
     
       // All done

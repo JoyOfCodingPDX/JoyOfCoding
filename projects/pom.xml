@@ -2,20 +2,20 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2013</version>
+    <version>Summer2014</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>projects</artifactId>
   <name>CS410J Project APIs</name>
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
-  <version>Summer2013</version>
+  <version>Summer2014</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

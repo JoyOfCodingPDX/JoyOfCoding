@@ -59,7 +59,7 @@ public class AboutLoops {
 	
 	@Koan
 	public void extendedForLoopBreak() {
-		String[] sa = {"Dog", "Cat", "Tiger" };
+		String[] sa = {"Dog", "Cat", "Tiger"};
 		int count = 0;
 		for(String current : sa) {
 			if("Cat".equals(current)) {
@@ -72,7 +72,7 @@ public class AboutLoops {
 	
 	@Koan
 	public void extendedForLoopContinue() {
-		String[] sa = {"Dog", "Cat", "Tiger" };
+		String[] sa = {"Dog", "Cat", "Tiger"};
 		int count = 0;
 		for(String current : sa) {
 			if("Dog".equals(current)) {
@@ -84,7 +84,6 @@ public class AboutLoops {
 		assertEquals(count, __);
 	}
 
-	
 	@Koan
 	public void forLoopContinueLabel() {
 		int count = 0;

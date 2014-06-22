@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>CS410J</artifactId>
+    <artifactId>gwt-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2013</version>
+    <version>Summer2014</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2013</version>
+  <version>Summer2014</version>
   <name>Example GWT Application</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -36,19 +36,19 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.8.5</version>
+      <version>1.9.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>r06</version>
+      <version>16.0.1</version>
       <!-- Can't use guava in GWT client code yet -->
     </dependency>
     <dependency>
@@ -64,17 +64,17 @@
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
-      <version>1.5.0</version>
+      <version>2.1.2</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2013</version>
+      <version>Summer2014</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2013</version>
+      <version>Summer2014</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
@@ -85,7 +85,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>2.5.1</version>
+          <version>${gwt.version}</version>
             <configuration>
                 <runTarget>edu.pdx.cs410J.gwt.Examples/Examples.html</runTarget>
                 <module>edu.pdx.cs410J.gwt.Examples</module>

@@ -1,11 +1,12 @@
 package edu.pdx.cs410J.web;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the <code>HttpRequestHelper</code> class
@@ -16,9 +17,9 @@ public class HttpRequestHelperTest {
 
   @Test
   public void testGet() throws IOException {
-    HttpRequestHelper.Response response = helper.get("http://www.yahoo.com");
+    HttpRequestHelper.Response response = helper.get("http://www.google.com");
     assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
-    assertTrue(response.getContent().contains("Yahoo"));
+    assertTrue(response.getContent().contains("Google"));
   }
 
   @Test

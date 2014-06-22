@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.junit;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class tests the functionality of the <code>Section</code> class

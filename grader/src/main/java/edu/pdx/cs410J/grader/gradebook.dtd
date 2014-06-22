@@ -61,7 +61,7 @@ assignments, and some notes -->
 <!-- A grade has an assignment name, a score, and some notes -->
 <!ELEMENT grade (name, score, notes?)>
 <!ATTLIST grade
-  type (INCOMPLETE | NOGRADE) #IMPLIED
+  type (INCOMPLETE | NO_GRADE) #IMPLIED
 >
 
 <!ELEMENT score (#PCDATA)>

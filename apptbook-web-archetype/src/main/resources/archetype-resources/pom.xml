@@ -3,7 +3,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2011</version>
+    <version>Summer2014</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -23,35 +23,53 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>1.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2014</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2014</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2011</version>
+      <version>Summer2014</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
+      <version>3.0-alpha-1</version>
     </dependency>
   </dependencies>
   <build>
     <finalName>${artifactId}</finalName>
     <plugins>
+      <plugin>
+        <!-- Need version 2.1.1 for Java 7 -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version>
+      </plugin>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
@@ -112,7 +130,9 @@
             <containerId>jetty6x</containerId>
             <type>embedded</type>
             <systemProperties>
-              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+              <org.apache.commons.logging.Log>
+                org.apache.commons.logging.impl.SimpleLog
+              </org.apache.commons.logging.Log>
             </systemProperties>
           </container>
           <wait>false</wait>
@@ -120,29 +140,42 @@
             <properties>
               <cargo.servlet.port>8080</cargo.servlet.port>
             </properties>
-            <deployables>
-              <deployable>
-                <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
-                <pingURL>http://localhost:8080/${project.build.finalName}/appointments</pingURL>
-              </deployable>
-            </deployables>
           </configuration>
+          <deployables>
+            <deployable>
+              <location>
+                ${project.build.directory}/${project.build.finalName}.${project.packaging}
+              </location>
+              <pingURL>http://localhost:8080/${project.build.finalName}/appointments</pingURL>
+              <pingTimeout>20000</pingTimeout>
+            </deployable>
+          </deployables>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
+        <version>2.4</version>
         <configuration>
           <archive>
             <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
-              <classpathLayoutType>repository</classpathLayoutType>
               <mainClass>${package}.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.7.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -160,7 +193,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2011</version>
+                <version>Summer2014</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
             </configuration>

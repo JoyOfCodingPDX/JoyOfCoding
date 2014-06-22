@@ -2,20 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
-  <version>Summer2013</version>
+  <version>Summer2014</version>
   <artifactId>CS410J</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
   <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
+    <module>gwt-parent</module>
     <module>examples</module>
     <module>web</module>
-    <!-- module>gwt</module -->
+    <!--<module>gwt</module>-->
     <module>projects</module>
     <module>family</module>
     <module>grader</module>
-    <module>familygwt</module>
+    <!--<module>familygwt</module>-->
     <module>apptbook-archetype</module>
     <module>apptbook-web-archetype</module>
     <module>apptbook-gwt-archetype</module>
@@ -26,6 +27,7 @@
     <module>phonebill-web-archetype</module>
     <module>phonebill-gwt-archetype</module>
     <module>java-koans-archetype</module>
+    <module>student-archetype</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
   <organization>
@@ -52,22 +54,25 @@
     <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
     <prerequisites>
-        <maven>3.0.5</maven>
+        <maven>3.2.1</maven>
     </prerequisites>
     <properties>
-
-        <!-- convenience to define GWT version in one place -->
-        <gwt.version>2.5.1</gwt.version>
-
         <!--  tell the compiler we can use Java 7 -->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-        <groovy.version>1.8.3</groovy.version>
+        <groovy.version>2.2.2</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+    <repositories>
+      <repository>
+        <id>CS410J</id>
+        <name>CS410J Maven Repository</name>
+        <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
+      </repository>
+    </repositories>
   <pluginRepositories>
     <pluginRepository>
       <id>Codehaus Snapshots</id>
@@ -82,6 +87,29 @@
   </pluginRepositories>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.3.1</version>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <rules>
+            <requireMavenVersion>
+              <version>3.0.5</version> <!-- Cloudbees only supports 3.0.5 -->
+            </requireMavenVersion>
+            <requireJavaVersion>
+              <version>${maven.compiler.target}</version>
+            </requireJavaVersion>
+          </rules>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -129,14 +157,19 @@
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
+        <version>2.7</version>
         <dependencies>
          <dependency>
            <groupId>org.apache.maven.wagon</groupId>
-           <artifactId>wagon-ssh</artifactId>
+           <artifactId>wagon-ssh-external</artifactId>
            <version>1.0-beta-7</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
       </plugin>
     </plugins>
   </build>
@@ -166,6 +199,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-2</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -238,12 +272,12 @@
     <repository>
       <id>whitlock-PSU</id>
       <name>David Whitlock's PSU Repository</name>
-      <url>scp://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
+      <url>scpexe://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
     </repository>
     <site>
       <id>whitlock-PSU</id>
       <name>David Whitlock's PSU Web Site</name>
-      <url>scp://cs.pdx.edu/u/whitlock/public_html/site</url>
+      <url>scpexe://cs.pdx.edu/u/whitlock/public_html/site</url>
     </site>
   </distributionManagement>
 </project>
