@@ -10,7 +10,7 @@ import java.util.Arrays;
  *
  * @since Summer 2014
  */
-public class FindJavaFiles8 {
+public class FindJavaFilesUsingJava8 {
 
   /**
    * Prints out the names all of the Java source files in a directory
@@ -21,7 +21,7 @@ public class FindJavaFiles8 {
     Arrays.asList(javaFiles).forEach(System.out::println);
 
     File[] subdirectories = directory.listFiles(File::isDirectory);
-    Arrays.asList(subdirectories).forEach(FindJavaFiles8::findJavaFiles);
+    Arrays.asList(subdirectories).forEach(FindJavaFilesUsingJava8::findJavaFiles);
   }
 
   /**
