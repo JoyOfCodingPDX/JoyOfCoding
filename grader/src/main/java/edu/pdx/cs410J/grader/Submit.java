@@ -1,8 +1,5 @@
 package edu.pdx.cs410J.grader;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -15,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.Attributes;
+import java.util.stream.Collectors;
 
 /**
  * This class is used to submit assignments in CS410J.  The user
@@ -288,15 +286,8 @@ public class Submit {
     List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
 
     // Files should be sorted by name
-    SortedSet<File> files = new TreeSet<>(new Comparator<File>() {
-      @Override
-      public int compare(File o1, File o2) {
-        String name1 = o1.toString();
-        String name2 = o2.toString();
-
-        return name1.compareTo(name2);
-      }
-    });
+    SortedSet<File> files =
+      new TreeSet<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
 
     for (String fileName : fileNames) {
       File file = new File(fileName);
@@ -465,12 +456,8 @@ public class Submit {
 
     db("Created Jar file: " + jarFile);
 
-    Map<File, String> sourceFilesWithNames = Maps.toMap(sourceFiles, new Function<File, String>() {
-      @Override
-      public String apply(File file) {
-        return getRelativeName(file);
-      }
-    });
+    Map<File, String> sourceFilesWithNames =
+      sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
 
     return new JarMaker(sourceFilesWithNames, jarFile, getManifestEntries()).makeJar();
   }
