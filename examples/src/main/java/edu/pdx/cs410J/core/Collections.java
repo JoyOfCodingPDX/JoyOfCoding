@@ -20,14 +20,14 @@ public class Collections {
   }
 
   public static void main(String[] args) {
-    Collection<String> c = new ArrayList<>();
+    Collection<String> c = new ArrayList<String>();
     c.add("One");
     c.add("Two");
     c.add("Three");
     print(c);
     System.out.println("");
 
-    Set<String> set = new HashSet<>(c);
+    Set<String> set = new HashSet<String>(c);
     set.add("Four");
     set.add("Two");
     print(set);
