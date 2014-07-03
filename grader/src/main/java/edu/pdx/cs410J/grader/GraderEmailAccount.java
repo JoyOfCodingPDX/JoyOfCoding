@@ -33,7 +33,9 @@ public class GraderEmailAccount {
         }
       }
 
-    } catch (MessagingException | IOException ex ) {
+    } catch (MessagingException ex ) {
+      throw new IllegalStateException("While printing unread messages", ex);
+    } catch (IOException ex ) {
       throw new IllegalStateException("While printing unread messages", ex);
     }
   }

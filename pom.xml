@@ -52,11 +52,11 @@
     <url>https://projects.cecs.pdx.edu/svn/CS399J/</url>
   </scm>
     <prerequisites>
-        <maven>3.2.1</maven>
+        <maven>3.0.4</maven>
     </prerequisites>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
 
         <groovy.version>2.2.2</groovy.version>
 
@@ -99,7 +99,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.0.5</version> <!-- Cloudbees only supports 3.0.5 -->
+              <version>3.0.4</version>
             </requireMavenVersion>
             <requireJavaVersion>
               <version>${maven.compiler.target}</version>

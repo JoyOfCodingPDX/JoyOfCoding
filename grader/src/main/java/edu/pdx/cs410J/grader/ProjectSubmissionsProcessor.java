@@ -42,7 +42,10 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     try {
       writeSubmissionToDisk(fileName, bytes, manifest);
 
-    } catch (IOException | SubmissionException ex) {
+    } catch (IOException ex) {
+      logException("While writing \"" + fileName + "\" to \"" + directory + "\"", ex);
+      return;
+    } catch (SubmissionException ex) {
       logException("While writing \"" + fileName + "\" to \"" + directory + "\"", ex);
       return;
     }
