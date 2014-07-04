@@ -102,7 +102,7 @@ class JarMaker {
     assert jarFileName != null;
     File jarFile = new File(jarFileName);
 
-    Map<Attributes.Name, String> manifestEntries = new HashMap<Attributes.Name, String>();
+    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(new Attributes.Name("Created-By"), System.getProperty("user.name"));
     manifestEntries.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
 
