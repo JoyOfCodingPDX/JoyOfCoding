@@ -14,7 +14,10 @@ import java.util.Map;
  *
  * @author David Whitlock
  * @since Summer 2010
+ * @deprecated This class imports grades from Blackboard.  D2L replaced
+ *             Blackboard years ago.
  */
+@Deprecated()
 public class ImportQuizGrades
 {
     private static final int LAST_NAME_INDEX = 0;
