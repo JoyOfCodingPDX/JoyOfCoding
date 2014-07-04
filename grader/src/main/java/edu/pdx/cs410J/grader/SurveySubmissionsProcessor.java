@@ -46,7 +46,10 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
       XmlStudentParser parser = new XmlStudentParser(file);
       student = parser.parseStudent();
 
-    } catch (IOException | ParserException ex) {
+    } catch (IOException ex) {
+      logException("While parsing \"" + file + "\"", ex);
+      return;
+    } catch (ParserException ex) {
       logException("While parsing \"" + file + "\"", ex);
       return;
     }
