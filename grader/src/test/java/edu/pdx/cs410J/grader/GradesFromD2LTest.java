@@ -91,7 +91,28 @@ public class GradesFromD2LTest {
   @Ignore
   @Test
   public void matchStudentDifferentFirstAndLastNameButSameD2LId() {
+    String d2lId = "d2lId";
+    String firstName = "firstName";
+    String lastName = "lastName";
 
+    GradesFromD2L grades = new GradesFromD2L();
+    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId(d2lId).create();
+    grades.addStudent(d2lStudent);
+
+    GradeBook book = new GradeBook("test");
+    Student student = new Student("studentId");
+    student.setFirstName(firstName + "2");
+    student.setLastName(lastName + "2");
+    student.setD2LId(d2lId);
+    book.addStudent(student);
+    book.makeClean();
+
+    assertThat(student.getD2LId(), equalTo(d2lId));
+    assertThat(student.isDirty(), is(false));
+
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(student.getD2LId(), equalTo(d2lId));
+    assertThat(student.isDirty(), is(false));
   }
 
 }
