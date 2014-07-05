@@ -19,10 +19,19 @@ public class GradesFromD2L {
       Student student = book.getStudent(studentId);
       if (haveSameD2LId(d2lStudent, student)) {
         return student;
+
+      } else if (haveSameFirstAndLastNameIgnoringCase(d2lStudent, student)) {
+        student.setD2LId(d2lStudent.getD2lId());
+        return student;
       }
     }
 
     return null;
+  }
+
+  private boolean haveSameFirstAndLastNameIgnoringCase(D2LStudent d2lStudent, Student student) {
+    return d2lStudent.getFirstName().equalsIgnoreCase(student.getFirstName()) &&
+      d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
   }
 
   private boolean haveSameD2LId(D2LStudent d2lStudent, Student student) {
@@ -42,6 +51,14 @@ public class GradesFromD2L {
 
     public String getD2lId() {
       return d2lId;
+    }
+
+    public String getFirstName() {
+      return firstName;
+    }
+
+    public String getLastName() {
+      return lastName;
     }
   }
 

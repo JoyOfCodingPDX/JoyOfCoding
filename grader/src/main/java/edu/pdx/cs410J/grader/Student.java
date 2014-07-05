@@ -222,13 +222,12 @@ public class Student extends NotableImpl {
   /**
    * Marks this <code>Student</code> as being clean
    */
+  @Override
   public void makeClean() {
-	super.makeClean();
+	  super.makeClean();
 
     // Make all Grades clean
-    Iterator iter = this.grades.values().iterator();
-    while (iter.hasNext()) {
-      Grade grade = (Grade) iter.next();
+    for (Grade grade : this.grades.values()) {
       grade.makeClean();
     }
   }
@@ -520,6 +519,7 @@ public class Student extends NotableImpl {
   }
 
   public void setD2LId(String d2LId) {
+    this.setDirty(true);
     this.d2LId = d2LId;
   }
 
