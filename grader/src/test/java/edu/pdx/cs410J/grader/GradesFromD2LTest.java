@@ -1,12 +1,9 @@
 package edu.pdx.cs410J.grader;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 public class GradesFromD2LTest {
 
@@ -88,7 +85,6 @@ public class GradesFromD2LTest {
     assertThat(student.isDirty(), is(true));
   }
 
-  @Ignore
   @Test
   public void matchStudentDifferentFirstAndLastNameButSameD2LId() {
     String d2lId = "d2lId";
