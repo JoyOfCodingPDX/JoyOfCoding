@@ -28,6 +28,7 @@ public class Student extends NotableImpl {
 
   private List<String> late;   // Names of late Assignments
   private List<String> resubmitted;  // Names of resubmitted Assignments
+  private String d2LId;
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -516,5 +517,13 @@ public class Student extends NotableImpl {
 
   public Grade getGrade(Assignment project) {
     return this.getGrade(project.getName());
+  }
+
+  public void setD2LId(String d2LId) {
+    this.d2LId = d2LId;
+  }
+
+  public String getD2LId() {
+    return d2LId;
   }
 }
