@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.grader;
 
+import java.io.Reader;
+
 public class D2LCSVParser {
 
   private static final String[] ignoredColumnNames = new String[] {
@@ -9,6 +11,11 @@ public class D2LCSVParser {
     "Adjusted Final Grade Denominator",
     "End-of-Line Indicator"
   };
+
+  public D2LCSVParser(Reader reader) {
+
+
+  }
 
   public boolean isColumnIgnored(String columnName) {
     return contains(ignoredColumnNames, columnName);
@@ -25,4 +32,7 @@ public class D2LCSVParser {
   }
 
 
+  public GradesFromD2L parse() {
+    return new GradesFromD2L();
+  }
 }

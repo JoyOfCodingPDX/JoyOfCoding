@@ -38,6 +38,10 @@ public class GradesFromD2L {
     return d2lStudent.getD2lId().equals(student.getD2LId());
   }
 
+  public List<D2LStudent> getStudents() {
+    return this.students;
+  }
+
   static class D2LStudent {
     private final String firstName;
     private final String lastName;
