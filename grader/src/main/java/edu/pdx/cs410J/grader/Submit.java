@@ -103,7 +103,7 @@ public class Submit {
   /**
    * The names of the files to be submitted
    */
-  private Set<String> fileNames = new HashSet<String>();
+  private Set<String> fileNames = new HashSet<>();
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -288,7 +288,7 @@ public class Submit {
     List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
 
     // Files should be sorted by name
-    SortedSet<File> files = new TreeSet<File>(new Comparator<File>() {
+    SortedSet<File> files = new TreeSet<>(new Comparator<File>() {
       @Override
       public int compare(File o1, File o2) {
         String name1 = o1.toString();
@@ -371,7 +371,7 @@ public class Submit {
   }
 
   private List<String> fetchListOfStringsFromUrl(String listUrl) {
-    List<String> noSubmit = new ArrayList<String>();
+    List<String> noSubmit = new ArrayList<>();
 
     try {
       URL url = new URL(listUrl);
@@ -422,13 +422,14 @@ public class Submit {
 
       try {
         String line = in.readLine().trim();
-        if (line.equals("yes")) {
-          return true;
-        } else if (line.equals("no")) {
-          return false;
-        } else {
-          err.println("** Please enter yes or no");
-
+        switch (line) {
+          case "yes":
+            return true;
+          case "no":
+            return false;
+          default:
+            err.println("** Please enter yes or no");
+            break;
         }
 
       } catch (IOException ex) {
@@ -473,7 +474,7 @@ public class Submit {
   }
 
   private Map<Attributes.Name, String> getManifestEntries() {
-    Map<Attributes.Name, String> manifestEntries = new HashMap<Attributes.Name, String>();
+    Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(ManifestAttributes.USER_NAME, userName);
     manifestEntries.put(ManifestAttributes.USER_ID, userId);
     manifestEntries.put(ManifestAttributes.USER_EMAIL, userEmail);
