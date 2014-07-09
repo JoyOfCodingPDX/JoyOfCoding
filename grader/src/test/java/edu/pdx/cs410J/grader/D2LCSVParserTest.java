@@ -4,12 +4,14 @@ import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -17,7 +19,7 @@ import static org.hamcrest.Matchers.hasSize;
 public class D2LCSVParserTest {
 
   @Test
-  public void ignoreExpectedColumns() {
+  public void ignoreExpectedColumns() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
 
     assertThat(parser.isColumnIgnored("Calculated Final Grade Numerator"), is(true));
@@ -29,18 +31,41 @@ public class D2LCSVParserTest {
 
   @Ignore
   @Test
-  public void doNotIgnoreNonIgnoredColumns() {
+  public void doNotIgnoreNonIgnoredColumns() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
 
     assertThat(parser.isColumnIgnored("First Name"), is(false));
   }
 
   @Test
-  public void canParseCsvWithNoStudents() {
-
+  public void canParseCsvWithNoStudents() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
     GradesFromD2L grades = parser.parse();
     assertThat(grades.getStudents(), hasSize(0));
+  }
+
+  @Test
+  public void usernameIsFirstColumn() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getUsernameColumn(), equalTo(0));
+  }
+
+  @Test
+  public void lastNameIsSecondColumn() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getLastNameColumn(), equalTo(1));
+  }
+
+  @Test
+  public void firstNameIsThirdColumn() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getFirstNameColumn(), equalTo(2));
+  }
+
+  @Test
+  public void emailIsFourthColumn() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getEmailColumn(), equalTo(3));
   }
 
   private CSV createCsv() {
