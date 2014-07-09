@@ -4,6 +4,8 @@ import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class D2LCSVParser {
 
@@ -18,6 +20,7 @@ public class D2LCSVParser {
   private int lastNameColumn = -1;
   private int firstNameColumn = -1;
   private int emailColumn;
+  private Collection<String> quizNames = new ArrayList<>();
 
   public D2LCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader( reader );
@@ -42,6 +45,10 @@ public class D2LCSVParser {
         case "Email":
           emailColumn = i;
           break;
+        default:
+          if (!isColumnIgnored(cell)) {
+            quizNames.add(cell);
+          }
       }
     }
 
@@ -80,5 +87,9 @@ public class D2LCSVParser {
 
   public int getEmailColumn() {
     return emailColumn;
+  }
+
+  public Iterable<String> getQuizNames() {
+    return quizNames;
   }
 }

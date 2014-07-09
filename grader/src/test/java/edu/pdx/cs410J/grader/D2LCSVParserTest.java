@@ -11,8 +11,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -66,6 +65,25 @@ public class D2LCSVParserTest {
   public void emailIsFourthColumn() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
     assertThat(parser.getEmailColumn(), equalTo(3));
+  }
+
+  @Test
+  public void expectedQuizNames() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getQuizNames(), hasItem("Programming Background Quiz Points Grade <Numeric MaxPoints:4>"));
+    assertThat(parser.getQuizNames(), hasItem("Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>"));
+    assertThat(parser.getQuizNames(), hasItem("Language API Quiz Points Grade <Numeric MaxPoints:4>"));
+  }
+
+  @Test
+  public void quizNameDoNotContainIgnoredColumns() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Numerator")));
+    assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Denominator")));
+    assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Numerator")));
+    assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Denominator")));
+    assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Denominator")));
+    assertThat(parser.getQuizNames(), not(hasItem("End-of-Line Indicator")));
   }
 
   private CSV createCsv() {
