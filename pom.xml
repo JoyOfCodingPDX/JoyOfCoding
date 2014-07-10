@@ -55,7 +55,6 @@
         <maven>3.2.1</maven>
     </prerequisites>
     <properties>
-        <!--  tell the compiler we can use Java 7 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
