@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,12 +27,14 @@ public class D2LCSVParserTest {
     assertThat(parser.isColumnIgnored("End-of-Line Indicator"), is(true));
   }
 
-  @Ignore
   @Test
   public void doNotIgnoreNonIgnoredColumns() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
 
+    assertThat(parser.isColumnIgnored("Username"), is(false));
     assertThat(parser.isColumnIgnored("First Name"), is(false));
+    assertThat(parser.isColumnIgnored("Last Name"), is(false));
+    assertThat(parser.isColumnIgnored("Email"), is(false));
   }
 
   @Test
@@ -78,12 +79,24 @@ public class D2LCSVParserTest {
   @Test
   public void quizNameDoNotContainIgnoredColumns() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
     assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Numerator")));
     assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Denominator")));
     assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Numerator")));
     assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Denominator")));
     assertThat(parser.getQuizNames(), not(hasItem("Adjusted Final Grade Denominator")));
     assertThat(parser.getQuizNames(), not(hasItem("End-of-Line Indicator")));
+  }
+
+
+  @Test
+  public void studentInformationIsNotConsideredAQuiz() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
+    assertThat(parser.getQuizNames(), not(hasItem("Username")));
+    assertThat(parser.getQuizNames(), not(hasItem("First Name")));
+    assertThat(parser.getQuizNames(), not(hasItem("Last Name")));
+    assertThat(parser.getQuizNames(), not(hasItem("Email")));
   }
 
   private CSV createCsv() {
