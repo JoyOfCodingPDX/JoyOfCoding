@@ -16,6 +16,7 @@ public class D2LCSVParser {
     "Adjusted Final Grade Denominator",
     "End-of-Line Indicator"
   };
+  private final GradesFromD2L grades;
   private int usernameColumn = -1;
   private int lastNameColumn = -1;
   private int firstNameColumn = -1;
@@ -27,6 +28,25 @@ public class D2LCSVParser {
     String[] firstLine = csv.readNext();
     extractColumnNamesFromFirstLineOfCsv(firstLine);
 
+    grades = new GradesFromD2L();
+
+    String[] studentLine;
+    while ((studentLine = csv.readNext()) != null) {
+      addStudentAndGradesFromLineOfCsv(studentLine);
+    }
+  }
+
+  private void addStudentAndGradesFromLineOfCsv(String[] line) {
+    GradesFromD2L.D2LStudentBuilder builder = new GradesFromD2L.D2LStudentBuilder();
+    builder.setFirstName(getFirstNameFromLine(line));
+    builder.setLastName("");
+    builder.setD2LId("");
+
+    this.grades.addStudent(builder.create());
+  }
+
+  private String getFirstNameFromLine(String[] line) {
+    return line[getFirstNameColumn()];
   }
 
   private void extractColumnNamesFromFirstLineOfCsv(String[] firstLine) {
@@ -102,5 +122,9 @@ public class D2LCSVParser {
 
   public Iterable<String> getQuizNames() {
     return quizNames;
+  }
+
+  public GradesFromD2L getGrades() {
+    return grades;
   }
 }

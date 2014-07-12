@@ -1,6 +1,9 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.collect.Lists;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,10 +11,15 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 
 public class D2LCSVParserTest {
@@ -99,10 +107,64 @@ public class D2LCSVParserTest {
     assertThat(parser.getQuizNames(), not(hasItem("Email")));
   }
 
+  @Test
+  public void gradesPopulatedWithStudents() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
+  }
+
+  private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithFirstName(String firstName) {
+    return new TypeSafeMatcher<List<GradesFromD2L.D2LStudent>>() {
+      @Override
+      protected boolean matchesSafely(List<GradesFromD2L.D2LStudent> students) {
+        for (GradesFromD2L.D2LStudent student : students) {
+          if (student.getFirstName().equals(firstName)) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("a student with a first name of ").appendValue(firstName);
+      }
+
+      @Override
+      protected void describeMismatchSafely(List<GradesFromD2L.D2LStudent> students, Description mismatchDescription) {
+        mismatchDescription.appendText("the students' first names were: ");
+        Stream<String> firstNames = students.stream().map(GradesFromD2L.D2LStudent::getFirstName);
+        mismatchDescription.appendValueList("", ",", "", toIterable(firstNames));
+      }
+
+      private <T> Iterable<T> toIterable(final Stream<T> firstNames) {
+        return new Iterable<T>() {
+          @Override
+          public Iterator<T> iterator() {
+            return firstNames.iterator();
+          }
+
+          @Override
+          public void forEach(Consumer<? super T> action) {
+            firstNames.forEach(action);
+          }
+
+          @Override
+          public Spliterator<T> spliterator() {
+            return firstNames.spliterator();
+          }
+        };
+      }
+    };
+  }
+
   private CSV createCsv() {
     CSV csv = new CSV();
     csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
-    csv.addLine("student1","Student","One","student1@email.com","4","","","","","","4","24","","","");
+    csv.addLine("student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
     return csv;
   }
 
