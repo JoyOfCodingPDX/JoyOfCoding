@@ -133,8 +133,18 @@ public class D2LCSVParserTest {
     assertThat(student.get().getScore("Programming Background Quiz"), equalTo(4.0));
   }
 
+  @Test
+  public void gradesPopulatedWithScores2() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("student2", grades);
+    assertThat("Could not find student", student.isPresent(), is(true));
+    assertThat(student.get().getScore("Programming Background Quiz"), equalTo(3.0));
+  }
+
   private java.util.Optional<GradesFromD2L.D2LStudent> getStudentWithId(String d2lId, GradesFromD2L grades) {
-    return grades.getStudents().stream().findAny().filter(s -> s.getD2lId().equals(d2lId));
+    return grades.getStudents().stream().filter(s -> s.getD2lId().equals(d2lId)).findAny();
   }
 
   private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithD2LId(String d2lId) {
@@ -153,7 +163,7 @@ public class D2LCSVParserTest {
     CSV csv = new CSV();
     csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
     csv.addLine("student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
-    csv.addLine("student2","Two","Student","student2@email.com","4","","","","","","4","24","","","");
+    csv.addLine("student2","Two","Student","student2@email.com","3","","","","","","4","24","","","");
     return csv;
   }
 

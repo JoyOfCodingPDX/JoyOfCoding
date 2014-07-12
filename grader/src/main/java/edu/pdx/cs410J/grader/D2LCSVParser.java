@@ -96,8 +96,7 @@ public class D2LCSVParser {
           break;
         default:
           if (!isColumnIgnored(cell)) {
-            String quizName = extractQuizName(cell);
-            addQuiz(quizName, i);
+            addQuiz(extractQuizName(cell), i);
           }
       }
     }
