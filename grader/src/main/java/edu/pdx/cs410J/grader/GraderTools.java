@@ -10,7 +10,7 @@ public class GraderTools {
 
   public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
     String tool = null;
-    List<String> toolArgs = new ArrayList<String>();
+    List<String> toolArgs = new ArrayList<>();
     for (String arg : args) {
       if (tool == null) {
         tool = arg;
@@ -25,15 +25,18 @@ public class GraderTools {
     }
 
     Class toolClass;
-    if (tool.equals("gradebook")) {
-      toolClass = GradeBookGUI.class;
+    switch (tool) {
+      case "gradebook":
+        toolClass = GradeBookGUI.class;
+        break;
 
-    } else if (tool.equals("fetch")) {
-      toolClass = FetchAndProcessGraderEmail.class;
+      case "fetch":
+        toolClass = FetchAndProcessGraderEmail.class;
+        break;
 
-    } else {
-      usage("Unknown tool: " + tool);
-      return;
+      default:
+        usage("Unknown tool: " + tool);
+        return;
     }
 
     invokeMainMethod(toolClass, toolArgs.toArray(new String[toolArgs.size()]));

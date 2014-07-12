@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.grader;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
 
@@ -14,6 +12,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.util.stream.Collectors;
 
 class JarMaker {
 
@@ -97,12 +96,8 @@ class JarMaker {
       usage("Missing files");
     }
 
-    Map<File, String> sourceFilesAndNames = Maps.toMap(files, new Function<File, String>() {
-      @Override
-      public String apply(File file) {
-        return file.getPath();
-      }
-    });
+    Map<File, String> sourceFilesAndNames =
+      files.stream().collect(Collectors.toMap(file -> file, File::getPath));
 
     assert jarFileName != null;
     File jarFile = new File(jarFileName);
