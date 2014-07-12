@@ -71,9 +71,9 @@ public class D2LCSVParserTest {
   @Test
   public void expectedQuizNames() throws IOException {
     D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
-    assertThat(parser.getQuizNames(), hasItem("Programming Background Quiz Points Grade <Numeric MaxPoints:4>"));
-    assertThat(parser.getQuizNames(), hasItem("Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>"));
-    assertThat(parser.getQuizNames(), hasItem("Language API Quiz Points Grade <Numeric MaxPoints:4>"));
+    assertThat(parser.getQuizNames(), hasItem("Programming Background Quiz"));
+    assertThat(parser.getQuizNames(), hasItem("Java Language and OOP Quiz"));
+    assertThat(parser.getQuizNames(), hasItem("Language API Quiz"));
   }
 
   @Test
@@ -102,6 +102,7 @@ public class D2LCSVParserTest {
   private CSV createCsv() {
     CSV csv = new CSV();
     csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
+    csv.addLine("student1","Student","One","student1@email.com","4","","","","","","4","24","","","");
     return csv;
   }
 

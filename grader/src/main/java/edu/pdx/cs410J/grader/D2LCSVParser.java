@@ -47,11 +47,22 @@ public class D2LCSVParser {
           break;
         default:
           if (!isColumnIgnored(cell)) {
-            quizNames.add(cell);
+            quizNames.add(extractQuizName(cell));
           }
       }
     }
 
+  }
+
+  private String extractQuizName(String cell) {
+    // Programming Background Quiz Points Grade <Numeric MaxPoints:4>
+    int index = cell.indexOf(" Points Grade");
+    if (index > -1) {
+      return cell.substring(0, index);
+
+    } else {
+      return cell;
+    }
   }
 
   public boolean isColumnIgnored(String columnName) {
