@@ -4,8 +4,8 @@ import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class D2LCSVParser {
 
@@ -21,7 +21,7 @@ public class D2LCSVParser {
   private int lastNameColumn = -1;
   private int firstNameColumn = -1;
   private int emailColumn;
-  private Collection<String> quizNames = new ArrayList<>();
+  private Map<Integer, String> quizColumnsAndNames = new HashMap<>();
 
   public D2LCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader( reader );
@@ -37,12 +37,33 @@ public class D2LCSVParser {
   }
 
   private void addStudentAndGradesFromLineOfCsv(String[] line) {
-    GradesFromD2L.D2LStudentBuilder builder = new GradesFromD2L.D2LStudentBuilder();
+    GradesFromD2L.D2LStudentBuilder builder = GradesFromD2L.newStudent();
     builder.setFirstName(getFirstNameFromLine(line));
     builder.setLastName(getLastNameFromLine(line));
     builder.setD2LId(getUsernameFromLine(line));
 
-    this.grades.addStudent(builder.create());
+    GradesFromD2L.D2LStudent student = builder.create();
+    this.grades.addStudent(student);
+
+    addGradesFromLineOfCsv(student, line);
+  }
+
+  private void addGradesFromLineOfCsv(GradesFromD2L.D2LStudent student, String[] line) {
+    this.quizColumnsAndNames.forEach((index, quizName) -> {
+      String score = line[index];
+      if (!isEmptyString(score)) {
+        student.setScore(quizName, parseScore(score));
+      }
+    });
+
+  }
+
+  private boolean isEmptyString(String score) {
+    return "".equals(score);
+  }
+
+  private double parseScore(String score) {
+    return Double.parseDouble(score);
   }
 
   private String getUsernameFromLine(String[] line) {
@@ -75,11 +96,16 @@ public class D2LCSVParser {
           break;
         default:
           if (!isColumnIgnored(cell)) {
-            quizNames.add(extractQuizName(cell));
+            String quizName = extractQuizName(cell);
+            addQuiz(quizName, i);
           }
       }
     }
 
+  }
+
+  private void addQuiz(String quizName, int column) {
+    quizColumnsAndNames.put(column, quizName);
   }
 
   private String extractQuizName(String cell) {
@@ -129,7 +155,7 @@ public class D2LCSVParser {
   }
 
   public Iterable<String> getQuizNames() {
-    return quizNames;
+    return quizColumnsAndNames.values();
   }
 
   public GradesFromD2L getGrades() {

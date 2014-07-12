@@ -1,10 +1,12 @@
 package edu.pdx.cs410J.grader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GradesFromD2L {
-  private List<D2LStudent> students = new ArrayList<D2LStudent>();
+  private List<D2LStudent> students = new ArrayList<>();
 
   public static D2LStudentBuilder newStudent() {
     return new D2LStudentBuilder();
@@ -46,6 +48,7 @@ public class GradesFromD2L {
     private final String firstName;
     private final String lastName;
     private final String d2lId;
+    private Map<String, Double> scores = new HashMap<>();
 
     public D2LStudent(String firstName, String lastName, String d2lId) {
       this.firstName = firstName;
@@ -64,12 +67,24 @@ public class GradesFromD2L {
     public String getLastName() {
       return lastName;
     }
+
+    public void setScore(String quizName, double score) {
+      this.scores.put(quizName, score);
+    }
+
+    public Double getScore(String quizName) {
+      return this.scores.get(quizName);
+    }
   }
 
   static class D2LStudentBuilder {
     private String firstName;
     private String lastName;
     private String d2lId;
+
+    private D2LStudentBuilder() {
+
+    }
 
     public D2LStudentBuilder setFirstName(String firstName) {
       this.firstName = firstName;

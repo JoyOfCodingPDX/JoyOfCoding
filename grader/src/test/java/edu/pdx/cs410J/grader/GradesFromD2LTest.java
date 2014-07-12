@@ -111,4 +111,14 @@ public class GradesFromD2LTest {
     assertThat(student.isDirty(), is(false));
   }
 
+  @Test
+  public void gradeIsSet() {
+    GradesFromD2L.D2LStudent student = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    String quizName = "quizName";
+    double score = 3.4;
+    student.setScore(quizName, score);
+
+    assertThat(student.getScore(quizName), equalTo(score));
+  }
+
 }

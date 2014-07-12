@@ -10,9 +10,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -109,6 +111,30 @@ public class D2LCSVParserTest {
     assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
     assertThat(grades.getStudents(), hasStudentWithLastName("One"));
     assertThat(grades.getStudents(), hasStudentWithD2LId("student1"));
+  }
+
+  @Test
+  public void gradesPopulatedWithStudents2() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
+    assertThat(grades.getStudents(), hasStudentWithLastName("Two"));
+    assertThat(grades.getStudents(), hasStudentWithD2LId("student2"));
+  }
+
+  @Test
+  public void gradesPopulatedWithScores() throws IOException {
+    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("student1", grades);
+    assertThat("Could not find student", student.isPresent(), is(true));
+    assertThat(student.get().getScore("Programming Background Quiz"), equalTo(4.0));
+  }
+
+  private java.util.Optional<GradesFromD2L.D2LStudent> getStudentWithId(String d2lId, GradesFromD2L grades) {
+    return grades.getStudents().stream().findAny().filter(s -> s.getD2lId().equals(d2lId));
   }
 
   private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithD2LId(String d2lId) {
