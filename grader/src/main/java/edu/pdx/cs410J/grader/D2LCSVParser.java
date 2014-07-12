@@ -39,10 +39,18 @@ public class D2LCSVParser {
   private void addStudentAndGradesFromLineOfCsv(String[] line) {
     GradesFromD2L.D2LStudentBuilder builder = new GradesFromD2L.D2LStudentBuilder();
     builder.setFirstName(getFirstNameFromLine(line));
-    builder.setLastName("");
-    builder.setD2LId("");
+    builder.setLastName(getLastNameFromLine(line));
+    builder.setD2LId(getUsernameFromLine(line));
 
     this.grades.addStudent(builder.create());
+  }
+
+  private String getUsernameFromLine(String[] line) {
+    return line[getUsernameColumn()];
+  }
+
+  private String getLastNameFromLine(String[] line) {
+    return line[getLastNameColumn()];
   }
 
   private String getFirstNameFromLine(String[] line) {

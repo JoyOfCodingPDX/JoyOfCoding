@@ -107,16 +107,27 @@ public class D2LCSVParserTest {
 
     GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
+    assertThat(grades.getStudents(), hasStudentWithLastName("One"));
+    assertThat(grades.getStudents(), hasStudentWithD2LId("student1"));
+  }
+
+  private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithD2LId(String d2lId) {
+    return new D2LStudentPropertyMatcher(GradesFromD2L.D2LStudent::getD2lId, "d2l id", d2lId);
   }
 
   private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithFirstName(String firstName) {
     return new D2LStudentPropertyMatcher(GradesFromD2L.D2LStudent::getFirstName, "first name", firstName);
   }
 
+  private Matcher<? super List<GradesFromD2L.D2LStudent>> hasStudentWithLastName(String lastName) {
+    return new D2LStudentPropertyMatcher(GradesFromD2L.D2LStudent::getLastName, "last name", lastName);
+  }
+
   private CSV createCsv() {
     CSV csv = new CSV();
     csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
     csv.addLine("student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
+    csv.addLine("student2","Two","Student","student2@email.com","4","","","","","","4","24","","","");
     return csv;
   }
 
