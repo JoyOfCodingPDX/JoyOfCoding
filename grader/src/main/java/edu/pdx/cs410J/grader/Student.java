@@ -167,7 +167,7 @@ public class Student extends NotableImpl {
    * Returns the names of the assignments for which this
    * <code>Student</code> has received a <code>Grade</code>.
    */
-  public Set getGradeNames() {
+  public Set<String> getGradeNames() {
     return this.grades.keySet();
   }
 

@@ -36,6 +36,23 @@ public class GradesFromD2LTest {
   }
 
   @Test
+  public void matchStudentByIdAndD2LId() {
+    String studentId = "studentId";
+
+    GradesFromD2L grades = new GradesFromD2L();
+    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("firstName").setLastName("lastName").setD2LId(studentId).create();
+    grades.addStudent(d2lStudent);
+
+    GradeBook book = new GradeBook("test");
+    Student student = new Student(studentId);
+    book.addStudent(student);
+
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(student.isDirty(), is(true));
+    assertThat(student.getD2LId(), equalTo(studentId));
+  }
+
+  @Test
   public void matchStudentByFirstAndLastName() {
     String d2lId = "d2lId";
     String firstName = "firstName";
@@ -119,6 +136,23 @@ public class GradesFromD2LTest {
     student.setScore(quizName, score);
 
     assertThat(student.getScore(quizName), equalTo(score));
+  }
+
+  @Test
+  public void matchQuizWithSameName() {
+    String quizName = "quizName";
+
+    GradesFromD2L grades = new GradesFromD2L();
+    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    grades.addStudent(d2lStudent);
+    d2lStudent.setScore(quizName, 3.6);
+
+    GradeBook book = new GradeBook("test");
+    Assignment assignment = new Assignment(quizName, 4.0);
+    book.addAssignment(assignment);
+
+    assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).get(), equalTo(assignment));
+
   }
 
 }

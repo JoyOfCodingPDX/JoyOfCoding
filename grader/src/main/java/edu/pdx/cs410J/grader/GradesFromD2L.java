@@ -1,9 +1,6 @@
 package edu.pdx.cs410J.grader;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GradesFromD2L {
   private List<D2LStudent> students = new ArrayList<>();
@@ -22,6 +19,10 @@ public class GradesFromD2L {
       if (haveSameD2LId(d2lStudent, student)) {
         return student;
 
+      } else if (studentIdIsSameAsD2LId(d2lStudent, student)) {
+        student.setD2LId(d2lStudent.getD2lId());
+        return student;
+
       } else if (haveSameFirstAndLastNameIgnoringCase(d2lStudent, student)) {
         student.setD2LId(d2lStudent.getD2lId());
         return student;
@@ -29,6 +30,10 @@ public class GradesFromD2L {
     }
 
     return null;
+  }
+
+  private boolean studentIdIsSameAsD2LId(D2LStudent d2lStudent, Student student) {
+    return d2lStudent.getD2lId().equals(student.getId());
   }
 
   private boolean haveSameFirstAndLastNameIgnoringCase(D2LStudent d2lStudent, Student student) {
@@ -42,6 +47,10 @@ public class GradesFromD2L {
 
   public List<D2LStudent> getStudents() {
     return this.students;
+  }
+
+  public Optional<Assignment> findAssignmentInGradebookForD2lQuiz(String quizName, GradeBook gradebook) {
+    return Optional.ofNullable(gradebook.getAssignment(quizName));
   }
 
   static class D2LStudent {
@@ -74,6 +83,10 @@ public class GradesFromD2L {
 
     public Double getScore(String quizName) {
       return this.scores.get(quizName);
+    }
+
+    public Iterable<String> getQuizNames() {
+      return this.scores.keySet();
     }
   }
 
