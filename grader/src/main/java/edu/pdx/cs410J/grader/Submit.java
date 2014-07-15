@@ -246,7 +246,7 @@ public class Submit {
       throw new IllegalStateException(s);
     } else if (sourceFiles.size() < 3) {
       String s = "Too few source files were submitted. Each project requires at least 3 files be 
-                  submitted. You only submitted " + sourceFiles.size() + " files";
+                  submitted. You only submitted " + ((Integer) sourceFiles.size()).toString() + " files";
       throw new IllegalStateException(s);
     }
 
