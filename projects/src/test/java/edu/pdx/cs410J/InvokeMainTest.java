@@ -81,7 +81,7 @@ public class InvokeMainTest extends InvokeMainTestCase {
     {
         public static void main(String... args)
         {
-            System.exit(Integer.parseInt( args[0] ));
+            System.exit(Integer.parseInt(args[0]));
         }
     }
 
@@ -107,9 +107,13 @@ public class InvokeMainTest extends InvokeMainTestCase {
 
   private static class CodeAfterSystemExit {
     public static void main(String... args) {
-      System.exit(1);
+      callSystemExit1();
       System.out.println("Should not get here");
       throw new RuntimeException("Should not get here");
+    }
+
+    private static void callSystemExit1() {
+      System.exit(1);
     }
   }
 }
