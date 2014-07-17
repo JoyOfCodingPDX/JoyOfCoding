@@ -1,8 +1,11 @@
 package edu.pdx.cs410J;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNull;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests the {@link #invokeMain(Class, String[])} method of {@link InvokeMainTestCase}
@@ -45,6 +48,13 @@ public class InvokeMainTest extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( WriteArgsToStandardErr.class, "1", "2", "3", "4", "5" );
         assertEquals( "12345", result.getErr() );
     }
+
+  @Test
+  public void codeAfterSystemExitIsNotExecuted() {
+    MainMethodResult result = invokeMain(CodeAfterSystemExit.class);
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getOut(), equalTo(""));
+  }
 
     private static class NoExitCode
     {
@@ -94,4 +104,12 @@ public class InvokeMainTest extends InvokeMainTestCase {
             System.err.flush();
         }
     }
+
+  private static class CodeAfterSystemExit {
+    public static void main(String... args) {
+      System.exit(1);
+      System.out.println("Should not get here");
+      throw new RuntimeException("Should not get here");
+    }
+  }
 }
