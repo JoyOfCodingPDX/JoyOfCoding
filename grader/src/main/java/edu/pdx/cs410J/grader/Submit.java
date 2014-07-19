@@ -696,11 +696,11 @@ public class Submit {
         submit.setSaveJar(true);
 
       } else if (args[i].equals("-comment")) {
-          if (++i >= args.length) {
-              usage("No comment specified");
-          }
+        if (++i >= args.length) {
+          usage("No comment specified");
+        }
 
-          submit.setComment(args[i]);
+        submit.setComment(args[i]);
       } else if (args[i].equals("-submitKoans")) {
           submit.setKoansMode(true);
 
