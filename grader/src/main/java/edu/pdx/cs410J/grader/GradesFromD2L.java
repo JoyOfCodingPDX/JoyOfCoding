@@ -50,7 +50,21 @@ public class GradesFromD2L {
   }
 
   public Optional<Assignment> findAssignmentInGradebookForD2lQuiz(String quizName, GradeBook gradebook) {
-    return Optional.ofNullable(gradebook.getAssignment(quizName));
+    Assignment assignment = gradebook.getAssignment(quizName);
+    if (assignment != null) {
+      return Optional.ofNullable(assignment);
+    }
+
+    return findAssignmentInGradebookLike(quizName, gradebook);
+  }
+
+  private Optional<Assignment> findAssignmentInGradebookLike(String quizName, GradeBook gradebook) {
+    for (String assignmentName : gradebook.getAssignmentNames()) {
+      if (quizName.startsWith(assignmentName)) {
+        return Optional.ofNullable(gradebook.getAssignment(assignmentName));
+      }
+    }
+    return Optional.empty();
   }
 
   static class D2LStudent {

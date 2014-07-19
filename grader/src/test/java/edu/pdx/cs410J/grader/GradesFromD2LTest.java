@@ -152,6 +152,22 @@ public class GradesFromD2LTest {
     book.addAssignment(assignment);
 
     assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).get(), equalTo(assignment));
+  }
+
+  @Test
+  public void matchQuizWithPrefixThatIsTheSameAsQuizNameInD2L() {
+    String quizName = "quizName";
+
+    GradesFromD2L grades = new GradesFromD2L();
+    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    grades.addStudent(d2lStudent);
+    d2lStudent.setScore(quizName + " Quiz", 3.6);
+
+    GradeBook book = new GradeBook("test");
+    Assignment assignment = new Assignment(quizName, 4.0);
+    book.addAssignment(assignment);
+
+    assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
 
   }
 
