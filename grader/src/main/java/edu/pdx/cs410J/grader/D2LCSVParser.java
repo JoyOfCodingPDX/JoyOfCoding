@@ -132,11 +132,6 @@ public class D2LCSVParser {
     return false;
   }
 
-
-  public GradesFromD2L parse() {
-    return new GradesFromD2L();
-  }
-
   public int getUsernameColumn() {
     return usernameColumn;
   }

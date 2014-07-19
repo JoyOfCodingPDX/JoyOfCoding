@@ -46,6 +46,32 @@ public class GradesFromD2LImporterTest {
     assertThat(student.getGrade(quizName).getScore(), equalTo(score));
   }
 
+  @Test
+  public void importScoreFromD2LWhenStudentNameMatchesD2LName() {
+    String firstName = "first";
+    String lastName = "last";
+
+    String quizName = "quiz";
+    double score = 3.4;
+
+    GradeBook gradebook = new GradeBook("test");
+    gradebook.addAssignment(new Assignment(quizName, 4.0));
+    Student student = new Student("studentId");
+    student.setFirstName(firstName);
+    student.setLastName(lastName);
+    gradebook.addStudent(student);
+
+    GradesFromD2L d2l = new GradesFromD2L();
+    GradesFromD2L.D2LStudent d2LStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId("d2LstudentId").create();
+    d2LStudent.setScore(quizName, score);
+    d2l.addStudent(d2LStudent);
+
+    GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook);
+
+    assertThat(student.getGradeNames(), hasItem(quizName));
+    assertThat(student.getGrade(quizName).getScore(), equalTo(score));
+  }
+
 
 
 }

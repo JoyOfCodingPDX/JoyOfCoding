@@ -43,8 +43,8 @@ public class D2LCSVParserTest {
 
   @Test
   public void canParseCsvWithNoStudents() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
-    GradesFromD2L grades = parser.parse();
+    D2LCSVParser parser = new D2LCSVParser(createEmptyCsv().getReader());
+    GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasSize(0));
   }
 
@@ -160,10 +160,15 @@ public class D2LCSVParserTest {
   }
 
   private CSV createCsv() {
-    CSV csv = new CSV();
-    csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
+    CSV csv = createEmptyCsv();
     csv.addLine("student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
     csv.addLine("student2","Two","Student","student2@email.com","3","","","","","","4","24","","","");
+    return csv;
+  }
+
+  private CSV createEmptyCsv() {
+    CSV csv = new CSV();
+    csv.addLine("Username", "Last Name", "First Name", "Email", "Programming Background Quiz Points Grade <Numeric MaxPoints:4>", "Java Language and OOP Quiz Points Grade <Numeric MaxPoints:4>", "Language API Quiz Points Grade <Numeric MaxPoints:4>", "Java IO and Collections Quiz Points Grade <Numeric MaxPoints:4>", "Web and REST Quiz Points Grade <Numeric MaxPoints:4>", "Google Web Toolkit Quiz Points Grade <Numeric MaxPoints:4>", "Calculated Final Grade Numerator", "Calculated Final Grade Denominator", "Adjusted Final Grade Numerator", "Adjusted Final Grade Denominator", "End-of-Line Indicator");
     return csv;
   }
 
