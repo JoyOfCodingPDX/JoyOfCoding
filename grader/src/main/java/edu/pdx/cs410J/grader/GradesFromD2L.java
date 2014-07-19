@@ -60,8 +60,13 @@ public class GradesFromD2L {
 
   private Optional<Assignment> findAssignmentInGradebookLike(String quizName, GradeBook gradebook) {
     for (String assignmentName : gradebook.getAssignmentNames()) {
+      Assignment assignment = gradebook.getAssignment(assignmentName);
       if (quizName.startsWith(assignmentName)) {
-        return Optional.ofNullable(gradebook.getAssignment(assignmentName));
+        return Optional.ofNullable(assignment);
+      }
+
+      if (quizName.startsWith(assignment.getDescription())) {
+        return Optional.of(assignment);
       }
     }
     return Optional.empty();
