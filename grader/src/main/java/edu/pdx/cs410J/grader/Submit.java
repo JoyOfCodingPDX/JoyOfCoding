@@ -104,7 +104,7 @@ public class Submit {
   private Set<String> fileNames = new HashSet<>();
 
   /**
-  *
+  * Koans submission mode.
   */
   private boolean koansMode = false;
 
@@ -747,7 +747,7 @@ public class Submit {
   }
 
 
-    static class ManifestAttributes {
+  static class ManifestAttributes {
 
     public static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
     public static final Attributes.Name USER_ID = new Attributes.Name("Submitter-User-Id");
