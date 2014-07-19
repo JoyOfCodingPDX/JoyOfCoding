@@ -13,23 +13,23 @@ public class GradesFromD2L {
     this.students.add(student);
   }
 
-  public Student findStudentInGradebookForD2LStudent(D2LStudent d2lStudent, GradeBook book) {
+  public Optional<Student> findStudentInGradebookForD2LStudent(D2LStudent d2lStudent, GradeBook book) {
     for (String studentId : book.getStudentIds()) {
       Student student = book.getStudent(studentId);
       if (haveSameD2LId(d2lStudent, student)) {
-        return student;
+        return Optional.of(student);
 
       } else if (studentIdIsSameAsD2LId(d2lStudent, student)) {
         student.setD2LId(d2lStudent.getD2lId());
-        return student;
+        return Optional.of(student);
 
       } else if (haveSameFirstAndLastNameIgnoringCase(d2lStudent, student)) {
         student.setD2LId(d2lStudent.getD2lId());
-        return student;
+        return Optional.of(student);
       }
     }
 
-    return null;
+    return Optional.empty();
   }
 
   private boolean studentIdIsSameAsD2LId(D2LStudent d2lStudent, Student student) {
@@ -87,6 +87,11 @@ public class GradesFromD2L {
 
     public Iterable<String> getQuizNames() {
       return this.scores.keySet();
+    }
+
+    @Override
+    public String toString() {
+      return "D2L student \"" + getFirstName() + " " + getLastName() + "\" with id " + getD2lId();
     }
   }
 

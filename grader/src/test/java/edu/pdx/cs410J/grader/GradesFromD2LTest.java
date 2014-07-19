@@ -18,7 +18,7 @@ public class GradesFromD2LTest {
     student.setD2LId("notD2LId");
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), is(nullValue()));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).isPresent(), is(false));
   }
 
   @Test
@@ -32,7 +32,7 @@ public class GradesFromD2LTest {
     student.setD2LId("d2lId");
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
   }
 
   @Test
@@ -47,7 +47,7 @@ public class GradesFromD2LTest {
     Student student = new Student(studentId);
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.isDirty(), is(true));
     assertThat(student.getD2LId(), equalTo(studentId));
   }
@@ -72,7 +72,7 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(true));
   }
@@ -97,7 +97,7 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(true));
   }
@@ -123,7 +123,7 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book), equalTo(student));
+    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(false));
   }
