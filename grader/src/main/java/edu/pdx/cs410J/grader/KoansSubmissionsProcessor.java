@@ -23,17 +23,17 @@ public class KoansSubmissionsProcessor extends StudentEmailAttachmentProcessor{
 
   @Override
   public void processAttachment(Message message, String fileName, InputStream inputStream) {
-    String studentName;
+    String studentId;
     try {
-      studentName = getSenderName(message);
+      studentId = getIdOfStudentInGradeBookWhoSent(message);
 
     } catch (SubmissionException ex) {
-      logException("While getting student name", ex);
+      logException("While getting student id", ex);
       return;
     }
 
     try {
-      File file = getKoansFileLocation(fileName, studentName);
+      File file = getKoansFileLocation(fileName, studentId);
       warn("Writing \"" + fileName + "\" to " + file);
 
       ByteStreams.copy(inputStream, new FileOutputStream(file));
@@ -47,6 +47,11 @@ public class KoansSubmissionsProcessor extends StudentEmailAttachmentProcessor{
     } catch (SubmissionException ex) {
       logException("While noting submission from \"" + fileName + "\"", ex);
     }
+  }
+
+  private String getIdOfStudentInGradeBookWhoSent(Message message) throws SubmissionException {
+    Student student = getStudentFromGradeBook(message);
+    return student.getId();
   }
 
   private void noteSubmissionInGradeBook(Message message) throws SubmissionException {
@@ -137,12 +142,16 @@ public class KoansSubmissionsProcessor extends StudentEmailAttachmentProcessor{
     return student.getFirstName() + " " + student.getLastName();
   }
 
-  private File getKoansFileLocation(String fileName, String studentName) throws IOException {
-    File dir = new File(directory, studentName);
+  private File getKoansFileLocation(String fileName, String studentId) throws IOException {
+    File dir = new File(directory, studentId);
     if (!dir.exists() && !dir.mkdirs()) {
       throw new IOException("Could not create directory \"" + dir + "\"");
     }
-    return new File(dir, fileName);
+    return new File(dir, appendFileSuffixToStudentId(fileName, studentId));
+  }
+
+  private String appendFileSuffixToStudentId(String fileName, String studentId) {
+    return studentId + fileName.substring(fileName.lastIndexOf('.'));
   }
 
   private String getSenderName(Message message) throws SubmissionException {
