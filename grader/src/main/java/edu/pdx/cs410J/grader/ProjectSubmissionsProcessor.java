@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
 
+import javax.mail.Message;
 import java.io.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
@@ -16,7 +17,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   @Override
-  public void processAttachment(String fileName, InputStream inputStream) {
+  public void processAttachment(Message message, String fileName, InputStream inputStream) {
     warn("    File name: " + fileName);
     warn("    InputStream: " + inputStream);
 
