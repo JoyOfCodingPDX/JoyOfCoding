@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.grader;
 
+import javax.mail.Message;
 import java.io.InputStream;
 
 public interface EmailAttachmentProcessor {
-  void processAttachment(String fileName, InputStream inputStream);
+  void processAttachment(Message message, String fileName, InputStream inputStream);
 }

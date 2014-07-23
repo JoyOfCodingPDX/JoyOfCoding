@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import com.google.common.io.ByteStreams;
 import edu.pdx.cs410J.ParserException;
 
+import javax.mail.Message;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
   }
 
   @Override
-  public void processAttachment(String fileName, InputStream inputStream) {
+  public void processAttachment(Message message, String fileName, InputStream inputStream) {
     warn("    File name: " + fileName);
     warn("    InputStream: " + inputStream);
 

@@ -55,21 +55,21 @@ public class GraderEmailAccount {
 
     if (parts.getCount() == 1) {
       warnOfUnexpectedMessage(message, "Fetched a message that only had one part");
-      processAttachmentFromPart(parts.getBodyPart(0), processor);
+      processAttachmentFromPart(message, parts.getBodyPart(0), processor);
     }
 
     if (parts.getCount() == 2) {
-      processAttachmentFromPart(parts.getBodyPart(1), processor);
+      processAttachmentFromPart(message, parts.getBodyPart(1), processor);
     }
 
     if (parts.getCount() > 2) {
       warnOfUnexpectedMessage(message, "Fetched a message with more than two parts");
-      processAttachmentFromPart(parts.getBodyPart(1), processor);
+      processAttachmentFromPart(message, parts.getBodyPart(1), processor);
     }
   }
 
-  private void processAttachmentFromPart(BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
-    processor.processAttachment(part.getFileName(), part.getInputStream());
+  private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+    processor.processAttachment(message, part.getFileName(), part.getInputStream());
       System.out.println("    " + part.getContentType());
   }
 
