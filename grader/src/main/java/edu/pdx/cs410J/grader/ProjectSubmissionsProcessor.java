@@ -164,9 +164,4 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     return "Project Submissions";
   }
 
-  private class SubmissionException extends Exception {
-    public SubmissionException(String message) {
-      super(message);
-    }
-  }
 }
