@@ -77,6 +77,9 @@ public class FetchAndProcessGraderEmail {
     } else if (whatToFetch.equalsIgnoreCase("surveys")) {
       return new SurveySubmissionsProcessor(directory, gradeBook);
 
+    } else if (whatToFetch.equalsIgnoreCase("koans")) {
+      return new KoansSubmissionsProcessor(directory, gradeBook);
+
     } else {
       return usage("Cannot fetch \"" + whatToFetch + "\"");
     }
@@ -133,6 +136,7 @@ public class FetchAndProcessGraderEmail {
     err.println("  whatToFetch     What kind of student emails should be fetched");
     err.println("      projects    Project submissions");
     err.println("      surveys     Student surveys");
+    err.println("      koans       Koans submissions");
     err.println();
 
     System.exit(1);
