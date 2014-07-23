@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import javax.mail.MessagingException;
 import java.io.File;
 
 public abstract class StudentEmailAttachmentProcessor implements EmailAttachmentProcessor {
@@ -20,5 +21,15 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
 
   protected void warn(String message) {
     System.out.println(message);
+  }
+
+  protected class SubmissionException extends Exception {
+    public SubmissionException(String message) {
+      super(message);
+    }
+
+    public SubmissionException(String message, MessagingException cause) {
+      super(message, cause);
+    }
   }
 }
