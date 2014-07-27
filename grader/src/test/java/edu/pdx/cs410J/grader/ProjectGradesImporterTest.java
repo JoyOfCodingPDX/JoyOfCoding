@@ -42,6 +42,15 @@ public class ProjectGradesImporterTest {
     assertThat(score.getScore(), equalTo(3.4));
   }
 
+  @Test
+  public void scoreMatchesRegardlessOfCase() {
+    Matcher matcher = ProjectGradesImporter.scorePattern.matcher("4.0 OUT OF 5.0");
+    assertThat(matcher.matches(), equalTo(true));
+    assertThat(matcher.groupCount(), equalTo(2));
+    assertThat(matcher.group(1), equalTo("4.0"));
+    assertThat(matcher.group(2), equalTo("5.0"));
+  }
+
   private class GradedProject {
     private StringBuilder sb = new StringBuilder();
 
