@@ -9,6 +9,14 @@ import java.util.regex.Pattern;
 public class ProjectGradesImporter {
   static final Pattern scorePattern = Pattern.compile("(\\d+\\.?\\d*) out of (\\d+\\.?\\d*)", Pattern.CASE_INSENSITIVE);
 
+  private final GradeBook gradeBook;
+  private final Assignment assignment;
+
+  public ProjectGradesImporter(GradeBook gradeBook, Assignment assignment) {
+    this.gradeBook = gradeBook;
+    this.assignment = assignment;
+  }
+
   public static ProjectScore getScoreFrom(Reader reader) {
     BufferedReader br = new BufferedReader(reader);
     Optional<String> scoreLine = br.lines().filter(scorePattern.asPredicate()).findFirst();
@@ -26,6 +34,19 @@ public class ProjectGradesImporter {
       throw new IllegalStateException("No score found");
     }
 
+  }
+
+  public void recordScoreFromProjectReport(String studentId, Reader report) {
+    ProjectScore score = getScoreFrom(report);
+    Student student = gradeBook.getStudent(studentId);
+    Grade grade = student.getGrade(this.assignment);
+    if (grade == null) {
+      grade = new Grade(assignment, score.getScore());
+      student.setGrade(assignment.getName(), grade);
+
+    } else {
+      grade.setScore(score.getScore());
+    }
   }
 
   static class ProjectScore {
