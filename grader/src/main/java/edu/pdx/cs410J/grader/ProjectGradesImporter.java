@@ -26,11 +26,11 @@ public class ProjectGradesImporter {
 
     if (scoreLine.isPresent()) {
       Matcher matcher = scorePattern.matcher(scoreLine.get());
-      if (matcher.matches()) {
+      if (matcher.find()) {
         return new ProjectScore(matcher.group(1), matcher.group(2));
 
       } else {
-        throw new IllegalStateException("Matcher didn't match after all??");
+        throw new IllegalStateException("Matcher didn't match \"" + scoreLine.get() + "\"");
       }
 
     } else {
@@ -113,7 +113,11 @@ public class ProjectGradesImporter {
       String studentId = getStudentIdFromFileName(projectFile);
       try {
         importer.recordScoreFromProjectReport(studentId, new FileReader(projectFile));
-      } catch (FileNotFoundException e) {
+
+      } catch (IllegalStateException ex) {
+        throw new IllegalStateException("While recording score from " + projectFileName, ex);
+
+      } catch (FileNotFoundException ex) {
         throw new IllegalStateException("Could not find file \"" + projectFile + "\"");
       }
     }

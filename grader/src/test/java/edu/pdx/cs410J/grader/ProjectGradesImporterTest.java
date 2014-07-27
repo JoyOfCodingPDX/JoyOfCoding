@@ -25,7 +25,7 @@ public class ProjectGradesImporterTest {
   @Test
   public void scoreRegularExpressionWorkWithSimpleCase() {
     Matcher matcher = ProjectGradesImporter.scorePattern.matcher("3.0 out of 4.5");
-    assertThat(matcher.matches(), equalTo(true));
+    assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("3.0"));
     assertThat(matcher.group(2), equalTo("4.5"));
@@ -45,7 +45,7 @@ public class ProjectGradesImporterTest {
   @Test
   public void scoreMatchesRegardlessOfCase() {
     Matcher matcher = ProjectGradesImporter.scorePattern.matcher("4.0 OUT OF 5.0");
-    assertThat(matcher.matches(), equalTo(true));
+    assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("4.0"));
     assertThat(matcher.group(2), equalTo("5.0"));
@@ -54,7 +54,16 @@ public class ProjectGradesImporterTest {
   @Test
   public void scoreMatchesIntegerPoints() {
     Matcher matcher = ProjectGradesImporter.scorePattern.matcher("4 out of 5");
-    assertThat(matcher.matches(), equalTo(true));
+    assertThat(matcher.find(), equalTo(true));
+    assertThat(matcher.groupCount(), equalTo(2));
+    assertThat(matcher.group(1), equalTo("4"));
+    assertThat(matcher.group(2), equalTo("5"));
+  }
+
+  @Test
+  public void scoreMatchesInTheMiddleOfOtherText() {
+    Matcher matcher = ProjectGradesImporter.scorePattern.matcher("You got 4 out of 5 points");
+    assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("4"));
     assertThat(matcher.group(2), equalTo("5"));
