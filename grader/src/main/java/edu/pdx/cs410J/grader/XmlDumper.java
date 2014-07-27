@@ -1,29 +1,19 @@
 package edu.pdx.cs410J.grader;
 
+import org.w3c.dom.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
 
 /**
  * This class dumps the contents of a <code>GradeBook</code> to an XML
@@ -334,6 +324,12 @@ public class XmlDumper extends XmlHelper {
       Element major = doc.createElement("major");
       major.appendChild(doc.createTextNode(student.getMajor()));
       root.appendChild(major);
+    }
+
+    if (student.getD2LId() != null) {
+      Element d2lId = doc.createElement("d2l-id");
+      d2lId.appendChild(doc.createTextNode(student.getD2LId()));
+      root.appendChild(d2lId);
     }
 
     Iterator gradeNames = student.getGradeNames().iterator();

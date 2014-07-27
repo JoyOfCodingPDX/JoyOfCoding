@@ -1,10 +1,16 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.net.URL;
-import java.util.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.*;
-import org.w3c.dom.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class contains fields and methods that are useful when dealing
