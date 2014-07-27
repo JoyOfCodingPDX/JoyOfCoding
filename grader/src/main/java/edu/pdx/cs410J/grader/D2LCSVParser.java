@@ -43,6 +43,11 @@ public class D2LCSVParser {
     builder.setD2LId(getUsernameFromLine(line));
 
     GradesFromD2L.D2LStudent student = builder.create();
+
+    if (student.getD2lId().startsWith("guest")) {
+      return;
+    }
+
     this.grades.addStudent(student);
 
     addGradesFromLineOfCsv(student, line);
@@ -67,7 +72,11 @@ public class D2LCSVParser {
   }
 
   private String getUsernameFromLine(String[] line) {
-    return line[getUsernameColumn()];
+    String username = line[getUsernameColumn()];
+    if (username.charAt(0) == '#') {
+      username = username.substring(1);
+    }
+    return username;
   }
 
   private String getLastNameFromLine(String[] line) {

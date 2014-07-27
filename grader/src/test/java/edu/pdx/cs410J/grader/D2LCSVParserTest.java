@@ -12,11 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 public class D2LCSVParserTest {
 
@@ -190,6 +189,31 @@ public class D2LCSVParserTest {
 
       return new StringReader(writer.toString());
     }
+  }
+
+  @Test
+  public void guestStudentIsIgnored() throws IOException {
+    CSV csv = createEmptyCsv();
+    csv.addLine("guest1234","Two","Student","student2@email.com","3","","","","","","4","24","","","");
+
+    D2LCSVParser parser = new D2LCSVParser(csv.getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("guest1234", grades);
+    assertThat(student.isPresent(), equalTo(false));
+  }
+
+  @Test
+  public void poundSignAtStartOfUsernameIsIgnored() throws IOException {
+    CSV csv = createEmptyCsv();
+    csv.addLine("#student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
+    csv.addLine("student2","Two","Student","student2@email.com","3","","","","","","4","24","","","");
+
+    D2LCSVParser parser = new D2LCSVParser(csv.getReader());
+
+    GradesFromD2L grades = parser.getGrades();
+    assertThat(grades.getStudents(), hasStudentWithD2LId("student1"));
+    assertThat(grades.getStudents(), hasStudentWithD2LId("student2"));
   }
 
   // No students
