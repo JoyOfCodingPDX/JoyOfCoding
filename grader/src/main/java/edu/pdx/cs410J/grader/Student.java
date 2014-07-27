@@ -28,6 +28,7 @@ public class Student extends NotableImpl {
 
   private List<String> late;   // Names of late Assignments
   private List<String> resubmitted;  // Names of resubmitted Assignments
+  private String d2LId;
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -166,7 +167,7 @@ public class Student extends NotableImpl {
    * Returns the names of the assignments for which this
    * <code>Student</code> has received a <code>Grade</code>.
    */
-  public Set getGradeNames() {
+  public Set<String> getGradeNames() {
     return this.grades.keySet();
   }
 
@@ -221,13 +222,12 @@ public class Student extends NotableImpl {
   /**
    * Marks this <code>Student</code> as being clean
    */
+  @Override
   public void makeClean() {
-	super.makeClean();
+	  super.makeClean();
 
     // Make all Grades clean
-    Iterator iter = this.grades.values().iterator();
-    while (iter.hasNext()) {
-      Grade grade = (Grade) iter.next();
+    for (Grade grade : this.grades.values()) {
       grade.makeClean();
     }
   }
@@ -516,5 +516,14 @@ public class Student extends NotableImpl {
 
   public Grade getGrade(Assignment project) {
     return this.getGrade(project.getName());
+  }
+
+  public void setD2LId(String d2LId) {
+    this.setDirty(true);
+    this.d2LId = d2LId;
+  }
+
+  public String getD2LId() {
+    return d2LId;
   }
 }

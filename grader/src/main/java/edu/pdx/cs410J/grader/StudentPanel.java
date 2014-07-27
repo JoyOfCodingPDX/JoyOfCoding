@@ -1,23 +1,15 @@
 package edu.pdx.cs410J.grader;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import edu.pdx.cs410J.ParserException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import edu.pdx.cs410J.ParserException;
 
 /**
  * This panel displays a <code>Student</code>
@@ -36,6 +28,7 @@ public class StudentPanel extends JPanel {
   private JTextField emailField;
   private JTextField ssnField;
   private JTextField majorField;
+  private JTextField d2lIdField;
 
   /**
    * Creates and lays out a new <code>StudentPanel</code>
@@ -58,6 +51,7 @@ public class StudentPanel extends JPanel {
     labels.add(new JLabel("Email:"));
     labels.add(new JLabel("SSN:"));
     labels.add(new JLabel("Major:"));
+    labels.add(new JLabel("D2L Id:"));
 
     JPanel fields = new JPanel();
     fields.setLayout(new GridLayout(0, 1));
@@ -76,6 +70,8 @@ public class StudentPanel extends JPanel {
     fields.add(this.ssnField);
     this.majorField = new JTextField(15);
     fields.add(this.majorField);
+    this.d2lIdField = new JTextField(10);
+    fields.add(this.d2lIdField);
 
     infoPanel.add(labels, BorderLayout.WEST);
     infoPanel.add(fields, BorderLayout.CENTER);
@@ -113,6 +109,7 @@ public class StudentPanel extends JPanel {
     this.emailField.setText("");
     this.ssnField.setText("");
     this.majorField.setText("");
+    this.d2lIdField.setText("");
     this.notes.clearNotes();
   }
 
@@ -158,6 +155,11 @@ public class StudentPanel extends JPanel {
     String major = student.getMajor();
     if (major != null && !major.equals("")) {
       this.majorField.setText(major);
+    }
+
+    String d2lId = student.getD2LId();
+    if (d2lId != null && !d2lId.equals("")) {
+      this.d2lIdField.setText(d2lId);
     }
 
     this.notes.setNotable(student);
@@ -218,6 +220,15 @@ public class StudentPanel extends JPanel {
       }
     }
     
+    String d2lId = this.d2lIdField.getText();
+    if (d2lId != null) {
+      if (d2lId.equals("")) {
+        student.setD2LId(null);
+      } else {
+        student.setD2LId(d2lId);
+      }
+    }
+
     // The NotesPanel takes care of adding notes
 
 //     System.out.println("Updated student: " +

@@ -3,8 +3,7 @@ package edu.pdx.cs410J.grader;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GraderTools {
 
@@ -24,22 +23,24 @@ public class GraderTools {
       usage("Missing tool");
     }
 
-    Class toolClass;
+    invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));
+  }
+
+  private static Class getToolClass(String tool) {
     switch (tool) {
       case "gradebook":
-        toolClass = GradeBookGUI.class;
-        break;
+        return GradeBookGUI.class;
 
       case "fetch":
-        toolClass = FetchAndProcessGraderEmail.class;
-        break;
+        return FetchAndProcessGraderEmail.class;
+
+      case "importFromD2L" :
+        return GradesFromD2LImporter.class;
 
       default:
         usage("Unknown tool: " + tool);
-        return;
+        return null;
     }
-
-    invokeMainMethod(toolClass, toolArgs.toArray(new String[toolArgs.size()]));
   }
 
   @SuppressWarnings("unchecked")
@@ -56,10 +57,11 @@ public class GraderTools {
     err.println("Executes one of the Grader tools");
     err.println();
     err.println("usage: GraderTools tool toolArg*");
-    err.println("  tool           The tool to execute");
-    err.println("    gradebook    The Grade Book GUI");
-    err.println("    fetch        Fetch student surveys or project from the Grader's emails account");
-    err.println("  toolArg        A command line argument to send to the tool");
+    err.println("  tool             The tool to execute");
+    err.println("    gradebook      The Grade Book GUI");
+    err.println("    fetch          Fetch student surveys or project from the Grader's emails account");
+    err.println("    importFromD2L  Import grades from a D2L CSV");
+    err.println("  toolArg          A command line argument to send to the tool");
     err.println();
 
     System.exit(1);

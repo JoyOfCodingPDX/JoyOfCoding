@@ -1,11 +1,22 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
-import java.io.*;
-import java.util.*;
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class parses XML data that describes a <code>Student</code>.
@@ -169,6 +180,10 @@ class XmlStudentParser extends XmlHelper {
       } else if (child.getTagName().equals("major")) {
         String major = extractTextFrom(child);
         student.setMajor(major);
+
+      } else if (child.getTagName().equals("d2l-id")) {
+        String d2lId = extractTextFrom(child);
+        student.setD2LId(d2lId);
 
       } else if (child.getTagName().equals("grades")) {
         NodeList kids = child.getChildNodes();

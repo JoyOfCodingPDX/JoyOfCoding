@@ -1,9 +1,15 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.util.*;
-
 import edu.pdx.cs410J.ParserException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * This class represents a grade book that contains information about
@@ -150,17 +156,11 @@ public class GradeBook {
   public void makeClean() {
     this.setDirty(false);
 
-    // Mark all of the assignments as clean
-    Iterator iter = this.assignments.values().iterator();
-    while (iter.hasNext()) {
-      Assignment assign = (Assignment) iter.next();
-      assign.makeClean();
+    for (Assignment assignment : this.assignments.values()) {
+      assignment.makeClean();
     }
 
-    // Mark all of the students as clean
-    iter = this.students.values().iterator();
-    while (iter.hasNext()) {
-      Student student = (Student) iter.next();
+    for (Student student : this.students.values()) {
       student.makeClean();
     }
   }
