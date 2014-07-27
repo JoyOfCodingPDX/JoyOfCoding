@@ -46,12 +46,28 @@ public class GradesFromD2LImporter {
     GradesFromD2L d2lGrades = parseD2lCsvFile(d2lCsvFileName);
     GradeBook gradebook = parseGradeBook(gradeBookFileName);
     importGradesFromD2L(d2lGrades, gradebook);
+
+    saveGradeBookIfModified(gradebook, gradeBookFileName);
   }
+
+  private static void saveGradeBookIfModified(GradeBook gradeBook, String gradeBookFileName) {
+    if (gradeBook.isDirty()) {
+      File file = new File(gradeBookFileName);
+      try {
+        XmlDumper dumper = new XmlDumper(file);
+        dumper.dump(gradeBook);
+
+      } catch (IOException e) {
+        usage("Can't write grade book in \"" + gradeBookFileName + "\"");
+      }
+    }
+  }
+
 
   private static GradeBook parseGradeBook(String gradeBookFileName) throws IOException, ParserException {
     File gradeBookFile = new File(gradeBookFileName);
     if (!gradeBookFile.exists()) {
-      usage("Grade Boook file \"" + gradeBookFile + "\" does not exist");
+      usage("Grade Book file \"" + gradeBookFile + "\" does not exist");
     }
 
     XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFile);
