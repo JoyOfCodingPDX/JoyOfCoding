@@ -38,8 +38,8 @@ public class ProjectGradesImporterTest {
     project.addLine("iadguow");
 
     ProjectScore score = ProjectGradesImporter.getScoreFrom(project.getReader());
-    assertThat(score.getTotalPoints(), equalTo(3.5));
     assertThat(score.getScore(), equalTo(3.4));
+    assertThat(score.getTotalPoints(), equalTo(3.5));
   }
 
   @Test
@@ -64,6 +64,17 @@ public class ProjectGradesImporterTest {
     }
   }
 
+  @Test
+  public void onlyFirstScoreIsReturned() {
+    GradedProject project = new GradedProject();
+    project.addLine("3.4 out of 3.5");
+    project.addLine("iadguow");
+    project.addLine("3.3 out of 3.4");
+
+    ProjectScore score = ProjectGradesImporter.getScoreFrom(project.getReader());
+    assertThat(score.getScore(), equalTo(3.4));
+    assertThat(score.getTotalPoints(), equalTo(3.5));
+  }
 
   // Multiple grades in a file (only first one)
 }
