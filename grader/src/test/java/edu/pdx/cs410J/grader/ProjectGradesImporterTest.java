@@ -1,8 +1,7 @@
 package edu.pdx.cs410J.grader;
 
-import org.junit.Test;
-
 import edu.pdx.cs410J.grader.ProjectGradesImporter.ProjectScore;
+import org.junit.Test;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -10,6 +9,7 @@ import java.util.regex.Matcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
 
 public class ProjectGradesImporterTest {
 
@@ -133,7 +133,31 @@ public class ProjectGradesImporterTest {
 
     ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
     importer.recordScoreFromProjectReport(studentId, project.getReader());
+  }
 
+  @Test
+  public void throwIllegalStateExceptionWhenStudentDoesNotExistInGradeBook() {
+    String studentId = "student";
+    Assignment assignment = new Assignment("project", 6.0);
+
+    GradeBook gradeBook = new GradeBook("test");
+    gradeBook.addAssignment(assignment);
+
+    GradedProject project = new GradedProject();
+    project.addLine("5.8 out of 6.0");
+    project.addLine("");
+    project.addLine("asdfasd");
+
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
+    try {
+      importer.recordScoreFromProjectReport(studentId, project.getReader());
+      fail("Should have thrown an IllegalStateException");
+
+    } catch (IllegalStateException ex) {
+      // pass
+    }
+
+    assertThat(gradeBook.containsStudent(studentId), equalTo(false));
   }
 
 }
