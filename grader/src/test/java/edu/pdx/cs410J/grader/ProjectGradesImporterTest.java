@@ -51,6 +51,26 @@ public class ProjectGradesImporterTest {
     assertThat(matcher.group(2), equalTo("5.0"));
   }
 
+  @Test
+  public void scoreMatchesIntegerPoints() {
+    Matcher matcher = ProjectGradesImporter.scorePattern.matcher("4 out of 5");
+    assertThat(matcher.matches(), equalTo(true));
+    assertThat(matcher.groupCount(), equalTo(2));
+    assertThat(matcher.group(1), equalTo("4"));
+    assertThat(matcher.group(2), equalTo("5"));
+  }
+
+  @Test
+  public void gradedProjectWithIntegerPoints() {
+    GradedProject project = new GradedProject();
+    project.addLine("3 out of 5");
+    project.addLine("iadguow");
+
+    ProjectScore score = ProjectGradesImporter.getScoreFrom(project.getReader());
+    assertThat(score.getScore(), equalTo(3.0));
+    assertThat(score.getTotalPoints(), equalTo(5.0));
+  }
+
   private class GradedProject {
     private StringBuilder sb = new StringBuilder();
 
@@ -115,7 +135,5 @@ public class ProjectGradesImporterTest {
     importer.recordScoreFromProjectReport(studentId, project.getReader());
 
   }
-
-  // Integer grade and score
 
 }
