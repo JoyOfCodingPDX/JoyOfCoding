@@ -38,6 +38,13 @@ public class ProjectGradesImporter {
 
   public void recordScoreFromProjectReport(String studentId, Reader report) {
     ProjectScore score = getScoreFrom(report);
+
+    if (score.getTotalPoints() != this.assignment.getPoints()) {
+      String message = "Assignment " + this.assignment.getName() + " should be worth " + this.assignment.getPoints() +
+        " points, but the report for " + studentId + " was out of " + score.getTotalPoints();
+      throw new IllegalStateException(message);
+    }
+
     Student student = gradeBook.getStudent(studentId);
     Grade grade = student.getGrade(this.assignment);
     if (grade == null) {

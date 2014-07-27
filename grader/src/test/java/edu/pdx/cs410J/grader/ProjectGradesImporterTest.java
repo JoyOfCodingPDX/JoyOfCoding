@@ -97,6 +97,25 @@ public class ProjectGradesImporterTest {
     assertThat(gradeBook.isDirty(), equalTo(true));
   }
 
-  // Total points doesn't match total in grade book
+  @Test(expected = IllegalStateException.class)
+  public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() {
+    String studentId = "student";
+    Assignment assignment = new Assignment("project", 8.0);
+
+    GradeBook gradeBook = new GradeBook("test");
+    gradeBook.addStudent(new Student(studentId));
+    gradeBook.addAssignment(assignment);
+
+    GradedProject project = new GradedProject();
+    project.addLine("5.8 out of 6.0");
+    project.addLine("");
+    project.addLine("asdfasd");
+
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
+    importer.recordScoreFromProjectReport(studentId, project.getReader());
+
+  }
+
+  // Integer grade and score
 
 }
