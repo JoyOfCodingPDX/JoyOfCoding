@@ -63,7 +63,6 @@ public class GradesFromD2LImporter {
     }
   }
 
-
   private static GradeBook parseGradeBook(String gradeBookFileName) throws IOException, ParserException {
     File gradeBookFile = new File(gradeBookFileName);
     if (!gradeBookFile.exists()) {

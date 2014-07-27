@@ -37,6 +37,9 @@ public class GraderTools {
       case "importFromD2L" :
         return GradesFromD2LImporter.class;
 
+      case "importFromProjectReports" :
+        return ProjectGradesImporter.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -57,11 +60,13 @@ public class GraderTools {
     err.println("Executes one of the Grader tools");
     err.println();
     err.println("usage: GraderTools tool toolArg*");
-    err.println("  tool             The tool to execute");
-    err.println("    gradebook      The Grade Book GUI");
-    err.println("    fetch          Fetch student surveys or project from the Grader's emails account");
-    err.println("    importFromD2L  Import grades from a D2L CSV");
-    err.println("  toolArg          A command line argument to send to the tool");
+    err.println("  tool                        The tool to execute");
+    err.println("    gradebook                 The Grade Book GUI");
+    err.println("    fetch                     Fetch student surveys or projects from the Grader's");
+    err.println("                              emails account");
+    err.println("    importFromD2L             Import grades from a D2L CSV");
+    err.println("    importFromProjectReports  Import grades from graded project reports");
+    err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
     System.exit(1);
