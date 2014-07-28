@@ -40,6 +40,9 @@ public class GraderTools {
       case "importFromProjectReports" :
         return ProjectGradesImporter.class;
 
+      case "mailFileToStudent" :
+        return StudentFileMailer.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -66,6 +69,7 @@ public class GraderTools {
     err.println("                              emails account");
     err.println("    importFromD2L             Import grades from a D2L CSV");
     err.println("    importFromProjectReports  Import grades from graded project reports");
+    err.println("    mailFileToStudent         Email text files to students");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
