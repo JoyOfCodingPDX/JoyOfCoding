@@ -554,7 +554,6 @@ public class Submit {
     // Obtain a Session for sending email
     Properties props = new Properties();
     props.put("mail.smtp.host", serverName);
-    db("Establishing session on " + serverName);
     Session session = Session.getDefaultInstance(props, null);
     session.setDebug(this.debug);
     return session;
