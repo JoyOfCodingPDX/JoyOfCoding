@@ -4,20 +4,22 @@ import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Transport;
 import javax.mail.internet.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.Properties;
 
 /**
  * This program presents a survey that all students in CS410J should
  * answer.  It emails the results of the survey to the TA and emails a
  * receipt back to the student.
  */
-public class Survey {
+public class Survey extends EmailSender {
   private static final String systemID = 
     "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
   private static PrintWriter out = new PrintWriter(System.out, true);
@@ -26,7 +28,6 @@ public class Survey {
     new BufferedReader(new InputStreamReader(System.in));
 
   private static final String TA_EMAIL = "sjavata@gmail.com";
-  private static String serverName = "mailhost.cs.pdx.edu";
 
   /**
    * Returns a textual summary of a <code>Student</code>
@@ -194,26 +195,16 @@ public class Survey {
     bytes = baos.toByteArray();
 
     // Email the results of the survey to the TA and CC the student
-    
-    // Obtain a JavaMail session for sending email
-    Properties props = new Properties();
-    props.put("mail.smtp.host", serverName);
-    Session session = Session.getDefaultInstance(props, null);
 
-    // Make a new email message
-    MimeMessage message = new MimeMessage(session);
-
+    MimeMessage message = null;
     try {
-      InternetAddress[] to = {new InternetAddress(TA_EMAIL)};
-      message.setRecipients(Message.RecipientType.TO, to);
+      message = newEmailTo(newEmailSession(false), TA_EMAIL, "CS410J Survey for " + student.getFullName());
 
       String studentEmail = student.getEmail();
       if (studentEmail != null) {
         InternetAddress[] cc = {new InternetAddress(studentEmail)};
         message.setRecipients(Message.RecipientType.CC, cc);
       }
-
-      message.setSubject("CS410J Survey for " + student.getFullName());
 
     } catch (AddressException ex) {
       err.println("** Exception with email address " + ex);

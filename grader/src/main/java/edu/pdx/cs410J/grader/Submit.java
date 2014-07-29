@@ -113,7 +113,7 @@ public class Submit extends EmailSender {
    * Sets the name of the SMTP server that is used to send emails
    */
   public void setServerName(String serverName) {
-    this.serverName = serverName;
+    EmailSender.serverName = serverName;
   }
 
   /**
