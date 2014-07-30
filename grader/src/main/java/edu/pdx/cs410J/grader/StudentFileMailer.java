@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.io.Files;
 import edu.pdx.cs410J.ParserException;
 
 import javax.mail.MessagingException;
@@ -9,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,14 +59,14 @@ public class StudentFileMailer extends EmailSender {
       try {
         mailer.mailFileToStudent(file, student);
 
-      } catch (MessagingException ex) {
+      } catch (MessagingException | IOException ex) {
         System.err.println("While mailing \"" + file + "\" to " + student);
         ex.printStackTrace(System.err);
       }
     }
   }
 
-  private void mailFileToStudent(File file, Student student) throws MessagingException {
+  private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {
     String studentEmail = getEmailAddress(student);
 
     System.out.println("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
@@ -75,8 +77,10 @@ public class StudentFileMailer extends EmailSender {
     sendEmailMessage(message);
   }
 
-  private String readTextFromFile(File file) {
-    return "The text from " + file;
+  private String readTextFromFile(File file) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    Files.copy(file, Charset.defaultCharset(), sb);
+    return sb.toString();
   }
 
   private void sendEmailMessage(MimeMessage message) throws MessagingException {
