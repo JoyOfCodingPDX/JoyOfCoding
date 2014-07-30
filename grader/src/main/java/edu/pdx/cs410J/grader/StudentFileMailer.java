@@ -16,12 +16,10 @@ import java.util.List;
 
 public class StudentFileMailer extends EmailSender {
 
-  private final GradeBook gradeBook;
   private final String subject;
   private final Session session;
 
-  public StudentFileMailer(GradeBook gradeBook, String subject, Session session) {
-    this.gradeBook = gradeBook;
+  public StudentFileMailer(String subject, Session session) {
     this.subject = subject;
     this.session = session;
   }
@@ -52,7 +50,7 @@ public class StudentFileMailer extends EmailSender {
 
     assert files.size() == students.size();
 
-    StudentFileMailer mailer = new StudentFileMailer(gradeBook, subject, newEmailSession(false));
+    StudentFileMailer mailer = new StudentFileMailer(subject, newEmailSession(false));
     for (int i = 0; i < files.size(); i++) {
       File file = files.get(i);
       Student student = students.get(i);
