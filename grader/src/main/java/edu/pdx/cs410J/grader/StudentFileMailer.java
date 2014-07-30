@@ -68,10 +68,15 @@ public class StudentFileMailer extends EmailSender {
     String studentEmail = getEmailAddress(student);
 
     System.out.println("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
+
     MimeMessage message = newEmailTo(this.session, studentEmail, this.subject);
+    message.setText(readTextFromFile(file));
 
     sendEmailMessage(message);
+  }
 
+  private String readTextFromFile(File file) {
+    return "The text from " + file;
   }
 
   private void sendEmailMessage(MimeMessage message) throws MessagingException {
