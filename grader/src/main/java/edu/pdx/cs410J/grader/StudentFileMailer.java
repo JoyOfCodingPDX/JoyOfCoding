@@ -2,20 +2,26 @@ package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
 
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentFileMailer {
+public class StudentFileMailer extends EmailSender {
 
   private final GradeBook gradeBook;
   private final String subject;
+  private final Session session;
 
-  public StudentFileMailer(GradeBook gradeBook, String subject) {
+  public StudentFileMailer(GradeBook gradeBook, String subject, Session session) {
     this.gradeBook = gradeBook;
     this.subject = subject;
+    this.session = session;
   }
 
   public static void main(String[] args) {
@@ -44,17 +50,49 @@ public class StudentFileMailer {
 
     assert files.size() == students.size();
 
-    StudentFileMailer mailer = new StudentFileMailer(gradeBook, subject);
+    StudentFileMailer mailer = new StudentFileMailer(gradeBook, subject, newEmailSession(false));
     for (int i = 0; i < files.size(); i++) {
       File file = files.get(i);
       Student student = students.get(i);
-      mailer.mailFileToStudent(file, student);
+      try {
+        mailer.mailFileToStudent(file, student);
+
+      } catch (MessagingException ex) {
+        System.err.println("While mailing \"" + file + "\" to " + student);
+        ex.printStackTrace(System.err);
+      }
     }
   }
 
-  private void mailFileToStudent(File file, Student student) {
-    System.out.println("Mailing \"" + file + "\" to \"" + student + "\"");
+  private void mailFileToStudent(File file, Student student) throws MessagingException {
+    String studentEmail = getEmailAddress(student);
 
+    System.out.println("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
+    MimeMessage message = newEmailTo(this.session, studentEmail, this.subject);
+
+    sendEmailMessage(message);
+
+  }
+
+  private void sendEmailMessage(MimeMessage message) throws MessagingException {
+    Transport.send(message);
+  }
+
+  private String getEmailAddress(Student student) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(student.getFirstName());
+    sb.append(" ");
+    if (student.getNickName() != null) {
+      sb.append("\"");
+      sb.append(student.getNickName());
+      sb.append("\" ");
+    }
+    sb.append(student.getLastName());
+    sb.append(" <");
+    sb.append(student.getEmail());
+    sb.append(">");
+
+    return sb.toString();
   }
 
   private static List<Student> getStudentsFromFiles(List<File> files, GradeBook gradeBook) {
