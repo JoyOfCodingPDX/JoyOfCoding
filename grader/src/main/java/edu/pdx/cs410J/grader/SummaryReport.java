@@ -81,9 +81,11 @@ public class SummaryReport {
       if (grade == null) {
         line.append(" (MISSING GRADE)");
 
-      } else if (grade.getScore() == Grade.INCOMPLETE || 
-                grade.getScore() == Grade.NO_GRADE) {
+      } else if (grade.isIncomplete()) {
         line.append(" (INCOMPLETE)");
+
+      } else if (grade.isNotGraded()) {
+        line.append( "(NOT GRADED)");
       }
 
       pw.println(line);
@@ -128,11 +130,11 @@ public class SummaryReport {
     allTotals.put(student, new Double(total/best));
   }
 
-  private static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
+  static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
     for (String studentId : book.getStudentIds()) {
       Student student = book.getStudent(studentId);
       Grade grade = student.getGrade(assignment.getName());
-      if (grade != null) {
+      if (grade != null && !grade.isNotGraded()) {
         return false;
       }
     }
@@ -182,15 +184,15 @@ public class SummaryReport {
     String outputDirName = null;
     Collection<String> students = new ArrayList<String>();
 
-    for (int i = 0; i < args.length; i++) {
+    for (String arg : args) {
       if (xmlFileName == null) {
-	xmlFileName = args[i];
+        xmlFileName = arg;
 
       } else if (outputDirName == null) {
-	outputDirName = args[i];
+        outputDirName = arg;
 
       } else {
-	students.add(args[i]);
+        students.add(arg);
       }
     }
 
@@ -266,6 +268,7 @@ public class SummaryReport {
 
     // Sort students by totals and print out results:
     TreeSet<Student> sorted = new TreeSet<Student>(new Comparator<Student>() {
+        @Override
         public int compare(Student s1, Student s2) {
           Double d1 = allTotals.get(s1);
           Double d2 = allTotals.get(s2);
@@ -276,6 +279,7 @@ public class SummaryReport {
           }
         }
 
+        @Override
         public boolean equals(Object o) {
           return true;
         }

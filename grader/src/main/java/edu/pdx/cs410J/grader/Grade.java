@@ -53,6 +53,10 @@ public class Grade extends NotableImpl {
     return this.score;
   }
 
+  public boolean isIncomplete() {
+    return this.getScore() == INCOMPLETE;
+  }
+
   /**
    * Sets the score the student received on the assignment.
    */
@@ -269,5 +273,9 @@ public class Grade extends NotableImpl {
       err.println("** While dumping to " + file + ": " + ex);
       System.exit(1);
     }
+  }
+
+  public boolean isNotGraded() {
+    return this.getScore() == Grade.NO_GRADE;
   }
 }
