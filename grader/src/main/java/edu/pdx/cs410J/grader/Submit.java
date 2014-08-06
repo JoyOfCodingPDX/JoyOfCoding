@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * @author David Whitlock
  * @since Fall 2000 (Refactored to use fewer static methods in Spring 2006)
  */
-public class Submit {
+public class Submit extends EmailSender {
 
   private static final PrintWriter out = new PrintWriter(System.out, true);
   private static final PrintWriter err = new PrintWriter(System.err, true);
@@ -74,11 +74,6 @@ public class Submit {
   private String userId = null;
 
   /**
-   * The name of the SMTP server that is used to send email
-   */
-  private String serverName = "mailhost.cs.pdx.edu";
-
-  /**
    * A comment describing the project
    */
   private String comment = null;
@@ -118,7 +113,7 @@ public class Submit {
    * Sets the name of the SMTP server that is used to send emails
    */
   public void setServerName(String serverName) {
-    this.serverName = serverName;
+    EmailSender.serverName = serverName;
   }
 
   /**
@@ -482,7 +477,7 @@ public class Submit {
    * a textual summary of the contents of the Jar file.
    */
   private void mailTA(File jarFile, Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(), TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
+    MimeMessage message = newEmailTo(newEmailSession(debug), TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
     MimeBodyPart filePart = createJarAttachment(jarFile);
@@ -540,31 +535,11 @@ public class Submit {
     return textPart;
   }
 
-  private MimeMessage newEmailTo(Session session, String recipient, String subject) throws MessagingException {
-    // Make a new email message
-    MimeMessage message = new MimeMessage(session);
-
-    InternetAddress[] to = {new InternetAddress(recipient)};
-    message.setRecipients(Message.RecipientType.TO, to);
-    message.setSubject(subject);
-    return message;
-  }
-
-  private Session newEmailSession() {
-    // Obtain a Session for sending email
-    Properties props = new Properties();
-    props.put("mail.smtp.host", serverName);
-    db("Establishing session on " + serverName);
-    Session session = Session.getDefaultInstance(props, null);
-    session.setDebug(this.debug);
-    return session;
-  }
-
   /**
    * Sends a email to the user as a receipt of the submission.
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(), userEmail, "CS410J " + projName + " submission");
+    MimeMessage message = newEmailTo(newEmailSession(debug), userEmail, "CS410J " + projName + " submission");
 
     // Create the contents of the message
     DateFormat df =
