@@ -140,6 +140,7 @@ public class FetchAndProcessGraderEmail {
     err.println("      projects    Project submissions");
     err.println("      surveys     Student surveys");
     err.println("      koans       Koans submissions");
+    err.println("      gwtProjects GWT Project submissions");
     err.println();
 
     System.exit(1);
