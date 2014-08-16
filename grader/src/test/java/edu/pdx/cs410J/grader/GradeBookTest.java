@@ -50,15 +50,28 @@ public class GradeBookTest {
     range.setRange(99, 99);
   }
 
+  @Test
   public void defaultLetterGradeRangesAreValid() {
-
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    ranges.validate();
   }
 
+  @Test(expected = InvalidLetterGradeRange.class)
   public void rangesDoNotStartAtZero() {
-
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.F);
+    range.setRange(2, range.maximum());
+    ranges.validate();
   }
 
+  @Test(expected = InvalidLetterGradeRange.class)
   public void rangesDoNotContain100() {
-
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.A);
+    range.setRange(range.minimum(), 99);
+    ranges.validate();
   }
 }

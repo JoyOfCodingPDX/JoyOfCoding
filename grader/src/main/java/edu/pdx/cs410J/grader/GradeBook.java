@@ -356,6 +356,25 @@ public class GradeBook {
       return ranges.get(letterGrade);
     }
 
+    public void validate() {
+      validateThatFRangeHasAMinimumOf0();
+      validateThatARangeContains100();
+    }
+
+    private void validateThatARangeContains100() {
+      LetterGradeRange range = getRange(LetterGrade.A);
+      if (range.maximum() < 100) {
+        throw new LetterGradeRange.InvalidLetterGradeRange("The A range must contain 100");
+      }
+    }
+
+    private void validateThatFRangeHasAMinimumOf0() {
+      LetterGradeRange range = getRange(LetterGrade.F);
+      if (range.minimum() > 0) {
+        throw new LetterGradeRange.InvalidLetterGradeRange("The F range must contain zero");
+      }
+    }
+
     static class LetterGradeRange {
       private int maximum;
       private int minimum;
