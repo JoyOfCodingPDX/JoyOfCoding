@@ -3,10 +3,9 @@ package edu.pdx.cs410J.grader;
 import org.junit.Test;
 
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange.InvalidLetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 public class GradeBookTest {
 
@@ -35,11 +34,23 @@ public class GradeBookTest {
     assertThat(range.getGreaterThanOrEqualTo(), equalTo(greaterThanOrEqualTo));
   }
 
+  @Test(expected = InvalidLetterGradeRange.class)
+  public void lessThanValueGreaterThanGreaterThanOrEqualToValue() {
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.A);
+    range.setRange(100, 99);
+  }
+
   public void defaultLetterGradeRangesAreValid() {
 
   }
 
-  public void lessThanValueGreaterThanGreaterThanOrEqualToValue() {
+  public void rangesDoNotStartAtZero() {
+
+  }
+
+  public void rangesDoNotContain100() {
 
   }
 }

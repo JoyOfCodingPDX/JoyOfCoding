@@ -361,6 +361,16 @@ public class GradeBook {
       private int greaterThanOrEqualTo;
 
       public LetterGradeRange(int greaterThanOrEqualTo, int lessThan) {
+        setRange(greaterThanOrEqualTo, lessThan);
+      }
+
+      public void setRange(int greaterThanOrEqualTo, int lessThan) {
+        if (greaterThanOrEqualTo >= lessThan) {
+          String s = String.format("Minimum value (%d) must be less than maximum value (%d)",
+            greaterThanOrEqualTo, lessThan);
+          throw new InvalidLetterGradeRange(s);
+        }
+
         this.greaterThanOrEqualTo = greaterThanOrEqualTo;
         this.lessThan = lessThan;
       }
@@ -371,6 +381,12 @@ public class GradeBook {
 
       public int lessThan() {
         return this.lessThan;
+      }
+
+      public static class InvalidLetterGradeRange extends RuntimeException {
+        public InvalidLetterGradeRange(String message) {
+          super(message);
+        }
       }
     }
   }
