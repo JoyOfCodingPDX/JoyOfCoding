@@ -2,9 +2,22 @@ package edu.pdx.cs410J.grader;
 
 public enum LetterGrade {
 
-  A("A")
-
+  A("A"),
+  A_MINUS("A-"),
+  B_PLUS("B+"),
+  B("B"),
+  B_MINUS("B-"),
+  C_PLUS("C+"),
+  C("C"),
+  C_MINUS("C-"),
+  D_PLUS("D+"),
+  D("D"),
+  D_MINUS("D-"),
+  F("F"),
+  I("I"),
+  X("X")
   ;
+
   private final String stringValue;
 
   LetterGrade(String stringValue) {
@@ -23,6 +36,10 @@ public enum LetterGrade {
 
   public String asString() {
     return stringValue;
+  }
+
+  public String toString() {
+    return asString();
   }
 
 }
