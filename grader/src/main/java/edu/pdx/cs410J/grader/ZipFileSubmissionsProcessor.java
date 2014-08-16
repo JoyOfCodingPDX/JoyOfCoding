@@ -33,7 +33,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
     }
 
     try {
-      File file = getKoansFileLocation(fileName, studentId);
+      File file = getLocationToWriteFile(fileName, studentId);
       warn("Writing \"" + fileName + "\" to " + file);
 
       ByteStreams.copy(inputStream, new FileOutputStream(file));
@@ -144,7 +144,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
     return student.getFirstName() + " " + student.getLastName();
   }
 
-  private File getKoansFileLocation(String fileName, String studentId) throws IOException {
+  private File getLocationToWriteFile(String fileName, String studentId) throws IOException {
     File dir = new File(directory, studentId);
     if (!dir.exists() && !dir.mkdirs()) {
       throw new IOException("Could not create directory \"" + dir + "\"");

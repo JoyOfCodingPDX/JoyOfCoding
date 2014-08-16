@@ -69,7 +69,12 @@ public class GraderEmailAccount {
   }
 
   private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
-    processor.processAttachment(message, part.getFileName(), part.getInputStream());
+    String fileName = part.getFileName();
+    if (fileName == null) {
+      System.out.println("    Skipping message with attachment without a name");
+      return;
+    }
+    processor.processAttachment(message, fileName, part.getInputStream());
       System.out.println("    " + part.getContentType());
   }
 
