@@ -80,6 +80,9 @@ public class FetchAndProcessGraderEmail {
     } else if (whatToFetch.equalsIgnoreCase("koans")) {
       return new KoansSubmissionsProcessor(directory, gradeBook);
 
+    } else if (whatToFetch.equalsIgnoreCase("gwtProjects")) {
+      return new GwtProjectSubmissionsProcessor(directory, gradeBook);
+
     } else {
       return usage("Cannot fetch \"" + whatToFetch + "\"");
     }
@@ -137,6 +140,7 @@ public class FetchAndProcessGraderEmail {
     err.println("      projects    Project submissions");
     err.println("      surveys     Student surveys");
     err.println("      koans       Koans submissions");
+    err.println("      gwtProjects GWT Project submissions");
     err.println();
 
     System.exit(1);
