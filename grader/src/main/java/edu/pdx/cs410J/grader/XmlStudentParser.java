@@ -185,6 +185,10 @@ class XmlStudentParser extends XmlHelper {
         String d2lId = extractTextFrom(child);
         student.setD2LId(d2lId);
 
+      } else if (child.getTagName().equals("letter-grade")) {
+        String letterGrade = extractTextFrom(child);
+        student.setLetterGrade(LetterGrade.fromString(letterGrade));
+
       } else if (child.getTagName().equals("grades")) {
         NodeList kids = child.getChildNodes();
         for (int j = 0; j < kids.getLength(); j++) {

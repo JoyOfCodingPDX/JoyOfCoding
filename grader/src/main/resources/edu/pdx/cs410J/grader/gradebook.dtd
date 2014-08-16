@@ -44,7 +44,7 @@ points it is worth, a type, and some optional notes -->
 address, social security number, a major, some grades, some late
 assignments, and some notes -->
 <!ELEMENT student (id, firstName?, lastName?, nickName?, email?, ssn?,
-                   major?, d2l-id?, grades?, late?, resubmitted?, notes?)>
+                   major?, d2l-id?, letter-grade?, grades?, late?, resubmitted?, notes?)>
 
 <!ELEMENT id (#PCDATA)>
 
@@ -55,6 +55,7 @@ assignments, and some notes -->
 <!ELEMENT ssn (#PCDATA)>  <!-- xxx-xx-xxxx -->
 <!ELEMENT major (#PCDATA)>
 <!ELEMENT d2l-id (#PCDATA)>
+<!ELEMENT letter-grade (#PCDATA)>
 <!ELEMENT grades (grade*)>
 <!ELEMENT late (name*)>
 <!ELEMENT resubmitted (name*)>

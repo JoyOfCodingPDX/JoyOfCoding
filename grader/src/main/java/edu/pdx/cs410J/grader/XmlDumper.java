@@ -5,9 +5,7 @@ import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -182,20 +180,7 @@ public class XmlDumper extends XmlHelper {
 
     // Finally serialize the DOM tree to a Writer
     try {
-      Source src = new DOMSource(doc);
-      Result res = new StreamResult(this.pw);
-
-      TransformerFactory xFactory = TransformerFactory.newInstance();
-      Transformer xform = xFactory.newTransformer();
-      xform.setOutputProperty(OutputKeys.INDENT, "yes");
-      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
-//       xform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-      // Suppress warnings about "Declared encoding not matching
-      // actual one
-      xform.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      xform.transform(src, res);
+      writeXmlToPrintWriter(doc, this.pw);
 
     } catch (TransformerException ex) {
       ex.printStackTrace(System.err);
@@ -236,15 +221,7 @@ public class XmlDumper extends XmlHelper {
     PrintWriter pw = new PrintWriter(new FileWriter(studentFile), true);
 
     try {
-      Source src = new DOMSource(doc);
-      Result res = new StreamResult(pw);
-
-      TransformerFactory xFactory = TransformerFactory.newInstance();
-      Transformer xform = xFactory.newTransformer();
-      xform.setOutputProperty(OutputKeys.INDENT, "yes");
-      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
-      xform.transform(src, res);
+      writeXmlToPrintWriter(doc, pw);
 
     } catch (TransformerException ex) {
       ex.printStackTrace(System.err);
@@ -330,6 +307,12 @@ public class XmlDumper extends XmlHelper {
       Element d2lId = doc.createElement("d2l-id");
       d2lId.appendChild(doc.createTextNode(student.getD2LId()));
       root.appendChild(d2lId);
+    }
+
+    if (student.getLetterGrade() != null) {
+      Element letterGrade = doc.createElement("letter-grade");
+      letterGrade.appendChild(doc.createTextNode(student.getLetterGrade().asString()));
+      root.appendChild(letterGrade);
     }
 
     Iterator gradeNames = student.getGradeNames().iterator();

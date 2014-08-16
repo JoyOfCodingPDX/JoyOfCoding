@@ -9,9 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Transport;
 import javax.mail.internet.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 
 /**
@@ -173,26 +171,15 @@ public class Survey extends EmailSender {
 
     Document xmlDoc = XmlDumper.toXml(student);
 
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintWriter pw =
-      new PrintWriter(new OutputStreamWriter(baos), true);
 
     try {
-      Source src = new DOMSource(xmlDoc);
-      Result res = new StreamResult(pw);
-        
-      TransformerFactory xFactory = TransformerFactory.newInstance();
-      Transformer xform = xFactory.newTransformer();
-      xform.setOutputProperty(OutputKeys.INDENT, "yes");
-      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-      xform.transform(src, res);
-        
+      bytes = XmlHelper.getBytesForXmlDocument(xmlDoc);
+
     } catch (TransformerException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
 
-    bytes = baos.toByteArray();
 
     // Email the results of the survey to the TA and CC the student
 

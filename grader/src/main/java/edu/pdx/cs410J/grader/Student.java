@@ -20,6 +20,7 @@ public class Student extends NotableImpl {
   private String email;
   private String ssn;
   private String major;
+  private LetterGrade letterGrade;
 
   /** Maps name of Assignment to Grade.  The grades are sorted so that
    * they will appear in a canonical order in the student's XML
@@ -525,5 +526,14 @@ public class Student extends NotableImpl {
 
   public String getD2LId() {
     return d2LId;
+  }
+
+  public LetterGrade getLetterGrade() {
+    return letterGrade;
+  }
+
+  public void setLetterGrade(LetterGrade letterGrade) {
+    this.setDirty(true);
+    this.letterGrade = letterGrade;
   }
 }
