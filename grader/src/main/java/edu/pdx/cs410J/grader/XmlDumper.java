@@ -73,6 +73,23 @@ public class XmlDumper extends XmlHelper {
    * Dumps the contents of a <code>GradeBook</code> in XML format.
    */
   public void dump(GradeBook book) throws IOException {
+    Document doc = dumpGradeBook(book, this);
+
+    try {
+      writeXmlToPrintWriter(doc, this.pw);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
+    }
+
+    dumpDirtyStudents(book);
+
+    // Mark the grade book as being clean
+    book.makeClean();
+  }
+
+  static Document dumpGradeBook(GradeBook book, XmlHelper helper) throws IOException {
     Document doc = null;
 
     try {
@@ -81,12 +98,12 @@ public class XmlDumper extends XmlHelper {
       factory.setValidating(true);
 
       DocumentBuilder builder = factory.newDocumentBuilder();
-      builder.setErrorHandler(this);
-      builder.setEntityResolver(this);
+      builder.setErrorHandler(helper);
+      builder.setEntityResolver(helper);
 
       DOMImplementation dom =
         builder.getDOMImplementation();
-      DocumentType docType = 
+      DocumentType docType =
         dom.createDocumentType("gradebook", publicID, systemID);
       doc = dom.createDocument(null, "gradebook", docType);
 
@@ -99,9 +116,9 @@ public class XmlDumper extends XmlHelper {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
- 
+
     Element root = doc.getDocumentElement();
-    
+
     // name node
     Element name = doc.createElement("name");
     name.appendChild(doc.createTextNode(book.getClassName()));
@@ -109,9 +126,8 @@ public class XmlDumper extends XmlHelper {
 
     // assignment nodes
     Element assignments = doc.createElement("assignments");
-    Iterator iter = book.getAssignmentNames().iterator();
-    while (iter.hasNext()) {
-      Assignment assign = book.getAssignment((String) iter.next());
+    for (String assignmentName : book.getAssignmentNames()) {
+      Assignment assign = book.getAssignment(assignmentName);
       Element assignNode = doc.createElement("assignment");
 
       Element assignName = doc.createElement("name");
@@ -127,7 +143,7 @@ public class XmlDumper extends XmlHelper {
 
       Element assignPoints = doc.createElement("points");
       assignPoints.appendChild(doc.createTextNode("" +
-                                                  assign.getPoints()));
+        assign.getPoints()));
       assignNode.appendChild(assignPoints);
 
       doNotes(doc, assignNode, assign.getNotes());
@@ -135,26 +151,26 @@ public class XmlDumper extends XmlHelper {
       assignments.appendChild(assignNode);
 
       int type = assign.getType();
-      switch(type) {
-      case Assignment.PROJECT:
-        assignNode.setAttribute("type", "PROJECT");
-        break;
+      switch (type) {
+        case Assignment.PROJECT:
+          assignNode.setAttribute("type", "PROJECT");
+          break;
 
-      case Assignment.QUIZ:
-        assignNode.setAttribute("type", "QUIZ");
-        break;
+        case Assignment.QUIZ:
+          assignNode.setAttribute("type", "QUIZ");
+          break;
 
-      case Assignment.OTHER:
-        assignNode.setAttribute("type", "OTHER");
-        break;
+        case Assignment.OTHER:
+          assignNode.setAttribute("type", "OTHER");
+          break;
 
-      case Assignment.OPTIONAL:
-        assignNode.setAttribute("type", "OPTIONAL");
-        break;
+        case Assignment.OPTIONAL:
+          assignNode.setAttribute("type", "OPTIONAL");
+          break;
 
-      default: 
-        throw new IllegalArgumentException("Can't handle assignment " +
-                                           "type " + type);
+        default:
+          throw new IllegalArgumentException("Can't handle assignment " +
+            "type " + type);
       }
     }
     root.appendChild(assignments);
@@ -162,33 +178,24 @@ public class XmlDumper extends XmlHelper {
 
     // Students
     Element studentsNode = doc.createElement("students");
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
+    for (String id : book.getStudentIds()) {
       Element studentNode = doc.createElement("id");
       studentNode.appendChild(doc.createTextNode(id));
 
       studentsNode.appendChild(studentNode);
+    }
 
+    root.appendChild(studentsNode);
+    return doc;
+  }
+
+  private void dumpDirtyStudents(GradeBook book) throws IOException {
+    for (String id : book.getStudentIds()) {
       Student student = book.getStudent(id);
       if (student.isDirty()) {
         dumpStudent(student);
       }
     }
-
-    root.appendChild(studentsNode);
-
-    // Finally serialize the DOM tree to a Writer
-    try {
-      writeXmlToPrintWriter(doc, this.pw);
-
-    } catch (TransformerException ex) {
-      ex.printStackTrace(System.err);
-      System.exit(1);
-    }
-
-    // Mark the grade book as being clean
-    book.makeClean();
   }
 
   /**
