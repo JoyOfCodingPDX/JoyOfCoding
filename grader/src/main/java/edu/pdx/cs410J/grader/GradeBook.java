@@ -24,26 +24,24 @@ public class GradeBook {
   private String className;
 
   /** Maps the name of an assignment to an <code>Assignment</code> */
-  private Map<String, Assignment> assignments;
+  private Map<String, Assignment> assignments = new TreeMap<>();
 
   /** Maps the id of a student to a <code>Student</code> object */
-  private Map<String, Student> students;
+  private Map<String, Student> students = new TreeMap<>();
 
   /** Has the grade book been modified? */
-  private boolean dirty;
+  private boolean dirty = true;
 
   /** The Course Request Number (CRN) for this gradebook */
-  private int crn;
+  private int crn = 0;
+
+  private final LetterGradeRanges letterGradeRanges = new LetterGradeRanges();
   
   /**
    * Creates a new <code>GradeBook</code> for a given class
    */
   public GradeBook(String className) {
     this.className = className;
-    this.assignments = new TreeMap<String, Assignment>();
-    this.students = new TreeMap<String, Student>();
-    this.dirty = true;
-    this.crn = 0;
   }
 
   /**
@@ -330,4 +328,38 @@ public class GradeBook {
     }
   }
 
+  public LetterGradeRanges getLetterGradeRanges() {
+    return letterGradeRanges;
+  }
+
+  static class LetterGradeRanges {
+    private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
+
+    private LetterGradeRanges() {
+      this.ranges.put(LetterGrade.A, new LetterGradeRange(95.0, 100.0));
+      this.ranges.put(LetterGrade.A_MINUS, new LetterGradeRange(90.0, 95.0));
+    }
+
+    public LetterGradeRange getRange(LetterGrade letterGrade) {
+      return ranges.get(letterGrade);
+    }
+
+    static class LetterGradeRange {
+      private double lessThan;
+      private double greaterThanOrEqualTo;
+
+      public LetterGradeRange(double greaterThanOrEqualTo, double lessThan) {
+        this.greaterThanOrEqualTo = greaterThanOrEqualTo;
+        this.lessThan = lessThan;
+      }
+
+      public double getGreaterThanOrEqualTo() {
+        return this.greaterThanOrEqualTo;
+      }
+
+      public double lessThan() {
+        return this.lessThan;
+      }
+    }
+  }
 }
