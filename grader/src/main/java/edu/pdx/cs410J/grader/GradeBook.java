@@ -332,12 +332,24 @@ public class GradeBook {
     return letterGradeRanges;
   }
 
+
+
   static class LetterGradeRanges {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
     private LetterGradeRanges() {
-      this.ranges.put(LetterGrade.A, new LetterGradeRange(95.0, 100.0));
-      this.ranges.put(LetterGrade.A_MINUS, new LetterGradeRange(90.0, 95.0));
+      this.ranges.put(LetterGrade.A, new LetterGradeRange(94, 100));
+      this.ranges.put(LetterGrade.A_MINUS, new LetterGradeRange(90, 93));
+      this.ranges.put(LetterGrade.B_PLUS, new LetterGradeRange(87, 89));
+      this.ranges.put(LetterGrade.B, new LetterGradeRange(83, 86));
+      this.ranges.put(LetterGrade.B_MINUS, new LetterGradeRange(80, 82));
+      this.ranges.put(LetterGrade.C_PLUS, new LetterGradeRange(77, 79));
+      this.ranges.put(LetterGrade.C, new LetterGradeRange(73, 76));
+      this.ranges.put(LetterGrade.C_MINUS, new LetterGradeRange(70, 72));
+      this.ranges.put(LetterGrade.D_PLUS, new LetterGradeRange(67, 69));
+      this.ranges.put(LetterGrade.D, new LetterGradeRange(63, 66));
+      this.ranges.put(LetterGrade.D_MINUS, new LetterGradeRange(60, 62));
+      this.ranges.put(LetterGrade.F, new LetterGradeRange(0, 59));
     }
 
     public LetterGradeRange getRange(LetterGrade letterGrade) {
@@ -345,19 +357,19 @@ public class GradeBook {
     }
 
     static class LetterGradeRange {
-      private double lessThan;
-      private double greaterThanOrEqualTo;
+      private int lessThan;
+      private int greaterThanOrEqualTo;
 
-      public LetterGradeRange(double greaterThanOrEqualTo, double lessThan) {
+      public LetterGradeRange(int greaterThanOrEqualTo, int lessThan) {
         this.greaterThanOrEqualTo = greaterThanOrEqualTo;
         this.lessThan = lessThan;
       }
 
-      public double getGreaterThanOrEqualTo() {
+      public int getGreaterThanOrEqualTo() {
         return this.greaterThanOrEqualTo;
       }
 
-      public double lessThan() {
+      public int lessThan() {
         return this.lessThan;
       }
     }

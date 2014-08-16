@@ -14,14 +14,32 @@ public class GradeBookTest {
   public void defaultLetterGradeRanges() {
     GradeBook book = new GradeBook("test");
     GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
-    assertLetterGradeRange(ranges, LetterGrade.A, 100.0, 95.0);
-    assertLetterGradeRange(ranges, LetterGrade.A_MINUS, 95.0, 90.0);
+    assertLetterGradeRange(ranges, LetterGrade.A, 94, 100);
+    assertLetterGradeRange(ranges, LetterGrade.A_MINUS, 90, 93);
+    assertLetterGradeRange(ranges, LetterGrade.B_PLUS, 87, 89);
+    assertLetterGradeRange(ranges, LetterGrade.B, 83, 86);
+    assertLetterGradeRange(ranges, LetterGrade.B_MINUS, 80, 82);
+    assertLetterGradeRange(ranges, LetterGrade.C_PLUS, 77, 79);
+    assertLetterGradeRange(ranges, LetterGrade.C, 73, 76);
+    assertLetterGradeRange(ranges, LetterGrade.C_MINUS, 70, 72);
+    assertLetterGradeRange(ranges, LetterGrade.D_PLUS, 67, 69);
+    assertLetterGradeRange(ranges, LetterGrade.D, 63, 66);
+    assertLetterGradeRange(ranges, LetterGrade.D_MINUS, 60, 62);
+    assertLetterGradeRange(ranges, LetterGrade.F, 0, 59);
   }
 
-  private void assertLetterGradeRange(GradeBook.LetterGradeRanges ranges, LetterGrade letterGrade, double lessThan, double greaterThanOrEqualTo) {
+  private void assertLetterGradeRange(GradeBook.LetterGradeRanges ranges, LetterGrade letterGrade, int greaterThanOrEqualTo, int lessThan) {
     LetterGradeRange range = ranges.getRange(letterGrade);
     assertThat("No range for " + letterGrade, range, not(nullValue()));
-    assertThat(range.lessThan(), equalTo(lessThan));
+    assertThat("Less than for " + letterGrade, range.lessThan(), equalTo(lessThan));
     assertThat(range.getGreaterThanOrEqualTo(), equalTo(greaterThanOrEqualTo));
+  }
+
+  public void defaultLetterGradeRangesAreValid() {
+
+  }
+
+  public void lessThanValueGreaterThanGreaterThanOrEqualToValue() {
+
   }
 }
