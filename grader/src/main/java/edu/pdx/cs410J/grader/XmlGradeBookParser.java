@@ -14,6 +14,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.Iterator;
 
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+
 /**
  * This class creates a <code>GradeBook</code> from the contents of an
  * XML file.
@@ -168,6 +170,9 @@ public class XmlGradeBookParser extends XmlHelper {
       } else if (child.getTagName().equals("assignments")) {
         extractAssignmentsFrom(child);
 
+      } else if (child.getTagName().equals("letter-grade-ranges")) {
+        extractLetterGradeRangesFrom(child);
+
       } else if (child.getTagName().equals("students")) {
         extractStudentsFrom(child);
 
@@ -182,6 +187,31 @@ public class XmlGradeBookParser extends XmlHelper {
     }
 
     return this.book;
+  }
+
+  private void extractLetterGradeRangesFrom(Element parent) {
+    NodeList ranges = parent.getChildNodes();
+    for (int j = 0; j < ranges.getLength(); j++) {
+      Node range = ranges.item(j);
+
+      if (!(range instanceof Element)) {
+        continue;
+      }
+
+      extractLetterGradeRangeFrom((Element) range);
+    }
+  }
+
+  private void extractLetterGradeRangeFrom(Element element) {
+    String letterGradeString = element.getAttribute("letter-grade");
+    LetterGrade letterGrade = LetterGrade.fromString(letterGradeString);
+    LetterGradeRange range = this.book.getLetterGradeRanges().getRange(letterGrade);
+    range.setRange(toInt(element.getAttribute("minimum-score")), toInt(element.getAttribute("maximum-score")));
+
+  }
+
+  private int toInt(String value) {
+    return Integer.parseInt(value);
   }
 
   private void extractStudentsFrom(Element child) throws ParserException {

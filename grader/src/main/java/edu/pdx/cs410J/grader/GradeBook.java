@@ -6,10 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * This class represents a grade book that contains information about
@@ -334,7 +332,7 @@ public class GradeBook {
 
 
 
-  static class LetterGradeRanges {
+  static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
     private LetterGradeRanges() {
@@ -397,6 +395,21 @@ public class GradeBook {
       }
     }
 
+    @Override
+    public Iterator<LetterGradeRange> iterator() {
+      return this.ranges.values().iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super LetterGradeRange> action) {
+      this.ranges.values().forEach(action);
+    }
+
+    @Override
+    public Spliterator<LetterGradeRange> spliterator() {
+      return this.ranges.values().spliterator();
+    }
+
     static class LetterGradeRange {
       private final LetterGrade letterGrade;
       private int maximum;
@@ -428,7 +441,11 @@ public class GradeBook {
 
       @Override
       public String toString() {
-        return "Range for " + letterGrade + " is " + minimum() + " to " + maximum();
+        return "Range for " + letterGrade() + " is " + minimum() + " to " + maximum();
+      }
+
+      public LetterGrade letterGrade() {
+        return this.letterGrade;
       }
 
       public static class InvalidLetterGradeRange extends RuntimeException {

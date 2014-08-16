@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+
 /**
  * This class dumps the contents of a <code>GradeBook</code> to an XML
  * file.  By default, the students in the grade book are dumped to XML
@@ -96,10 +98,28 @@ public class XmlDumper extends XmlHelper {
 
     appendXmlForClassName(book, doc, root);
     appendXmlForAssignments(book, doc, root);
+    appendXmlForLetterGradeRanges(book, doc, root);
     appendXmlForStudents(book, doc, root);
 
 
     return doc;
+  }
+
+  private static void appendXmlForLetterGradeRanges(GradeBook book, Document doc, Element root) {
+    Element lgrNode = doc.createElement("letter-grade-ranges");
+    for (LetterGradeRange range : book.getLetterGradeRanges()) {
+      appendXmlForLetterGradeRange(range, doc, lgrNode);
+    }
+    root.appendChild(lgrNode);
+  }
+
+  private static void appendXmlForLetterGradeRange(LetterGradeRange range, Document doc, Element parent) {
+    Element node = doc.createElement("letter-grade-range");
+    node.setAttribute("letter-grade", range.letterGrade().asString());
+    node.setAttribute("minimum-score", String.valueOf(range.minimum()));
+    node.setAttribute("maximum-score", String.valueOf(range.maximum()));
+
+    parent.appendChild(node);
   }
 
   private static Document createDocumentForGradeBook(XmlHelper helper) {
