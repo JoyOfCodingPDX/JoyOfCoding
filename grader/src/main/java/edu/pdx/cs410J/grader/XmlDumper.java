@@ -90,6 +90,19 @@ public class XmlDumper extends XmlHelper {
   }
 
   static Document dumpGradeBook(GradeBook book, XmlHelper helper) throws IOException {
+    Document doc = createDocumentForGradeBook(helper);
+
+    Element root = doc.getDocumentElement();
+
+    appendXmlForClassName(book, doc, root);
+    appendXmlForAssignments(book, doc, root);
+    appendXmlForStudents(book, doc, root);
+
+
+    return doc;
+  }
+
+  private static Document createDocumentForGradeBook(XmlHelper helper) {
     Document doc = null;
 
     try {
@@ -116,14 +129,30 @@ public class XmlDumper extends XmlHelper {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
+    return doc;
+  }
 
-    Element root = doc.getDocumentElement();
+  private static void appendXmlForStudents(GradeBook book, Document doc, Element root) {
+    // Students
+    Element studentsNode = doc.createElement("students");
+    for (String id : book.getStudentIds()) {
+      Element studentNode = doc.createElement("id");
+      studentNode.appendChild(doc.createTextNode(id));
 
+      studentsNode.appendChild(studentNode);
+    }
+
+    root.appendChild(studentsNode);
+  }
+
+  private static void appendXmlForClassName(GradeBook book, Document doc, Element root) {
     // name node
     Element name = doc.createElement("name");
     name.appendChild(doc.createTextNode(book.getClassName()));
     root.appendChild(name);
+  }
 
+  private static void appendXmlForAssignments(GradeBook book, Document doc, Element root) {
     // assignment nodes
     Element assignments = doc.createElement("assignments");
     for (String assignmentName : book.getAssignmentNames()) {
@@ -174,19 +203,6 @@ public class XmlDumper extends XmlHelper {
       }
     }
     root.appendChild(assignments);
-
-
-    // Students
-    Element studentsNode = doc.createElement("students");
-    for (String id : book.getStudentIds()) {
-      Element studentNode = doc.createElement("id");
-      studentNode.appendChild(doc.createTextNode(id));
-
-      studentsNode.appendChild(studentNode);
-    }
-
-    root.appendChild(studentsNode);
-    return doc;
   }
 
   private void dumpDirtyStudents(GradeBook book) throws IOException {
