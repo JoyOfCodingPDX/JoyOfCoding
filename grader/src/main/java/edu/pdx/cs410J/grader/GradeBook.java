@@ -357,30 +357,30 @@ public class GradeBook {
     }
 
     static class LetterGradeRange {
-      private int lessThan;
-      private int greaterThanOrEqualTo;
+      private int maximum;
+      private int minimum;
 
-      public LetterGradeRange(int greaterThanOrEqualTo, int lessThan) {
-        setRange(greaterThanOrEqualTo, lessThan);
+      public LetterGradeRange(int minimum, int maximum) {
+        setRange(minimum, maximum);
       }
 
-      public void setRange(int greaterThanOrEqualTo, int lessThan) {
-        if (greaterThanOrEqualTo >= lessThan) {
+      public void setRange(int minimum, int maximum) {
+        if (minimum >= maximum) {
           String s = String.format("Minimum value (%d) must be less than maximum value (%d)",
-            greaterThanOrEqualTo, lessThan);
+            minimum, maximum);
           throw new InvalidLetterGradeRange(s);
         }
 
-        this.greaterThanOrEqualTo = greaterThanOrEqualTo;
-        this.lessThan = lessThan;
+        this.minimum = minimum;
+        this.maximum = maximum;
       }
 
-      public int getGreaterThanOrEqualTo() {
-        return this.greaterThanOrEqualTo;
+      public int minimum() {
+        return this.minimum;
       }
 
-      public int lessThan() {
-        return this.lessThan;
+      public int maximum() {
+        return this.maximum;
       }
 
       public static class InvalidLetterGradeRange extends RuntimeException {

@@ -27,19 +27,27 @@ public class GradeBookTest {
     assertLetterGradeRange(ranges, LetterGrade.F, 0, 59);
   }
 
-  private void assertLetterGradeRange(GradeBook.LetterGradeRanges ranges, LetterGrade letterGrade, int greaterThanOrEqualTo, int lessThan) {
+  private void assertLetterGradeRange(GradeBook.LetterGradeRanges ranges, LetterGrade letterGrade, int minimum, int maximum) {
     LetterGradeRange range = ranges.getRange(letterGrade);
     assertThat("No range for " + letterGrade, range, not(nullValue()));
-    assertThat("Less than for " + letterGrade, range.lessThan(), equalTo(lessThan));
-    assertThat(range.getGreaterThanOrEqualTo(), equalTo(greaterThanOrEqualTo));
+    assertThat("Less than for " + letterGrade, range.maximum(), equalTo(maximum));
+    assertThat(range.minimum(), equalTo(minimum));
   }
 
   @Test(expected = InvalidLetterGradeRange.class)
-  public void lessThanValueGreaterThanGreaterThanOrEqualToValue() {
+  public void minimumValueGreaterThanMaximumValue() {
     GradeBook book = new GradeBook("test");
     GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(100, 99);
+  }
+
+  @Test(expected = InvalidLetterGradeRange.class)
+  public void minimumValueEqualsMaximumValue() {
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.A);
+    range.setRange(99, 99);
   }
 
   public void defaultLetterGradeRangesAreValid() {
