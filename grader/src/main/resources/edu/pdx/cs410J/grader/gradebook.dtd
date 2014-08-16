@@ -14,7 +14,16 @@ All Grade Book XML data must include a DOCTYPE of the following form:
 <!-- A grade book consists of the name of the class, the assignments
 in the class, the ids of the students in the class, and an optional
 number of late days allowed in the class -->
-<!ELEMENT gradebook (name, assignments, students, lateDays?)>
+<!ELEMENT minimum-score (#PCDATA)>
+<!ELEMENT maximum-score (#PCDATA)>
+<!ELEMENT letter-grade-range EMPTY>
+<!ATTLIST letter-grade-range
+          letter-grade   CDATA  #REQUIRED
+          minimum-score  CDATA  #REQUIRED
+          maximum-score  CDATA  #REQUIRED
+>
+<!ELEMENT letter-grade-ranges (letter-grade-range+)>
+<!ELEMENT gradebook (name, assignments, letter-grade-ranges?, students, lateDays?)>
 <!ATTLIST gradebook
           crn CDATA #IMPLIED
 >
