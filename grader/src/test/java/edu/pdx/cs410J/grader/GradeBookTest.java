@@ -74,4 +74,22 @@ public class GradeBookTest {
     range.setRange(range.minimum(), 99);
     ranges.validate();
   }
+
+  @Test(expected = InvalidLetterGradeRange.class)
+  public void rangesAreContiguous() {
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.A);
+    range.setRange(range.minimum() + 1, range.maximum());
+    ranges.validate();
+  }
+
+  @Test(expected = InvalidLetterGradeRange.class)
+  public void rangesAreContiguousNotARange() {
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.C);
+    range.setRange(range.minimum(), range.maximum() - 1);
+    ranges.validate();
+  }
 }

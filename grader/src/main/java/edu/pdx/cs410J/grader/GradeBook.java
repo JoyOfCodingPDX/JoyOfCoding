@@ -338,18 +338,22 @@ public class GradeBook {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
     private LetterGradeRanges() {
-      this.ranges.put(LetterGrade.A, new LetterGradeRange(94, 100));
-      this.ranges.put(LetterGrade.A_MINUS, new LetterGradeRange(90, 93));
-      this.ranges.put(LetterGrade.B_PLUS, new LetterGradeRange(87, 89));
-      this.ranges.put(LetterGrade.B, new LetterGradeRange(83, 86));
-      this.ranges.put(LetterGrade.B_MINUS, new LetterGradeRange(80, 82));
-      this.ranges.put(LetterGrade.C_PLUS, new LetterGradeRange(77, 79));
-      this.ranges.put(LetterGrade.C, new LetterGradeRange(73, 76));
-      this.ranges.put(LetterGrade.C_MINUS, new LetterGradeRange(70, 72));
-      this.ranges.put(LetterGrade.D_PLUS, new LetterGradeRange(67, 69));
-      this.ranges.put(LetterGrade.D, new LetterGradeRange(63, 66));
-      this.ranges.put(LetterGrade.D_MINUS, new LetterGradeRange(60, 62));
-      this.ranges.put(LetterGrade.F, new LetterGradeRange(0, 59));
+      createDefaultLetterGradeRange(LetterGrade.A, 94, 100);
+      createDefaultLetterGradeRange(LetterGrade.A_MINUS, 90, 93);
+      createDefaultLetterGradeRange(LetterGrade.B_PLUS, 87, 89);
+      createDefaultLetterGradeRange(LetterGrade.B, 83, 86);
+      createDefaultLetterGradeRange(LetterGrade.B_MINUS, 80, 82);
+      createDefaultLetterGradeRange(LetterGrade.C_PLUS, 77, 79);
+      createDefaultLetterGradeRange(LetterGrade.C, 73, 76);
+      createDefaultLetterGradeRange(LetterGrade.C_MINUS, 70, 72);
+      createDefaultLetterGradeRange(LetterGrade.D_PLUS, 67, 69);
+      createDefaultLetterGradeRange(LetterGrade.D, 63, 66);
+      createDefaultLetterGradeRange(LetterGrade.D_MINUS, 60, 62);
+      createDefaultLetterGradeRange(LetterGrade.F, 0, 59);
+    }
+
+    private void createDefaultLetterGradeRange(LetterGrade letterGrade, int minimum, int maximum) {
+      this.ranges.put(letterGrade, new LetterGradeRange(letterGrade, minimum, maximum));
     }
 
     public LetterGradeRange getRange(LetterGrade letterGrade) {
@@ -359,6 +363,24 @@ public class GradeBook {
     public void validate() {
       validateThatFRangeHasAMinimumOf0();
       validateThatARangeContains100();
+      validateThatRangesAreContiguous();
+    }
+
+    private void validateThatRangesAreContiguous() {
+      LetterGradeRange previous = null;
+
+      for (LetterGrade letterGrade : ranges.keySet()) {
+        LetterGradeRange current = ranges.get(letterGrade);
+        if (previous != null) {
+          if (previous.minimum() != current.maximum() + 1) {
+            String s = "There is a gap between the range for " + previous + " and " + current;
+            throw new LetterGradeRange.InvalidLetterGradeRange(s);
+          }
+        }
+
+        previous = current;
+      }
+
     }
 
     private void validateThatARangeContains100() {
@@ -376,10 +398,12 @@ public class GradeBook {
     }
 
     static class LetterGradeRange {
+      private final LetterGrade letterGrade;
       private int maximum;
       private int minimum;
 
-      public LetterGradeRange(int minimum, int maximum) {
+      public LetterGradeRange(LetterGrade letterGrade, int minimum, int maximum) {
+        this.letterGrade = letterGrade;
         setRange(minimum, maximum);
       }
 
@@ -400,6 +424,11 @@ public class GradeBook {
 
       public int maximum() {
         return this.maximum;
+      }
+
+      @Override
+      public String toString() {
+        return "Range for " + letterGrade + " is " + minimum() + " to " + maximum();
       }
 
       public static class InvalidLetterGradeRange extends RuntimeException {
