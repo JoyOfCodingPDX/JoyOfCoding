@@ -1,12 +1,18 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.util.*;
-
 import edu.pdx.cs410J.ParserException;
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.util.Iterator;
 
 /**
  * This class creates a <code>GradeBook</code> from the contents of an
@@ -133,31 +139,8 @@ public class XmlGradeBookParser extends XmlHelper {
    * Parses the source and from it creates a <code>GradeBook</code>.
    */
   public GradeBook parse() throws ParserException {
-    // Parse the source
-    Document doc = null;
+    Document doc = parseDocumentFromInputStream();
 
-    // Create a DOM tree from the XML source
-    try {
-      DocumentBuilderFactory factory =
-	DocumentBuilderFactory.newInstance();
-      factory.setValidating(true);
-
-      DocumentBuilder builder = 
-	factory.newDocumentBuilder();
-      builder.setErrorHandler(this);
-      builder.setEntityResolver(this);
-
-      doc = builder.parse(new InputSource(this.in));
-
-    } catch (ParserConfigurationException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-
-    } catch (SAXException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-
-    } catch (IOException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-    }
 
     Element root = null;
     if (doc != null) {
@@ -177,53 +160,17 @@ public class XmlGradeBookParser extends XmlHelper {
       Element child = (Element) node;
       if (child.getTagName().equals("name")) {
         this.book = new GradeBook(extractTextFrom(child));
-	this.book.setDirty(false);
+	      this.book.setDirty(false);
 
       } else if (this.book == null) {
         throw new ParserException("name element is not first");
 
       } else if (child.getTagName().equals("assignments")) {
-        NodeList assignments = child.getChildNodes();
-        for (int j = 0; j < assignments.getLength(); j++) {
-          Node assignment = assignments.item(j);
-          if (assignment instanceof Element) {
-            Assignment assign = 
-              extractAssignmentFrom((Element) assignment);
-            this.book.addAssignment(assign);
-          }
-        }
+        extractAssignmentsFrom(child);
 
       } else if (child.getTagName().equals("students")) {
-        NodeList students = child.getChildNodes();
-        for (int j = 0; j < students.getLength(); j++) {
-          Node student = students.item(j);
+        extractStudentsFrom(child);
 
-          if (!(student instanceof Element)) {
-            continue;
-          }
-              
-          Element idElement = (Element) student;
-          if (idElement.getTagName().equals("id")) {
-            String id = extractTextFrom(idElement);
-                // Locate the XML file for the Student
-            File file = 
-              new File(this.studentDir, id + ".xml");
-            if (!file.exists()) {
-              throw new IllegalArgumentException("No XML file for " +
-                                                 id);
-            }
-
-            try {
-              XmlStudentParser sp = new XmlStudentParser(file);
-              Student stu = sp.parseStudent();
-              this.book.addStudent(stu);
-
-            } catch (Exception ex) {
-              String s = "While parsing " + file + ": " + ex;
-              throw new ParserException(s);
-            }
-          }         
-        }
       } else if (child.getTagName().equals("lateDays")) {
         // Fill in later, maybe.
       }
@@ -235,6 +182,80 @@ public class XmlGradeBookParser extends XmlHelper {
     }
 
     return this.book;
+  }
+
+  private void extractStudentsFrom(Element child) throws ParserException {
+    NodeList students = child.getChildNodes();
+    for (int j = 0; j < students.getLength(); j++) {
+      Node student = students.item(j);
+
+      if (!(student instanceof Element)) {
+        continue;
+      }
+
+      Element idElement = (Element) student;
+      if (idElement.getTagName().equals("id")) {
+        String id = extractTextFrom(idElement);
+            // Locate the XML file for the Student
+        File file =
+          new File(this.studentDir, id + ".xml");
+        if (!file.exists()) {
+          throw new IllegalArgumentException("No XML file for " +
+                                             id);
+        }
+
+        try {
+          XmlStudentParser sp = new XmlStudentParser(file);
+          Student stu = sp.parseStudent();
+          this.book.addStudent(stu);
+
+        } catch (Exception ex) {
+          String s = "While parsing " + file + ": " + ex;
+          throw new ParserException(s);
+        }
+      }
+    }
+  }
+
+  private void extractAssignmentsFrom(Element child) throws ParserException {
+    NodeList assignments = child.getChildNodes();
+    for (int j = 0; j < assignments.getLength(); j++) {
+      Node assignment = assignments.item(j);
+      if (assignment instanceof Element) {
+        Assignment assign =
+          extractAssignmentFrom((Element) assignment);
+        this.book.addAssignment(assign);
+      }
+    }
+  }
+
+  private Document parseDocumentFromInputStream() throws ParserException {
+    // Parse the source
+    Document doc = null;
+
+    // Create a DOM tree from the XML source
+    try {
+      DocumentBuilderFactory factory =
+	DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder =
+	factory.newDocumentBuilder();
+      builder.setErrorHandler(this);
+      builder.setEntityResolver(this);
+
+      doc = builder.parse(new InputSource(this.in));
+
+    } catch (ParserConfigurationException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+
+    } catch (SAXException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+
+    } catch (IOException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+    }
+    return doc;
   }
 
 }
