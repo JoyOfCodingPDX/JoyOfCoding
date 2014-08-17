@@ -92,4 +92,28 @@ public class GradeBookTest {
     range.setRange(range.minimum(), range.maximum() - 1);
     ranges.validate();
   }
+
+  @Test
+  public void scoreIsInRange() {
+    GradeBook book = new GradeBook("test");
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    LetterGradeRange range = ranges.getRange(LetterGrade.A);
+    range.setRange(90, 100);
+
+    assertThat(range.isScoreInRange(90.0), is(true));
+    assertThat(range.isScoreInRange(100.0), is(true));
+    assertThat(range.isScoreInRange(95.0), is(true));
+    assertThat(range.isScoreInRange(89.5), is(true));
+    assertThat(range.isScoreInRange(101.0), is(false));
+    assertThat(range.isScoreInRange(89.0), is(false));
+    assertThat(range.isScoreInRange(89.4), is(false));
+
+  }
+
+  @Test
+  public void scoresAreCorrectlyMappedToLetterGrades() {
+    GradeBook book = new GradeBook("test");
+    assertThat(book.getLetterGradeForScore(99.0), equalTo(LetterGrade.A));
+    assertThat(book.getLetterGradeForScore(93.0), equalTo(LetterGrade.A_MINUS));
+  }
 }

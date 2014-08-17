@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.*;
+
 /**
  * This class represents a grade book that contains information about
  * a CS410J class: the assignments, the students and their grades.
@@ -330,6 +332,15 @@ public class GradeBook {
     return letterGradeRanges;
   }
 
+  public LetterGrade getLetterGradeForScore(double score) {
+    for (LetterGradeRange range : this.getLetterGradeRanges()) {
+      if (range.isScoreInRange(score)) {
+        return range.letterGrade();
+      }
+    }
+
+    throw new IllegalStateException("Could not find a letter grade range for " + score);
+  }
 
 
   static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
@@ -446,6 +457,11 @@ public class GradeBook {
 
       public LetterGrade letterGrade() {
         return this.letterGrade;
+      }
+
+      public boolean isScoreInRange(double score) {
+        int intScore = (int) Math.round(score);
+        return intScore >= minimum() && intScore <= maximum();
       }
 
       public static class InvalidLetterGradeRange extends RuntimeException {
