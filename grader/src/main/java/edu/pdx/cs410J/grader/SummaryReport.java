@@ -18,7 +18,7 @@ public class SummaryReport {
    * Computes the student's final average and makes a pretty report.
    */
   private static void dumpReportTo(GradeBook book, Student student,
-                                   PrintWriter pw) {
+                                   PrintWriter pw, boolean assignLetterGrades) {
     NumberFormat format = NumberFormat.getNumberInstance();
     format.setMinimumFractionDigits(1);
     format.setMaximumFractionDigits(1);
@@ -127,7 +127,18 @@ public class SummaryReport {
     pw.println("Total grade: " + format.format(total)  + "/" +
                format.format(best));
 
-    allTotals.put(student, new Double(total/best));
+    double overallScore = total / best;
+
+    if (assignLetterGrades) {
+      LetterGrade letterGrade = book.getLetterGradeForScore(overallScore * 100.0);
+      student.setLetterGrade(letterGrade);
+    }
+
+    if (student.getLetterGrade() != null) {
+      pw.println("Letter Grade: " + student.getLetterGrade());
+    }
+
+    allTotals.put(student, overallScore);
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
@@ -166,7 +177,7 @@ public class SummaryReport {
    */
   private static void usage(String s) {
     err.println("\n** " + s + "\n");
-    err.println("\njava SummaryReport xmlFile outDir (student)*");
+    err.println("\njava SummaryReport -assignLetterGrades xmlFile outDir (student)*");
     err.println("\n");
     err.println("Generates summary grade reports for the given " +
 		"students.  If student is not \ngiven, then reports " + 
@@ -180,12 +191,16 @@ public class SummaryReport {
    * grade book located in a given XML file.
    */
   public static void main(String[] args) {
+    boolean assignLetterGrades = false;
     String xmlFileName = null;
     String outputDirName = null;
     Collection<String> students = new ArrayList<String>();
 
     for (String arg : args) {
-      if (xmlFileName == null) {
+      if (arg.equals("-assignLetterGrades")) {
+        assignLetterGrades = true;
+
+      } else if (xmlFileName == null) {
         xmlFileName = arg;
 
       } else if (outputDirName == null) {
@@ -205,7 +220,7 @@ public class SummaryReport {
     }
 
     String xmlFile = xmlFileName;
-    File outDir = new File(args[1]);
+    File outDir = new File(outputDirName);
     if (!outDir.exists()) {
       outDir.mkdirs();
 
@@ -257,7 +272,7 @@ public class SummaryReport {
       try {
         PrintWriter pw = 
           new PrintWriter(new FileWriter(outFile), true);
-        dumpReportTo(book, student, pw);
+        dumpReportTo(book, student, pw, assignLetterGrades);
 
 //         dumpReportTo(book, student, out);
       } catch (IOException ex) {
@@ -291,8 +306,26 @@ public class SummaryReport {
 
     for (Student student : sorted) {
       Double d = allTotals.get(student);
-      out.println(student + ": " + format.format(d.doubleValue()));
+      out.print(student + ": " + format.format(d.doubleValue()));
+
+      if (student.getLetterGrade() != null) {
+        out.print(" " + student.getLetterGrade());
+      }
+
+      out.println();
     }
+
+    if (book.isDirty()) {
+      try {
+        XmlDumper dumper = new XmlDumper(xmlFileName);
+        dumper.dump(book);
+
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        System.exit(1);
+      }
+    }
+
   }
 
 }

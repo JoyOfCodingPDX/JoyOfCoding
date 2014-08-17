@@ -10,6 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Vector;
 
 /**
  * This panel displays a <code>Student</code>
@@ -29,6 +31,7 @@ public class StudentPanel extends JPanel {
   private JTextField ssnField;
   private JTextField majorField;
   private JTextField d2lIdField;
+  private final JComboBox<LetterGrade> letterGraderComboBox;
 
   /**
    * Creates and lays out a new <code>StudentPanel</code>
@@ -52,6 +55,7 @@ public class StudentPanel extends JPanel {
     labels.add(new JLabel("SSN:"));
     labels.add(new JLabel("Major:"));
     labels.add(new JLabel("D2L Id:"));
+    labels.add(new JLabel("Letter Grade:"));
 
     JPanel fields = new JPanel();
     fields.setLayout(new GridLayout(0, 1));
@@ -72,6 +76,8 @@ public class StudentPanel extends JPanel {
     fields.add(this.majorField);
     this.d2lIdField = new JTextField(10);
     fields.add(this.d2lIdField);
+    this.letterGraderComboBox = createLetterGradeComboBox();
+    fields.add(this.letterGraderComboBox);
 
     infoPanel.add(labels, BorderLayout.WEST);
     infoPanel.add(fields, BorderLayout.CENTER);
@@ -98,6 +104,13 @@ public class StudentPanel extends JPanel {
     this.add(buttons, BorderLayout.SOUTH);
   }
 
+  private JComboBox<LetterGrade> createLetterGradeComboBox() {
+    Vector<LetterGrade> vector = new Vector<>();
+    vector.add(null);
+    vector.addAll(Arrays.asList(LetterGrade.values()));
+    return new JComboBox<>(vector);
+  }
+
   /**
    * Clears the contents of the student fields
    */
@@ -110,6 +123,7 @@ public class StudentPanel extends JPanel {
     this.ssnField.setText("");
     this.majorField.setText("");
     this.d2lIdField.setText("");
+    this.letterGraderComboBox.setSelectedItem(null);
     this.notes.clearNotes();
   }
 
@@ -160,6 +174,11 @@ public class StudentPanel extends JPanel {
     String d2lId = student.getD2LId();
     if (d2lId != null && !d2lId.equals("")) {
       this.d2lIdField.setText(d2lId);
+    }
+
+    LetterGrade letterGrade = student.getLetterGrade();
+    if (letterGrade != null) {
+      this.letterGraderComboBox.setSelectedItem(letterGrade);
     }
 
     this.notes.setNotable(student);
@@ -228,6 +247,9 @@ public class StudentPanel extends JPanel {
         student.setD2LId(d2lId);
       }
     }
+
+    LetterGrade letterGrade = (LetterGrade) this.letterGraderComboBox.getSelectedItem();
+    student.setLetterGrade(letterGrade);
 
     // The NotesPanel takes care of adding notes
 

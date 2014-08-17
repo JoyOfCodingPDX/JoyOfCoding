@@ -5,15 +5,15 @@ import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
+
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class dumps the contents of a <code>GradeBook</code> to an XML
@@ -75,6 +75,54 @@ public class XmlDumper extends XmlHelper {
    * Dumps the contents of a <code>GradeBook</code> in XML format.
    */
   public void dump(GradeBook book) throws IOException {
+    Document doc = dumpGradeBook(book, this);
+
+    try {
+      writeXmlToPrintWriter(doc, this.pw);
+
+    } catch (TransformerException ex) {
+      ex.printStackTrace(System.err);
+      System.exit(1);
+    }
+
+    dumpDirtyStudents(book);
+
+    // Mark the grade book as being clean
+    book.makeClean();
+  }
+
+  static Document dumpGradeBook(GradeBook book, XmlHelper helper) throws IOException {
+    Document doc = createDocumentForGradeBook(helper);
+
+    Element root = doc.getDocumentElement();
+
+    appendXmlForClassName(book, doc, root);
+    appendXmlForAssignments(book, doc, root);
+    appendXmlForLetterGradeRanges(book, doc, root);
+    appendXmlForStudents(book, doc, root);
+
+
+    return doc;
+  }
+
+  private static void appendXmlForLetterGradeRanges(GradeBook book, Document doc, Element root) {
+    Element lgrNode = doc.createElement("letter-grade-ranges");
+    for (LetterGradeRange range : book.getLetterGradeRanges()) {
+      appendXmlForLetterGradeRange(range, doc, lgrNode);
+    }
+    root.appendChild(lgrNode);
+  }
+
+  private static void appendXmlForLetterGradeRange(LetterGradeRange range, Document doc, Element parent) {
+    Element node = doc.createElement("letter-grade-range");
+    node.setAttribute("letter-grade", range.letterGrade().asString());
+    node.setAttribute("minimum-score", String.valueOf(range.minimum()));
+    node.setAttribute("maximum-score", String.valueOf(range.maximum()));
+
+    parent.appendChild(node);
+  }
+
+  private static Document createDocumentForGradeBook(XmlHelper helper) {
     Document doc = null;
 
     try {
@@ -83,12 +131,12 @@ public class XmlDumper extends XmlHelper {
       factory.setValidating(true);
 
       DocumentBuilder builder = factory.newDocumentBuilder();
-      builder.setErrorHandler(this);
-      builder.setEntityResolver(this);
+      builder.setErrorHandler(helper);
+      builder.setEntityResolver(helper);
 
       DOMImplementation dom =
         builder.getDOMImplementation();
-      DocumentType docType = 
+      DocumentType docType =
         dom.createDocumentType("gradebook", publicID, systemID);
       doc = dom.createDocument(null, "gradebook", docType);
 
@@ -101,19 +149,34 @@ public class XmlDumper extends XmlHelper {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
- 
-    Element root = doc.getDocumentElement();
-    
+    return doc;
+  }
+
+  private static void appendXmlForStudents(GradeBook book, Document doc, Element root) {
+    // Students
+    Element studentsNode = doc.createElement("students");
+    for (String id : book.getStudentIds()) {
+      Element studentNode = doc.createElement("id");
+      studentNode.appendChild(doc.createTextNode(id));
+
+      studentsNode.appendChild(studentNode);
+    }
+
+    root.appendChild(studentsNode);
+  }
+
+  private static void appendXmlForClassName(GradeBook book, Document doc, Element root) {
     // name node
     Element name = doc.createElement("name");
     name.appendChild(doc.createTextNode(book.getClassName()));
     root.appendChild(name);
+  }
 
+  private static void appendXmlForAssignments(GradeBook book, Document doc, Element root) {
     // assignment nodes
     Element assignments = doc.createElement("assignments");
-    Iterator iter = book.getAssignmentNames().iterator();
-    while (iter.hasNext()) {
-      Assignment assign = book.getAssignment((String) iter.next());
+    for (String assignmentName : book.getAssignmentNames()) {
+      Assignment assign = book.getAssignment(assignmentName);
       Element assignNode = doc.createElement("assignment");
 
       Element assignName = doc.createElement("name");
@@ -129,7 +192,7 @@ public class XmlDumper extends XmlHelper {
 
       Element assignPoints = doc.createElement("points");
       assignPoints.appendChild(doc.createTextNode("" +
-                                                  assign.getPoints()));
+        assign.getPoints()));
       assignNode.appendChild(assignPoints);
 
       doNotes(doc, assignNode, assign.getNotes());
@@ -137,73 +200,38 @@ public class XmlDumper extends XmlHelper {
       assignments.appendChild(assignNode);
 
       int type = assign.getType();
-      switch(type) {
-      case Assignment.PROJECT:
-        assignNode.setAttribute("type", "PROJECT");
-        break;
+      switch (type) {
+        case Assignment.PROJECT:
+          assignNode.setAttribute("type", "PROJECT");
+          break;
 
-      case Assignment.QUIZ:
-        assignNode.setAttribute("type", "QUIZ");
-        break;
+        case Assignment.QUIZ:
+          assignNode.setAttribute("type", "QUIZ");
+          break;
 
-      case Assignment.OTHER:
-        assignNode.setAttribute("type", "OTHER");
-        break;
+        case Assignment.OTHER:
+          assignNode.setAttribute("type", "OTHER");
+          break;
 
-      case Assignment.OPTIONAL:
-        assignNode.setAttribute("type", "OPTIONAL");
-        break;
+        case Assignment.OPTIONAL:
+          assignNode.setAttribute("type", "OPTIONAL");
+          break;
 
-      default: 
-        throw new IllegalArgumentException("Can't handle assignment " +
-                                           "type " + type);
+        default:
+          throw new IllegalArgumentException("Can't handle assignment " +
+            "type " + type);
       }
     }
     root.appendChild(assignments);
+  }
 
-
-    // Students
-    Element studentsNode = doc.createElement("students");
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-      Element studentNode = doc.createElement("id");
-      studentNode.appendChild(doc.createTextNode(id));
-
-      studentsNode.appendChild(studentNode);
-
+  private void dumpDirtyStudents(GradeBook book) throws IOException {
+    for (String id : book.getStudentIds()) {
       Student student = book.getStudent(id);
       if (student.isDirty()) {
         dumpStudent(student);
       }
     }
-
-    root.appendChild(studentsNode);
-
-    // Finally serialize the DOM tree to a Writer
-    try {
-      Source src = new DOMSource(doc);
-      Result res = new StreamResult(this.pw);
-
-      TransformerFactory xFactory = TransformerFactory.newInstance();
-      Transformer xform = xFactory.newTransformer();
-      xform.setOutputProperty(OutputKeys.INDENT, "yes");
-      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
-//       xform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-      // Suppress warnings about "Declared encoding not matching
-      // actual one
-      xform.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      xform.transform(src, res);
-
-    } catch (TransformerException ex) {
-      ex.printStackTrace(System.err);
-      System.exit(1);
-    }
-
-    // Mark the grade book as being clean
-    book.makeClean();
   }
 
   /**
@@ -236,15 +264,7 @@ public class XmlDumper extends XmlHelper {
     PrintWriter pw = new PrintWriter(new FileWriter(studentFile), true);
 
     try {
-      Source src = new DOMSource(doc);
-      Result res = new StreamResult(pw);
-
-      TransformerFactory xFactory = TransformerFactory.newInstance();
-      Transformer xform = xFactory.newTransformer();
-      xform.setOutputProperty(OutputKeys.INDENT, "yes");
-      xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-      xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
-      xform.transform(src, res);
+      writeXmlToPrintWriter(doc, pw);
 
     } catch (TransformerException ex) {
       ex.printStackTrace(System.err);
@@ -330,6 +350,12 @@ public class XmlDumper extends XmlHelper {
       Element d2lId = doc.createElement("d2l-id");
       d2lId.appendChild(doc.createTextNode(student.getD2LId()));
       root.appendChild(d2lId);
+    }
+
+    if (student.getLetterGrade() != null) {
+      Element letterGrade = doc.createElement("letter-grade");
+      letterGrade.appendChild(doc.createTextNode(student.getLetterGrade().asString()));
+      root.appendChild(letterGrade);
     }
 
     Iterator gradeNames = student.getGradeNames().iterator();

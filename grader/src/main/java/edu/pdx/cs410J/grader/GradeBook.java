@@ -6,10 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.function.Consumer;
+
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.*;
 
 /**
  * This class represents a grade book that contains information about
@@ -24,26 +24,24 @@ public class GradeBook {
   private String className;
 
   /** Maps the name of an assignment to an <code>Assignment</code> */
-  private Map<String, Assignment> assignments;
+  private Map<String, Assignment> assignments = new TreeMap<>();
 
   /** Maps the id of a student to a <code>Student</code> object */
-  private Map<String, Student> students;
+  private Map<String, Student> students = new TreeMap<>();
 
   /** Has the grade book been modified? */
-  private boolean dirty;
+  private boolean dirty = true;
 
   /** The Course Request Number (CRN) for this gradebook */
-  private int crn;
+  private int crn = 0;
+
+  private final LetterGradeRanges letterGradeRanges = new LetterGradeRanges();
   
   /**
    * Creates a new <code>GradeBook</code> for a given class
    */
   public GradeBook(String className) {
     this.className = className;
-    this.assignments = new TreeMap<String, Assignment>();
-    this.students = new TreeMap<String, Student>();
-    this.dirty = true;
-    this.crn = 0;
   }
 
   /**
@@ -330,4 +328,147 @@ public class GradeBook {
     }
   }
 
+  public LetterGradeRanges getLetterGradeRanges() {
+    return letterGradeRanges;
+  }
+
+  public LetterGrade getLetterGradeForScore(double score) {
+    for (LetterGradeRange range : this.getLetterGradeRanges()) {
+      if (range.isScoreInRange(score)) {
+        return range.letterGrade();
+      }
+    }
+
+    throw new IllegalStateException("Could not find a letter grade range for " + score);
+  }
+
+
+  static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
+    private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
+
+    private LetterGradeRanges() {
+      createDefaultLetterGradeRange(LetterGrade.A, 94, 100);
+      createDefaultLetterGradeRange(LetterGrade.A_MINUS, 90, 93);
+      createDefaultLetterGradeRange(LetterGrade.B_PLUS, 87, 89);
+      createDefaultLetterGradeRange(LetterGrade.B, 83, 86);
+      createDefaultLetterGradeRange(LetterGrade.B_MINUS, 80, 82);
+      createDefaultLetterGradeRange(LetterGrade.C_PLUS, 77, 79);
+      createDefaultLetterGradeRange(LetterGrade.C, 73, 76);
+      createDefaultLetterGradeRange(LetterGrade.C_MINUS, 70, 72);
+      createDefaultLetterGradeRange(LetterGrade.D_PLUS, 67, 69);
+      createDefaultLetterGradeRange(LetterGrade.D, 63, 66);
+      createDefaultLetterGradeRange(LetterGrade.D_MINUS, 60, 62);
+      createDefaultLetterGradeRange(LetterGrade.F, 0, 59);
+    }
+
+    private void createDefaultLetterGradeRange(LetterGrade letterGrade, int minimum, int maximum) {
+      this.ranges.put(letterGrade, new LetterGradeRange(letterGrade, minimum, maximum));
+    }
+
+    public LetterGradeRange getRange(LetterGrade letterGrade) {
+      return ranges.get(letterGrade);
+    }
+
+    public void validate() {
+      validateThatFRangeHasAMinimumOf0();
+      validateThatARangeContains100();
+      validateThatRangesAreContiguous();
+    }
+
+    private void validateThatRangesAreContiguous() {
+      LetterGradeRange previous = null;
+
+      for (LetterGrade letterGrade : ranges.keySet()) {
+        LetterGradeRange current = ranges.get(letterGrade);
+        if (previous != null) {
+          if (previous.minimum() != current.maximum() + 1) {
+            String s = "There is a gap between the range for " + previous + " and " + current;
+            throw new LetterGradeRange.InvalidLetterGradeRange(s);
+          }
+        }
+
+        previous = current;
+      }
+
+    }
+
+    private void validateThatARangeContains100() {
+      LetterGradeRange range = getRange(LetterGrade.A);
+      if (range.maximum() < 100) {
+        throw new LetterGradeRange.InvalidLetterGradeRange("The A range must contain 100");
+      }
+    }
+
+    private void validateThatFRangeHasAMinimumOf0() {
+      LetterGradeRange range = getRange(LetterGrade.F);
+      if (range.minimum() > 0) {
+        throw new LetterGradeRange.InvalidLetterGradeRange("The F range must contain zero");
+      }
+    }
+
+    @Override
+    public Iterator<LetterGradeRange> iterator() {
+      return this.ranges.values().iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super LetterGradeRange> action) {
+      this.ranges.values().forEach(action);
+    }
+
+    @Override
+    public Spliterator<LetterGradeRange> spliterator() {
+      return this.ranges.values().spliterator();
+    }
+
+    static class LetterGradeRange {
+      private final LetterGrade letterGrade;
+      private int maximum;
+      private int minimum;
+
+      public LetterGradeRange(LetterGrade letterGrade, int minimum, int maximum) {
+        this.letterGrade = letterGrade;
+        setRange(minimum, maximum);
+      }
+
+      public void setRange(int minimum, int maximum) {
+        if (minimum >= maximum) {
+          String s = String.format("Minimum value (%d) must be less than maximum value (%d)",
+            minimum, maximum);
+          throw new InvalidLetterGradeRange(s);
+        }
+
+        this.minimum = minimum;
+        this.maximum = maximum;
+      }
+
+      public int minimum() {
+        return this.minimum;
+      }
+
+      public int maximum() {
+        return this.maximum;
+      }
+
+      @Override
+      public String toString() {
+        return "Range for " + letterGrade() + " is " + minimum() + " to " + maximum();
+      }
+
+      public LetterGrade letterGrade() {
+        return this.letterGrade;
+      }
+
+      public boolean isScoreInRange(double score) {
+        int intScore = (int) Math.round(score);
+        return intScore >= minimum() && intScore <= maximum();
+      }
+
+      public static class InvalidLetterGradeRange extends RuntimeException {
+        public InvalidLetterGradeRange(String message) {
+          super(message);
+        }
+      }
+    }
+  }
 }

@@ -1,13 +1,12 @@
 package edu.pdx.cs410J.grader;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xml.sax.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,14 @@ class XmlHelper implements EntityResolver, ErrorHandler {
   /** The Public ID for the Grade Bookd DTD */
   protected static final String publicID = 
     "-//Portland State University//DTD CS410J Grade Book//EN";
+
+  static byte[] getBytesForXmlDocument(Document xmlDoc) throws TransformerException {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      PrintWriter pw =
+        new PrintWriter(new OutputStreamWriter(baos), true);
+      writeXmlToPrintWriter(xmlDoc, pw);
+      return baos.toByteArray();
+    }
 
   ////////////////////  EntityResolver Methods  //////////////////
 
@@ -113,4 +120,20 @@ class XmlHelper implements EntityResolver, ErrorHandler {
     return (text == null ? "" : text.getData());
   }
 
+  static void writeXmlToPrintWriter(Document doc, PrintWriter pw) throws TransformerException {
+    Source src = new DOMSource(doc);
+    Result res = new StreamResult(pw);
+
+    TransformerFactory xFactory = TransformerFactory.newInstance();
+    Transformer xform = xFactory.newTransformer();
+    xform.setOutputProperty(OutputKeys.INDENT, "yes");
+    xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+    xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
+
+    // Suppress warnings about "Declared encoding not matching
+    // actual one
+    xform.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+    xform.transform(src, res);
+  }
 }
