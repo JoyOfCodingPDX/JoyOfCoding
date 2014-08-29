@@ -122,8 +122,8 @@ public class APIDocumentationDoclet {
    */
   private static void generate(ExecutableMemberDoc m, PrintWriter pw) {
     StringBuilder sb = new StringBuilder();
-    sb.append(m.modifiers());
-    sb.append(" ");
+    sb.append(m.modifiers()).append(" ");
+    appendReturnType(m, sb);
     sb.append(m.name());
     sb.append("(");
     Parameter[] params = m.parameters();
@@ -160,6 +160,17 @@ public class APIDocumentationDoclet {
       pw.println("");
     }
 
+  }
+
+  private static void appendReturnType(ExecutableMemberDoc m, StringBuilder sb) {
+    if (m instanceof MethodDoc) {
+      MethodDoc method = (MethodDoc) m;
+      if (method.isAbstract()) {
+        sb.append("abstract ");
+      }
+
+      sb.append(method.returnType().typeName()).append(" ");
+    }
   }
 
 }
