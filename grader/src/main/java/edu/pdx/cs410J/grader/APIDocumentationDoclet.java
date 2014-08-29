@@ -39,18 +39,14 @@ public class APIDocumentationDoclet {
    */
   public static boolean start(RootDoc root) {
     PrintWriter pw = new PrintWriter(System.out, true);
-//     try {
-      ClassDoc[] classes = root.classes();
-      for (int i = 0; i < classes.length; i++) {
-        generate(classes[i], pw);
-        pw.println("");
-      }
-      return true;
 
-//     } catch (IOException ex) {
-//       ex.printStackTrace(System.err);
-//       return false;
-//     }
+    ClassDoc[] classes = root.classes();
+    for (ClassDoc aClass : classes) {
+      generate(aClass, pw);
+      pw.println("");
+    }
+
+    return true;
   }
 
   /**
@@ -58,7 +54,7 @@ public class APIDocumentationDoclet {
    */
   private static void indent(String text, final int indent,
                              PrintWriter pw) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (int i = 0; i < indent; i++) {
       sb.append(" ");
     }
@@ -110,13 +106,13 @@ public class APIDocumentationDoclet {
     pw.println("");
 
     ConstructorDoc[] constructors = c.constructors();
-    for (int i = 0; i < constructors.length; i++) {
-      generate(constructors[i], pw);
+    for (ConstructorDoc constructor : constructors) {
+      generate(constructor, pw);
     }
 
     MethodDoc[] methods = c.methods();
-    for (int i = 0; i < methods.length; i++) {
-      generate(methods[i], pw);
+    for (MethodDoc method : methods) {
+      generate(method, pw);
     }
   }
 
@@ -125,7 +121,7 @@ public class APIDocumentationDoclet {
    * constructor
    */
   private static void generate(ExecutableMemberDoc m, PrintWriter pw) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(m.modifiers());
     sb.append(" ");
     sb.append(m.name());
@@ -152,17 +148,15 @@ public class APIDocumentationDoclet {
     pw.println("");
 
     ParamTag[] tags = m.paramTags();
-    for (int i = 0; i < tags.length; i++) {
-      ParamTag tag = tags[i];
+    for (ParamTag tag : tags) {
       indent(tag.parameterName() + " - " + tag.parameterComment(), 4, pw);
       pw.println("");
     }
 
     ThrowsTag[] throwsTags = m.throwsTags();
-    for (int i = 0; i < throwsTags.length; i++) {
-      ThrowsTag tag = throwsTags[i];
+    for (ThrowsTag tag : throwsTags) {
       indent("throws " + tag.exceptionName() + " - " +
-             tag.exceptionComment(), 4, pw);
+        tag.exceptionComment(), 4, pw);
       pw.println("");
     }
 
