@@ -12,10 +12,22 @@ import java.text.BreakIterator;
  * them.  It is used for grading a student's Javadocs.
  *
  * @author David Whitlock
- * @version $Revision: 1.1 $
  * @since Summer 2004
  */
+@SuppressWarnings("UnusedDeclaration")
 public class APIDocumentationDoclet {
+
+  /**
+   * NOTE: Without this method present and returning LanguageVersion.JAVA_1_5,
+   * Javadoc will not process generics because it assumes LanguageVersion.JAVA_1_1.
+   *
+   * Note that 1.5 is as high as the <code>LanguageVersion</code> goes.
+   *
+   * @return language version (hard coded to LanguageVersion.JAVA_1_5)
+   */
+  public static LanguageVersion languageVersion() {
+    return LanguageVersion.JAVA_1_5;
+  }
 
   /**
    * This doclet has no valid options
@@ -35,22 +47,18 @@ public class APIDocumentationDoclet {
 
   /**
    * Print out a summary of each class, field, and method to standard
-   * out. 
+   * out.
    */
   public static boolean start(RootDoc root) {
     PrintWriter pw = new PrintWriter(System.out, true);
-//     try {
-      ClassDoc[] classes = root.classes();
-      for (int i = 0; i < classes.length; i++) {
-        generate(classes[i], pw);
-        pw.println("");
-      }
-      return true;
 
-//     } catch (IOException ex) {
-//       ex.printStackTrace(System.err);
-//       return false;
-//     }
+    ClassDoc[] classes = root.classes();
+    for (ClassDoc aClass : classes) {
+      generate(aClass, pw);
+      pw.println("");
+    }
+
+    return true;
   }
 
   /**
@@ -58,7 +66,7 @@ public class APIDocumentationDoclet {
    */
   private static void indent(String text, final int indent,
                              PrintWriter pw) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (int i = 0; i < indent; i++) {
       sb.append(" ");
     }
@@ -72,7 +80,7 @@ public class APIDocumentationDoclet {
     BreakIterator boundary = BreakIterator.getWordInstance();
     boundary.setText(text);
     int start = boundary.first();
-    for (int end = boundary.next(); end != BreakIterator.DONE; 
+    for (int end = boundary.next(); end != BreakIterator.DONE;
          start = end, end = boundary.next()) {
 
       String word = text.substring(start, end);
@@ -110,13 +118,13 @@ public class APIDocumentationDoclet {
     pw.println("");
 
     ConstructorDoc[] constructors = c.constructors();
-    for (int i = 0; i < constructors.length; i++) {
-      generate(constructors[i], pw);
+    for (ConstructorDoc constructor : constructors) {
+      generate(constructor, pw);
     }
 
     MethodDoc[] methods = c.methods();
-    for (int i = 0; i < methods.length; i++) {
-      generate(methods[i], pw);
+    for (MethodDoc method : methods) {
+      generate(method, pw);
     }
   }
 
@@ -125,9 +133,10 @@ public class APIDocumentationDoclet {
    * constructor
    */
   private static void generate(ExecutableMemberDoc m, PrintWriter pw) {
-    StringBuffer sb = new StringBuffer();
-    sb.append(m.modifiers());
-    sb.append(" ");
+    StringBuilder sb = new StringBuilder();
+    sb.append(m.modifiers()).append(" ");
+    appendTypeVariables(m.typeParameters(), sb);
+    appendReturnType(m, sb);
     sb.append(m.name());
     sb.append("(");
     Parameter[] params = m.parameters();
@@ -152,20 +161,68 @@ public class APIDocumentationDoclet {
     pw.println("");
 
     ParamTag[] tags = m.paramTags();
-    for (int i = 0; i < tags.length; i++) {
-      ParamTag tag = tags[i];
+    for (ParamTag tag : tags) {
       indent(tag.parameterName() + " - " + tag.parameterComment(), 4, pw);
       pw.println("");
     }
 
     ThrowsTag[] throwsTags = m.throwsTags();
-    for (int i = 0; i < throwsTags.length; i++) {
-      ThrowsTag tag = throwsTags[i];
+    for (ThrowsTag tag : throwsTags) {
       indent("throws " + tag.exceptionName() + " - " +
-             tag.exceptionComment(), 4, pw);
+        tag.exceptionComment(), 4, pw);
       pw.println("");
     }
 
+  }
+
+  private static void appendTypeVariables(TypeVariable[] variables, StringBuilder sb) {
+    if (variables.length > 0) {
+      sb.append("<");
+
+      for (int i = 0; i < variables.length; i++) {
+        TypeVariable variable = variables[i];
+        appendType(variable, sb);
+
+        if (i < variables.length - 1) {
+          sb.append(", ");
+        }
+      }
+
+      sb.append("> ");
+    }
+  }
+
+  private static void appendReturnType(ExecutableMemberDoc m, StringBuilder sb) {
+    if (m instanceof MethodDoc) {
+      MethodDoc method = (MethodDoc) m;
+      appendType(method.returnType(), sb).append(" ");
+    }
+  }
+
+  private static StringBuilder appendType(Type type, StringBuilder sb) {
+    sb.append(type.qualifiedTypeName());
+
+    ParameterizedType parameterizedType = type.asParameterizedType();
+    if (parameterizedType != null) {
+      appendTypeArguments(parameterizedType.typeArguments(), sb);
+    }
+
+    return sb;
+  }
+
+  private static void appendTypeArguments(Type[] typeArguments, StringBuilder sb) {
+    if (typeArguments.length >0) {
+      sb.append("<");
+      for (int i = 0; i < typeArguments.length; i++) {
+        Type typeArgument = typeArguments[i];
+        sb.append(typeArgument.qualifiedTypeName());
+
+        if (i < typeArguments.length - 1) {
+          sb.append(", ");
+        }
+      }
+      sb.append(">");
+    }
   }
 
 }
