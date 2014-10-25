@@ -66,4 +66,10 @@ public class GuiceRemoteServiceServlet extends RemoteServiceServlet {
   private RemoteService getServiceInstance(Class serviceClass) {
     return (RemoteService) injector.get().getInstance(serviceClass);
   }
+  @Override
+  protected void doUnexpectedFailure(Throwable unhandled) {
+    unhandled.printStackTrace(System.err);
+    super.doUnexpectedFailure(unhandled);
+  }
+
 }
