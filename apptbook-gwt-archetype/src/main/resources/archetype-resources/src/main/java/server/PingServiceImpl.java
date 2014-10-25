@@ -14,10 +14,17 @@ import ${package}.client.PingService;
  */
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
-    public AbstractAppointmentBook ping()
-    {
-        AppointmentBook book = new AppointmentBook();
-        book.addAppointment( new Appointment() );
-        return book;
-    }
+  @Override
+  public AbstractAppointmentBook ping() {
+    AppointmentBook book = new AppointmentBook();
+    book.addAppointment(new Appointment());
+    return book;
+  }
+
+  @Override
+  protected void doUnexpectedFailure(Throwable unhandled) {
+    unhandled.printStackTrace(System.err);
+    super.doUnexpectedFailure(unhandled);
+  }
+
 }

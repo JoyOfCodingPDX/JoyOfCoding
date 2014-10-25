@@ -14,10 +14,22 @@ import ${package}.client.PingService;
  */
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
-    public AbstractAirline ping()
-    {
-        Airline airline = new Airline();
-        airline.addFlight( new Flight() );
-        return airline;
-    }
+  @Override
+  public AbstractAirline ping() {
+    Airline airline = new Airline();
+    airline.addFlight(new Flight());
+    return airline;
+  }
+
+  /**
+   * Log unhandled exceptions to standard error
+   *
+   * @param unhandled
+   *        The exception that wasn't handled
+   */
+  @Override
+  protected void doUnexpectedFailure(Throwable unhandled) {
+    unhandled.printStackTrace(System.err);
+    super.doUnexpectedFailure(unhandled);
+  }
 }

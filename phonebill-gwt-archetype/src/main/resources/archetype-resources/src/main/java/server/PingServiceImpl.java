@@ -16,11 +16,22 @@ import java.lang.Override;
  */
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
-    @Override
-    public AbstractPhoneBill ping()
-    {
-        PhoneBill phonebill = new PhoneBill();
-        phonebill.addPhoneCall(new PhoneCall());
-        return phonebill;
-    }
+  @Override
+  public AbstractPhoneBill ping() {
+    PhoneBill phonebill = new PhoneBill();
+    phonebill.addPhoneCall(new PhoneCall());
+    return phonebill;
+  }
+
+  /**
+   * Log unhandled exceptions to standard error
+   *
+   * @param unhandled
+   *        The exception that wasn't handled
+   */
+  @Override
+  protected void doUnexpectedFailure(Throwable unhandled) {
+    unhandled.printStackTrace(System.err);
+    super.doUnexpectedFailure(unhandled);
+  }
 }
