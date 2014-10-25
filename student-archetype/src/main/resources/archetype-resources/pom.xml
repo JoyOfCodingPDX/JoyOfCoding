@@ -4,7 +4,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2014</version>
+    <version>Summer2015</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -121,12 +121,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>Summer2014</version>
+      <version>Summer2015</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Summer2014</version>
+      <version>Summer2015</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

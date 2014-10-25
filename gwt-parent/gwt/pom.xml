@@ -4,13 +4,13 @@
   <parent>
     <artifactId>gwt-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2014</version>
+    <version>Summer2015</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2014</version>
+  <version>Summer2015</version>
   <name>Example GWT Application</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
@@ -69,12 +69,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2014</version>
+      <version>Summer2015</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2014</version>
+      <version>Summer2015</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
