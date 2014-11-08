@@ -132,6 +132,27 @@
          <configuration>
            <doCheck>false</doCheck> <!-- Don't fail when there are modified files -->
            <doUpdate>false</doUpdate> <!-- Don't update the checkout the code repository -->
+           <buildNumberPropertyName>scmRevision</buildNumberPropertyName>
+           <scmBranchPropertyName>scmBranch</scmBranchPropertyName>
+           <timestampPropertyName>buildTimestamp</timestampPropertyName>
+           <timestampFormat>{0, date, yyyy-MM-dd'T'HH:mm:ss.SSSZ}</timestampFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Built-From-Revision>${scmRevision}</Built-From-Revision>
+              <Built-From-Branch>${scmBranch}</Built-From-Branch>
+              <Built-On>${buildTimestamp}</Built-On>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
