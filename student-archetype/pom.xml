@@ -53,8 +53,4 @@
     </developer>
   </developers>
 
-  <scm>
-    <connection>scm:svn:https://projects.cecs.pdx.edu/svn/CS399J/student</connection>
-    <url>https://projects.cecs.pdx.edu/svn/CS399J/student/</url>
-  </scm>
 </project>
