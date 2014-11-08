@@ -19,9 +19,9 @@ public class Messages
         return String.format("  %s -> %s", key, value);
     }
 
-    public static String missingRequiredParameter( String key )
+    public static String missingRequiredParameter( String parameterName )
     {
-        return String.format("The required parameter ${symbol_escape}"%s${symbol_escape}" is missing", key);
+        return String.format("The required parameter ${symbol_escape}"%s${symbol_escape}" is missing", parameterName);
     }
 
     public static String mappedKeyValue( String key, String value )
