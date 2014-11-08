@@ -154,6 +154,23 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version> <!-- Need version 2.1.1 for Java 7 -->
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Built-From-Revision>${scmRevision}</Built-From-Revision>
+              <Built-From-Branch>${scmBranch}</Built-From-Branch>
+              <Built-On>${buildTimestamp}</Built-On>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-idea-plugin</artifactId>
         <version>2.2</version>
         <configuration>
