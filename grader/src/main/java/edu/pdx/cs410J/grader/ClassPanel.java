@@ -41,15 +41,12 @@ public class ClassPanel extends JPanel {
     this.setLayout(new BorderLayout());
     this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-    JPanel classNamePanel = new JPanel();
-    classNamePanel.setLayout(new BoxLayout(classNamePanel,
-                                           BoxLayout.X_AXIS));
-    classNamePanel.add(Box.createHorizontalGlue());
-    this.classNameLabel = new JLabel();
-    classNamePanel.add(this.classNameLabel);
-    classNamePanel.add(Box.createHorizontalGlue());
-    this.add(classNamePanel, BorderLayout.NORTH);
-    
+    addClassNamePanel();
+    addAssignmentsPanel();
+    addNewStudentPanel();
+  }
+
+  private void addAssignmentsPanel() {
     // Set up the assignments panel
     JPanel assignmentsPanel = new JPanel();
     Border assignmentBorder =
@@ -57,6 +54,14 @@ public class ClassPanel extends JPanel {
     assignmentsPanel.setBorder(assignmentBorder);
     assignmentsPanel.setLayout(new BorderLayout());
 
+    JPanel listPanel = addAssignmentsListPanel();
+    addAddAssignmentButton(listPanel);
+    assignmentsPanel.add(listPanel, BorderLayout.WEST);
+    addInfoPanel(assignmentsPanel);
+    this.add(assignmentsPanel, BorderLayout.CENTER);
+  }
+
+  private JPanel addAssignmentsListPanel() {
     JPanel listPanel = new JPanel();
     listPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     listPanel.setLayout(new BorderLayout());
@@ -79,43 +84,10 @@ public class ClassPanel extends JPanel {
       });
     listPanel.add(new JScrollPane(this.assignmentsList),
                   BorderLayout.CENTER);
+    return listPanel;
+  }
 
-    this.newAssignmentButton = new JButton("Add Assignment");
-    this.newAssignmentButton.setEnabled(false);
-    this.newAssignmentButton.addActionListener(e -> {
-      createAssignment();
-    });
-    listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
-
-    assignmentsPanel.add(listPanel, BorderLayout.WEST);
-
-    JPanel infoPanel = new JPanel();
-    infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    infoPanel.setLayout(new BorderLayout());
-    this.assignmentPanel = new AssignmentPanel(false);
-    infoPanel.add(assignmentPanel, BorderLayout.CENTER);
-
-    JPanel p = new JPanel();
-    p.setLayout(new FlowLayout());
-    JButton updateButton = new JButton("Update");
-    updateButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          // Get the selected assignment and update it
-          String name = assignmentsList.getSelectedValue();
-          Assignment assign = book.getAssignment(name);
-
-          // Update currently selected assignment
-          updateAssignment(assign);
-        }
-      });
-    p.add(updateButton);
-    infoPanel.add(p, BorderLayout.SOUTH);
-
-    assignmentsPanel.add(infoPanel, BorderLayout.CENTER);
-
-    this.add(assignmentsPanel, BorderLayout.CENTER);
-
+  private void addNewStudentPanel() {
     // Add a panel for adding a new student
     JPanel newStudentPanel = new JPanel();
     newStudentPanel.setLayout(new FlowLayout());
@@ -142,6 +114,57 @@ public class ClassPanel extends JPanel {
     });
     newStudentPanel.add(this.newStudentButton);
     this.add(newStudentPanel, BorderLayout.SOUTH);
+  }
+
+  private void addAddAssignmentButton(JPanel listPanel) {
+    this.newAssignmentButton = new JButton("Add Assignment");
+    this.newAssignmentButton.setEnabled(false);
+    this.newAssignmentButton.addActionListener(e -> {
+      createAssignment();
+    });
+    listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
+  }
+
+  private void addInfoPanel(JPanel assignmentsPanel) {
+    JPanel infoPanel = new JPanel();
+    infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    infoPanel.setLayout(new BorderLayout());
+    this.assignmentPanel = new AssignmentPanel(false);
+    infoPanel.add(assignmentPanel, BorderLayout.CENTER);
+
+    addUpdateButton(infoPanel);
+
+    assignmentsPanel.add(infoPanel, BorderLayout.CENTER);
+  }
+
+  private void addUpdateButton(JPanel infoPanel) {
+    JPanel p = new JPanel();
+    p.setLayout(new FlowLayout());
+    JButton updateButton = new JButton("Update");
+    updateButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          // Get the selected assignment and update it
+          String name = assignmentsList.getSelectedValue();
+          Assignment assign = book.getAssignment(name);
+
+          // Update currently selected assignment
+          updateAssignment(assign);
+        }
+      });
+    p.add(updateButton);
+    infoPanel.add(p, BorderLayout.SOUTH);
+  }
+
+  private void addClassNamePanel() {
+    JPanel classNamePanel = new JPanel();
+    classNamePanel.setLayout(new BoxLayout(classNamePanel,
+                                           BoxLayout.X_AXIS));
+    classNamePanel.add(Box.createHorizontalGlue());
+    this.classNameLabel = new JLabel();
+    classNamePanel.add(this.classNameLabel);
+    classNamePanel.add(Box.createHorizontalGlue());
+    this.add(classNamePanel, BorderLayout.NORTH);
   }
 
   private void showErrorMessageDialog(String message) {
