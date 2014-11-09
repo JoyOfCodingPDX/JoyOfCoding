@@ -43,7 +43,18 @@ public class ClassPanel extends JPanel {
 
     addClassNamePanel();
     addAssignmentsPanel();
+    addLetterGradeRangesPanel();
     addNewStudentPanel();
+  }
+
+  private void addLetterGradeRangesPanel() {
+    JPanel letterGradeRangesPanel = new JPanel();
+    Border letterGradeRangesBorder = BorderFactory.createTitledBorder("Letter Grade Ranges");
+    letterGradeRangesPanel.setBorder(letterGradeRangesBorder);
+    letterGradeRangesPanel.setLayout(new BorderLayout());
+
+    letterGradeRangesPanel.add(new LetterGradeRangesPanel());
+    this.add(letterGradeRangesPanel, BorderLayout.EAST);
   }
 
   private void addAssignmentsPanel() {
