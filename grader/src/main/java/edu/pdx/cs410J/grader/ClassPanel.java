@@ -127,20 +127,12 @@ public class ClassPanel extends JPanel {
     this.newStudentButton.addActionListener(e -> {
       String id = newStudentField.getText();
       if (id == null || id.equals("")) {
-        String s = "No student id specified";
-        JOptionPane.showMessageDialog(ClassPanel.this,
-          new String[]{s},
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+        showErrorMessageDialog("No student id specified");
         return;
       }
 
       if (ClassPanel.this.book == null) {
-        String s = "No grade book opened";
-        JOptionPane.showMessageDialog(ClassPanel.this,
-          new String[]{s},
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+        showErrorMessageDialog("No grade book opened");
         return;
       }
 
@@ -150,6 +142,13 @@ public class ClassPanel extends JPanel {
     });
     newStudentPanel.add(this.newStudentButton);
     this.add(newStudentPanel, BorderLayout.SOUTH);
+  }
+
+  private void showErrorMessageDialog(String message) {
+    JOptionPane.showMessageDialog(ClassPanel.this,
+      new String[]{message},
+      "Error",
+      JOptionPane.ERROR_MESSAGE);
   }
 
   /**
