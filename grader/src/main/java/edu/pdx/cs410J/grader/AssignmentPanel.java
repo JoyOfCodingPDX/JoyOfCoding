@@ -1,23 +1,14 @@
 package edu.pdx.cs410J.grader;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import edu.pdx.cs410J.ParserException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import edu.pdx.cs410J.ParserException;
 
 /**
  * This panel is used to display and edit <code>Assignment</code>s.
@@ -31,7 +22,7 @@ public class AssignmentPanel extends JPanel {
 
   // GUI components we care about
   private JTextField nameField;
-  private JComboBox typeBox;
+  private JComboBox<String> typeBox;
   private JTextField pointsField;
   private JTextField descriptionField;
   private NotesPanel notes;
@@ -63,7 +54,7 @@ public class AssignmentPanel extends JPanel {
     this.pointsField = new JTextField(5);
     fields.add(this.pointsField);
 
-    this.typeBox = new JComboBox();
+    this.typeBox = new JComboBox<>();
     this.typeBox.addItem(QUIZ);
     this.typeBox.addItem(PROJECT);
     this.typeBox.addItem(OTHER);
@@ -85,16 +76,19 @@ public class AssignmentPanel extends JPanel {
     // Add a NotePanel
     this.notes = new NotesPanel();
     this.notes.setNotable(new Notable() {
-        private ArrayList<String> notes = new ArrayList<String>();
+        private ArrayList<String> notes = new ArrayList<>();
 
+        @Override
         public java.util.List<String> getNotes() {
           return notes;
         }
 
+        @Override
         public void addNote(String note) {
           notes.add(note);
         }
 
+        @Override
         public void removeNote(String note) {
           notes.remove(note);
         }
@@ -132,9 +126,8 @@ public class AssignmentPanel extends JPanel {
     try {
       double d = Double.parseDouble(points);
       Assignment newAssign = new Assignment(name, d);
-      for (Iterator iter = this.notes.getNotable().getNotes().iterator();
-           iter.hasNext(); ) {
-        newAssign.addNote((String) iter.next());
+      for (String note : this.notes.getNotable().getNotes()) {
+        newAssign.addNote(note);
       }
 
       updateAssignment(newAssign);
@@ -213,21 +206,22 @@ public class AssignmentPanel extends JPanel {
 
     String type = (String) this.typeBox.getSelectedItem();
 
-    if (type.equals(QUIZ)) {
-      assign.setType(Assignment.QUIZ);
-
-    } else if (type.equals(PROJECT)) {
-      assign.setType(Assignment.PROJECT);
-
-    } else if (type.equals(OTHER)) {
-      assign.setType(Assignment.OTHER);
-
-    } else if (type.equals(OPTIONAL)) {
-      assign.setType(Assignment.OPTIONAL);
-
-    } else {
-      String s = "Unknown assignment type: " + type;
-      throw new IllegalArgumentException(s);
+    switch (type) {
+      case QUIZ:
+        assign.setType(Assignment.QUIZ);
+        break;
+      case PROJECT:
+        assign.setType(Assignment.PROJECT);
+        break;
+      case OTHER:
+        assign.setType(Assignment.OTHER);
+        break;
+      case OPTIONAL:
+        assign.setType(Assignment.OPTIONAL);
+        break;
+      default:
+        String s = "Unknown assignment type: " + type;
+        throw new IllegalArgumentException(s);
     }
 
     String description = this.descriptionField.getText();
@@ -275,6 +269,7 @@ public class AssignmentPanel extends JPanel {
 
     JFrame frame = new JFrame("AssignmentPanel test");
     frame.addWindowListener(new WindowAdapter() {
+        @Override
         public void windowClosing(WindowEvent e) {
           System.exit(1);
         }

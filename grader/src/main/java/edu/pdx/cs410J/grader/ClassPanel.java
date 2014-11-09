@@ -1,13 +1,19 @@
 package edu.pdx.cs410J.grader;
 
-import edu.pdx.cs410J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import edu.pdx.cs410J.ParserException;
+
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * This panel displays and edits information about a class stored in a
@@ -21,7 +27,7 @@ public class ClassPanel extends JPanel {
 
   // GUI components we care about
   private JLabel classNameLabel;
-  private JList assignmentsList;
+  private JList<String> assignmentsList;
   private AssignmentPanel assignmentPanel;
 
   private JButton newAssignmentButton;
@@ -55,11 +61,12 @@ public class ClassPanel extends JPanel {
     listPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     listPanel.setLayout(new BorderLayout());
 
-    this.assignmentsList = new JList();
+    this.assignmentsList = new JList<>();
     assignmentsList.addListSelectionListener(new
       ListSelectionListener() {
+        @Override
         public void valueChanged(ListSelectionEvent e) {
-          String name = (String) assignmentsList.getSelectedValue();
+          String name = assignmentsList.getSelectedValue();
           if (name != null) {
             Assignment assign = book.getAssignment(name);
             if (assign == null) {
@@ -75,11 +82,9 @@ public class ClassPanel extends JPanel {
 
     this.newAssignmentButton = new JButton("Add Assignment");
     this.newAssignmentButton.setEnabled(false);
-    this.newAssignmentButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          createAssignment();
-        }
-      });
+    this.newAssignmentButton.addActionListener(e -> {
+      createAssignment();
+    });
     listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
 
     assignmentsPanel.add(listPanel, BorderLayout.WEST);
@@ -94,9 +99,10 @@ public class ClassPanel extends JPanel {
     p.setLayout(new FlowLayout());
     JButton updateButton = new JButton("Update");
     updateButton.addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
           // Get the selected assignment and update it
-          String name = (String) assignmentsList.getSelectedValue();
+          String name = assignmentsList.getSelectedValue();
           Assignment assign = book.getAssignment(name);
 
           // Update currently selected assignment
@@ -118,32 +124,30 @@ public class ClassPanel extends JPanel {
     newStudentPanel.add(newStudentField);
     this.newStudentButton = new JButton("Add");
     this.newStudentButton.setEnabled(false);
-    this.newStudentButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          String id = newStudentField.getText();
-          if (id == null || id.equals("")) {
-            String s = "No student id specified";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-          }
+    this.newStudentButton.addActionListener(e -> {
+      String id = newStudentField.getText();
+      if (id == null || id.equals("")) {
+        String s = "No student id specified";
+        JOptionPane.showMessageDialog(ClassPanel.this,
+          new String[]{s},
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
-	  if (ClassPanel.this.book == null) {
-            String s = "No grade book opened";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-	  }
+      if (ClassPanel.this.book == null) {
+        String s = "No grade book opened";
+        JOptionPane.showMessageDialog(ClassPanel.this,
+          new String[]{s},
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
-          Student student = new Student(id);
-          ClassPanel.this.book.addStudent(student);
-          newStudentField.setText("");
-        }
-      });
+      Student student = new Student(id);
+      ClassPanel.this.book.addStudent(student);
+      newStudentField.setText("");
+    });
     newStudentPanel.add(this.newStudentButton);
     this.add(newStudentPanel, BorderLayout.SOUTH);
   }
@@ -208,7 +212,7 @@ public class ClassPanel extends JPanel {
    */
   void displayAssignments(GradeBook book) {
     // Display all of the assignments
-    Vector<String> assignmentNames = new Vector<String>();
+    Vector<String> assignmentNames = new Vector<>();
     assignmentNames.addAll(book.getAssignmentNames());
     this.assignmentsList.setListData(assignmentNames);
   }
@@ -256,6 +260,7 @@ public class ClassPanel extends JPanel {
 
     final GradeBook theBook = book;
     frame.addWindowListener(new WindowAdapter() {
+        @Override
         public void windowClosing(WindowEvent e) {
           // Write changes to grade book back to file
           try {
