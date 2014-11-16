@@ -14,14 +14,20 @@ public enum LetterGrade {
   D("D"),
   D_MINUS("D-"),
   F("F"),
-  I("I"),
-  X("X")
+  I("I", false),
+  X("X", false)
   ;
 
   private final String stringValue;
+  private final boolean hasNumericRange;
 
   LetterGrade(String stringValue) {
+    this(stringValue, true);
+  }
+
+  LetterGrade(String stringValue, boolean hasNumericRange) {
     this.stringValue = stringValue;
+    this.hasNumericRange = hasNumericRange;
   }
 
   public static LetterGrade fromString(String string) {
@@ -42,4 +48,7 @@ public enum LetterGrade {
     return asString();
   }
 
+  public boolean hasNumericRange() {
+    return this.hasNumericRange;
+  }
 }

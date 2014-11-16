@@ -12,7 +12,9 @@ public class LetterGradeRangesPanel extends JPanel {
     this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     for (LetterGrade letter : LetterGrade.values()) {
-      addLetterGradeRange(letter);
+      if (letter.hasNumericRange()) {
+        addLetterGradeRange(letter);
+      }
     }
 
     this.add(Box.createVerticalGlue());
