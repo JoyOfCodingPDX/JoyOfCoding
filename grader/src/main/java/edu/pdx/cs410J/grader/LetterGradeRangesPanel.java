@@ -56,9 +56,9 @@ public class LetterGradeRangesPanel extends JPanel {
 
     MinMaxValueFields fields = createMinMaxValueFieldsFor(letter);
 
-    rangePanel.add(fields.getMinValueField());
-    rangePanel.add(new JLabel("to"));
     rangePanel.add(fields.getMaxValueField());
+    rangePanel.add(new JLabel("to"));
+    rangePanel.add(fields.getMinValueField());
 
     rangePanel.add(Box.createHorizontalBox());
 
