@@ -32,6 +32,7 @@ public class ClassPanel extends JPanel {
 
   private JButton newAssignmentButton;
   private JButton newStudentButton;
+  private LetterGradeRangesPanel letterGradeRangesPanel;
 
   /**
    * Creats a <code>ClassPanel</code> and initializes its components.
@@ -53,7 +54,8 @@ public class ClassPanel extends JPanel {
     letterGradeRangesPanel.setBorder(letterGradeRangesBorder);
     letterGradeRangesPanel.setLayout(new BorderLayout());
 
-    letterGradeRangesPanel.add(new LetterGradeRangesPanel());
+    this.letterGradeRangesPanel = new LetterGradeRangesPanel();
+    letterGradeRangesPanel.add(this.letterGradeRangesPanel);
     this.add(letterGradeRangesPanel, BorderLayout.EAST);
   }
 
@@ -237,6 +239,12 @@ public class ClassPanel extends JPanel {
 
     this.displayAssignments(book);
     this.assignmentsList.clearSelection();  // No initial selection
+
+    displayLetterGradeRanges(book);
+  }
+
+  private void displayLetterGradeRanges(GradeBook book) {
+    this.letterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges());
   }
 
   /**
