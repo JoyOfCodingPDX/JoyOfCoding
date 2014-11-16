@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +19,7 @@ public class LetterGradeRangesPanel extends JPanel {
   private void addLetterGradeRanges() {
     this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-    for (LetterGrade letter : LetterGrade.values()) {
-      if (letter.hasNumericRange()) {
-        addLetterGradeRange(letter);
-      }
-    }
+    this.add(createRangesPanel());
 
     this.add(Box.createVerticalGlue());
 
@@ -30,6 +27,53 @@ public class LetterGradeRangesPanel extends JPanel {
     update.addActionListener(e -> updateLetterGradeRanges());
     this.add(update);
 
+  }
+
+  private JPanel createRangesPanel() {
+    JPanel rangesPanel = new JPanel(new GridBagLayout());
+    int row = 0;
+
+    for (LetterGrade letter : LetterGrade.values()) {
+      if (letter.hasNumericRange()) {
+
+        addLetterLabel(letter, rangesPanel, row);
+
+        MinMaxValueFields fields = createMinMaxValueFieldsFor(letter);
+
+        addMaxValueField(fields, rangesPanel, row);
+        addToLabel(rangesPanel, row);
+        addMinValueField(fields, rangesPanel, row);
+
+        row++;
+      }
+    }
+
+    return rangesPanel;
+  }
+
+  private void addMinValueField(MinMaxValueFields fields, JPanel rangesPanel, int row) {
+    addComponentToRow(fields.getMinValueField(), rangesPanel, row, 3);
+  }
+
+  private void addToLabel(JPanel rangesPanel, int row) {
+    addComponentToRow(new JLabel("to"), rangesPanel, row, 2);
+  }
+
+  private void addMaxValueField(MinMaxValueFields fields, JPanel rangesPanel, int row) {
+    addComponentToRow(fields.getMaxValueField(), rangesPanel, row, 1);
+  }
+
+  private void addLetterLabel(LetterGrade letter, JPanel rangesPanel, int row) {
+    JLabel letterLabel = new JLabel(letter.asString());
+    addComponentToRow(letterLabel, rangesPanel, row, 0);
+  }
+
+  private void addComponentToRow(JComponent component, JPanel rangesPanel, int row, int gridx) {
+    GridBagConstraints constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    constraints.gridx = gridx;
+    constraints.gridy = row;
+    rangesPanel.add(component, constraints);
   }
 
   private void updateLetterGradeRanges() {
@@ -48,25 +92,8 @@ public class LetterGradeRangesPanel extends JPanel {
     return Integer.parseInt(field.getText());
   }
 
-  private void addLetterGradeRange(LetterGrade letter) {
-    JPanel rangePanel = new JPanel();
-    rangePanel.setLayout(new BoxLayout(rangePanel, BoxLayout.X_AXIS));
-
-    rangePanel.add(new JLabel(letter.asString()));
-
-    MinMaxValueFields fields = createMinMaxValueFieldsFor(letter);
-
-    rangePanel.add(fields.getMaxValueField());
-    rangePanel.add(new JLabel("to"));
-    rangePanel.add(fields.getMinValueField());
-
-    rangePanel.add(Box.createHorizontalBox());
-
-    this.add(rangePanel);
-  }
-
   private MinMaxValueFields createMinMaxValueFieldsFor(LetterGrade letter) {
-    MinMaxValueFields fields = new MinMaxValueFields(new JTextField(2), new JTextField(2));
+    MinMaxValueFields fields = new MinMaxValueFields(new JTextField(3), new JTextField(3));
     this.minMaxValueFields.put(letter, fields);
     return fields;
   }
