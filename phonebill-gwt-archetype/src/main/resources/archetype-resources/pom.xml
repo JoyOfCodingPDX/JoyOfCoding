@@ -63,7 +63,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
-          <version>2.5.1</version>
+          <version>${gwt.version}</version>
             <configuration>
                 <runTarget>${package}.PhoneBillGwt/PhoneBillGwt.html</runTarget>
                 <modules>
