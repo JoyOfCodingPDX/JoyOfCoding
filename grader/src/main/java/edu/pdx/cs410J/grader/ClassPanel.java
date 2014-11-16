@@ -1,13 +1,19 @@
 package edu.pdx.cs410J.grader;
 
-import edu.pdx.cs410J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import edu.pdx.cs410J.ParserException;
+
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * This panel displays and edits information about a class stored in a
@@ -21,11 +27,12 @@ public class ClassPanel extends JPanel {
 
   // GUI components we care about
   private JLabel classNameLabel;
-  private JList assignmentsList;
+  private JList<String> assignmentsList;
   private AssignmentPanel assignmentPanel;
 
   private JButton newAssignmentButton;
   private JButton newStudentButton;
+  private LetterGradeRangesPanel letterGradeRangesPanel;
 
   /**
    * Creats a <code>ClassPanel</code> and initializes its components.
@@ -35,15 +42,24 @@ public class ClassPanel extends JPanel {
     this.setLayout(new BorderLayout());
     this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-    JPanel classNamePanel = new JPanel();
-    classNamePanel.setLayout(new BoxLayout(classNamePanel,
-                                           BoxLayout.X_AXIS));
-    classNamePanel.add(Box.createHorizontalGlue());
-    this.classNameLabel = new JLabel();
-    classNamePanel.add(this.classNameLabel);
-    classNamePanel.add(Box.createHorizontalGlue());
-    this.add(classNamePanel, BorderLayout.NORTH);
-    
+    addClassNamePanel();
+    addAssignmentsPanel();
+    addLetterGradeRangesPanel();
+    addNewStudentPanel();
+  }
+
+  private void addLetterGradeRangesPanel() {
+    JPanel letterGradeRangesPanel = new JPanel();
+    Border letterGradeRangesBorder = BorderFactory.createTitledBorder("Letter Grades");
+    letterGradeRangesPanel.setBorder(letterGradeRangesBorder);
+    letterGradeRangesPanel.setLayout(new BorderLayout());
+
+    this.letterGradeRangesPanel = new LetterGradeRangesPanel();
+    letterGradeRangesPanel.add(this.letterGradeRangesPanel);
+    this.add(letterGradeRangesPanel, BorderLayout.EAST);
+  }
+
+  private void addAssignmentsPanel() {
     // Set up the assignments panel
     JPanel assignmentsPanel = new JPanel();
     Border assignmentBorder =
@@ -51,15 +67,24 @@ public class ClassPanel extends JPanel {
     assignmentsPanel.setBorder(assignmentBorder);
     assignmentsPanel.setLayout(new BorderLayout());
 
+    JPanel listPanel = addAssignmentsListPanel();
+    addAddAssignmentButton(listPanel);
+    assignmentsPanel.add(listPanel, BorderLayout.WEST);
+    addInfoPanel(assignmentsPanel);
+    this.add(assignmentsPanel, BorderLayout.CENTER);
+  }
+
+  private JPanel addAssignmentsListPanel() {
     JPanel listPanel = new JPanel();
     listPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     listPanel.setLayout(new BorderLayout());
 
-    this.assignmentsList = new JList();
+    this.assignmentsList = new JList<>();
     assignmentsList.addListSelectionListener(new
       ListSelectionListener() {
+        @Override
         public void valueChanged(ListSelectionEvent e) {
-          String name = (String) assignmentsList.getSelectedValue();
+          String name = assignmentsList.getSelectedValue();
           if (name != null) {
             Assignment assign = book.getAssignment(name);
             if (assign == null) {
@@ -72,44 +97,10 @@ public class ClassPanel extends JPanel {
       });
     listPanel.add(new JScrollPane(this.assignmentsList),
                   BorderLayout.CENTER);
+    return listPanel;
+  }
 
-    this.newAssignmentButton = new JButton("Add Assignment");
-    this.newAssignmentButton.setEnabled(false);
-    this.newAssignmentButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          createAssignment();
-        }
-      });
-    listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
-
-    assignmentsPanel.add(listPanel, BorderLayout.WEST);
-
-    JPanel infoPanel = new JPanel();
-    infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    infoPanel.setLayout(new BorderLayout());
-    this.assignmentPanel = new AssignmentPanel(false);
-    infoPanel.add(assignmentPanel, BorderLayout.CENTER);
-
-    JPanel p = new JPanel();
-    p.setLayout(new FlowLayout());
-    JButton updateButton = new JButton("Update");
-    updateButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          // Get the selected assignment and update it
-          String name = (String) assignmentsList.getSelectedValue();
-          Assignment assign = book.getAssignment(name);
-
-          // Update currently selected assignment
-          updateAssignment(assign);
-        }
-      });
-    p.add(updateButton);
-    infoPanel.add(p, BorderLayout.SOUTH);
-
-    assignmentsPanel.add(infoPanel, BorderLayout.CENTER);
-
-    this.add(assignmentsPanel, BorderLayout.CENTER);
-
+  private void addNewStudentPanel() {
     // Add a panel for adding a new student
     JPanel newStudentPanel = new JPanel();
     newStudentPanel.setLayout(new FlowLayout());
@@ -118,34 +109,82 @@ public class ClassPanel extends JPanel {
     newStudentPanel.add(newStudentField);
     this.newStudentButton = new JButton("Add");
     this.newStudentButton.setEnabled(false);
-    this.newStudentButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          String id = newStudentField.getText();
-          if (id == null || id.equals("")) {
-            String s = "No student id specified";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-          }
+    this.newStudentButton.addActionListener(e -> {
+      String id = newStudentField.getText();
+      if (id == null || id.equals("")) {
+        showErrorMessageDialog("No student id specified");
+        return;
+      }
 
-	  if (ClassPanel.this.book == null) {
-            String s = "No grade book opened";
-            JOptionPane.showMessageDialog(ClassPanel.this, 
-                                          new String[] {s},
-                                          "Error",
-                                          JOptionPane.ERROR_MESSAGE);
-            return;
-	  }
+      if (ClassPanel.this.book == null) {
+        showErrorMessageDialog("No grade book opened");
+        return;
+      }
 
-          Student student = new Student(id);
-          ClassPanel.this.book.addStudent(student);
-          newStudentField.setText("");
-        }
-      });
+      Student student = new Student(id);
+      ClassPanel.this.book.addStudent(student);
+      newStudentField.setText("");
+    });
     newStudentPanel.add(this.newStudentButton);
     this.add(newStudentPanel, BorderLayout.SOUTH);
+  }
+
+  private void addAddAssignmentButton(JPanel listPanel) {
+    this.newAssignmentButton = new JButton("Add Assignment");
+    this.newAssignmentButton.setEnabled(false);
+    this.newAssignmentButton.addActionListener(e -> {
+      createAssignment();
+    });
+    listPanel.add(this.newAssignmentButton, BorderLayout.SOUTH);
+  }
+
+  private void addInfoPanel(JPanel assignmentsPanel) {
+    JPanel infoPanel = new JPanel();
+    infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    infoPanel.setLayout(new BorderLayout());
+    this.assignmentPanel = new AssignmentPanel(false);
+    infoPanel.add(assignmentPanel, BorderLayout.CENTER);
+
+    addUpdateButton(infoPanel);
+
+    assignmentsPanel.add(infoPanel, BorderLayout.CENTER);
+  }
+
+  private void addUpdateButton(JPanel infoPanel) {
+    JPanel p = new JPanel();
+    p.setLayout(new FlowLayout());
+    JButton updateButton = new JButton("Update");
+    updateButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          // Get the selected assignment and update it
+          String name = assignmentsList.getSelectedValue();
+          Assignment assign = book.getAssignment(name);
+
+          // Update currently selected assignment
+          updateAssignment(assign);
+        }
+      });
+    p.add(updateButton);
+    infoPanel.add(p, BorderLayout.SOUTH);
+  }
+
+  private void addClassNamePanel() {
+    JPanel classNamePanel = new JPanel();
+    classNamePanel.setLayout(new BoxLayout(classNamePanel,
+                                           BoxLayout.X_AXIS));
+    classNamePanel.add(Box.createHorizontalGlue());
+    this.classNameLabel = new JLabel();
+    classNamePanel.add(this.classNameLabel);
+    classNamePanel.add(Box.createHorizontalGlue());
+    this.add(classNamePanel, BorderLayout.NORTH);
+  }
+
+  private void showErrorMessageDialog(String message) {
+    JOptionPane.showMessageDialog(ClassPanel.this,
+      new String[]{message},
+      "Error",
+      JOptionPane.ERROR_MESSAGE);
   }
 
   /**
@@ -200,6 +239,12 @@ public class ClassPanel extends JPanel {
 
     this.displayAssignments(book);
     this.assignmentsList.clearSelection();  // No initial selection
+
+    displayLetterGradeRanges(book);
+  }
+
+  private void displayLetterGradeRanges(GradeBook book) {
+    this.letterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges());
   }
 
   /**
@@ -208,7 +253,7 @@ public class ClassPanel extends JPanel {
    */
   void displayAssignments(GradeBook book) {
     // Display all of the assignments
-    Vector<String> assignmentNames = new Vector<String>();
+    Vector<String> assignmentNames = new Vector<>();
     assignmentNames.addAll(book.getAssignmentNames());
     this.assignmentsList.setListData(assignmentNames);
   }
@@ -256,6 +301,7 @@ public class ClassPanel extends JPanel {
 
     final GradeBook theBook = book;
     frame.addWindowListener(new WindowAdapter() {
+        @Override
         public void windowClosing(WindowEvent e) {
           // Write changes to grade book back to file
           try {
