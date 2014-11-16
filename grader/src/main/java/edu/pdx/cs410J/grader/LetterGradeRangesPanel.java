@@ -4,9 +4,12 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+
 public class LetterGradeRangesPanel extends JPanel {
 
   private final Map<LetterGrade, MinMaxValueFields> minMaxValueFields = new HashMap<>();
+  private GradeBook.LetterGradeRanges letterGradeRanges;
 
   LetterGradeRangesPanel() {
     addLetterGradeRanges();
@@ -23,8 +26,26 @@ public class LetterGradeRangesPanel extends JPanel {
 
     this.add(Box.createVerticalGlue());
 
-    this.add(new JButton("Update"));
+    JButton update = new JButton("Update");
+    update.addActionListener(e -> updateLetterGradeRanges());
+    this.add(update);
 
+  }
+
+  private void updateLetterGradeRanges() {
+    this.minMaxValueFields.forEach((LetterGrade grade, MinMaxValueFields fields) -> {
+      int minValue = getIntValue(fields.getMinValueField());
+      int maxValue = getIntValue(fields.getMaxValueField());
+
+      LetterGradeRange range = this.letterGradeRanges.getRange(grade);
+      range.setRange(minValue, maxValue);
+    });
+
+    this.letterGradeRanges.validate();
+  }
+
+  private int getIntValue(JTextField field) {
+    return Integer.parseInt(field.getText());
   }
 
   private void addLetterGradeRange(LetterGrade letter) {
@@ -51,10 +72,11 @@ public class LetterGradeRangesPanel extends JPanel {
   }
 
   public void displayLetterGradeRanges(GradeBook.LetterGradeRanges letterGradeRanges) {
+    this.letterGradeRanges = letterGradeRanges;
     letterGradeRanges.forEach(this::displayLetterGradeRange);
   }
 
-  private void displayLetterGradeRange(GradeBook.LetterGradeRanges.LetterGradeRange range) {
+  private void displayLetterGradeRange(LetterGradeRange range) {
     setTextFieldValue(getMinValueField(range.letterGrade()), range.minimum());
     setTextFieldValue(getMaxValueField(range.letterGrade()), range.maximum());
   }
