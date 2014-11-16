@@ -72,8 +72,14 @@ public class LetterGradeRangesPanel extends JPanel {
   }
 
   public void displayLetterGradeRanges(GradeBook.LetterGradeRanges letterGradeRanges) {
+    clearAllMinMaxValueFields();
+
     this.letterGradeRanges = letterGradeRanges;
     letterGradeRanges.forEach(this::displayLetterGradeRange);
+  }
+
+  private void clearAllMinMaxValueFields() {
+    this.minMaxValueFields.values().forEach(MinMaxValueFields::clearFields);
   }
 
   private void displayLetterGradeRange(LetterGradeRange range) {
@@ -110,6 +116,11 @@ public class LetterGradeRangesPanel extends JPanel {
 
     public JTextField getMaxValueField() {
       return maxValueField;
+    }
+
+    public void clearFields() {
+      this.maxValueField.setText("");
+      this.minValueField.setText("");
     }
   }
 }
