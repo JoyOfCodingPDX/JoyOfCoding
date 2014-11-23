@@ -403,6 +403,10 @@ public class Submit extends EmailSender {
 
     out.println("A receipt will be sent to: " + userEmail + "\n");
 
+    return doesUserWantToSubmit();
+  }
+
+  private boolean doesUserWantToSubmit() {
     InputStreamReader isr = new InputStreamReader(System.in);
     BufferedReader in = new BufferedReader(isr);
 
