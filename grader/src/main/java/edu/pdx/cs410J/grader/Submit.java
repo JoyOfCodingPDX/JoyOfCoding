@@ -290,11 +290,7 @@ public class Submit extends EmailSender {
       new TreeSet<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
     populateWithFilesFromSubdirectories(files, fileNames);
 
-    files.forEach((file) -> {
-      if (canBeSubmitted(file)) {
-        files.add(file);
-      }
-    });
+    files.removeIf((file) -> !canBeSubmitted(file));
 
     return files;
   }
