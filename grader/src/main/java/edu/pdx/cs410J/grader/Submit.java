@@ -98,6 +98,11 @@ public class Submit extends EmailSender {
    */
   private Set<String> fileNames = new HashSet<>();
 
+  /**
+  * Koans submission mode.
+  */
+  private boolean koansMode = false;
+
   ///////////////////////  Constructors  /////////////////////////
 
   /**
@@ -175,6 +180,12 @@ public class Submit extends EmailSender {
   }
 
   /**
+  * Sets the flag to enable koan submission mode
+  */
+  public void setKoansMode(boolean koansMode) {
+    this.koansMode = koansMode;
+  }
+  /**
    * Validates the state of this submission
    *
    * @throws IllegalStateException If any state is incorrect or missing
@@ -231,8 +242,14 @@ public class Submit extends EmailSender {
    * @throws IllegalStateException If no source files were found
    */
   public boolean submit(boolean verify) throws IOException, MessagingException {
-    // Recursively search the source directory for .java files
-    Set<File> sourceFiles = searchForSourceFiles(fileNames);
+
+    Set<File> sourceFiles;
+    if(!koansMode){
+      // Recursively search the source directory for .java files
+      sourceFiles = searchForSourceFiles(fileNames);
+    } else {
+      sourceFiles = findAllFilesUnderWorkingDirectory();
+    }
 
     db(sourceFiles.size() + " source files found");
 
@@ -354,6 +371,41 @@ public class Submit extends EmailSender {
     }
 
     return files;
+  }
+
+  /**
+   * Finds all files under current working directory by calling
+   * a recursive function that searches all directories under it
+   * and adds files with .java extension.
+   */
+  private Set<File> findAllFilesUnderWorkingDirectory(){
+    Set<File> files = new TreeSet<>();
+    String path = System.getProperty("user.dir");
+    recursiveJavaSourceFileAdder(path, files);
+    return files;
+  }
+
+  /**
+   * Recursively finds all files under a given path and adds them to the
+   * files set.
+   * Modified version of: http://stackoverflow.com/questions/2056221/recursively-list-files-in-java
+   */
+  public void recursiveJavaSourceFileAdder(String path, Set<File> files) {
+    File root = new File(path);
+    File[] list = root.listFiles();
+
+    if (list == null) return;
+
+    for ( File f : list ) {
+      if ( f.isDirectory() ) {
+        recursiveJavaSourceFileAdder(f.getAbsolutePath(), files);
+      } else {
+        String filename = f.getAbsoluteFile().toString();
+        if (filename.split("\\.")[1].equals("java")){
+          files.add(f);
+        }
+      }
+    }
   }
 
   private List<String> fetchListOfFilesThatCanNotBeSubmitted() {
@@ -604,6 +656,7 @@ public class Submit extends EmailSender {
     err.println("    -smtp serverName   Name of SMTP server");
     err.println("    -verbose           Log debugging output");
     err.println("    -comment comment   Info for the Grader");
+    err.println("    -submitKoans       Automatically submit koans");
     err.println("");
     err.println("Submits Java source code to the CS410J grader.");
     System.exit(1);
@@ -639,6 +692,8 @@ public class Submit extends EmailSender {
         }
 
         submit.setComment(args[i]);
+      } else if (args[i].equals("-submitKoans")) {
+          submit.setKoansMode(true);
 
       } else if (submit.projName == null) {
         submit.setProjectName(args[i]);
@@ -681,6 +736,7 @@ public class Submit extends EmailSender {
       out.println(submit.projName + " not submitted.");
     }
   }
+
 
   static class ManifestAttributes {
 
