@@ -3,7 +3,9 @@ package edu.pdx.cs410J.grader;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Transport;
 import javax.mail.internet.*;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -13,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class is used to submit assignments in CS410J.  The user
@@ -285,17 +288,31 @@ public class Submit extends EmailSender {
     // Files should be sorted by name
     SortedSet<File> files =
       new TreeSet<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
+    populateWithFilesFromSubdirectories(files, fileNames);
 
-    for (String fileName : fileNames) {
-      File file = new File(fileName);
-      file = file.getAbsoluteFile();  // Full path
-
+    files.forEach((file) -> {
       if (canBeSubmitted(file)) {
         files.add(file);
       }
-    }
+    });
 
     return files;
+  }
+
+  private void populateWithFilesFromSubdirectories(SortedSet<File> allFiles, Set<String> fileNames) {
+    populateWithFilesFromSubdirectories(allFiles, fileNames.stream().map(name -> new File(name).getAbsoluteFile()));
+  }
+
+  private void populateWithFilesFromSubdirectories(SortedSet<File> allFiles, Stream<File> files) {
+    files.forEach((file) -> {
+      if (file.isDirectory()) {
+        populateWithFilesFromSubdirectories(allFiles, Arrays.stream(file.listFiles()));
+
+      } else {
+        allFiles.add(file);
+      }
+    });
+
   }
 
   private boolean canBeSubmitted(File file) {
