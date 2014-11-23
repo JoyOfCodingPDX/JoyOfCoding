@@ -335,38 +335,30 @@ public class Submit extends EmailSender {
     }
 
     // Verify that file is in the correct directory.
-    File parent = file.getParentFile();
-    if (parent == null || !parent.getName().equals(userId)) {
-      err.println("** Not submitting file " + file +
-        ": it does not reside in a directory named " +
-        userId);
-      return false;
-    }
-
-    parent = parent.getParentFile();
-    if (parent == null || !parent.getName().equals("cs410J")) {
-      err.println("** Not submitting file " + file +
-        ": it does not reside in a directory named " +
-        "cs410J" + File.separator + userId);
-      return false;
-    }
-
-    parent = parent.getParentFile();
-    if (parent == null || !parent.getName().equals("pdx")) {
-      err.println("** Not submitting file " + file +
-        ": it does not reside in a directory named " +
-        "pdx" + File.separator + "cs410J" + File.separator
-        + userId);
-      return false;
-    }
-
-    parent = parent.getParentFile();
-    if (parent == null || !parent.getName().equals("edu")) {
+    if (!isInEduPdxCs410JDirectory(file)) {
       err.println("** Not submitting file " + file +
         ": it does not reside in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
         "cs410J" + File.separator + userId);
       return false;
+    }
+
+    return true;
+  }
+
+  private boolean isInEduPdxCs410JDirectory(File file) {
+    return hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
+  }
+
+  private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
+    File parent = file.getParentFile();
+    for (String parentDirectoryName : parentDirectoryNames) {
+      if (parent == null || !parent.getName().equals(parentDirectoryName)) {
+        return false;
+
+      } else {
+        parent = parent.getParentFile();
+      }
     }
 
     return true;
