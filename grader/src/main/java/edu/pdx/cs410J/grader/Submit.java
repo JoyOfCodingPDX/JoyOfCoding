@@ -612,7 +612,7 @@ public class Submit extends EmailSender {
     err.println("    student      Who is submitting the project?");
     err.println("    loginId      UNIX login id");
     err.println("    email        Student's email address");
-    err.println("    file         Java source file to submit");
+    err.println("    file         Java source file (or all files in a directory) to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savejar           Saves temporary Jar file");
     err.println("    -smtp serverName   Name of SMTP server");
