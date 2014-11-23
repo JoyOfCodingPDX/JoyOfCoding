@@ -282,8 +282,6 @@ public class Submit extends EmailSender {
    * edu/pdx/cs410J/<studentId>.
    */
   private Set<File> searchForSourceFiles(Set<String> fileNames) {
-    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
-
     // Files should be sorted by name
     SortedSet<File> files =
       new TreeSet<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
@@ -292,68 +290,73 @@ public class Submit extends EmailSender {
       File file = new File(fileName);
       file = file.getAbsoluteFile();  // Full path
 
-      // Does the file exist?
-      if (!file.exists()) {
-        err.println("** Not submitting file " + fileName +
-          " because it does not exist");
-        continue;
+      if (canBeSubmitted(file)) {
+        files.add(file);
       }
-
-      // Is the file on the "no submit" list?
-      String name = file.getName();
-      if (noSubmit.contains(name)) {
-        err.println("** Not submitting file " + fileName +
-          " because it is on the \"no submit\" list");
-        continue;
-      }
-
-      // Does the file name end in .java?
-      if (!name.endsWith(".java")) {
-        err.println("** No submitting file " + fileName +
-          " because does end in \".java\"");
-        continue;
-      }
-
-      // Verify that file is in the correct directory.
-      File parent = file.getParentFile();
-      if (parent == null || !parent.getName().equals(userId)) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("cs410J")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "cs410J" + File.separator + userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("pdx")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "pdx" + File.separator + "cs410J" + File.separator
-          + userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("edu")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "edu" + File.separator + "pdx" + File.separator +
-          "cs410J" + File.separator + userId);
-        continue;
-      }
-
-      // We like this file
-      files.add(file);
     }
 
     return files;
+  }
+
+  private boolean canBeSubmitted(File file) {
+    if (!file.exists()) {
+      err.println("** Not submitting file " + file +
+        " because it does not exist");
+      return false;
+    }
+
+    // Is the file on the "no submit" list?
+    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
+    String name = file.getName();
+    if (noSubmit.contains(name)) {
+      err.println("** Not submitting file " + file +
+        " because it is on the \"no submit\" list");
+      return false;
+    }
+
+    // Does the file name end in .java?
+    if (!name.endsWith(".java")) {
+      err.println("** No submitting file " + file +
+        " because does end in \".java\"");
+      return false;
+    }
+
+    // Verify that file is in the correct directory.
+    File parent = file.getParentFile();
+    if (parent == null || !parent.getName().equals(userId)) {
+      err.println("** Not submitting file " + file +
+        ": it does not reside in a directory named " +
+        userId);
+      return false;
+    }
+
+    parent = parent.getParentFile();
+    if (parent == null || !parent.getName().equals("cs410J")) {
+      err.println("** Not submitting file " + file +
+        ": it does not reside in a directory named " +
+        "cs410J" + File.separator + userId);
+      return false;
+    }
+
+    parent = parent.getParentFile();
+    if (parent == null || !parent.getName().equals("pdx")) {
+      err.println("** Not submitting file " + file +
+        ": it does not reside in a directory named " +
+        "pdx" + File.separator + "cs410J" + File.separator
+        + userId);
+      return false;
+    }
+
+    parent = parent.getParentFile();
+    if (parent == null || !parent.getName().equals("edu")) {
+      err.println("** Not submitting file " + file +
+        ": it does not reside in a directory named " +
+        "edu" + File.separator + "pdx" + File.separator +
+        "cs410J" + File.separator + userId);
+      return false;
+    }
+
+    return true;
   }
 
   private List<String> fetchListOfFilesThatCanNotBeSubmitted() {
