@@ -329,21 +329,27 @@ public class Submit extends EmailSender {
 
     // Does the file name end in .java?
     if (!name.endsWith(".java")) {
-      err.println("** No submitting file " + file +
+      err.println("** Not submitting file " + file +
         " because does end in \".java\"");
       return false;
     }
 
     // Verify that file is in the correct directory.
-    if (!isInEduPdxCs410JDirectory(file)) {
+    if (!isInEduPdxCs410JDirectory(file) && !isInAKoansDirectory(file)) {
       err.println("** Not submitting file " + file +
         ": it does not reside in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
-        "cs410J" + File.separator + userId);
+        "cs410J" + File.separator + userId + " (or in one of the koans directories)");
       return false;
     }
 
     return true;
+  }
+
+  private boolean isInAKoansDirectory(File file) {
+    return hasParentDirectories(file, "beginner") ||
+      hasParentDirectories(file, "intermediate") ||
+      hasParentDirectories(file, "advanced");
   }
 
   private boolean isInEduPdxCs410JDirectory(File file) {
