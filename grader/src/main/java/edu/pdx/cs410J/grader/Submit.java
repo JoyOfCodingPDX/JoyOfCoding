@@ -403,7 +403,19 @@ public class Submit extends EmailSender {
 
     out.println("A receipt will be sent to: " + userEmail + "\n");
 
+    warnIfMainProjectClassIsNotSubmitted(sourceFiles);
+
     return doesUserWantToSubmit();
+  }
+
+  private void warnIfMainProjectClassIsNotSubmitted(Set<File> sourceFiles) {
+    boolean wasMainProjectClassSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains(this.projName));
+    if (!wasMainProjectClassSubmitted) {
+      String mainProjectClassName = this.projName + ".java";
+      out.println("*** WARNING: You are submitting " + this.projName +
+        ", but did not include " + mainProjectClassName + ".\n" +
+        "    You might want to check the name of the project or the files you are submitting.\n");
+    }
   }
 
   private boolean doesUserWantToSubmit() {
