@@ -3,7 +3,9 @@ package edu.pdx.cs410J.grader;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Transport;
 import javax.mail.internet.*;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -13,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class is used to submit assignments in CS410J.  The user
@@ -282,78 +285,89 @@ public class Submit extends EmailSender {
    * edu/pdx/cs410J/<studentId>.
    */
   private Set<File> searchForSourceFiles(Set<String> fileNames) {
-    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
-
     // Files should be sorted by name
     SortedSet<File> files =
       new TreeSet<>((o1, o2) -> o1.toString().compareTo(o2.toString()));
+    populateWithFilesFromSubdirectories(files, fileNames);
 
-    for (String fileName : fileNames) {
-      File file = new File(fileName);
-      file = file.getAbsoluteFile();  // Full path
-
-      // Does the file exist?
-      if (!file.exists()) {
-        err.println("** Not submitting file " + fileName +
-          " because it does not exist");
-        continue;
-      }
-
-      // Is the file on the "no submit" list?
-      String name = file.getName();
-      if (noSubmit.contains(name)) {
-        err.println("** Not submitting file " + fileName +
-          " because it is on the \"no submit\" list");
-        continue;
-      }
-
-      // Does the file name end in .java?
-      if (!name.endsWith(".java")) {
-        err.println("** No submitting file " + fileName +
-          " because does end in \".java\"");
-        continue;
-      }
-
-      // Verify that file is in the correct directory.
-      File parent = file.getParentFile();
-      if (parent == null || !parent.getName().equals(userId)) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("cs410J")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "cs410J" + File.separator + userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("pdx")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "pdx" + File.separator + "cs410J" + File.separator
-          + userId);
-        continue;
-      }
-
-      parent = parent.getParentFile();
-      if (parent == null || !parent.getName().equals("edu")) {
-        err.println("** Not submitting file " + fileName +
-          ": it does not reside in a directory named " +
-          "edu" + File.separator + "pdx" + File.separator +
-          "cs410J" + File.separator + userId);
-        continue;
-      }
-
-      // We like this file
-      files.add(file);
-    }
+    files.removeIf((file) -> !canBeSubmitted(file));
 
     return files;
+  }
+
+  private void populateWithFilesFromSubdirectories(SortedSet<File> allFiles, Set<String> fileNames) {
+    populateWithFilesFromSubdirectories(allFiles, fileNames.stream().map(name -> new File(name).getAbsoluteFile()));
+  }
+
+  private void populateWithFilesFromSubdirectories(SortedSet<File> allFiles, Stream<File> files) {
+    files.forEach((file) -> {
+      if (file.isDirectory()) {
+        populateWithFilesFromSubdirectories(allFiles, Arrays.stream(file.listFiles()));
+
+      } else {
+        allFiles.add(file);
+      }
+    });
+
+  }
+
+  private boolean canBeSubmitted(File file) {
+    if (!file.exists()) {
+      err.println("** Not submitting file " + file +
+        " because it does not exist");
+      return false;
+    }
+
+    // Is the file on the "no submit" list?
+    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
+    String name = file.getName();
+    if (noSubmit.contains(name)) {
+      err.println("** Not submitting file " + file +
+        " because it is on the \"no submit\" list");
+      return false;
+    }
+
+    // Does the file name end in .java?
+    if (!name.endsWith(".java")) {
+      err.println("** Not submitting file " + file +
+        " because does end in \".java\"");
+      return false;
+    }
+
+    // Verify that file is in the correct directory.
+    if (!isInEduPdxCs410JDirectory(file) && !isInAKoansDirectory(file)) {
+      err.println("** Not submitting file " + file +
+        ": it does not reside in a directory named " +
+        "edu" + File.separator + "pdx" + File.separator +
+        "cs410J" + File.separator + userId + " (or in one of the koans directories)");
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean isInAKoansDirectory(File file) {
+    return hasParentDirectories(file, "beginner") ||
+      hasParentDirectories(file, "intermediate") ||
+      hasParentDirectories(file, "advanced");
+  }
+
+  private boolean isInEduPdxCs410JDirectory(File file) {
+    return hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
+  }
+
+  private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
+    File parent = file.getParentFile();
+    for (String parentDirectoryName : parentDirectoryNames) {
+      if (parent == null || !parent.getName().equals(parentDirectoryName)) {
+        return false;
+
+      } else {
+        parent = parent.getParentFile();
+      }
+    }
+
+    return true;
   }
 
   private List<String> fetchListOfFilesThatCanNotBeSubmitted() {
@@ -598,7 +612,7 @@ public class Submit extends EmailSender {
     err.println("    student      Who is submitting the project?");
     err.println("    loginId      UNIX login id");
     err.println("    email        Student's email address");
-    err.println("    file         Java source file to submit");
+    err.println("    file         Java source file (or all files in a directory) to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savejar           Saves temporary Jar file");
     err.println("    -smtp serverName   Name of SMTP server");
