@@ -2,10 +2,12 @@ package edu.pdx.cs410J.grader;
 
 import javax.mail.*;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class GraderEmailAccount {
+  private final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
+
   private final String password;
 
   public GraderEmailAccount(String password) {
@@ -46,8 +48,7 @@ public class GraderEmailAccount {
       throw new MessagingException("While getting content", ex);
     }
 
-    PrintStream out = System.out;
-    out.println("  Part count: " + parts.getCount());
+    debug("  Part count: " + parts.getCount());
 
     if (parts.getCount() <= 0) {
       warnOfUnexpectedMessage(message, "Fetched a message that has no attachments");
@@ -71,17 +72,16 @@ public class GraderEmailAccount {
   private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
     String fileName = part.getFileName();
     if (fileName == null) {
-      System.out.println("    Skipping message with attachment without a name");
+      debug("    Skipping message with attachment without a name");
       return;
     }
     processor.processAttachment(message, fileName, part.getInputStream());
-      System.out.println("    " + part.getContentType());
+      debug("    " + part.getContentType());
   }
 
   private void warnOfUnexpectedMessage(Message message, String description) throws MessagingException {
-    PrintStream out = System.out;
-    out.println(description);
-    printMessageDetails(message, out);
+    debug(description);
+    printMessageDetails(message);
   }
 
   private boolean isMultipartMessage(Message message) throws MessagingException {
@@ -93,18 +93,17 @@ public class GraderEmailAccount {
   }
 
   private void printMessageInformation(Message message) throws MessagingException {
-    PrintStream out = System.out;
-    out.println("Message");
-    printMessageDetails(message, out);
+    debug("Message");
+    printMessageDetails(message);
   }
 
-  private void printMessageDetails(Message message, PrintStream out) throws MessagingException {
-    out.println("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
-    out.println("  From: " + addresses(message.getFrom()));
-    out.println("  Subject: " + message.getSubject());
-    out.println("  Sent: " + message.getSentDate());
-    out.println("  Flags: " + flags(message.getFlags()));
-    out.println("  Content Type: " + message.getContentType());
+  private void printMessageDetails(Message message) throws MessagingException {
+    debug("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
+    debug("  From: " + addresses(message.getFrom()));
+    debug("  Subject: " + message.getSubject());
+    debug("  Sent: " + message.getSentDate());
+    debug("  Flags: " + flags(message.getFlags()));
+    debug("  Content Type: " + message.getContentType());
   }
 
   private StringBuilder flags(Flags flags) {
@@ -163,15 +162,18 @@ public class GraderEmailAccount {
 
   private void printFolderInformation(Folder folder) {
     try {
-      PrintStream out = System.out;
-      out.println("Folder: " + folder.getFullName());
-      out.println("Message count: " + folder.getMessageCount());
-      out.println("Unread messages: " + folder.getUnreadMessageCount());
-      out.println("New messages: " + folder.getNewMessageCount());
+      debug("Folder: " + folder.getFullName());
+      debug("Message count: " + folder.getMessageCount());
+      debug("Unread messages: " + folder.getUnreadMessageCount());
+      debug("New messages: " + folder.getNewMessageCount());
 
     } catch (MessagingException ex) {
       throw new IllegalStateException("While getting folder information", ex);
     }
+  }
+
+  private void debug(String message) {
+    this.logger.info(message);
   }
 
   private Folder openFolder(Store store, String folderName) {

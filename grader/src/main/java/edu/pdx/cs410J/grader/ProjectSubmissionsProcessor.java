@@ -18,8 +18,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   @Override
   public void processAttachment(Message message, String fileName, InputStream inputStream) {
-    warn("    File name: " + fileName);
-    warn("    InputStream: " + inputStream);
+    debug("    File name: " + fileName);
+    debug("    InputStream: " + inputStream);
 
     byte[] bytes;
     try {
