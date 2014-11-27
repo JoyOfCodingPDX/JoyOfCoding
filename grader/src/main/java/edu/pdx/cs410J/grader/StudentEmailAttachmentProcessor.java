@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import javax.mail.MessagingException;
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class StudentEmailAttachmentProcessor implements EmailAttachmentProcessor {
@@ -15,18 +16,21 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
   }
 
   protected void logException(String message, Exception ex) {
-    System.err.println(message);
-    ex.printStackTrace(System.err);
+    this.logger.log(Level.SEVERE, message, ex);
   }
 
   public abstract String getEmailFolder();
 
   protected void warn(String message) {
-    System.out.println(message);
+    this.logger.warning(message);
+  }
+
+  protected void info(String message) {
+    this.logger.info(message);
   }
 
   protected void debug(String message) {
-    this.logger.info(message);
+    this.logger.fine(message);
   }
 
   protected class SubmissionException extends Exception {

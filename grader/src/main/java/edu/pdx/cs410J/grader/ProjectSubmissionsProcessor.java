@@ -72,7 +72,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       warnOfPreExistingFile(file);
     }
 
-    warn("Writing " + fileName + " to " + projectDir);
+    info("Writing " + fileName + " to " + projectDir);
 
     ByteStreams.copy(new ByteArrayInputStream(bytes), new FileOutputStream(file));
   }

@@ -173,7 +173,7 @@ public class GraderEmailAccount {
   }
 
   private void debug(String message) {
-    this.logger.info(message);
+    this.logger.fine(message);
   }
 
   private Folder openFolder(Store store, String folderName) {
