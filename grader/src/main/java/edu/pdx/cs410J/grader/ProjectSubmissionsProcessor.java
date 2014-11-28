@@ -18,8 +18,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   @Override
   public void processAttachment(Message message, String fileName, InputStream inputStream) {
-    warn("    File name: " + fileName);
-    warn("    InputStream: " + inputStream);
+    debug("    File name: " + fileName);
+    debug("    InputStream: " + inputStream);
 
     byte[] bytes;
     try {
@@ -72,7 +72,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       warnOfPreExistingFile(file);
     }
 
-    warn("Writing " + fileName + " to " + projectDir);
+    info("Writing " + fileName + " to " + projectDir);
 
     ByteStreams.copy(new ByteArrayInputStream(bytes), new FileOutputStream(file));
   }

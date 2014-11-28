@@ -1,9 +1,14 @@
 package edu.pdx.cs410J.grader;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraderTools {
 
@@ -11,7 +16,10 @@ public class GraderTools {
     String tool = null;
     List<String> toolArgs = new ArrayList<>();
     for (String arg : args) {
-      if (tool == null) {
+      if (arg.equals("-debug")) {
+        setLoggingLevelToDebug();
+
+      } else if (tool == null) {
         tool = arg;
 
       } else {
@@ -23,7 +31,13 @@ public class GraderTools {
       usage("Missing tool");
     }
 
+
     invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));
+  }
+
+  private static void setLoggingLevelToDebug() {
+    Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+    logger.setLevel(Level.DEBUG);
   }
 
   private static Class getToolClass(String tool) {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>%-5level %msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <logger name="edu.pdx.cs410J.grader" level="INFO">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <root level="OFF">
+
+  </root>
+</configuration>

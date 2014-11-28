@@ -21,8 +21,8 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
 
   @Override
   public void processAttachment(Message message, String fileName, InputStream inputStream) {
-    warn("    File name: " + fileName);
-    warn("    InputStream: " + inputStream);
+    debug("    File name: " + fileName);
+    debug("    InputStream: " + inputStream);
 
     File file = new File(directory, fileName);
     try {
@@ -58,6 +58,14 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
     }
 
     gradeBook.addStudent(student);
+
+    info("Added " + student.getFullName() + " to " + gradeBook.getClassName());
+
+    logNotesAboutStudent(student);
+  }
+
+  private void logNotesAboutStudent(Student student) {
+    student.getNotes().forEach((note) -> info("  " + note));
   }
 
   private void warnOfPreExistingFile(File file) {

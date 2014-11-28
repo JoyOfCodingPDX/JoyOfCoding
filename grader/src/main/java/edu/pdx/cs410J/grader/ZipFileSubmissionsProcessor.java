@@ -34,7 +34,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
 
     try {
       File file = getLocationToWriteFile(fileName, studentId);
-      warn("Writing \"" + fileName + "\" to " + file);
+      info("Writing \"" + fileName + "\" to " + file);
 
       ByteStreams.copy(inputStream, new FileOutputStream(file));
     } catch (IOException ex) {
