@@ -4,10 +4,7 @@ import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.*;
 import javax.xml.transform.TransformerException;
 import java.io.*;
@@ -157,11 +154,34 @@ public class Survey extends EmailSender {
 
       Transport.send(message);
 
+      logSentEmail(message);
+
     } catch (MessagingException ex) {
       err.println("** Exception while adding parts and sending: " +
 		  ex);
       System.exit(1);
     }
+  }
+
+  private static void logSentEmail(MimeMessage message) throws MessagingException {
+    StringBuilder sb = new StringBuilder();
+    sb.append("\nAn email with with subject \"");
+    sb.append(message.getSubject());
+    sb.append("\" was sent to ");
+
+    Address[] recipients = message.getAllRecipients();
+    for (int i = 0; i < recipients.length; i++) {
+      Address recipient = recipients[i];
+      sb.append(recipient);
+      if (i < recipients.length - 2) {
+        sb.append(", ");
+
+      } else if (i < recipients.length - 1) {
+        sb.append(" and ");
+      }
+    }
+
+    System.out.println(sb);
   }
 
   private static MimeBodyPart createXmlAttachment(Student student) {
