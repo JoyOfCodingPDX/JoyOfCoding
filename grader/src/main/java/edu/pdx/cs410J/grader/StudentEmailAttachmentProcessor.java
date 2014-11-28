@@ -1,12 +1,13 @@
 package edu.pdx.cs410J.grader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.MessagingException;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class StudentEmailAttachmentProcessor implements EmailAttachmentProcessor {
-  protected final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
+  protected final Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
   protected final File directory;
   protected final GradeBook gradeBook;
 
@@ -16,13 +17,13 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
   }
 
   protected void logException(String message, Exception ex) {
-    this.logger.log(Level.SEVERE, message, ex);
+    this.logger.error(message, ex);
   }
 
   public abstract String getEmailFolder();
 
   protected void warn(String message) {
-    this.logger.warning(message);
+    this.logger.warn(message);
   }
 
   protected void info(String message) {
@@ -30,7 +31,7 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
   }
 
   protected void debug(String message) {
-    this.logger.fine(message);
+    this.logger.debug(message);
   }
 
   protected class SubmissionException extends Exception {

@@ -1,12 +1,14 @@
 package edu.pdx.cs410J.grader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.*;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public class GraderEmailAccount {
-  private final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
+  private final Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
   private final String password;
 
@@ -173,7 +175,7 @@ public class GraderEmailAccount {
   }
 
   private void debug(String message) {
-    this.logger.fine(message);
+    this.logger.debug(message);
   }
 
   private Folder openFolder(Store store, String folderName) {
