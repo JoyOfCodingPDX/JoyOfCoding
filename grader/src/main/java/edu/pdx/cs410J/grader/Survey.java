@@ -11,6 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.*;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.function.Consumer;
 
 /**
  * This program presents a survey that all students in CS410J should
@@ -100,31 +101,20 @@ public class Survey extends EmailSender {
     // Create a Student instance based on the response
     Student student = new Student(id);
 
-    if (isNotEmpty(firstName)) {
-      student.setFirstName(firstName);
-    }
-
-    if (isNotEmpty(lastName)) {
-      student.setLastName(lastName);
-    }
-
-    if (isNotEmpty(nickName)) {
-      student.setNickName(nickName);
-    }
-
-    if (isNotEmpty(email)) {
-      student.setEmail(email);
-    }
-
-    if (isNotEmpty(ssn)) {
-      student.setSsn(ssn);
-    }
-
-    if (isNotEmpty(major)) {
-      student.setMajor(major);
-    }
+    setValueIfNotEmpty(firstName, student::setFirstName);
+    setValueIfNotEmpty(lastName, student::setLastName);
+    setValueIfNotEmpty(nickName, student::setNickName);
+    setValueIfNotEmpty(email, student::setEmail);
+    setValueIfNotEmpty(ssn, student::setSsn);
+    setValueIfNotEmpty(major, student::setMajor);
 
     emailSurveyResults(learn, comments, student);
+  }
+
+  static void setValueIfNotEmpty(String string, Consumer<String> setter) {
+    if (isNotEmpty(string)) {
+      setter.accept(string);
+    }
   }
 
   private static void emailSurveyResults(String learn, String comments, Student student) {
