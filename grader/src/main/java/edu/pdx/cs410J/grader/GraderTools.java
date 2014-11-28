@@ -24,14 +24,8 @@ public class GraderTools {
       usage("Missing tool");
     }
 
-    configureLogger();
 
     invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));
-  }
-
-  private static void configureLogger() {
-    // Oddly enough, attempts to access the Logger end up causes a ClassNotFoundException
-    System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s %5$s%6$s%n");
   }
 
   private static Class getToolClass(String tool) {

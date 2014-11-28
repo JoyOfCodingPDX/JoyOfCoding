@@ -2,9 +2,9 @@
 <configuration>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
+    <encoder>
       <Pattern>%-5level %msg%n</Pattern>
-    </layout>
+    </encoder>
   </appender>
 
   <logger name="edu.pdx.cs410J.grader" level="INFO">
