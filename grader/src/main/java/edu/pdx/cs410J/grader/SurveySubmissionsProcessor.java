@@ -60,6 +60,12 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
     gradeBook.addStudent(student);
 
     info("Added " + student.getFullName() + " to " + gradeBook.getClassName());
+
+    logNotesAboutStudent(student);
+  }
+
+  private void logNotesAboutStudent(Student student) {
+    student.getNotes().forEach((note) -> info("  " + note));
   }
 
   private void warnOfPreExistingFile(File file) {
