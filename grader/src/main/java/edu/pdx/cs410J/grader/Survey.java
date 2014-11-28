@@ -85,7 +85,19 @@ public class Survey extends EmailSender {
     String learn = ask("What do you hope to learn in CS410J?");
     String comments = ask("What else would you like to tell me?");
 
-    emailSurveyResults(learn, comments, student);
+    addNotesToStudent(student, learn, comments);
+
+    emailSurveyResults(student, learn, comments);
+  }
+
+  private static void addNotesToStudent(Student student, String learn, String comments) {
+    if (isNotEmpty(learn)) {
+      student.addNote(student.getFullName() + " would like to learn " + learn);
+    }
+
+    if (isNotEmpty(comments)) {
+      student.addNote(student.getFullName() + " has these comments: " + comments);
+    }
   }
 
   private static Student gatherStudentInformation() {
@@ -123,7 +135,7 @@ public class Survey extends EmailSender {
     }
   }
 
-  private static void emailSurveyResults(String learn, String comments, Student student) {
+  private static void emailSurveyResults(Student student, String learn, String comments) {
     String summary = verifyInformation(student);
 
     // Email the results of the survey to the TA and CC the student
