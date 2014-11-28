@@ -80,6 +80,15 @@ public class Survey extends EmailSender {
 
     printIntroduction();
 
+    Student student = gatherStudentInformation();
+
+    String learn = ask("What do you hope to learn in CS410J?");
+    String comments = ask("What else would you like to tell me?");
+
+    emailSurveyResults(learn, comments, student);
+  }
+
+  private static Student gatherStudentInformation() {
     String firstName = ask("What is your first name?");
     String lastName = ask("What is your last name?");
     String nickName = ask("What is your nickname? (Leave blank if " +
@@ -91,24 +100,21 @@ public class Survey extends EmailSender {
       System.exit(1);
     }
 
-    String email = ask("What is your email address (doesn't have " +
-                       "to be PSU)?");
-    String ssn = ask("What is your student id (XXXXXXXXX)?");
-    String major = ask("What is your major?");
-    String learn = ask("What do you hope to learn in CS410J?");
-    String comments = ask("What else would you like to tell me?");
-
-    // Create a Student instance based on the response
     Student student = new Student(id);
-
     setValueIfNotEmpty(firstName, student::setFirstName);
     setValueIfNotEmpty(lastName, student::setLastName);
     setValueIfNotEmpty(nickName, student::setNickName);
-    setValueIfNotEmpty(email, student::setEmail);
-    setValueIfNotEmpty(ssn, student::setSsn);
-    setValueIfNotEmpty(major, student::setMajor);
 
-    emailSurveyResults(learn, comments, student);
+    askQuestionAndSetValue("What is your email address (doesn't have to be PSU)?", student::setEmail);
+    askQuestionAndSetValue("What is your student id (XXXXXXXXX)?", student::setSsn);
+    askQuestionAndSetValue("What is your major?", student::setMajor);
+
+    return student;
+  }
+
+  private static void askQuestionAndSetValue(String question, Consumer<String> setter) {
+    String answer = ask(question);
+    setValueIfNotEmpty(answer, setter);
   }
 
   static void setValueIfNotEmpty(String string, Consumer<String> setter) {
