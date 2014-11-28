@@ -58,6 +58,8 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
     }
 
     gradeBook.addStudent(student);
+
+    info("Added " + student.getFullName() + " to " + gradeBook.getClassName());
   }
 
   private void warnOfPreExistingFile(File file) {
