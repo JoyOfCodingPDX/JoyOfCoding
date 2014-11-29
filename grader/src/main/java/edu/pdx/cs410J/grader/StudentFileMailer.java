@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class StudentFileMailer extends EmailSender {
 
@@ -107,16 +108,15 @@ public class StudentFileMailer extends EmailSender {
     for (File file : files) {
       String studentId;
       studentId = getStudentIdFromFileName(file);
-
-      if (!gradeBook.containsStudent(studentId)) {
-        throw new IllegalStateException("Cannot find student with id \"" + studentId + "\" in grade book");
-
-      } else {
-        students.add(gradeBook.getStudent(studentId));
-      }
+      students.add(gradeBook.getStudent(studentId).orElseThrow(cannotFindStudent(studentId)));
     }
 
     return students;
+  }
+
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
+  private static Supplier<IllegalStateException> cannotFindStudent(String studentId) {
+    return () -> new IllegalStateException("Cannot find student with id \"" + studentId + "\" in grade book");
   }
 
   private static String getStudentIdFromFileName(File file) {

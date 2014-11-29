@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.function.Supplier;
 
 /**
  * This panel displays a <code>Student</code>
@@ -282,7 +283,7 @@ public class StudentPanel extends JPanel {
       System.exit(1);
     }
 
-    Student student = book.getStudent(studentId);
+    Student student = book.getStudent(studentId).orElseThrow(cannotFindStudent(studentId));
 
     StudentPanel studentPanel = new StudentPanel();
     studentPanel.displayStudent(student);
@@ -308,6 +309,11 @@ public class StudentPanel extends JPanel {
     
     frame.pack();
     frame.setVisible(true);
+  }
+
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
+  private static Supplier<IllegalStateException> cannotFindStudent(String studentId) {
+    return () -> new IllegalStateException("Cannot find student with id " + studentId);
   }
 
 }

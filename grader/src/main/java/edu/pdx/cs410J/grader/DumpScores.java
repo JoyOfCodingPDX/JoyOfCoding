@@ -99,16 +99,13 @@ public class DumpScores {
     // Maps score to the student
     SortedSet<Tuple> scores = new TreeSet<Tuple>();
 
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-      Student student = book.getStudent(id);
+    book.forEachStudent(student -> {
       Grade grade = student.getGrade(assign.getName());
       if (grade != null) {
         double score = grade.getScore();
         scores.add(new Tuple(student, score));
       }
-    }
+    });
 
     out.println("\nGrades for " + assign + ": " +
                 assign.getDescription());

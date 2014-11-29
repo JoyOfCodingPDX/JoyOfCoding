@@ -1,13 +1,19 @@
 package edu.pdx.cs410J.grader;
 
-import edu.pdx.cs410J.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import edu.pdx.cs410J.ParserException;
+
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * This panel is used to display and edit a <code>Student</code>'s
@@ -379,7 +385,8 @@ public class GradePanel extends JPanel {
     GradePanel gradePanel = new GradePanel();
     gradePanel.displayAssignmentsFor(book);
 
-    Student student = book.getStudent(studentName);
+    Student student =
+      book.getStudent(studentName).orElseThrow(() -> new IllegalStateException("No student with id " + studentName));
     gradePanel.displayStudent(student);
 
     final GradeBook theBook = book;

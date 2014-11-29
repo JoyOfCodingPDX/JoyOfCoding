@@ -129,7 +129,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
   }
 
   private Stream<Student> getStudentsInGradeBook() {
-    return gradeBook.getStudentIds().stream().map(gradeBook::getStudent);
+    return gradeBook.studentsStream();
   }
 
   private Predicate<Student> doesStudentHaveName(String studentName) {

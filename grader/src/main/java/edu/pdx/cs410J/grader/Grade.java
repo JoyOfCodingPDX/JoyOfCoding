@@ -170,6 +170,7 @@ public class Grade extends NotableImpl {
     if (id == null) {
       err.println("** No student id specified");
       usage();
+      return;
     }
 
     if (assignment == null) {
@@ -209,7 +210,7 @@ public class Grade extends NotableImpl {
     }
 
     // Get the student
-    Student student = book.getStudent(id);
+    Student student = book.getStudent(id).get();
 
     // Get the grade
     Grade grade = student.getGrade(assignment);

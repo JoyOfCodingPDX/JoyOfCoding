@@ -1,34 +1,18 @@
 package edu.pdx.cs410J.grader;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import edu.pdx.cs410J.ParserException;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.swing.AbstractListModel;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import edu.pdx.cs410J.ParserException;
+import java.util.*;
 
 /**
  * This panel displays the contents of a grade book.  On the left-hand
@@ -127,7 +111,8 @@ public class GradeBookPanel extends JPanel {
    * Displays information about a given student
    */
   private void displayStudent(String id) {
-    Student student = this.book.getStudent(id);
+    Student student =
+      this.book.getStudent(id).orElseThrow(() -> new IllegalStateException("No student with id " + id));
     this.studentPanel.displayStudent(student);
     this.gradePanel.displayStudent(student);
   }
@@ -276,15 +261,9 @@ class StudentsModel extends AbstractListModel {
         }
       });
 
-    Iterator iter = book.getStudentIds().iterator();
-    while (iter.hasNext()) {
-      String id = (String) iter.next();
-      sortedStudents.add(book.getStudent(id));
-    }
+    book.forEachStudent(sortedStudents::add);
 
-    iter = sortedStudents.iterator();
-    while (iter.hasNext()) {
-      Student student = (Student) iter.next();
+    for (Student student : sortedStudents) {
       this.ids.add(student.getId());
 
       if (sortedOrder == GradeBookPanel.BY_ID) {
@@ -301,7 +280,7 @@ class StudentsModel extends AbstractListModel {
 
       } else {
         throw new IllegalArgumentException("Unknown sort order: "
-                                           + sortedOrder);
+          + sortedOrder);
       }
     }
 

@@ -14,22 +14,22 @@ public class GradesFromD2L {
   }
 
   public Optional<Student> findStudentInGradebookForD2LStudent(D2LStudent d2lStudent, GradeBook book) {
-    for (String studentId : book.getStudentIds()) {
-      Student student = book.getStudent(studentId);
+    return book.studentsStream().filter((Student student) -> {
       if (haveSameD2LId(d2lStudent, student)) {
-        return Optional.of(student);
+        return true;
 
       } else if (studentIdIsSameAsD2LId(d2lStudent, student)) {
         student.setD2LId(d2lStudent.getD2lId());
-        return Optional.of(student);
+        return true;
 
       } else if (haveSameFirstAndLastNameIgnoringCase(d2lStudent, student)) {
         student.setD2LId(d2lStudent.getD2lId());
-        return Optional.of(student);
-      }
-    }
+        return true;
 
-    return Optional.empty();
+      } else {
+        return false;
+      }
+    }).findAny();
   }
 
   private boolean studentIdIsSameAsD2LId(D2LStudent d2lStudent, Student student) {

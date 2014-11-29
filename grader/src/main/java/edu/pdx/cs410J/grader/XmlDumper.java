@@ -226,12 +226,11 @@ public class XmlDumper extends XmlHelper {
   }
 
   private void dumpDirtyStudents(GradeBook book) throws IOException {
-    for (String id : book.getStudentIds()) {
-      Student student = book.getStudent(id);
+    book.forEachStudent(student -> {
       if (student.isDirty()) {
         dumpStudent(student);
       }
-    }
+    });
   }
 
   /**
@@ -256,12 +255,12 @@ public class XmlDumper extends XmlHelper {
    * based on the student's id and resides in the
    * <code>studentDir</code>.
    */
-  private void dumpStudent(Student student) throws IOException {
+  private void dumpStudent(Student student) {
     Document doc = toXml(student);
 
     // Now dump DOM tree to the file
     File studentFile = new File(studentDir, student.getId() + ".xml");
-    PrintWriter pw = new PrintWriter(new FileWriter(studentFile), true);
+    PrintWriter pw = new PrintWriter(newFileWriter(studentFile), true);
 
     try {
       writeXmlToPrintWriter(doc, pw);
@@ -269,6 +268,15 @@ public class XmlDumper extends XmlHelper {
     } catch (TransformerException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
+    }
+  }
+
+  private FileWriter newFileWriter(File studentFile) {
+    try {
+      return new FileWriter(studentFile);
+
+    } catch (IOException ex) {
+      throw new IllegalStateException("Couldn't create FileWriter for " + studentFile, ex);
     }
   }
 

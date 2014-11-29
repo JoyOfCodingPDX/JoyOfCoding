@@ -1,8 +1,12 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.*;
-import java.util.*;
-import edu.pdx.cs410J.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This program generates a .mailrc file containing a mail alias for
@@ -18,15 +22,14 @@ public class GenerateMailrc {
 
     // Sort all of the students by their id
     SortedSet<Student> sorted = new TreeSet<Student>(new Comparator<Student>() {
-	public int compare(Student o1, Student o2) {
-	  String id1 = o1.getId();
-	  String id2 = o2.getId();
-	  return id1.compareTo(id2);
-	}
-      });
-    for (String id : book.getStudentIds()) {
-      sorted.add(book.getStudent(id));
-    }
+      public int compare(Student o1, Student o2) {
+        String id1 = o1.getId();
+        String id2 = o2.getId();
+        return id1.compareTo(id2);
+      }
+    });
+
+    book.forEachStudent(sorted::add);
 
     Iterator iter = sorted.iterator();
     while (iter.hasNext()) {

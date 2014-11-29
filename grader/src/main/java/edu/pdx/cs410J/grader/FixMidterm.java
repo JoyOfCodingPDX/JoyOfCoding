@@ -1,9 +1,11 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.util.*;
-
 import edu.pdx.cs410J.ParserException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * This is a little program that combines the grades for the midterm
@@ -23,7 +25,7 @@ public class FixMidterm {
 
     String xmlFile = args[0];
 
-    GradeBook book = null;
+    GradeBook book;
 
     File file = new File(xmlFile);
     if (file.exists()) {
@@ -31,29 +33,32 @@ public class FixMidterm {
       try {
         XmlGradeBookParser parser = new XmlGradeBookParser(file);
         book = parser.parse();
-        
+
       } catch (FileNotFoundException ex) {
         err.println("** Could not find file: " + ex.getMessage());
         System.exit(1);
+        return;
 
       } catch (IOException ex) {
         err.println("** IOException during parsing: " + ex.getMessage());
         System.exit(1);
+        return;
 
       } catch (ParserException ex) {
         err.println("** Error during parsing: " + ex.getMessage());
         System.exit(1);
+        return;
       }
+
+    } else {
+      err.println("** File " + file + " does not exist");
+      System.exit(1);
+      return;
     }
 
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-
-      out.print("Fixing " + id + ": ");
+    book.forEachStudent(student -> {
+      out.print("Fixing " + student.getId() + ": ");
       out.flush();
-
-      Student student = book.getStudent(id);
 
       double total = 0.0;
 
@@ -91,7 +96,7 @@ public class FixMidterm {
       quiz3.setScore(total);
       student.setGrade(quiz3.getAssignmentName(), quiz3);
       out.println("total = " + quiz3.getScore());
-    }
+    });
 
     // Write the grade book to the XML file
     try {

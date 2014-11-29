@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.*;
+import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class represents a grade book that contains information about
@@ -100,18 +101,12 @@ public class GradeBook {
     return this.students.keySet();
   }
 
-  /**
-   * Returns the <code>Student</code> with the given id.  If a student
-   * with that name does not exist, a new <code>Student</code> is
-   * created.
-   */
-  public Student getStudent(String id) {
-    Student student = (Student) this.students.get(id);
-    if (student == null) {
-      student = new Student(id);
-      this.addStudent(student);
-    }
-    return student;
+  public Optional<Student> getStudent(String id) {
+    return Optional.ofNullable(this.students.get(id));
+  }
+
+  public Stream<Student> studentsStream() {
+    return this.students.values().stream();
   }
 
   /**
@@ -342,6 +337,9 @@ public class GradeBook {
     throw new IllegalStateException("Could not find a letter grade range for " + score);
   }
 
+  public void forEachStudent(Consumer<Student> consumer) {
+    this.students.values().forEach(consumer);
+  }
 
   static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();

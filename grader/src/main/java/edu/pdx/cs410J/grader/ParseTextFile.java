@@ -51,7 +51,8 @@ public class ParseTextFile {
       while (line != null) {
         st = new StringTokenizer(line);
         String studentName = st.nextToken();
-        Student student = book.getStudent(studentName);
+        Student student =
+          book.getStudent(studentName).orElseThrow(() -> new IllegalStateException("No student with id " + studentName));
 
         for (int i = 0; st.hasMoreTokens(); i++) {
           String s = st.nextToken();

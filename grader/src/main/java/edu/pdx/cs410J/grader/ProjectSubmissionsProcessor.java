@@ -1,9 +1,11 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 
 import javax.mail.Message;
 import java.io.*;
+import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -58,7 +60,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private byte[] readAttachmentIntoByteArray(InputStream inputStream) throws IOException {
-    byte[] bytes;ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    byte[] bytes;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ByteStreams.copy(inputStream, baos);
     bytes = baos.toByteArray();
     return bytes;
@@ -88,7 +91,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     return projectDir;
   }
 
-  private void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
+  @VisibleForTesting
+  void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
     Attributes attrs = manifest.getMainAttributes();
 
     Student student = getStudentFromGradeBook(attrs);
@@ -129,20 +133,45 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
     String studentId = getManifestAttributeValue(attrs, USER_ID, "Student Id missing from manifest");
+    String studentName = getManifestAttributeValue(attrs, USER_NAME, "Student Name missing from manifest");
+    String studentEmail = getManifestAttributeValue(attrs, USER_EMAIL, "Student Email missing from manifest");
 
-    Student student = this.gradeBook.getStudent(studentId);
-    if (student == null) {
-      throw new SubmissionException("Student with id \"" + studentId + "\" is not in grade book");
-    }
-    return student;
+    Optional<Student> optional = this.gradeBook.studentsStream().filter(student ->
+      hasStudentId(student, studentId) ||
+      hasFirstNameLastName(student, studentName) ||
+      hasNickNameLastName(student, studentName) ||
+      hasEmail(student, studentEmail)).findAny();
+
+    return optional.orElseThrow(() -> {
+      String s = "Could not find student with id \"" + studentId + "\" or name \"" +
+        studentName + "\" or email \"" + studentEmail + "\" in grade book";
+      return new SubmissionException(s);
+    });
   }
 
+  private boolean hasEmail(Student student, String studentEmail) {
+    return studentEmail.equals(student.getEmail());
+  }
+
+  private boolean hasNickNameLastName(Student student, String studentName) {
+    return studentName.equals(student.getNickName() + " " + student.getLastName());
+  }
+
+  private boolean hasFirstNameLastName(Student student, String studentName) {
+    return studentName.equals(student.getFirstName() + " " + student.getLastName());
+  }
+
+  private boolean hasStudentId(Student student, String studentId) {
+    return student.getId().equals(studentId);
+  }
+
+
   private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
-    String studentId = attrs.getValue(attribute);
-    if (studentId == null) {
+    String value = attrs.getValue(attribute);
+    if (value == null) {
       throwSubmissionException(message);
     }
-    return studentId;
+    return value;
   }
 
   private void throwSubmissionException(String message) throws SubmissionException {
