@@ -33,16 +33,9 @@ public class ProjectSubmissionsProcessorTest {
     String projectName = "Project";
 
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
 
-    String studentId = "studentId";
-    String firstName = "firstName";
-    String lastName = "lastName";
-    String nickName = "nickName";
-    String email = "test@test.com";
-
-    Student student = createStudentInGradeBook(studentId, firstName, lastName, nickName, email, gradebook);
-
-    String studentName = firstName + " " + lastName;
+    String studentName = student.getFirstName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
     String submissionComment = "This is only a test";
@@ -61,16 +54,9 @@ public class ProjectSubmissionsProcessorTest {
     String projectName = "Project";
 
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
 
-    String studentId = "studentId";
-    String firstName = "firstName";
-    String lastName = "lastName";
-    String nickName = "nickName";
-    String email = "test@test.com";
-
-    Student student = createStudentInGradeBook(studentId, firstName, lastName, nickName, email, gradebook);
-
-    String studentName = nickName + " " + lastName;
+    String studentName = student.getNickName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
     String submissionComment = "This is only a test";
@@ -108,12 +94,12 @@ public class ProjectSubmissionsProcessorTest {
     return manifest;
   }
 
-  private Student createStudentInGradeBook(String studentId, String firstName, String lastName, String nickName, String email, GradeBook gradebook) {
-    Student student = new Student(studentId);
-    student.setFirstName(firstName);
-    student.setLastName(lastName);
-    student.setNickName(nickName);
-    student.setEmail(email);
+  private Student createStudentInGradeBook(GradeBook gradebook) {
+    Student student = new Student("studentId");
+    student.setFirstName("firstName");
+    student.setLastName("lastName");
+    student.setNickName("nickName");
+    student.setEmail("test@test.com");
     gradebook.addStudent(student);
     return student;
   }
