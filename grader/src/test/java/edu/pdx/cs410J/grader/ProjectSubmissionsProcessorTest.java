@@ -30,44 +30,71 @@ public class ProjectSubmissionsProcessorTest {
    */
   @Test
   public void matchStudentBasedOnNameBeforeId() throws StudentEmailAttachmentProcessor.SubmissionException {
-    GradeBook gradebook = new GradeBook("test");
-
     String projectName = "Project";
-    Assignment assignment = new Assignment(projectName, 10.0);
-    gradebook.addAssignment(assignment);
 
-    Student student = new Student("studentId");
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+
+    String studentId = "studentId";
     String firstName = "firstName";
     String lastName = "lastName";
+    String nickName = "nickName";
+    String email = "test@test.com";
+
+    Student student = createStudentInGradeBook(studentId, firstName, lastName, nickName, email, gradebook);
+
     String studentName = firstName + " " + lastName;
-    student.setFirstName(firstName);
-    student.setLastName(lastName);
-    student.setEmail("test@test.com");
-    gradebook.addStudent(student);
-
-
-
-    Manifest manifest = new Manifest();
-    Attributes attributes = manifest.getMainAttributes();
     String wrongStudentId = "Not the student id we expect";
-    attributes.put(USER_ID, wrongStudentId);
-    attributes.put(USER_EMAIL, "Not the email that we expect");
-    attributes.put(USER_NAME, studentName);
-    attributes.put(PROJECT_NAME, projectName);
-    attributes.put(SUBMISSION_TIME, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+    String wrongEmail = "Not the email that we expect";
     String submissionComment = "This is only a test";
-    attributes.put(SUBMISSION_COMMENT, submissionComment);
 
-    ProjectSubmissionsProcessor processor =
-      new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);
-    processor.noteSubmissionInGradeBook(manifest);
+    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(gradebook.getStudent(wrongStudentId), isNotPresent());
 
-    Grade grade = student.getGrade(assignment);
+    assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
+  }
+
+  private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
+    ProjectSubmissionsProcessor processor =
+      new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);
+    processor.noteSubmissionInGradeBook(manifest);
+  }
+
+  private void assertThatProjectSubmissionWasRecordedForStudent(String projectName, Student student) {
+    Grade grade = student.getGrade(projectName);
     assertThat(grade, not(nullValue()));
     assertThat(grade.isNotGraded(), equalTo(true));
-    assertThat(grade.getNotes().get(0), containsString(submissionComment));
+  }
+
+  private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment) {
+    Manifest manifest = new Manifest();
+    Attributes attributes = manifest.getMainAttributes();
+    attributes.put(USER_ID, wrongStudentId);
+    attributes.put(USER_EMAIL, wrongEmail);
+    attributes.put(USER_NAME, studentName);
+    attributes.put(PROJECT_NAME, projectName);
+    attributes.put(SUBMISSION_TIME, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+    attributes.put(SUBMISSION_COMMENT, submissionComment);
+    return manifest;
+  }
+
+  private Student createStudentInGradeBook(String studentId, String firstName, String lastName, String nickName, String email, GradeBook gradebook) {
+    Student student = new Student(studentId);
+    student.setFirstName(firstName);
+    student.setLastName(lastName);
+    student.setNickName(nickName);
+    student.setEmail(email);
+    gradebook.addStudent(student);
+    return student;
+  }
+
+  private GradeBook createGradeBookWithAssignment(String projectName) {
+    GradeBook gradebook = new GradeBook("test");
+    Assignment assignment = new Assignment(projectName, 10.0);
+    gradebook.addAssignment(assignment);
+    return gradebook;
   }
 
   // Test match on email and nick name
