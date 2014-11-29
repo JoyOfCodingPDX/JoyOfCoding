@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -120,7 +120,7 @@ public class ProjectSubmissionsProcessorTest {
     Student student = createStudentInGradeBook(gradebook);
 
     String submissionComment = "This is only a test";
-    Date submissionDate = new Date();
+    LocalDateTime submissionDate = LocalDateTime.now().minusHours(2);
     Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -128,7 +128,7 @@ public class ProjectSubmissionsProcessorTest {
     assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
   }
 
-  private Manifest createManifest(String projectName, Student student, Date submissionDate, String submissionComment) {
+  private Manifest createManifest(String projectName, Student student, LocalDateTime submissionDate, String submissionComment) {
     return createManifest(projectName, student.getFullName(), student.getId(), student.getEmail(), submissionComment,
       Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
   }
@@ -146,7 +146,7 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment) {
-    return createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+    return createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment, Submit.ManifestAttributes.formatSubmissionTime(LocalDateTime.now()));
   }
 
   private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment, String submissionTime) {

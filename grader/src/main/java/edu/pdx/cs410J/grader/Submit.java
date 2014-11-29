@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.stream.Collectors;
@@ -94,7 +96,7 @@ public class Submit extends EmailSender {
   /**
    * The time at which the project was submitted
    */
-  private Date submitTime = null;
+  private LocalDateTime submitTime = null;
 
   /**
    * The names of the files to be submitted
@@ -255,7 +257,7 @@ public class Submit extends EmailSender {
     }
 
     // Timestamp
-    this.submitTime = new Date();
+    this.submitTime = LocalDateTime.now();
 
     // Create a temporary jar file to hold the source files
     File jarFile = makeJarFileWith(sourceFiles);
@@ -705,9 +707,8 @@ public class Submit extends EmailSender {
     public static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     public static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
 
-    public static String formatSubmissionTime(Date submitTime) {
-      DateFormat format = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
-      return format.format(submitTime);
+    public static String formatSubmissionTime(LocalDateTime submitTime) {
+      return submitTime.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss"));
     }
   }
 
