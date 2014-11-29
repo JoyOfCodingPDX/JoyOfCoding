@@ -67,8 +67,10 @@ public class ProjectSubmissionsProcessorTest {
     Grade grade = student.getGrade(assignment);
     assertThat(grade, not(nullValue()));
     assertThat(grade.isNotGraded(), equalTo(true));
-    assertThat(grade.getNotes(), contains(submissionComment));
+    assertThat(grade.getNotes().get(0), containsString(submissionComment));
   }
+
+  // Test match on email and nick name
 
   private static Matcher<? super Optional<Student>> isNotPresent() {
     return new TypeSafeMatcher<Optional<Student>>() {
