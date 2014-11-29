@@ -474,7 +474,7 @@ public class Student extends NotableImpl {
     }
 
     // Get the Student
-    Student student = book.getStudent(id);
+    Student student = book.getStudent(id).get();
 
     if (firstName != null) {
       student.setFirstName(firstName);

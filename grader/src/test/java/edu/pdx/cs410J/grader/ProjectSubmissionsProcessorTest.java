@@ -1,9 +1,13 @@
 package edu.pdx.cs410J.grader;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -58,11 +62,25 @@ public class ProjectSubmissionsProcessorTest {
       new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);
     processor.noteSubmissionInGradeBook(manifest);
 
-    assertThat(gradebook.getStudent(wrongStudentId), is(nullValue()));
+    assertThat(gradebook.getStudent(wrongStudentId), isNotPresent());
 
     Grade grade = student.getGrade(assignment);
     assertThat(grade, not(nullValue()));
     assertThat(grade.isNotGraded(), equalTo(true));
     assertThat(grade.getNotes(), contains(submissionComment));
+  }
+
+  private static Matcher<? super Optional<Student>> isNotPresent() {
+    return new TypeSafeMatcher<Optional<Student>>() {
+      @Override
+      protected boolean matchesSafely(Optional<Student> item) {
+        return !item.isPresent();
+      }
+
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("an Optional<Student> that is not present");
+      }
+    };
   }
 }

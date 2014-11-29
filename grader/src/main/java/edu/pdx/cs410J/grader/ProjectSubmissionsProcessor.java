@@ -5,6 +5,7 @@ import com.google.common.io.ByteStreams;
 
 import javax.mail.Message;
 import java.io.*;
+import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -133,11 +134,11 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
     String studentId = getManifestAttributeValue(attrs, USER_ID, "Student Id missing from manifest");
 
-    Student student = this.gradeBook.getStudent(studentId);
-    if (student == null) {
+    Optional<Student> student = this.gradeBook.getStudent(studentId);
+    if (!student.isPresent()) {
       throw new SubmissionException("Student with id \"" + studentId + "\" is not in grade book");
     }
-    return student;
+    return student.get();
   }
 
   private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {

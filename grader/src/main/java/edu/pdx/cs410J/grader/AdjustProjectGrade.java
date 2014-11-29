@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.grader;
 
 import java.io.*;
-import java.util.*;
 
 /**
  * This program subtracts some number of points off of each student's
@@ -85,18 +84,19 @@ public class AdjustProjectGrade {
       usage("Assignment \"" + proj + "\" is not a project");
     }
 
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-      Student student = book.getStudent(id);
-      Grade grade = student.getGrade(proj);
-      if (grade != null) {
-        grade.setScore(grade.getScore() - points);
-      }
-    }
+    adjustGradeForEachStudent(book, proj, points);
 
     XmlDumper dumper = new XmlDumper(file);
     dumper.dump(book);
+  }
+
+  private static void adjustGradeForEachStudent(GradeBook book, String projectName, double adjustment) {
+    book.forEachStudent((Student student) -> {
+      Grade grade = student.getGrade(projectName);
+      if (grade != null) {
+        grade.setScore(grade.getScore() - adjustment);
+      }
+    });
   }
 
 }

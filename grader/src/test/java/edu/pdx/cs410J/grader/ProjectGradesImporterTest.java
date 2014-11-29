@@ -122,7 +122,7 @@ public class ProjectGradesImporterTest {
     ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
     importer.recordScoreFromProjectReport(studentId, project.getReader());
 
-    assertThat(gradeBook.getStudent(studentId).getGrade(assignment.getName()).getScore(), equalTo(5.8));
+    assertThat(gradeBook.getStudent(studentId).get().getGrade(assignment.getName()).getScore(), equalTo(5.8));
     assertThat(gradeBook.isDirty(), equalTo(true));
   }
 

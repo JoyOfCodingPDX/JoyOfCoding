@@ -6,6 +6,7 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Class that creates a pretty report that summarizes a student's
@@ -142,15 +143,12 @@ public class SummaryReport {
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
-    for (String studentId : book.getStudentIds()) {
-      Student student = book.getStudent(studentId);
-      Grade grade = student.getGrade(assignment.getName());
-      if (grade != null && !grade.isNotGraded()) {
-        return false;
-      }
-    }
+    return book.studentsStream().noneMatch(student -> studentHasGradeFor(student, assignment));
+  }
 
-    return true;
+  private static boolean studentHasGradeFor(Student student, Assignment assignment) {
+    Grade grade = student.getGrade(assignment.getName());
+    return grade != null && !grade.isNotGraded();
   }
 
   private static double getScore(Grade grade) {
@@ -266,7 +264,7 @@ public class SummaryReport {
     for (String id : studentIds) {
       err.println(id);
 
-      Student student = book.getStudent(id);
+      Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
       
       File outFile = new File(outDir, id + ".report");
       try {
@@ -326,6 +324,11 @@ public class SummaryReport {
       }
     }
 
+  }
+
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
+  private static Supplier<? extends IllegalStateException> noStudentWithId(String id) {
+    return () -> new IllegalStateException("No student with id " + id);
   }
 
 }

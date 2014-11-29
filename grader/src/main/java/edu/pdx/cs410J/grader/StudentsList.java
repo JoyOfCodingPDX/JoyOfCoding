@@ -1,28 +1,16 @@
 package edu.pdx.cs410J.grader;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import edu.pdx.cs410J.ParserException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-
-import edu.pdx.cs410J.ParserException;
+import java.util.*;
 
 /**
  * A <code>StudentsList</code> is a <code>JList</code> that lists all
@@ -141,13 +129,10 @@ public class StudentsList extends JPanel {
         }
       });
 
-    Iterator ids = book.getStudentIds().iterator();
-    while (ids.hasNext()) {
-      String id = (String) ids.next();
-      Student student = (Student) book.getStudent(id);
+    book.forEachStudent(student -> {
       sortedByName.add(student);
       sortedById.add(student);
-    }
+    });
 
     this.studentsByName = new ArrayList<Student>();
     this.studentsByName.addAll(sortedByName);
