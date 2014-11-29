@@ -70,6 +70,27 @@ public class ProjectSubmissionsProcessorTest {
     assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
   }
 
+  @Test
+  public void matchStudentBasedOnEmail() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String studentName = "Not the student name we expect";
+    String wrongStudentId = "Not the student id we expect";
+    String email = student.getEmail();
+    String submissionComment = "This is only a test";
+
+    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, email, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(gradebook.getStudent(wrongStudentId), isNotPresent());
+
+    assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
+  }
+
   private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
     ProjectSubmissionsProcessor processor =
       new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);

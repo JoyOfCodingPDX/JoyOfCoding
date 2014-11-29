@@ -135,6 +135,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
     String studentId = getManifestAttributeValue(attrs, USER_ID, "Student Id missing from manifest");
     String studentName = getManifestAttributeValue(attrs, USER_NAME, "Student Name missing from manifest");
+    String studentEmail = getManifestAttributeValue(attrs, USER_EMAIL, "Student Email missing from manifest");
 
     Optional<Student> student = findStudentInGradeBookWithId(studentId);
     if (student.isPresent()) {
@@ -146,10 +147,23 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
         return student.get();
 
       } else {
-        String s = "Could not find student with id \"" + studentId + "\" or name \"" + studentName + "\" in grade book";
-        throw new SubmissionException(s);
+        student = findStudentInGradeBookWithEmail(studentEmail);
+        if (student.isPresent()) {
+          return student.get();
+
+        } else {
+          String s = "Could not find student with id \"" + studentId + "\" or name \"" +
+            studentName + "\" or email \"" + studentEmail + "\" in grade book";
+          throw new SubmissionException(s);
+        }
       }
     }
+  }
+
+  private Optional<Student> findStudentInGradeBookWithEmail(String studentEmail) {
+    Predicate<Student> hasEmail =
+      student -> studentEmail.equals(student.getEmail());
+    return this.gradeBook.studentsStream().filter(hasEmail).findAny();
   }
 
   private Optional<Student> findStudentInGradeBookWithName(String studentName) {
@@ -163,15 +177,15 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private Optional<Student> findStudentInGradeBookWithFirstAndLastName(String studentName) {
-    Predicate<Student> hasName =
+    Predicate<Student> hasFirstAndLastName =
       student -> studentName.equals(student.getFirstName() + " " + student.getLastName());
-    return this.gradeBook.studentsStream().filter(hasName).findAny();
+    return this.gradeBook.studentsStream().filter(hasFirstAndLastName).findAny();
   }
 
   private Optional<Student> findStudentInGradeBookWithNickAndLastName(String studentName) {
-    Predicate<Student> hasName =
+    Predicate<Student> hasNickAndLastName =
       student -> studentName.equals(student.getNickName() + " " + student.getLastName());
-    return this.gradeBook.studentsStream().filter(hasName).findAny();
+    return this.gradeBook.studentsStream().filter(hasNickAndLastName).findAny();
   }
 
   private Optional<Student> findStudentInGradeBookWithId(String studentId) {
