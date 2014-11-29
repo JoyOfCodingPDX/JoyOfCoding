@@ -120,7 +120,7 @@ public class ProjectSubmissionsProcessorTest {
     Student student = createStudentInGradeBook(gradebook);
 
     String submissionComment = "This is only a test";
-    LocalDateTime submissionDate = LocalDateTime.now().minusHours(2);
+    LocalDateTime submissionDate = LocalDateTime.now().minusHours(2).withNano(0);
     Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);

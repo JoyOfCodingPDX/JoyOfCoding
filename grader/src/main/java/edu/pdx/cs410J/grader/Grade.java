@@ -286,4 +286,8 @@ public class Grade extends NotableImpl {
   public List<LocalDateTime> getSubmissionTimes() {
     return submissionTimes;
   }
+
+  public void addSubmissionTime(LocalDateTime submissionTime) {
+    this.submissionTimes.add(submissionTime);
+  }
 }

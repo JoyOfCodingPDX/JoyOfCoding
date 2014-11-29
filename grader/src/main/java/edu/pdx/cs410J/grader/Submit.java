@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -707,8 +706,14 @@ public class Submit extends EmailSender {
     public static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     public static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
+
     public static String formatSubmissionTime(LocalDateTime submitTime) {
-      return submitTime.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss"));
+      return submitTime.format(DATE_TIME_FORMATTER);
+    }
+
+    public static LocalDateTime parseSubmissionTime(String string) {
+      return LocalDateTime.parse(string, DATE_TIME_FORMATTER);
     }
   }
 
