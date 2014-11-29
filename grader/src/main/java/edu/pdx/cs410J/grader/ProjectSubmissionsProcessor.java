@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 
 import javax.mail.Message;
@@ -58,7 +59,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private byte[] readAttachmentIntoByteArray(InputStream inputStream) throws IOException {
-    byte[] bytes;ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    byte[] bytes;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ByteStreams.copy(inputStream, baos);
     bytes = baos.toByteArray();
     return bytes;
@@ -88,7 +90,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     return projectDir;
   }
 
-  private void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
+  @VisibleForTesting
+  void noteSubmissionInGradeBook(Manifest manifest) throws SubmissionException {
     Attributes attrs = manifest.getMainAttributes();
 
     Student student = getStudentFromGradeBook(attrs);
@@ -138,11 +141,11 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
-    String studentId = attrs.getValue(attribute);
-    if (studentId == null) {
+    String value = attrs.getValue(attribute);
+    if (value == null) {
       throwSubmissionException(message);
     }
-    return studentId;
+    return value;
   }
 
   private void throwSubmissionException(String message) throws SubmissionException {
