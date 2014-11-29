@@ -6,7 +6,6 @@ import com.google.common.io.ByteStreams;
 import javax.mail.Message;
 import java.io.*;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -137,60 +136,35 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     String studentName = getManifestAttributeValue(attrs, USER_NAME, "Student Name missing from manifest");
     String studentEmail = getManifestAttributeValue(attrs, USER_EMAIL, "Student Email missing from manifest");
 
-    Optional<Student> student = findStudentInGradeBookWithId(studentId);
-    if (student.isPresent()) {
-      return student.get();
+    Optional<Student> optional = this.gradeBook.studentsStream().filter(student ->
+      hasStudentId(student, studentId) ||
+      hasFirstNameLastName(student, studentName) ||
+      hasNickNameLastName(student, studentName) ||
+      hasEmail(student, studentEmail)).findAny();
 
-    } else {
-      student = findStudentInGradeBookWithName(studentName);
-      if (student.isPresent()) {
-        return student.get();
-
-      } else {
-        student = findStudentInGradeBookWithEmail(studentEmail);
-        if (student.isPresent()) {
-          return student.get();
-
-        } else {
-          String s = "Could not find student with id \"" + studentId + "\" or name \"" +
-            studentName + "\" or email \"" + studentEmail + "\" in grade book";
-          throw new SubmissionException(s);
-        }
-      }
-    }
+    return optional.orElseThrow(() -> {
+      String s = "Could not find student with id \"" + studentId + "\" or name \"" +
+        studentName + "\" or email \"" + studentEmail + "\" in grade book";
+      return new SubmissionException(s);
+    });
   }
 
-  private Optional<Student> findStudentInGradeBookWithEmail(String studentEmail) {
-    Predicate<Student> hasEmail =
-      student -> studentEmail.equals(student.getEmail());
-    return this.gradeBook.studentsStream().filter(hasEmail).findAny();
+  private boolean hasEmail(Student student, String studentEmail) {
+    return studentEmail.equals(student.getEmail());
   }
 
-  private Optional<Student> findStudentInGradeBookWithName(String studentName) {
-    Optional<Student> student = findStudentInGradeBookWithFirstAndLastName(studentName);
-    if (student.isPresent()) {
-      return student;
-
-    } else {
-      return findStudentInGradeBookWithNickAndLastName(studentName);
-    }
+  private boolean hasNickNameLastName(Student student, String studentName) {
+    return studentName.equals(student.getNickName() + " " + student.getLastName());
   }
 
-  private Optional<Student> findStudentInGradeBookWithFirstAndLastName(String studentName) {
-    Predicate<Student> hasFirstAndLastName =
-      student -> studentName.equals(student.getFirstName() + " " + student.getLastName());
-    return this.gradeBook.studentsStream().filter(hasFirstAndLastName).findAny();
+  private boolean hasFirstNameLastName(Student student, String studentName) {
+    return studentName.equals(student.getFirstName() + " " + student.getLastName());
   }
 
-  private Optional<Student> findStudentInGradeBookWithNickAndLastName(String studentName) {
-    Predicate<Student> hasNickAndLastName =
-      student -> studentName.equals(student.getNickName() + " " + student.getLastName());
-    return this.gradeBook.studentsStream().filter(hasNickAndLastName).findAny();
+  private boolean hasStudentId(Student student, String studentId) {
+    return student.getId().equals(studentId);
   }
 
-  private Optional<Student> findStudentInGradeBookWithId(String studentId) {
-    return this.gradeBook.getStudent(studentId);
-  }
 
   private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
     String value = attrs.getValue(attribute);
