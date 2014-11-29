@@ -146,14 +146,31 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
         return student.get();
 
       } else {
-        throw new SubmissionException("Student with id \"" + studentId + "\" is not in grade book");
+        String s = "Could not find student with id \"" + studentId + "\" or name \"" + studentName + "\" in grade book";
+        throw new SubmissionException(s);
       }
     }
   }
 
   private Optional<Student> findStudentInGradeBookWithName(String studentName) {
+    Optional<Student> student = findStudentInGradeBookWithFirstAndLastName(studentName);
+    if (student.isPresent()) {
+      return student;
+
+    } else {
+      return findStudentInGradeBookWithNickAndLastName(studentName);
+    }
+  }
+
+  private Optional<Student> findStudentInGradeBookWithFirstAndLastName(String studentName) {
     Predicate<Student> hasName =
       student -> studentName.equals(student.getFirstName() + " " + student.getLastName());
+    return this.gradeBook.studentsStream().filter(hasName).findAny();
+  }
+
+  private Optional<Student> findStudentInGradeBookWithNickAndLastName(String studentName) {
+    Predicate<Student> hasName =
+      student -> studentName.equals(student.getNickName() + " " + student.getLastName());
     return this.gradeBook.studentsStream().filter(hasName).findAny();
   }
 

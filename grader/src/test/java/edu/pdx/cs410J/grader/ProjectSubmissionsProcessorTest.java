@@ -29,7 +29,7 @@ public class ProjectSubmissionsProcessorTest {
    * This tests issue #52 (https://github.com/DavidWhitlock/PortlandStateJava/issues/52)
    */
   @Test
-  public void matchStudentBasedOnNameBeforeId() throws StudentEmailAttachmentProcessor.SubmissionException {
+  public void matchStudentBasedOnFirstAndLastName() throws StudentEmailAttachmentProcessor.SubmissionException {
     String projectName = "Project";
 
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
@@ -43,6 +43,34 @@ public class ProjectSubmissionsProcessorTest {
     Student student = createStudentInGradeBook(studentId, firstName, lastName, nickName, email, gradebook);
 
     String studentName = firstName + " " + lastName;
+    String wrongStudentId = "Not the student id we expect";
+    String wrongEmail = "Not the email that we expect";
+    String submissionComment = "This is only a test";
+
+    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(gradebook.getStudent(wrongStudentId), isNotPresent());
+
+    assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
+  }
+
+  @Test
+  public void matchStudentBasedOnNickAndLastName() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+
+    String studentId = "studentId";
+    String firstName = "firstName";
+    String lastName = "lastName";
+    String nickName = "nickName";
+    String email = "test@test.com";
+
+    Student student = createStudentInGradeBook(studentId, firstName, lastName, nickName, email, gradebook);
+
+    String studentName = nickName + " " + lastName;
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
     String submissionComment = "This is only a test";
