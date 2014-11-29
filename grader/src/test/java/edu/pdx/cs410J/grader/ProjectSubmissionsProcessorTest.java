@@ -112,6 +112,27 @@ public class ProjectSubmissionsProcessorTest {
     assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
   }
 
+  @Test
+  public void submissionTimeNotedInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    Date submissionDate = new Date();
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
+  }
+
+  private Manifest createManifest(String projectName, Student student, Date submissionDate, String submissionComment) {
+    return createManifest(projectName, student.getFullName(), student.getId(), student.getEmail(), submissionComment,
+      Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
+  }
+
   private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
     ProjectSubmissionsProcessor processor =
       new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);
@@ -125,13 +146,17 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment) {
+    return createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+  }
+
+  private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment, String submissionTime) {
     Manifest manifest = new Manifest();
     Attributes attributes = manifest.getMainAttributes();
     attributes.put(USER_ID, wrongStudentId);
     attributes.put(USER_EMAIL, wrongEmail);
     attributes.put(USER_NAME, studentName);
     attributes.put(PROJECT_NAME, projectName);
-    attributes.put(SUBMISSION_TIME, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+    attributes.put(SUBMISSION_TIME, submissionTime);
     attributes.put(SUBMISSION_COMMENT, submissionComment);
     return manifest;
   }
