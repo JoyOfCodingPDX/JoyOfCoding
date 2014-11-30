@@ -106,7 +106,13 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       student.setGrade(project.getName(), grade);
     }
     grade.addNote(note);
-    grade.addSubmissionTime(getSubmissionTime(attrs));
+
+    LocalDateTime submissionTime = getSubmissionTime(attrs);
+    grade.addSubmissionTime(submissionTime);
+
+    if (project.isSubmissionLate(submissionTime)) {
+      student.addLate(project.getName());
+    }
   }
 
   private LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {

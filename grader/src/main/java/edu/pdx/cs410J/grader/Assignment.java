@@ -319,4 +319,13 @@ public class Assignment extends NotableImpl {
   public LocalDateTime getDueDate() {
     return dueDate;
   }
+
+  public boolean isSubmissionLate(LocalDateTime submissionTime) {
+    if (this.dueDate == null) {
+      return false;
+
+    } else {
+      return submissionTime.isAfter(this.dueDate);
+    }
+  }
 }

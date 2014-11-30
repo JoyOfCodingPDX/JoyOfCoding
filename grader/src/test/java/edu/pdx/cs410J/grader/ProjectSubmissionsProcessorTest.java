@@ -128,6 +128,40 @@ public class ProjectSubmissionsProcessorTest {
     assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
   }
 
+  @Test
+  public void submissionsPastDueDateAreLate() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+    LocalDateTime dueDate = LocalDateTime.now();
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    LocalDateTime submissionDate = dueDate.plusDays(3);
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getLate(), contains(projectName));
+  }
+
+  @Test
+  public void submissionsBeforeDueDateAreNoteLate() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+    LocalDateTime dueDate = LocalDateTime.now();
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    LocalDateTime submissionDate = dueDate.minusDays(3);
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getLate(), not(contains(projectName)));
+  }
+
   private Manifest createManifest(String projectName, Student student, LocalDateTime submissionDate, String submissionComment) {
     return createManifest(projectName, student.getFullName(), student.getId(), student.getEmail(), submissionComment,
       Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
@@ -172,8 +206,13 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   private GradeBook createGradeBookWithAssignment(String projectName) {
+    return createGradeBookWithAssignment(projectName, null);
+  }
+
+  private GradeBook createGradeBookWithAssignment(String projectName, LocalDateTime dueDate) {
     GradeBook gradebook = new GradeBook("test");
     Assignment assignment = new Assignment(projectName, 10.0);
+    assignment.setDueDate(dueDate);
     gradebook.addAssignment(assignment);
     return gradebook;
   }
