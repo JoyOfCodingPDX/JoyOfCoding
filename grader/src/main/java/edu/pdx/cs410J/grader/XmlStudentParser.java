@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -52,7 +51,7 @@ class XmlStudentParser extends XmlHelper {
   private Grade extractGradeFrom(Element root) throws ParserException {
     String name = null;
     String score = null;
-    List notes = null;
+    List<String> notes = null;
 
     NodeList kids = root.getChildNodes();
     for (int j = 0; j < kids.getLength(); j++) {
@@ -81,11 +80,7 @@ class XmlStudentParser extends XmlHelper {
       double s = Double.parseDouble(score);
       Grade grade = new Grade(name, s);
       if (notes != null) {
-	Iterator iter = notes.iterator();
-	while (iter.hasNext()) {
-	  String note = (String) iter.next();
-	  grade.addNote(note);
-	}
+        notes.forEach(grade::addNote);
       }
 
       return grade;
@@ -99,49 +94,14 @@ class XmlStudentParser extends XmlHelper {
    * Creates a new <code>Student</code> from the contents of a file.
    */
   public Student parseStudent() throws ParserException {
-
-    // Parse the XML file
-    Document doc = null;
-    try {
-      DocumentBuilderFactory factory =
-	DocumentBuilderFactory.newInstance();
-      factory.setValidating(true);
-
-      DocumentBuilder builder = 
-	factory.newDocumentBuilder();
-      builder.setErrorHandler(this);
-      builder.setEntityResolver(this);
-
-      doc = builder.parse(new InputSource(this.reader));;
-
-    } catch (ParserConfigurationException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-
-    } catch (SAXException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-
-    } catch (IOException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-    }
-
-    Element root = null;
-    if (doc != null) {
-      root = doc.getDocumentElement();
-    }
-    if (doc == null || root == null) {
-      throw new ParserException("Document parsing failed");
-    }
-
-    if (!root.getTagName().equals("student")) {
-      String s = "XML data does not contain a student";
-      throw new ParserException(s);
-    }
+    Document doc = parseXml();
+    Element root = getRootElement(doc);
 
     Student student = null;
 
     NodeList children = root.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
-            Node node = children.item(i);
+      Node node = children.item(i);
       if (!(node instanceof Element)) {
         continue;
       }
@@ -149,12 +109,6 @@ class XmlStudentParser extends XmlHelper {
       Element child = (Element) node;
       if (child.getTagName().equals("id")) {
         String idFromFile = extractTextFrom(child);
-//         if (id != null && !id.equals(idFromFile)) {
-//           throw new ParserException(file + 
-//                                     " does not contain student " +
-//                                     student.getId());
-//         }
-
         student = new Student(idFromFile);
 
       } else if (child.getTagName().equals("firstName")) {
@@ -233,9 +187,7 @@ class XmlStudentParser extends XmlHelper {
         }
 
       } else if (child.getTagName().equals("notes")) {
-        Iterator notes = extractNotesFrom(child).iterator();
-        while (notes.hasNext()) {
-          String note = (String) notes.next();
+        for (String note : extractNotesFrom(child)) {
           student.addNote(note);
         }
       }
@@ -247,6 +199,40 @@ class XmlStudentParser extends XmlHelper {
     }
 
     return student;
+  }
+
+  private Element getRootElement(Document doc) throws ParserException {
+    Element root = null;
+    if (doc != null) {
+      root = doc.getDocumentElement();
+    }
+    if (doc == null || root == null) {
+      throw new ParserException("Document parsing failed");
+    }
+
+    if (!root.getTagName().equals("student")) {
+      String s = "XML data does not contain a student";
+      throw new ParserException(s);
+    }
+    return root;
+  }
+
+  private Document parseXml() throws ParserException {
+    Document doc = null;
+    try {
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      factory.setValidating(true);
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      builder.setErrorHandler(this);
+      builder.setEntityResolver(this);
+
+      doc = builder.parse(new InputSource(this.reader));
+
+    } catch (ParserConfigurationException | IOException | SAXException ex) {
+      throw new ParserException("While parsing XML source: " + ex);
+    }
+    return doc;
   }
 
 
