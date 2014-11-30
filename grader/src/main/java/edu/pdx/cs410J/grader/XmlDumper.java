@@ -105,7 +105,6 @@ public class XmlDumper extends XmlHelper {
     appendXmlForLetterGradeRanges(book, doc, root);
     appendXmlForStudents(book, doc, root);
 
-
     return doc;
   }
 
@@ -179,46 +178,42 @@ public class XmlDumper extends XmlHelper {
       Assignment assign = book.getAssignment(assignmentName);
       Element assignNode = doc.createElement("assignment");
 
-      Element assignName = doc.createElement("name");
-      assignName.appendChild(doc.createTextNode(assign.getName()));
-      assignNode.appendChild(assignName);
-
-      String desc = assign.getDescription();
-      appendTextElementIfValueIsNotNull(assignNode, "description", desc);
-
-      Element assignPoints = doc.createElement("points");
-      assignPoints.appendChild(doc.createTextNode("" +
-        assign.getPoints()));
-      assignNode.appendChild(assignPoints);
+      setAssignmentTypeAttribute(assign, assignNode);
+      appendTextElementIfValueIsNotNull(assignNode, "name", assign.getName());
+      appendTextElementIfValueIsNotNull(assignNode, "description", assign.getDescription());
+      appendTextElementIfValueIsNotNull(assignNode, "points", String.valueOf(assign.getPoints()));
 
       doNotes(doc, assignNode, assign.getNotes());
 
       assignments.appendChild(assignNode);
 
-      int type = assign.getType();
-      switch (type) {
-        case Assignment.PROJECT:
-          assignNode.setAttribute("type", "PROJECT");
-          break;
-
-        case Assignment.QUIZ:
-          assignNode.setAttribute("type", "QUIZ");
-          break;
-
-        case Assignment.OTHER:
-          assignNode.setAttribute("type", "OTHER");
-          break;
-
-        case Assignment.OPTIONAL:
-          assignNode.setAttribute("type", "OPTIONAL");
-          break;
-
-        default:
-          throw new IllegalArgumentException("Can't handle assignment " +
-            "type " + type);
-      }
     }
     root.appendChild(assignments);
+  }
+
+  private static void setAssignmentTypeAttribute(Assignment assign, Element assignNode) {
+    int type = assign.getType();
+    switch (type) {
+      case Assignment.PROJECT:
+        assignNode.setAttribute("type", "PROJECT");
+        break;
+
+      case Assignment.QUIZ:
+        assignNode.setAttribute("type", "QUIZ");
+        break;
+
+      case Assignment.OTHER:
+        assignNode.setAttribute("type", "OTHER");
+        break;
+
+      case Assignment.OPTIONAL:
+        assignNode.setAttribute("type", "OPTIONAL");
+        break;
+
+      default:
+        throw new IllegalArgumentException("Can't handle assignment " +
+          "type " + type);
+    }
   }
 
   private void dumpDirtyStudents(GradeBook book) throws IOException {
