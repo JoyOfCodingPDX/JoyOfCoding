@@ -8,6 +8,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +22,15 @@ public class AssignmentPanel extends JPanel {
   private static final String PROJECT = "Project";
   private static final String OTHER = "Other";
   private static final String OPTIONAL = "Optional";
+  static final String DATE_TIME_FORMAT_PATTERN = "M/d/yyyy h:mm a";
+  static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN);
 
   // GUI components we care about
   private JTextField nameField;
   private JComboBox<String> typeBox;
   private JTextField pointsField;
   private JTextField descriptionField;
+  private JTextField dueDateField;
   private NotesPanel notes;
 
   /**
@@ -78,6 +84,7 @@ public class AssignmentPanel extends JPanel {
     labels.add(new JLabel("Max points:"));
     labels.add(new JLabel("Type:"));
     labels.add(new JLabel("Description:"));
+    labels.add(new JLabel("Due date:"));
 
     JPanel fields = new JPanel();
     fields.setLayout(new GridLayout(0, 1));
@@ -90,6 +97,8 @@ public class AssignmentPanel extends JPanel {
 
     this.descriptionField = new JTextField(20);
     fields.add(this.descriptionField);
+    this.dueDateField = new JTextField(22);
+    fields.add(this.dueDateField);
 
     infoPanel.add(labels, BorderLayout.WEST);
     infoPanel.add(fields, BorderLayout.CENTER);
@@ -174,6 +183,17 @@ public class AssignmentPanel extends JPanel {
     String description = assign.getDescription();
     if (isNotEmpty(description)) {
       this.descriptionField.setText(description);
+
+    } else {
+      this.descriptionField.setText("");
+    }
+
+    LocalDateTime dueDate = assign.getDueDate();
+    if (dueDate != null) {
+      this.dueDateField.setText(DATE_TIME_FORMAT.format(dueDate));
+
+    } else {
+      this.dueDateField.setText("");
     }
 
     this.notes.setNotable(assign);
@@ -205,6 +225,19 @@ public class AssignmentPanel extends JPanel {
 
     if (isNotEmpty(description)) {
       assign.setDescription(description);
+    }
+
+    String dueDate = this.dueDateField.getText();
+    if (isNotEmpty(dueDate)) {
+      try {
+        assign.setDueDate(LocalDateTime.parse(dueDate.trim(), DATE_TIME_FORMAT));
+
+      } catch (DateTimeParseException ex) {
+        error(dueDate + " is not a validate date (" + DATE_TIME_FORMAT_PATTERN + ")");
+      }
+
+    } else {
+      assign.setDueDate(null);
     }
 
     // Adding notes is taken care of by the NotesPanel
