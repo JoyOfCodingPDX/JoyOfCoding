@@ -69,8 +69,10 @@ assignments, and some notes -->
 <!ELEMENT late (name*)>
 <!ELEMENT resubmitted (name*)>
 
-<!-- A grade has an assignment name, a score, and some notes -->
-<!ELEMENT grade (name, score, notes?)>
+<!-- A grade has an assignment name, a score, submissions, and some notes -->
+<!ELEMENT submission (#PCDATA)>
+<!ELEMENT submissions (submission)*>
+<!ELEMENT grade (name, score, submissions?, notes?)>
 <!ATTLIST grade
   type (INCOMPLETE | NO_GRADE) #IMPLIED
 >

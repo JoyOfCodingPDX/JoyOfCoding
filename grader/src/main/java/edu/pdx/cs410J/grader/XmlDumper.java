@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -348,6 +349,8 @@ public class XmlDumper extends XmlHelper {
         scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
         gradeNode.appendChild(scoreNode);
 
+        appendSubmissionTimesInformation(grade.getSubmissionTimes(), gradeNode);
+
         doNotes(doc, gradeNode, grade.getNotes());
 
         if (grade.getScore() == Grade.INCOMPLETE) {
@@ -362,6 +365,21 @@ public class XmlDumper extends XmlHelper {
 
       parent.appendChild(gradesNode);
     }
+  }
+
+  private static void appendSubmissionTimesInformation(List<LocalDateTime> submissionTimes, Element parent) {
+    if (!submissionTimes.isEmpty()) {
+      Document doc = parent.getOwnerDocument();
+      Element submissions = doc.createElement("submissions");
+      parent.appendChild(submissions);
+
+      submissionTimes.forEach(submissionTime -> {
+        Element submission = doc.createElement("submission");
+        submissions.appendChild(submission);
+        submission.appendChild(doc.createTextNode(submissionTime.format(DATE_TIME_FORMAT)));
+      });
+    }
+
   }
 
   private static void appendStudentInformation(Student student, Element root) {

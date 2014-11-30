@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +54,7 @@ class XmlStudentParser extends XmlHelper {
     String name = null;
     String score = null;
     List<String> notes = null;
+    List<LocalDateTime> submissions = null;
 
     NodeList kids = root.getChildNodes();
     for (int j = 0; j < kids.getLength(); j++) {
@@ -69,6 +72,9 @@ class XmlStudentParser extends XmlHelper {
         
       } else if (kid.getTagName().equals("notes")) {
         notes = extractNotesFrom(kid);
+
+      } else if (kid.getTagName().equals("submissions")) {
+        submissions = extractSubmissionsFrom(kid);
       }
     }
     
@@ -82,12 +88,35 @@ class XmlStudentParser extends XmlHelper {
       if (notes != null) {
         notes.forEach(grade::addNote);
       }
+      if (submissions != null) {
+        submissions.forEach(grade::addSubmissionTime);
+      }
 
       return grade;
 
     } catch (NumberFormatException ex) {
       throw new ParserException("Malformatted number: " + score);
     }
+  }
+
+  private static List<LocalDateTime> extractSubmissionsFrom(Element parent) {
+    List<LocalDateTime> list = new ArrayList<>();
+
+    NodeList children = parent.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      Node node = children.item(i);
+      if (!(node instanceof Element)) {
+        continue;
+      }
+
+      Element child = (Element) node;
+      if (child.getTagName().equals("submission")) {
+        String text = extractTextFrom(child);
+        list.add(LocalDateTime.parse(text, DATE_TIME_FORMAT));
+      }
+    }
+
+    return list;
   }
 
   /**

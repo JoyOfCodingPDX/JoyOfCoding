@@ -8,6 +8,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,8 @@ class XmlHelper implements EntityResolver, ErrorHandler {
   protected static final String publicID = 
     "-//Portland State University//DTD CS410J Grade Book//EN";
 
+  protected static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
   static byte[] getBytesForXmlDocument(Document xmlDoc) throws TransformerException {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       PrintWriter pw =
@@ -40,6 +43,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
    * by the given public and system ID.  The external entity is
    * returned as a <code>InputSource</code>
    */
+  @Override
   public InputSource resolveEntity (String publicId, String systemId)
     throws SAXException, IOException {
 
@@ -68,7 +72,8 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 
   //////////////////  ErrorHandler Methods  ////////////////////////
   
-  public void warning(SAXParseException ex) throws SAXException { 
+  @Override
+  public void warning(SAXParseException ex) throws SAXException {
     // Most warnings are annoying
 
 //      String s = "Warning while parsing XML (" + ex.getLineNumber() +
@@ -76,12 +81,14 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 //      System.err.println(s);
   }
 
+  @Override
   public void error(SAXParseException ex) throws SAXException {
     String s = "Error while parsing XML (" + ex.getLineNumber() +
       ":" + ex.getColumnNumber() + "): " + ex.getMessage();
     throw new SAXException(s);
   }
   
+  @Override
   public void fatalError(SAXParseException ex) throws SAXException {
     String s = "Fatal error while parsing XML (" + ex.getLineNumber()
       + ":" + ex.getColumnNumber() + "): " + ex.getMessage();
@@ -94,7 +101,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
    * Extracts a bunch of notes from an <code>Element</code>
    */
   protected static List<String> extractNotesFrom(Element element) {
-    List<String> list = new ArrayList<String>();
+    List<String> list = new ArrayList<>();
 
     NodeList children = element.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
