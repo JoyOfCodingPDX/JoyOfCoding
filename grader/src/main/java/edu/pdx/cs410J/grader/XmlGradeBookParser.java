@@ -12,7 +12,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.Iterator;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 
@@ -96,7 +97,7 @@ public class XmlGradeBookParser extends XmlHelper {
         try {
           if (name == null) {
             throw new ParserException("No name for assignment with " +
-                                      "points " + points);
+              "points " + points);
           }
           assign = new Assignment(name, Double.parseDouble(points));
           if (description != null) {
@@ -105,13 +106,21 @@ public class XmlGradeBookParser extends XmlHelper {
 
         } catch (NumberFormatException ex) {
           throw new ParserException("Invalid points value: " +
-                                    points);
+            points);
+        }
+
+      } else if (child.getTagName().equals("due-date")) {
+        String dueDate = extractTextFrom(child);
+        try {
+          assign.setDueDate(LocalDateTime.parse(dueDate, DATE_TIME_FORMAT));
+
+        } catch(DateTimeParseException ex) {
+          throw new ParserException("Invalidate LocalDateTime: " + dueDate, ex);
         }
 
       } else if (child.getTagName().equals("notes")) {
-        Iterator notes = extractNotesFrom(child).iterator();
-        while (notes.hasNext()) {
-          assign.addNote((String) notes.next());
+        for (String note : extractNotesFrom(child)) {
+          assign.addNote(note);
         }
       }
     }
@@ -119,22 +128,28 @@ public class XmlGradeBookParser extends XmlHelper {
     if (assign == null ) {
       throw new ParserException("No assignment found!");
     }
-    
-    String type = element.getAttribute("type");
-    if (type.equals("PROJECT")) {
-      assign.setType(Assignment.PROJECT);
-      
-    } else if (type.equals("QUIZ")) {
-      assign.setType(Assignment.QUIZ);
-      
-    } else if (type.equals("OTHER")) {
-      assign.setType(Assignment.OTHER);
 
-    } else if (type.equals("OPTIONAL")) {
-      assign.setType(Assignment.OPTIONAL);
-    }
+    setAssignmentTypeFromXml(element, assign);
 
     return assign;
+  }
+
+  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assign) {
+    String type = assignmentElement.getAttribute("type");
+    switch (type) {
+      case "PROJECT":
+        assign.setType(Assignment.PROJECT);
+        break;
+      case "QUIZ":
+        assign.setType(Assignment.QUIZ);
+        break;
+      case "OTHER":
+        assign.setType(Assignment.OTHER);
+        break;
+      case "OPTIONAL":
+        assign.setType(Assignment.OPTIONAL);
+        break;
+    }
   }
 
   /**

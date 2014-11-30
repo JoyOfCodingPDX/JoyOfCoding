@@ -182,6 +182,7 @@ public class XmlDumper extends XmlHelper {
       appendTextElementIfValueIsNotNull(assignNode, "name", assign.getName());
       appendTextElementIfValueIsNotNull(assignNode, "description", assign.getDescription());
       appendTextElementIfValueIsNotNull(assignNode, "points", String.valueOf(assign.getPoints()));
+      appendTextElementIfValueIsNotNull(assignNode, "due-date", assign.getDueDate());
 
       doNotes(doc, assignNode, assign.getNotes());
 
@@ -189,6 +190,12 @@ public class XmlDumper extends XmlHelper {
 
     }
     root.appendChild(assignments);
+  }
+
+  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, LocalDateTime dateTime) {
+    if (dateTime != null) {
+      appendTextElementIfValueIsNotNull(parent, elementName, dateTime.format(DATE_TIME_FORMAT));
+    }
   }
 
   private static void setAssignmentTypeAttribute(Assignment assign, Element assignNode) {

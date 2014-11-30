@@ -1,11 +1,12 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import edu.pdx.cs410J.ParserException;
+import java.time.LocalDateTime;
 
 /**
  * This class represents an assignment give to students in CS410J.
@@ -33,6 +34,8 @@ public class Assignment extends NotableImpl {
   private String description;
   private double points;
   private int type;
+  private LocalDateTime dueDate;
+
   /**
    * Creates a new <code>Assignment</code> with the given name and
    * point value.
@@ -307,5 +310,13 @@ public class Assignment extends NotableImpl {
       err.println("** While dumping to " + file + ": " + ex);
       System.exit(1);
     }
+  }
+
+  public void setDueDate(LocalDateTime dueDate) {
+    this.dueDate = dueDate;
+  }
+
+  public LocalDateTime getDueDate() {
+    return dueDate;
   }
 }

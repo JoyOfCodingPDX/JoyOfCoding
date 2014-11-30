@@ -37,14 +37,15 @@ number of late days allowed in the class -->
 <!ELEMENT lateDays (#PCDATA)>
 
 <!-- An assignment has a name, description, a required number of
-points it is worth, a type, and some optional notes -->
-<!ELEMENT assignment (name, description?, points, notes*)>
+points it is worth, a type, a due date, and some optional notes -->
+<!ELEMENT assignment (name, description?, points, due-date?, notes*)>
 <!ATTLIST assignment
   type  (PROJECT | QUIZ | OTHER | OPTIONAL)  #REQUIRED
 >
 
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT points (#PCDATA)>
+<!ELEMENT due-date (#PCDATA)>
 
 <!ELEMENT notes (note*)>
 <!ELEMENT note (#PCDATA)>
