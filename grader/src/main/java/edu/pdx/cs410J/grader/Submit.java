@@ -10,9 +10,9 @@ import javax.mail.internet.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.stream.Collectors;
@@ -544,10 +544,7 @@ public class Submit extends EmailSender {
     StringBuilder text = new StringBuilder();
     text.append("Student name: ").append(userName).append(" (").append(userEmail).append(")\n");
     text.append("Project name: ").append(projName).append("\n");
-    DateFormat df =
-      DateFormat.getDateTimeInstance(DateFormat.FULL,
-        DateFormat.FULL);
-    text.append("Submitted on: ").append(df.format(submitTime)).append("\n");
+    text.append("Submitted on: ").append(humanReadableSubmitDate()).append("\n");
     if (comment != null) {
       text.append("\nComment: ").append(comment).append("\n\n");
     }
@@ -566,6 +563,10 @@ public class Submit extends EmailSender {
     return textPart;
   }
 
+  private String humanReadableSubmitDate() {
+    return submitTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM));
+  }
+
   /**
    * Sends a email to the user as a receipt of the submission.
    */
@@ -573,10 +574,8 @@ public class Submit extends EmailSender {
     MimeMessage message = newEmailTo(newEmailSession(debug), userEmail, "CS410J " + projName + " submission");
 
     // Create the contents of the message
-    DateFormat df =
-      DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
     StringBuilder text = new StringBuilder();
-    text.append("On ").append(df.format(submitTime)).append("\n");
+    text.append("On ").append(humanReadableSubmitDate()).append("\n");
     text.append(userName).append(" (").append(userEmail).append(")\n");
     text.append("submitted the following files for ").append(projName).append(":\n");
 
@@ -595,7 +594,7 @@ public class Submit extends EmailSender {
     message.setText(text.toString());
     message.setDisposition("inline");
 
-    out.println("Sending receipt to you");
+    out.println("Sending receipt to you at " + userEmail);
 
     Transport.send(message);
   }
