@@ -288,6 +288,7 @@ public class Grade extends NotableImpl {
   }
 
   public void addSubmissionTime(LocalDateTime submissionTime) {
+    this.setDirty(true);
     this.submissionTimes.add(submissionTime);
   }
 }
