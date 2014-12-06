@@ -9,7 +9,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.*;
+import java.util.List;
 
 /**
  * This panel is used to display and edit a <code>Student</code>'s
@@ -30,6 +34,7 @@ public class GradePanel extends JPanel {
   private NotesPanel notes;
   private JList<String> lateList;
   private JList<String> resubmitList;
+  private JList<LocalDateTime> submissionTimesList;
 
   /** The most recently selected index in the assignments list */
   private int assignmentIndex = -1;
@@ -152,9 +157,31 @@ public class GradePanel extends JPanel {
     this.notes = new NotesPanel();
     gradePanel.add(this.notes, BorderLayout.CENTER);
 
+    gradePanel.add(createSubmissionsList(), BorderLayout.EAST);
+
     gradePanel.add(createGradeButtonsPanel(), BorderLayout.SOUTH);
 
     return gradePanel;
+  }
+
+  private Component createSubmissionsList() {
+    JPanel submissionsPanel = new JPanel();
+    submissionsPanel.setLayout(new BorderLayout());
+    submissionsPanel.setBorder(BorderFactory.createTitledBorder("Submissions"));
+
+    this.submissionTimesList = new JList<>();
+    this.submissionTimesList.setCellRenderer(new DefaultListCellRenderer() {
+      @Override
+      public Component getListCellRendererComponent(JList<?> list, Object dateTime, int index, boolean isSelected, boolean cellHasFocus) {
+        LocalDateTime submissionTime = (LocalDateTime) dateTime;
+        String value = submissionTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      }
+    });
+
+    submissionsPanel.add(new JScrollPane(this.submissionTimesList), BorderLayout.CENTER);
+
+    return submissionsPanel;
   }
 
   private JPanel createGradeButtonsPanel() {
@@ -261,12 +288,27 @@ public class GradePanel extends JPanel {
       if (grade != null) {
         this.gradeField.setText(String.valueOf(grade.getScore()));
         this.notes.setNotable(grade);
+        this.submissionTimesList.setModel(createListModel(grade.getSubmissionTimes()));
         return;
       }
     }
 
     this.gradeField.setText("");
     this.notes.clearNotes();
+  }
+
+  private ListModel<LocalDateTime> createListModel(List<LocalDateTime> submissionTimes) {
+    return new AbstractListModel<LocalDateTime>() {
+      @Override
+      public int getSize() {
+        return submissionTimes.size();
+      }
+
+      @Override
+      public LocalDateTime getElementAt(int index) {
+        return submissionTimes.get(index);
+      }
+    };
   }
 
   /**
