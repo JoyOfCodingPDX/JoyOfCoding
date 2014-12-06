@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represent the grade a student got on an assignment.
@@ -23,7 +26,7 @@ public class Grade extends NotableImpl {
 
   private String assignmentName;
   private double score;         // Score student received
-  
+  private final List<LocalDateTime> submissionTimes = new ArrayList<>();
 
   /**
    * Creates a <code>Grade</code> for a given assignment
@@ -278,5 +281,14 @@ public class Grade extends NotableImpl {
 
   public boolean isNotGraded() {
     return this.getScore() == Grade.NO_GRADE;
+  }
+
+  public List<LocalDateTime> getSubmissionTimes() {
+    return submissionTimes;
+  }
+
+  public void addSubmissionTime(LocalDateTime submissionTime) {
+    this.setDirty(true);
+    this.submissionTimes.add(submissionTime);
   }
 }

@@ -37,14 +37,15 @@ number of late days allowed in the class -->
 <!ELEMENT lateDays (#PCDATA)>
 
 <!-- An assignment has a name, description, a required number of
-points it is worth, a type, and some optional notes -->
-<!ELEMENT assignment (name, description?, points, notes*)>
+points it is worth, a type, a due date, and some optional notes -->
+<!ELEMENT assignment (name, description?, points, due-date?, notes*)>
 <!ATTLIST assignment
   type  (PROJECT | QUIZ | OTHER | OPTIONAL)  #REQUIRED
 >
 
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT points (#PCDATA)>
+<!ELEMENT due-date (#PCDATA)>
 
 <!ELEMENT notes (note*)>
 <!ELEMENT note (#PCDATA)>
@@ -69,8 +70,10 @@ assignments, and some notes -->
 <!ELEMENT late (name*)>
 <!ELEMENT resubmitted (name*)>
 
-<!-- A grade has an assignment name, a score, and some notes -->
-<!ELEMENT grade (name, score, notes?)>
+<!-- A grade has an assignment name, a score, submissions, and some notes -->
+<!ELEMENT submission (#PCDATA)>
+<!ELEMENT submissions (submission)*>
+<!ELEMENT grade (name, score, submissions?, notes?)>
 <!ATTLIST grade
   type (INCOMPLETE | NO_GRADE) #IMPLIED
 >

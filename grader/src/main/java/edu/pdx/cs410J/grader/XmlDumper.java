@@ -10,8 +10,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 
@@ -36,7 +38,9 @@ public class XmlDumper extends XmlHelper {
     this(new PrintWriter(new FileWriter(xmlFile), true));
 
     if (!xmlFile.exists()) {
-      xmlFile.createNewFile();
+      if (!xmlFile.createNewFile()) {
+        throw new IOException("Could not create file " + xmlFile);
+      }
     }
 
     this.setStudentDir(xmlFile.getCanonicalFile().getParentFile());
@@ -101,7 +105,6 @@ public class XmlDumper extends XmlHelper {
     appendXmlForLetterGradeRanges(book, doc, root);
     appendXmlForStudents(book, doc, root);
 
-
     return doc;
   }
 
@@ -140,14 +143,10 @@ public class XmlDumper extends XmlHelper {
         dom.createDocumentType("gradebook", publicID, systemID);
       doc = dom.createDocument(null, "gradebook", docType);
 
-    } catch (ParserConfigurationException ex) {
+    } catch (ParserConfigurationException | DOMException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
 
-    } catch (DOMException ex) {
-      // Eep, this is bad
-      ex.printStackTrace(System.err);
-      System.exit(1);
     }
     return doc;
   }
@@ -179,50 +178,49 @@ public class XmlDumper extends XmlHelper {
       Assignment assign = book.getAssignment(assignmentName);
       Element assignNode = doc.createElement("assignment");
 
-      Element assignName = doc.createElement("name");
-      assignName.appendChild(doc.createTextNode(assign.getName()));
-      assignNode.appendChild(assignName);
-
-      String desc = assign.getDescription();
-      if (desc != null) {
-        Element assignDesc = doc.createElement("description");
-        assignDesc.appendChild(doc.createTextNode(desc));
-        assignNode.appendChild(assignDesc);
-      }
-
-      Element assignPoints = doc.createElement("points");
-      assignPoints.appendChild(doc.createTextNode("" +
-        assign.getPoints()));
-      assignNode.appendChild(assignPoints);
+      setAssignmentTypeAttribute(assign, assignNode);
+      appendTextElementIfValueIsNotNull(assignNode, "name", assign.getName());
+      appendTextElementIfValueIsNotNull(assignNode, "description", assign.getDescription());
+      appendTextElementIfValueIsNotNull(assignNode, "points", String.valueOf(assign.getPoints()));
+      appendTextElementIfValueIsNotNull(assignNode, "due-date", assign.getDueDate());
 
       doNotes(doc, assignNode, assign.getNotes());
 
       assignments.appendChild(assignNode);
 
-      int type = assign.getType();
-      switch (type) {
-        case Assignment.PROJECT:
-          assignNode.setAttribute("type", "PROJECT");
-          break;
-
-        case Assignment.QUIZ:
-          assignNode.setAttribute("type", "QUIZ");
-          break;
-
-        case Assignment.OTHER:
-          assignNode.setAttribute("type", "OTHER");
-          break;
-
-        case Assignment.OPTIONAL:
-          assignNode.setAttribute("type", "OPTIONAL");
-          break;
-
-        default:
-          throw new IllegalArgumentException("Can't handle assignment " +
-            "type " + type);
-      }
     }
     root.appendChild(assignments);
+  }
+
+  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, LocalDateTime dateTime) {
+    if (dateTime != null) {
+      appendTextElementIfValueIsNotNull(parent, elementName, dateTime.format(DATE_TIME_FORMAT));
+    }
+  }
+
+  private static void setAssignmentTypeAttribute(Assignment assign, Element assignNode) {
+    int type = assign.getType();
+    switch (type) {
+      case Assignment.PROJECT:
+        assignNode.setAttribute("type", "PROJECT");
+        break;
+
+      case Assignment.QUIZ:
+        assignNode.setAttribute("type", "QUIZ");
+        break;
+
+      case Assignment.OTHER:
+        assignNode.setAttribute("type", "OTHER");
+        break;
+
+      case Assignment.OPTIONAL:
+        assignNode.setAttribute("type", "OPTIONAL");
+        break;
+
+      default:
+        throw new IllegalArgumentException("Can't handle assignment " +
+          "type " + type);
+    }
   }
 
   private void dumpDirtyStudents(GradeBook book) throws IOException {
@@ -237,13 +235,11 @@ public class XmlDumper extends XmlHelper {
    * Creates a <code>notes</code> XML element for a given
    * <code>List</code> of notes.
    */
-  private static void doNotes(Document doc, Element parent, List notes) {
+  private static void doNotes(Document doc, Element parent, List<String> notes) {
     Element notesNode = doc.createElement("notes");
-    for (int i = 0; i < notes.size(); i++) {
-      String note = (String) notes.get(i);
+    for (String note : notes) {
       Element noteNode = doc.createElement("note");
       noteNode.appendChild(doc.createTextNode(note));
-
       notesNode.appendChild(noteNode);
     }
 
@@ -284,7 +280,123 @@ public class XmlDumper extends XmlHelper {
    * Returns a DOM tree that represents a <code>Student</code>
    */
   static Document toXml(Student student) {
-    // Create a new Document for the Student
+    Document doc = createXmlDocument();
+
+    Element root = doc.getDocumentElement();
+
+    appendStudentInformation(student, root);
+    appendGradesInformation(student, root);
+    appendLateInformation(student, root);
+    appendResubmittedInformation(student, root);
+    appendNotes(student, root);
+
+    return doc;
+  }
+
+  private static void appendNotes(Student student, Element parent) {
+    List<String> notes = student.getNotes();
+    if (!notes.isEmpty()) {
+      doNotes(parent.getOwnerDocument(), parent, notes);
+    }
+  }
+
+  private static void appendResubmittedInformation(Student student, Element parent) {
+    Document doc = parent.getOwnerDocument();
+    List<String> resubmitted = student.getResubmitted();
+    if (!resubmitted.isEmpty()) {
+      Element resubNode = doc.createElement("resubmitted");
+
+      for (String assignmentName : resubmitted) {
+        Element nameNode = doc.createElement("name");
+        nameNode.appendChild(doc.createTextNode(assignmentName));
+        resubNode.appendChild(nameNode);
+      }
+
+      parent.appendChild(resubNode);
+    }
+  }
+
+  private static void appendLateInformation(Student student, Element parent) {
+    Document doc = parent.getOwnerDocument();
+    List<String> late = student.getLate();
+    if (!late.isEmpty()) {
+      Element lateNode = doc.createElement("late");
+
+      for (String assignmentName : late) {
+        Element nameNode = doc.createElement("name");
+        nameNode.appendChild(doc.createTextNode(assignmentName));
+        lateNode.appendChild(nameNode);
+      }
+
+      parent.appendChild(lateNode);
+    }
+  }
+
+  private static void appendGradesInformation(Student student, Element parent) {
+    Document doc = parent.getOwnerDocument();
+    Iterator gradeNames = student.getGradeNames().iterator();
+    if (gradeNames.hasNext()) {
+      Element gradesNode = doc.createElement("grades");
+      while (gradeNames.hasNext()) {
+        String gradeName = (String) gradeNames.next();
+        Grade grade = student.getGrade(gradeName);
+
+        Element gradeNode = doc.createElement("grade");
+
+        Element nameNode = doc.createElement("name");
+        nameNode.appendChild(doc.createTextNode(grade.getAssignmentName()));
+        gradeNode.appendChild(nameNode);
+
+        Element scoreNode = doc.createElement("score");
+        scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
+        gradeNode.appendChild(scoreNode);
+
+        appendSubmissionTimesInformation(grade.getSubmissionTimes(), gradeNode);
+
+        doNotes(doc, gradeNode, grade.getNotes());
+
+        if (grade.getScore() == Grade.INCOMPLETE) {
+          gradeNode.setAttribute("type", "INCOMPLETE");
+
+        } else if (grade.getScore() == Grade.NO_GRADE) {
+          gradeNode.setAttribute("type", "NO_GRADE");
+        }
+
+        gradesNode.appendChild(gradeNode);
+      }
+
+      parent.appendChild(gradesNode);
+    }
+  }
+
+  private static void appendSubmissionTimesInformation(List<LocalDateTime> submissionTimes, Element parent) {
+    if (!submissionTimes.isEmpty()) {
+      Document doc = parent.getOwnerDocument();
+      Element submissions = doc.createElement("submissions");
+      parent.appendChild(submissions);
+
+      submissionTimes.forEach(submissionTime -> {
+        Element submission = doc.createElement("submission");
+        submissions.appendChild(submission);
+        submission.appendChild(doc.createTextNode(submissionTime.format(DATE_TIME_FORMAT)));
+      });
+    }
+
+  }
+
+  private static void appendStudentInformation(Student student, Element root) {
+    appendTextElementIfValueIsNotNull(root, "id", student.getId());
+    appendTextElementIfValueIsNotNull(root, "firstName", student.getFirstName());
+    appendTextElementIfValueIsNotNull(root, "lastName", student.getLastName());
+    appendTextElementIfValueIsNotNull(root, "nickName", student.getNickName());
+    appendTextElementIfValueIsNotNull(root, "email", student.getEmail());
+    appendTextElementIfValueIsNotNull(root, "ssn", student.getSsn());
+    appendTextElementIfValueIsNotNull(root, "major", student.getMajor());
+    appendTextElementIfValueIsNotNull(root, "d2l-id", student.getD2LId());
+    appendTextElementIfValueIsNotNull(root, "letter-grade", Objects.toString(student.getLetterGrade(), null));
+  }
+
+  private static Document createXmlDocument() {
     Document doc = null;
 
     try {
@@ -296,142 +408,24 @@ public class XmlDumper extends XmlHelper {
 
       DOMImplementation dom =
         builder.getDOMImplementation();
-      DocumentType docType = 
+      DocumentType docType =
         dom.createDocumentType("student", publicID, systemID);
       doc = dom.createDocument(null, "student", docType);
 
-    } catch (ParserConfigurationException ex) {
-      ex.printStackTrace(System.err);
-      System.exit(1);
-
-    } catch (DOMException ex) {
-      // Eep, this is bad
+    } catch (ParserConfigurationException | DOMException ex) {
       ex.printStackTrace(System.err);
       System.exit(1);
     }
-
-    Element root = doc.getDocumentElement();
-
-    // id node
-    Element id = doc.createElement("id");
-    id.appendChild(doc.createTextNode(student.getId()));
-    root.appendChild(id);
-
-    // First name
-    if (student.getFirstName() != null) {
-      Element firstName = doc.createElement("firstName");
-      firstName.appendChild(doc.createTextNode(student.getFirstName()));
-      root.appendChild(firstName);
-    }
-
-    if (student.getLastName() != null) {
-      Element lastName = doc.createElement("lastName");
-      lastName.appendChild(doc.createTextNode(student.getLastName()));
-      root.appendChild(lastName);
-    }
-
-    if (student.getNickName() != null) {
-      Element nickName = doc.createElement("nickName");
-      nickName.appendChild(doc.createTextNode(student.getNickName()));
-      root.appendChild(nickName);
-    }
-
-    if (student.getEmail() != null) {
-      Element email = doc.createElement("email");
-      email.appendChild(doc.createTextNode(student.getEmail()));
-      root.appendChild(email);
-    }
-
-    if (student.getSsn() != null) {
-      Element ssn = doc.createElement("ssn");
-      ssn.appendChild(doc.createTextNode(student.getSsn()));
-      root.appendChild(ssn);
-    }
-
-    if (student.getMajor() != null) {
-      Element major = doc.createElement("major");
-      major.appendChild(doc.createTextNode(student.getMajor()));
-      root.appendChild(major);
-    }
-
-    if (student.getD2LId() != null) {
-      Element d2lId = doc.createElement("d2l-id");
-      d2lId.appendChild(doc.createTextNode(student.getD2LId()));
-      root.appendChild(d2lId);
-    }
-
-    if (student.getLetterGrade() != null) {
-      Element letterGrade = doc.createElement("letter-grade");
-      letterGrade.appendChild(doc.createTextNode(student.getLetterGrade().asString()));
-      root.appendChild(letterGrade);
-    }
-
-    Iterator gradeNames = student.getGradeNames().iterator();
-    if (gradeNames.hasNext()) {
-      Element gradesNode = doc.createElement("grades");
-      while (gradeNames.hasNext()) {
-        String gradeName = (String) gradeNames.next();
-        Grade grade = student.getGrade(gradeName);
-        
-        Element gradeNode = doc.createElement("grade");
-        
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(grade.getAssignmentName()));
-        gradeNode.appendChild(nameNode);
-        
-        Element scoreNode = doc.createElement("score");
-        scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
-        gradeNode.appendChild(scoreNode);
-        
-        doNotes(doc, gradeNode, grade.getNotes());
-        
-        if (grade.getScore() == Grade.INCOMPLETE) {
-          gradeNode.setAttribute("type", "INCOMPLETE");
-          
-        } else if (grade.getScore() == Grade.NO_GRADE) {
-          gradeNode.setAttribute("type", "NO_GRADE");
-        }
-
-        gradesNode.appendChild(gradeNode);
-      }
-
-      root.appendChild(gradesNode);
-    }
-
-    List late = student.getLate();
-    if (!late.isEmpty()) {
-      Element lateNode = doc.createElement("late");
-      
-      for (int i = 0; i < late.size(); i++) {
-        String name = (String) late.get(i);
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(name));
-        lateNode.appendChild(nameNode);
-      }
-      
-      root.appendChild(lateNode);
-    }
-
-    List resubmitted = student.getResubmitted();
-    if (!resubmitted.isEmpty()) {
-      Element resubNode = doc.createElement("resubmitted");
-          
-      for (int i = 0; i < resubmitted.size(); i++) {
-        String name = (String) resubmitted.get(i);
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(name));
-        resubNode.appendChild(nameNode);
-      }
-
-      root.appendChild(resubNode);
-    }
-
-    List notes = student.getNotes();
-    if (!notes.isEmpty()) {
-      doNotes(doc, root, notes);
-    }
-
     return doc;
+  }
+
+  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, String textValue) {
+    if (textValue != null) {
+      Document doc = parent.getOwnerDocument();
+      Element id = doc.createElement(elementName);
+      id.appendChild(doc.createTextNode(textValue));
+      parent.appendChild(id);
+    }
   }
 
 }

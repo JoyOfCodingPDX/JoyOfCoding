@@ -5,6 +5,7 @@ import com.google.common.io.ByteStreams;
 
 import javax.mail.Message;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
@@ -105,16 +106,32 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       student.setGrade(project.getName(), grade);
     }
     grade.addNote(note);
+
+    LocalDateTime submissionTime = getSubmissionTime(attrs);
+    grade.addSubmissionTime(submissionTime);
+
+    if (project.isSubmissionLate(submissionTime)) {
+      student.addLate(project.getName());
+    }
+  }
+
+  private LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {
+    String string = getSubmissionTimeString(attrs);
+    return Submit.ManifestAttributes.parseSubmissionTime(string);
   }
 
   private String getSubmissionNote(Attributes attrs) throws SubmissionException {
     String studentName = getManifestAttributeValue(attrs, USER_NAME, "Student name missing from manifest");
-    String submissionTime = getManifestAttributeValue(attrs, SUBMISSION_TIME, "Submission time missing from manifest");
+    String submissionTime = getSubmissionTimeString(attrs);
     String submissionComment = getManifestAttributeValue(attrs, SUBMISSION_COMMENT, "Submission comment missing from manifest");
 
     return "Submitted by: " + studentName + "\n" +
       "On: " + submissionTime + "\n" +
       "With comment: " + submissionComment + "\n";
+  }
+
+  private String getSubmissionTimeString(Attributes attrs) throws SubmissionException {
+    return getManifestAttributeValue(attrs, SUBMISSION_TIME, "Submission time missing from manifest");
   }
 
   private Assignment getProjectFromGradeBook(Attributes attrs) throws SubmissionException {

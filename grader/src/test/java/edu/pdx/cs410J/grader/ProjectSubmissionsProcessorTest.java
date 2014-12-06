@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -112,6 +112,61 @@ public class ProjectSubmissionsProcessorTest {
     assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
   }
 
+  @Test
+  public void submissionTimeNotedInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    LocalDateTime submissionDate = LocalDateTime.now().minusHours(2).withNano(0);
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
+  }
+
+  @Test
+  public void submissionsPastDueDateAreLate() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+    LocalDateTime dueDate = LocalDateTime.now();
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    LocalDateTime submissionDate = dueDate.plusDays(3);
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getLate(), contains(projectName));
+  }
+
+  @Test
+  public void submissionsBeforeDueDateAreNoteLate() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+    LocalDateTime dueDate = LocalDateTime.now();
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String submissionComment = "This is only a test";
+    LocalDateTime submissionDate = dueDate.minusDays(3);
+    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    assertThat(student.getLate(), not(contains(projectName)));
+  }
+
+  private Manifest createManifest(String projectName, Student student, LocalDateTime submissionDate, String submissionComment) {
+    return createManifest(projectName, student.getFullName(), student.getId(), student.getEmail(), submissionComment,
+      Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
+  }
+
   private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
     ProjectSubmissionsProcessor processor =
       new ProjectSubmissionsProcessor(new File(System.getProperty("user.dir")), gradebook);
@@ -125,13 +180,17 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment) {
+    return createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment, Submit.ManifestAttributes.formatSubmissionTime(LocalDateTime.now()));
+  }
+
+  private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment, String submissionTime) {
     Manifest manifest = new Manifest();
     Attributes attributes = manifest.getMainAttributes();
     attributes.put(USER_ID, wrongStudentId);
     attributes.put(USER_EMAIL, wrongEmail);
     attributes.put(USER_NAME, studentName);
     attributes.put(PROJECT_NAME, projectName);
-    attributes.put(SUBMISSION_TIME, Submit.ManifestAttributes.formatSubmissionTime(new Date()));
+    attributes.put(SUBMISSION_TIME, submissionTime);
     attributes.put(SUBMISSION_COMMENT, submissionComment);
     return manifest;
   }
@@ -147,8 +206,13 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   private GradeBook createGradeBookWithAssignment(String projectName) {
+    return createGradeBookWithAssignment(projectName, null);
+  }
+
+  private GradeBook createGradeBookWithAssignment(String projectName, LocalDateTime dueDate) {
     GradeBook gradebook = new GradeBook("test");
     Assignment assignment = new Assignment(projectName, 10.0);
+    assignment.setDueDate(dueDate);
     gradebook.addAssignment(assignment);
     return gradebook;
   }
