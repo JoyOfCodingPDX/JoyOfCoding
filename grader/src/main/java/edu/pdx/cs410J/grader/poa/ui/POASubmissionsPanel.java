@@ -34,7 +34,7 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
   public void addSubmissionSelectedListener(POASubmissionSelectedListener listener) {
     submissions.addListSelectionListener(e -> {
       if (isFinalEventInUserSelection(e)) {
-        listener.submissionSelected(e.getFirstIndex());
+        listener.submissionSelected(submissions.getSelectedIndex());
       }
     });
   }
