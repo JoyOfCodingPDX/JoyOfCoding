@@ -4,8 +4,30 @@ import java.time.LocalDateTime;
 
 public class POASubmission {
 
+  private final String subject;
+  private final String submitter;
+  private final LocalDateTime submitTime;
+
+  public POASubmission(String subject, String submitter, LocalDateTime submitTime) {
+    this.subject = subject;
+    this.submitter = submitter;
+    this.submitTime = submitTime;
+  }
+
   public static Builder builder() {
     return new Builder();
+  }
+
+  public String getSubject() {
+    return subject;
+  }
+
+  public String getSubmitter() {
+    return submitter;
+  }
+
+  public LocalDateTime getSubmitTime() {
+    return submitTime;
   }
 
   public static class Builder {
@@ -14,7 +36,7 @@ public class POASubmission {
     private LocalDateTime submitTime;
 
     public POASubmission create() {
-      return null;
+      return new POASubmission(subject, submitter, submitTime);
     }
 
     public Builder setSubject(String subject) {
