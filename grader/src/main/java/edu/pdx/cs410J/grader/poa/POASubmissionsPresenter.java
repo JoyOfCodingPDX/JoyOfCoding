@@ -18,7 +18,13 @@ public class POASubmissionsPresenter {
     this.bus = bus;
     this.view = view;
 
+    this.view.addSubmissionSelectedListener(this::selectPOASubmission);
+
     this.bus.register(this);
+  }
+
+  private void selectPOASubmission(int index) {
+    this.bus.post(new POASubmissionSelected(this.submissions.get(index)));
   }
 
   @Subscribe

@@ -28,4 +28,9 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
   public void setPOASubmissionsDescriptions(List<String> strings) {
     submissions.setListData(new Vector<>(strings));
   }
+
+  @Override
+  public void addSubmissionSelectedListener(SubmissionSelectedListener listener) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
 }
