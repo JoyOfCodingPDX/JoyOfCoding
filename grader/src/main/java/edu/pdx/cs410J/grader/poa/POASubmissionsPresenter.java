@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class POASubmissionsPresenter {
   private final POASubmissionsView view;
   private final List<POASubmission> submissions = new ArrayList<>();
 
+  @Inject
   public POASubmissionsPresenter(EventBus bus, POASubmissionsView view) {
     this.bus = bus;
     this.view = view;

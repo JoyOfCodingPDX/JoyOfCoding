@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmissionsView;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Vector;
 
+@Singleton
 public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
 
   private final JList<String> submissions;

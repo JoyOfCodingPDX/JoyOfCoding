@@ -1,15 +1,20 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmission;
-import edu.pdx.cs410J.grader.poa.POASubmissionsPresenter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 
+@Singleton
 public class PlanOfAttackGrader extends JFrame {
 
+  @Inject
   public PlanOfAttackGrader(POASubmissionsPanel submissions) {
     super("Plan Of Attack Grader");
 
@@ -19,11 +24,13 @@ public class PlanOfAttackGrader extends JFrame {
   }
 
   public static void main(String[] args) {
-    EventBus bus = new EventBus("PlanOfAttackGrader");
+    Injector injector = Guice.createInjector(new POAGraderUIModule());
 
-    createUI(bus);
+    PlanOfAttackGrader ui = injector.getInstance(PlanOfAttackGrader.class);
+    ui.pack();
+    ui.setVisible(true);
 
-    publishDemoSubmissions(bus);
+    publishDemoSubmissions(injector.getInstance(EventBus.class));
   }
 
   private static void publishDemoSubmissions(EventBus bus) {
@@ -44,13 +51,4 @@ public class PlanOfAttackGrader extends JFrame {
     return builder.create();
   }
 
-  private static void createUI(EventBus bus) {
-    POASubmissionsPanel submissions = new POASubmissionsPanel();
-    PlanOfAttackGrader ui = new PlanOfAttackGrader(submissions);
-    ui.pack();
-    ui.setVisible(true);
-
-    new POASubmissionsPresenter(bus, submissions);
-
-  }
 }
