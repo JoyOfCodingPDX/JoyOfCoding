@@ -9,14 +9,13 @@ import org.mockito.ArgumentCaptor;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import static edu.pdx.cs410J.grader.poa.POASubmissionsView.SubmissionSelectedListener;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class POASubmissionsPresentTest {
+public class POASubmissionsPresenterTest {
 
   private EventBus bus;
   private POASubmissionsView view;
@@ -70,10 +69,10 @@ public class POASubmissionsPresentTest {
     String submitter = "Test Student";
     LocalDateTime submitTime = LocalDateTime.now();
 
-    SubmissionSelectedHandler handler = mock(SubmissionSelectedHandler.class);
+    POASubmissionSelectedHandler handler = mock(POASubmissionSelectedHandler.class);
     bus.register(handler);
 
-    ArgumentCaptor<SubmissionSelectedListener> listener = ArgumentCaptor.forClass(SubmissionSelectedListener.class);
+    ArgumentCaptor<POASubmissionsView.POASubmissionSelectedListener> listener = ArgumentCaptor.forClass(POASubmissionsView.POASubmissionSelectedListener.class);
     verify(view).addSubmissionSelectedListener(listener.capture());
 
     bus.post(createPOASubmission(subject1, submitter, submitTime));
@@ -92,7 +91,7 @@ public class POASubmissionsPresentTest {
     verifyNoMoreInteractions(handler);
   }
 
-  private interface SubmissionSelectedHandler {
+  private interface POASubmissionSelectedHandler {
     @Subscribe
     public void handle(POASubmissionSelected selected);
   }

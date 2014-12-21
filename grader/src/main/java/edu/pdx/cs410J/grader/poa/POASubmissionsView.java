@@ -5,9 +5,9 @@ import java.util.List;
 public interface POASubmissionsView {
   void setPOASubmissionsDescriptions(List<String> strings);
 
-  void addSubmissionSelectedListener(SubmissionSelectedListener listener);
+  void addSubmissionSelectedListener(POASubmissionSelectedListener listener);
 
-  interface SubmissionSelectedListener {
+  interface POASubmissionSelectedListener {
     public void submissionSelected(int index);
   }
 }
