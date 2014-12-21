@@ -14,6 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class POASubmissionsPresentTest {
 
@@ -87,6 +88,8 @@ public class POASubmissionsPresentTest {
     ArgumentCaptor<POASubmissionSelected> eventCaptor = ArgumentCaptor.forClass(POASubmissionSelected.class);
     verify(handler).handle(eventCaptor.capture());
     assertThat(eventCaptor.getValue().getSubmission(), equalTo(submission));
+
+    verifyNoMoreInteractions(handler);
   }
 
   private interface SubmissionSelectedHandler {

@@ -1,11 +1,14 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Singleton
 public class PlanOfAttackGrader extends JFrame {
+  private static final Logger logger = LoggerFactory.getLogger(PlanOfAttackGrader.class);
 
   @Inject
   public PlanOfAttackGrader(POASubmissionsPanel submissions) {
@@ -26,11 +30,24 @@ public class PlanOfAttackGrader extends JFrame {
   public static void main(String[] args) {
     Injector injector = Guice.createInjector(new POAGraderUIModule());
 
+    EventBus bus = injector.getInstance(EventBus.class);
+    registerEventLogger(bus);
+
     PlanOfAttackGrader ui = injector.getInstance(PlanOfAttackGrader.class);
     ui.pack();
     ui.setVisible(true);
 
-    publishDemoSubmissions(injector.getInstance(EventBus.class));
+    publishDemoSubmissions(bus);
+  }
+
+  private static void registerEventLogger(EventBus bus) {
+    bus.register(new Object() {
+      @Subscribe
+      public void logEvent(Object event) {
+        logger.info("Event " + event);
+      }
+    });
+
   }
 
   private static void publishDemoSubmissions(EventBus bus) {

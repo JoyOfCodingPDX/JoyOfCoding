@@ -30,6 +30,11 @@ public class POASubmission {
     return submitTime;
   }
 
+  @Override
+  public String toString() {
+    return String.format("POA from %s with subject %s on %s", getSubmitter(), getSubject(), getSubmitTime());
+  }
+
   public static class Builder {
     private String subject;
     private String submitter;

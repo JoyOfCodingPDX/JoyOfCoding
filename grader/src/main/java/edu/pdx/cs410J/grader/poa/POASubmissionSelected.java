@@ -10,4 +10,9 @@ public class POASubmissionSelected {
   public POASubmission getSubmission() {
     return submission;
   }
+
+  @Override
+  public String toString() {
+    return "Submission selected: " + getSubmission();
+  }
 }
