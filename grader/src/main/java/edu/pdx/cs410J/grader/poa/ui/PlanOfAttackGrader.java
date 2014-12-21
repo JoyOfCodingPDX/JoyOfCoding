@@ -19,12 +19,13 @@ public class PlanOfAttackGrader extends JFrame {
   private static final Logger logger = LoggerFactory.getLogger(PlanOfAttackGrader.class);
 
   @Inject
-  public PlanOfAttackGrader(POASubmissionsPanel submissions) {
+  public PlanOfAttackGrader(POASubmissionsPanel submissions, POASubmissionInformationPanel submissionInfo) {
     super("Plan Of Attack Grader");
 
     Container content = this.getContentPane();
     content.setLayout(new BorderLayout());
-    content.add(submissions, BorderLayout.CENTER);
+    content.add(submissions, BorderLayout.WEST);
+    content.add(submissionInfo, BorderLayout.CENTER);
   }
 
   public static void main(String[] args) {

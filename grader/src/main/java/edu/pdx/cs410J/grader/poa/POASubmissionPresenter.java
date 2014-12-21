@@ -2,13 +2,17 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Singleton
 public class POASubmissionPresenter {
   private final POASubmissionView view;
 
+  @Inject
   public POASubmissionPresenter(EventBus bus, POASubmissionView view) {
     this.view = view;
 
