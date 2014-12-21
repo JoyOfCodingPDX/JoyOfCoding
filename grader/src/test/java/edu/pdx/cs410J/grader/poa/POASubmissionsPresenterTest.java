@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.grader.poa;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,18 +10,16 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
-public class POASubmissionsPresenterTest {
+public class POASubmissionsPresenterTest extends POASubmissionTestCase {
 
-  private EventBus bus;
   private POASubmissionsView view;
 
+  @Override
   @Before
   public void setUp() {
-    bus = new EventBus();
+    super.setUp();
     view = mock(POASubmissionsView.class);
     new POASubmissionsPresenter(bus, view);
   }
@@ -51,14 +48,6 @@ public class POASubmissionsPresenterTest {
 
     verify(view).setPOASubmissionsDescriptions(Arrays.asList(subject1));
     verify(view).setPOASubmissionsDescriptions(Arrays.asList(subject1, subject2));
-  }
-
-  private POASubmission createPOASubmission(String subject, String submitter, LocalDateTime submitTime) {
-    POASubmission.Builder builder = POASubmission.builder();
-    builder.setSubject(subject);
-    builder.setSubmitter(submitter);
-    builder.setSubmitTime(submitTime);
-    return builder.create();
   }
 
   @Test
