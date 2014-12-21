@@ -20,6 +20,7 @@ public class POASubmissionInformationPanel extends JPanel {
     addComponentOnGrid(widgets.getSubmissionTimeWidget(), information, 0, 1);
 
     this.add(information, BorderLayout.NORTH);
+    this.add(widgets.getSubmissionContentWidget(), BorderLayout.CENTER);
   }
 
   private void addComponentOnGrid(JComponent component, JPanel container, int row, int column) {

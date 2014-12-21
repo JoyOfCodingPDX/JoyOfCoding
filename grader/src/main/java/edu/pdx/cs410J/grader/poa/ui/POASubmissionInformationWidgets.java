@@ -9,15 +9,16 @@ import java.awt.*;
 @Singleton
 public class POASubmissionInformationWidgets implements POASubmissionView {
 
-
-  private JLabel subjectLabel;
-  private JLabel submitterLabel;
-  private JLabel submissionTimeLabel;
+  private final JLabel subjectLabel;
+  private final JLabel submitterLabel;
+  private final JLabel submissionTimeLabel;
+  private final JTextArea submissionContent;
 
   public POASubmissionInformationWidgets() {
     this.subjectLabel = new JLabel();
     this.submitterLabel = new JLabel();
     this.submissionTimeLabel = new JLabel();
+    this.submissionContent = new JTextArea();
   }
 
   public JComponent getSubjectWidget() {
@@ -52,5 +53,9 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   @Override
   public void setSubmissionTime(String time) {
     this.submissionTimeLabel.setText(time);
+  }
+
+  public JComponent getSubmissionContentWidget() {
+    return new JScrollPane(this.submissionContent);
   }
 }
