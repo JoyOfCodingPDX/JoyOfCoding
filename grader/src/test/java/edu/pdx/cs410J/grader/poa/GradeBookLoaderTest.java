@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -53,4 +54,23 @@ public class GradeBookLoaderTest extends EventBusTestCase {
     void handle(GradeBookLoaded event);
   }
 
+  @Test
+  public void unhandledExceptionEventPublishedWhenLoadingBadGradeBook() throws IOException {
+    File badFile = File.createTempFile("badGradeBook", "xml");
+
+    UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.class);
+    this.bus.register(handler);
+
+    this.bus.post(new LoadGradeBook(badFile));
+
+    ArgumentCaptor<UnhandledExceptionEvent> event = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
+    verify(handler).handle(event.capture());
+
+    assertThat(event.getValue().getUnhandledException(), any(Throwable.class));
+  }
+
+  private interface UnhandledExceptionEventHandler {
+    @Subscribe
+    void handle(UnhandledExceptionEvent event);
+  }
 }
