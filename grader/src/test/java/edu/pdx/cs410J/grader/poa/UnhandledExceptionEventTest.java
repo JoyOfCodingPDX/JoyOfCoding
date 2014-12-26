@@ -14,45 +14,45 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class UncaughtExceptionEventTest {
+public class UnhandledExceptionEventTest {
 
   @Test
-  public void uncaughtExceptionInEventThreadCallsSubscriberExceptionHandler() {
+  public void unhandledExceptionInEventThreadCallsSubscriberExceptionHandler() {
     SubscriberExceptionHandler handler = mock(SubscriberExceptionHandler.class);
     EventBus bus = new EventBus(handler);
 
-    final IllegalStateException exception = new IllegalStateException("Excepted Uncaught Exception");
+    final IllegalStateException exception = new IllegalStateException("Excepted Unhandled Exception");
     bus.register(new Object() {
       @Subscribe
-      public void throwUncaughtException(TriggerUncaughtException event) {
+      public void throwUnhandledException(TriggerUnhandledException event) {
         throw exception;
       }
     });
 
-    bus.post(new TriggerUncaughtException());
+    bus.post(new TriggerUnhandledException());
 
     verify(handler).handleException(eq(exception), any(SubscriberExceptionContext.class));
   }
 
-  private class TriggerUncaughtException {
+  private class TriggerUnhandledException {
   }
 
   @Test
-  public void uncaughtExceptionInEventThreadFiresUncaughtExceptionEvent() {
-    EventBusThatPublishesUncaughtExceptionEvents bus = new EventBusThatPublishesUncaughtExceptionEvents();
+  public void unhandledExceptionInEventThreadFiresUnhandledExceptionEvent() {
+    EventBusThatPublishesUnhandledExceptionEvents bus = new EventBusThatPublishesUnhandledExceptionEvents();
 
-    UncaughtExceptionEventHandler handler = mock(UncaughtExceptionEventHandler.class);
+    UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.class);
     bus.register(handler);
 
-    final IllegalStateException exception = new IllegalStateException("Excepted Uncaught Exception");
+    final IllegalStateException exception = new IllegalStateException("Expected Unhandled Exception");
     bus.register(new Object() {
       @Subscribe
-      public void throwUncaughtException(TriggerUncaughtException event) {
+      public void throwUnhandledException(TriggerUnhandledException event) {
         throw exception;
       }
     });
 
-    bus.post(new TriggerUncaughtException());
+    bus.post(new TriggerUnhandledException());
 
     ArgumentCaptor<UnhandledExceptionEvent> event = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
     verify(handler).handle(event.capture());
@@ -60,7 +60,7 @@ public class UncaughtExceptionEventTest {
     assertThat(event.getValue().getUnhandledException(), equalTo(exception));
   }
 
-  private interface UncaughtExceptionEventHandler {
+  private interface UnhandledExceptionEventHandler {
     @Subscribe
     void handle(UnhandledExceptionEvent event);
   }

@@ -5,7 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
 
-public class EventBusThatPublishesUncaughtExceptionEvents extends EventBus {
+public class EventBusThatPublishesUnhandledExceptionEvents extends EventBus {
 
   /** We have to use this hokey second event bus because the
    * SubscriberExceptionHandler (which posts the UnhandledExceptionEvent)
@@ -13,7 +13,7 @@ public class EventBusThatPublishesUncaughtExceptionEvents extends EventBus {
    * fully initialized and available for use. */
   private static final EventBus errorMessageBus = new EventBus("Error Messages");
 
-  public EventBusThatPublishesUncaughtExceptionEvents() {
+  public EventBusThatPublishesUnhandledExceptionEvents() {
     super(new SubscriberExceptionHandler() {
       @Override
       public void handleException(Throwable throwable, SubscriberExceptionContext subscriberExceptionContext) {

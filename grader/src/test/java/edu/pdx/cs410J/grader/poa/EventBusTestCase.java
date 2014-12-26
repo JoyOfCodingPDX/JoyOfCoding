@@ -8,6 +8,6 @@ public class EventBusTestCase {
 
   @Before
   public void setUp() {
-    bus = new EventBusThatPublishesUncaughtExceptionEvents();
+    bus = new EventBusThatPublishesUnhandledExceptionEvents();
   }
 }
