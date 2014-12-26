@@ -12,8 +12,7 @@ import java.util.Arrays;
 import static edu.pdx.cs410J.grader.poa.StudentsView.SelectStudentHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class StudentsPresenterTest extends EventBusTestCase {
 
@@ -97,8 +96,39 @@ public class StudentsPresenterTest extends EventBusTestCase {
     assertThat(event.getValue().getSelectedStudent(), equalTo(student1));
   }
 
-  // submissionWithMatchingStudentEmailFiresStudentSelectedEvent
+  @Test
+  public void submissionWithMatchingStudentEmailFiresStudentSelectedEvent() {
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
 
-  // submissionByNonMatchingStudentDoesNotFireStudentSelectedEvent
+    this.bus.post(new GradeBookLoaded(this.book));
+
+    POASubmission submission =
+      new POASubmission("Subject", student2.getEmail(), LocalDateTime.now());
+    this.bus.post(submission);
+
+    verify(this.view).setSelectedStudentIndex(2);
+
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(student2));
+  }
+
+  @Test
+  public void submissionByNonMatchingStudentDoesNotFireStudentSelectedEvent() {
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(this.book));
+
+    POASubmission submission =
+      new POASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
+    this.bus.post(submission);
+
+    verify(this.view, times(1)).setSelectedStudentIndex(0);
+
+    verifyNoMoreInteractions(eventHandler);
+  }
 
 }

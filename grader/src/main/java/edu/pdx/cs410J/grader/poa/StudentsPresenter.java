@@ -62,7 +62,11 @@ public class StudentsPresenter {
 
   private boolean submitterMatchesStudent(POASubmission submission, Student student) {
     String submitter = submission.getSubmitter();
-    return submitterContainsStudentName(student, submitter);
+    return submitterContainsStudentName(student, submitter) || submitterContainsStudentEmail(student, submitter);
+  }
+
+  private boolean submitterContainsStudentEmail(Student student, String submitter) {
+    return submitter.contains(student.getEmail());
   }
 
   private boolean submitterContainsStudentName(Student student, String submitter) {
