@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.XmlGradeBookParser;
@@ -12,6 +13,7 @@ import java.io.IOException;
 public class GradeBookLoader {
   private final EventBus bus;
 
+  @Inject
   public GradeBookLoader(EventBus bus) {
     this.bus = bus;
     this.bus.register(this);

@@ -6,5 +6,5 @@ public interface UnhandledExceptionView {
 
   void setExceptionDetails(String details);
 
-  void show();
+  void displayView();
 }

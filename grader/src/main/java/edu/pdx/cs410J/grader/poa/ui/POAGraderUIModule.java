@@ -13,18 +13,20 @@ public class POAGraderUIModule extends AbstractModule {
     bind(POASubmissionsView.class).to(POASubmissionsPanel.class);
     bind(POASubmissionView.class).to(POASubmissionInformationWidgets.class);
     bind(GradeBookView.class).to(GradeBookWidget.class);
+    bind(UnhandledExceptionView.class).to(UnhandledExceptionDialog.class).asEagerSingleton();
 
     bind(POASubmissionsPresenter.class).asEagerSingleton();
     bind(POASubmissionPresenter.class).asEagerSingleton();
     bind(GradeBookPresenter.class).asEagerSingleton();
+    bind(UnhandledExceptionPresenter.class).asEagerSingleton();
+
+    bind(GradeBookLoader.class).asEagerSingleton();
   }
 
   @Provides
   @Singleton
   public EventBus provideEventBus() {
-    return new EventBus((throwable, subscriberExceptionContext) -> {
-      throwable.printStackTrace(System.err);
-    });
+    return new EventBusThatPublishesUnhandledExceptionEvents();
   }
 
 }

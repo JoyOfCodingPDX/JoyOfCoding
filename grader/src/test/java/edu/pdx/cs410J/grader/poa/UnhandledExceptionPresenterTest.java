@@ -30,7 +30,7 @@ public class UnhandledExceptionPresenterTest extends EventBusTestCase {
 
     verify(this.view).setExceptionMessage(message);
     verify(this.view).setExceptionDetails(getStackTrace(exception));
-    verify(this.view).show();
+    verify(this.view).displayView();
   }
 
   private String getStackTrace(Throwable exception) throws IOException {
