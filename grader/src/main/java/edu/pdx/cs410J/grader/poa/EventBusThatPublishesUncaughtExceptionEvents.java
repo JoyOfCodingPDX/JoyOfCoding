@@ -8,7 +8,7 @@ import com.google.common.eventbus.SubscriberExceptionHandler;
 public class EventBusThatPublishesUncaughtExceptionEvents extends EventBus {
 
   /** We have to use this hokey second event bus because the
-   * SubscriberExceptionHandler (which posts the UncaughtExceptionEvent)
+   * SubscriberExceptionHandler (which posts the UnhandledExceptionEvent)
    * must be created in the constructor before the bus, itself, is
    * fully initialized and available for use. */
   private static final EventBus errorMessageBus = new EventBus("Error Messages");
@@ -25,11 +25,11 @@ public class EventBusThatPublishesUncaughtExceptionEvents extends EventBus {
   }
 
   @Subscribe
-  public void postUncaughtExceptionEventToErrorMessageBus(UncaughtExceptionEvent event) {
+  public void postUncaughtExceptionEventToErrorMessageBus(UnhandledExceptionEvent event) {
     this.post(event);
   }
 
   private static void postUncaughtExceptionEvent(Throwable throwable) {
-    errorMessageBus.post(new UncaughtExceptionEvent(throwable));
+    errorMessageBus.post(new UnhandledExceptionEvent(throwable));
   }
 }

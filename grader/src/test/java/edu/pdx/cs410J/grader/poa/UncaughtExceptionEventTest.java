@@ -54,14 +54,14 @@ public class UncaughtExceptionEventTest {
 
     bus.post(new TriggerUncaughtException());
 
-    ArgumentCaptor<UncaughtExceptionEvent> event = ArgumentCaptor.forClass(UncaughtExceptionEvent.class);
+    ArgumentCaptor<UnhandledExceptionEvent> event = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
     verify(handler).handle(event.capture());
 
-    assertThat(event.getValue().getUncaughtException(), equalTo(exception));
+    assertThat(event.getValue().getUnhandledException(), equalTo(exception));
   }
 
   private interface UncaughtExceptionEventHandler {
     @Subscribe
-    void handle(UncaughtExceptionEvent event);
+    void handle(UnhandledExceptionEvent event);
   }
 }
