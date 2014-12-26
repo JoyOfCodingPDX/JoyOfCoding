@@ -49,10 +49,10 @@ public class StudentsPresenter {
   }
 
   @Subscribe
-  public void attemptToMatchSubmissionWithStudent(POASubmission submission) {
+  public void attemptToMatchSubmissionWithStudent(POASubmissionSelected selected) {
     for (int i = 0; i < students.size(); i++) {
       Student student = students.get(i);
-      if (submitterMatchesStudent(submission, student)) {
+      if (submitterMatchesStudent(selected.getSubmission(), student)) {
         this.view.setSelectedStudentIndex(i);
         fireStudentSelectedEvent(student);
         return;

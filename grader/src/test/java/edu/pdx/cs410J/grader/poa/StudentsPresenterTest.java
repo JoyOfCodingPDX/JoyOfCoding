@@ -86,7 +86,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
 
     POASubmission submission =
       new POASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
-    this.bus.post(submission);
+    this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(1);
 
@@ -105,7 +105,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
 
     POASubmission submission =
       new POASubmission("Subject", student2.getEmail(), LocalDateTime.now());
-    this.bus.post(submission);
+    this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(2);
 
@@ -124,7 +124,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
 
     POASubmission submission =
       new POASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
-    this.bus.post(submission);
+    this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view, times(1)).setSelectedStudentIndex(0);
 
