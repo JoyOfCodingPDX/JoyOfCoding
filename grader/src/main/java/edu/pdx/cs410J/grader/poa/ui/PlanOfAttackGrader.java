@@ -10,35 +10,43 @@ import edu.pdx.cs410J.grader.poa.POASubmission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 
 @Singleton
-public class PlanOfAttackGrader extends JFrame {
+public class PlanOfAttackGrader {
   private static final Logger logger = LoggerFactory.getLogger(PlanOfAttackGrader.class);
+  private final TopLevelJFrame parent;
 
   @Inject
-  public PlanOfAttackGrader(POASubmissionsPanel submissions, POASubmissionInformationPanel submissionInfo) {
-    super("Plan Of Attack Grader");
+  public PlanOfAttackGrader(TopLevelJFrame parent, POASubmissionsPanel submissions, POASubmissionInformationPanel submissionInfo) {
+    this.parent = parent;
 
-    Container content = this.getContentPane();
+    parent.setTitle("Plan Of Attack Grader");
+
+    Container content = parent.getContentPane();
     content.setLayout(new BorderLayout());
     content.add(submissions, BorderLayout.WEST);
     content.add(submissionInfo, BorderLayout.CENTER);
   }
 
   public static void main(String[] args) {
+    Thread.currentThread().setUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
+
     Injector injector = Guice.createInjector(new POAGraderUIModule());
 
     EventBus bus = injector.getInstance(EventBus.class);
     registerEventLogger(bus);
 
     PlanOfAttackGrader ui = injector.getInstance(PlanOfAttackGrader.class);
-    ui.pack();
-    ui.setVisible(true);
+    ui.display();
 
     publishDemoSubmissions(bus);
+  }
+
+  private void display() {
+    parent.pack();
+    parent.setVisible(true);
   }
 
   private static void registerEventLogger(EventBus bus) {

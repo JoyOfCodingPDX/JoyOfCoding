@@ -10,17 +10,18 @@ import java.awt.*;
 public class POASubmissionInformationPanel extends JPanel {
 
   @Inject
-  public POASubmissionInformationPanel(POASubmissionInformationWidgets widgets) {
+  public POASubmissionInformationPanel(POASubmissionInformationWidgets submissionWidgets, GradeBookWidget gradeBookWidget) {
     this.setLayout(new BorderLayout());
 
     JPanel information = new JPanel(new GridBagLayout());
 
-    addComponentOnGrid(widgets.getSubjectWidget(), information, 0, 0);
-    addComponentOnGrid(widgets.getSubmitterWidget(), information, 1, 0);
-    addComponentOnGrid(widgets.getSubmissionTimeWidget(), information, 0, 1);
+    addComponentOnGrid(submissionWidgets.getSubjectWidget(), information, 0, 0);
+    addComponentOnGrid(submissionWidgets.getSubmitterWidget(), information, 1, 0);
+    addComponentOnGrid(submissionWidgets.getSubmissionTimeWidget(), information, 0, 1);
+    addComponentOnGrid(gradeBookWidget, information, 1, 1);
 
     this.add(information, BorderLayout.NORTH);
-    this.add(widgets.getSubmissionContentWidget(), BorderLayout.CENTER);
+    this.add(submissionWidgets.getSubmissionContentWidget(), BorderLayout.CENTER);
   }
 
   private void addComponentOnGrid(JComponent component, JPanel container, int row, int column) {

@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 
 import java.io.File;
 
@@ -9,6 +10,7 @@ public class GradeBookPresenter {
   private final GradeBookView view;
   private final EventBus bus;
 
+  @Inject
   public GradeBookPresenter(EventBus bus, GradeBookView view) {
     this.bus = bus;
     this.view = view;

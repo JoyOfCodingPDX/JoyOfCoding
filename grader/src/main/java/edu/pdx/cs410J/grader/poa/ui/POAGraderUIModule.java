@@ -2,20 +2,29 @@ package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
-import edu.pdx.cs410J.grader.poa.POASubmissionPresenter;
-import edu.pdx.cs410J.grader.poa.POASubmissionView;
-import edu.pdx.cs410J.grader.poa.POASubmissionsPresenter;
-import edu.pdx.cs410J.grader.poa.POASubmissionsView;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.poa.*;
 
 public class POAGraderUIModule extends AbstractModule {
   @Override
   protected void configure() {
-    bind(EventBus.class).toInstance(new EventBus("PlanOfAttackGrader"));
 
     bind(POASubmissionsView.class).to(POASubmissionsPanel.class);
     bind(POASubmissionView.class).to(POASubmissionInformationWidgets.class);
+    bind(GradeBookView.class).to(GradeBookWidget.class);
 
     bind(POASubmissionsPresenter.class).asEagerSingleton();
     bind(POASubmissionPresenter.class).asEagerSingleton();
+    bind(GradeBookPresenter.class).asEagerSingleton();
   }
+
+  @Provides
+  @Singleton
+  public EventBus provideEventBus() {
+    return new EventBus((throwable, subscriberExceptionContext) -> {
+      throwable.printStackTrace(System.err);
+    });
+  }
+
 }
