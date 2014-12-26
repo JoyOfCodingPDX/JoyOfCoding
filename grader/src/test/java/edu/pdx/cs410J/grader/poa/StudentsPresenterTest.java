@@ -6,6 +6,7 @@ import edu.pdx.cs410J.grader.Student;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static edu.pdx.cs410J.grader.poa.StudentsView.SelectStudentHandler;
@@ -77,9 +78,27 @@ public class StudentsPresenterTest extends EventBusTestCase {
     void handle(StudentSelectedEvent event);
   }
 
-  // submissionByNonMatchingStudentDoesNotFireStudentSelectedEvent
+  @Test
+  public void submissionWithMatchingStudentNameFiresStudentSelectedEvent() {
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
 
-  // submissionWithMatchingStudentNameFiresStudentSelectedEvent
+    this.bus.post(new GradeBookLoaded(this.book));
+
+    POASubmission submission =
+      new POASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
+    this.bus.post(submission);
+
+    verify(this.view).setSelectedStudentIndex(1);
+
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(student1));
+  }
 
   // submissionWithMatchingStudentEmailFiresStudentSelectedEvent
+
+  // submissionByNonMatchingStudentDoesNotFireStudentSelectedEvent
+
 }
