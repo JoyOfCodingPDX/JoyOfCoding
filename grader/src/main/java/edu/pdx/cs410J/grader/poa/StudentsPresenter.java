@@ -2,6 +2,8 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
@@ -9,11 +11,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Singleton
 public class StudentsPresenter {
   private final EventBus bus;
   private final StudentsView view;
   private List<Student> students = Collections.emptyList();
 
+  @Inject
   public StudentsPresenter(EventBus bus, StudentsView view) {
     this.bus = bus;
     this.view = view;
