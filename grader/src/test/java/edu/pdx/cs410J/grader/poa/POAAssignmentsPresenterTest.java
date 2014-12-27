@@ -1,17 +1,24 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 
+import static edu.pdx.cs410J.grader.poa.POAAssignmentsView.AssignmentSelectedHandler;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class POAAssignmentsPresenterTest extends EventBusTestCase {
 
   private POAAssignmentsView view;
+  private GradeBook book;
+  private Assignment assignment1;
 
   @Override
   public void setUp() {
@@ -20,20 +27,43 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
     this.view = mock(POAAssignmentsView.class);
 
     new POAAssignmentsPresenter(this.bus, this.view);
+
+    book = new GradeBook("Test Grade Book");
+    book.addAssignment(new Assignment("POA 0", 1.0).setType(Assignment.AssignmentType.POA));
+    assignment1 = new Assignment("POA 1", 1.0).setType(Assignment.AssignmentType.POA);
+    book.addAssignment(assignment1);
+    book.addAssignment(new Assignment("POA 2", 1.0).setType(Assignment.AssignmentType.POA));
+    book.addAssignment(new Assignment("Quiz 0", 3.0).setType(Assignment.AssignmentType.QUIZ));
   }
 
   @Test
   public void assignmentListPopulatedInViewWhenGradeBookLoaded() {
-
-    GradeBook book = new GradeBook("Test Grade Book");
-    book.addAssignment(new Assignment("POA 0", 1.0).setType(Assignment.AssignmentType.POA));
-    book.addAssignment(new Assignment("POA 1", 1.0).setType(Assignment.AssignmentType.POA));
-    book.addAssignment(new Assignment("POA 2", 1.0).setType(Assignment.AssignmentType.POA));
-    book.addAssignment(new Assignment("Quiz 0", 3.0).setType(Assignment.AssignmentType.QUIZ));
-
     this.bus.post(new GradeBookLoaded(book));
 
     verify(this.view).setAssignments(Arrays.asList("POA 0", "POA 1", "POA 2"));
     verify(this.view).setSelectedAssignment(0);
+  }
+
+  @Test
+  public void assignmentSelectedFireWhenAssignmentSelectedInView() {
+    ArgumentCaptor<AssignmentSelectedHandler> viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.class);
+    verify(this.view).addAssignmentSelectedHandler(viewHandler.capture());
+
+    AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    viewHandler.getValue().assignmentSelected(1);
+
+    ArgumentCaptor<AssignmentSelectedEvent> event = ArgumentCaptor.forClass(AssignmentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getAssignment(), equalTo(assignment1));
+  }
+
+  private interface AssignmentSelectedEventHandler {
+    @Subscribe
+    void handle(AssignmentSelectedEvent event);
   }
 }
