@@ -1,14 +1,18 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class POAAssignmentsPresenter {
@@ -26,6 +30,10 @@ public class POAAssignmentsPresenter {
 
   private void fireAssignmentSelectedForAssignment(int index) {
     Assignment assignment = this.poaAssignments.get(index);
+    fireAssignmentSelectedEvent(assignment);
+  }
+
+  private void fireAssignmentSelectedEvent(Assignment assignment) {
     this.bus.post(new AssignmentSelectedEvent(assignment));
   }
 
@@ -62,4 +70,31 @@ public class POAAssignmentsPresenter {
   private boolean isAssignmentPOA(Assignment assignment) {
     return assignment.getType() == Assignment.AssignmentType.POA;
   }
+
+  @Subscribe
+  public void selectAssignmentThatMatchesSubmissionSubject(POASubmission submission) {
+    List<String> numbersInSubject = findNumbersInString(submission.getSubject());
+    for (int i = 0; i < this.poaAssignments.size(); i++) {
+      Assignment assignment = this.poaAssignments.get(i);
+      for (String numberInSubject : numbersInSubject) {
+        if (assignment.getName().contains(numberInSubject)) {
+          this.view.setSelectedAssignment(i);
+          fireAssignmentSelectedEvent(assignment);
+        }
+      }
+    }
+  }
+
+  @VisibleForTesting
+  static List<String> findNumbersInString(String string) {
+    Pattern pattern = Pattern.compile(".*?(\\d+).*?");
+    Matcher matcher = pattern.matcher(string);
+    List<String> numbers = new ArrayList<>();
+    while (matcher.find()) {
+      numbers.add(matcher.group(1));
+    }
+
+    return numbers;
+  }
 }
+

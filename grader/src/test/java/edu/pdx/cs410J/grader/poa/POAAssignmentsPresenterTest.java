@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 import static edu.pdx.cs410J.grader.poa.POAAssignmentsView.AssignmentSelectedHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -84,6 +84,32 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
   }
 
 
-  // selectAssignmentWhenPOASubmittedWithAssignmentNumberInSubject
+  @Test
+  public void selectAssignmentWhenPOASubmittedWithAssignmentNumberInSubject() {
+    AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    this.bus.post(new POASubmission("POA for Project 2", "me", LocalDateTime.now()));
+
+    verify(this.view).setSelectedAssignment(2);
+
+    ArgumentCaptor<AssignmentSelectedEvent> event = ArgumentCaptor.forClass(AssignmentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getAssignment(), equalTo(assignment2));
+  }
+
+  @Test
+  public void testFindNumbersInString() {
+    assertThat(POAAssignmentsPresenter.findNumbersInString("POA for Project 1"), hasItem("1"));
+    assertThat(POAAssignmentsPresenter.findNumbersInString("POA for Project 42"), hasItem("42"));
+    assertThat(POAAssignmentsPresenter.findNumbersInString("3 for Project 42"), hasItems("3", "42"));
+  }
+
+  // populateDueDateInView
+
+  // clearDueDateInViewWhenAssignmentHasNoDueDate
 
 }
