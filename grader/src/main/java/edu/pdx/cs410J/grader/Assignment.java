@@ -103,9 +103,10 @@ public class Assignment extends NotableImpl {
    * @see #QUIZ
    * @see #OTHER
    */
-  public void setType(int type) {
+  public Assignment setType(int type) {
     this.setDirty(true);
     this.type = type;
+    return this;
   }
 
   /**
