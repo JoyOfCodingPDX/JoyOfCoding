@@ -6,6 +6,7 @@ import edu.pdx.cs410J.grader.GradeBook;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static edu.pdx.cs410J.grader.poa.POAAssignmentsView.AssignmentSelectedHandler;
@@ -18,7 +19,9 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
 
   private POAAssignmentsView view;
   private GradeBook book;
+  private Assignment assignment0;
   private Assignment assignment1;
+  private Assignment assignment2;
 
   @Override
   public void setUp() {
@@ -29,10 +32,12 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
     new POAAssignmentsPresenter(this.bus, this.view);
 
     book = new GradeBook("Test Grade Book");
-    book.addAssignment(new Assignment("POA 0", 1.0).setType(Assignment.AssignmentType.POA));
+    assignment0 = new Assignment("POA 0", 1.0).setType(Assignment.AssignmentType.POA);
+    book.addAssignment(assignment0);
     assignment1 = new Assignment("POA 1", 1.0).setType(Assignment.AssignmentType.POA);
     book.addAssignment(assignment1);
-    book.addAssignment(new Assignment("POA 2", 1.0).setType(Assignment.AssignmentType.POA));
+    assignment2 = new Assignment("POA 2", 1.0).setType(Assignment.AssignmentType.POA);
+    book.addAssignment(assignment2);
     book.addAssignment(new Assignment("Quiz 0", 3.0).setType(Assignment.AssignmentType.QUIZ));
   }
 
@@ -66,4 +71,19 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
     @Subscribe
     void handle(AssignmentSelectedEvent event);
   }
+
+  @Test
+  public void initiallySelectAssignmentWhoseDueDateHasMostRecentlyPassed() {
+    assignment0.setDueDate(LocalDateTime.now().minusDays(3));
+    assignment1.setDueDate(LocalDateTime.now().minusDays(2));
+    assignment2.setDueDate(LocalDateTime.now().plusDays(2));
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    verify(this.view).setSelectedAssignment(1);
+  }
+
+
+  // selectAssignmentWhenPOASubmittedWithAssignmentNumberInSubject
+
 }

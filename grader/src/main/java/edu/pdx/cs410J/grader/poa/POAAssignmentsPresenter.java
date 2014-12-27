@@ -5,8 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class POAAssignmentsPresenter {
@@ -36,7 +38,25 @@ public class POAAssignmentsPresenter {
     List<String> poaNames = poaAssignments.stream().map(Assignment::getName).collect(Collectors.toList());
     this.view.setAssignments(poaNames);
 
-    this.view.setSelectedAssignment(0);
+    selectAssignmentWithMostRecentlyPastDueDate();
+  }
+
+  private void selectAssignmentWithMostRecentlyPastDueDate() {
+    Optional<Assignment> mostRecentlyDueAssignment = this.poaAssignments.stream().
+      filter(a -> a.getDueDate() != null).
+      filter(a -> a.getDueDate().isBefore(LocalDateTime.now())).
+      sorted((a1, a2) -> a1.getDueDate().compareTo(a2.getDueDate()) * -1).
+      findFirst();
+
+    int index;
+    if (mostRecentlyDueAssignment.isPresent()) {
+      index = poaAssignments.indexOf(mostRecentlyDueAssignment.get());
+
+    } else {
+      index = 0;
+    }
+
+    this.view.setSelectedAssignment(index);
   }
 
   private boolean isAssignmentPOA(Assignment assignment) {
