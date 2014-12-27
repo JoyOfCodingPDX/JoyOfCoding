@@ -163,16 +163,16 @@ public class AssignmentPanel extends JPanel {
   public void displayAssignment(Assignment assign) {
     this.nameField.setText(assign.getName());
     this.pointsField.setText(String.valueOf(assign.getPoints()));
-    if (assign.getType() == Assignment.QUIZ) {
+    if (assign.getType() == Assignment.AssignmentType.QUIZ) {
       this.typeBox.setSelectedItem(QUIZ);
 
-    } else if (assign.getType() == Assignment.PROJECT) {
+    } else if (assign.getType() == Assignment.AssignmentType.PROJECT) {
       this.typeBox.setSelectedItem(PROJECT);
 
-    } else if (assign.getType() == Assignment.OTHER) {
+    } else if (assign.getType() == Assignment.AssignmentType.OTHER) {
       this.typeBox.setSelectedItem(OTHER);
 
-    } else if (assign.getType() == Assignment.OPTIONAL) {
+    } else if (assign.getType() == Assignment.AssignmentType.OPTIONAL) {
       this.typeBox.setSelectedItem(OPTIONAL);
 
     } else {
@@ -248,16 +248,16 @@ public class AssignmentPanel extends JPanel {
 
     switch (type) {
       case QUIZ:
-        assign.setType(Assignment.QUIZ);
+        assign.setType(Assignment.AssignmentType.QUIZ);
         break;
       case PROJECT:
-        assign.setType(Assignment.PROJECT);
+        assign.setType(Assignment.AssignmentType.PROJECT);
         break;
       case OTHER:
-        assign.setType(Assignment.OTHER);
+        assign.setType(Assignment.AssignmentType.OTHER);
         break;
       case OPTIONAL:
-        assign.setType(Assignment.OPTIONAL);
+        assign.setType(Assignment.AssignmentType.OPTIONAL);
         break;
       default:
         String s = "Unknown assignment type: " + type;

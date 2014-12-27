@@ -26,10 +26,10 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
   public void assignmentListPopulatedInViewWhenGradeBookLoaded() {
 
     GradeBook book = new GradeBook("Test Grade Book");
-    book.addAssignment(new Assignment("POA 0", 1.0).setType(Assignment.OTHER));
-    book.addAssignment(new Assignment("POA 1", 1.0).setType(Assignment.OTHER));
-    book.addAssignment(new Assignment("POA 2", 1.0).setType(Assignment.OTHER));
-    book.addAssignment(new Assignment("Quiz 0", 3.0).setType(Assignment.QUIZ));
+    book.addAssignment(new Assignment("POA 0", 1.0).setType(Assignment.AssignmentType.OTHER));
+    book.addAssignment(new Assignment("POA 1", 1.0).setType(Assignment.AssignmentType.OTHER));
+    book.addAssignment(new Assignment("POA 2", 1.0).setType(Assignment.AssignmentType.OTHER));
+    book.addAssignment(new Assignment("Quiz 0", 3.0).setType(Assignment.AssignmentType.QUIZ));
 
     this.bus.post(new GradeBookLoaded(book));
 

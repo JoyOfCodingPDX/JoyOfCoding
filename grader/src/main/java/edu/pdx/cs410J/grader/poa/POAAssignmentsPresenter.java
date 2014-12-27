@@ -32,6 +32,6 @@ public class POAAssignmentsPresenter {
   }
 
   private boolean isAssignmentPOA(Assignment assignment) {
-    return assignment.getType() == Assignment.OTHER;
+    return assignment.getType() == Assignment.AssignmentType.OTHER;
   }
 }

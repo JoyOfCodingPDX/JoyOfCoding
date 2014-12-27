@@ -30,7 +30,7 @@ public class XmlGradeBookParser extends XmlHelper {
    * Creates an <code>XmlGradeBookParser</code> that creates a
    * <code>GradeBook</code> from a file of a given name.
    */
-  public XmlGradeBookParser(String fileName) throws FileNotFoundException, IOException {
+  public XmlGradeBookParser(String fileName) throws IOException {
     this(new File(fileName));
   }
 
@@ -38,7 +38,7 @@ public class XmlGradeBookParser extends XmlHelper {
    * Creates an <code>XmlGradeBookParser</code> that creates a
    * <code>GradeBook</code> from the contents of a <code>File</code>.
    */
-  public XmlGradeBookParser(File file) throws FileNotFoundException, IOException {
+  public XmlGradeBookParser(File file) throws IOException {
     this(new FileInputStream(file));
     this.setStudentDir(file.getCanonicalFile().getParentFile());
   }
@@ -138,16 +138,16 @@ public class XmlGradeBookParser extends XmlHelper {
     String type = assignmentElement.getAttribute("type");
     switch (type) {
       case "PROJECT":
-        assign.setType(Assignment.PROJECT);
+        assign.setType(Assignment.AssignmentType.PROJECT);
         break;
       case "QUIZ":
-        assign.setType(Assignment.QUIZ);
+        assign.setType(Assignment.AssignmentType.QUIZ);
         break;
       case "OTHER":
-        assign.setType(Assignment.OTHER);
+        assign.setType(Assignment.AssignmentType.OTHER);
         break;
       case "OPTIONAL":
-        assign.setType(Assignment.OPTIONAL);
+        assign.setType(Assignment.AssignmentType.OPTIONAL);
         break;
     }
   }
@@ -276,7 +276,7 @@ public class XmlGradeBookParser extends XmlHelper {
 
   private Document parseDocumentFromInputStream() throws ParserException {
     // Parse the source
-    Document doc = null;
+    Document doc;
 
     // Create a DOM tree from the XML source
     try {
@@ -291,14 +291,9 @@ public class XmlGradeBookParser extends XmlHelper {
 
       doc = builder.parse(new InputSource(this.in));
 
-    } catch (ParserConfigurationException ex) {
+    } catch (ParserConfigurationException | SAXException | IOException ex) {
       throw new ParserException("While parsing XML source: " + ex);
 
-    } catch (SAXException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
-
-    } catch (IOException ex) {
-      throw new ParserException("While parsing XML source: " + ex);
     }
     return doc;
   }

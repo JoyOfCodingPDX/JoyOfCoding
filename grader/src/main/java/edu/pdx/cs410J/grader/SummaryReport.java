@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * grades.
  */
 public class SummaryReport {
-  private static HashMap<Student, Double> allTotals = new HashMap<Student, Double>();
+  private static HashMap<Student, Double> allTotals = new HashMap<>();
 
   /**
    * Computes the student's final average and makes a pretty report.
@@ -46,7 +46,7 @@ public class SummaryReport {
 
 //       System.out.println("Examining " + assign + ", score: " + score);
 
-      if (assignment.getType() == Assignment.QUIZ) {
+      if (assignment.getType() == Assignment.AssignmentType.QUIZ) {
         if (lowestQuiz == null) {
           lowestQuiz = assignment;
 //           System.out.println("Lowest quiz: " + lowestQuiz + 
@@ -69,7 +69,7 @@ public class SummaryReport {
       line.append(" (");
       line.append(assignment.getDescription());
       line.append(")");
-      if (assignment.getType() == Assignment.OPTIONAL) {
+      if (assignment.getType() == Assignment.AssignmentType.OPTIONAL) {
         line.append(" (OPTIONAL)");
       }
       line.append(": ");
@@ -93,7 +93,7 @@ public class SummaryReport {
 
       // Don't count optional assignments toward the maximum point
       // total
-      if (assignment.getType() != Assignment.OPTIONAL) {
+      if (assignment.getType() != Assignment.AssignmentType.OPTIONAL) {
         best += assignment.getPoints();
       }
 
@@ -164,7 +164,7 @@ public class SummaryReport {
   }
 
   private static SortedSet<String> getSortedAssignmentNames(GradeBook book) {
-    return new TreeSet<String>(book.getAssignmentNames());
+    return new TreeSet<>(book.getAssignmentNames());
   }
 
   private static PrintWriter out = new PrintWriter(System.out, true);
@@ -192,7 +192,7 @@ public class SummaryReport {
     boolean assignLetterGrades = false;
     String xmlFileName = null;
     String outputDirName = null;
-    Collection<String> students = new ArrayList<String>();
+    Collection<String> students = new ArrayList<>();
 
     for (String arg : args) {
       if (arg.equals("-assignLetterGrades")) {
@@ -215,6 +215,7 @@ public class SummaryReport {
 
     if (outputDirName == null) {
       usage("Missing output dir name");
+      return;
     }
 
     String xmlFile = xmlFileName;
@@ -280,7 +281,7 @@ public class SummaryReport {
     }
 
     // Sort students by totals and print out results:
-    TreeSet<Student> sorted = new TreeSet<Student>(new Comparator<Student>() {
+    TreeSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
         @Override
         public int compare(Student s1, Student s2) {
           Double d1 = allTotals.get(s1);
