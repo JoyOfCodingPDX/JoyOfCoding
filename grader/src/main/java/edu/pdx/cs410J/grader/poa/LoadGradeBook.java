@@ -12,4 +12,9 @@ public class LoadGradeBook {
   public File getFile() {
     return file;
   }
+
+  @Override
+  public String toString() {
+    return "Load grade book from " + this.file;
+  }
 }

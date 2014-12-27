@@ -12,4 +12,9 @@ public class GradeBookLoaded {
   public GradeBook getGradeBook() {
     return gradeBook;
   }
+
+  @Override
+  public String toString() {
+    return "Loaded grade book \"" + gradeBook.getClassName() + "\"";
+  }
 }

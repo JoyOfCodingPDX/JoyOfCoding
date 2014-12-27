@@ -12,4 +12,9 @@ public class StudentSelectedEvent {
   public Student getSelectedStudent() {
     return selectedStudent;
   }
+
+  @Override
+  public String toString() {
+    return "Selected student " + selectedStudent;
+  }
 }
