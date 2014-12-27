@@ -19,6 +19,7 @@ public class Assignment extends NotableImpl {
     PROJECT,
     QUIZ,
     OTHER,
+    POA,
     OPTIONAL
   }
 
@@ -181,6 +182,9 @@ public class Assignment extends NotableImpl {
             break;
           case "QUIZ":
             type = AssignmentType.QUIZ;
+            break;
+          case "POA":
+            type = AssignmentType.POA;
             break;
           case "OTHER":
             type = AssignmentType.OTHER;

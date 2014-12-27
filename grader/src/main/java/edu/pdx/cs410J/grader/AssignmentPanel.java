@@ -22,6 +22,8 @@ public class AssignmentPanel extends JPanel {
   private static final String PROJECT = "Project";
   private static final String OTHER = "Other";
   private static final String OPTIONAL = "Optional";
+  private static final String POA = "POA";
+
   static final String DATE_TIME_FORMAT_PATTERN = "M/d/yyyy h:mm a";
   static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN);
 
@@ -163,20 +165,24 @@ public class AssignmentPanel extends JPanel {
   public void displayAssignment(Assignment assign) {
     this.nameField.setText(assign.getName());
     this.pointsField.setText(String.valueOf(assign.getPoints()));
-    if (assign.getType() == Assignment.AssignmentType.QUIZ) {
+    Assignment.AssignmentType type = assign.getType();
+    if (type == Assignment.AssignmentType.QUIZ) {
       this.typeBox.setSelectedItem(QUIZ);
 
-    } else if (assign.getType() == Assignment.AssignmentType.PROJECT) {
+    } else if (type == Assignment.AssignmentType.PROJECT) {
       this.typeBox.setSelectedItem(PROJECT);
 
-    } else if (assign.getType() == Assignment.AssignmentType.OTHER) {
+    } else if (type == Assignment.AssignmentType.OTHER) {
       this.typeBox.setSelectedItem(OTHER);
 
-    } else if (assign.getType() == Assignment.AssignmentType.OPTIONAL) {
+    } else if (type == Assignment.AssignmentType.OPTIONAL) {
       this.typeBox.setSelectedItem(OPTIONAL);
 
+    } else if (type == Assignment.AssignmentType.POA) {
+      this.typeBox.setSelectedItem(POA);
+
     } else {
-      String s = "Invalid assignment type: " + assign.getType();
+      String s = "Invalid assignment type: " + type;
       throw new IllegalArgumentException(s);
     }
 
@@ -258,6 +264,9 @@ public class AssignmentPanel extends JPanel {
         break;
       case OPTIONAL:
         assign.setType(Assignment.AssignmentType.OPTIONAL);
+        break;
+      case POA:
+        assign.setType(Assignment.AssignmentType.POA);
         break;
       default:
         String s = "Unknown assignment type: " + type;

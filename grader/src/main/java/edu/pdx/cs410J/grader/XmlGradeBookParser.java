@@ -134,7 +134,7 @@ public class XmlGradeBookParser extends XmlHelper {
     return assign;
   }
 
-  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assign) {
+  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assign) throws ParserException {
     String type = assignmentElement.getAttribute("type");
     switch (type) {
       case "PROJECT":
@@ -149,6 +149,11 @@ public class XmlGradeBookParser extends XmlHelper {
       case "OPTIONAL":
         assign.setType(Assignment.AssignmentType.OPTIONAL);
         break;
+      case "POA":
+        assign.setType(Assignment.AssignmentType.POA);
+        break;
+      default:
+        throw new ParserException("Unknown assignment type: " + type);
     }
   }
 

@@ -217,6 +217,10 @@ public class XmlDumper extends XmlHelper {
         assignNode.setAttribute("type", "OPTIONAL");
         break;
 
+      case POA:
+        assignNode.setAttribute("type", "POA");
+        break;
+
       default:
         throw new IllegalArgumentException("Can't handle assignment " +
           "type " + type);
