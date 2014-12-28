@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class IsPOALatePresenterTest extends EventBusTestCase {
@@ -76,9 +77,16 @@ public class IsPOALatePresenterTest extends EventBusTestCase {
     verify(this.view).setIsLate(true);
   }
 
-  // selectedAssignmentWithLateAssignmentIsLateInView
+  @Test
+  public void onTimeSubmissionIsNotLateInView() {
+    assignment.setDueDate(LocalDateTime.now().plusDays(5));
 
-  // onTimeSubmissionIsNotLateInView
+    this.bus.post(new POASubmissionSelected(submission));
+    this.bus.post(new StudentSelectedEvent(student));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
 
-  // changingAssignmentMakesOnTimeAssignmentNotLate
+    verify(this.view).setIsEnabled(true);
+    verify(this.view, times(3)).setIsLate(eq(false));
+  }
+
 }

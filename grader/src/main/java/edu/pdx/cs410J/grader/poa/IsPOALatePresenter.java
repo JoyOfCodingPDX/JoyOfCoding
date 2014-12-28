@@ -46,6 +46,9 @@ public class IsPOALatePresenter {
 
       if (this.submission.getSubmitTime().isAfter(this.assignment.getDueDate())) {
         this.view.setIsLate(true);
+
+      } else {
+        this.view.setIsLate(false);
       }
 
     } else {
