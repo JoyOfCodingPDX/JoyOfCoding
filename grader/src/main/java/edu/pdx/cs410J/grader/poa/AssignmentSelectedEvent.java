@@ -12,4 +12,9 @@ public class AssignmentSelectedEvent {
   public Assignment getAssignment() {
     return assignment;
   }
+
+  @Override
+  public String toString() {
+    return "Selected assignment " + assignment.getName();
+  }
 }
