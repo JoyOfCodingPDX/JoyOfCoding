@@ -110,6 +110,7 @@ public class AssignmentPanel extends JPanel {
     this.typeBox = new JComboBox<>();
     this.typeBox.addItem(QUIZ);
     this.typeBox.addItem(PROJECT);
+    this.typeBox.addItem(POA);
     this.typeBox.addItem(OTHER);
     this.typeBox.addItem(OPTIONAL);
     fields.add(this.typeBox);
