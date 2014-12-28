@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GradeBookPresenterTest extends EventBusTestCase{
+public class GBPTest extends EventBusTestCase{
 
   private GradeBookView view;
 
