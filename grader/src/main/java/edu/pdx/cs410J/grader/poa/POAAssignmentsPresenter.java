@@ -85,8 +85,8 @@ public class POAAssignmentsPresenter {
   }
 
   @Subscribe
-  public void selectAssignmentThatMatchesSubmissionSubject(POASubmission submission) {
-    List<String> numbersInSubject = findNumbersInString(submission.getSubject());
+  public void selectAssignmentThatMatchesSubmissionSubject(POASubmissionSelected submission) {
+    List<String> numbersInSubject = findNumbersInString(submission.getSubmission().getSubject());
     for (int i = 0; i < this.poaAssignments.size(); i++) {
       Assignment assignment = this.poaAssignments.get(i);
       for (String numberInSubject : numbersInSubject) {
