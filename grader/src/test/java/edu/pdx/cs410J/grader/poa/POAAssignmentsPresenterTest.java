@@ -158,4 +158,6 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
     verify(this.view).setSelectedAssignmentDueDate("");
   }
 
+  // noAssignmentSelectedWhenGradeBookHasNoPOAAssignments
+
 }

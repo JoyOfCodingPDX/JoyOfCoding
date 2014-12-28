@@ -3,6 +3,8 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 
@@ -16,11 +18,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Singleton
 public class POAAssignmentsPresenter {
   private final EventBus bus;
   private final POAAssignmentsView view;
   private List<Assignment> poaAssignments = Collections.emptyList();
 
+  @Inject
   public POAAssignmentsPresenter(EventBus bus, POAAssignmentsView view) {
     this.bus = bus;
     this.view = view;

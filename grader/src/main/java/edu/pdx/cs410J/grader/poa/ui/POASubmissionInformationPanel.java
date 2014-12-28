@@ -12,7 +12,8 @@ public class POASubmissionInformationPanel extends JPanel {
   @Inject
   public POASubmissionInformationPanel(POASubmissionInformationWidgets submissionWidgets,
                                        GradeBookWidget gradeBookWidget,
-                                       StudentsWidget studentsWidget) {
+                                       StudentsWidget studentsWidget,
+                                       POAAssignmentsWidget assignmentsWidget) {
     this.setLayout(new BorderLayout());
 
     JPanel information = new JPanel(new GridBagLayout());
@@ -22,6 +23,7 @@ public class POASubmissionInformationPanel extends JPanel {
     addComponentOnGrid(submissionWidgets.getSubmissionTimeWidget(), information, 0, 1);
     addComponentOnGrid(gradeBookWidget, information, 1, 1);
     addComponentOnGrid(studentsWidget, information, 2, 1);
+    addComponentOnGrid(assignmentsWidget, information, 3, 1);
 
     this.add(information, BorderLayout.NORTH);
     this.add(submissionWidgets.getSubmissionContentWidget(), BorderLayout.CENTER);
