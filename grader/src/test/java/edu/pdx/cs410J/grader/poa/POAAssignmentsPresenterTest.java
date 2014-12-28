@@ -104,12 +104,58 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
   @Test
   public void testFindNumbersInString() {
     assertThat(POAAssignmentsPresenter.findNumbersInString("POA for Project 1"), hasItem("1"));
+    assertThat(POAAssignmentsPresenter.findNumbersInString("Project 5 POA"), hasItem("5"));
     assertThat(POAAssignmentsPresenter.findNumbersInString("POA for Project 42"), hasItem("42"));
     assertThat(POAAssignmentsPresenter.findNumbersInString("3 for Project 42"), hasItems("3", "42"));
   }
 
-  // populateDueDateInView
+  @Test
+  public void populateDueDateInViewWhenGradeBookLoaded() {
+    assignment0.setDueDate(LocalDateTime.now().minusDays(3));
+    assignment1.setDueDate(LocalDateTime.now().minusDays(2));
+    assignment2.setDueDate(LocalDateTime.now().plusDays(2));
 
-  // clearDueDateInViewWhenAssignmentHasNoDueDate
+    this.bus.post(new GradeBookLoaded(book));
+
+    verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment1));
+  }
+
+  @Test
+  public void populateDueDateInViewWhenAssignmentSelected() {
+    assignment0.setDueDate(LocalDateTime.now().minusDays(2));
+    assignment1.setDueDate(LocalDateTime.now().minusDays(3));
+
+    ArgumentCaptor<AssignmentSelectedHandler> viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.class);
+    verify(this.view).addAssignmentSelectedHandler(viewHandler.capture());
+
+    AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(book));
+    verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment0));
+
+    viewHandler.getValue().assignmentSelected(1);
+
+    verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment1));
+  }
+
+  @Test
+  public void clearDueDateInViewWhenAssignmentHasNoDueDate() {
+    assignment0.setDueDate(LocalDateTime.now().minusDays(2));
+    assignment1.setDueDate(null);
+
+    ArgumentCaptor<AssignmentSelectedHandler> viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.class);
+    verify(this.view).addAssignmentSelectedHandler(viewHandler.capture());
+
+    AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(book));
+    verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment0));
+
+    viewHandler.getValue().assignmentSelected(1);
+
+    verify(this.view).setSelectedAssignmentDueDate("");
+  }
 
 }

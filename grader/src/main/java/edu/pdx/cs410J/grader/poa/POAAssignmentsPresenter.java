@@ -7,6 +7,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,7 @@ public class POAAssignmentsPresenter {
 
   private void fireAssignmentSelectedForAssignment(int index) {
     Assignment assignment = this.poaAssignments.get(index);
+    this.view.setSelectedAssignmentDueDate(formatDueDate(assignment));
     fireAssignmentSelectedEvent(assignment);
   }
 
@@ -64,7 +66,12 @@ public class POAAssignmentsPresenter {
       index = 0;
     }
 
+    setSelectedAssignmentInView(index);
+  }
+
+  private void setSelectedAssignmentInView(int index) {
     this.view.setSelectedAssignment(index);
+    this.view.setSelectedAssignmentDueDate(formatDueDate(this.poaAssignments.get(index)));
   }
 
   private boolean isAssignmentPOA(Assignment assignment) {
@@ -78,7 +85,7 @@ public class POAAssignmentsPresenter {
       Assignment assignment = this.poaAssignments.get(i);
       for (String numberInSubject : numbersInSubject) {
         if (assignment.getName().contains(numberInSubject)) {
-          this.view.setSelectedAssignment(i);
+          setSelectedAssignmentInView(i);
           fireAssignmentSelectedEvent(assignment);
         }
       }
@@ -95,6 +102,16 @@ public class POAAssignmentsPresenter {
     }
 
     return numbers;
+  }
+
+  @VisibleForTesting
+  static String formatDueDate(Assignment assignment) {
+    LocalDateTime dueDate = assignment.getDueDate();
+    if (dueDate == null) {
+      return "";
+    } else {
+      return dueDate.format(DateTimeFormatter.ofPattern("M/d/yyyy h:mm a"));
+    }
   }
 }
 

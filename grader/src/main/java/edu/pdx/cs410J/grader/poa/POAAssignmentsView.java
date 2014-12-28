@@ -9,6 +9,8 @@ public interface POAAssignmentsView {
 
   void addAssignmentSelectedHandler(AssignmentSelectedHandler handler);
 
+  void setSelectedAssignmentDueDate(String dueDate);
+
   public interface AssignmentSelectedHandler {
     void assignmentSelected(int index);
   }
