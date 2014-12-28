@@ -12,8 +12,9 @@ import java.util.Arrays;
 import static edu.pdx.cs410J.grader.poa.POAAssignmentsView.AssignmentSelectedHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 public class POAAssignmentsPresenterTest extends EventBusTestCase {
 
@@ -158,6 +159,13 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
     verify(this.view).setSelectedAssignmentDueDate("");
   }
 
-  // noAssignmentSelectedWhenGradeBookHasNoPOAAssignments
+  @Test
+  public void noAssignmentSelectedWhenGradeBookHasNoPOAAssignments() {
+    this.bus.post(new GradeBookLoaded(new GradeBook("No POA assignments")));
+
+    verify(this.view, never()).setAssignments(anyList());
+    verify(this.view, never()).setSelectedAssignment(anyInt());
+    verify(this.view, never()).setSelectedAssignmentDueDate(any(String.class));
+  }
 
 }

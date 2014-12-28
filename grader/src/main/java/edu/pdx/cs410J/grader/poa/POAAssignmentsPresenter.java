@@ -49,10 +49,12 @@ public class POAAssignmentsPresenter {
 
     poaAssignments = book.assignmentsStream().filter(this::isAssignmentPOA).collect(Collectors.toList());
 
-    List<String> poaNames = poaAssignments.stream().map(Assignment::getName).collect(Collectors.toList());
-    this.view.setAssignments(poaNames);
+    if (!poaAssignments.isEmpty()) {
+      List<String> poaNames = poaAssignments.stream().map(Assignment::getName).collect(Collectors.toList());
+      this.view.setAssignments(poaNames);
 
-    selectAssignmentWithMostRecentlyPastDueDate();
+      selectAssignmentWithMostRecentlyPastDueDate();
+    }
   }
 
   private void selectAssignmentWithMostRecentlyPastDueDate() {
