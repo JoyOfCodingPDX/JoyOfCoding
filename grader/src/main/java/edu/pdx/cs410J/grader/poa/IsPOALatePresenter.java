@@ -42,11 +42,19 @@ public class IsPOALatePresenter {
 
   private void determineIfPOAIsLate() {
     if (this.submission != null && this.assignment != null && this.student != null) {
+      enableView();
 
+      if (this.submission.getSubmitTime().isAfter(this.assignment.getDueDate())) {
+        this.view.setIsLate(true);
+      }
 
     } else {
       disableView();
     }
+  }
+
+  private void enableView() {
+    this.view.setIsEnabled(true);
   }
 
   private void disableView() {
