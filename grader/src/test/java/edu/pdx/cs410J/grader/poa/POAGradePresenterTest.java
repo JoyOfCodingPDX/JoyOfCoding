@@ -12,9 +12,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class IsPOALatePresenterTest extends EventBusTestCase {
+public class POAGradePresenterTest extends EventBusTestCase {
 
-  private IsPOALateView view;
+  private POAGradeView view;
   private POASubmission submission;
   private Student student;
   private Assignment assignment;
@@ -24,9 +24,9 @@ public class IsPOALatePresenterTest extends EventBusTestCase {
   public void setUp() {
     super.setUp();
 
-    this.view = mock(IsPOALateView.class);
+    this.view = mock(POAGradeView.class);
 
-    new IsPOALatePresenter(this.bus, this.view);
+    new POAGradePresenter(this.bus, this.view);
     submission = new POASubmission("Subject", "Submitter", LocalDateTime.now());
     student = new Student("id");
     assignment = new Assignment("assignment", 1.0);

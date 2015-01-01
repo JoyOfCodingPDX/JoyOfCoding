@@ -5,14 +5,14 @@ import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Student;
 
-public class IsPOALatePresenter {
+public class POAGradePresenter {
   private final EventBus bus;
-  private final IsPOALateView view;
+  private final POAGradeView view;
   private POASubmission submission;
   private Assignment assignment;
   private Student student;
 
-  public IsPOALatePresenter(EventBus bus, IsPOALateView view) {
+  public POAGradePresenter(EventBus bus, POAGradeView view) {
     this.bus = bus;
     this.view = view;
 
