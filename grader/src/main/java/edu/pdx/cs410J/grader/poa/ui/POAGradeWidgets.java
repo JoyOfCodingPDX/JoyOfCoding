@@ -29,6 +29,8 @@ public class POAGradeWidgets implements POAGradeView {
 
   @Override
   public void addIsLateHandler(IsLateHandler handler) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.isLateCheckbox.addItemListener(e -> {
+      handler.setIsLate(isLateCheckbox.isSelected());
+    });
   }
 }
