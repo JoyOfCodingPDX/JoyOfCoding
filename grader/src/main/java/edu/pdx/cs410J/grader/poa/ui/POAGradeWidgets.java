@@ -5,15 +5,19 @@ import edu.pdx.cs410J.grader.poa.POAGradeView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 @Singleton
 public class POAGradeWidgets implements POAGradeView {
   private final JCheckBox isLateCheckbox;
   private final JLabel totalPointsLabel;
+  private final JTextField score;
 
   public POAGradeWidgets() {
     isLateCheckbox = new JCheckBox("Late");
     totalPointsLabel = new JLabel("out of");
+    score = new JTextField(4);
   }
 
   public JCheckBox getIsLateCheckbox() {
@@ -23,6 +27,7 @@ public class POAGradeWidgets implements POAGradeView {
   @Override
   public void setIsEnabled(boolean isEnabled) {
     this.isLateCheckbox.setEnabled(isEnabled);
+    this.score.setEnabled(isEnabled);
   }
 
   @Override
@@ -42,16 +47,33 @@ public class POAGradeWidgets implements POAGradeView {
 
   @Override
   public void addScoreValueHandler(ScoreValueHandler handler) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.score.addFocusListener(new FocusListener() {
+      @Override
+      public void focusGained(FocusEvent e) {
+
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        handler.scoreValue(score.getText());
+      }
+    });
   }
 
   @Override
   public void setErrorInScore(boolean errorInScore) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    if (errorInScore) {
+      this.score.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+
+    } else {
+      this.score.setBorder(null);
+    }
   }
 
   public JComponent getGradeWidget() {
     JPanel panel = new JPanel(new FlowLayout());
+    panel.add(new JLabel("Grade:"));
+    panel.add(this.score);
     panel.add(this.totalPointsLabel);
     return panel;
   }
