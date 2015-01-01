@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -142,7 +143,39 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setTotalPoints("2.75");
+  }
 
+  @Test
+  public void scoreInViewIsInErrorWhenValueIsNotAnInteger() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("Not an Integer");
+
+    verify(this.view).setErrorInScore(true);
+    assertThat(presenter.getScore(), nullValue());
+  }
+
+  @Test
+  public void setPresentersScoreFromView() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("1.75");
+
+    verify(this.view).setErrorInScore(false);
+    assertThat(presenter.getScore(), equalTo(1.75));
+  }
+
+  @Test
+  public void negativeScoreIsAnError() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("-4.3");
+
+    verify(this.view).setErrorInScore(true);
+    assertThat(presenter.getScore(), nullValue());
   }
 
 }

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -15,6 +16,7 @@ public class POAGradePresenter {
   private Assignment assignment;
   private Student student;
   private boolean isLate;
+  private Double score;
 
   @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
@@ -24,6 +26,12 @@ public class POAGradePresenter {
     this.bus.register(this);
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
+    this.view.addScoreValueHandler(new POAGradeView.ScoreValueHandler() {
+      @Override
+      public void scoreValue(String value) {
+        setScoreValue(value);
+      }
+    });
   }
 
   @Subscribe
@@ -79,11 +87,34 @@ public class POAGradePresenter {
     this.view.setIsEnabled(false);
   }
 
-  public boolean isLate() {
+  @VisibleForTesting
+  boolean isLate() {
     return this.isLate;
   }
 
-  public static String formatTotalPoints(double points) {
+  @VisibleForTesting
+  static String formatTotalPoints(double points) {
     return String.format("%.2f", points);
+  }
+
+  public void setScoreValue(String scoreValue) {
+    try {
+      this.score = new Double(scoreValue);
+
+      if (this.score < 0.0) {
+        this.score = null;
+        this.view.setErrorInScore(true);
+      }
+
+      this.view.setErrorInScore(false);
+
+    } catch (NumberFormatException ex) {
+      this.score = null;
+      this.view.setErrorInScore(true);
+    }
+  }
+
+  public Double getScore() {
+    return score;
   }
 }

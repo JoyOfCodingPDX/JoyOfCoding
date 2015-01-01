@@ -9,7 +9,15 @@ public interface POAGradeView {
 
   void setTotalPoints(String totalPoints);
 
+  void addScoreValueHandler(ScoreValueHandler handler);
+
+  void setErrorInScore(boolean errorInScore);
+
   public interface IsLateHandler {
     void setIsLate(boolean isLate);
+  }
+
+  public interface ScoreValueHandler {
+    void scoreValue(String value);
   }
 }

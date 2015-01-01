@@ -40,6 +40,16 @@ public class POAGradeWidgets implements POAGradeView {
     this.totalPointsLabel.setText("out of " + totalPoints);
   }
 
+  @Override
+  public void addScoreValueHandler(ScoreValueHandler handler) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
+  @Override
+  public void setErrorInScore(boolean errorInScore) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
   public JComponent getGradeWidget() {
     JPanel panel = new JPanel(new FlowLayout());
     panel.add(this.totalPointsLabel);
