@@ -2,9 +2,12 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Student;
 
+@Singleton
 public class POAGradePresenter {
   private final EventBus bus;
   private final POAGradeView view;
@@ -12,6 +15,7 @@ public class POAGradePresenter {
   private Assignment assignment;
   private Student student;
 
+  @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
     this.bus = bus;
     this.view = view;
@@ -44,7 +48,7 @@ public class POAGradePresenter {
     if (this.submission != null && this.assignment != null && this.student != null) {
       enableView();
 
-      if (this.submission.getSubmitTime().isAfter(this.assignment.getDueDate())) {
+      if (this.assignment.isSubmissionLate(this.submission.getSubmitTime())) {
         this.view.setIsLate(true);
 
       } else {

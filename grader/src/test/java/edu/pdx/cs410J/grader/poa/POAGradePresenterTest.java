@@ -89,4 +89,16 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verify(this.view, times(3)).setIsLate(eq(false));
   }
 
+  @Test
+  public void assignmentWithNoDueDateIsNotLate() {
+    assignment.setDueDate(null);
+
+    this.bus.post(new POASubmissionSelected(submission));
+    this.bus.post(new StudentSelectedEvent(student));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setIsEnabled(true);
+    verify(this.view, times(3)).setIsLate(eq(false));
+  }
+
 }
