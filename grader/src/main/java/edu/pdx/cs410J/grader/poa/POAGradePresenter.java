@@ -14,6 +14,7 @@ public class POAGradePresenter {
   private POASubmission submission;
   private Assignment assignment;
   private Student student;
+  private boolean isLate;
 
   @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
@@ -21,6 +22,8 @@ public class POAGradePresenter {
     this.view = view;
 
     this.bus.register(this);
+
+    this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
   }
 
   @Subscribe
@@ -49,10 +52,10 @@ public class POAGradePresenter {
       enableView();
 
       if (this.assignment.isSubmissionLate(this.submission.getSubmitTime())) {
-        this.view.setIsLate(true);
+        setIsLate(true);
 
       } else {
-        this.view.setIsLate(false);
+        setIsLate(false);
       }
 
     } else {
@@ -60,12 +63,21 @@ public class POAGradePresenter {
     }
   }
 
+  private void setIsLate(boolean isLate) {
+    this.isLate = isLate;
+    this.view.setIsLate(isLate);
+  }
+
   private void enableView() {
     this.view.setIsEnabled(true);
   }
 
   private void disableView() {
-    this.view.setIsLate(false);
+    setIsLate(false);
     this.view.setIsEnabled(false);
+  }
+
+  public boolean isLate() {
+    return this.isLate;
   }
 }

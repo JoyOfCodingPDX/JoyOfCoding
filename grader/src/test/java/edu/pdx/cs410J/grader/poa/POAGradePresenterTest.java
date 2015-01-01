@@ -4,13 +4,14 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDateTime;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class POAGradePresenterTest extends EventBusTestCase {
 
@@ -18,6 +19,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   private POASubmission submission;
   private Student student;
   private Assignment assignment;
+  private POAGradePresenter presenter;
 
   @Before
   @Override
@@ -26,7 +28,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     this.view = mock(POAGradeView.class);
 
-    new POAGradePresenter(this.bus, this.view);
+    presenter = new POAGradePresenter(this.bus, this.view);
     submission = new POASubmission("Subject", "Submitter", LocalDateTime.now());
     student = new Student("id");
     assignment = new Assignment("assignment", 1.0);
@@ -36,15 +38,19 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void onlySubmissionSelectedDisablesView() {
     this.bus.post(new POASubmissionSelected(submission));
 
-    verify(this.view).setIsLate(eq(false));
+    verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
+  }
+
+  private void verifyIsLate(boolean isLate) {
+    verifyIsLate(1, isLate);
   }
 
   @Test
   public void onlyStudentSelectedDisablesView() {
     this.bus.post(new StudentSelectedEvent(student));
 
-    verify(this.view).setIsLate(eq(false));
+    verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
   }
 
@@ -52,7 +58,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void onlyAssignmentSelectedDisablesView() {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
-    verify(this.view).setIsLate(eq(false));
+    verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
   }
 
@@ -74,7 +80,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setIsEnabled(true);
-    verify(this.view).setIsLate(true);
+    verifyIsLate(true);
   }
 
   @Test
@@ -86,7 +92,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setIsEnabled(true);
-    verify(this.view, times(3)).setIsLate(eq(false));
+    verifyIsLate(3, false);
   }
 
   @Test
@@ -98,7 +104,36 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setIsEnabled(true);
-    verify(this.view, times(3)).setIsLate(eq(false));
+    int wantedNumberOfInvocations = 3;
+    boolean isLate = false;
+    verifyIsLate(wantedNumberOfInvocations, isLate);
   }
+
+  private void verifyIsLate(int wantedNumberOfInvocations, boolean isLate) {
+    verify(this.view, times(wantedNumberOfInvocations)).setIsLate(eq(isLate));
+    assertThat(this.presenter.isLate(), equalTo(isLate));
+  }
+
+  @Test
+  public void latePOAIsStoredInPresenterWhenMarkedLateInView() {
+    ArgumentCaptor<POAGradeView.IsLateHandler> handler = ArgumentCaptor.forClass(POAGradeView.IsLateHandler.class);
+    verify(this.view).addIsLateHandler(handler.capture());
+
+    assignment.setDueDate(LocalDateTime.now().plusDays(5));
+
+    this.bus.post(new POASubmissionSelected(submission));
+    this.bus.post(new StudentSelectedEvent(student));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setIsEnabled(true);
+    verifyIsLate(3, false);
+
+    handler.getValue().setIsLate(true);
+    verifyIsLate(true);
+
+    handler.getValue().setIsLate(false);
+    verifyIsLate(4, false);
+  }
+
 
 }
