@@ -135,5 +135,14 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verifyIsLate(4, false);
   }
 
+  @Test
+  public void assignmentTotalPointsDisplayedInViewWhenAssignmentSelected() {
+    double points = 2.75;
+    assignment.setPoints(points);
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setTotalPoints("2.75");
+
+  }
 
 }

@@ -45,6 +45,8 @@ public class POAGradePresenter {
     this.assignment = event.getAssignment();
 
     determineIfPOAIsLate();
+
+    this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
   }
 
   private void determineIfPOAIsLate() {
@@ -79,5 +81,9 @@ public class POAGradePresenter {
 
   public boolean isLate() {
     return this.isLate;
+  }
+
+  public static String formatTotalPoints(double points) {
+    return String.format("%.2f", points);
   }
 }

@@ -33,4 +33,9 @@ public class POAGradeWidgets implements POAGradeView {
       handler.setIsLate(isLateCheckbox.isSelected());
     });
   }
+
+  @Override
+  public void setTotalPoints(String totalPoints) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
 }

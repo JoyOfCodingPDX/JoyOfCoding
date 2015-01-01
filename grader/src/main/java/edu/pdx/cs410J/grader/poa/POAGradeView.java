@@ -7,6 +7,8 @@ public interface POAGradeView {
 
   void addIsLateHandler(IsLateHandler handler);
 
+  void setTotalPoints(String totalPoints);
+
   public interface IsLateHandler {
     void setIsLate(boolean isLate);
   }
