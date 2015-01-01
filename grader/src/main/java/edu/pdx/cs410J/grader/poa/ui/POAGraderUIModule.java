@@ -16,6 +16,7 @@ public class POAGraderUIModule extends AbstractModule {
     bind(UnhandledExceptionView.class).to(UnhandledExceptionDialog.class).asEagerSingleton();
     bind(StudentsView.class).to(StudentsWidget.class);
     bind(POAAssignmentsView.class).to(POAAssignmentsWidget.class);
+    bind(POAGradeView.class).to(POAGradeWidgets.class);
 
     bind(POASubmissionsPresenter.class).asEagerSingleton();
     bind(POASubmissionPresenter.class).asEagerSingleton();
@@ -23,6 +24,7 @@ public class POAGraderUIModule extends AbstractModule {
     bind(UnhandledExceptionPresenter.class).asEagerSingleton();
     bind(StudentsPresenter.class).asEagerSingleton();
     bind(POAAssignmentsPresenter.class).asEagerSingleton();
+    bind(POAGradePresenter.class).asEagerSingleton();
 
     bind(GradeBookLoader.class).asEagerSingleton();
   }

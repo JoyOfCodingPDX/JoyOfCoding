@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmissionView;
 
@@ -13,8 +14,12 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   private final JLabel submitterLabel;
   private final JLabel submissionTimeLabel;
   private final JTextArea submissionContent;
+  private final POAGradeWidgets gradesWidgets;
 
-  public POASubmissionInformationWidgets() {
+  @Inject
+  public POASubmissionInformationWidgets(POAGradeWidgets gradesWidgets) {
+    this.gradesWidgets = gradesWidgets;
+
     this.subjectLabel = new JLabel();
     this.submitterLabel = new JLabel();
     this.submissionTimeLabel = new JLabel();
@@ -25,7 +30,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
     return createLabeledWidget("Subject:", this.subjectLabel);
   }
 
-  private JComponent createLabeledWidget(String label, JLabel widget) {
+  private JPanel createLabeledWidget(String label, JLabel widget) {
     JPanel panel = new JPanel(new FlowLayout());
     panel.add(new JLabel(label));
     panel.add(widget);
@@ -37,7 +42,9 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   }
 
   public JComponent getSubmissionTimeWidget() {
-    return createLabeledWidget("Submitted on:", this.submissionTimeLabel);
+    JPanel panel = createLabeledWidget("Submitted on:", this.submissionTimeLabel);
+    panel.add(gradesWidgets.getIsLateCheckbox());
+    return panel;
   }
 
   @Override
