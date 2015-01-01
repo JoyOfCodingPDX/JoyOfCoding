@@ -13,7 +13,8 @@ public class POASubmissionInformationPanel extends JPanel {
   public POASubmissionInformationPanel(POASubmissionInformationWidgets submissionWidgets,
                                        GradeBookWidget gradeBookWidget,
                                        StudentsWidget studentsWidget,
-                                       POAAssignmentsWidget assignmentsWidget) {
+                                       POAAssignmentsWidget assignmentsWidget,
+                                       POAGradeWidgets gradeWidgets) {
     this.setLayout(new BorderLayout());
 
     JPanel information = new JPanel(new GridBagLayout());
@@ -24,6 +25,7 @@ public class POASubmissionInformationPanel extends JPanel {
     addComponentOnGrid(gradeBookWidget, information, 1, 1);
     addComponentOnGrid(studentsWidget, information, 2, 1);
     addComponentOnGrid(assignmentsWidget, information, 3, 1);
+    addComponentOnGrid(gradeWidgets.getGradeWidget(), information, 4, 1);
 
     this.add(information, BorderLayout.NORTH);
     this.add(submissionWidgets.getSubmissionContentWidget(), BorderLayout.CENTER);
