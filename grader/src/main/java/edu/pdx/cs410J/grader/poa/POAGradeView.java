@@ -13,6 +13,8 @@ public interface POAGradeView {
 
   void setErrorInScore(boolean errorInScore);
 
+  void setScore(String score);
+
   public interface IsLateHandler {
     void setIsLate(boolean isLate);
   }

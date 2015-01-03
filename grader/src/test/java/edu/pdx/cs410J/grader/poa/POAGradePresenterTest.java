@@ -178,4 +178,36 @@ public class POAGradePresenterTest extends EventBusTestCase {
     assertThat(presenter.getScore(), nullValue());
   }
 
+  @Test
+  public void errorStateShouldBeClearedWhenNewSubmissionIsSelected() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("-4.3");
+
+    verify(this.view).setErrorInScore(true);
+
+    this.bus.post(new POASubmissionSelected(submission));
+
+    verify(this.view).setErrorInScore(false);
+  }
+
+  @Test
+  public void scoreShouldBeClearedWhenNewSubmissionIsSelected() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("-4.3");
+
+    this.bus.post(new POASubmissionSelected(submission));
+
+    verify(this.view).setScore("");
+    assertThat(this.presenter.getScore(), nullValue());
+  }
+
+  // scoreAndErrorShouldBeClearedWhenNewStudentIsSelected
+
+  // scoreAndErrorShouldBeClearedWhenNewAssignmentIsSelected
+
+  // scoreDefaultsToTotalPoints
 }

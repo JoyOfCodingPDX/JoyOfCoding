@@ -70,6 +70,11 @@ public class POAGradeWidgets implements POAGradeView {
     }
   }
 
+  @Override
+  public void setScore(String score) {
+    this.score.setText(score);
+  }
+
   public JComponent getGradeWidget() {
     JPanel panel = new JPanel(new FlowLayout());
     panel.add(new JLabel("Grade:"));

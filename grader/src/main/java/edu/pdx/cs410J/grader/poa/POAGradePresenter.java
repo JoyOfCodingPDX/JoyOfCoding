@@ -38,7 +38,14 @@ public class POAGradePresenter {
   public void determineIfSubmissionIsLate(POASubmissionSelected event) {
     this.submission = event.getSubmission();
 
+    clearScore();
     determineIfPOAIsLate();
+  }
+
+  private void clearScore() {
+    this.score = null;
+    this.view.setErrorInScore(false);
+    this.view.setScore("");
   }
 
   @Subscribe
@@ -99,14 +106,16 @@ public class POAGradePresenter {
 
   public void setScoreValue(String scoreValue) {
     try {
-      this.score = new Double(scoreValue);
+      double score = new Double(scoreValue);
 
-      if (this.score < 0.0) {
+      if (score < 0.0) {
         this.score = null;
         this.view.setErrorInScore(true);
-      }
 
-      this.view.setErrorInScore(false);
+      } else {
+        this.score = score;
+        this.view.setErrorInScore(false);
+      }
 
     } catch (NumberFormatException ex) {
       this.score = null;
