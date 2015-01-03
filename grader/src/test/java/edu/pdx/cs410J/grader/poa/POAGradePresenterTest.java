@@ -235,7 +235,14 @@ public class POAGradePresenterTest extends EventBusTestCase {
     assertThat(this.presenter.getScore(), nullValue());
   }
 
-  // scoreDefaultsToTotalPoints
+  @Test
+  public void scoreDefaultsToTotalPoints() {
+    this.bus.post(new POASubmissionSelected(submission));
+    this.bus.post(new StudentSelectedEvent(student));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
+  }
 
   // aScoreOfEmptyStringShouldNotBeAnError
 

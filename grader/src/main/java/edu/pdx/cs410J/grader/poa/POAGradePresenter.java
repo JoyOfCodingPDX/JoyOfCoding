@@ -26,12 +26,7 @@ public class POAGradePresenter {
     this.bus.register(this);
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
-    this.view.addScoreValueHandler(new POAGradeView.ScoreValueHandler() {
-      @Override
-      public void scoreValue(String value) {
-        setScoreValue(value);
-      }
-    });
+    this.view.addScoreValueHandler(this::setScoreValue);
   }
 
   @Subscribe
@@ -63,7 +58,9 @@ public class POAGradePresenter {
     clearScore();
     determineIfPOAIsLate();
 
-    this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
+    String totalPoints = formatTotalPoints(this.assignment.getPoints());
+    this.view.setTotalPoints(totalPoints);
+    this.view.setScore(totalPoints);
   }
 
   private void determineIfPOAIsLate() {
