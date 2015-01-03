@@ -7,17 +7,23 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.Grade;
+import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+
+import java.util.Optional;
 
 @Singleton
 public class POAGradePresenter {
   private final EventBus bus;
   private final POAGradeView view;
+
   private POASubmission submission;
   private Assignment assignment;
   private Student student;
   private boolean isLate;
   private Double score;
+  private CurrentGradeCalculator currentGradeCalculator;
 
   @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
@@ -61,7 +67,22 @@ public class POAGradePresenter {
 
     String totalPoints = formatTotalPoints(this.assignment.getPoints());
     this.view.setTotalPoints(totalPoints);
-    this.view.setScore(totalPoints);
+    setDefaultValueOfScore(totalPoints);
+  }
+
+  private void setDefaultValueOfScore(String totalPoints) {
+    Optional<Double> currentGrade = this.currentGradeCalculator.getCurrentGradeFor(this.assignment, this.student);
+    if (currentGrade.isPresent()) {
+      this.view.setScore(formatTotalPoints(currentGrade.get()));
+
+    } else {
+      this.view.setScore(totalPoints);
+    }
+  }
+
+  @Subscribe
+  public void createCurrentGradeCalculator(GradeBookLoaded event) {
+    this.currentGradeCalculator = new CurrentGradeCalculator(event.getGradeBook());
   }
 
   private void determineIfPOAIsLate() {
@@ -139,5 +160,22 @@ public class POAGradePresenter {
 
   public Double getScore() {
     return score;
+  }
+
+  private class CurrentGradeCalculator {
+    private final GradeBook gradeBook;
+
+    public CurrentGradeCalculator(GradeBook gradeBook) {
+      this.gradeBook = gradeBook;
+    }
+
+    public Optional<Double> getCurrentGradeFor(Assignment assignment, Student student) {
+      Grade grade = student.getGrade(assignment);
+      if (grade != null) {
+        return Optional.of(grade.getScore());
+      } else {
+        return Optional.empty();
+      }
+    }
   }
 }

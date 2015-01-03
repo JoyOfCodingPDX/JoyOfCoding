@@ -1,6 +1,8 @@
 package edu.pdx.cs410J.grader.poa;
 
 import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.Grade;
+import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   private POASubmission submission;
   private Student student;
   private Assignment assignment;
+  private GradeBook book;
   private POAGradePresenter presenter;
 
   @Before
@@ -33,6 +36,10 @@ public class POAGradePresenterTest extends EventBusTestCase {
     submission = new POASubmission("Subject", "Submitter", LocalDateTime.now());
     student = new Student("id");
     assignment = new Assignment("assignment", 1.0);
+
+    book = new GradeBook("POAGradePresenterTest");
+    book.addAssignment(assignment);
+    book.addStudent(student);
   }
 
   @Test
@@ -65,9 +72,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void submissionStudentAndAssignmentEnablesView() {
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    postEventsToBus();
 
     verify(this.view).setIsEnabled(true);
   }
@@ -76,9 +81,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void lateSubmissionIsLateInView() {
     assignment.setDueDate(LocalDateTime.now().minusDays(5));
 
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    postEventsToBus();
 
     verify(this.view).setIsEnabled(true);
     verifyIsLate(true);
@@ -88,9 +91,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void onTimeSubmissionIsNotLateInView() {
     assignment.setDueDate(LocalDateTime.now().plusDays(5));
 
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    postEventsToBus();
 
     verify(this.view).setIsEnabled(true);
     verifyIsLate(3, false);
@@ -100,9 +101,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void assignmentWithNoDueDateIsNotLate() {
     assignment.setDueDate(null);
 
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    postEventsToBus();
 
     verify(this.view).setIsEnabled(true);
     int wantedNumberOfInvocations = 3;
@@ -122,9 +121,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     assignment.setDueDate(LocalDateTime.now().plusDays(5));
 
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    postEventsToBus();
 
     verify(this.view).setIsEnabled(true);
     verifyIsLate(3, false);
@@ -240,11 +237,16 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void scoreDefaultsToTotalPoints() {
+    postEventsToBus();
+
+    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
+  }
+
+  private void postEventsToBus() {
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new POASubmissionSelected(submission));
     this.bus.post(new StudentSelectedEvent(student));
     this.bus.post(new AssignmentSelectedEvent(assignment));
-
-    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
   }
 
   @Test
@@ -269,5 +271,15 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     verify(this.view).setErrorInScore(true);
     assertThat(presenter.getScore(), nullValue());
+  }
+
+  @Test
+  public void scoreDefaultsToCurrentGrade() {
+    double score = 0.75;
+    student.setGrade(assignment, new Grade(assignment, score));
+
+    postEventsToBus();
+
+    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(score));
   }
 }
