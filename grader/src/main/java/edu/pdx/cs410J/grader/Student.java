@@ -539,4 +539,9 @@ public class Student extends NotableImpl {
     this.setDirty(true);
     this.letterGrade = letterGrade;
   }
+
+  public Student setGrade(Assignment assignment, Grade grade) {
+    setGrade(assignment.getName(), grade);
+    return this;
+  }
 }
