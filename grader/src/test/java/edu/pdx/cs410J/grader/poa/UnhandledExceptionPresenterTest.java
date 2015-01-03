@@ -16,6 +16,7 @@ public class UnhandledExceptionPresenterTest extends EventBusTestCase {
   @Override
   public void setUp() {
     super.setUp();
+    this.unhandledExceptionHandler = this::doNotFailTestWhenUnhandledExceptionEncountered;
 
     this.view = mock(UnhandledExceptionView.class);
     new UnhandledExceptionPresenter(this.bus, this.view);

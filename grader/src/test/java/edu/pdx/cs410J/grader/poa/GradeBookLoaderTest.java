@@ -61,6 +61,8 @@ public class GradeBookLoaderTest extends EventBusTestCase {
     UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.class);
     this.bus.register(handler);
 
+    this.unhandledExceptionHandler = this::doNotFailTestWhenUnhandledExceptionEncountered;
+
     this.bus.post(new LoadGradeBook(badFile));
 
     ArgumentCaptor<UnhandledExceptionEvent> event = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
