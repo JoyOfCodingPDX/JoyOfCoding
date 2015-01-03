@@ -170,6 +170,10 @@ public class POAGradePresenter {
     }
 
     public Optional<Double> getCurrentGradeFor(Assignment assignment, Student student) {
+      if (student == null) {
+        return Optional.empty();
+      }
+
       Grade grade = student.getGrade(assignment);
       if (grade != null) {
         return Optional.of(grade.getScore());

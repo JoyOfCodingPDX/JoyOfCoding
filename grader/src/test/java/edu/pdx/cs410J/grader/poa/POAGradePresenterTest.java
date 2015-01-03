@@ -64,6 +64,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void onlyAssignmentSelectedDisablesView() {
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verifyIsLate(false);
@@ -137,6 +138,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
   public void assignmentTotalPointsDisplayedInViewWhenAssignmentSelected() {
     double points = 2.75;
     assignment.setPoints(points);
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setTotalPoints("2.75");
@@ -158,6 +160,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment.setPoints(2.0d)));
     reset(this.view);
 
@@ -228,6 +231,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     handler.getValue().scoreValue("-4.3");
     verify(this.view).setErrorInScore(true);
 
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setErrorInScore(false);
@@ -265,6 +269,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
+    this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     handler.getValue().scoreValue(String.valueOf(assignment.getPoints() + 1.0d));
@@ -282,4 +287,13 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     verify(this.view).setScore(POAGradePresenter.formatTotalPoints(score));
   }
+
+  @Test
+  public void scoreDefaultsToTotalPointsWhenNoStudentIsSelected() {
+    this.bus.post(new GradeBookLoaded(book));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
+  }
+
 }
