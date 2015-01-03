@@ -205,9 +205,39 @@ public class POAGradePresenterTest extends EventBusTestCase {
     assertThat(this.presenter.getScore(), nullValue());
   }
 
-  // scoreAndErrorShouldBeClearedWhenNewStudentIsSelected
+  @Test
+  public void scoreAndErrorShouldBeClearedWhenNewStudentIsSelected() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
 
-  // scoreAndErrorShouldBeClearedWhenNewAssignmentIsSelected
+    handler.getValue().scoreValue("-4.3");
+    verify(this.view).setErrorInScore(true);
+
+    this.bus.post(new StudentSelectedEvent(student));
+
+    verify(this.view).setErrorInScore(false);
+    verify(this.view).setScore("");
+    assertThat(this.presenter.getScore(), nullValue());
+  }
+
+  @Test
+  public void scoreAndErrorShouldBeClearedWhenNewAssignmentIsSelected() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    handler.getValue().scoreValue("-4.3");
+    verify(this.view).setErrorInScore(true);
+
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setErrorInScore(false);
+    verify(this.view).setScore("");
+    assertThat(this.presenter.getScore(), nullValue());
+  }
 
   // scoreDefaultsToTotalPoints
+
+  // aScoreOfEmptyStringShouldNotBeAnError
+
+  // aScoreThatIsGreaterThanTheTotalPointsShouldBeAnError
 }

@@ -52,6 +52,7 @@ public class POAGradePresenter {
   public void determineIfStudentsPOAIsLate(StudentSelectedEvent event) {
     this.student = event.getSelectedStudent();
 
+    clearScore();
     determineIfPOAIsLate();
   }
 
@@ -59,6 +60,7 @@ public class POAGradePresenter {
   public void determineIfAssignmentIsLate(AssignmentSelectedEvent event) {
     this.assignment = event.getAssignment();
 
+    clearScore();
     determineIfPOAIsLate();
 
     this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
