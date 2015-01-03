@@ -59,9 +59,10 @@ public class Assignment extends NotableImpl {
    * Sets the number of points that this <code>Assignment</code> is
    * worth.
    */
-  public void setPoints(double points) {
+  public Assignment setPoints(double points) {
     this.setDirty(true);
     this.points = points;
+    return this;
   }
 
   /**
