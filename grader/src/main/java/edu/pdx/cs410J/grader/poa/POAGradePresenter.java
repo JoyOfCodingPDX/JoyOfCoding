@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -104,21 +105,35 @@ public class POAGradePresenter {
   }
 
   public void setScoreValue(String scoreValue) {
+    if (Strings.isNullOrEmpty(scoreValue)) {
+      this.score = null;
+      this.view.setErrorInScore(false);
+      return;
+    }
+
     try {
-      double score = new Double(scoreValue);
+      double score = Double.parseDouble(scoreValue);
 
-      if (score < 0.0) {
-        this.score = null;
-        this.view.setErrorInScore(true);
-
-      } else {
-        this.score = score;
-        this.view.setErrorInScore(false);
-      }
+      validateScoreIsBetweenZeroAndAssignmentsTotalPoints(score);
 
     } catch (NumberFormatException ex) {
       this.score = null;
       this.view.setErrorInScore(true);
+    }
+  }
+
+  private void validateScoreIsBetweenZeroAndAssignmentsTotalPoints(double score) {
+    if (score < 0.0) {
+      this.score = null;
+      this.view.setErrorInScore(true);
+
+    } else if (score > this.assignment.getPoints()) {
+      this.score = null;
+      this.view.setErrorInScore(true);
+
+    } else {
+      this.score = score;
+      this.view.setErrorInScore(false);
     }
   }
 

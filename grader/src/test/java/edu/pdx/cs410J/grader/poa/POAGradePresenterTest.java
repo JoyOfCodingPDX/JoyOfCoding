@@ -161,6 +161,9 @@ public class POAGradePresenterTest extends EventBusTestCase {
     ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
+    this.bus.post(new AssignmentSelectedEvent(assignment.setPoints(2.0d)));
+    reset(this.view);
+
     handler.getValue().scoreValue("1.75");
 
     verify(this.view).setErrorInScore(false);
@@ -244,7 +247,27 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
   }
 
-  // aScoreOfEmptyStringShouldNotBeAnError
+  @Test
+  public void aScoreOfEmptyStringShouldNotBeAnError() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
 
-  // aScoreThatIsGreaterThanTheTotalPointsShouldBeAnError
+    handler.getValue().scoreValue("");
+
+    verify(this.view).setErrorInScore(false);
+    assertThat(presenter.getScore(), nullValue());
+  }
+
+  @Test
+  public void aScoreThatIsGreaterThanTheTotalPointsShouldBeAnError() {
+    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    verify(view).addScoreValueHandler(handler.capture());
+
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    handler.getValue().scoreValue(String.valueOf(assignment.getPoints() + 1.0d));
+
+    verify(this.view).setErrorInScore(true);
+    assertThat(presenter.getScore(), nullValue());
+  }
 }
