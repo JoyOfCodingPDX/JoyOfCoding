@@ -15,6 +15,8 @@ public interface POAGradeView {
 
   void setScore(String score);
 
+  void setScoreHasBeenRecorded(boolean hasScoreBeenRecorded);
+
   public interface IsLateHandler {
     void setIsLate(boolean isLate);
   }

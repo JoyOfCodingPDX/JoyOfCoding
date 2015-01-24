@@ -75,6 +75,11 @@ public class POAGradeWidgets implements POAGradeView {
     this.score.setText(score);
   }
 
+  @Override
+  public void setScoreHasBeenRecorded(boolean hasScoreBeenRecorded) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
   public JComponent getGradeWidget() {
     JPanel panel = new JPanel(new FlowLayout());
     panel.add(new JLabel("Grade:"));

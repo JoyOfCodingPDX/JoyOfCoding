@@ -296,4 +296,12 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
   }
 
+  @Test
+  public void scoreHasNotBeenRecordedWhenNoStudentIsSelected() {
+    this.bus.post(new GradeBookLoaded(book));
+    this.bus.post(new AssignmentSelectedEvent(assignment));
+
+    verify(this.view).setScoreHasBeenRecorded(false);
+  }
+
 }
