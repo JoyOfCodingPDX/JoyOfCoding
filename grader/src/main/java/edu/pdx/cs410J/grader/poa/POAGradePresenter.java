@@ -24,7 +24,6 @@ public class POAGradePresenter {
   private boolean isLate;
   private Double score;
   private CurrentGradeCalculator currentGradeCalculator;
-  private boolean hasScoreBeenRecorded;
 
   @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
@@ -35,13 +34,6 @@ public class POAGradePresenter {
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
     this.view.addScoreValueHandler(this::setScoreValue);
-
-    setScoreGradeBeenRecorded(false);
-  }
-
-  private void setScoreGradeBeenRecorded(boolean hasScoreBeenRecorded) {
-    this.hasScoreBeenRecorded = hasScoreBeenRecorded;
-    this.view.setScoreHasBeenRecorded(hasScoreBeenRecorded);
   }
 
   @Subscribe
@@ -82,9 +74,11 @@ public class POAGradePresenter {
     Optional<Double> currentGrade = this.currentGradeCalculator.getCurrentGradeFor(this.assignment, this.student);
     if (currentGrade.isPresent()) {
       this.view.setScore(formatTotalPoints(currentGrade.get()));
+      this.view.setScoreHasBeenRecorded(true);
 
     } else {
       this.view.setScore(totalPoints);
+      this.view.setScoreHasBeenRecorded(false);
     }
   }
 

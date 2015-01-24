@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -304,4 +305,34 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verify(this.view).setScoreHasBeenRecorded(false);
   }
 
+  @Test
+  public void scoreHasNotBeenRecordedWhenThereIsNoGradeInGradeBook() {
+    assertThat(student.getGrade(assignment), nullValue());
+
+    postEventsToBus();
+
+    verify(this.view).setScoreHasBeenRecorded(false);
+  }
+
+  @Test
+  public void scoreHasBeenRecordedForSelectedStudentWhenItIsInGradeBook() {
+    double score = 0.75;
+    student.setGrade(assignment, new Grade(assignment, score));
+
+    postEventsToBus();
+
+    verify(this.view).setScoreHasBeenRecorded(true);
+  }
+
+  @Ignore
+  @Test
+  public void scoreHasBeenRecordedShouldBeFalseWhenNewSubmissionIsSelected() {
+
+  }
+
+  @Ignore
+  @Test
+  public void clearingScoreMakesItSoGradeCanNotBeRecorded() {
+
+  }
 }
