@@ -34,6 +34,12 @@ public class POAGradePresenter {
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
     this.view.addScoreValueHandler(this::setScoreValue);
+    this.view.addRecordGradeHandler(this::publishScoreToMessageBus);
+  }
+
+  private void publishScoreToMessageBus() {
+    RecordGradeEvent event = new RecordGradeEvent(this.score, this.student, this.assignment, this.isLate);
+    this.bus.post(event);
   }
 
   @Subscribe

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
@@ -10,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDateTime;
 
+import static edu.pdx.cs410J.grader.poa.POAGradeView.RecordGradeHandler;
+import static edu.pdx.cs410J.grader.poa.POAGradeView.ScoreValueHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
@@ -146,7 +149,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void scoreInViewIsInErrorWhenValueIsNotAnInteger() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("Not an Integer");
@@ -157,7 +160,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void setPresentersScoreFromView() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     this.bus.post(new GradeBookLoaded(book));
@@ -172,7 +175,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void negativeScoreIsAnError() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("-4.3");
@@ -183,7 +186,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void errorStateShouldBeClearedWhenNewSubmissionIsSelected() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("-4.3");
@@ -197,7 +200,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void scoreShouldBeClearedWhenNewSubmissionIsSelected() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("-4.3");
@@ -210,7 +213,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void scoreAndErrorShouldBeClearedWhenNewStudentIsSelected() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("-4.3");
@@ -225,7 +228,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void scoreAndErrorShouldBeClearedWhenNewAssignmentIsSelected() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("-4.3");
@@ -255,7 +258,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void aScoreOfEmptyStringShouldNotBeAnError() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     handler.getValue().scoreValue("");
@@ -266,7 +269,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
   @Test
   public void aScoreThatIsGreaterThanTheTotalPointsShouldBeAnError() {
-    ArgumentCaptor<POAGradeView.ScoreValueHandler> handler = ArgumentCaptor.forClass(POAGradeView.ScoreValueHandler.class);
+    ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
     this.bus.post(new GradeBookLoaded(book));
@@ -335,5 +338,38 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new StudentSelectedEvent(student));
 
     verify(this.view).setScoreHasBeenRecorded(false);
+  }
+
+  @Test
+  public void recordingGradeInViewPublishesRecordGradeMessage() {
+    ArgumentCaptor<ScoreValueHandler> scoreHandler = ArgumentCaptor.forClass(ScoreValueHandler.class);
+    verify(this.view).addScoreValueHandler(scoreHandler.capture());
+
+    ArgumentCaptor<RecordGradeHandler> recordGrade = ArgumentCaptor.forClass(RecordGradeHandler.class);
+    verify(this.view).addRecordGradeHandler(recordGrade.capture());
+
+    RecordGradeEventHandler eventHandler = mock(RecordGradeEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.assignment.setDueDate(LocalDateTime.now().minusDays(5));
+    postEventsToBus();
+
+    double score = 0.75;
+    scoreHandler.getValue().scoreValue(POAGradePresenter.formatTotalPoints(score));
+    recordGrade.getValue().recordGrade();
+
+    ArgumentCaptor<RecordGradeEvent> eventCaptor = ArgumentCaptor.forClass(RecordGradeEvent.class);
+    verify(eventHandler).handleRecordGradeEvent(eventCaptor.capture());
+
+    RecordGradeEvent event = eventCaptor.getValue();
+    assertThat(event.getScore(), equalTo(score));
+    assertThat(event.getStudent(), equalTo(this.student));
+    assertThat(event.getAssignment(), equalTo(this.assignment));
+    assertThat(event.isLate(), equalTo(true));
+  }
+
+  private interface RecordGradeEventHandler {
+    @Subscribe
+    public void handleRecordGradeEvent(RecordGradeEvent event);
   }
 }

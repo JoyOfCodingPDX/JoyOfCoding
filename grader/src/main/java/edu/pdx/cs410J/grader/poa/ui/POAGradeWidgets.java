@@ -80,6 +80,11 @@ public class POAGradeWidgets implements POAGradeView {
     throw new UnsupportedOperationException("This method is not implemented yet");
   }
 
+  @Override
+  public void addRecordGradeHandler(RecordGradeHandler handler) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
   public JComponent getGradeWidget() {
     JPanel panel = new JPanel(new FlowLayout());
     panel.add(new JLabel("Grade:"));
