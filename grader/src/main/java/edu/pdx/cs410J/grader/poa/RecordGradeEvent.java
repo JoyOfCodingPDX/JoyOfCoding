@@ -31,4 +31,10 @@ public class RecordGradeEvent {
   public boolean isLate() {
     return late;
   }
+
+  @Override
+  public String toString() {
+    return "Record " + (isLate() ? "late" : "on-time") + " grade of " + getScore() + " for " +
+      getStudent().getFullName() + " on " + getAssignment().getName();
+  }
 }

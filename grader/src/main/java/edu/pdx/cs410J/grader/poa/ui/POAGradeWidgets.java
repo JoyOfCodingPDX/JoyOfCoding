@@ -13,11 +13,13 @@ public class POAGradeWidgets implements POAGradeView {
   private final JCheckBox isLateCheckbox;
   private final JLabel totalPointsLabel;
   private final JTextField score;
+  private final JButton recordGrade;
 
   public POAGradeWidgets() {
     isLateCheckbox = new JCheckBox("Late");
     totalPointsLabel = new JLabel("out of");
     score = new JTextField(4);
+    recordGrade = new JButton("Save Grade");
   }
 
   public JCheckBox getIsLateCheckbox() {
@@ -28,6 +30,7 @@ public class POAGradeWidgets implements POAGradeView {
   public void setIsEnabled(boolean isEnabled) {
     this.isLateCheckbox.setEnabled(isEnabled);
     this.score.setEnabled(isEnabled);
+    this.recordGrade.setEnabled(isEnabled);
   }
 
   @Override
@@ -64,25 +67,33 @@ public class POAGradeWidgets implements POAGradeView {
   public void setErrorInScore(boolean errorInScore) {
     if (errorInScore) {
       this.score.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+      this.recordGrade.setEnabled(false);
 
     } else {
       this.score.setBorder(null);
+      this.recordGrade.setEnabled(true);
     }
   }
 
   @Override
   public void setScore(String score) {
     this.score.setText(score);
+    this.recordGrade.setEnabled(true);
   }
 
   @Override
   public void setScoreHasBeenRecorded(boolean hasScoreBeenRecorded) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    if (hasScoreBeenRecorded) {
+      this.recordGrade.setText("Update Grade");
+
+    } else {
+      this.recordGrade.setText("Save Grade");
+    }
   }
 
   @Override
   public void addRecordGradeHandler(RecordGradeHandler handler) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.recordGrade.addActionListener(e -> handler.recordGrade());
   }
 
   public JComponent getGradeWidget() {
@@ -90,6 +101,7 @@ public class POAGradeWidgets implements POAGradeView {
     panel.add(new JLabel("Grade:"));
     panel.add(this.score);
     panel.add(this.totalPointsLabel);
+    panel.add(this.recordGrade);
     return panel;
   }
 }
