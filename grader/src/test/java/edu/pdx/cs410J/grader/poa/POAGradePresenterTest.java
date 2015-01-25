@@ -238,8 +238,8 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setErrorInScore(false);
-    verify(this.view).setScore("");
-    assertThat(this.presenter.getScore(), nullValue());
+    verify(this.view).setScore(POAGradePresenter.formatTotalPoints(assignment.getPoints()));
+    assertThat(this.presenter.getScore(), equalTo(assignment.getPoints()));
   }
 
   @Test
@@ -304,7 +304,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
-    verify(this.view, times(2)).setScoreHasBeenRecorded(false);
+    verify(this.view).setScoreHasBeenRecorded(false);
   }
 
   @Test
@@ -313,7 +313,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     postEventsToBus();
 
-    verify(this.view, times(4)).setScoreHasBeenRecorded(false);
+    verify(this.view, times(3)).setScoreHasBeenRecorded(false);
   }
 
   @Test
@@ -366,6 +366,8 @@ public class POAGradePresenterTest extends EventBusTestCase {
     assertThat(event.getStudent(), equalTo(this.student));
     assertThat(event.getAssignment(), equalTo(this.assignment));
     assertThat(event.isLate(), equalTo(true));
+
+    verify(this.view).setScoreHasBeenRecorded(true);
   }
 
   private interface RecordGradeEventHandler {

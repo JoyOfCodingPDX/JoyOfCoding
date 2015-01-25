@@ -38,8 +38,13 @@ public class POAGradePresenter {
   }
 
   private void publishScoreToMessageBus() {
+    if (this.score == null) {
+      throw new IllegalStateException("No score specified");
+    }
+
     RecordGradeEvent event = new RecordGradeEvent(this.score, this.student, this.assignment, this.isLate);
     this.bus.post(event);
+    this.view.setScoreHasBeenRecorded(true);
   }
 
   @Subscribe
@@ -69,24 +74,26 @@ public class POAGradePresenter {
   public void determineIfAssignmentIsLate(AssignmentSelectedEvent event) {
     this.assignment = event.getAssignment();
 
-    clearScore();
     determineIfPOAIsLate();
 
-    String totalPoints = formatTotalPoints(this.assignment.getPoints());
-    this.view.setTotalPoints(totalPoints);
-    setDefaultValueOfScore(totalPoints);
+    this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
+    setDefaultValueOfScore();
   }
 
-  private void setDefaultValueOfScore(String totalPoints) {
+  private void setDefaultValueOfScore() {
     Optional<Double> currentGrade = this.currentGradeCalculator.getCurrentGradeFor(this.assignment, this.student);
     if (currentGrade.isPresent()) {
-      this.view.setScore(formatTotalPoints(currentGrade.get()));
+      this.score = currentGrade.get();
+      this.view.setScore(formatTotalPoints(this.score));
       this.view.setScoreHasBeenRecorded(true);
 
     } else {
-      this.view.setScore(totalPoints);
+      this.score = this.assignment.getPoints();
+      this.view.setScore(formatTotalPoints(this.score));
       this.view.setScoreHasBeenRecorded(false);
     }
+
+    this.view.setErrorInScore(false);
   }
 
   @Subscribe
