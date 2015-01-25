@@ -48,6 +48,7 @@ public class POAGradePresenter {
     this.score = null;
     this.view.setErrorInScore(false);
     this.view.setScore("");
+    this.view.setScoreHasBeenRecorded(false);
   }
 
   @Subscribe

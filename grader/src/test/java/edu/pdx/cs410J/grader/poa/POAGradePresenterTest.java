@@ -5,7 +5,6 @@ import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -302,7 +301,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.bus.post(new GradeBookLoaded(book));
     this.bus.post(new AssignmentSelectedEvent(assignment));
 
-    verify(this.view).setScoreHasBeenRecorded(false);
+    verify(this.view, times(2)).setScoreHasBeenRecorded(false);
   }
 
   @Test
@@ -311,7 +310,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
 
     postEventsToBus();
 
-    verify(this.view).setScoreHasBeenRecorded(false);
+    verify(this.view, times(4)).setScoreHasBeenRecorded(false);
   }
 
   @Test
@@ -324,15 +323,17 @@ public class POAGradePresenterTest extends EventBusTestCase {
     verify(this.view).setScoreHasBeenRecorded(true);
   }
 
-  @Ignore
   @Test
   public void scoreHasBeenRecordedShouldBeFalseWhenNewSubmissionIsSelected() {
+    this.bus.post(new POASubmissionSelected(submission));
 
+    verify(this.view).setScoreHasBeenRecorded(false);
   }
 
-  @Ignore
   @Test
-  public void clearingScoreMakesItSoGradeCanNotBeRecorded() {
+  public void scoreHasBeenRecordedShouldBeFalseWhenNewStudentIsSelected() {
+    this.bus.post(new StudentSelectedEvent(student));
 
+    verify(this.view).setScoreHasBeenRecorded(false);
   }
 }
