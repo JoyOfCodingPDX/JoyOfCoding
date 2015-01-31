@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GradeBookLoaderTest extends EventBusTestCase {
+public class GradeBookFileManagerTest extends EventBusTestCase {
 
   @Override
   public void setUp() {
