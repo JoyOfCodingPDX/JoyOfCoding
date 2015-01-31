@@ -22,6 +22,11 @@ public class GradeBookPresenter {
     bus.register(this);
 
     view.addGradeBookFileListener(this::publishLoadGradeBookEvent);
+    view.addSaveGradeBookListener(this::publishSaveGradeBookEvent);
+  }
+
+  private void publishSaveGradeBookEvent() {
+    this.bus.post(new SaveGradeBook(this.gradeBook));
   }
 
   private void publishLoadGradeBookEvent(File file) {

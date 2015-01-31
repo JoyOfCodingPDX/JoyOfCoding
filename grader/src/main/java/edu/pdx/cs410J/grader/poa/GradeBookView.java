@@ -9,7 +9,13 @@ public interface GradeBookView {
 
   void canSaveGradeBook(boolean canSaveGradeBook);
 
+  void addSaveGradeBookListener(SaveGradeBookListener listener);
+
   interface FileSelectedListener {
     void fileSelected(File file);
+  }
+
+  public interface SaveGradeBookListener {
+    void saveGradeBook();
   }
 }

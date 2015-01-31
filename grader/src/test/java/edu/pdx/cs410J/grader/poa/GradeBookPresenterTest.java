@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import java.io.File;
 import java.io.IOException;
 
+import static edu.pdx.cs410J.grader.poa.GradeBookView.SaveGradeBookListener;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -136,5 +137,34 @@ public class GradeBookPresenterTest extends GradeBookTestCase {
     this.bus.post(new RecordGradeEvent(newScore, student, poa, isLate));
 
     verify(view).canSaveGradeBook(true);
+  }
+
+  @Test
+  public void savingGradeBookInViewPublishesSaveGradeBookEvent() throws IOException {
+    ArgumentCaptor<SaveGradeBookListener> listener = ArgumentCaptor.forClass(SaveGradeBookListener.class);
+    verify(this.view).addSaveGradeBookListener(listener.capture());
+
+    GradeBook book = new GradeBook("Test");
+    Student student = new Student("studentId");
+    book.addStudent(student);
+    Assignment poa = new Assignment("poa", 1.0);
+    book.addAssignment(poa);
+    student.setGrade(poa, 0.9);
+    bus.post(new GradeBookLoaded(book));
+
+    SaveGradeBookEventHandler eventHandler = mock(SaveGradeBookEventHandler.class);
+    bus.register(eventHandler);
+
+    listener.getValue().saveGradeBook();
+
+    ArgumentCaptor<SaveGradeBook> event = ArgumentCaptor.forClass(SaveGradeBook.class);
+    verify(eventHandler).saveGradeBook(event.capture());
+
+    assertThat(event.getValue().getGradeBook(), equalTo(book));
+  }
+
+  public interface SaveGradeBookEventHandler {
+    @Subscribe
+    public void saveGradeBook(SaveGradeBook event);
   }
 }

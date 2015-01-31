@@ -44,6 +44,11 @@ public class GradeBookWidget extends JPanel implements GradeBookView {
     this.saveGradeBookButton.setEnabled(canSaveGradeBook);
   }
 
+  @Override
+  public void addSaveGradeBookListener(SaveGradeBookListener listener) {
+    this.saveGradeBookButton.addActionListener(e -> listener.saveGradeBook());
+  }
+
   private void displayFileChooser(FileSelectedListener listener) {
     JFileChooser chooser = new JFileChooser();
     chooser.setDialogTitle("Select Grade Book file");
