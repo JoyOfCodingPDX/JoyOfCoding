@@ -12,6 +12,7 @@ import java.awt.*;
 public class GradeBookWidget extends JPanel implements GradeBookView {
   private final JLabel gradeBookName;
   private final JButton loadGradeBookButton;
+  private final JButton saveGradeBookButton;
   private final Component parentComponent;
 
   @Inject
@@ -19,10 +20,13 @@ public class GradeBookWidget extends JPanel implements GradeBookView {
     this.parentComponent = parentFrame;
     gradeBookName = new JLabel();
     loadGradeBookButton = new JButton("Load grade book");
+    saveGradeBookButton = new JButton("Save grade book");
+    saveGradeBookButton.setEnabled(false);
 
     this.setLayout(new FlowLayout());
     this.add(gradeBookName);
     this.add(loadGradeBookButton);
+    this.add(saveGradeBookButton);
   }
 
   @Override
@@ -37,7 +41,7 @@ public class GradeBookWidget extends JPanel implements GradeBookView {
 
   @Override
   public void canSaveGradeBook(boolean canSaveGradeBook) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.saveGradeBookButton.setEnabled(canSaveGradeBook);
   }
 
   private void displayFileChooser(FileSelectedListener listener) {
