@@ -35,6 +35,11 @@ public class GradeBookWidget extends JPanel implements GradeBookView {
     this.loadGradeBookButton.addActionListener(e -> displayFileChooser(listener));
   }
 
+  @Override
+  public void canSaveGradeBook(boolean canSaveGradeBook) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
   private void displayFileChooser(FileSelectedListener listener) {
     JFileChooser chooser = new JFileChooser();
     chooser.setDialogTitle("Select Grade Book file");

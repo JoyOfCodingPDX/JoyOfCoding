@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
@@ -33,6 +32,7 @@ public class GradeBookPresenter {
   public void noteGradeBook(GradeBookLoaded event) {
     gradeBook = event.getGradeBook();
     this.view.setGradeBookName(gradeBook.getClassName());
+    this.view.canSaveGradeBook(false);
   }
 
   @Subscribe
@@ -44,5 +44,7 @@ public class GradeBookPresenter {
     if (event.isLate()) {
       student.addLate(assignment);
     }
+
+    this.view.canSaveGradeBook(true);
   }
 }

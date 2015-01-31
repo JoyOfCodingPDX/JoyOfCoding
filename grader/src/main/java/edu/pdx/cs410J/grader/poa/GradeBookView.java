@@ -7,6 +7,8 @@ public interface GradeBookView {
 
   void addGradeBookFileListener(FileSelectedListener listener);
 
+  void canSaveGradeBook(boolean canSaveGradeBook);
+
   interface FileSelectedListener {
     void fileSelected(File file);
   }

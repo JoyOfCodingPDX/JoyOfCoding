@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GradeBookPresenterTest extends EventBusTestCase{
+public class GradeBookPresenterTest extends GradeBookTestCase {
 
   private GradeBookView view;
 
@@ -67,6 +67,7 @@ public class GradeBookPresenterTest extends EventBusTestCase{
     book.addStudent(student);
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
+    bus.post(new GradeBookLoaded(book));
 
     boolean isLate = true;
     double score = 0.5;
@@ -86,6 +87,7 @@ public class GradeBookPresenterTest extends EventBusTestCase{
     book.addStudent(student);
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
+    bus.post(new GradeBookLoaded(book));
 
     boolean isLate = false;
     double score = 0.6;
@@ -105,6 +107,7 @@ public class GradeBookPresenterTest extends EventBusTestCase{
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
     student.setGrade(poa, 0.9);
+    bus.post(new GradeBookLoaded(book));
 
     boolean isLate = false;
     double newScore = 0.6;
@@ -114,6 +117,24 @@ public class GradeBookPresenterTest extends EventBusTestCase{
     assertThat(grade, notNullValue());
     assertThat(grade.getScore(), equalTo(newScore));
     assertThat(student.getLate(), not(contains(poa.getName())));
+  }
 
+  @Test
+  public void recordingGradeEnablesSaveGradeBookInView() {
+    GradeBook book = new GradeBook("Test");
+    Student student = new Student("studentId");
+    book.addStudent(student);
+    Assignment poa = new Assignment("poa", 1.0);
+    book.addAssignment(poa);
+    student.setGrade(poa, 0.9);
+    bus.post(new GradeBookLoaded(book));
+
+    verify(view).canSaveGradeBook(false);
+
+    boolean isLate = false;
+    double newScore = 0.6;
+    this.bus.post(new RecordGradeEvent(newScore, student, poa, isLate));
+
+    verify(view).canSaveGradeBook(true);
   }
 }
