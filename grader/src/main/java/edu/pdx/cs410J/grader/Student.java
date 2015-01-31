@@ -544,4 +544,13 @@ public class Student extends NotableImpl {
     setGrade(assignment.getName(), grade);
     return this;
   }
+
+  public void addLate(Assignment assignment) {
+    this.addLate(assignment.getName());
+  }
+
+  public void setGrade(Assignment assignment, double score) {
+    this.setGrade(assignment, new Grade(assignment, score));
+
+  }
 }

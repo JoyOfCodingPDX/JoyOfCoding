@@ -1,7 +1,10 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
+import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.Student;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -9,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -55,5 +58,62 @@ public class GradeBookPresenterTest extends EventBusTestCase{
   private interface LoadGradeBookHandler {
     @Subscribe
     public void handle(LoadGradeBook loadGradeBook);
+  }
+
+  @Test
+  public void gradeBookIsUpdatedOnRecordGradeEventForLateSubmission() {
+    GradeBook book = new GradeBook("Test");
+    Student student = new Student("studentId");
+    book.addStudent(student);
+    Assignment poa = new Assignment("poa", 1.0);
+    book.addAssignment(poa);
+
+    boolean isLate = true;
+    double score = 0.5;
+    this.bus.post(new RecordGradeEvent(score, student, poa, isLate));
+
+    Grade grade = student.getGrade(poa.getName());
+    assertThat(grade, notNullValue());
+    assertThat(grade.getScore(), equalTo(score));
+    assertThat(student.getLate(), contains(poa.getName()));
+
+  }
+
+  @Test
+  public void gradeBookIsUpdatedOnRecordGradeEventForOnTimeSubmission() {
+    GradeBook book = new GradeBook("Test");
+    Student student = new Student("studentId");
+    book.addStudent(student);
+    Assignment poa = new Assignment("poa", 1.0);
+    book.addAssignment(poa);
+
+    boolean isLate = false;
+    double score = 0.6;
+    this.bus.post(new RecordGradeEvent(score, student, poa, isLate));
+
+    Grade grade = student.getGrade(poa.getName());
+    assertThat(grade, notNullValue());
+    assertThat(grade.getScore(), equalTo(score));
+    assertThat(student.getLate(), not(contains(poa.getName())));
+  }
+
+  @Test
+  public void gradeBookIsUpdatedOnRecordGradeEventForExistingGrade() {
+    GradeBook book = new GradeBook("Test");
+    Student student = new Student("studentId");
+    book.addStudent(student);
+    Assignment poa = new Assignment("poa", 1.0);
+    book.addAssignment(poa);
+    student.setGrade(poa, 0.9);
+
+    boolean isLate = false;
+    double newScore = 0.6;
+    this.bus.post(new RecordGradeEvent(newScore, student, poa, isLate));
+
+    Grade grade = student.getGrade(poa.getName());
+    assertThat(grade, notNullValue());
+    assertThat(grade.getScore(), equalTo(newScore));
+    assertThat(student.getLate(), not(contains(poa.getName())));
+
   }
 }
