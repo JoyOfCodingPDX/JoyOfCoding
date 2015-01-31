@@ -10,11 +10,11 @@ import edu.pdx.cs410J.grader.XmlGradeBookParser;
 import java.io.File;
 import java.io.IOException;
 
-public class GradeBookLoader {
+public class GradeBookFileManager {
   private final EventBus bus;
 
   @Inject
-  public GradeBookLoader(EventBus bus) {
+  public GradeBookFileManager(EventBus bus) {
     this.bus = bus;
     this.bus.register(this);
   }

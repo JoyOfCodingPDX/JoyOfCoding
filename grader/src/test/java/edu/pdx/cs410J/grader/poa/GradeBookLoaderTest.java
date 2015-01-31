@@ -1,6 +1,8 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
+import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.XmlDumper;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -13,12 +15,12 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GradeBookLoaderTest extends GradeBookTestCase {
+public class GradeBookLoaderTest extends EventBusTestCase {
 
   @Override
   public void setUp() {
     super.setUp();
-    new GradeBookLoader(this.bus);
+    new GradeBookFileManager(this.bus);
   }
 
   @Test
@@ -35,6 +37,16 @@ public class GradeBookLoaderTest extends GradeBookTestCase {
     verify(handler).handle(event.capture());
 
     assertThat(event.getValue().getGradeBook().getClassName(), equalTo(gradeBookName));
+  }
+
+  protected File writeGradeBookToFile(String gradeBookName) throws IOException {
+    File file = File.createTempFile("testGradeBook", "xml");
+
+    GradeBook book = new GradeBook(gradeBookName);
+    XmlDumper dumper = new XmlDumper(file);
+    dumper.dump(book);
+
+    return file;
   }
 
   private interface GradeBookLoadedHandler {

@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GradeBookPresenterTest extends GradeBookTestCase {
+public class GradeBookPresenterTest extends EventBusTestCase {
 
   private GradeBookView view;
 

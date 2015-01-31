@@ -26,7 +26,7 @@ public class POAGraderUIModule extends AbstractModule {
     bind(POAAssignmentsPresenter.class).asEagerSingleton();
     bind(POAGradePresenter.class).asEagerSingleton();
 
-    bind(GradeBookLoader.class).asEagerSingleton();
+    bind(GradeBookFileManager.class).asEagerSingleton();
   }
 
   @Provides
