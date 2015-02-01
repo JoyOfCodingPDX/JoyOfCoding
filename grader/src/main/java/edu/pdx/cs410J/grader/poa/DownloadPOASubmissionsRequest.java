@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
-public class DownloadSubmissions {
+public class DownloadPOASubmissionsRequest {
 
   @Override
   public String toString() {

@@ -96,7 +96,7 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
 
     listener.getValue().downloadSubmissions();
 
-    ArgumentCaptor<DownloadSubmissions> event = ArgumentCaptor.forClass(DownloadSubmissions.class);
+    ArgumentCaptor<DownloadPOASubmissionsRequest> event = ArgumentCaptor.forClass(DownloadPOASubmissionsRequest.class);
     verify(handler).handleDownloadSubmissions(event.capture());
 
     assertThat(event.getValue(), notNullValue());
@@ -104,7 +104,7 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
 
   public interface DownloadSubmissionsHandler {
     @Subscribe
-    public void handleDownloadSubmissions(DownloadSubmissions event);
+    public void handleDownloadSubmissions(DownloadPOASubmissionsRequest event);
   }
 
 }

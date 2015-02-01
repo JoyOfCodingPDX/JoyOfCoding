@@ -25,7 +25,7 @@ public class POASubmissionsPresenter {
   }
 
   private void fireDownloadSubmissionsEvent() {
-    this.bus.post(new DownloadSubmissions());
+    this.bus.post(new DownloadPOASubmissionsRequest());
   }
 
   private void selectPOASubmission(int index) {

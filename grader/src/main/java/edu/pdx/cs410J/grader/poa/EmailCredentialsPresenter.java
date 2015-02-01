@@ -30,7 +30,7 @@ public class EmailCredentialsPresenter {
   }
 
   @Subscribe
-  public void displayEmailCredentialsView(DownloadSubmissions event) {
+  public void displayEmailCredentialsView(DownloadPOASubmissionsRequest event) {
     this.view.setIsVisible(true);
   }
 
