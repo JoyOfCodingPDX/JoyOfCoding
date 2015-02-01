@@ -66,7 +66,7 @@ public class PlanOfAttackGrader {
     bus.register(new Object() {
       @Subscribe
       public void logEvent(Object event) {
-        logger.info("Event " + event);
+        logger.debug("Event " + event);
       }
     });
 

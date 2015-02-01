@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
@@ -56,6 +57,9 @@ public class GraderTools {
 
       case "mailFileToStudent" :
         return StudentFileMailer.class;
+
+      case "gradePOAs":
+        return PlanOfAttackGrader.class;
 
       default:
         usage("Unknown tool: " + tool);
