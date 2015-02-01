@@ -13,6 +13,7 @@ import java.util.Vector;
 public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
 
   private final JList<String> submissions;
+  private final JButton downloadSubmissions;
 
   public POASubmissionsPanel() {
     submissions = new JList<>();
@@ -22,7 +23,8 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
 
     this.add(new JScrollPane(submissions), BorderLayout.CENTER);
 
-    this.add(new JLabel("Hello??"), BorderLayout.SOUTH);
+    downloadSubmissions = new JButton("Download");
+    this.add(downloadSubmissions, BorderLayout.SOUTH);
   }
 
   @Override
@@ -37,6 +39,11 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
         listener.submissionSelected(submissions.getSelectedIndex());
       }
     });
+  }
+
+  @Override
+  public void addDownloadSubmissionsListener(DownloadSubmissionsListener listener) {
+    this.downloadSubmissions.addActionListener(e -> listener.downloadSubmissions());
   }
 
   private boolean isFinalEventInUserSelection(ListSelectionEvent e) {

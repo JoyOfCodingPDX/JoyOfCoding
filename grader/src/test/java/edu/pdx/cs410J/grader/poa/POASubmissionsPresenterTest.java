@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.*;
 
 public class POASubmissionsPresenterTest extends POASubmissionTestCase {
@@ -84,4 +85,26 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     @Subscribe
     public void handle(POASubmissionSelected selected);
   }
+
+  @Test
+  public void downloadSubmissionsInViewFiresDownloadSubmissionsEvent() {
+    ArgumentCaptor<POASubmissionsView.DownloadSubmissionsListener> listener = ArgumentCaptor.forClass(POASubmissionsView.DownloadSubmissionsListener.class);
+    verify(this.view).addDownloadSubmissionsListener(listener.capture());
+
+    DownloadSubmissionsHandler handler = mock(DownloadSubmissionsHandler.class);
+    this.bus.register(handler);
+
+    listener.getValue().downloadSubmissions();
+
+    ArgumentCaptor<DownloadSubmissions> event = ArgumentCaptor.forClass(DownloadSubmissions.class);
+    verify(handler).handleDownloadSubmissions(event.capture());
+
+    assertThat(event.getValue(), notNullValue());
+  }
+
+  public interface DownloadSubmissionsHandler {
+    @Subscribe
+    public void handleDownloadSubmissions(DownloadSubmissions event);
+  }
+
 }

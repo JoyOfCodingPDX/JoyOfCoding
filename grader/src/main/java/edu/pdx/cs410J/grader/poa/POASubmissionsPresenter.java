@@ -19,8 +19,13 @@ public class POASubmissionsPresenter {
     this.view = view;
 
     this.view.addSubmissionSelectedListener(this::selectPOASubmission);
+    this.view.addDownloadSubmissionsListener(this::fireDownloadSubmissionsEvent);
 
     this.bus.register(this);
+  }
+
+  private void fireDownloadSubmissionsEvent() {
+    this.bus.post(new DownloadSubmissions());
   }
 
   private void selectPOASubmission(int index) {
