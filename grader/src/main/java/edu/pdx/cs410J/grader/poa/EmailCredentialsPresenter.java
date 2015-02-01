@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
@@ -17,6 +18,11 @@ public class EmailCredentialsPresenter {
 
     this.view.addEmailAddressValueListener(this::setEmailAddress);
     this.view.addPasswordValueListener(this::setPassword);
+    this.view.addSubmitCredentialsListener(this::fireEmailCredentialsEvent);
+  }
+
+  private void fireEmailCredentialsEvent() {
+    this.bus.post(new EmailCredentials(this.emailAddress, this.password));
   }
 
   @Subscribe
@@ -28,7 +34,8 @@ public class EmailCredentialsPresenter {
     return emailAddress;
   }
 
-  private void setEmailAddress(String emailAddress) {
+  @VisibleForTesting
+  void setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
   }
 
@@ -36,7 +43,8 @@ public class EmailCredentialsPresenter {
     return password;
   }
 
-  private void setPassword(String password) {
+  @VisibleForTesting
+  void setPassword(String password) {
     this.password = password;
   }
 }

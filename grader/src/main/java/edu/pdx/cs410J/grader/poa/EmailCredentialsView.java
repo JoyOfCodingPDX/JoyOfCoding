@@ -7,11 +7,17 @@ public interface EmailCredentialsView {
 
   void addPasswordValueListener(PasswordValueListener listener);
 
+  void addSubmitCredentialsListener(SubmitCredentialsListener listener);
+
   public interface EmailAddressValueListener {
     void setEmailAddress(String address);
   }
 
   public interface PasswordValueListener {
     void setPassword(String password);
+  }
+
+  public interface SubmitCredentialsListener {
+    void submitCredentials();
   }
 }
