@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import static edu.pdx.cs410J.grader.poa.EmailCredentialsView.EmailAddressValueListener;
+import static edu.pdx.cs410J.grader.poa.EmailCredentialsView.PasswordValueListener;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
@@ -39,5 +40,16 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
     emailAddress.getValue().setEmailAddress(address);
 
     assertThat(presenter.getEmailAddress(), equalTo(address));
+  }
+
+  @Test
+  public void passwordInViewIsSavedToPresenter() {
+    ArgumentCaptor<PasswordValueListener> passwordCaptor = ArgumentCaptor.forClass(PasswordValueListener.class);
+    verify(this.view).addPasswordValueListener(passwordCaptor.capture());
+
+    String password = "password";
+    passwordCaptor.getValue().setPassword(password);
+
+    assertThat(presenter.getPassword(), equalTo(password));
   }
 }

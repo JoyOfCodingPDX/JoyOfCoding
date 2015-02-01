@@ -7,6 +7,7 @@ public class EmailCredentialsPresenter {
   private final EventBus bus;
   private final EmailCredentialsView view;
   private String emailAddress;
+  private String password;
 
   public EmailCredentialsPresenter(EventBus bus, EmailCredentialsView view) {
     this.bus = bus;
@@ -15,6 +16,7 @@ public class EmailCredentialsPresenter {
     this.bus.register(this);
 
     this.view.addEmailAddressValueListener(this::setEmailAddress);
+    this.view.addPasswordValueListener(this::setPassword);
   }
 
   @Subscribe
@@ -28,5 +30,13 @@ public class EmailCredentialsPresenter {
 
   private void setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  private void setPassword(String password) {
+    this.password = password;
   }
 }
