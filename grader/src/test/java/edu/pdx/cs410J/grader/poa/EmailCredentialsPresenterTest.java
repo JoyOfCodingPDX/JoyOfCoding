@@ -30,7 +30,7 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
   public void downloadingSubmissionsDisplaysEmailCredentialsView() {
     this.bus.post(new DownloadSubmissions());
 
-    verify(this.view).setVisible(true);
+    verify(this.view).setIsVisible(true);
   }
 
   @Test

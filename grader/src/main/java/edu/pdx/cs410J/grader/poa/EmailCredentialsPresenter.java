@@ -3,13 +3,17 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class EmailCredentialsPresenter {
   private final EventBus bus;
   private final EmailCredentialsView view;
   private String emailAddress;
   private String password;
 
+  @Inject
   public EmailCredentialsPresenter(EventBus bus, EmailCredentialsView view) {
     this.bus = bus;
     this.view = view;
@@ -27,7 +31,7 @@ public class EmailCredentialsPresenter {
 
   @Subscribe
   public void displayEmailCredentialsView(DownloadSubmissions event) {
-    this.view.setVisible(true);
+    this.view.setIsVisible(true);
   }
 
   public String getEmailAddress() {

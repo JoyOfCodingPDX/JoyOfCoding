@@ -33,7 +33,7 @@ public class PlanOfAttackGrader {
   }
 
   public static void main(String[] args) {
-    Thread.currentThread().setUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
+    Thread.currentThread().setUncaughtExceptionHandler((t, e) -> printStackTrace(e));
 
     Injector injector = Guice.createInjector(new POAGraderUIModule());
 
@@ -50,6 +50,11 @@ public class PlanOfAttackGrader {
     }
 
     publishDemoSubmissions(bus);
+  }
+
+  private static void printStackTrace(Throwable e) {
+    e.fillInStackTrace();
+    e.printStackTrace(System.err);
   }
 
   private void display() {

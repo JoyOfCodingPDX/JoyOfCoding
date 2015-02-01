@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
 public interface EmailCredentialsView {
-  public void setVisible(boolean isVisible);
+  public void setIsVisible(boolean isVisible);
 
   void addEmailAddressValueListener(EmailAddressValueListener listener);
 

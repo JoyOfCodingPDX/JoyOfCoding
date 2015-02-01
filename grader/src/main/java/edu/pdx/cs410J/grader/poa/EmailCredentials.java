@@ -16,4 +16,9 @@ public class EmailCredentials {
   public String getPassword() {
     return password;
   }
+
+  @Override
+  public String toString() {
+    return "Email credentials for " + this.emailAddress;
+  }
 }

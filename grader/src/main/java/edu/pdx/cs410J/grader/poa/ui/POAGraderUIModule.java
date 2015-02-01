@@ -17,6 +17,7 @@ public class POAGraderUIModule extends AbstractModule {
     bind(StudentsView.class).to(StudentsWidget.class);
     bind(POAAssignmentsView.class).to(POAAssignmentsWidget.class);
     bind(POAGradeView.class).to(POAGradeWidgets.class);
+    bind(EmailCredentialsView.class).to(EmailCredentialsDialog.class).asEagerSingleton();
 
     bind(POASubmissionsPresenter.class).asEagerSingleton();
     bind(POASubmissionPresenter.class).asEagerSingleton();
@@ -25,6 +26,7 @@ public class POAGraderUIModule extends AbstractModule {
     bind(StudentsPresenter.class).asEagerSingleton();
     bind(POAAssignmentsPresenter.class).asEagerSingleton();
     bind(POAGradePresenter.class).asEagerSingleton();
+    bind(EmailCredentialsPresenter.class).asEagerSingleton();
 
     bind(GradeBookFileManager.class).asEagerSingleton();
   }
