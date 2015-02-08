@@ -6,4 +6,6 @@ public interface POASubmissionView {
   void setSubmissionSubmitter(String submitter);
 
   void setSubmissionTime(String time);
+
+  void setContent(String content);
 }

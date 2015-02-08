@@ -26,6 +26,7 @@ public class POASubmissionPresenter {
     this.view.setSubmissionSubject(submission.getSubject());
     this.view.setSubmissionSubmitter(submission.getSubmitter());
     this.view.setSubmissionTime(formatSubmissionTime(submission.getSubmitTime()));
+    this.view.setContent(submission.getContent());
   }
 
   static String formatSubmissionTime(LocalDateTime submitTime) {

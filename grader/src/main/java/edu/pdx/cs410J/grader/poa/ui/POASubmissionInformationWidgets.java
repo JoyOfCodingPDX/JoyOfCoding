@@ -62,6 +62,11 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
     this.submissionTimeLabel.setText(time);
   }
 
+  @Override
+  public void setContent(String content) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
   public JComponent getSubmissionContentWidget() {
     return new JScrollPane(this.submissionContent);
   }

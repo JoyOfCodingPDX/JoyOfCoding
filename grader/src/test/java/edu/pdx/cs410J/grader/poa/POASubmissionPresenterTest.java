@@ -23,13 +23,18 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
 
   @Test
   public void submissionInformationDisplayedOnSubmissionSelectionEvent() {
-    POASubmission submission = createPOASubmission("Subject", "Submitter", LocalDateTime.now());
+    String subject = "Subject";
+    String submitter = "Submitter";
+    LocalDateTime submitTime = LocalDateTime.now();
+    String content = "Test Content";
+    POASubmission submission = createPOASubmission(subject, submitter, submitTime, content);
 
     this.bus.post(new POASubmissionSelected(submission));
 
-    verify(view).setSubmissionSubject(submission.getSubject());
-    verify(view).setSubmissionSubmitter(submission.getSubmitter());
-    verify(view).setSubmissionTime(POASubmissionPresenter.formatSubmissionTime(submission.getSubmitTime()));
+    verify(view).setSubmissionSubject(subject);
+    verify(view).setSubmissionSubmitter(submitter);
+    verify(view).setSubmissionTime(POASubmissionPresenter.formatSubmissionTime(submitTime));
+    verify(view).setContent(content);
   }
 
 }
