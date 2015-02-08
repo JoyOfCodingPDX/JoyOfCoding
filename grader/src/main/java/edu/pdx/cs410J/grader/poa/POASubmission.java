@@ -34,7 +34,18 @@ public class POASubmission {
 
   @Override
   public String toString() {
-    return String.format("POA from %s with subject %s on %s", getSubmitter(), getSubject(), getSubmitTime());
+    return String.format("POA from %s with subject %s on %s with %d characters of content",
+      getSubmitter(), getSubject(), getSubmitTime(), getContentLength());
+  }
+
+  private int getContentLength() {
+    String content = getContent();
+    if (content == null) {
+      return 0;
+
+    } else {
+      return content.length();
+    }
   }
 
   public String getContent() {
@@ -66,8 +77,9 @@ public class POASubmission {
       return this;
     }
 
-    public void setContent(String content) {
+    public Builder setContent(String content) {
       this.content = content;
+      return this;
     }
   }
 }

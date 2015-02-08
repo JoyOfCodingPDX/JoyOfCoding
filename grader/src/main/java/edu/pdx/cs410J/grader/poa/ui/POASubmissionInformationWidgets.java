@@ -24,6 +24,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
     this.submitterLabel = new JLabel();
     this.submissionTimeLabel = new JLabel();
     this.submissionContent = new JTextArea();
+    this.submissionContent.setEditable(false);
   }
 
   public JComponent getSubjectWidget() {
@@ -64,7 +65,12 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
 
   @Override
   public void setContent(String content) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.submissionContent.setText(content);
+    scrollPaneToTop();
+  }
+
+  private void scrollPaneToTop() {
+    this.submissionContent.setCaretPosition(0);
   }
 
   public JComponent getSubmissionContentWidget() {

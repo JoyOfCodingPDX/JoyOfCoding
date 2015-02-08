@@ -45,6 +45,7 @@ public class POASubmissionsDownloader {
         .setSubject(message.getSubject())
         .setSubmitter(submitter)
         .setSubmitTime(submitTime)
+        .setContent(content)
         .create();
 
       this.bus.post(submission);
