@@ -36,7 +36,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.view = mock(POAGradeView.class);
 
     presenter = new POAGradePresenter(this.bus, this.view);
-    submission = new POASubmission("Subject", "Submitter", LocalDateTime.now());
+    submission = newPOASubmission("Subject", "Submitter", LocalDateTime.now());
     student = new Student("id");
     assignment = new Assignment("assignment", 1.0);
 

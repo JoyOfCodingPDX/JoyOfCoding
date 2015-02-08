@@ -41,7 +41,11 @@ public class POASubmissionsDownloader {
       String submitter = getSender(message);
       LocalDateTime submitTime = getTimeMessageWasSent(message);
       String content = extractPOAContentFrom(inputStream);
-      POASubmission submission = new POASubmission(message.getSubject(), submitter, submitTime);
+      POASubmission submission = POASubmission.builder()
+        .setSubject(message.getSubject())
+        .setSubmitter(submitter)
+        .setSubmitTime(submitTime)
+        .create();
 
       this.bus.post(submission);
 

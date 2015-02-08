@@ -92,7 +92,7 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
 
     this.bus.post(new GradeBookLoaded(book));
 
-    POASubmission submission = new POASubmission("POA for Project 2", "me", LocalDateTime.now());
+    POASubmission submission = newPOASubmission("POA for Project 2", "me", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedAssignment(2);

@@ -8,7 +8,7 @@ public class POASubmission {
   private final String submitter;
   private final LocalDateTime submitTime;
 
-  public POASubmission(String subject, String submitter, LocalDateTime submitTime) {
+  private POASubmission(String subject, String submitter, LocalDateTime submitTime) {
     this.subject = subject;
     this.submitter = submitter;
     this.submitTime = submitTime;
