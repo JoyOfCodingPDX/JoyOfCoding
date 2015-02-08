@@ -5,7 +5,6 @@ import com.google.common.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 
-import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
 public class EventBusTestCase {
@@ -39,11 +38,4 @@ public class EventBusTestCase {
 
   }
 
-  protected POASubmission newPOASubmission(String subject, String submitter, LocalDateTime submitTime) {
-    return POASubmission.builder()
-      .setSubject(subject)
-      .setSubmitter(submitter)
-      .setSubmitTime(submitTime)
-      .create();
-  }
 }

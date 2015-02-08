@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-public class StudentsPresenterTest extends EventBusTestCase {
+public class StudentsPresenterTest extends POASubmissionTestCase {
 
   private StudentsView view;
   private GradeBook book;
@@ -85,7 +85,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
     this.bus.post(new GradeBookLoaded(this.book));
 
     POASubmission submission =
-      newPOASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
+      createPOASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(1);
@@ -104,7 +104,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
     this.bus.post(new GradeBookLoaded(this.book));
 
     POASubmission submission =
-      newPOASubmission("Subject", student2.getEmail(), LocalDateTime.now());
+      createPOASubmission("Subject", student2.getEmail(), LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(2);
@@ -123,7 +123,7 @@ public class StudentsPresenterTest extends EventBusTestCase {
     this.bus.post(new GradeBookLoaded(this.book));
 
     POASubmission submission =
-      newPOASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
+      createPOASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view, times(1)).setSelectedStudentIndex(0);

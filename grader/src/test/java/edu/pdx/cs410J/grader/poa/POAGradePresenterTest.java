@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class POAGradePresenterTest extends EventBusTestCase {
+public class POAGradePresenterTest extends POASubmissionTestCase {
 
   private POAGradeView view;
   private POASubmission submission;
@@ -36,7 +36,7 @@ public class POAGradePresenterTest extends EventBusTestCase {
     this.view = mock(POAGradeView.class);
 
     presenter = new POAGradePresenter(this.bus, this.view);
-    submission = newPOASubmission("Subject", "Submitter", LocalDateTime.now());
+    submission = createPOASubmission("Subject", "Submitter", LocalDateTime.now());
     student = new Student("id");
     assignment = new Assignment("assignment", 1.0);
 

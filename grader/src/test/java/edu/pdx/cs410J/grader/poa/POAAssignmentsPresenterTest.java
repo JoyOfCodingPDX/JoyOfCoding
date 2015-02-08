@@ -16,7 +16,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
-public class POAAssignmentsPresenterTest extends EventBusTestCase {
+public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
 
   private POAAssignmentsView view;
   private GradeBook book;
@@ -92,7 +92,7 @@ public class POAAssignmentsPresenterTest extends EventBusTestCase {
 
     this.bus.post(new GradeBookLoaded(book));
 
-    POASubmission submission = newPOASubmission("POA for Project 2", "me", LocalDateTime.now());
+    POASubmission submission = createPOASubmission("POA for Project 2", "me", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedAssignment(2);
