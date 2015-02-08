@@ -6,6 +6,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.mail.util.ByteArrayDataSource;
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.function.Consumer;
@@ -187,7 +188,7 @@ public class Survey extends EmailSender {
   private static MimeBodyPart createXmlAttachment(Student student) {
     byte[] xmlBytes = getXmlBytes(student);
 
-    DataSource ds = new ByteArrayDataSource(xmlBytes);
+    DataSource ds = new ByteArrayDataSource(xmlBytes, "text/xml");
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
     try {
@@ -326,59 +327,6 @@ public class Survey extends EmailSender {
         usage();
       }
     }
-  }
-
-  /**
-   * A <code>DataSource</code> that is built around a byte array
-   * containing XML data.
-   *
-   * @since Winter 2004
-   */
-  static class ByteArrayDataSource implements DataSource {
-
-    /** The byte array containing the XML data */
-    private byte[] bytes;
-
-    /**
-     * Creates a new <code>ByteArrayDataSource</code> for a given
-     * <code>byte</code> array.
-     */
-    public ByteArrayDataSource(byte[] bytes) {
-      this.bytes = bytes;
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-      return new ByteArrayInputStream(this.bytes);
-    }
-
-    /**
-     * We do not support writing to a
-     * <code>ByteArrayDataSource</code>.
-     *
-     * @throws UnsupportedOperationException
-     *         If this method is invoked
-     */
-    @Override
-    public OutputStream getOutputStream() throws IOException {
-      String s = "We do not support writing to a ByteArrayDataSource";
-      throw new UnsupportedOperationException(s);
-    }
-
-    /**
-     * The content type for a <code>ByteArrayDataSource</code> is
-     * <code>text/xml</code>.
-     */
-    @Override
-    public String getContentType() {
-      return "text/xml";
-    }
-
-    @Override
-    public java.lang.String getName() {
-      return "XML Data";
-    }
-
   }
 
 }

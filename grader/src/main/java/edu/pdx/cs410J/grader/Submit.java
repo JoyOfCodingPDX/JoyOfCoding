@@ -526,7 +526,12 @@ public class Submit extends EmailSender {
 
   private MimeBodyPart createJarAttachment(File jarFile) throws MessagingException {
     // Now attach the Jar file
-    DataSource ds = new FileDataSource(jarFile);
+    DataSource ds = new FileDataSource(jarFile) {
+      @Override
+      public String getContentType() {
+        return "application/java-archive";
+      }
+    };
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
 
