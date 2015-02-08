@@ -8,10 +8,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 
 public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor {
   public SurveySubmissionsProcessor(File directory, GradeBook gradeBook) {
     super(directory, gradeBook);
+  }
+
+  @Override
+  public Iterable<? extends String> getSupportedContentTypes() {
+    return Collections.singleton("text/xml");
   }
 
   @Override
