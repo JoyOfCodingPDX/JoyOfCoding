@@ -48,8 +48,6 @@ public class PlanOfAttackGrader {
       File gradeBookFile = new File(gradeBookFileName);
       bus.post(new LoadGradeBook(gradeBookFile));
     }
-
-    publishDemoSubmissions(bus);
   }
 
   private static void printStackTrace(Throwable e) {
@@ -70,14 +68,6 @@ public class PlanOfAttackGrader {
       }
     });
 
-  }
-
-  private static void publishDemoSubmissions(EventBus bus) {
-    bus.post(createPOASubmission("Submission 1"));
-    bus.post(createPOASubmission("Submission 2"));
-    bus.post(createPOASubmission("Submission 3"));
-    bus.post(createPOASubmission("Submission 4"));
-    bus.post(createPOASubmission("Submission 5"));
   }
 
   private static POASubmission createPOASubmission(String subject) {
