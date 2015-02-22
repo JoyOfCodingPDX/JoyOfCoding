@@ -6,6 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.poa.DownloadPOASubmissionsRequest;
 import edu.pdx.cs410J.grader.poa.LoadGradeBook;
 import edu.pdx.cs410J.grader.poa.POASubmission;
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ public class PlanOfAttackGrader {
       File gradeBookFile = new File(gradeBookFileName);
       bus.post(new LoadGradeBook(gradeBookFile));
     }
+
+    bus.post(new DownloadPOASubmissionsRequest());
   }
 
   private static void printStackTrace(Throwable e) {
