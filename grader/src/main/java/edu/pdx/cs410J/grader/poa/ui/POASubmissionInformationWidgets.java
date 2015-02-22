@@ -23,7 +23,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
     this.subjectLabel = new JLabel();
     this.submitterLabel = new JLabel();
     this.submissionTimeLabel = new JLabel();
-    this.submissionContent = new JTextArea();
+    this.submissionContent = new JTextArea(20, 80);
     this.submissionContent.setEditable(false);
   }
 
