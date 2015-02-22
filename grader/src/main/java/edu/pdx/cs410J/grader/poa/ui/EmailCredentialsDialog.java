@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 public class EmailCredentialsDialog extends JDialog implements EmailCredentialsView {
@@ -16,6 +18,7 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
   private final JPasswordField passwordField = new JPasswordField(30);
   private final JButton okButton = new JButton("OK");
   private final JButton cancelButton = new JButton("Cancel");
+  private final List<SubmitCredentialsListener> submitCredentialsListeners = new ArrayList<>();
 
   @Inject
   public EmailCredentialsDialog(TopLevelJFrame parent) {
@@ -28,6 +31,7 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
     rootPane1.add(createOkCancelPanel(), BorderLayout.SOUTH);
 
     this.cancelButton.addActionListener(e -> hideDialog());
+    this.okButton.addActionListener(e -> submitCredentials());
   }
 
   private JPanel createOkCancelPanel() {
@@ -81,6 +85,11 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
         listener.setEmailAddress(emailAddressField.getText());
       }
     });
+
+    this.emailAddressField.addActionListener(e -> {
+      listener.setEmailAddress(emailAddressField.getText());
+      submitCredentials();
+    });
   }
 
   @Override
@@ -93,14 +102,27 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
 
       @Override
       public void focusLost(FocusEvent e) {
-        listener.setPassword(new String(passwordField.getPassword()));
+        listener.setPassword(getPasswordFromWidget());
       }
     });
+
+    this.passwordField.addActionListener(e -> {
+      listener.setPassword(getPasswordFromWidget());
+      submitCredentials();
+    });
+  }
+
+  private void submitCredentials() {
+    this.submitCredentialsListeners.forEach(this::submitCredentials);
+  }
+
+  private String getPasswordFromWidget() {
+    return new String(passwordField.getPassword());
   }
 
   @Override
   public void addSubmitCredentialsListener(SubmitCredentialsListener listener) {
-    this.okButton.addActionListener(e -> submitCredentials(listener));
+    this.submitCredentialsListeners.add(listener);
   }
 
   private void submitCredentials(SubmitCredentialsListener listener) {
