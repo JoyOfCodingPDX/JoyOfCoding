@@ -97,11 +97,16 @@ public class POAGradeWidgets implements POAGradeView {
   }
 
   public JComponent getGradeWidget() {
-    JPanel panel = new JPanel(new FlowLayout());
+    JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
     panel.add(new JLabel("Grade:"));
+    panel.add(Box.createHorizontalStrut(3));
     panel.add(this.score);
+    panel.add(Box.createHorizontalStrut(3));
     panel.add(this.totalPointsLabel);
+    panel.add(Box.createHorizontalStrut(6));
     panel.add(this.recordGrade);
+    panel.add(Box.createHorizontalGlue());
     return panel;
   }
 }

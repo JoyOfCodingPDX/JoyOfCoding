@@ -19,14 +19,17 @@ public class GradeBookWidget extends JPanel implements GradeBookView {
   public GradeBookWidget(TopLevelJFrame parentFrame) {
     this.parentComponent = parentFrame;
     gradeBookName = new JLabel();
-    loadGradeBookButton = new JButton("Load grade book");
-    saveGradeBookButton = new JButton("Save grade book");
+    loadGradeBookButton = new JButton("Load Book");
+    saveGradeBookButton = new JButton("Save Book");
     saveGradeBookButton.setEnabled(false);
 
-    this.setLayout(new FlowLayout());
+    this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
     this.add(gradeBookName);
+    this.add(Box.createHorizontalStrut(3));
     this.add(loadGradeBookButton);
+    this.add(Box.createHorizontalStrut(3));
     this.add(saveGradeBookButton);
+    this.add(Box.createHorizontalGlue());
   }
 
   @Override

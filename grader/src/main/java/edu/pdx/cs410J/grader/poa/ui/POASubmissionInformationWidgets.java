@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmissionView;
 
 import javax.swing.*;
-import java.awt.*;
 
 @Singleton
 public class POASubmissionInformationWidgets implements POASubmissionView {
@@ -32,8 +31,10 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   }
 
   private JPanel createLabeledWidget(String label, JLabel widget) {
-    JPanel panel = new JPanel(new FlowLayout());
+    JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
     panel.add(new JLabel(label));
+    panel.add(Box.createHorizontalStrut(3));
     panel.add(widget);
     return panel;
   }
@@ -44,6 +45,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
 
   public JComponent getSubmissionTimeWidget() {
     JPanel panel = createLabeledWidget("Submitted on:", this.submissionTimeLabel);
+    panel.add(Box.createHorizontalGlue());
     panel.add(gradesWidgets.getIsLateCheckbox());
     return panel;
   }
