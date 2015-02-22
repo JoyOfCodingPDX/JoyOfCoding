@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class GraderEmailAccount {
@@ -63,20 +65,48 @@ public class GraderEmailAccount {
     }
 
     for (String contentType : processor.getSupportedContentTypes()) {
-      for (int i = 0; i < parts.getCount(); i++) {
-        BodyPart part = parts.getBodyPart(i);
-        if (partHasContentType(part, contentType)) {
-          debug("    Processing attachment of type " + part.getContentType());
-          processAttachmentFromPart(message, part, processor);
+      for (BodyPart part : getBodyParts(parts)) {
+        if (attemptToProcessPart(message, part, processor, contentType)) {
           return;
-
-        } else {
-          debug("    Skipping attachment of type " + part.getContentType());
         }
       }
     }
 
     warnOfUnexpectedMessage(message, "Could not process of any attachments");
+  }
+
+  private boolean attemptToProcessPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String supportedContentType) throws MessagingException, IOException {
+    if (partHasContentType(part, supportedContentType)) {
+      debug("    Processing attachment of type " + part.getContentType());
+      processAttachmentFromPart(message, part, processor);
+      return true;
+
+    } else if (partIsMultiPart(part)) {
+      debug("    Attempting to process attachment of type " + part.getContentType());
+
+      for (BodyPart subpart : getBodyParts((Multipart) part.getContent())) {
+        if (attemptToProcessPart(message, subpart, processor, supportedContentType)) {
+          return true;
+        }
+      }
+
+    } else {
+      debug("    Skipping attachment of type " + part.getContentType());
+    }
+    return false;
+  }
+
+  private List<BodyPart> getBodyParts(Multipart parts) throws MessagingException {
+    List<BodyPart> list = new ArrayList<>(parts.getCount());
+    for (int i = 0; i < parts.getCount(); i++) {
+      list.add(parts.getBodyPart(i));
+    }
+
+    return list;
+  }
+
+  private boolean partIsMultiPart(BodyPart part) throws IOException, MessagingException {
+    return part.getContent() instanceof Multipart;
   }
 
   private boolean partHasContentType(BodyPart part, String contentType) throws MessagingException {
