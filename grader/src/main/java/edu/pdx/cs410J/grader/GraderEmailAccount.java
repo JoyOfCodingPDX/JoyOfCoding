@@ -5,14 +5,22 @@ import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class GraderEmailAccount {
   private final Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
   private final String password;
+  private final String userName;
 
   public GraderEmailAccount(String password) {
+    this("sjavata", password);
+  }
+
+  public GraderEmailAccount(String userName, String password) {
+    this.userName = userName;
     this.password = password;
   }
 
@@ -30,7 +38,7 @@ public class GraderEmailAccount {
         if (isUnread(message)) {
           printMessageInformation(message);
           if (isMultipartMessage(message)) {
-            processAttachment(message, processor);
+            processAttachments(message, processor);
           } else {
             warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart");
           }
@@ -42,7 +50,7 @@ public class GraderEmailAccount {
     }
   }
 
-  private void processAttachment(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+  private void processAttachments(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
     Multipart parts;
     try {
       parts = (Multipart) message.getContent();
@@ -56,29 +64,58 @@ public class GraderEmailAccount {
       warnOfUnexpectedMessage(message, "Fetched a message that has no attachments");
     }
 
-    if (parts.getCount() == 1) {
-      warnOfUnexpectedMessage(message, "Fetched a message that only had one part");
-      processAttachmentFromPart(message, parts.getBodyPart(0), processor);
+    for (String contentType : processor.getSupportedContentTypes()) {
+      for (BodyPart part : getBodyParts(parts)) {
+        if (attemptToProcessPart(message, part, processor, contentType)) {
+          return;
+        }
+      }
     }
 
-    if (parts.getCount() == 2) {
-      processAttachmentFromPart(message, parts.getBodyPart(1), processor);
+    warnOfUnexpectedMessage(message, "Could not process of any attachments");
+  }
+
+  private boolean attemptToProcessPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String supportedContentType) throws MessagingException, IOException {
+    if (partHasContentType(part, supportedContentType)) {
+      debug("    Processing attachment of type " + part.getContentType());
+      processAttachmentFromPart(message, part, processor);
+      return true;
+
+    } else if (partIsMultiPart(part)) {
+      debug("    Attempting to process attachment of type " + part.getContentType());
+
+      for (BodyPart subpart : getBodyParts((Multipart) part.getContent())) {
+        if (attemptToProcessPart(message, subpart, processor, supportedContentType)) {
+          return true;
+        }
+      }
+
+    } else {
+      debug("    Skipping attachment of type " + part.getContentType());
+    }
+    return false;
+  }
+
+  private List<BodyPart> getBodyParts(Multipart parts) throws MessagingException {
+    List<BodyPart> list = new ArrayList<>(parts.getCount());
+    for (int i = 0; i < parts.getCount(); i++) {
+      list.add(parts.getBodyPart(i));
     }
 
-    if (parts.getCount() > 2) {
-      warnOfUnexpectedMessage(message, "Fetched a message with more than two parts");
-      processAttachmentFromPart(message, parts.getBodyPart(1), processor);
-    }
+    return list;
+  }
+
+  private boolean partIsMultiPart(BodyPart part) throws IOException, MessagingException {
+    return part.getContent() instanceof Multipart;
+  }
+
+  private boolean partHasContentType(BodyPart part, String contentType) throws MessagingException {
+    return part.getContentType().toUpperCase().contains(contentType.toUpperCase());
   }
 
   private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
     String fileName = part.getFileName();
-    if (fileName == null) {
-      debug("    Skipping message with attachment without a name");
-      return;
-    }
     processor.processAttachment(message, fileName, part.getInputStream());
-      debug("    " + part.getContentType());
   }
 
   private void warnOfUnexpectedMessage(Message message, String description) throws MessagingException {
@@ -203,7 +240,7 @@ public class GraderEmailAccount {
     Session session = Session.getInstance(props, null);
     try {
       Store store = session.getStore("imaps");
-      store.connect("imap.gmail.com", "sjavata", this.password);
+      store.connect("imap.gmail.com", this.userName, this.password);
       return store;
 
     } catch (MessagingException ex) {

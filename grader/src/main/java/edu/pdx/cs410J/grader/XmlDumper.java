@@ -199,22 +199,26 @@ public class XmlDumper extends XmlHelper {
   }
 
   private static void setAssignmentTypeAttribute(Assignment assign, Element assignNode) {
-    int type = assign.getType();
+    Assignment.AssignmentType type = assign.getType();
     switch (type) {
-      case Assignment.PROJECT:
+      case PROJECT:
         assignNode.setAttribute("type", "PROJECT");
         break;
 
-      case Assignment.QUIZ:
+      case QUIZ:
         assignNode.setAttribute("type", "QUIZ");
         break;
 
-      case Assignment.OTHER:
+      case OTHER:
         assignNode.setAttribute("type", "OTHER");
         break;
 
-      case Assignment.OPTIONAL:
+      case OPTIONAL:
         assignNode.setAttribute("type", "OPTIONAL");
+        break;
+
+      case POA:
+        assignNode.setAttribute("type", "POA");
         break;
 
       default:

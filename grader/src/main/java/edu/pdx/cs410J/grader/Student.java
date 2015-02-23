@@ -63,9 +63,10 @@ public class Student extends NotableImpl {
   /**
    * Returns the last name of this <code>Student</code>
    */
-  public void setFirstName(String firstName) {
+  public Student setFirstName(String firstName) {
     this.setDirty(true);
     this.firstName = firstName;
+    return this;
   }
 
   /**
@@ -78,9 +79,10 @@ public class Student extends NotableImpl {
   /**
    * Returns the last name of this <code>Student</code>
    */
-  public void setLastName(String lastName) {
+  public Student setLastName(String lastName) {
     this.setDirty(true);
     this.lastName = lastName;
+    return this;
   }
 
   /**
@@ -129,9 +131,10 @@ public class Student extends NotableImpl {
   /**
    * Sets the email address of this <code>Student</code>
    */
-  public void setEmail(String email) {
+  public Student setEmail(String email) {
     this.setDirty(true);
     this.email = email;
+    return this;
   }
 
   /**
@@ -535,5 +538,19 @@ public class Student extends NotableImpl {
   public void setLetterGrade(LetterGrade letterGrade) {
     this.setDirty(true);
     this.letterGrade = letterGrade;
+  }
+
+  public Student setGrade(Assignment assignment, Grade grade) {
+    setGrade(assignment.getName(), grade);
+    return this;
+  }
+
+  public void addLate(Assignment assignment) {
+    this.addLate(assignment.getName());
+  }
+
+  public void setGrade(Assignment assignment, double score) {
+    this.setGrade(assignment, new Grade(assignment, score));
+
   }
 }

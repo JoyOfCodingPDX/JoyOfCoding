@@ -31,23 +31,24 @@ public class AdjustProjectGrade {
     String proj = null;
     String pointsString = null;
 
-    for (int i = 0; i < args.length; i++) {
+    for (String arg : args) {
       if (fileName == null) {
-        fileName = args[i];
+        fileName = arg;
 
       } else if (proj == null) {
-        proj = args[i];
+        proj = arg;
 
       } else if (pointsString == null) {
-        pointsString = args[i];
+        pointsString = arg;
 
       } else {
-        usage("Spurious command line: " + args[i]);
+        usage("Spurious command line: " + arg);
       }
     }
 
     if (fileName == null) {
       usage("Missing file name");
+      return;
     }
 
     if (proj == null) {
@@ -78,9 +79,10 @@ public class AdjustProjectGrade {
     Assignment assign = book.getAssignment(proj);
     if (assign == null) {
       usage("No such assignment: " + proj);
+      return;
     }
 
-    if (assign.getType() != Assignment.PROJECT) {
+    if (assign.getType() != Assignment.AssignmentType.PROJECT) {
       usage("Assignment \"" + proj + "\" is not a project");
     }
 

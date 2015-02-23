@@ -14,26 +14,19 @@ import java.time.LocalDateTime;
  * @author David Whitlock
  */
 public class Assignment extends NotableImpl {
-  /**
-   * The assignment is a project
-   */
-  public static final int PROJECT = 0;
 
-  /**
-   * The assignment is a quiz
-   */
-  public static final int QUIZ = 1;
-
-  /** The assignment is some other kind of grade (POA, etc.) */
-  public static final int OTHER = 2;
-
-  /** The assignment is optional (awarded as extra credit) */
-  public static final int OPTIONAL = 3;
+  public enum AssignmentType {
+    PROJECT,
+    QUIZ,
+    OTHER,
+    POA,
+    OPTIONAL
+  }
 
   private String name;
   private String description;
   private double points;
-  private int type;
+  private AssignmentType type;
   private LocalDateTime dueDate;
 
   /**
@@ -43,6 +36,7 @@ public class Assignment extends NotableImpl {
   public Assignment(String name, double points) {
     this.name = name;
     this.points = points;
+    this.type = AssignmentType.PROJECT;
     this.setDirty(false);
   }
 
@@ -65,9 +59,10 @@ public class Assignment extends NotableImpl {
    * Sets the number of points that this <code>Assignment</code> is
    * worth.
    */
-  public void setPoints(double points) {
+  public Assignment setPoints(double points) {
     this.setDirty(true);
     this.points = points;
+    return this;
   }
 
   /**
@@ -87,25 +82,18 @@ public class Assignment extends NotableImpl {
 
   /**
    * Returns the type of this <code>Assignment</code>
-   *
-   * @see #PROJECT
-   * @see #QUIZ
-   * @see #OTHER
    */
-  public int getType() {
+  public AssignmentType getType() {
     return this.type;
   }
 
   /**
    * Sets the type of this <code>Assignment</code>
-   *
-   * @see #PROJECT
-   * @see #QUIZ
-   * @see #OTHER
    */
-  public void setType(int type) {
+  public Assignment setType(AssignmentType type) {
     this.setDirty(true);
     this.type = type;
+    return this;
   }
 
   /**
@@ -145,7 +133,7 @@ public class Assignment extends NotableImpl {
     String name = null;
     String points = null;
     String desc = null;
-    Integer type = null;
+    AssignmentType type = null;
     String note = null;
 
     // Parse the command line
@@ -189,21 +177,26 @@ public class Assignment extends NotableImpl {
         }
 
         // Make sure type is valid
-        if (args[i].equals("PROJECT")) {
-          type = new Integer(Assignment.PROJECT);
-
-        } else if (args[i].equals("QUIZ")) {
-          type = new Integer(Assignment.QUIZ);
-
-        } else if (args[i].equals("OTHER")) {
-          type = new Integer(Assignment.OTHER);
-
-        } else if (args[i].equals("OPTIONAL")) {
-          type = new Integer(Assignment.OPTIONAL);
-
-        } else {
-          err.println("** Invalid type: " + args[i]);
-          usage();
+        switch (args[i]) {
+          case "PROJECT":
+            type = AssignmentType.PROJECT;
+            break;
+          case "QUIZ":
+            type = AssignmentType.QUIZ;
+            break;
+          case "POA":
+            type = AssignmentType.POA;
+            break;
+          case "OTHER":
+            type = AssignmentType.OTHER;
+            break;
+          case "OPTIONAL":
+            type = AssignmentType.OPTIONAL;
+            break;
+          default:
+            err.println("** Invalid type: " + args[i]);
+            usage();
+            break;
         }
 
       } else if (args[i].equals("-note")) {
@@ -294,7 +287,7 @@ public class Assignment extends NotableImpl {
     }
 
     if (type != null) {
-      assign.setType(type.intValue());
+      assign.setType(type);
     }
 
     if (note != null) {

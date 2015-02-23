@@ -65,4 +65,17 @@ public class GradeBookXmlTest {
 
     assertThat(book2.getAssignment(assignmentName).getDueDate(), equalTo(dueDate));
   }
+
+  @Test
+  public void poaAssignmentsArePersistedToXml() throws TransformerException, IOException, ParserException {
+    GradeBook book = new GradeBook("test");
+    String assignmentName = "assignment";
+    Assignment assignment = new Assignment(assignmentName, 10.0);
+    assignment.setType(Assignment.AssignmentType.POA);
+    book.addAssignment(assignment);
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+
+    assertThat(book2.getAssignment(assignmentName).getType(), equalTo(Assignment.AssignmentType.POA));
+  }
 }

@@ -341,6 +341,10 @@ public class GradeBook {
     this.students.values().forEach(consumer);
   }
 
+  public Stream<Assignment> assignmentsStream() {
+    return this.assignments.values().stream();
+  }
+
   static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 

@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import javax.mail.Message;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
@@ -17,6 +18,11 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   public ProjectSubmissionsProcessor(File directory, GradeBook gradeBook) {
     super(directory, gradeBook);
+  }
+
+  @Override
+  public Iterable<? extends String> getSupportedContentTypes() {
+    return Collections.singleton("application/java-archive");
   }
 
   @Override
