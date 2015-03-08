@@ -28,7 +28,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    */
   public MovieDatabaseImpl() throws RemoteException {
     // Sort movies by their id, so the lookup is O(lg n)
-    this.movies = new TreeMap<Long, Movie>((id1, id2) -> id1.compareTo(id2));
+    this.movies = new TreeMap<>(Long::compareTo);
 
     System.out.println("Starting Movie Database");
     UnicastRemoteObject.exportObject(this);
@@ -131,7 +131,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
   }
 
   /**
-   * Unregisters this <code>MovieDatabseImpl</code> with the RMI
+   * Unregisters this <code>MovieDatabaseImpl</code> with the RMI
    * registry.
    */
   @Override
