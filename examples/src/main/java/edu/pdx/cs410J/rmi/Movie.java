@@ -40,7 +40,7 @@ public class Movie implements Serializable {
     this.id = Movie.nextId++;
     this.title = title;
     this.year = year;
-    this.characters = new HashMap<String, Long>();
+    this.characters = new HashMap<>();
   }
 
   //////////////////////  Accessor Methods  ///////////////////////
@@ -100,11 +100,11 @@ public class Movie implements Serializable {
    * Returns the ids of the actors that are in this movie
    */
   public Set<Long> getActors() {
-    return new HashSet<Long>(this.characters.values());
+    return new HashSet<>(this.characters.values());
   }
 
   /**
-   * Makes note of a character in thie movie played by a given actor.
+   * Makes note of a character in the movie played by a given actor.
    * This behavior is intended to be server-side only.
    *
    * @throws IllegalArgumentException

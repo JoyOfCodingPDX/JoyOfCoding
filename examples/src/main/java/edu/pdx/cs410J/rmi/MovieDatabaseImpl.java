@@ -1,9 +1,12 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.*;
-import java.rmi.*;
-import java.rmi.server.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class provides an implementation of the remote {@link
@@ -25,11 +28,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    */
   public MovieDatabaseImpl() throws RemoteException {
     // Sort movies by their id, so the lookup is O(lg n)
-    this.movies = new TreeMap<Long, Movie>(new Comparator<Long>() {
-      public int compare(Long id1, Long id2) {
-        return id1.compareTo(id2);
-      }
-    });
+    this.movies = new TreeMap<Long, Movie>((id1, id2) -> id1.compareTo(id2));
 
     System.out.println("Starting Movie Database");
     UnicastRemoteObject.exportObject(this);
@@ -46,7 +45,8 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * @param year
    *        The year in which the movie was released
    */
-  public long createMovie(String title, int year) 
+  @Override
+  public long createMovie(String title, int year)
     throws RemoteException {
     Movie movie = new Movie(title, year);
     long id = movie.getId();
@@ -58,6 +58,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
   /**
    * Returns the <code>Movie</code> with the given id.
    */
+  @Override
   public Movie getMovie(long id) throws RemoteException {
     return this.movies.get(id);
   }
@@ -70,6 +71,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    *         There is no movie with <code>movieId</code> or the
    *         character is already played by someone else
    */
+  @Override
   public void noteCharacter(long movieId, String character, long actorId)
     throws RemoteException {
 
@@ -87,14 +89,11 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * Returns the movie in which a given actor acted.  The movies are
    * sorted by release date.
    */
+  @Override
   public SortedSet<Movie> getFilmography(final long actorId)
     throws RemoteException {
 
-    Query query = new Query() {
-        public boolean satisfies(Movie movie) {
-          return movie.getActors().contains(actorId);
-        }
-      };
+    Query query = movie -> movie.getActors().contains(actorId);
 
     Comparator<Movie> sorter = new SortMoviesByReleaseDate();
 
@@ -110,6 +109,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
   static class SortMoviesByReleaseDate 
     implements Comparator<Movie>, java.io.Serializable {
 
+    @Override
     public int compare(Movie movie1, Movie movie2) {
       int year1 = movie1.getYear();
       int year2 = movie2.getYear();
@@ -121,31 +121,27 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * Performs a query on the database.  The movies that match the
    * query are sorted using the given comparator.
    */
+  @Override
   public SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter)
     throws RemoteException {
 
-    SortedSet<Movie> result = new TreeSet<Movie>(sorter);
-    Iterator<Movie> movies = this.movies.values().iterator();
-    while (movies.hasNext()) {
-      Movie movie = movies.next();
-      if (query.satisfies(movie)) {
-        result.add(movie);
-      }
-    }
-
-    return result;
+    return this.movies.values().stream()
+      .filter(query::satisfies)
+      .collect(Collectors.toCollection(() -> new TreeSet<>(sorter)));
   }
 
   /**
    * Unregisters this <code>MovieDatabseImpl</code> with the RMI
    * registry.
    */
+  @Override
   public void shutdown() throws RemoteException {
     System.out.println("Shutting down Movie Database");
     UnicastRemoteObject.unexportObject(this, false /* force */);
     System.exit(0);
   }
 
+  @Override
   public Collection<Movie> getMovies() throws RemoteException {
     return this.movies.values();
   }
@@ -172,10 +168,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
       MovieDatabase db  = new MovieDatabaseImpl();
       Naming.rebind(name, db);
 
-    } catch (RemoteException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
+    } catch (RemoteException | MalformedURLException ex) {
       ex.printStackTrace(System.err);
     }
 

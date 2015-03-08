@@ -29,27 +29,13 @@ public class GetMoviesInYear {
       MovieDatabase db = 
         (MovieDatabase) Naming.lookup(name);
 
-      Query query = new Query() {
-          public boolean satisfies(Movie movie) {
-            return movie.getYear() == year;
-          }
-        };
+      Query query = movie -> movie.getYear() == year;
 
-      Comparator sorter = new SortMoviesByTitle();
+      Comparator<Movie> sorter = new SortMoviesByTitle();
 
-      Iterator movies = db.executeQuery(query, sorter).iterator();
-      while (movies.hasNext()) {
-        Movie movie = (Movie) movies.next();
-        System.out.println(movie);
-      }
+      db.executeQuery(query, sorter).forEach(System.out::println);
 
-    } catch (RemoteException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (NotBoundException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
       ex.printStackTrace(System.err);
     }
 
@@ -60,11 +46,10 @@ public class GetMoviesInYear {
    * by their titles.
    */
   static class SortMoviesByTitle 
-    implements Comparator, java.io.Serializable {
+    implements Comparator<Movie>, java.io.Serializable {
 
-    public int compare(Object o1, Object o2) {
-      Movie m1 = (Movie) o1;
-      Movie m2 = (Movie) o2;
+    @Override
+    public int compare(Movie m1, Movie m2) {
       return m1.getTitle().compareTo(m2.getTitle());
     }
   }

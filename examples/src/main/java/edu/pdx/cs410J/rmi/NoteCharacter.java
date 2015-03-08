@@ -36,19 +36,11 @@ public class NoteCharacter {
 
       Movie movie = db.getMovie(id);
       out.println(movie.getTitle());
-      Iterator roles = movie.getCharacters().entrySet().iterator();
-      while (roles.hasNext()) {
-        Map.Entry entry = (Map.Entry) roles.next();
+      for (Map.Entry entry : movie.getCharacters().entrySet()) {
         out.println("  " + entry.getKey() + "\t" + entry.getValue());
       }
 
-    } catch (RemoteException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (NotBoundException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
       ex.printStackTrace(System.err);
     }
 

@@ -1,8 +1,10 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.*;
-import java.rmi.*;
-import java.util.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 
 /**
  * This program searches the remote movie database for all of the
@@ -26,19 +28,9 @@ public class GetFilmography {
     try {
       MovieDatabase db = 
         (MovieDatabase) Naming.lookup(name);
-      Iterator movies = db.getFilmography(actor).iterator();
-      while (movies.hasNext()) {
-        Movie movie = (Movie) movies.next();
-        System.out.println(movie);
-      }
+      db.getFilmography(actor).forEach(System.out::println);
 
-    } catch (RemoteException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (NotBoundException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
       ex.printStackTrace(System.err);
     }
 

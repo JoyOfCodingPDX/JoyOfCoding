@@ -8,6 +8,7 @@ import java.io.Serializable;
  * <code>Query</code> objects can be sent between the client and the
  * server. 
  */
+@FunctionalInterface
 public interface Query extends Serializable {
 
   /**
