@@ -1,12 +1,13 @@
 package edu.pdx.cs410J.rmi;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.SortedSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests the behavior of the {@link MovieDatabase} class.
@@ -20,7 +21,7 @@ public class MovieDatabaseTest {
   @Test
   public void testCreateMovie() throws RemoteException {
     MovieDatabase db = getMovieDatabase();
-    String title = "Moive 1";
+    String title = "Movie 1";
     int year = 2008;
     long id = db.createMovie(title, year);
     Movie movie = db.getMovie(id);
