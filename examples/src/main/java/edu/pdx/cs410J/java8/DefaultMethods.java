@@ -14,7 +14,7 @@ public class DefaultMethods {
     }
   }
 
-  class WhatHappensWithTwoInterfaceWithSameDefaultMethod implements InterfaceWithDefaultMethod, AnotherInterfaceWithDefaultMethod {
+  class WhatHappensWithTwoInterfacesWithSameDefaultMethod implements InterfaceWithDefaultMethod, AnotherInterfaceWithDefaultMethod {
     /**
      * If you don't override this method, this class won't compile because the
      * compiler cannot determine which <code>defaultMethod</code> implementation
