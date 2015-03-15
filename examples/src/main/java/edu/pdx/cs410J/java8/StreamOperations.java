@@ -114,4 +114,16 @@ public class StreamOperations {
   public String concatenateStrings3(Stream<String> stream) {
     return stream.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
   }
+
+  public String concatenateStrings4(Stream<String> stream) {
+    return stream.collect(Collectors.joining());
+  }
+
+  public SortedSet<String> getSortedStrings(Stream<String> stream) {
+    return stream.collect(Collectors.toCollection(TreeSet::new));
+  }
+
+  public double getAverageStringLength(Stream<String> stream) {
+    return stream.collect(Collectors.averagingInt(s -> s.length()));
+  }
 }
