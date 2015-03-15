@@ -1,11 +1,10 @@
 package edu.pdx.cs410J.java8;
 
-import java.util.Arrays;
-import java.util.IntSummaryStatistics;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import edu.pdx.cs410J.rmi.Movie;
+
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -62,5 +61,57 @@ public class StreamOperations {
   public String getLongestString(Stream<String> strings) {
     Optional<String> longest = strings.max((s1, s2) -> s1.length() > s2.length() ? 1 : 0);
     return longest.orElse("");
+  }
+
+  public Movie findMovieWithId(long id, Stream<Movie> movies) {
+    Optional<Movie> movie = movies.filter(m -> m.getId() == id).findAny();
+    return movie.orElseThrow(() -> new IllegalArgumentException("Can't find movie"));
+  }
+
+  public long countMoviesWithActor(long actorId, Stream<Movie> movies) {
+    return movies.parallel()
+      .filter(m -> m.getActors().contains(actorId))
+      .count();
+  }
+
+  public List<Movie> getMoviesWithActorUnsafe(long actorId, Stream<Movie> allMovies) {
+    List<Movie> movies = new ArrayList<>();
+    allMovies.parallel()
+      .filter(m -> m.getActors().contains(actorId))
+      .forEach(m -> movies.add(m));
+    return movies;
+  }
+
+  public List<Movie> getMoviesWithActorSafe(long actorId, Stream<Movie> allMovies) {
+    return allMovies.parallel()
+      .filter(m -> m.getActors().contains(actorId))
+      .collect(Collectors.toList());
+  }
+
+  public int countAwardsForMoviesWithActor(long actorId, Stream<Movie> allMovies) {
+    return allMovies.filter(m -> m.getActors().contains(actorId))
+      .map(m -> m.getNumberOfAwards())
+      .reduce(0, new BinaryOperator<Integer>() {
+        @Override
+        public Integer apply(Integer i1, Integer i2) {
+          return i1 + i2;
+        }
+      });
+  }
+
+  public String concatenateStrings(Stream<String> stream) {
+    return stream.reduce("", (s1, s2) -> s1 + s2);
+  }
+
+  public String concatenateStrings2(Stream<String> stream) {
+    Supplier<StringBuilder> supplier = () -> new StringBuilder();
+    BiConsumer<StringBuilder, StringBuilder> combiner = (sb1, sb2) -> sb1.append(sb2);
+    BiConsumer<StringBuilder, String> accumulator = (sb, s) -> sb.append(s);
+    StringBuilder sb = stream.collect(supplier, accumulator, combiner);
+    return sb.toString();
+  }
+
+  public String concatenateStrings3(Stream<String> stream) {
+    return stream.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
   }
 }

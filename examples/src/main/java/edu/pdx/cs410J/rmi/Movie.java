@@ -30,6 +30,8 @@ public class Movie implements Serializable {
    * them. */
   private Map<String, Long> characters;
 
+  private int numberOfAwards;
+
   /////////////////////////  Constructors  ////////////////////////
 
   /**
@@ -142,5 +144,9 @@ public class Movie implements Serializable {
     }
 
     return false;
+  }
+
+  public int getNumberOfAwards() {
+    return numberOfAwards;
   }
 }
