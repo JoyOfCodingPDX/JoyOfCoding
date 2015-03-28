@@ -50,7 +50,7 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>${gwt.version}</version>
             <configuration>
-                <runTarget>${package}.PhoneBillGwt/PhoneBillGwt.html</runTarget>
+                <runTarget>PhoneBillGwt.html</runTarget>
                 <modules>
                   <module>${package}.PhoneBillGwt</module>
                 </modules>
