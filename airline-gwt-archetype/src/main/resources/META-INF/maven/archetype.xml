@@ -6,11 +6,11 @@
     <source>src/main/java/client/AirlineGwt.java</source>
     <source>src/main/java/client/PingService.java</source>
     <source>src/main/java/client/PingServiceAsync.java</source>
-    <source>src/main/java/public/AirlineGwt.html</source>
     <source>src/main/java/server/PingServiceImpl.java</source>
   </sources>
   <resources>
     <resource>src/main/resources/edu/pdx/cs410J/YOU/AirlineGwt.gwt.xml</resource>
+    <resource>src/main/webapp/AirlineGwt.html</resource>
     <resource>src/main/webapp/WEB-INF/web.xml</resource>
   </resources>
 </archetype>

@@ -6,11 +6,11 @@
     <source>src/main/java/client/AppointmentBookGwt.java</source>
     <source>src/main/java/client/PingService.java</source>
     <source>src/main/java/client/PingServiceAsync.java</source>
-    <source>src/main/java/public/AppointmentBookGwt.html</source>
     <source>src/main/java/server/PingServiceImpl.java</source>
   </sources>
   <resources>
     <resource>src/main/resources/edu/pdx/cs410J/YOU/AppointmentBookGwt.gwt.xml</resource>
+    <resource>src/main/webapp/AppointmentBookGwt.html</resource>
     <resource>src/main/webapp/WEB-INF/web.xml</resource>
   </resources>
 </archetype>

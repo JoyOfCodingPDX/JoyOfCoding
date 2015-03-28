@@ -115,7 +115,7 @@ public class FamilyTreeGWT extends SimplePanel implements EntryPoint {
     open.setText("Open Family Tree XML File");
 
     final FormPanel form = new FormPanel();
-    form.setAction("/upload");
+    form.setAction("upload");
     form.setMethod(FormPanel.METHOD_POST);
     form.setEncoding(FormPanel.ENCODING_MULTIPART);
 
