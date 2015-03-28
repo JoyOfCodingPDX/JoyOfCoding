@@ -25,7 +25,7 @@
 
     <properties>
 
-        <gwt.version>2.6.0</gwt.version>
+        <gwt.version>2.7.0</gwt.version>
 
         <!--  GWT doesn't work with Java 8 yet -->
         <maven.compiler.source>1.7</maven.compiler.source>
