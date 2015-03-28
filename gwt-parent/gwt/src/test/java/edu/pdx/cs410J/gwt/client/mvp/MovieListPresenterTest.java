@@ -14,9 +14,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static edu.pdx.cs410J.gwt.client.mvp.MovieListPresenter.*;
-import static edu.pdx.cs410J.gwt.client.mvp.MovieListPresenter.Display.*;
-import static org.junit.Assert.fail;
+import static edu.pdx.cs410J.gwt.client.mvp.MovieListPresenter.Display;
+import static edu.pdx.cs410J.gwt.client.mvp.MovieListPresenter.Display.MovieSelectedHandler;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -54,7 +53,7 @@ public class MovieListPresenterTest extends MovieTestCase {
 
       }
     });
-    allMoviesCaptor.getValue().onSuccess(Lists.<Movie>newArrayList(movies));
+    allMoviesCaptor.getValue().onSuccess(Lists.newArrayList(movies));
 
     verify(view).setTitles(titles);
   }
