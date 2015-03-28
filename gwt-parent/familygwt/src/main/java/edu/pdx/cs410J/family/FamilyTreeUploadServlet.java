@@ -1,27 +1,26 @@
 package edu.pdx.cs410J.family;
 
-import org.apache.commons.fileupload.FileItemFactory;
+import edu.pdx.cs410J.family.web.FamilyTreeManager;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Iterator;
-
-import edu.pdx.cs410J.family.web.FamilyTreeManager;
 
 /**
  * A servlet that uploads a family tree XML file and stores it in the session.
  */
 public class FamilyTreeUploadServlet extends HttpServlet {
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/plain");
 
@@ -30,7 +29,7 @@ public class FamilyTreeUploadServlet extends HttpServlet {
     if (ServletFileUpload.isMultipartContent(request)) {
       FileItemFactory factory = new DiskFileItemFactory();
       ServletFileUpload upload = new ServletFileUpload(factory);
-      List items;
+      List<FileItem> items;
       try {
         items = upload.parseRequest(request);
 
@@ -39,8 +38,7 @@ public class FamilyTreeUploadServlet extends HttpServlet {
       }
 
       FileItem file = null;
-      for (Iterator iter = items.iterator(); iter.hasNext(); ) {
-        FileItem item = (FileItem) iter.next();
+      for (FileItem item : items) {
         if (!item.isFormField()) {
           if (file != null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only one file can be uploaded");
@@ -78,6 +76,7 @@ public class FamilyTreeUploadServlet extends HttpServlet {
     }
   }
 
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/plain");
 
