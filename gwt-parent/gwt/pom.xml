@@ -68,7 +68,7 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>${gwt.version}</version>
             <configuration>
-                <runTarget>edu.pdx.cs410J.gwt.Examples/Examples.html</runTarget>
+                <runTarget>Examples.html</runTarget>
                 <module>edu.pdx.cs410J.gwt.Examples</module>
                 <style>PRETTY</style>
                 <copyWebapp>true</copyWebapp>
