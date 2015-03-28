@@ -44,7 +44,7 @@
           <artifactId>gwt-maven-plugin</artifactId>
           <version>${gwt.version}</version>
             <configuration>
-                <runTarget>${package}.AirlineGwt/AirlineGwt.html</runTarget>
+                <runTarget>AirlineGwt.html</runTarget>
                 <modules>
                   <module>${package}.AirlineGwt</module>
                 </modules>
