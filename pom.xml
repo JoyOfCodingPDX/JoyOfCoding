@@ -155,7 +155,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.1.1</version> <!-- Need version 2.1.1 for Java 7 -->
+        <version>2.6</version>
         <configuration>
           <archive>
             <manifest>
