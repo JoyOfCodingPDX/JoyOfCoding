@@ -8,7 +8,6 @@
     <version>Summer2015</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
   <version>Summer2015</version>
@@ -142,14 +141,6 @@
               </sources>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.8</version>
-        <executions>
           <execution>
             <id>add-it-resources</id>
             <phase>generate-test-resources</phase>
@@ -166,7 +157,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 </project>
