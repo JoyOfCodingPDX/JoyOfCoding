@@ -28,8 +28,10 @@
             </goals>
             <configuration>
               <projectName>TestProject</projectName>
+              <userId>it</userId>
               <userName>myUserName</userName>
               <userEmail>user@email.com</userEmail>
+              <sendEmail>false</sendEmail>
             </configuration>
           </execution>
         </executions>

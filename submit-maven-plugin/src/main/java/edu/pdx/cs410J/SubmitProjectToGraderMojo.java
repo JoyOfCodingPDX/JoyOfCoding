@@ -16,16 +16,21 @@ package edu.pdx.cs410J;
  * limitations under the License.
  */
 
+import edu.pdx.cs410J.grader.Submit;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
+import java.util.stream.Stream;
 
 @Mojo( name = "submit", defaultPhase = LifecyclePhase.NONE )
 public class SubmitProjectToGraderMojo
@@ -42,6 +47,9 @@ public class SubmitProjectToGraderMojo
 
     @Parameter( property = "projectName", required = true )
     private String projectName;
+
+    @Parameter( property = "userId", required = true )
+    private String userId;
 
     @Parameter( property = "userName", required = true )
     private String userName;
@@ -67,6 +75,24 @@ public class SubmitProjectToGraderMojo
     {
         getLog().info("Hello " + new Date());
         getLog().info("Source Directory is " + sourceDirectory);
+
+        Submit submit = new Submit();
+        submit.setProjectName(projectName);
+        submit.setUserId(userId);
+        submit.setUserName(userName);
+        submit.setUserEmail(userEmail);
+        submit.setComment(comment);
+        submit.setDebug(debug);
+        submit.setSaveJar(saveJar);
+        submit.setSendEmail(sendEmail);
+
+        try {
+            findJavaFiles(sourceDirectory).forEach(f -> submit.addFile(f.getAbsolutePath()));
+            submit.submit(false);
+
+        } catch (IOException | MessagingException ex) {
+            throw new MojoExecutionException("While submitting to grader", ex);
+        }
 
         File f = outputDirectory;
 
@@ -102,5 +128,15 @@ public class SubmitProjectToGraderMojo
                 }
             }
         }
+    }
+
+    private Stream<File> findJavaFiles(File directory) throws IOException {
+        return Files.walk(directory.toPath())
+          .map(Path::toFile)
+          .filter(this::fileNameEndsWithJava);
+    }
+
+    private boolean fileNameEndsWithJava(File f) {
+        return f.getName().endsWith(".java");
     }
 }
