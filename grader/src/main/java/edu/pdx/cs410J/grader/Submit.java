@@ -97,6 +97,7 @@ public class Submit extends EmailSender {
    */
   private LocalDateTime submitTime = null;
 
+  private boolean sendEmail = true;
   /**
    * The names of the files to be submitted
    */
@@ -168,6 +169,10 @@ public class Submit extends EmailSender {
    */
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
+  }
+
+  public void setSendEmail(boolean sendEmail) {
+    this.sendEmail = sendEmail;
   }
 
   /**
@@ -261,13 +266,19 @@ public class Submit extends EmailSender {
     // Create a temporary jar file to hold the source files
     File jarFile = makeJarFileWith(sourceFiles);
 
-    // Send the jar file as an email attachment to the TA
-    mailTA(jarFile, sourceFiles);
+    if (this.sendEmail) {
+      // Send the jar file as an email attachment to the TA
+      mailTA(jarFile, sourceFiles);
 
-    // Send a receipt to the user
-    mailReceipt(sourceFiles);
+      // Send a receipt to the user
+      mailReceipt(sourceFiles);
 
-    return true;
+      return true;
+
+    } else {
+      return false;
+    }
+
   }
 
   /**
