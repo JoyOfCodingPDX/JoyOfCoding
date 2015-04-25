@@ -13,7 +13,7 @@
   <version>Summer2015</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>2.3.3.Final</resteasy.version>
+    <resteasy.version>3.0.11.Final</resteasy.version>
   </properties>
   <build>
     <finalName>web</finalName>
@@ -52,7 +52,7 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.13</version>
         <executions>
           <execution>
             <id>start-container</id>
@@ -71,7 +71,7 @@
         </executions>
         <configuration>
           <container>
-            <containerId>jetty6x</containerId>
+            <containerId>jetty9x</containerId>
             <type>embedded</type>
             <systemProperties>
               <org.apache.commons.logging.Log>
@@ -213,12 +213,12 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>2.0</version>
+      <version>4.0-beta5</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>2.0</version>
+      <version>4.0-beta5</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
