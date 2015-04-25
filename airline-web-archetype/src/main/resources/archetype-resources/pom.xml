@@ -84,6 +84,9 @@
           <httpConnector port="8080"/>
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+          <webApp>
+            <contextPath>/airline</contextPath>
+          </webApp>
         </configuration>
       </plugin>
       <plugin>
