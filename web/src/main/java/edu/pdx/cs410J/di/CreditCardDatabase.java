@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.di;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.google.inject.internal.Maps;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;

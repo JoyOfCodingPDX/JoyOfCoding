@@ -13,21 +13,17 @@
   <version>Summer2015</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>2.3.3.Final</resteasy.version>
+    <resteasy.version>3.0.11.Final</resteasy.version>
   </properties>
   <build>
     <finalName>web</finalName>
     <plugins>
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.26</version>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.10.v20150310</version>
         <configuration>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8080</port>
-            </connector>
-          </connectors>
+          <httpConnector port="8080"/>
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
         </configuration>
@@ -56,7 +52,7 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.13</version>
         <executions>
           <execution>
             <id>start-container</id>
@@ -75,7 +71,7 @@
         </executions>
         <configuration>
           <container>
-            <containerId>jetty6x</containerId>
+            <containerId>jetty9x</containerId>
             <type>embedded</type>
             <systemProperties>
               <org.apache.commons.logging.Log>
@@ -176,7 +172,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -217,17 +213,17 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>2.0</version>
+      <version>4.0-beta5</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>2.0</version>
+      <version>4.0-beta5</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>16.0.1</version>
+      <version>18.0</version>
     </dependency>
   </dependencies>
 </project>
