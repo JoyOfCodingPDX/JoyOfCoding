@@ -37,11 +37,36 @@ public class SubmitProjectToGraderMojo
     @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
     private File outputDirectory;
 
+    @Parameter( defaultValue = "${project.build.sourceDirectory}", property = "sourceDirectory", required = false)
+    private File sourceDirectory;
+
+    @Parameter( property = "projectName", required = true )
+    private String projectName;
+
+    @Parameter( property = "userName", required = true )
+    private String userName;
+
+    @Parameter( property = "userEmail", required = true )
+    private String userEmail;
+
+    @Parameter( property = "comment", required = false )
+    private String comment;
+
+    @Parameter( property = "debug", defaultValue = "false", required = false )
+    private boolean debug;
+
+    @Parameter( property = "saveJar", defaultValue = "false", required = false )
+    private boolean saveJar;
+
+    @Parameter( property = "sendEmail", defaultValue = "true", required = false )
+    private boolean sendEmail;
+
     @Override
     public void execute()
         throws MojoExecutionException
     {
         getLog().info("Hello " + new Date());
+        getLog().info("Source Directory is " + sourceDirectory);
 
         File f = outputDirectory;
 

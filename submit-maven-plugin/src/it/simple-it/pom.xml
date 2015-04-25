@@ -26,6 +26,11 @@
             <goals>
               <goal>submit</goal>
             </goals>
+            <configuration>
+              <projectName>TestProject</projectName>
+              <userName>myUserName</userName>
+              <userEmail>user@email.com</userEmail>
+            </configuration>
           </execution>
         </executions>
       </plugin>
