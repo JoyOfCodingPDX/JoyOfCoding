@@ -25,8 +25,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
-@Mojo( name = "submit", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "submit", defaultPhase = LifecyclePhase.NONE )
 public class SubmitProjectToGraderMojo
     extends AbstractMojo
 {
@@ -40,6 +41,8 @@ public class SubmitProjectToGraderMojo
     public void execute()
         throws MojoExecutionException
     {
+        getLog().info("Hello " + new Date());
+
         File f = outputDirectory;
 
         if ( !f.exists() )

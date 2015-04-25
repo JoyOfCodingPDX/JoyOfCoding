@@ -53,7 +53,7 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.4</version>
         <configuration>
-          <goalPrefix>submit-maven-plugin</goalPrefix>
+          <goalPrefix>submit</goalPrefix>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>
