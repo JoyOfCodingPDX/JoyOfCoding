@@ -1,9 +1,5 @@
 import java.util.jar.JarFile
 
-File touchFile = new File( basedir, "target/touch.txt" );
-
-assert touchFile.isFile()
-
 File jarDir = new File( basedir, "target" )
 File jarFile = jarDir.listFiles().find{it.isFile() && it=~/.jar$/ }
 assert jarFile.exists()

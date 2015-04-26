@@ -25,11 +25,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import javax.mail.MessagingException;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.stream.Stream;
 
 @Mojo( name = "submit", defaultPhase = LifecyclePhase.NONE )
@@ -76,9 +74,6 @@ public class SubmitProjectToGraderMojo
     public void execute()
         throws MojoExecutionException
     {
-        getLog().info("Hello " + new Date());
-        getLog().info("Source Directory is " + sourceDirectory);
-
         Submit submit = new Submit();
         submit.setProjectName(projectName);
         submit.setUserId(loginId);
@@ -98,40 +93,6 @@ public class SubmitProjectToGraderMojo
             throw new MojoExecutionException("While submitting to grader", ex);
         }
 
-        File f = outputDirectory;
-
-        if ( !f.exists() )
-        {
-            f.mkdirs();
-        }
-
-        File touch = new File( f, "touch.txt" );
-
-        FileWriter w = null;
-        try
-        {
-            w = new FileWriter( touch );
-
-            w.write( "touch.txt" );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error creating file " + touch, e );
-        }
-        finally
-        {
-            if ( w != null )
-            {
-                try
-                {
-                    w.close();
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-            }
-        }
     }
 
     private File getJarFileDirectory() throws IOException {
