@@ -41,7 +41,6 @@ class JarMaker {
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
       File file = fileEntry.getKey();
       String fileName = fileEntry.getValue();
-      System.out.println("Adding " + fileName + " to jar");
       JarEntry entry = new JarEntry(fileName);
       entry.setTime(file.lastModified());
       entry.setSize(file.length());
