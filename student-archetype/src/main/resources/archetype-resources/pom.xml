@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
 
   <name>student</name>
-  <description>A simple Student program to get you started with Java</description>
+  <description>${assignmentName}</description>
   <url>http://www.cs.pdx.edu</url>
 
   <properties>
