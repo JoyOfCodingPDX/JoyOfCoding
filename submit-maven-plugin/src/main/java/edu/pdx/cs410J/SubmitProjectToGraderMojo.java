@@ -74,7 +74,7 @@ public class SubmitProjectToGraderMojo
     public void execute()
         throws MojoExecutionException
     {
-        Submit submit = new Submit();
+        Submit submit = new Submit(adaptMojoLogger());
         submit.setProjectName(projectName);
         submit.setUserId(loginId);
         submit.setUserName(userName);
@@ -93,6 +93,31 @@ public class SubmitProjectToGraderMojo
             throw new MojoExecutionException("While submitting to grader", ex);
         }
 
+    }
+
+    private Submit.Logger adaptMojoLogger() {
+        return new Submit.Logger() {
+
+            @Override
+            public void debug(String message) {
+                getLog().debug(message);
+            }
+
+            @Override
+            public void info(String message) {
+                getLog().info(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                getLog().warn(message);
+            }
+
+            @Override
+            public void error(String message) {
+                getLog().error(message);
+            }
+        };
     }
 
     private File getJarFileDirectory() throws IOException {
