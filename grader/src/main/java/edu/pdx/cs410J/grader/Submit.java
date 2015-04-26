@@ -52,6 +52,8 @@ public class Submit extends EmailSender {
   private static final String PROJECT_NAMES_LIST_URL =
     "http://www.cs.pdx.edu/~whitlock/project-names";
 
+  private final Logger logger;
+
   /////////////////////  Instance Fields  //////////////////////////
 
   /**
@@ -107,8 +109,32 @@ public class Submit extends EmailSender {
   /**
    * Creates a new <code>Submit</code> program
    */
-  public Submit() {
+  public Submit(Logger logger) {
+    this.logger = logger;
+  }
 
+  public Submit() {
+    this(new Logger() {
+      @Override
+      public void debug(String message) {
+        System.err.println("++ " + message);
+      }
+
+      @Override
+      public void info(String message) {
+        System.out.println(message);
+      }
+
+      @Override
+      public void warn(String message) {
+        System.out.println(message);
+      }
+
+      @Override
+      public void error(String message) {
+        System.err.println(message);
+      }
+    });
   }
 
   /////////////////////  Instance Methods  ///////////////////////
@@ -407,20 +433,20 @@ public class Submit extends EmailSender {
    */
   private void logDebug(String message) {
     if (this.debug) {
-      System.err.println("++ " + message);
+      this.logger.debug(message);
     }
   }
 
   private void logInfo(String message) {
-    System.out.println(message);
+    this.logger.info(message);
   }
 
   private void logWarning(String message) {
-    System.out.println(message);
+    this.logger.warn(message);
   }
 
   private void logError(String message) {
-    System.err.println(message);
+    this.logger.error(message);
   }
 
   /**
@@ -754,6 +780,17 @@ public class Submit extends EmailSender {
     public static LocalDateTime parseSubmissionTime(String string) {
       return LocalDateTime.parse(string, DATE_TIME_FORMATTER);
     }
+  }
+
+  public interface Logger {
+
+    void debug(String message);
+
+    void info(String message);
+
+    void warn(String message);
+
+    void error(String message);
   }
 
 }
