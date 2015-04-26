@@ -42,6 +42,7 @@
               <debug>true</debug>
               <saveJar>true</saveJar>
               <jarFileDirectory>${project.build.directory}</jarFileDirectory>
+              <verifySubmissionWithUser>false</verifySubmissionWithUser>
             </configuration>
           </execution>
         </executions>

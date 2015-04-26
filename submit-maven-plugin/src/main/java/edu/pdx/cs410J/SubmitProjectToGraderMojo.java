@@ -70,6 +70,10 @@ public class SubmitProjectToGraderMojo
     @Parameter( property = "jarFileDirectory", required = false)
     private File jarFileDirectory;
 
+    @Parameter( property = "verifySubmissionWithUser", defaultValue = "true", required = false)
+    private boolean verifySubmissionWithUser;
+
+
     @Override
     public void execute()
         throws MojoExecutionException
@@ -87,7 +91,7 @@ public class SubmitProjectToGraderMojo
         try {
             submit.setJarFileDirectory(getJarFileDirectory());
             findJavaFiles(sourceDirectory).forEach(f -> submit.addFile(f.getAbsolutePath()));
-            submit.submit(false);
+            submit.submit(verifySubmissionWithUser);
 
         } catch (IOException | MessagingException ex) {
             throw new MojoExecutionException("While submitting to grader", ex);

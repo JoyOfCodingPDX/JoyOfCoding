@@ -272,7 +272,10 @@ public class Submit extends EmailSender {
     // Recursively search the source directory for .java files
     Set<File> sourceFiles = searchForSourceFiles(fileNames);
 
-    logDebug(sourceFiles.size() + " source files found");
+    if (debug) {
+      logDebug(sourceFiles.size() + " source files found");
+      sourceFiles.forEach(f -> logDebug("  " + f));
+    }
 
     if (sourceFiles.size() == 0) {
       String s = "No source files were found.";
@@ -457,20 +460,22 @@ public class Submit extends EmailSender {
    */
   private boolean verifySubmission(Set<File> sourceFiles) {
     // Print out what is going to be submitted
-    PrintStream out = System.out;
-    out.print("\n" + userName);
-    out.print("'s submission for ");
-    out.println(projName);
+    logInfo("");
+    logInfo(userName + "'s submission for " + projName);
 
     for (File file : sourceFiles) {
-      out.println("  " + file);
+      logInfo("  " + file);
     }
 
     if (comment != null) {
-      out.println("\nComment: " + comment + "\n\n");
+      logInfo("");
+      logInfo("Comment: " + comment);
+      logInfo("");
+      logInfo("");
     }
 
-    out.println("A receipt will be sent to: " + userEmail + "\n");
+    logInfo("A receipt will be sent to: " + userEmail);
+    logInfo("");
 
     warnIfMainProjectClassIsNotSubmitted(sourceFiles);
 
