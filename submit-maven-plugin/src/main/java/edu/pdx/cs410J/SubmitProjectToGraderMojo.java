@@ -69,6 +69,9 @@ public class SubmitProjectToGraderMojo
     @Parameter( property = "sendEmail", defaultValue = "true", required = false )
     private boolean sendEmail;
 
+    @Parameter( property = "jarFileDirectory", required = false)
+    private File jarFileDirectory;
+
     @Override
     public void execute()
         throws MojoExecutionException
@@ -87,6 +90,7 @@ public class SubmitProjectToGraderMojo
         submit.setSendEmail(sendEmail);
 
         try {
+            submit.setJarFileDirectory(getJarFileDirectory());
             findJavaFiles(sourceDirectory).forEach(f -> submit.addFile(f.getAbsolutePath()));
             submit.submit(false);
 
@@ -128,6 +132,19 @@ public class SubmitProjectToGraderMojo
                 }
             }
         }
+    }
+
+    private File getJarFileDirectory() throws IOException {
+        if (jarFileDirectory == null) {
+            return jarFileDirectory;
+        }
+
+        if (!jarFileDirectory.exists()){
+            if (!jarFileDirectory.mkdirs()) {
+                throw new IOException("Could not create jar file directory: " + jarFileDirectory);
+            }
+        }
+        return jarFileDirectory;
     }
 
     private Stream<File> findJavaFiles(File directory) throws IOException {

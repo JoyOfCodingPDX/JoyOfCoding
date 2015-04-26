@@ -98,6 +98,8 @@ public class Submit extends EmailSender {
   private LocalDateTime submitTime = null;
 
   private boolean sendEmail = true;
+
+  private File jarFileDirectory = null;
   /**
    * The names of the files to be submitted
    */
@@ -173,6 +175,10 @@ public class Submit extends EmailSender {
 
   public void setSendEmail(boolean sendEmail) {
     this.sendEmail = sendEmail;
+  }
+
+  public void setJarFileDirectory(File jarFileDirectory) {
+    this.jarFileDirectory = jarFileDirectory;
   }
 
   /**
@@ -487,7 +493,17 @@ public class Submit extends EmailSender {
    */
   private File makeJarFileWith(Set<File> sourceFiles) throws IOException {
     String jarFileName = userName.replace(' ', '_') + "-TEMP";
-    File jarFile = File.createTempFile(jarFileName, ".jar");
+    File jarFile = createJarFile(jarFileName);
+    db("Created Jar file: " + jarFile);
+
+    Map<File, String> sourceFilesWithNames =
+      sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
+
+    return new JarMaker(sourceFilesWithNames, jarFile, getManifestEntries()).makeJar();
+  }
+
+  private File createJarFile(String jarFileName) throws IOException {
+    File jarFile = File.createTempFile(jarFileName, ".jar", jarFileDirectory);
     if (!saveJar) {
       jarFile.deleteOnExit();
 
@@ -495,12 +511,7 @@ public class Submit extends EmailSender {
       out.println("Saving temporary Jar file: " + jarFile);
     }
 
-    db("Created Jar file: " + jarFile);
-
-    Map<File, String> sourceFilesWithNames =
-      sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
-
-    return new JarMaker(sourceFilesWithNames, jarFile, getManifestEntries()).makeJar();
+    return jarFile;
   }
 
   private Map<Attributes.Name, String> getManifestEntries() {

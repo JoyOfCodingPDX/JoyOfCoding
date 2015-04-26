@@ -40,6 +40,8 @@
               <!-- userEmail>user@email.com</userEmail -->
               <sendEmail>false</sendEmail>
               <debug>true</debug>
+              <saveJar>true</saveJar>
+              <jarFileDirectory>${project.build.directory}</jarFileDirectory>
             </configuration>
           </execution>
         </executions>
