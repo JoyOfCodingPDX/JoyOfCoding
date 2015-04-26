@@ -487,8 +487,9 @@ public class Submit extends EmailSender {
     if (!wasMainProjectClassSubmitted) {
       String mainProjectClassName = this.projName + ".java";
       logWarning("*** WARNING: You are submitting " + this.projName +
-        ", but did not include " + mainProjectClassName + ".\n" +
-        "    You might want to check the name of the project or the files you are submitting.\n");
+        ", but did not include " + mainProjectClassName + ".");
+      logWarning("    You might want to check the name of the project or the files you are submitting.");
+      logWarning("");
     }
   }
 
@@ -496,10 +497,8 @@ public class Submit extends EmailSender {
     InputStreamReader isr = new InputStreamReader(System.in);
     BufferedReader in = new BufferedReader(isr);
 
-    PrintStream out = System.out;
     while (true) {
-      out.print("Do you wish to continue with the submission? (yes/no) ");
-      out.flush();
+      logInfo("Do you wish to continue with the submission? (yes/no) ");
 
       try {
         String line = in.readLine().trim();
@@ -511,7 +510,7 @@ public class Submit extends EmailSender {
             return false;
 
           default:
-            System.err.println("** Please enter yes or no");
+            logError("** Please enter yes or no");
             break;
         }
 

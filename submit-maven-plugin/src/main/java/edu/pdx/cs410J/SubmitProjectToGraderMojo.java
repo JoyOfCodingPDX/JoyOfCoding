@@ -88,14 +88,17 @@ public class SubmitProjectToGraderMojo
         submit.setSaveJar(saveJar);
         submit.setSendEmail(sendEmail);
 
+        boolean submitted;
         try {
             submit.setJarFileDirectory(getJarFileDirectory());
             findJavaFiles(sourceDirectory).forEach(f -> submit.addFile(f.getAbsolutePath()));
-            submit.submit(verifySubmissionWithUser);
+            submitted = submit.submit(verifySubmissionWithUser);
 
         } catch (IOException | MessagingException ex) {
             throw new MojoExecutionException("While submitting to grader", ex);
         }
+
+        getLog().info("Project " + projectName + " was " + (!submitted ? "not " : "") + "submitted");
 
     }
 
