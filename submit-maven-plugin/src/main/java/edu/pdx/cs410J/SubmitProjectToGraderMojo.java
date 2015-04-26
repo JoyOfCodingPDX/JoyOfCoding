@@ -45,16 +45,16 @@ public class SubmitProjectToGraderMojo
     @Parameter( defaultValue = "${project.build.sourceDirectory}", property = "sourceDirectory", required = false)
     private File sourceDirectory;
 
-    @Parameter( property = "projectName", required = true )
+    @Parameter( property = "projectName", defaultValue = "${project.description}", required = true )
     private String projectName;
 
-    @Parameter( property = "userId", required = true )
+    @Parameter( property = "userId", defaultValue = "${project.developers[0].id}", required = true )
     private String userId;
 
-    @Parameter( property = "userName", required = true )
+    @Parameter( property = "userName", defaultValue = "${project.developers[0].name}", required = true )
     private String userName;
 
-    @Parameter( property = "userEmail", required = true )
+    @Parameter( property = "userEmail", defaultValue = "${project.developers[0].email}",required = true )
     private String userEmail;
 
     @Parameter( property = "comment", required = false )
