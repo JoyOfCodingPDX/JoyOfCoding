@@ -97,7 +97,7 @@ public class SubmitProjectToGraderMojo
 
     private File getJarFileDirectory() throws IOException {
         if (jarFileDirectory == null) {
-            return jarFileDirectory;
+            return null;
         }
 
         if (!jarFileDirectory.exists()){
