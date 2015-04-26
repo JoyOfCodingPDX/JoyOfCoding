@@ -15,6 +15,14 @@
   <description>${assignmentName}</description>
   <url>http://www.cs.pdx.edu</url>
 
+  <developers>
+    <developer>
+      <id>${studentId}</id>
+      <name>${studentName}</name>
+      <email>${studentEmailAddress}</email>
+    </developer>
+  </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
