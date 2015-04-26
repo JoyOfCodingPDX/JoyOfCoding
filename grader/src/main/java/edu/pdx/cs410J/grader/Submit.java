@@ -38,9 +38,6 @@ import java.util.stream.Stream;
  */
 public class Submit extends EmailSender {
 
-  private static final PrintWriter out = new PrintWriter(System.out, true);
-  private static final PrintWriter err = new PrintWriter(System.err, true);
-
   /**
    * The grader's email address
    */
@@ -249,7 +246,7 @@ public class Submit extends EmailSender {
     // Recursively search the source directory for .java files
     Set<File> sourceFiles = searchForSourceFiles(fileNames);
 
-    db(sourceFiles.size() + " source files found");
+    logDebug(sourceFiles.size() + " source files found");
 
     if (sourceFiles.size() == 0) {
       String s = "No source files were found.";
@@ -290,9 +287,9 @@ public class Submit extends EmailSender {
   /**
    * Prints debugging output.
    */
-  private void db(String s) {
+  private void logDebug(String message) {
     if (this.debug) {
-      err.println("++ " + s);
+      System.err.println("++ " + message);
     }
   }
 
@@ -331,7 +328,7 @@ public class Submit extends EmailSender {
 
   private boolean canBeSubmitted(File file) {
     if (!file.exists()) {
-      err.println("** Not submitting file " + file +
+      logError("** Not submitting file " + file +
         " because it does not exist");
       return false;
     }
@@ -340,21 +337,21 @@ public class Submit extends EmailSender {
     List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
     String name = file.getName();
     if (noSubmit.contains(name)) {
-      err.println("** Not submitting file " + file +
+      logError("** Not submitting file " + file +
         " because it is on the \"no submit\" list");
       return false;
     }
 
     // Does the file name end in .java?
     if (!name.endsWith(".java")) {
-      err.println("** Not submitting file " + file +
+      logError("** Not submitting file " + file +
         " because does end in \".java\"");
       return false;
     }
 
     // Verify that file is in the correct directory.
     if (!isInEduPdxCs410JDirectory(file) && !isInAKoansDirectory(file)) {
-      err.println("** Not submitting file " + file +
+      logError("** Not submitting file " + file +
         ": it does not reside in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
         "cs410J" + File.separator + userId + " (or in one of the koans directories)");
@@ -404,13 +401,26 @@ public class Submit extends EmailSender {
       }
 
     } catch (MalformedURLException ex) {
-      err.println("** WARNING: Cannot access " + listUrl + ": " +
-        ex.getMessage());
+      String message = "** WARNING: Cannot access " + listUrl + ": " +
+        ex.getMessage();
+      logWarning(message);
 
     } catch (IOException ex) {
-      err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
+      logWarning("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
     }
     return noSubmit;
+  }
+
+  private static void logInfo(String message) {
+    System.out.println(message);
+  }
+
+  private void logWarning(String message) {
+    System.out.println(message);
+  }
+
+  private void logError(String message) {
+    System.err.println(message);
   }
 
   /**
@@ -421,6 +431,7 @@ public class Submit extends EmailSender {
    */
   private boolean verifySubmission(Set<File> sourceFiles) {
     // Print out what is going to be submitted
+    PrintStream out = System.out;
     out.print("\n" + userName);
     out.print("'s submission for ");
     out.println(projName);
@@ -444,7 +455,7 @@ public class Submit extends EmailSender {
     boolean wasMainProjectClassSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains(this.projName));
     if (!wasMainProjectClassSubmitted) {
       String mainProjectClassName = this.projName + ".java";
-      out.println("*** WARNING: You are submitting " + this.projName +
+      logWarning("*** WARNING: You are submitting " + this.projName +
         ", but did not include " + mainProjectClassName + ".\n" +
         "    You might want to check the name of the project or the files you are submitting.\n");
     }
@@ -454,6 +465,7 @@ public class Submit extends EmailSender {
     InputStreamReader isr = new InputStreamReader(System.in);
     BufferedReader in = new BufferedReader(isr);
 
+    PrintStream out = System.out;
     while (true) {
       out.print("Do you wish to continue with the submission? (yes/no) ");
       out.flush();
@@ -468,12 +480,12 @@ public class Submit extends EmailSender {
             return false;
 
           default:
-            err.println("** Please enter yes or no");
+            System.err.println("** Please enter yes or no");
             break;
         }
 
       } catch (IOException ex) {
-        err.println("** Exception while reading from System.in: " + ex);
+        logError("** Exception while reading from System.in: " + ex);
       }
     }
   }
@@ -494,7 +506,7 @@ public class Submit extends EmailSender {
   private File makeJarFileWith(Set<File> sourceFiles) throws IOException {
     String jarFileName = userName.replace(' ', '_') + "-TEMP";
     File jarFile = createJarFile(jarFileName);
-    db("Created Jar file: " + jarFile);
+    logDebug("Created Jar file: " + jarFile);
 
     Map<File, String> sourceFilesWithNames =
       sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
@@ -508,7 +520,7 @@ public class Submit extends EmailSender {
       jarFile.deleteOnExit();
 
     } else {
-      out.println("Saving temporary Jar file: " + jarFile);
+      logInfo("Saving temporary Jar file: " + jarFile);
     }
 
     return jarFile;
@@ -541,7 +553,7 @@ public class Submit extends EmailSender {
 
     message.setContent(mp);
 
-    out.println("Submitting project to Grader");
+    logInfo("Submitting project to Grader");
 
     Transport.send(message);
   }
@@ -621,7 +633,7 @@ public class Submit extends EmailSender {
     message.setText(text.toString());
     message.setDisposition("inline");
 
-    out.println("Sending receipt to you at " + userEmail);
+    logInfo("Sending receipt to you at " + userEmail);
 
     Transport.send(message);
   }
@@ -632,6 +644,7 @@ public class Submit extends EmailSender {
    * Prints usage information about this program.
    */
   private static void usage(String s) {
+    PrintStream err = System.err;
     err.println("\n** " + s + "\n");
     err.println("usage: java Submit [options] args file+");
     err.println("  args are (in this order):");
@@ -705,7 +718,7 @@ public class Submit extends EmailSender {
       // Make sure that user entered enough information
       submit.validate();
 
-      submit.db("Command line successfully parsed.");
+      submit.logDebug("Command line successfully parsed.");
 
       submitted = submit.submit(true);
 
@@ -716,10 +729,10 @@ public class Submit extends EmailSender {
 
     // All done.
     if (submitted) {
-      out.println(submit.projName + " submitted successfully.  Thank you.");
+      logInfo(submit.projName + " submitted successfully.  Thank you.");
 
     } else {
-      out.println(submit.projName + " not submitted.");
+      logInfo(submit.projName + " not submitted.");
     }
   }
 
