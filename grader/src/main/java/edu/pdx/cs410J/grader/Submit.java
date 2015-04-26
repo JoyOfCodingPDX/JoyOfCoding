@@ -285,15 +285,6 @@ public class Submit extends EmailSender {
   }
 
   /**
-   * Prints debugging output.
-   */
-  private void logDebug(String message) {
-    if (this.debug) {
-      System.err.println("++ " + message);
-    }
-  }
-
-  /**
    * Searches for the files given on the command line.  Ignores files
    * that do not end in .java, or that appear on the "no submit" list.
    * Files must reside in a directory named
@@ -411,7 +402,16 @@ public class Submit extends EmailSender {
     return noSubmit;
   }
 
-  private static void logInfo(String message) {
+  /**
+   * Prints debugging output.
+   */
+  private void logDebug(String message) {
+    if (this.debug) {
+      System.err.println("++ " + message);
+    }
+  }
+
+  private void logInfo(String message) {
     System.out.println(message);
   }
 
@@ -729,10 +729,10 @@ public class Submit extends EmailSender {
 
     // All done.
     if (submitted) {
-      logInfo(submit.projName + " submitted successfully.  Thank you.");
+      submit.logInfo(submit.projName + " submitted successfully.  Thank you.");
 
     } else {
-      logInfo(submit.projName + " not submitted.");
+      submit.logInfo(submit.projName + " not submitted.");
     }
   }
 
