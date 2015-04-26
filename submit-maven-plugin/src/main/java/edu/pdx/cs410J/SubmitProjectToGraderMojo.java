@@ -48,8 +48,8 @@ public class SubmitProjectToGraderMojo
     @Parameter( property = "projectName", defaultValue = "${project.description}", required = true )
     private String projectName;
 
-    @Parameter( property = "userId", defaultValue = "${project.developers[0].id}", required = true )
-    private String userId;
+    @Parameter( property = "loginId", defaultValue = "${project.developers[0].id}", required = true )
+    private String loginId;
 
     @Parameter( property = "userName", defaultValue = "${project.developers[0].name}", required = true )
     private String userName;
@@ -78,7 +78,7 @@ public class SubmitProjectToGraderMojo
 
         Submit submit = new Submit();
         submit.setProjectName(projectName);
-        submit.setUserId(userId);
+        submit.setUserId(loginId);
         submit.setUserName(userName);
         submit.setUserEmail(userEmail);
         submit.setComment(comment);
