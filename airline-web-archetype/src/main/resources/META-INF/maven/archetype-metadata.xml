@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><archetype-descriptor name="airline-web">
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="airline-web">
+  <requiredProperties>
+    <requiredProperty key="assignmentName">
+      <defaultValue>Project4</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="studentId" />
+    <requiredProperty key="studentName" />
+    <requiredProperty key="studentEmailAddress" />
+  </requiredProperties>
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">
       <directory>src/main/java</directory>
