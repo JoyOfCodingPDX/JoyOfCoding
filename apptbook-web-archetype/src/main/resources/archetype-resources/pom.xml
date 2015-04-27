@@ -184,6 +184,11 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>edu.pdx.cs410J</groupId>
+        <artifactId>submit-maven-plugin</artifactId>
+        <version>Summer2015</version>
+      </plugin>
     </plugins>
   </build>
   <profiles>
