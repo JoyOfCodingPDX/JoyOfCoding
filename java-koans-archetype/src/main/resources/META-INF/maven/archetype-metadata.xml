@@ -4,18 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <fileSets>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>src/beginner</directory>
-      <includes>
-        <include>**/*.java</include>
-      </includes>
-    </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
-      <directory>src/advanced</directory>
-      <includes>
-        <include>**/*.java</include>
-      </includes>
-    </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/intermediate</directory>
       <includes>
         <include>**/*.java</include>
@@ -34,6 +22,30 @@
         <include>**/*.properties</include>
       </includes>
     </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/advanced</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/beginner</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/java7</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/java8</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
     <fileSet encoding="UTF-8">
       <directory>app</directory>
       <includes>
@@ -41,9 +53,9 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>app/lib</directory>
+      <directory>app/bin</directory>
       <includes>
-        <include>**/*.jar</include>
+        <include>**/*.class</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
@@ -53,16 +65,16 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
+      <directory>app/lib</directory>
+      <includes>
+        <include>**/*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
       <directory>app/config</directory>
       <includes>
         <include>**/*.dat</include>
         <include>**/*.gitignore</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory>app/bin</directory>
-      <includes>
-        <include>**/*.class</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
