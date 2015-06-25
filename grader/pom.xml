@@ -101,12 +101,23 @@
         <configuration>
           <archive>
             <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
               <mainClass>edu.pdx.cs410J.grader.GraderTools</mainClass>
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
         <plugin>
             <groupId>org.codehaus.mojo</groupId>
