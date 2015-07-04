@@ -474,8 +474,13 @@ public class Submit extends EmailSender {
    * directory.
    */
   private String getRelativeName(File file) {
-    // We already know that the file is in the correct directory
-    return "edu/pdx/cs410J/" + userId + "/" + file.getName();
+    if (isSubmittingKoans) {
+      return file.getParentFile().getName() + "/" + file.getName();
+
+    } else {
+      // We already know that the file is in the correct directory
+      return "edu/pdx/cs410J/" + userId + "/" + file.getName();
+    }
   }
 
   /**
