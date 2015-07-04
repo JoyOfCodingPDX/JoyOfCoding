@@ -102,6 +102,8 @@ public class Submit extends EmailSender {
    */
   private Set<String> fileNames = new HashSet<>();
 
+  private boolean isSubmittingKoans = false;
+
   ///////////////////////  Constructors  /////////////////////////
 
   /**
@@ -348,9 +350,15 @@ public class Submit extends EmailSender {
   }
 
   private boolean isInAKoansDirectory(File file) {
-    return hasParentDirectories(file, "beginner") ||
+    boolean isInAKoansDirectory = hasParentDirectories(file, "beginner") ||
       hasParentDirectories(file, "intermediate") ||
-      hasParentDirectories(file, "advanced");
+      hasParentDirectories(file, "advanced") ||
+      hasParentDirectories(file, "java7") ||
+      hasParentDirectories(file, "java8");
+    if (isInAKoansDirectory) {
+      this.isSubmittingKoans = true;
+    }
+    return isInAKoansDirectory;
   }
 
   private boolean isInEduPdxCs410JDirectory(File file) {
@@ -425,7 +433,7 @@ public class Submit extends EmailSender {
 
   private void warnIfMainProjectClassIsNotSubmitted(Set<File> sourceFiles) {
     boolean wasMainProjectClassSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains(this.projName));
-    if (!wasMainProjectClassSubmitted) {
+    if (!wasMainProjectClassSubmitted && !this.isSubmittingKoans) {
       String mainProjectClassName = this.projName + ".java";
       out.println("*** WARNING: You are submitting " + this.projName +
         ", but did not include " + mainProjectClassName + ".\n" +
