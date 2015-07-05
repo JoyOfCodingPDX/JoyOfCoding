@@ -9,56 +9,55 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
-class JarMaker {
+class ZipMaker {
 
   private final Map<Attributes.Name, String> manifestEntries;
   private final Map<File, String> sourceFilesAndNames;
-  private final File jarFile;
+  private final File zipFile;
 
-  public JarMaker(Map<File, String> sourceFilesAndNames, File jarFile, Map<Attributes.Name, String> manifestEntries) {
+  public ZipMaker(Map<File, String> sourceFilesAndNames, File zipFile, Map<Attributes.Name, String> manifestEntries) {
     this.sourceFilesAndNames = sourceFilesAndNames;
-    this.jarFile = jarFile;
+    this.zipFile = zipFile;
     this.manifestEntries = manifestEntries;
   }
 
-  public File makeJar() throws IOException {
+  public File makeZipFile() throws IOException {
     // Create a Manifest for the Jar file containing the name of the
     // author (userName) and a version that is based on the current
     // date/time.
     Manifest manifest = new Manifest();
     addEntriesToMainManifest(manifest);
 
-    // Create a JarOutputStream around the jar file
-    JarOutputStream jos = new JarOutputStream(new FileOutputStream(jarFile), manifest);
-    jos.setMethod(JarOutputStream.DEFLATED);
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
+    zos.setMethod(ZipOutputStream.DEFLATED);
 
     // Add the source files to the Jar
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
       File file = fileEntry.getKey();
       String fileName = fileEntry.getValue();
       System.out.println("Adding " + fileName + " to jar");
-      JarEntry entry = new JarEntry(fileName);
+      ZipEntry entry = new ZipEntry(fileName);
       entry.setTime(file.lastModified());
       entry.setSize(file.length());
 
-      entry.setMethod(JarEntry.DEFLATED);
+      entry.setMethod(ZipEntry.DEFLATED);
 
       // Add the entry to the JAR file
-      jos.putNextEntry(entry);
+      zos.putNextEntry(entry);
 
-      ByteStreams.copy(new FileInputStream(file), jos);
+      ByteStreams.copy(new FileInputStream(file), zos);
 
-      jos.closeEntry();
+      zos.closeEntry();
     }
 
-    jos.close();
+    zos.close();
 
-    return jarFile;
+    return zipFile;
   }
 
   private void addEntriesToMainManifest(Manifest manifest) {
@@ -106,13 +105,13 @@ class JarMaker {
     manifestEntries.put(new Attributes.Name("Created-By"), System.getProperty("user.name"));
     manifestEntries.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
 
-    new JarMaker(sourceFilesAndNames, jarFile, manifestEntries).makeJar();
+    new ZipMaker(sourceFilesAndNames, jarFile, manifestEntries).makeZipFile();
   }
 
   private static void usage(String message) {
     PrintStream err = System.err;
     err.println("** " + message);
-    err.println("java JarMaker jarFileName files+");
+    err.println("java ZipMaker jarFileName files+");
     err.println("  jarFileName    The name of the jar file to create");
     err.println("  files+         One or more files to include in the jar");
     err.println();
