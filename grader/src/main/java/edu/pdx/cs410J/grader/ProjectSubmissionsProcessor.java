@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.jar.Attributes;
-import java.util.jar.JarInputStream;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
 
@@ -22,7 +24,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   @Override
   public Iterable<? extends String> getSupportedContentTypes() {
-    return Collections.singleton("application/java-archive");
+    return Collections.singleton("application/zip");
   }
 
   @Override
@@ -203,8 +205,20 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private Manifest getManifestFromByteArray(byte[] file) throws IOException {
-    JarInputStream in = new JarInputStream(new ByteArrayInputStream(file));
-    return in.getManifest();
+    ZipInputStream in = new ZipInputStream(new ByteArrayInputStream(file));
+    for (ZipEntry entry = in.getNextEntry(); entry != null ; entry = in.getNextEntry()) {
+      if (entry.getName().equals(JarFile.MANIFEST_NAME)) {
+        Manifest manifest = new Manifest();
+        manifest.read(in);
+        in.closeEntry();
+        return manifest;
+
+      } else {
+        in.closeEntry();
+      }
+    }
+
+    throw new IllegalStateException("Zip file did not contain manifest");
   }
 
   private void warnOfPreExistingFile(File file) {
