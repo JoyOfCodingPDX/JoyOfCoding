@@ -31,7 +31,7 @@ class ZipMaker {
     ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
     zos.setMethod(ZipOutputStream.DEFLATED);
 
-    // Create a Manifest for the Jar file containing the name of the
+    // Create a Manifest for the Zip file containing the name of the
     // author (userName) and a version that is based on the current
     // date/time.
     writeManifestAsEntryInZipFile(zos);
@@ -40,14 +40,14 @@ class ZipMaker {
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
       File file = fileEntry.getKey();
       String fileName = fileEntry.getValue();
-      System.out.println("Adding " + fileName + " to jar");
+      System.out.println("Adding " + fileName + " to zip");
       ZipEntry entry = new ZipEntry(fileName);
       entry.setTime(file.lastModified());
       entry.setSize(file.length());
 
       entry.setMethod(ZipEntry.DEFLATED);
 
-      // Add the entry to the JAR file
+      // Add the entry to the ZIP file
       zos.putNextEntry(entry);
 
       ByteStreams.copy(new FileInputStream(file), zos);
@@ -88,12 +88,12 @@ class ZipMaker {
   }
 
   public static void main(String[] args) throws IOException {
-    String jarFileName = null;
+    String zipFileName = null;
     Set<File> files = Sets.newHashSet();
 
     for (String arg : args) {
-      if (jarFileName == null) {
-        jarFileName = arg;
+      if (zipFileName == null) {
+        zipFileName = arg;
 
       } else {
         File file = new File(arg);
@@ -103,8 +103,8 @@ class ZipMaker {
       }
     }
 
-    if (jarFileName == null) {
-      usage("Missing jar file name");
+    if (zipFileName == null) {
+      usage("Missing zip file name");
     }
 
     if (files.isEmpty()) {
@@ -114,22 +114,22 @@ class ZipMaker {
     Map<File, String> sourceFilesAndNames =
       files.stream().collect(Collectors.toMap(file -> file, File::getPath));
 
-    assert jarFileName != null;
-    File jarFile = new File(jarFileName);
+    assert zipFileName != null;
+    File zipFile = new File(zipFileName);
 
     Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(new Attributes.Name("Created-By"), System.getProperty("user.name"));
     manifestEntries.put(Attributes.Name.MANIFEST_VERSION, new Date().toString());
 
-    new ZipMaker(sourceFilesAndNames, jarFile, manifestEntries).makeZipFile();
+    new ZipMaker(sourceFilesAndNames, zipFile, manifestEntries).makeZipFile();
   }
 
   private static void usage(String message) {
     PrintStream err = System.err;
     err.println("** " + message);
-    err.println("java ZipMaker jarFileName files+");
-    err.println("  jarFileName    The name of the jar file to create");
-    err.println("  files+         One or more files to include in the jar");
+    err.println("java ZipMaker zipFileName files+");
+    err.println("  ziprFileName    The name of the zip file to create");
+    err.println("  files+         One or more files to include in the zip");
     err.println();
 
     System.exit(1);
