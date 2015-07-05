@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -27,16 +28,15 @@ class ZipMaker {
   }
 
   public File makeZipFile() throws IOException {
-    // Create a Manifest for the Jar file containing the name of the
-    // author (userName) and a version that is based on the current
-    // date/time.
-    Manifest manifest = new Manifest();
-    addEntriesToMainManifest(manifest);
-
     ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
     zos.setMethod(ZipOutputStream.DEFLATED);
 
-    // Add the source files to the Jar
+    // Create a Manifest for the Jar file containing the name of the
+    // author (userName) and a version that is based on the current
+    // date/time.
+    writeManifestAsEntryInZipFile(zos);
+
+    // Add the source files to the Zip
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
       File file = fileEntry.getKey();
       String fileName = fileEntry.getValue();
@@ -58,6 +58,22 @@ class ZipMaker {
     zos.close();
 
     return zipFile;
+  }
+
+  private void writeManifestAsEntryInZipFile(ZipOutputStream zos) throws IOException {
+    Manifest manifest = new Manifest();
+    addEntriesToMainManifest(manifest);
+
+    String entryName = JarFile.MANIFEST_NAME;
+
+    System.out.println("Adding " + entryName + " to zip");
+    ZipEntry entry = new ZipEntry(entryName);
+    entry.setTime(System.currentTimeMillis());
+    entry.setMethod(ZipEntry.DEFLATED);
+
+    zos.putNextEntry(entry);
+    manifest.write(new BufferedOutputStream(zos));
+    zos.closeEntry();
   }
 
   private void addEntriesToMainManifest(Manifest manifest) {
