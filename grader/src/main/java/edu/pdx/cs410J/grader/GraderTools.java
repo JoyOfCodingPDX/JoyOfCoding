@@ -88,6 +88,7 @@ public class GraderTools {
     err.println("    importFromD2L             Import grades from a D2L CSV");
     err.println("    importFromProjectReports  Import grades from graded project reports");
     err.println("    mailFileToStudent         Email text files to students");
+    err.println("    gradePOAs                 Tool for downloading and grading POAs");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
