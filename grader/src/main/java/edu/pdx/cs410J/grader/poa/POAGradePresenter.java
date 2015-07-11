@@ -66,26 +66,52 @@ public class POAGradePresenter {
   public void determineIfStudentsPOAIsLate(StudentSelectedEvent event) {
     this.student = event.getSelectedStudent();
 
-    clearScore();
-    determineIfPOAIsLate();
+    updateViewBasedOnCurrentState();
   }
 
   @Subscribe
   public void determineIfAssignmentIsLate(AssignmentSelectedEvent event) {
     this.assignment = event.getAssignment();
 
-    determineIfPOAIsLate();
+    updateViewBasedOnCurrentState();
+  }
 
-    this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
+  private void updateViewBasedOnCurrentState() {
+    clearScore();
+    determineIfPOAIsLate();
+    setTotalPointsValue();
     setDefaultValueOfScore();
   }
 
+  private void setTotalPointsValue() {
+    String totalPoints;
+    if (this.assignment == null) {
+      totalPoints = "??";
+
+    } else {
+      totalPoints = formatTotalPoints(this.assignment.getPoints());
+    }
+    this.view.setTotalPoints(totalPoints);
+  }
+
   private void setDefaultValueOfScore() {
+    if (this.currentGradeCalculator == null) {
+      this.score = null;
+      this.view.setScore("");
+      this.view.setScoreHasBeenRecorded(false);
+      return;
+    }
+
     Optional<Double> currentGrade = this.currentGradeCalculator.getCurrentGradeFor(this.assignment, this.student);
     if (currentGrade.isPresent()) {
       this.score = currentGrade.get();
       this.view.setScore(formatTotalPoints(this.score));
       this.view.setScoreHasBeenRecorded(true);
+
+    } else if (this.assignment == null) {
+      this.score = null;
+      this.view.setScore("");
+      this.view.setScoreHasBeenRecorded(false);
 
     } else {
       this.score = this.assignment.getPoints();
@@ -186,7 +212,7 @@ public class POAGradePresenter {
     }
 
     public Optional<Double> getCurrentGradeFor(Assignment assignment, Student student) {
-      if (student == null) {
+      if (student == null || assignment == null) {
         return Optional.empty();
       }
 
