@@ -416,4 +416,16 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     this.bus.post(new StudentSelectedEvent(student));
     inOrder.verify(this.view).setScore(formatTotalPoints(scoreForPOAWithGrade));
   }
+
+  @Test
+  public void unknownStudentClearsUI() {
+    postEventsToBus();
+    verify(this.view, times(4)).setScore("");
+    verifyIsLate(3, false);
+
+    this.bus.post(new StudentSelectedEvent(null));
+
+    verify(this.view, times(5)).setScore("");
+    verifyIsLate(4, false);
+  }
 }

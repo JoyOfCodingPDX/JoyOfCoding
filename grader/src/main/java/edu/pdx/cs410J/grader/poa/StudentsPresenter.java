@@ -29,7 +29,13 @@ public class StudentsPresenter {
   }
 
   private void fireSelectedStudentEventForStudentAtIndex(int index) {
-    Student student = this.students.get(index);
+    Student student;
+    if (index == 0) {
+      student = null;
+
+    } else {
+      student = this.students.get(index - 1);
+    }
     fireStudentSelectedEvent(student);
   }
 
@@ -41,12 +47,14 @@ public class StudentsPresenter {
   public void populateViewWithStudents(GradeBookLoaded event) {
     GradeBook book = event.getGradeBook();
 
-    this.students = book.studentsStream().collect(Collectors.toList());
-
-    List<String> studentsDisplayStrings = book.studentsStream()
+    this.students = book.studentsStream()
       .sorted(sortStudentsByLastNameFirstNameEmail())
+      .collect(Collectors.toList());
+
+    List<String> studentsDisplayStrings = this.students.stream()
       .map(this::getStudentDisplayText)
       .collect(Collectors.toList());
+    studentsDisplayStrings.add(0, "<unknown student>");
     this.view.setStudents(studentsDisplayStrings);
 
     this.view.setSelectedStudentIndex(0);
@@ -81,11 +89,14 @@ public class StudentsPresenter {
     for (int i = 0; i < students.size(); i++) {
       Student student = students.get(i);
       if (submitterMatchesStudent(selected.getSubmission(), student)) {
-        this.view.setSelectedStudentIndex(i);
+        this.view.setSelectedStudentIndex(i + 1);
         fireStudentSelectedEvent(student);
         return;
       }
     }
+
+    this.view.setSelectedStudentIndex(0);
+    fireStudentSelectedEvent(null);
   }
 
   private boolean submitterMatchesStudent(POASubmission submission, Student student) {
