@@ -48,6 +48,18 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
   }
 
   @Test
+  public void studentsAreListedInAlphabeticalOrderByLastName() {
+    GradeBook book = new GradeBook("Test In Alphabetical Order");
+    book.addStudent(new Student("4").setFirstName("First1").setLastName("Last1").setEmail("email1@mail.com"));
+    book.addStudent(new Student("3").setFirstName("First3").setLastName("Last3").setEmail("email3@mail.com"));
+    book.addStudent(new Student("1").setFirstName("First2").setLastName("Last2").setEmail("email2@mail.com"));
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    verify(this.view).setStudents(Arrays.asList("First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>", "First3 Last3 <email3@mail.com>"));
+  }
+
+  @Test
   public void firstStudentIsSelectedWhenGradeBookLoaded() {
     this.bus.post(new GradeBookLoaded(book));
 

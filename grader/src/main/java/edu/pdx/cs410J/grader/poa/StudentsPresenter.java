@@ -8,6 +8,7 @@ import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,10 +43,33 @@ public class StudentsPresenter {
 
     this.students = book.studentsStream().collect(Collectors.toList());
 
-    List<String> studentsDisplayStrings = book.studentsStream().map(this::getStudentDisplayText).collect(Collectors.toList());
+    List<String> studentsDisplayStrings = book.studentsStream()
+      .sorted(sortStudentsByLastNameFirstNameEmail())
+      .map(this::getStudentDisplayText)
+      .collect(Collectors.toList());
     this.view.setStudents(studentsDisplayStrings);
 
     this.view.setSelectedStudentIndex(0);
+  }
+
+  private Comparator<Student> sortStudentsByLastNameFirstNameEmail() {
+    return (student1, student2) -> {
+      String lastName1 = student1.getLastName();
+      String lastName2 = student2.getLastName();
+      if (!lastName1.equals(lastName2)) {
+        return lastName1.compareTo(lastName2);
+
+      } else {
+        String firstName1 = student1.getFirstName();
+        String firstName2 = student2.getFirstName();
+        if (!firstName1.equals(firstName2)) {
+          return firstName1.compareTo(firstName2);
+
+        } else {
+          return student1.getEmail().compareTo(student2.getEmail());
+        }
+      }
+    };
   }
 
   private String getStudentDisplayText(Student student) {
