@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
-import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
 import java.util.Optional;
@@ -124,7 +123,7 @@ public class POAGradePresenter {
 
   @Subscribe
   public void createCurrentGradeCalculator(GradeBookLoaded event) {
-    this.currentGradeCalculator = new CurrentGradeCalculator(event.getGradeBook());
+    this.currentGradeCalculator = new CurrentGradeCalculator();
   }
 
   private void determineIfPOAIsLate() {
@@ -205,10 +204,8 @@ public class POAGradePresenter {
   }
 
   private class CurrentGradeCalculator {
-    private final GradeBook gradeBook;
 
-    public CurrentGradeCalculator(GradeBook gradeBook) {
-      this.gradeBook = gradeBook;
+    public CurrentGradeCalculator() {
     }
 
     public Optional<Double> getCurrentGradeFor(Assignment assignment, Student student) {

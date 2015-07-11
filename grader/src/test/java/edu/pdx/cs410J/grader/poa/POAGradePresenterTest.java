@@ -119,8 +119,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
     verify(this.view).setIsEnabled(true);
     int wantedNumberOfInvocations = 3;
-    boolean isLate = false;
-    verifyIsLate(wantedNumberOfInvocations, isLate);
+    verifyIsLate(wantedNumberOfInvocations, false);
   }
 
   private void verifyIsLate(int wantedNumberOfInvocations, boolean isLate) {
@@ -382,7 +381,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   private interface RecordGradeEventHandler {
     @Subscribe
-    public void handleRecordGradeEvent(RecordGradeEvent event);
+    void handleRecordGradeEvent(RecordGradeEvent event);
   }
 
   @Test
