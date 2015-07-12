@@ -8,6 +8,7 @@ import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,13 @@ public class StudentsPresenter {
   }
 
   private void fireSelectedStudentEventForStudentAtIndex(int index) {
-    Student student = this.students.get(index);
+    Student student;
+    if (index == 0) {
+      student = null;
+
+    } else {
+      student = this.students.get(index - 1);
+    }
     fireStudentSelectedEvent(student);
   }
 
@@ -40,12 +47,37 @@ public class StudentsPresenter {
   public void populateViewWithStudents(GradeBookLoaded event) {
     GradeBook book = event.getGradeBook();
 
-    this.students = book.studentsStream().collect(Collectors.toList());
+    this.students = book.studentsStream()
+      .sorted(sortStudentsByLastNameFirstNameEmail())
+      .collect(Collectors.toList());
 
-    List<String> studentsDisplayStrings = book.studentsStream().map(this::getStudentDisplayText).collect(Collectors.toList());
+    List<String> studentsDisplayStrings = this.students.stream()
+      .map(this::getStudentDisplayText)
+      .collect(Collectors.toList());
+    studentsDisplayStrings.add(0, "<unknown student>");
     this.view.setStudents(studentsDisplayStrings);
 
     this.view.setSelectedStudentIndex(0);
+  }
+
+  private Comparator<Student> sortStudentsByLastNameFirstNameEmail() {
+    return (student1, student2) -> {
+      String lastName1 = student1.getLastName();
+      String lastName2 = student2.getLastName();
+      if (!lastName1.equals(lastName2)) {
+        return lastName1.compareTo(lastName2);
+
+      } else {
+        String firstName1 = student1.getFirstName();
+        String firstName2 = student2.getFirstName();
+        if (!firstName1.equals(firstName2)) {
+          return firstName1.compareTo(firstName2);
+
+        } else {
+          return student1.getEmail().compareTo(student2.getEmail());
+        }
+      }
+    };
   }
 
   private String getStudentDisplayText(Student student) {
@@ -57,11 +89,14 @@ public class StudentsPresenter {
     for (int i = 0; i < students.size(); i++) {
       Student student = students.get(i);
       if (submitterMatchesStudent(selected.getSubmission(), student)) {
-        this.view.setSelectedStudentIndex(i);
+        this.view.setSelectedStudentIndex(i + 1);
         fireStudentSelectedEvent(student);
         return;
       }
     }
+
+    this.view.setSelectedStudentIndex(0);
+    fireStudentSelectedEvent(null);
   }
 
   private boolean submitterMatchesStudent(POASubmission submission, Student student) {

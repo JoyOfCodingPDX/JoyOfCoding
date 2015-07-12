@@ -44,7 +44,19 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
   public void viewIsPopulatedWhenGradeBookLoaded() {
     this.bus.post(new GradeBookLoaded(book));
 
-    verify(this.view).setStudents(Arrays.asList("First0 Last0 <email0@mail.com>", "First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>"));
+    verify(this.view).setStudents(Arrays.asList("<unknown student>", "First0 Last0 <email0@mail.com>", "First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>"));
+  }
+
+  @Test
+  public void studentsAreListedInAlphabeticalOrderByLastName() {
+    GradeBook book = new GradeBook("Test In Alphabetical Order");
+    book.addStudent(new Student("4").setFirstName("First1").setLastName("Last1").setEmail("email1@mail.com"));
+    book.addStudent(new Student("3").setFirstName("First3").setLastName("Last3").setEmail("email3@mail.com"));
+    book.addStudent(new Student("1").setFirstName("First2").setLastName("Last2").setEmail("email2@mail.com"));
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    verify(this.view).setStudents(Arrays.asList("<unknown student>", "First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>", "First3 Last3 <email3@mail.com>"));
   }
 
   @Test
@@ -64,12 +76,55 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
 
     this.bus.post(new GradeBookLoaded(book));
 
-    viewHandler.getValue().studentSelected(1);
+    viewHandler.getValue().studentSelected(2);
 
     ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
     verify(eventHandler).handle(event.capture());
 
     assertThat(event.getValue().getSelectedStudent(), equalTo(student1));
+  }
+
+  @Test
+  public void selectingStudentInAlphabetizedViewFiresStudentSelectedEvent() {
+    ArgumentCaptor<SelectStudentHandler> viewHandler = ArgumentCaptor.forClass(SelectStudentHandler.class);
+    verify(this.view).addSelectStudentHandler(viewHandler.capture());
+
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    GradeBook book = new GradeBook("Test In Alphabetical Order");
+    book.addStudent(new Student("4").setFirstName("First1").setLastName("Last1").setEmail("email1@mail.com"));
+    book.addStudent(new Student("3").setFirstName("First3").setLastName("Last3").setEmail("email3@mail.com"));
+
+    Student student2 = new Student("1").setFirstName("First2").setLastName("Last2").setEmail("email2@mail.com");
+    book.addStudent(student2);
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    viewHandler.getValue().studentSelected(2);
+
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(student2));
+  }
+
+  @Test
+  public void selectingUnknownStudentInViewFiresNullStudentSelectedEvent() {
+    ArgumentCaptor<SelectStudentHandler> viewHandler = ArgumentCaptor.forClass(SelectStudentHandler.class);
+    verify(this.view).addSelectStudentHandler(viewHandler.capture());
+
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.bus.post(new GradeBookLoaded(book));
+
+    viewHandler.getValue().studentSelected(0);
+
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(null));
   }
 
   private interface StudentSelectedEventHandler {
@@ -88,7 +143,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
       createPOASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
-    verify(this.view).setSelectedStudentIndex(1);
+    verify(this.view).setSelectedStudentIndex(2);
 
     ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
     verify(eventHandler).handle(event.capture());
@@ -107,7 +162,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
       createPOASubmission("Subject", student2.getEmail(), LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
-    verify(this.view).setSelectedStudentIndex(2);
+    verify(this.view).setSelectedStudentIndex(3);
 
     ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
     verify(eventHandler).handle(event.capture());
@@ -116,7 +171,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
   }
 
   @Test
-  public void submissionByNonMatchingStudentDoesNotFireStudentSelectedEvent() {
+  public void submissionByNonMatchingStudentFiresUnknownStudentSelectedEvent() {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
@@ -126,9 +181,12 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
       createPOASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
     this.bus.post(new POASubmissionSelected(submission));
 
-    verify(this.view, times(1)).setSelectedStudentIndex(0);
+    verify(this.view, times(2)).setSelectedStudentIndex(0);
 
-    verifyNoMoreInteractions(eventHandler);
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(null));
   }
 
 }

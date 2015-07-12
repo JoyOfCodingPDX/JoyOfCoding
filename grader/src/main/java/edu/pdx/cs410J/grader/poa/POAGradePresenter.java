@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
-import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
 import java.util.Optional;
@@ -66,26 +65,52 @@ public class POAGradePresenter {
   public void determineIfStudentsPOAIsLate(StudentSelectedEvent event) {
     this.student = event.getSelectedStudent();
 
-    clearScore();
-    determineIfPOAIsLate();
+    updateViewBasedOnCurrentState();
   }
 
   @Subscribe
   public void determineIfAssignmentIsLate(AssignmentSelectedEvent event) {
     this.assignment = event.getAssignment();
 
-    determineIfPOAIsLate();
+    updateViewBasedOnCurrentState();
+  }
 
-    this.view.setTotalPoints(formatTotalPoints(this.assignment.getPoints()));
+  private void updateViewBasedOnCurrentState() {
+    clearScore();
+    determineIfPOAIsLate();
+    setTotalPointsValue();
     setDefaultValueOfScore();
   }
 
+  private void setTotalPointsValue() {
+    String totalPoints;
+    if (this.assignment == null) {
+      totalPoints = "??";
+
+    } else {
+      totalPoints = formatTotalPoints(this.assignment.getPoints());
+    }
+    this.view.setTotalPoints(totalPoints);
+  }
+
   private void setDefaultValueOfScore() {
+    if (this.currentGradeCalculator == null) {
+      this.score = null;
+      this.view.setScore("");
+      this.view.setScoreHasBeenRecorded(false);
+      return;
+    }
+
     Optional<Double> currentGrade = this.currentGradeCalculator.getCurrentGradeFor(this.assignment, this.student);
     if (currentGrade.isPresent()) {
       this.score = currentGrade.get();
       this.view.setScore(formatTotalPoints(this.score));
       this.view.setScoreHasBeenRecorded(true);
+
+    } else if (this.assignment == null) {
+      this.score = null;
+      this.view.setScore("");
+      this.view.setScoreHasBeenRecorded(false);
 
     } else {
       this.score = this.assignment.getPoints();
@@ -98,7 +123,7 @@ public class POAGradePresenter {
 
   @Subscribe
   public void createCurrentGradeCalculator(GradeBookLoaded event) {
-    this.currentGradeCalculator = new CurrentGradeCalculator(event.getGradeBook());
+    this.currentGradeCalculator = new CurrentGradeCalculator();
   }
 
   private void determineIfPOAIsLate() {
@@ -179,14 +204,12 @@ public class POAGradePresenter {
   }
 
   private class CurrentGradeCalculator {
-    private final GradeBook gradeBook;
 
-    public CurrentGradeCalculator(GradeBook gradeBook) {
-      this.gradeBook = gradeBook;
+    public CurrentGradeCalculator() {
     }
 
     public Optional<Double> getCurrentGradeFor(Assignment assignment, Student student) {
-      if (student == null) {
+      if (student == null || assignment == null) {
         return Optional.empty();
       }
 
