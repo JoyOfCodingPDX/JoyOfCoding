@@ -65,7 +65,7 @@ public class GraderEmailAccount {
     }
 
     for (String contentType : processor.getSupportedContentTypes()) {
-      for (BodyPart part : getBodyParts(parts)) {
+      for (BodyPart part : getBodyPartsInReverseOrder(parts)) {
         if (attemptToProcessPart(message, part, processor, contentType)) {
           return;
         }
@@ -84,7 +84,7 @@ public class GraderEmailAccount {
     } else if (partIsMultiPart(part)) {
       debug("    Attempting to process attachment of type " + part.getContentType());
 
-      for (BodyPart subpart : getBodyParts((Multipart) part.getContent())) {
+      for (BodyPart subpart : getBodyPartsInReverseOrder((Multipart) part.getContent())) {
         if (attemptToProcessPart(message, subpart, processor, supportedContentType)) {
           return true;
         }
@@ -96,9 +96,9 @@ public class GraderEmailAccount {
     return false;
   }
 
-  private List<BodyPart> getBodyParts(Multipart parts) throws MessagingException {
+  private List<BodyPart> getBodyPartsInReverseOrder(Multipart parts) throws MessagingException {
     List<BodyPart> list = new ArrayList<>(parts.getCount());
-    for (int i = 0; i < parts.getCount(); i++) {
+    for (int i = parts.getCount() - 1; i >= 0; i--) {
       list.add(parts.getBodyPart(i));
     }
 
