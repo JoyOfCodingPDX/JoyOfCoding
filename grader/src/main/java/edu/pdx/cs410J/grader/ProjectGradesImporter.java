@@ -48,7 +48,13 @@ public class ProjectGradesImporter {
       throw new IllegalStateException(message);
     }
 
-    Student student = gradeBook.getStudent(studentId).orElseThrow(() -> new IllegalStateException("Student \"" + studentId + "\" not found in gradebook"));
+    Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
+    if (!maybeStudent.isPresent()) {
+      warn("Student \"" + studentId + "\" not found in gradebook");
+      return;
+    }
+
+    Student student = maybeStudent.get();
     Grade grade = student.getGrade(this.assignment);
     if (grade == null) {
       grade = new Grade(assignment, score.getScore());
@@ -58,6 +64,10 @@ public class ProjectGradesImporter {
       grade.setScore(score.getScore());
     }
 
+  }
+
+  private void warn(String message) {
+    System.err.println("WARNING " + message);
   }
 
   static class ProjectScore {
