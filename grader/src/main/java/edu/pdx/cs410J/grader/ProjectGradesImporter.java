@@ -1,6 +1,8 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,10 +16,12 @@ public class ProjectGradesImporter {
 
   private final GradeBook gradeBook;
   private final Assignment assignment;
+  private final Logger logger;
 
-  public ProjectGradesImporter(GradeBook gradeBook, Assignment assignment) {
+  public ProjectGradesImporter(GradeBook gradeBook, Assignment assignment, Logger logger) {
     this.gradeBook = gradeBook;
     this.assignment = assignment;
+    this.logger = logger;
   }
 
   public static ProjectScore getScoreFrom(Reader reader) {
@@ -67,7 +71,7 @@ public class ProjectGradesImporter {
   }
 
   private void warn(String message) {
-    System.err.println("WARNING " + message);
+    logger.warn(message);
   }
 
   static class ProjectScore {
@@ -111,7 +115,9 @@ public class ProjectGradesImporter {
 
     GradeBook gradeBook = getGradeBook(gradeBookFileName);
     Assignment assignment = getAssignment(assignmentName, gradeBook);
-    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
+    Logger logger = LoggerFactory.getLogger(ProjectGradesImporter.class.getPackage().getName());
+
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
 
     for (String projectFileName : projectFileNames) {
       File projectFile = getProjectFile(projectFileName);

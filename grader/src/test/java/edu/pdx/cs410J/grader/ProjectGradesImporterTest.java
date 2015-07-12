@@ -2,16 +2,22 @@ package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.grader.ProjectGradesImporter.ProjectScore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 public class ProjectGradesImporterTest {
+
+  private Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
   @Test(expected = IllegalStateException.class)
   public void gradedProjectWithNoGradeThrowsIllegalStateException() {
@@ -119,7 +125,7 @@ public class ProjectGradesImporterTest {
     project.addLine("");
     project.addLine("asdfasd");
 
-    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
     importer.recordScoreFromProjectReport(studentId, project.getReader());
 
     assertThat(gradeBook.getStudent(studentId).get().getGrade(assignment.getName()).getScore(), equalTo(5.8));
@@ -140,12 +146,12 @@ public class ProjectGradesImporterTest {
     project.addLine("");
     project.addLine("asdfasd");
 
-    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
     importer.recordScoreFromProjectReport(studentId, project.getReader());
   }
 
   @Test
-  public void throwIllegalStateExceptionWhenStudentDoesNotExistInGradeBook() {
+  public void logWarningWhenStudentDoesNotExistInGradeBook() {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
@@ -157,16 +163,16 @@ public class ProjectGradesImporterTest {
     project.addLine("");
     project.addLine("asdfasd");
 
-    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment);
-    try {
-      importer.recordScoreFromProjectReport(studentId, project.getReader());
-      fail("Should have thrown an IllegalStateException");
+    Logger logger = mock(Logger.class);
+    ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
 
-    } catch (IllegalStateException ex) {
-      // pass
-    }
+    importer.recordScoreFromProjectReport(studentId, project.getReader());
 
     assertThat(gradeBook.containsStudent(studentId), equalTo(false));
+
+    ArgumentCaptor<String> message = ArgumentCaptor.forClass(String.class);
+    verify(logger, times(1)).warn(message.capture());
+    assertThat(message.getValue(), containsString("Student \"" + studentId + "\" not found in gradebook"));
   }
 
 }
