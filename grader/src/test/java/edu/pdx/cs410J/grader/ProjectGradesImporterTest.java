@@ -120,16 +120,22 @@ public class ProjectGradesImporterTest {
     gradeBook.addStudent(new Student(studentId));
     gradeBook.addAssignment(assignment);
 
+    String score = "5.8";
     GradedProject project = new GradedProject();
-    project.addLine("5.8 out of 6.0");
+    project.addLine(score + " out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
 
+    Logger logger = mock(Logger.class);
     ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
     importer.recordScoreFromProjectReport(studentId, project.getReader());
 
     assertThat(gradeBook.getStudent(studentId).get().getGrade(assignment.getName()).getScore(), equalTo(5.8));
     assertThat(gradeBook.isDirty(), equalTo(true));
+
+    ArgumentCaptor<String> message = ArgumentCaptor.forClass(String.class);
+    verify(logger).info(message.capture());
+    assertThat(message.getValue(), containsString("Recorded grade of " + score + " for " + studentId));
   }
 
   @Test(expected = IllegalStateException.class)

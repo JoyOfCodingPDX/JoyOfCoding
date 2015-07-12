@@ -68,6 +68,11 @@ public class ProjectGradesImporter {
       grade.setScore(score.getScore());
     }
 
+    info("Recorded grade of " + score.getScore() + " for " + studentId);
+  }
+
+  private void info(String message) {
+    this.logger.info(message);
   }
 
   private void warn(String message) {
