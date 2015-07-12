@@ -2,6 +2,8 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.Files;
 import edu.pdx.cs410J.ParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -13,9 +15,10 @@ import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class StudentFileMailer extends EmailSender {
+  private static Logger logger = LoggerFactory.getLogger(StudentFileMailer.class.getPackage().getName());
 
   private final String subject;
   private final Session session;
@@ -108,15 +111,19 @@ public class StudentFileMailer extends EmailSender {
     for (File file : files) {
       String studentId;
       studentId = getStudentIdFromFileName(file);
-      students.add(gradeBook.getStudent(studentId).orElseThrow(cannotFindStudent(studentId)));
+      Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
+      if (!maybeStudent.isPresent()) {
+        cannotFindStudent(studentId);
+      } else {
+        students.add(maybeStudent.get());
+      }
     }
 
     return students;
   }
 
-  @SuppressWarnings("ThrowableInstanceNeverThrown")
-  private static Supplier<IllegalStateException> cannotFindStudent(String studentId) {
-    return () -> new IllegalStateException("Cannot find student with id \"" + studentId + "\" in grade book");
+  private static void cannotFindStudent(String studentId) {
+    logger.warn("Cannot find student with id \"" + studentId + "\" in grade book");
   }
 
   private static String getStudentIdFromFileName(File file) {
