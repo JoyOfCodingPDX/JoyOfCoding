@@ -67,7 +67,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>${artifactId}</finalName>
+    <finalName>${artifactId}</finalName>  <!-- Need finalName to make integration tests work -->
     <plugins>
       <plugin>
         <!-- Need version 2.1.1 for Java 7 -->
