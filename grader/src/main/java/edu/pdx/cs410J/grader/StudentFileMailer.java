@@ -62,8 +62,7 @@ public class StudentFileMailer extends EmailSender {
         mailer.mailFileToStudent(file, student);
 
       } catch (MessagingException | IOException ex) {
-        System.err.println("While mailing \"" + file + "\" to " + student);
-        ex.printStackTrace(System.err);
+        logger.error("While mailing \"" + file + "\" to " + student, ex);
       }
     }
   }
@@ -71,7 +70,7 @@ public class StudentFileMailer extends EmailSender {
   private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {
     String studentEmail = getEmailAddress(student);
 
-    System.out.println("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
+    logger.info("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
 
     MimeMessage message = newEmailTo(this.session, studentEmail, this.subject);
     message.setText(readTextFromFile(file));
