@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class StudentFileMailer extends EmailSender {
   private static Logger logger = LoggerFactory.getLogger(StudentFileMailer.class.getPackage().getName());
@@ -50,21 +48,17 @@ public class StudentFileMailer extends EmailSender {
     usageIfEmpty(fileNames, "Missing file names");
     List<File> files = getFiles(fileNames);
     GradeBook gradeBook = getGradeBook(gradeBookFileName);
-    List<Student> students = getStudentsFromFiles(files, gradeBook);
-
-    assert files.size() == students.size();
+    Map<Student, File> filesToSendToStudents = getFilesToSendToStudents(files, gradeBook);
 
     StudentFileMailer mailer = new StudentFileMailer(subject, newEmailSession(false));
-    for (int i = 0; i < files.size(); i++) {
-      File file = files.get(i);
-      Student student = students.get(i);
+    filesToSendToStudents.forEach((student, file) -> {
       try {
         mailer.mailFileToStudent(file, student);
 
       } catch (MessagingException | IOException ex) {
         logger.error("While mailing \"" + file + "\" to " + student, ex);
       }
-    }
+    });
   }
 
   private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {
@@ -105,20 +99,19 @@ public class StudentFileMailer extends EmailSender {
     return sb.toString();
   }
 
-  private static List<Student> getStudentsFromFiles(List<File> files, GradeBook gradeBook) {
-    List<Student> students = new ArrayList<>(files.size());
+  private static Map<Student, File> getFilesToSendToStudents(List<File> files, GradeBook gradeBook) {
+    Map<Student, File> filesToSendToStudents = new HashMap<>();
     for (File file : files) {
-      String studentId;
-      studentId = getStudentIdFromFileName(file);
+      String studentId = getStudentIdFromFileName(file);
       Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
       if (!maybeStudent.isPresent()) {
         cannotFindStudent(studentId);
       } else {
-        students.add(maybeStudent.get());
+        filesToSendToStudents.put(maybeStudent.get(), file);
       }
     }
 
-    return students;
+    return filesToSendToStudents;
   }
 
   private static void cannotFindStudent(String studentId) {
