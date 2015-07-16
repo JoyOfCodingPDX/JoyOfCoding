@@ -24,7 +24,7 @@ public class ProjectGradesImporter {
     this.logger = logger;
   }
 
-  public static ProjectScore getScoreFrom(Reader reader) {
+  public static ProjectScore getScoreFrom(Reader reader) throws ScoreNotFoundException {
     BufferedReader br = new BufferedReader(reader);
     Optional<String> scoreLine = br.lines().filter(scorePattern.asPredicate()).findFirst();
 
@@ -38,12 +38,12 @@ public class ProjectGradesImporter {
       }
 
     } else {
-      throw new IllegalStateException("No score found");
+      throw new ScoreNotFoundException();
     }
 
   }
 
-  public void recordScoreFromProjectReport(String studentId, Reader report) {
+  public void recordScoreFromProjectReport(String studentId, Reader report) throws ScoreNotFoundException {
     ProjectScore score = getScoreFrom(report);
 
     if (score.getTotalPoints() != this.assignment.getPoints()) {
@@ -135,6 +135,8 @@ public class ProjectGradesImporter {
 
       } catch (FileNotFoundException ex) {
         throw new IllegalStateException("Could not find file \"" + projectFile + "\"");
+      } catch (ScoreNotFoundException e) {
+        logger.warn("Could not find score in " + projectFileName);
       }
     }
 
@@ -227,5 +229,9 @@ public class ProjectGradesImporter {
     System.exit(1);
 
     return null;
+  }
+
+  private static class ScoreNotFoundException extends Exception {
+
   }
 }
