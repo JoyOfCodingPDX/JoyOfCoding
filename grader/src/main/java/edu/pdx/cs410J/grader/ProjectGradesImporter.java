@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -231,7 +232,8 @@ public class ProjectGradesImporter {
     return null;
   }
 
-  private static class ScoreNotFoundException extends Exception {
+  @VisibleForTesting
+  static class ScoreNotFoundException extends Exception {
 
   }
 }

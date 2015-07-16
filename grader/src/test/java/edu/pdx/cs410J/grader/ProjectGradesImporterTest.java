@@ -19,8 +19,8 @@ public class ProjectGradesImporterTest {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
-  @Test(expected = IllegalStateException.class)
-  public void gradedProjectWithNoGradeThrowsIllegalStateException() {
+  @Test(expected = ProjectGradesImporter.ScoreNotFoundException.class)
+  public void gradedProjectWithNoGradeThrowsScoreNotFoundException() throws ProjectGradesImporter.ScoreNotFoundException {
     GradedProject project = new GradedProject();
     project.addLine("asdfhjkl");
     project.addLine("iadguow");
@@ -38,7 +38,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void gradedProjectWithOutOfHasValidScore() {
+  public void gradedProjectWithOutOfHasValidScore() throws ProjectGradesImporter.ScoreNotFoundException {
     GradedProject project = new GradedProject();
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
@@ -76,7 +76,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void gradedProjectWithIntegerPoints() {
+  public void gradedProjectWithIntegerPoints() throws ProjectGradesImporter.ScoreNotFoundException {
     GradedProject project = new GradedProject();
     project.addLine("3 out of 5");
     project.addLine("iadguow");
@@ -100,7 +100,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void onlyFirstScoreIsReturned() {
+  public void onlyFirstScoreIsReturned() throws ProjectGradesImporter.ScoreNotFoundException {
     GradedProject project = new GradedProject();
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
@@ -112,7 +112,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void scoreIsRecordedInGradeBook() {
+  public void scoreIsRecordedInGradeBook() throws ProjectGradesImporter.ScoreNotFoundException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
@@ -139,7 +139,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test(expected = IllegalStateException.class)
-  public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() {
+  public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() throws ProjectGradesImporter.ScoreNotFoundException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 8.0);
 
@@ -157,7 +157,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void logWarningWhenStudentDoesNotExistInGradeBook() {
+  public void logWarningWhenStudentDoesNotExistInGradeBook() throws ProjectGradesImporter.ScoreNotFoundException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
