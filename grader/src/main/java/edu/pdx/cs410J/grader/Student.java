@@ -39,9 +39,9 @@ public class Student extends NotableImpl {
    */
   public Student(String id) {
     this.id = id;
-    this.grades = new TreeMap<String, Grade>();
-    this.late = new ArrayList<String>();
-    this.resubmitted = new ArrayList<String>();
+    this.grades = new TreeMap<>();
+    this.late = new ArrayList<>();
+    this.resubmitted = new ArrayList<>();
   }
 
   ///////////////////////  Instance Methods  ///////////////////////
@@ -105,17 +105,17 @@ public class Student extends NotableImpl {
    * last, and nick names.
    */
   public String getFullName() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     if (this.firstName != null) {
       sb.append(this.firstName);
     }
 
     if (this.nickName != null) {
-      sb.append(" \"" + this.nickName + "\"");
+      sb.append(" \"").append(this.nickName).append("\"");
     }
 
     if (this.lastName != null) {
-      sb.append(" " + this.lastName);
+      sb.append(" ").append(this.lastName);
     }
 
     return sb.toString().trim();
@@ -147,9 +147,10 @@ public class Student extends NotableImpl {
   /**
    * Sets the social security number of this <code>Student</code>
    */
-  public void setSsn(String ssn) {
+  public Student setSsn(String ssn) {
     this.setDirty(true);
     this.ssn = ssn;
+    return this;
   }
 
   /**
@@ -231,9 +232,7 @@ public class Student extends NotableImpl {
 	  super.makeClean();
 
     // Make all Grades clean
-    for (Grade grade : this.grades.values()) {
-      grade.makeClean();
-    }
+    this.grades.values().forEach(edu.pdx.cs410J.grader.Grade::makeClean);
   }
 
   /**
@@ -262,29 +261,27 @@ public class Student extends NotableImpl {
   String getDescription() {
     Student student = this;
 
-    StringBuffer sb = new StringBuffer();
-    sb.append(student.getId() + ": ");
+    StringBuilder sb = new StringBuilder();
+    sb.append(student.getId()).append(": ");
     sb.append(student.getFullName());
 
     String email = student.getEmail();
     if (email != null && !email.equals("")) {
-      sb.append(", " + email);
+      sb.append(", ").append(email);
     }
 
     String ssn = student.getSsn();
     if (ssn != null && !ssn.equals("")) {
-      sb.append(", " + ssn);
+      sb.append(", ").append(ssn);
     }
 
     String major = student.getMajor();
     if (major != null && !major.equals("")) {
-      sb.append(", " + major);
+      sb.append(", ").append(major);
     }
 
-    Iterator iter = this.getNotes().iterator();
-    while (iter.hasNext()) {
-      String note = (String) iter.next();
-      sb.append(", \"" + note + "\"");
+    for (Object note : this.getNotes()) {
+      sb.append(", \"").append(note).append("\"");
     }
 
     return sb.toString();
@@ -296,12 +293,7 @@ public class Student extends NotableImpl {
    * Two <code>Student</code>s are equal if they have the same id
    */
   public boolean equals(Object o) {
-    if (o instanceof Student) {
-      return this.getId().equals(((Student) o).getId());
-
-    } else {
-      return false;
-    }
+    return o instanceof Student && this.getId().equals(((Student) o).getId());
   }
 
   /**
