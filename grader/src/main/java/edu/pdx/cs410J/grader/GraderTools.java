@@ -61,6 +61,9 @@ public class GraderTools {
       case "gradePOAs":
         return PlanOfAttackGrader.class;
 
+      case "generateGradeSummary":
+        return SummaryReport.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -89,6 +92,7 @@ public class GraderTools {
     err.println("    importFromProjectReports  Import grades from graded project reports");
     err.println("    mailFileToStudent         Email text files to students");
     err.println("    gradePOAs                 Tool for downloading and grading POAs");
+    err.println("    generateGradeSummary      Generate grade summary report for one or more students");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
