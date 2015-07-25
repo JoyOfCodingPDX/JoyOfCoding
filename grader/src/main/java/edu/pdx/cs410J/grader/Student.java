@@ -147,9 +147,10 @@ public class Student extends NotableImpl {
   /**
    * Sets the social security number of this <code>Student</code>
    */
-  public void setSsn(String ssn) {
+  public Student setSsn(String ssn) {
     this.setDirty(true);
     this.ssn = ssn;
+    return this;
   }
 
   /**

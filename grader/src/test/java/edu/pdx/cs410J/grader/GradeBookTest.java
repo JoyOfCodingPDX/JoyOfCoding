@@ -116,4 +116,19 @@ public class GradeBookTest {
     assertThat(book.getLetterGradeForScore(99.0), equalTo(LetterGrade.A));
     assertThat(book.getLetterGradeForScore(93.0), equalTo(LetterGrade.A_MINUS));
   }
+
+  @Test
+  public void getStudentBySsnForNonExistentStudentReturnsNonPresentOptional() {
+    GradeBook book = new GradeBook("test");
+    assertThat(book.getStudentWithSsn("123").isPresent(), equalTo(false));
+  }
+
+  @Test
+  public void getStudentBySsnForStudentReturnsStudent() {
+    GradeBook book = new GradeBook("test");
+    String ssn = "123456789";
+    Student student = new Student("id").setSsn(ssn);
+    book.addStudent(student);
+    assertThat(book.getStudentWithSsn(ssn).get(), equalTo(student));
+  }
 }

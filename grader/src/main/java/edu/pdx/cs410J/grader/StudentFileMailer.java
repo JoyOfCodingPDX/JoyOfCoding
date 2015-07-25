@@ -105,6 +105,9 @@ public class StudentFileMailer extends EmailSender {
       String studentId = getStudentIdFromFileName(file);
       Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
       if (!maybeStudent.isPresent()) {
+        maybeStudent = gradeBook.getStudentWithSsn(studentId);
+      }
+      if (!maybeStudent.isPresent()) {
         cannotFindStudent(studentId);
       } else {
         filesToSendToStudents.put(maybeStudent.get(), file);

@@ -345,6 +345,10 @@ public class GradeBook {
     return this.assignments.values().stream();
   }
 
+  public Optional<Student> getStudentWithSsn(String ssn) {
+    return this.studentsStream().filter(s -> ssn.equals(s.getSsn())).findAny();
+  }
+
   static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
