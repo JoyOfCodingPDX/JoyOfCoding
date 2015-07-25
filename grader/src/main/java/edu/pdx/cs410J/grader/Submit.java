@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -200,6 +202,10 @@ public class Submit extends EmailSender {
       throw new IllegalStateException("Missing login id");
     }
 
+    if (isNineDigitStudentId(userId)) {
+      throw new IllegalStateException(loginIdShouldNotBeStudentId(userId));
+    }
+
     if (userEmail == null) {
       throw new IllegalStateException("Missing email address");
 
@@ -215,6 +221,15 @@ public class Submit extends EmailSender {
         throw ex2;
       }
     }
+  }
+
+  @VisibleForTesting
+  boolean isNineDigitStudentId(String userId) {
+    return userId.matches("^[0-9]{9}$");
+  }
+
+  private String loginIdShouldNotBeStudentId(String userId) {
+    return "Your login id (" + userId + ") should not be your 9-digit student id";
   }
 
   private void validateProjectName() {
