@@ -206,6 +206,10 @@ public class Submit extends EmailSender {
       throw new IllegalStateException(loginIdShouldNotBeStudentId(userId));
     }
 
+    if (looksLikeAnEmailAddress(userId)) {
+      throw new IllegalStateException(loginIdShouldNotBeEmailAddress(userId));
+    }
+
     if (userEmail == null) {
       throw new IllegalStateException("Missing email address");
 
@@ -221,6 +225,15 @@ public class Submit extends EmailSender {
         throw ex2;
       }
     }
+  }
+
+  private String loginIdShouldNotBeEmailAddress(String userId) {
+    return "You login id (" + userId + ") should not be an email address";
+  }
+
+  @VisibleForTesting
+  boolean looksLikeAnEmailAddress(String userId) {
+    return userId.contains("@");
   }
 
   @VisibleForTesting

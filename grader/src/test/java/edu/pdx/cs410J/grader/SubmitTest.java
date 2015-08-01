@@ -24,4 +24,10 @@ public class SubmitTest {
     Submit submit = new Submit();
     assertThat(submit.isNineDigitStudentId("whitlock"), equalTo(false));
   }
+
+  @Test
+  public void emailAddressIsInvalidLoginId() {
+    Submit submit = new Submit();
+    assertThat(submit.looksLikeAnEmailAddress("me@email.com"), equalTo(true));
+  }
 }
