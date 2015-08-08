@@ -1,14 +1,22 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.List;
 import java.util.Optional;
 
 public class GradesFromD2LImporter {
 
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+
   public static void importGradesFromD2L(GradesFromD2L d2lGrades, GradeBook gradebook) {
-    for (GradesFromD2L.D2LStudent d2LStudent : d2lGrades.getStudents()) {
+    List<GradesFromD2L.D2LStudent> students = d2lGrades.getStudents();
+    logger.debug("Importing grades for " + students.size() + " students");
+
+    for (GradesFromD2L.D2LStudent d2LStudent : students) {
       Optional<Student> student = d2lGrades.findStudentInGradebookForD2LStudent(d2LStudent, gradebook);
       if (!student.isPresent()) {
         String message = "Could not find student " + d2LStudent + " in gradebook";
@@ -18,7 +26,10 @@ public class GradesFromD2LImporter {
         for (String quizName : d2LStudent.getQuizNames()) {
           Optional<Assignment> optional = d2lGrades.findAssignmentInGradebookForD2lQuiz(quizName, gradebook);
           Assignment quiz = optional.orElseThrow(() -> new IllegalStateException("No quiz named \"" + quizName + "\" in gradebook"));
-          student.get().setGrade(quiz.getName(), new Grade(quiz, d2LStudent.getScore(quizName)));
+
+          Double score = d2LStudent.getScore(quizName);
+          logger.debug("Recording grade of " + score + " for " + student.get() + " for " + quiz.getName());
+          student.get().setGrade(quiz.getName(), new Grade(quiz, score));
         }
       }
     }
