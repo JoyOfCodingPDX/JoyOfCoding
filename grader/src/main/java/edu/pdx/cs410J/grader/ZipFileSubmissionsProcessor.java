@@ -151,7 +151,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
   }
 
   private File getLocationToWriteFile(String fileName, String studentId) throws IOException {
-    File dir = new File(directory, studentId);
+    File dir = new File(directory, getAssignmentName());
     if (!dir.exists() && !dir.mkdirs()) {
       throw new IOException("Could not create directory \"" + dir + "\"");
     }
