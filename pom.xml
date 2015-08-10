@@ -67,6 +67,22 @@
         <name>CS410J Maven Repository</name>
         <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
       </repository>
+      <repository>
+        <id>Codehaus Snapshots</id>
+        <name>Codehaus Snapshots</name>
+        <releases>
+          <enabled>false</enabled>
+          <updatePolicy>always</updatePolicy>
+          <checksumPolicy>warn</checksumPolicy>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+          <updatePolicy>never</updatePolicy>
+          <checksumPolicy>fail</checksumPolicy>
+        </snapshots>
+        <url>http://snapshots.maven.codehaus.org</url>
+        <layout>default</layout>
+      </repository>
     </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -78,6 +94,16 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Codehaus Plugin Snapshots</id>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <url>http://snapshots.repository.codehaus.org/</url>
     </pluginRepository>
   </pluginRepositories>
   <build>
