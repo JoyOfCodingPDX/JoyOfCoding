@@ -8,6 +8,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
+
+  <properties>
+    <http.port>8080</http.port>
+  </properties>
+
   <packaging>war</packaging>
   <version>${version}</version>
   <name>Phone Bill GWT Application</name>
@@ -72,9 +77,14 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.2.10.v20150310</version>
         <configuration>
-          <httpConnector port="8080"/>
+          <httpConnector>
+            <port>${http.port}</port>
+          </httpConnector>
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+          <webApp>
+            <contextPath>/phonebill</contextPath>
+          </webApp>
         </configuration>
       </plugin>
     </plugins>
