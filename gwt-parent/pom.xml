@@ -27,9 +27,10 @@
 
         <gwt.version>2.7.0</gwt.version>
 
-        <!--  GWT doesn't work with Java 8 yet -->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <!--  GWT server-side code can use Java 8 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <gwt.client.source.level>1.7</gwt.client.source.level>
     </properties>
 
     <dependencyManagement>

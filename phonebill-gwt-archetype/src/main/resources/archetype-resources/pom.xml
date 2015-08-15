@@ -62,6 +62,7 @@
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>
                 <copyWebapp>true</copyWebapp>
+                <sourceLevel>${gwt.client.source.level}</sourceLevel>
             </configuration>
           <executions>
             <execution>
