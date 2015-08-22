@@ -70,6 +70,7 @@
       <repository>
         <id>Codehaus Snapshots</id>
         <name>Codehaus Snapshots</name>
+        <url>http://snapshots.maven.codehaus.org</url>
         <releases>
           <enabled>false</enabled>
           <updatePolicy>always</updatePolicy>
@@ -80,30 +81,19 @@
           <updatePolicy>never</updatePolicy>
           <checksumPolicy>fail</checksumPolicy>
         </snapshots>
-        <url>http://snapshots.maven.codehaus.org</url>
         <layout>default</layout>
       </repository>
     </repositories>
   <pluginRepositories>
     <pluginRepository>
-      <id>Codehaus Snapshots</id>
-      <url>http://snapshots.repository.codehaus.org/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
       <id>Codehaus Plugin Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
       <releases>
         <enabled>false</enabled>
       </releases>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <url>http://snapshots.repository.codehaus.org/</url>
     </pluginRepository>
   </pluginRepositories>
   <build>
