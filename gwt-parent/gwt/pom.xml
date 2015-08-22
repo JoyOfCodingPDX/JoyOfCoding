@@ -72,6 +72,7 @@
                 <module>edu.pdx.cs410J.gwt.Examples</module>
                 <style>PRETTY</style>
                 <copyWebapp>true</copyWebapp>
+                <sourceLevel>${gwt.client.source.level}</sourceLevel>
             </configuration>
           <executions>
             <execution>
