@@ -1,28 +1,27 @@
 package edu.pdx.cs410J.servlets;
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.family.FamilyTree;
 import edu.pdx.cs410J.family.Person;
 import edu.pdx.cs410J.family.XmlParser;
-import edu.pdx.cs410J.family.FamilyTree;
+import edu.pdx.cs410J.web.HttpRequestHelper;
+import org.junit.Test;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Calendar;
 import java.io.IOException;
 import java.io.StringReader;
-import static java.net.HttpURLConnection.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static org.junit.Assert.*;
 
 
 /**
  * Tests the REST web service provided by the <code>FamilyTreeServlet</code>
  */
-public class FamilyTreeServletTest extends HttpRequestHelper {
+public class FamilyTreeServletIT extends HttpRequestHelper {
 
   private static final String PERSON_URL = "http://localhost:8080/web/family/person";
 

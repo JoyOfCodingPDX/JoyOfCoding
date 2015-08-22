@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the functionality of the <code>MovieDatabaseRestServlet</code>
  */
-public class MovieDatabaseServletTest extends HttpRequestHelper {
+public class MovieDatabaseServletIT extends HttpRequestHelper {
 
   /**
    * The URL for accessing the Movie database application

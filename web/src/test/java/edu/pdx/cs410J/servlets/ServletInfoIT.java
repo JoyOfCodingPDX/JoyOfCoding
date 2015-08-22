@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Tests that we can get information about the servlet container
  */
-public class ServletInfoTest {
+public class ServletInfoIT {
 
   @Test
   public void testServletInfo() throws IOException {
