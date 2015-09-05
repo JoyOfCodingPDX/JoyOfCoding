@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Tests the {@link #invokeMain(Class, String[])} method of {@link InvokeMainTestCase}
  */
-public class InvokeMainTest extends InvokeMainTestCase {
+public class InvokeMainIT extends InvokeMainTestCase {
 
     @Test
     public void testNoExitCode() {
