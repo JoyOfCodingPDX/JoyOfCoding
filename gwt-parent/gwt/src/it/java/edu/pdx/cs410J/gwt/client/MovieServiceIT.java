@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Tests that the remote movie service is successfully deployed and invokable
  */
-public class MovieServiceGwtTest extends IntegrationGwtTestCase {
+public class MovieServiceIT extends IntegrationGwtTestCase {
 
   /**
    * Tests that we can get all of the movies that we know about
