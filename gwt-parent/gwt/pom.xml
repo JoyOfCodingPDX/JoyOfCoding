@@ -5,12 +5,12 @@
   <parent>
     <artifactId>gwt-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2015</version>
+    <version>Summer2016</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2015</version>
+  <version>Summer2016</version>
   <name>Example GWT Application</name>
   <url>http://www.cs.pdx.edu/~whitlock</url>
 
@@ -46,12 +46,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2015</version>
+      <version>Summer2016</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2015</version>
+      <version>Summer2016</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
