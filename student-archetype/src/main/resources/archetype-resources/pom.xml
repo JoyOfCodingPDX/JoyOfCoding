@@ -11,7 +11,7 @@
   <version>${version}</version>
   <packaging>jar</packaging>
 
-  <name>student</name>
+  <name>${artifactId}</name>
   <description>A simple Student program to get you started with Java</description>
   <url>http://www.cs.pdx.edu</url>
 
@@ -53,6 +53,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
