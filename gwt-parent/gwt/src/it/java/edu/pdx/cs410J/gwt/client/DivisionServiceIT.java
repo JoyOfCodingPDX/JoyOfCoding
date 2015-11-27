@@ -3,7 +3,7 @@ package edu.pdx.cs410J.gwt.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Unit tests for the {@link DivisionService}
+ * Integration tests for the {@link DivisionService}
  */
 public class DivisionServiceIT extends IntegrationGwtTestCase {
 
@@ -11,11 +11,13 @@ public class DivisionServiceIT extends IntegrationGwtTestCase {
     DivisionServiceAsync service = DivisionService.Helper.getAsync();
     service.divide(4, 2, new AsyncCallback<Integer>() {
 
+      @Override
       public void onFailure(Throwable throwable) {
         fail("Got exception: " + throwable);
         finishTest();
       }
 
+      @Override
       public void onSuccess(Integer quotient) {
         assertEquals(new Integer(2), quotient);
         finishTest();
