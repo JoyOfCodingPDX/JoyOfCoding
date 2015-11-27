@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><archetype-descriptor name="apptbook">
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="apptbook"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">
       <directory>src/main/java</directory>
@@ -6,7 +9,7 @@
         <include>**/*.java</include>
       </includes>
     </fileSet>
-    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/javadoc</directory>
       <includes>
         <include>**/*.html</include>
@@ -18,12 +21,17 @@
         <include>**/*.java</include>
       </includes>
     </fileSet>
-    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/test/javadoc</directory>
       <includes>
         <include>**/*.html</include>
       </includes>
     </fileSet>
-
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/it/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
   </fileSets>
 </archetype-descriptor>
