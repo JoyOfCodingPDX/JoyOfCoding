@@ -18,13 +18,13 @@ public interface MovieDatabase extends Remote {
    * @param year
    *        The year in which the movie was released
    */
-  public long createMovie(String title, int year) 
+  long createMovie(String title, int year)
     throws RemoteException; 
   
   /**
    * Returns the <code>Movie</code> with the given id.
    */
-  public Movie getMovie(long id) throws RemoteException;
+  Movie getMovie(long id) throws RemoteException;
 
   /**
    * Makes note of a character in a given movie played by a given
@@ -33,21 +33,21 @@ public interface MovieDatabase extends Remote {
    * @throws IllegalArgumentException
    *         The character is already played by someone else
    */
-  public void noteCharacter(long movieId, String character, long actorId) 
+  void noteCharacter(long movieId, String character, long actorId)
     throws RemoteException;
 
   /**
    * Returns the movie in which a given actor acted.  The movies are
    * sorted by release date.
    */
-  public SortedSet<Movie> getFilmography(long actorId) 
+  SortedSet<Movie> getFilmography(long actorId)
     throws RemoteException;
 
   /**
    * Performs a query on the database.  The movies that match the
    * query are sorted using the given comparator.
    */
-  public SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter) 
+  SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter)
     throws RemoteException;
 
   /**
@@ -55,10 +55,10 @@ public interface MovieDatabase extends Remote {
    * registry.  Once it is unregistered, this object will no longer be
    * accessible.
    */
-  public void shutdown() throws RemoteException;
+  void shutdown() throws RemoteException;
 
   /**
    * Returns all of the movies in the database
    */
-  public Collection<Movie> getMovies() throws RemoteException;
+  Collection<Movie> getMovies() throws RemoteException;
 }
