@@ -1,20 +1,22 @@
 package edu.pdx.cs410J.servlets;
 
+import edu.pdx.cs410J.rmi.Movie;
 import edu.pdx.cs410J.rmi.MovieDatabase;
 import edu.pdx.cs410J.rmi.MovieDatabaseImpl;
-import edu.pdx.cs410J.rmi.Movie;
-import edu.pdx.cs410J.rmi.Query;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static javax.servlet.http.HttpServletResponse.*;
-import javax.servlet.ServletException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.rmi.RemoteException;
-import java.io.*;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 /**
  * A servlet that provides REST access to a movie database
@@ -26,6 +28,7 @@ public class MovieDatabaseServlet extends HttpServlet {
     MOVIE, ACTOR, CHARACTER, UNKNOWN
   }
 
+  @Override
   public void init() throws ServletException {
     try {
       this.database = new MovieDatabaseImpl();
@@ -61,8 +64,9 @@ public class MovieDatabaseServlet extends HttpServlet {
    *                arrives in the body (conent) of the request.  {#link getParameter} returns
    *                <code>null</code>
    */
+  @Override
   protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Map<String, String> parameters = new HashMap<String, String>();
+    Map<String, String> parameters = new HashMap<>();
     BufferedReader br = request.getReader(); // new BufferedReader(new InputStreamReader(request.getInputStream(), Charset.forName("UTF-8")));
     for (String line = br.readLine(); line != null; line = br.readLine()) {
       String[] strings = line.split("=");
@@ -83,8 +87,6 @@ public class MovieDatabaseServlet extends HttpServlet {
 
   /**
    * Creates a new movie in the database
-   *
-   * @return Whether or not the movie was successfully created
    */
   private void createMovie(HttpServletRequest parameters, HttpServletResponse response) throws IOException {
     String title = parameters.getParameter("title");
@@ -125,6 +127,7 @@ public class MovieDatabaseServlet extends HttpServlet {
   /**
    * Searches for information in the database
    */
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/plain");
 
@@ -137,6 +140,7 @@ public class MovieDatabaseServlet extends HttpServlet {
   /**
    * Creates information in the database
    */
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/plain");
 
@@ -194,13 +198,10 @@ public class MovieDatabaseServlet extends HttpServlet {
    * Writes a description of one or more movies back to the client
    */
   private void dumpMovies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Comparator<Movie> sorter = new Comparator<Movie>() {
-
-      public int compare(Movie m1, Movie m2) {
-        long id1 = m1.getId();
-        long id2 = m2.getId();
-        return id1 > id2 ? 1 : id1 < id2 ? -1 : 0;
-      }
+    Comparator<Movie> sorter = (m1, m2) -> {
+      long id1 = m1.getId();
+      long id2 = m2.getId();
+      return id1 > id2 ? 1 : id1 < id2 ? -1 : 0;
     };
 
     String idString = request.getParameter("id");
@@ -217,18 +218,15 @@ public class MovieDatabaseServlet extends HttpServlet {
         }
 
       } else {
-        for (Movie movie: this.database.executeQuery(new Query() {
+        for (Movie movie: this.database.executeQuery(movie1 -> {
+          if (notExists(title)) {
+            return movie1.getYear() == Integer.parseInt(year);
 
-          public boolean satisfies(Movie movie) {
-            if (notExists(title)) {
-              return movie.getYear() == Integer.parseInt(year);
+          } else if (notExists(year)) {
+            return movie1.getTitle().contains(title);
 
-            } else if (notExists(year)) {
-              return movie.getTitle().contains(title);
-
-            } else {
-              return movie.getYear() == Integer.parseInt(year) && movie.getTitle().contains(title);  
-            }
+          } else {
+            return movie1.getYear() == Integer.parseInt(year) && movie1.getTitle().contains(title);
           }
         }, sorter)) {
           dumpMovie(movie, pw);
@@ -264,6 +262,7 @@ public class MovieDatabaseServlet extends HttpServlet {
   /**
    * Removes information from the database
    */
+  @Override
   protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
   }
