@@ -74,15 +74,18 @@ public class MovieDatabaseImpl implements MovieDatabase {
   @Override
   public void noteCharacter(long movieId, String character, long actorId)
     throws RemoteException {
+    Movie movie = getExistingMovie(movieId);
+    movie.addCharacter(character, actorId);
+  }
 
+  private Movie getExistingMovie(long movieId) throws RemoteException {
     // Note local call of remote method
     Movie movie = this.getMovie(movieId);
     if (movie == null) {
       String s = "There is no movie with id " + movieId;
       throw new IllegalArgumentException(s);
     }
-
-    movie.addCharacter(character, actorId);
+    return movie;
   }
 
   /**
@@ -144,6 +147,12 @@ public class MovieDatabaseImpl implements MovieDatabase {
   @Override
   public Collection<Movie> getMovies() throws RemoteException {
     return this.movies.values();
+  }
+
+  @Override
+  public void deleteMovie(long movieId) throws RemoteException {
+    Movie movie = getExistingMovie(movieId);
+    this.movies.remove(movie.getId());
   }
 
   ///////////////////////  Main Program  /////////////////////////

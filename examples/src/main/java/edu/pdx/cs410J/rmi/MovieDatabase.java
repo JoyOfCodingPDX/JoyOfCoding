@@ -61,4 +61,6 @@ public interface MovieDatabase extends Remote {
    * Returns all of the movies in the database
    */
   Collection<Movie> getMovies() throws RemoteException;
+
+  void deleteMovie(long movieId) throws RemoteException;
 }
