@@ -3,6 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import com.google.common.annotations.VisibleForTesting;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +55,7 @@ public class AppointmentBookServlet extends HttpServlet
 
         String key = getParameter( "key", request );
         if (key == null) {
-            missingRequiredParameter( response, "key" );
+            missingRequiredParameter(response, "key");
             return;
         }
 
@@ -70,6 +72,25 @@ public class AppointmentBookServlet extends HttpServlet
         pw.flush();
 
         response.setStatus( HttpServletResponse.SC_OK);
+    }
+
+    /**
+     * Handles an HTTP DELETE request by removing all key/value pairs.  This
+     * behavior is exposed for testing purposes only.  It's probably not
+     * something that you'd want a real application to expose.
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/plain");
+
+        this.data.clear();
+
+        PrintWriter pw = response.getWriter();
+        pw.println(Messages.allMappingsDeleted());
+        pw.flush();
+
+        response.setStatus(HttpServletResponse.SC_OK);
+
     }
 
     /**
@@ -99,7 +120,7 @@ public class AppointmentBookServlet extends HttpServlet
 
         PrintWriter pw = response.getWriter();
         pw.println(Messages.getMappingCount( value != null ? 1 : 0 ));
-        pw.println(Messages.formatKeyValuePair( key, value ));
+        pw.println(Messages.formatKeyValuePair(key, value));
 
         pw.flush();
 
@@ -115,7 +136,7 @@ public class AppointmentBookServlet extends HttpServlet
     private void writeAllMappings( HttpServletResponse response ) throws IOException
     {
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.getMappingCount( data.size() ));
+        pw.println(Messages.getMappingCount(data.size()));
 
         for (Map.Entry<String, String> entry : this.data.entrySet()) {
             pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
@@ -142,4 +163,13 @@ public class AppointmentBookServlet extends HttpServlet
       }
     }
 
+    @VisibleForTesting
+    void setValueForKey(String key, String value) {
+        this.data.put(key, value);
+    }
+
+    @VisibleForTesting
+    String getValueForKey(String key) {
+        return this.data.get(key);
+    }
 }
