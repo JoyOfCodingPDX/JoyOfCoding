@@ -42,13 +42,29 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the POST
    */
   protected Response post(String urlString, String... parameters) throws IOException {
+    return sendEncodedRequest(urlString, "POST", parameters);
+
+  }
+
+  /**
+   * Performs an HTTP DELETE to the given URL
+   * @param urlString The URL to post to
+   * @param parameters The key/value parameters
+   * @return A <code>Response</code> summarizing the result of the POST
+   */
+  protected Response delete(String urlString, String... parameters) throws IOException {
+    return sendEncodedRequest(urlString, "DELETE", parameters);
+
+  }
+
+  private Response sendEncodedRequest(String urlString, String requestMethod, String... parameters) throws IOException {
     checkParameters(parameters);
 
     StringBuilder data = encodeParameters(parameters);
 
     URL url = new URL(urlString);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("POST");
+    conn.setRequestMethod(requestMethod);
     conn.setDoOutput(true);
 
     OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), Charset.forName("UTF-8"));
@@ -59,7 +75,6 @@ public class HttpRequestHelper {
     wr.close();
 
     return response;
-
   }
 
   /**
