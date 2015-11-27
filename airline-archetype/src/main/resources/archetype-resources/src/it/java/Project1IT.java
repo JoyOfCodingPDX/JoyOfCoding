@@ -3,15 +3,17 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 import edu.pdx.cs410J.InvokeMainTestCase;
-import static junit.framework.Assert.assertEquals;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the functionality in the {@link Project1} main class.
+ * An integration test for the {@link Project1} main class.
  */
-public class Project1Test extends InvokeMainTestCase {
+public class Project1IT extends InvokeMainTestCase {
 
     /**
      * Invokes the main method of {@link Project1} with the given arguments.
@@ -26,8 +28,8 @@ public class Project1Test extends InvokeMainTestCase {
   @Test
   public void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain();
-    assertEquals(new Integer(1), result.getExitCode());
-    assertTrue(result.getErr().contains( "Missing command line arguments" ));
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getErr(), containsString("Missing command line arguments"));
   }
 
 }
