@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * A servlet that provides REST access to a movie database
@@ -66,12 +67,7 @@ public class MovieDatabaseServlet extends HttpServlet {
    */
   @Override
   protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Map<String, String> parameters = new HashMap<>();
-    BufferedReader br = request.getReader(); // new BufferedReader(new InputStreamReader(request.getInputStream(), Charset.forName("UTF-8")));
-    for (String line = br.readLine(); line != null; line = br.readLine()) {
-      String[] strings = line.split("=");
-      parameters.put(strings[0], strings[1]);
-    }
+    Map<String, String> parameters = readParametersFromRequest(request);
 
     response.setContentType("text/plain");
     DataType dataType = getDataType(request);
@@ -83,6 +79,16 @@ public class MovieDatabaseServlet extends HttpServlet {
         response.sendError(SC_BAD_REQUEST, "Unknown dataType: " + dataType);
         break;
     }
+  }
+
+  private Map<String, String> readParametersFromRequest(HttpServletRequest request) throws IOException {
+    Map<String, String> parameters = new HashMap<>();
+    BufferedReader br = request.getReader(); // new BufferedReader(new InputStreamReader(request.getInputStream(), Charset.forName("UTF-8")));
+    for (String line = br.readLine(); line != null; line = br.readLine()) {
+      String[] strings = line.split("=");
+      parameters.put(strings[0], strings[1]);
+    }
+    return parameters;
   }
 
   /**
@@ -238,7 +244,7 @@ public class MovieDatabaseServlet extends HttpServlet {
       try {
         Movie movie = this.database.getMovie(Long.parseLong(idString));
         if (movie == null) {
-          response.sendError(SC_BAD_REQUEST, "There is no movie with id " + idString);
+          response.sendError(SC_NOT_FOUND, "There is no movie with id " + idString);
 
         } else {
           dumpMovie(movie, response.getWriter());
@@ -264,6 +270,41 @@ public class MovieDatabaseServlet extends HttpServlet {
    */
   @Override
   protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Map<String, String> parameters = readParametersFromRequest(request);
 
+    response.setContentType("text/plain");
+    DataType dataType = getDataType(request);
+    switch (dataType) {
+      case MOVIE:
+        deleteMovie(parameters, response);
+        break;
+      case UNKNOWN:
+        response.sendError(SC_BAD_REQUEST, "Unknown dataType: " + dataType);
+        break;
+    }
+  }
+
+  private void deleteMovie(Map<String, String> request, HttpServletResponse response) throws IOException {
+    String idString = request.get("id");
+    if (notExists(idString)) {
+      response.sendError(SC_BAD_REQUEST, "Missing id");
+      return;
+    }
+
+    Movie movie;
+    try {
+      movie = this.database.getMovie(Long.parseLong(idString));
+
+    } catch (NumberFormatException ex) {
+      response.sendError(SC_BAD_REQUEST, "Malformed id: " + idString);
+      return;
+    }
+
+    if (movie == null) {
+      response.sendError(SC_NOT_FOUND, "Unknown movie: " + idString);
+      return;
+    }
+
+    this.database.deleteMovie(movie.getId());
   }
 }

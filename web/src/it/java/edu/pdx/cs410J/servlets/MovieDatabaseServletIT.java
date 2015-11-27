@@ -6,7 +6,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 /**
@@ -154,6 +156,17 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     assertEquals(1, response.getContentLines());
     assertTrue(response.getContent().contains(newTitle));
     assertTrue(response.getContent().contains(newYear));
+  }
+
+  @Test
+  public void canDeleteMovieFromServer() throws IOException {
+    long id = createMovie("Movie to be deleted", "2015");
+
+    Response response = delete(getResourceURL(MOVIES), "id", String.valueOf(id));
+    assertThat(response.getContent(), response.getCode(), equalTo(HTTP_OK));
+
+    response = get(getResourceURL(MOVIES), "id", String.valueOf(id));
+    assertThat(response.getContent(), response.getCode(), equalTo(HTTP_NOT_FOUND));
   }
 
   private String getResourceURL(String resource) {
