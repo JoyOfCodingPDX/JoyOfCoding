@@ -6,6 +6,8 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.SortedSet;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -65,5 +67,19 @@ public class MovieDatabaseTest {
     Movie billMovie = billMovies.iterator().next();
     assertEquals(title2, billMovie.getTitle());
     assertEquals(year2, billMovie.getYear());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void deletingAnNonExistentMovieThrowsIllegalArgumentException() throws RemoteException {
+    MovieDatabase db = getMovieDatabase();
+    db.deleteMovie(-1);
+  }
+
+  @Test
+  public void testDeleteMovie() throws RemoteException {
+    MovieDatabase db = getMovieDatabase();
+    long movieId = db.createMovie("Movie 1", 2015);
+    db.deleteMovie(movieId);
+    assertThat(db.getMovie(movieId), nullValue());
   }
 }

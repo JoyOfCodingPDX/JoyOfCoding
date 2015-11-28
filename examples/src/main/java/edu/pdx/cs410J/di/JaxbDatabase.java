@@ -50,6 +50,10 @@ public abstract class JaxbDatabase
         }
     }
 
+    public File getDatabaseFile() {
+        return file;
+    }
+
     /**
      * Read the XML data file and returns the unmarshalled object
      * @return The object in the XML file or null if the file doesn't exist
