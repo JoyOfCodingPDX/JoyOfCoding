@@ -48,6 +48,11 @@ public class PhoneBillRestClient extends HttpRequestHelper
 
     public Response addKeyValuePair( String key, String value ) throws IOException
     {
-        return post( this.url, "key", key, "value", value );
+        return post(this.url, "key", key, "value", value);
     }
+
+    public Response removeAllMappings() throws IOException {
+        return delete(this.url);
+    }
+
 }
