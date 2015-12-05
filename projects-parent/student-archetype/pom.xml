@@ -8,7 +8,6 @@
     <version>Summer2016</version>
   </parent>
 
-  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>student-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
