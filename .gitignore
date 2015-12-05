@@ -15,4 +15,5 @@
 # Maven build artifacts should not be committed #
 target
 */target
+dependency-reduced-pom.xml
 
