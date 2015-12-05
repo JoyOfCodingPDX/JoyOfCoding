@@ -3,15 +3,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>projects-parent</artifactId>
+    <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2016</version>
   </parent>
-  <artifactId>airline-web-archetype</artifactId>
+  <artifactId>phonebill-gwt-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
-  <name>airline-web-archetype</name>
-  <description>Maven Archetype for creating a Web/REST Project for the Airline</description>
+  <name>phonebill-gwt-archetype</name>
+  <description>A Maven Archetype for creating a GWT Project for the Phone Bill</description>
   <build>
     <extensions>
       <extension>

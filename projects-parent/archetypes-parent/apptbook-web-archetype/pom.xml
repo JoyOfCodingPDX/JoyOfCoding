@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>projects-parent</artifactId>
+    <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2016</version>
   </parent>
-  <artifactId>phonebill-web-archetype</artifactId>
+  <artifactId>apptbook-web-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
-  <name>phonebill-web-archetype</name>
-  <description>Maven Archetype for creating a Web/REST Project for the Phone Bill</description>
+  <name>apptbook-web-archetype</name>
+  <description> Maven Archetype for creating a Web/REST Project for the Appointment Book</description>
   <build>
     <extensions>
       <extension>

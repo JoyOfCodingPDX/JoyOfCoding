@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>edu.pdx.cs410J</groupId>
+        <artifactId>projects-parent</artifactId>
+        <version>Summer2016</version>
+    </parent>
+
+    <artifactId>archetypes-parent</artifactId>
+    <version>Summer2016</version>
+
+    <packaging>pom</packaging>
+
+    <name>Parent Project for CS410J Project Archetypes</name>
+
+    <modules>
+        <module>student-archetype</module>
+        <module>java-koans-archetype</module>
+        <module>apptbook-archetype</module>
+        <module>apptbook-web-archetype</module>
+        <module>apptbook-gwt-archetype</module>
+        <module>airline-archetype</module>
+        <module>airline-web-archetype</module>
+        <module>airline-gwt-archetype</module>
+        <module>phonebill-archetype</module>
+        <module>phonebill-web-archetype</module>
+        <module>phonebill-gwt-archetype</module>
+    </modules>
+
+</project>
