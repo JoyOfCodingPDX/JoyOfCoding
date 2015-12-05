@@ -1,11 +1,10 @@
 <?xml version="1.0"?><project>
   <parent>
-    <artifactId>CS410J</artifactId>
+    <artifactId>projects-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
     <version>Summer2016</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J</groupId>
   <artifactId>projects</artifactId>
   <name>CS410J Project APIs</name>
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>

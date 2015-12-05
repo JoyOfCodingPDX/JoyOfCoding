@@ -18,7 +18,8 @@
     <name>Parent Project for CS410J Projects</name>
 
     <modules>
-      <module>student-archetype</module>
+        <module>projects</module>
+        <module>student-archetype</module>
     </modules>
 
 </project>
