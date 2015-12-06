@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>HTML forms for interacting with the REST API</title>
+    <style type="text/css">
+        div {
+            padding-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>
+
+    This page contains a couple of HTML forms that GET and POST to the
+    REST API provided by your project.
+
+</h1>
+
+<h2>
+    These forms let you interact with the simple key/value REST API that
+    is created by the project archetype.
+</h2>
+
+
+<div>
+    <form method="get" action="flights">
+        List all key/value pairs <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+<div>
+    <form method="get" action="flights">
+        List value for key <input name="key" type="text" size="10" title="key"/>
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+<div>
+    <form method="post" action="flights">
+        Create a new key/value pair <input name="key" type="text" size="10" title="key"/> /
+        <input name="value" type="text" size="10" title="value"/>
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+</body>
+</html>
