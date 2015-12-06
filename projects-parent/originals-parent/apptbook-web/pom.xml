@@ -73,7 +73,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>apptbook-web</finalName>
+    <finalName>apptbook</finalName>
     <plugins>
       <plugin>
         <!-- Need version 2.1.1 for Java 7 -->
@@ -98,7 +98,7 @@
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
-            <contextPath>/apptbook</contextPath>
+            <contextPath>/${project.build.finalName}</contextPath>
           </webApp>
         </configuration>
       </plugin>
