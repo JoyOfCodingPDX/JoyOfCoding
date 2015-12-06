@@ -21,6 +21,7 @@
     <modules>
         <module>gwt</module>
         <module>familygwt</module>
+        <module>gwt-originals-parent</module>
     </modules>
 
     <properties>

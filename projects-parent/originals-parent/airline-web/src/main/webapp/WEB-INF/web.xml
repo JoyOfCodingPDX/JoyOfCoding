@@ -1,0 +1,15 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Airline REST Service</display-name>
+  <servlet>
+    <servlet-name>AirlineServlet</servlet-name>
+    <servlet-class>edu.pdx.cs410J.original.AirlineServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AirlineServlet</servlet-name>
+    <url-pattern>/flights</url-pattern>
+  </servlet-mapping>
+</web-app>

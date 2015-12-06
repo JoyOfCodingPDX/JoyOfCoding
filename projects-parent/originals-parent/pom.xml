@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>edu.pdx.cs410J</groupId>
+        <artifactId>projects-parent</artifactId>
+        <version>Summer2016</version>
+    </parent>
+
+    <artifactId>originals-parent</artifactId>
+    <version>Summer2016</version>
+
+    <packaging>pom</packaging>
+
+    <name>Project originals parent</name>
+    <description>Parent of Maven projects from which archetypes are generated</description>
+
+    <modules>
+        <module>student</module>
+        <module>airline</module>
+        <module>airline-web</module>
+    <module>apptbook</module>
+    <module>apptbook-web</module>
+    <module>phonebill</module>
+    <module>phonebill-web</module>
+  </modules>
+
+</project>

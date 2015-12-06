@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>archetypes-parent</artifactId>
+    <groupId>edu.pdx.cs410J</groupId>
+    <version>Summer2016</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>java-koans-archetype</artifactId>
+  <version>Summer2016</version>
+  <packaging>maven-archetype</packaging>
+
+  <name>java-koans-archetype</name>
+  <inceptionYear>2012</inceptionYear>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>2.2</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <url>https://github.com/DavidWhitlock/java-koans</url>
+
+  <developers>
+    <developer>
+      <id>matyb</id>
+      <name>Mat Bentley</name>
+      <url>https://github.com/matyb</url>
+      <roles>
+        <role>java-koans author</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dwhitlock</id>
+      <name>David Whitlock</name>
+      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <roles>
+        <role>Maven-izer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>YOU</id>
+      <name>Your name here</name>
+      <email>you@youremail.com</email>
+      <url>http://www.cs.pdx.edu/~YOU</url>
+      <organization>PSU Department of Computer Science</organization>
+      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <roles>
+        <role>Student who does koans</role>
+      </roles>
+      <timezone>-7</timezone>
+    </developer>
+  </developers>
+</project>
