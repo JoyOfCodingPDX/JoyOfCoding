@@ -5,22 +5,20 @@
 
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
-        <artifactId>projects-parent</artifactId>
+        <artifactId>gwt-parent</artifactId>
         <version>Summer2016</version>
     </parent>
 
-    <artifactId>originals-parent</artifactId>
+    <artifactId>gwt-originals-parent</artifactId>
     <version>Summer2016</version>
 
     <packaging>pom</packaging>
 
-    <name>Project originals parent</name>
-    <description>Parent of Maven projects from which archetypes are generated</description>
+    <name>GWT originals parent</name>
+    <description>Parent of Maven projects from which GWT project archetypes are generated</description>
 
     <modules>
-        <module>student</module>
-        <module>airline</module>
-        <module>airline-web</module>
+        <module>airline-gwt</module>
     </modules>
 
 </project>
