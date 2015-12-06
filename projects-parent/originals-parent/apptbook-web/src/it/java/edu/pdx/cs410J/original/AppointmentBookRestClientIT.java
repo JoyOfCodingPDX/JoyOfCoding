@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -49,6 +50,14 @@ public class AppointmentBookRestClientIT {
     String content = response.getContent();
     assertThat(content, response.getCode(), equalTo(200));
     assertThat(content, containsString(Messages.mappedKeyValue(testKey, testValue)));
+  }
+
+  @Test
+  public void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+    Response response = client.postToMyURL();
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
+    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 
 }
