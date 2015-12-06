@@ -73,7 +73,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>phonebill-web</finalName>  <!-- Need finalName to make integration tests work -->
+    <finalName>phonebill</finalName>  <!-- Need finalName to make integration tests work -->
     <plugins>
       <plugin>
         <!-- Need version 2.1.1 for Java 7 -->
@@ -100,7 +100,7 @@
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
-            <contextPath>/phonebill</contextPath>
+            <contextPath>/${project.build.finalName}</contextPath>
           </webApp>
         </configuration>
       </plugin>

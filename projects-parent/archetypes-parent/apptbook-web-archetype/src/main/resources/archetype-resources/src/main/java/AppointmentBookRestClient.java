@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class AppointmentBookRestClient extends HttpRequestHelper
 {
-    private static final String WEB_APP = "${artifactId}";
+    private static final String WEB_APP = "apptbook";
     private static final String SERVLET = "appointments";
 
     private final String url;

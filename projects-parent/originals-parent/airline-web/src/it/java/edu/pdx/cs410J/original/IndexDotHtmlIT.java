@@ -32,7 +32,7 @@ public class IndexDotHtmlIT {
   }
 
   static class IndexDotHtmlHelper extends HttpRequestHelper {
-    private static final String WEB_APP = "airline-web";
+    private static final String WEB_APP = "airline";
     private final String url;
 
     IndexDotHtmlHelper(String hostName, int port) {
