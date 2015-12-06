@@ -22,6 +22,7 @@
         <module>airline-web</module>
     <module>apptbook</module>
     <module>apptbook-web</module>
+    <module>phonebill</module>
   </modules>
 
 </project>
