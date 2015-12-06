@@ -23,6 +23,7 @@
     <module>apptbook</module>
     <module>apptbook-web</module>
     <module>phonebill</module>
+    <module>phonebill-web</module>
   </modules>
 
 </project>
