@@ -21,6 +21,7 @@
         <module>airline</module>
         <module>airline-web</module>
     <module>apptbook</module>
+    <module>apptbook-web</module>
   </modules>
 
 </project>
