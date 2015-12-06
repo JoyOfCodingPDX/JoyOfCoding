@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class AirlineRestClient extends HttpRequestHelper
 {
-    private static final String WEB_APP = "${artifactId}";
+    private static final String WEB_APP = "airline";
     private static final String SERVLET = "flights";
 
     private final String url;
