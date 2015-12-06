@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.original;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,6 +66,25 @@ public class AirlineServlet extends HttpServlet {
     pw.flush();
 
     response.setStatus(HttpServletResponse.SC_OK);
+  }
+
+  /**
+   * Handles an HTTP DELETE request by removing all key/value pairs.  This
+   * behavior is exposed for testing purposes only.  It's probably not
+   * something that you'd want a real application to expose.
+   */
+  @Override
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      response.setContentType("text/plain");
+
+      this.data.clear();
+
+      PrintWriter pw = response.getWriter();
+      pw.println(Messages.allMappingsDeleted());
+      pw.flush();
+
+      response.setStatus(HttpServletResponse.SC_OK);
+
   }
 
   /**
@@ -133,4 +154,13 @@ public class AirlineServlet extends HttpServlet {
     }
   }
 
+  @VisibleForTesting
+  void setValueForKey(String key, String value) {
+      this.data.put(key, value);
+  }
+
+  @VisibleForTesting
+  String getValueForKey(String key) {
+      return this.data.get(key);
+  }
 }

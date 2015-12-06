@@ -25,4 +25,8 @@ public class Messages
     {
         return String.format( "Mapped %s to %s", key, value );
     }
+
+    public static String allMappingsDeleted() {
+        return "All mappings have been deleted";
+    }
 }

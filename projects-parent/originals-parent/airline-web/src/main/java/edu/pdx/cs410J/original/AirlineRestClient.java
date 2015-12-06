@@ -47,4 +47,8 @@ public class AirlineRestClient extends HttpRequestHelper
     {
         return post( this.url, "key", key, "value", value );
     }
+
+    public Response removeAllMappings() throws IOException {
+        return delete(this.url);
+    }
 }

@@ -1,21 +1,32 @@
 package edu.pdx.cs410J.original;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * Tests the {@link Project4} class by invoking its main method with various arguments 
+ * An integration test for {@link Project4} that invokes its main method with
+ * various arguments
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class Project4Test extends InvokeMainTestCase {
+public class Project4IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
     private static final String PORT = System.getProperty("http.port", "8080");
+
+    @Test
+    public void test0RemoveAllMappings() throws IOException {
+      AirlineRestClient client = new AirlineRestClient(HOSTNAME, Integer.parseInt(PORT));
+      HttpRequestHelper.Response response = client.removeAllMappings();
+      assertThat(response.getContent(), response.getCode(), equalTo(200));
+    }
 
     @Test
     public void test1NoCommandLineArguments() {
