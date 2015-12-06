@@ -132,7 +132,6 @@
               <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
             </systemProperties>
           </container>
-          <wait>false</wait>
           <configuration>
             <properties>
               <cargo.servlet.port>${jetty.http.port}</cargo.servlet.port>
