@@ -101,11 +101,8 @@ public class PhoneBillServlet extends HttpServlet
     private void missingRequiredParameter( HttpServletResponse response, String parameterName )
         throws IOException
     {
-        PrintWriter pw = response.getWriter();
-        pw.println( Messages.missingRequiredParameter(parameterName));
-        pw.flush();
-        
-        response.setStatus( HttpServletResponse.SC_PRECONDITION_FAILED );
+        String message = Messages.missingRequiredParameter(parameterName);
+        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 
     /**

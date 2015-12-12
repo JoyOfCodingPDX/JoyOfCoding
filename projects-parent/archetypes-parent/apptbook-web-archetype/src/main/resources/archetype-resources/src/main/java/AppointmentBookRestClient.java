@@ -3,6 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
@@ -46,7 +47,12 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 
     public Response addKeyValuePair( String key, String value ) throws IOException
     {
-        return post(this.url, "key", key, "value", value);
+        return postToMyURL("key", key, "value", value);
+    }
+
+    @VisibleForTesting
+    Response postToMyURL(String... keysAndValues) throws IOException {
+        return post(this.url, keysAndValues);
     }
 
     public Response removeAllMappings() throws IOException {

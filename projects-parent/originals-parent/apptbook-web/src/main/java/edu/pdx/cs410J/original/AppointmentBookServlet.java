@@ -95,14 +95,11 @@ public class AppointmentBookServlet extends HttpServlet
      *
      * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
      */
-    private void missingRequiredParameter( HttpServletResponse response, String key )
+    private void missingRequiredParameter( HttpServletResponse response, String parameterName )
         throws IOException
     {
-        PrintWriter pw = response.getWriter();
-        pw.println( Messages.missingRequiredParameter(key));
-        pw.flush();
-        
-        response.setStatus( HttpServletResponse.SC_PRECONDITION_FAILED );
+        String message = Messages.missingRequiredParameter(parameterName);
+        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 
     /**
