@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.original.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.original.client.Airline;
 import edu.pdx.cs410J.original.client.Flight;
 import edu.pdx.cs410J.original.client.PingService;
@@ -12,7 +11,7 @@ import edu.pdx.cs410J.original.client.PingService;
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
   @Override
-  public AbstractAirline ping() {
+  public Airline ping() {
     Airline airline = new Airline();
     airline.addFlight(new Flight());
     return airline;

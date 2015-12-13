@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import edu.pdx.cs410J.AbstractFlight;
-import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.Collection;
 
@@ -23,14 +22,16 @@ public class AirlineGwt implements EntryPoint {
         public void onClick( ClickEvent clickEvent )
         {
             PingServiceAsync async = GWT.create( PingService.class );
-            async.ping( new AsyncCallback<AbstractAirline>() {
+            async.ping( new AsyncCallback<Airline>() {
 
-                public void onFailure( Throwable ex )
+                @Override
+                public void onFailure(Throwable ex )
                 {
                     Window.alert(ex.toString());
                 }
 
-                public void onSuccess( AbstractAirline airline )
+                @Override
+                public void onSuccess(Airline airline )
                 {
                     StringBuilder sb = new StringBuilder( airline.toString() );
                     Collection<AbstractFlight> flights = airline.getFlights();
