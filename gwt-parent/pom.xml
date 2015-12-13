@@ -73,4 +73,46 @@
       </dependency>
     </dependencies>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- The gwt:test plugin goal does not let you add it-classes to the classpath.
+                     So, we have to add the Integration Tests to plain-old "test-classes". -->
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>build-helper-maven-plugin</artifactId>
+              <version>1.8</version>
+              <executions>
+                <execution>
+                  <id>add-it-sources</id>
+                  <phase>generate-test-sources</phase>
+                  <goals>
+                    <goal>add-test-source</goal>
+                  </goals>
+                  <configuration>
+                    <sources>
+                      <source>src/it/java</source>
+                    </sources>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>add-it-resources</id>
+                  <phase>generate-test-resources</phase>
+                  <goals>
+                    <goal>add-test-resource</goal>
+                  </goals>
+                  <configuration>
+                  <resources>
+                    <resource>
+                      <directory>src/it/resources</directory>
+                    </resource>
+                  </resources>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+</plugins>
+        </pluginManagement>
+    </build>
+
 </project>
