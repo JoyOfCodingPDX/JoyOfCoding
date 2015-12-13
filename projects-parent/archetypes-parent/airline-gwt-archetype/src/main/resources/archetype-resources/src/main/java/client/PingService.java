@@ -16,6 +16,6 @@ public interface PingService extends RemoteService {
   /**
    * Returns the current date and time on the server
    */
-  public AbstractAirline ping();
+  Airline ping();
 
 }
