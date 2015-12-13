@@ -33,7 +33,7 @@
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <artifactId>guava-gwt</artifactId>
       <version>18.0</version>
     </dependency>
   </dependencies>
