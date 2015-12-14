@@ -286,7 +286,7 @@
               <additionalClasspathElement>${project.build.directory}/test-classes</additionalClasspathElement>
             </additionalClasspathElements>
             <excludes>
-              <exclude>**/*GWTIT.*</exclude>
+              <exclude>**/*GwtIT.*</exclude>
             </excludes>
           </configuration>
           <executions>

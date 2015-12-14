@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import org.junit.Test;
 
-public class DivisionServiceExampleIT extends IntegrationGwtTestCase{
+public class DivisionServiceExampleGwtIT extends IntegrationGwtTestCase{
 
   /**
    * Tests that the division service UI
