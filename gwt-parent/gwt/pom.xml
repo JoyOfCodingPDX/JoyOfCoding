@@ -60,6 +60,11 @@
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.blueesoteric</groupId>
+      <artifactId>gwt-syncproxy</artifactId>
+      <version>0.5</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>gwt</finalName>
