@@ -14,8 +14,8 @@ public class ExamplesGwtTestSuite extends TestCase {
     GWTTestSuite suite = new GWTTestSuite("GWT Examples");
 
     suite.addTestSuite(DivisionServiceGwtIT.class);
-    suite.addTestSuite(DivisionServiceExampleGwtIT.class);
-    suite.addTestSuite(MovieServiceGwtIT.class);
+    suite.addTestSuite(DivisionServiceExampleXGwtIT.class);
+    suite.addTestSuite(MovieServiceXGwtIT.class);
 
     return suite;
   }
