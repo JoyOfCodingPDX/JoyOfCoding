@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import edu.pdx.cs410J.AbstractAppointment;
-import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.Collection;
 
@@ -23,14 +22,14 @@ public class AppointmentBookGwt implements EntryPoint {
         public void onClick( ClickEvent clickEvent )
         {
             PingServiceAsync async = GWT.create( PingService.class );
-            async.ping( new AsyncCallback<AbstractAppointmentBook>() {
+            async.ping( new AsyncCallback<AppointmentBook>() {
 
                 public void onFailure( Throwable ex )
                 {
                     Window.alert(ex.toString());
                 }
 
-                public void onSuccess( AbstractAppointmentBook book )
+                public void onSuccess( AppointmentBook book )
                 {
                     StringBuilder sb = new StringBuilder( book.toString() );
                     Collection<AbstractAppointment> appts = book.getAppointments();
