@@ -11,6 +11,11 @@
   <packaging>war</packaging>
   <version>${version}</version>
   <name>Airline GWT Application</name>
+
+  <properties>
+    <jetty.http.port>8080</jetty.http.port>
+  </properties>
+
   <repositories>
     <repository>
       <id>CS410J</id>
@@ -31,14 +36,34 @@
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-gwt</artifactId>
+      <version>18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs410J</groupId>
+      <artifactId>examples</artifactId>
+      <version>Summer2016</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.blueesoteric</groupId>
+      <artifactId>gwt-syncproxy</artifactId>
+      <version>0.5</version>
+    </dependency>
   </dependencies>
   <build>
-    <finalName>airline-gwt</finalName>
+    <finalName>airline</finalName>
 
     <!-- Output classes directly into the webapp, so that IDEs and "mvn process-classes" update them in DevMode -->
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
@@ -57,19 +82,85 @@
             <execution>
               <goals>
                 <goal>compile</goal>
+                <goal>test</goal>
               </goals>
+            </execution>
+            <execution>
+              <id>gwt-it</id>
+              <phase>integration-test</phase>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <skip>false</skip>
+                <includes>**/*GwtTestSuite.java</includes>
+                <!--
+                <extraJvmArgs>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</extraJvmArgs>
+                <testTimeOut>3600</testTimeOut>
+                -->
+                <mode>htmlunit</mode>
+              </configuration>
             </execution>
           </executions>
         </plugin>
-
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.8</version>
+      </plugin>
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.2.10.v20150310</version>
         <configuration>
-          <httpConnector port="8080"/>
+          <httpConnector port="8080" />
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+          <webApp>
+            <contextPath>/${project.build.finalName}</contextPath>
+          </webApp>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.4.13</version>
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <container>
+            <containerId>jetty9x</containerId>
+            <type>embedded</type>
+            <systemProperties>
+              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+            </systemProperties>
+          </container>
+          <configuration>
+            <properties>
+              <cargo.servlet.port>${jetty.http.port}</cargo.servlet.port>
+            </properties>
+          </configuration>
+          <deployables>
+            <deployable>
+              <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
+              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}</pingURL>
+              <pingTimeout>20000</pingTimeout>
+            </deployable>
+          </deployables>
         </configuration>
       </plugin>
     </plugins>

@@ -234,6 +234,20 @@
               </sources>
             </configuration>
           </execution>
+          <execution>
+            <id>add-it-resources</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+            <resources>
+              <resource>
+                <directory>src/it/resources</directory>
+              </resource>
+            </resources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -254,6 +268,7 @@
             <configuration>
               <testIncludes>
                 <testInclude>**/*IT.java</testInclude>
+                <testInclude>**/*TestSuite.java</testInclude>
               </testIncludes>
               <outputDirectory>${project.build.directory}/it-classes</outputDirectory>
             </configuration>
@@ -270,6 +285,9 @@
             <additionalClasspathElements>
               <additionalClasspathElement>${project.build.directory}/test-classes</additionalClasspathElement>
             </additionalClasspathElements>
+            <excludes>
+              <exclude>**/*GwtIT.*</exclude>
+            </excludes>
           </configuration>
           <executions>
             <execution>

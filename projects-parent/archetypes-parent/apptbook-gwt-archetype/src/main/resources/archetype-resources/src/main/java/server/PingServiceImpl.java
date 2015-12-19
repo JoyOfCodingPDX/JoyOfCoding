@@ -4,9 +4,8 @@
 package ${package}.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs410J.AbstractAppointmentBook;
-import ${package}.client.AppointmentBook;
 import ${package}.client.Appointment;
+import ${package}.client.AppointmentBook;
 import ${package}.client.PingService;
 
 /**
@@ -15,7 +14,7 @@ import ${package}.client.PingService;
 public class PingServiceImpl extends RemoteServiceServlet implements PingService
 {
   @Override
-  public AbstractAppointmentBook ping() {
+  public AppointmentBook ping() {
     AppointmentBook book = new AppointmentBook();
     book.addAppointment(new Appointment());
     return book;

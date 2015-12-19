@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.original.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -9,7 +10,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import edu.pdx.cs410J.AbstractFlight;
-import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.Collection;
 
@@ -17,33 +17,64 @@ import java.util.Collection;
  * A basic GWT class that makes sure that we can send an airline back from the server
  */
 public class AirlineGwt implements EntryPoint {
-  public void onModuleLoad() {
-    Button button = new Button("Ping Server");
-    button.addClickHandler(new ClickHandler() {
-        public void onClick( ClickEvent clickEvent )
-        {
-            PingServiceAsync async = GWT.create( PingService.class );
-            async.ping( new AsyncCallback<AbstractAirline>() {
 
-                public void onFailure( Throwable ex )
-                {
-                    Window.alert(ex.toString());
-                }
+  private final Alerter alerter;
 
-                public void onSuccess( AbstractAirline airline )
-                {
-                    StringBuilder sb = new StringBuilder( airline.toString() );
-                    Collection<AbstractFlight> flights = airline.getFlights();
-                    for ( AbstractFlight flight : flights ) {
-                        sb.append(flight);
-                        sb.append("\n");
-                    }
-                    Window.alert( sb.toString() );
-                }
-            });
-        }
+  @VisibleForTesting
+  Button button;
+
+  public AirlineGwt() {
+    this(new Alerter() {
+      @Override
+      public void alert(String message) {
+        Window.alert(message);
+      }
     });
-      RootPanel rootPanel = RootPanel.get();
-      rootPanel.add(button);
+  }
+
+  @VisibleForTesting
+  AirlineGwt(Alerter alerter) {
+    this.alerter = alerter;
+
+    addWidgets();
+  }
+
+  private void addWidgets() {
+    button = new Button("Ping Server");
+    button.addClickHandler(new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent clickEvent) {
+        PingServiceAsync async = GWT.create(PingService.class);
+        async.ping(new AsyncCallback<Airline>() {
+
+          @Override
+          public void onFailure(Throwable ex) {
+            alerter.alert(ex.toString());
+          }
+
+          @Override
+          public void onSuccess(Airline airline) {
+            StringBuilder sb = new StringBuilder(airline.toString());
+            Collection<AbstractFlight> flights = airline.getFlights();
+            for (AbstractFlight flight : flights) {
+              sb.append(flight);
+              sb.append("\n");
+            }
+            alerter.alert(sb.toString());
+          }
+        });
+      }
+    });
+  }
+
+  @Override
+  public void onModuleLoad() {
+    RootPanel rootPanel = RootPanel.get();
+    rootPanel.add(button);
+  }
+
+  @VisibleForTesting
+  interface Alerter {
+    void alert(String message);
   }
 }

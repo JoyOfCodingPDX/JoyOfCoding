@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 /**
  * Integration tests for the {@link DivisionService}
  */
-public class DivisionServiceIT extends IntegrationGwtTestCase {
+public class DivisionServiceGwtIT extends IntegrationGwtTestCase {
 
   public void testSimpleDivision() {
     DivisionServiceAsync service = DivisionService.Helper.getAsync();
