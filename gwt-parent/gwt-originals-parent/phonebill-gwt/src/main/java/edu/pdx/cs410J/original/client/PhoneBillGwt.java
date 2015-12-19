@@ -23,14 +23,14 @@ public class PhoneBillGwt implements EntryPoint {
         public void onClick( ClickEvent clickEvent )
         {
             PingServiceAsync async = GWT.create( PingService.class );
-            async.ping( new AsyncCallback<AbstractPhoneBill>() {
+            async.ping( new AsyncCallback<PhoneBill>() {
 
                 public void onFailure( Throwable ex )
                 {
                     Window.alert(ex.toString());
                 }
 
-                public void onSuccess( AbstractPhoneBill phonebill )
+                public void onSuccess( PhoneBill phonebill )
                 {
                     StringBuilder sb = new StringBuilder( phonebill.toString() );
                     Collection<AbstractPhoneCall> calls = phonebill.getPhoneCalls();
