@@ -75,4 +75,6 @@ public class AppointmentBookGwt implements EntryPoint {
   @VisibleForTesting
   interface Alerter {
     void alert(String message);
-  }}
+  }
+
+}
