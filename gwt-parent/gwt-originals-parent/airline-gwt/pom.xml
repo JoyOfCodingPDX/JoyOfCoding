@@ -47,6 +47,11 @@
       <version>Summer2016</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.blueesoteric</groupId>
+      <artifactId>gwt-syncproxy</artifactId>
+      <version>0.5</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>airline</finalName>

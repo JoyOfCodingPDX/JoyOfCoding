@@ -1,3 +1,6 @@
+import com.gdevelop.gwt.syncrpc.SyncProxy;
+import edu.pdx.cs410J.original.client.Airline;
+import edu.pdx.cs410J.original.client.PingService;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 
@@ -14,6 +17,17 @@ public class PingServiceSyncProxyIT extends HttpRequestHelper {
   public void gwtWebApplicationIsRunning() throws IOException {
     Response response = get(this.webAppUrl);
     assertEquals(200, response.getCode());
+  }
+
+  @Test
+  public void canInvokePingServiceWithGwtSyncProxy() {
+    String moduleName = "airline";
+    SyncProxy.setBaseURL(this.webAppUrl + "/" + moduleName + "/");
+
+    PingService ping = SyncProxy.createSync(PingService.class);
+    Airline airline = ping.ping();
+    assertEquals("Air CS410J", airline.getName());
+    assertEquals(1, airline.getFlights().size());
   }
 
 }
