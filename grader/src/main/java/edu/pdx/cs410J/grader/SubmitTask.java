@@ -33,6 +33,7 @@ import java.util.List;
  * <h3>Parameters</h3>
  * 
  * <table border="1" cellpadding="2" cellspacing="0">
+ *  <caption>Properties of this Ant Task</caption>
  *  <tr>
  *    <td valign="top"><b>Attribute</b></td>
  *    <td valign="top"><b>Description</b></td>

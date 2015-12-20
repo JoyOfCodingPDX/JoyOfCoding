@@ -7,14 +7,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
-
-import edu.pdx.cs410J.ParserException;
+import java.util.*;
 
 /**
  * This class is a remote family tree whose contents are read from and
@@ -49,7 +42,7 @@ public class XmlRemoteFamilyTree extends UnicastRemoteObject
    * Creates a new <code>XmlRemoteFamilyTree</code> that gets its data
    * from a given XML file.
    *
-   * @throws ParserException
+   * @throws FamilyTreeException
    *         A problem occurred while parsing the XML file
    */
   public XmlRemoteFamilyTree(File xmlFile) 

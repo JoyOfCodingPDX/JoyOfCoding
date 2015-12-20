@@ -7,7 +7,7 @@ import java.text.ParseException;
  * A class with a main method for testing {@link Person}.  Once upon a time,
  * this functionality was part of the <code>Person</code> class.  However,
  * since GWT <a href="http://code.google.com/p/bunsenandbeaker/wiki/DevGuideDateAndNumberFormat">cannot
- * handle <code>DateFormat</code> on the client side, I had to move it to
+ * handle</a> <code>DateFormat</code> on the client side, I had to move it to
  * its own class.
  *
  * @since Summer 2008 

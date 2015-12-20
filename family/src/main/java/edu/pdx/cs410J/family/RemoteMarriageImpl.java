@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * This is class implements the <code>RemoteMarriage</code> interface.
  * Basically, it delegates all of its behavior to an underlying {@link
- * edu.pdx.cs410J.Marriage} that lives only on the server.
+ * edu.pdx.cs410J.family.Marriage} that lives only on the server.
  */
 @SuppressWarnings("serial")
 class RemoteMarriageImpl extends java.rmi.server.UnicastRemoteObject
