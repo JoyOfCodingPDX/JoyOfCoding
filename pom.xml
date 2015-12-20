@@ -305,6 +305,16 @@
   </build>
   <reporting>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.3</version>
+        <configuration>
+          <xmlOutput>true</xmlOutput>
+          <!-- Optional directory to put findbugs xdoc xml report -->
+          <xmlOutputDirectory>target/site</xmlOutputDirectory>
+        </configuration>
+      </plugin>
       <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -330,13 +340,6 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jdepend-maven-plugin</artifactId>
         <version>2.0-beta-2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <configuration>
-          <xmlOutput>true</xmlOutput>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
