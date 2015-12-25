@@ -94,7 +94,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.2.10.v20150310</version>
         <configuration>
-          <httpConnector port="8080"/>
+          <httpConnector port="8080" />
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
@@ -168,6 +168,12 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <!-- In order for the project info plugin report to work with Java 8,
+             you need to declare it in the <build> section, apparently. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
