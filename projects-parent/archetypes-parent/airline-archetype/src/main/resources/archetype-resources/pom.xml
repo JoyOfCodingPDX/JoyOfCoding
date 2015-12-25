@@ -10,7 +10,7 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>jar</packaging>
   <version>${version}</version>
-  <name>CS410J AirlineProject</name>
+  <name>CS410J Airline Project</name>
   <description>An Airline application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
