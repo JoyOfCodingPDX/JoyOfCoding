@@ -27,11 +27,9 @@ import java.util.stream.Stream;
  * searched recursively for files ending in .java.  Those files are
  * placed in a zip file and emailed to the grader.  A confirmation
  * email is sent to the submitter.
- * <p/>
- * <p/>
- * <p/>
+ *
  * More information about the JavaMail API can be found at:
- * <p/>
+ *
  * <center><a href="http://java.sun.com/products/javamail">
  * http://java.sun.com/products/javamail</a></center>
  *

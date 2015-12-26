@@ -102,33 +102,15 @@
             </archive>
           </configuration>
         </plugin>
-
+      <plugin>
+        <!-- In order for the project info plugin report to work with Java 8,
+             you need to declare it in the <build> section, apparently. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
   <repositories>
-    <!-- Disable the use of this old repository to work around Maven bug MNG-4428 -->
-    <repository>
-      <id>java.net</id>
-      <url>https://maven-repository.dev.java.net/nonav/repository</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <!-- And replace it with this -->
-    <repository>
-      <id>java.net1</id>
-      <url>http://download.java.net/maven/1</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-
     <repository>
       <id>jboss</id>
       <url>http://repository.jboss.org</url>

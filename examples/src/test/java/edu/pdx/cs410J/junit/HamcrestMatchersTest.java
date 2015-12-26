@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * This test demonstrates the use of various matchers from the Hamcrest library
  * for performing more advanced assertions in unit tests.
  *
- * <a href="http://hamcrest.org/JavaHamcrest"></a>http://hamcrest.org/JavaHamcrest</a>
+ * <a href="http://hamcrest.org/JavaHamcrest">http://hamcrest.org/JavaHamcrest</a>
  *
  * @since Summer 2013
  */

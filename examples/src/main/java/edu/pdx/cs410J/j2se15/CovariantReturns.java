@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.j2se15;
 
 /**
- * This class demonstrates <I>covariant returns<I> in JDK 1.5.  The
+ * This class demonstrates <I>covariant returns</I> in JDK 1.5.  The
  * Java compiler allows an overriding method to change the method's
  * return type to be a subclass of the overriden method's return
  * type.  However, you have to be extra careful when using covariant

@@ -62,6 +62,12 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <!-- In order for the project info plugin report to work with Java 8,
+             you need to declare it in the <build> section, apparently. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 
@@ -72,28 +78,6 @@
           <artifactId>maven-surefire-report-plugin</artifactId>
           <version>2.13</version>
         </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9</version>
-            <configuration>
-              <linksource>true</linksource>
-              <links>
-                <link>http://download.oracle.com/javase/6/docs/api</link>
-                <link>http://download.oracle.com/javaee/6/api</link>
-                <link>http://junit.sourceforge.net/javadoc</link>
-                <link>http://web.cecs.pdx.edu/~whitlock/docs</link>
-              </links>
-            </configuration>
-            <reportSets>
-              <reportSet>
-                <reports>
-                  <report>javadoc</report>
-                  <report>test-javadoc</report>
-                </reports>
-              </reportSet>
-            </reportSets>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jxr-plugin</artifactId>
@@ -111,16 +95,6 @@
            <groupId>org.apache.maven.plugins</groupId>
            <artifactId>maven-checkstyle-plugin</artifactId>
            <version>2.9.1</version>
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-pmd-plugin</artifactId>
-           <version>3.1</version>
-         </plugin>
-         <plugin>
-           <groupId>org.apache.maven.plugins</groupId>
-           <artifactId>maven-project-info-reports-plugin</artifactId>
-           <version>2.7</version>
          </plugin>
       </plugins>
     </reporting>
