@@ -9,8 +9,9 @@
   <artifactId>phonebill-web-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>phonebill-web-archetype</name>
-  <description>Maven Archetype for creating a Web/REST Project for the Phone Bill</description>
+
   <build>
     <extensions>
       <extension>
