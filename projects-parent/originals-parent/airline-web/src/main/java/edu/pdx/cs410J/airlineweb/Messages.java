@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original;
+package edu.pdx.cs410J.airlineweb;
 
 /**
  * Class for formatting messages on the server side.  This is mainly to enable

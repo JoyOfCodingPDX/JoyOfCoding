@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original;
+package edu.pdx.cs410J.airlineweb;
 
 import org.junit.Test;
 

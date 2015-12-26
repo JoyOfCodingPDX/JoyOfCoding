@@ -160,7 +160,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.original.Project4</mainClass>
+              <mainClass>edu.pdx.cs410J.airlineweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
