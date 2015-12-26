@@ -10,7 +10,7 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>jar</packaging>
   <version>${version}</version>
-  <name>CS410J AirlineProject</name>
+  <name>CS410J Airline Project</name>
   <description>An Airline application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
@@ -107,14 +107,6 @@
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>2.13</version>
       </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
-          <version>2.3</version>
-          <configuration>
-            <linkJavadoc>true</linkJavadoc>
-          </configuration>
-        </plugin>
        <plugin>
          <groupId>org.codehaus.mojo</groupId>
          <artifactId>jdepend-maven-plugin</artifactId>
