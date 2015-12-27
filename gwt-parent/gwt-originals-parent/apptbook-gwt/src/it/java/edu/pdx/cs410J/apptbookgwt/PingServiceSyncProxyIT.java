@@ -1,8 +1,8 @@
-package edu.pdx.cs410J.original;
+package edu.pdx.cs410J.apptbookgwt;
 
 import com.gdevelop.gwt.syncrpc.SyncProxy;
-import edu.pdx.cs410J.original.client.AppointmentBook;
-import edu.pdx.cs410J.original.client.PingService;
+import edu.pdx.cs410J.apptbookgwt.client.AppointmentBook;
+import edu.pdx.cs410J.apptbookgwt.client.PingService;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 

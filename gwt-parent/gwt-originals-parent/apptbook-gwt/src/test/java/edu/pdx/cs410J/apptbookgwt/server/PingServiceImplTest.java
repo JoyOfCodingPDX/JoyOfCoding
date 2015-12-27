@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.apptbookgwt.server;
 
-import edu.pdx.cs410J.original.client.AppointmentBook;
+import edu.pdx.cs410J.apptbookgwt.client.AppointmentBook;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

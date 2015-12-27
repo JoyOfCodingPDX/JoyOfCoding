@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.apptbookgwt.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

@@ -1,9 +1,9 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.apptbookgwt.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs410J.original.client.Appointment;
-import edu.pdx.cs410J.original.client.AppointmentBook;
-import edu.pdx.cs410J.original.client.PingService;
+import edu.pdx.cs410J.apptbookgwt.client.Appointment;
+import edu.pdx.cs410J.apptbookgwt.client.AppointmentBook;
+import edu.pdx.cs410J.apptbookgwt.client.PingService;
 
 /**
  * The server-side implementation of the division service

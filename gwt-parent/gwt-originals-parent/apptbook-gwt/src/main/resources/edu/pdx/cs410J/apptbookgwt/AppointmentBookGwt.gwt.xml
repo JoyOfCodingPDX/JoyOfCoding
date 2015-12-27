@@ -2,7 +2,7 @@
   <inherits name="com.google.gwt.user.User"/>
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
   <inherits name='edu.pdx.cs410J.Projects'/>
-  <entry-point class="edu.pdx.cs410J.original.client.AppointmentBookGwt"/>
+  <entry-point class="edu.pdx.cs410J.apptbookgwt.client.AppointmentBookGwt"/>
 
-  <servlet path="/ping" class="edu.pdx.cs410J.original.server.PingServiceImpl"/>
+  <servlet path="/ping" class="edu.pdx.cs410J.apptbookgwt.server.PingServiceImpl"/>
 </module>
