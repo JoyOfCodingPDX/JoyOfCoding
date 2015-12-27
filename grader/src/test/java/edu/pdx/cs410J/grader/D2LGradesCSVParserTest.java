@@ -17,11 +17,11 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class D2LCSVParserTest {
+public class D2LGradesCSVParserTest {
 
   @Test
   public void ignoreExpectedColumns() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     assertThat(parser.isColumnIgnored("Calculated Final Grade Numerator"), is(true));
     assertThat(parser.isColumnIgnored("Calculated Final Grade Denominator"), is(true));
@@ -32,7 +32,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void doNotIgnoreNonIgnoredColumns() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     assertThat(parser.isColumnIgnored("Username"), is(false));
     assertThat(parser.isColumnIgnored("First Name"), is(false));
@@ -42,38 +42,38 @@ public class D2LCSVParserTest {
 
   @Test
   public void canParseCsvWithNoStudents() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createEmptyCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createEmptyCsv().getReader());
     GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasSize(0));
   }
 
   @Test
   public void usernameIsFirstColumn() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
     assertThat(parser.getUsernameColumn(), equalTo(0));
   }
 
   @Test
   public void lastNameIsSecondColumn() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
     assertThat(parser.getLastNameColumn(), equalTo(1));
   }
 
   @Test
   public void firstNameIsThirdColumn() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
     assertThat(parser.getFirstNameColumn(), equalTo(2));
   }
 
   @Test
   public void emailIsFourthColumn() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
     assertThat(parser.getEmailColumn(), equalTo(3));
   }
 
   @Test
   public void expectedQuizNames() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
     assertThat(parser.getQuizNames(), hasItem("Programming Background Quiz"));
     assertThat(parser.getQuizNames(), hasItem("Java Language and OOP Quiz"));
     assertThat(parser.getQuizNames(), hasItem("Language API Quiz"));
@@ -81,7 +81,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void quizNameDoNotContainIgnoredColumns() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Numerator")));
     assertThat(parser.getQuizNames(), not(hasItem("Calculated Final Grade Denominator")));
@@ -94,7 +94,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void studentInformationIsNotConsideredAQuiz() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     assertThat(parser.getQuizNames(), not(hasItem("Username")));
     assertThat(parser.getQuizNames(), not(hasItem("First Name")));
@@ -104,7 +104,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void gradesPopulatedWithStudents() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
@@ -114,7 +114,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void gradesPopulatedWithStudents2() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasStudentWithFirstName("Student"));
@@ -124,7 +124,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void gradesPopulatedWithScores() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     GradesFromD2L grades = parser.getGrades();
     Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("student1", grades);
@@ -134,7 +134,7 @@ public class D2LCSVParserTest {
 
   @Test
   public void gradesPopulatedWithScores2() throws IOException {
-    D2LCSVParser parser = new D2LCSVParser(createCsv().getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(createCsv().getReader());
 
     GradesFromD2L grades = parser.getGrades();
     Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("student2", grades);
@@ -196,7 +196,7 @@ public class D2LCSVParserTest {
     CSV csv = createEmptyCsv();
     csv.addLine("guest1234","Two","Student","student2@email.com","3","","","","","","4","24","","","");
 
-    D2LCSVParser parser = new D2LCSVParser(csv.getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(csv.getReader());
 
     GradesFromD2L grades = parser.getGrades();
     Optional<GradesFromD2L.D2LStudent> student = getStudentWithId("guest1234", grades);
@@ -209,7 +209,7 @@ public class D2LCSVParserTest {
     csv.addLine("#student1","One","Student","student1@email.com","4","","","","","","4","24","","","");
     csv.addLine("student2","Two","Student","student2@email.com","3","","","","","","4","24","","","");
 
-    D2LCSVParser parser = new D2LCSVParser(csv.getReader());
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(csv.getReader());
 
     GradesFromD2L grades = parser.getGrades();
     assertThat(grades.getStudents(), hasStudentWithD2LId("student1"));

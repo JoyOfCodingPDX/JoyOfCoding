@@ -7,7 +7,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class D2LCSVParser {
+public class D2LGradesCSVParser {
 
   private static final String[] ignoredColumnNames = new String[] {
     "Calculated Final Grade Numerator",
@@ -23,7 +23,7 @@ public class D2LCSVParser {
   private int emailColumn;
   private Map<Integer, String> quizColumnsAndNames = new HashMap<>();
 
-  public D2LCSVParser(Reader reader) throws IOException {
+  public D2LGradesCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader( reader );
     String[] firstLine = csv.readNext();
     extractColumnNamesFromFirstLineOfCsv(firstLine);
