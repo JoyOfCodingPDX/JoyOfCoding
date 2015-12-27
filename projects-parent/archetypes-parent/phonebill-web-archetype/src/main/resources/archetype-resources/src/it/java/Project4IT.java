@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * Tests the {@link Project4} class by invoking its main method with various arguments 
+ * Tests the {@link Project4} class by invoking its main method with various arguments
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Project4IT extends InvokeMainTestCase {
