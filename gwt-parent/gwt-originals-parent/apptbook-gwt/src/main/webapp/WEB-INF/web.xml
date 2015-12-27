@@ -7,7 +7,7 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>pingServlet</servlet-name>
-    <servlet-class>edu.pdx.cs410J.original.server.PingServiceImpl</servlet-class>
+    <servlet-class>edu.pdx.cs410J.apptbookgwt.server.PingServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>

@@ -6,7 +6,7 @@
   <display-name>Phone Bill REST Service</display-name>
   <servlet>
     <servlet-name>PhoneBillServlet</servlet-name>
-    <servlet-class>edu.pdx.cs410J.original.PhoneBillServlet</servlet-class>
+    <servlet-class>edu.pdx.cs410J.phonebillweb.PhoneBillServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>PhoneBillServlet</servlet-name>

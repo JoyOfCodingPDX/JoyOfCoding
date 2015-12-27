@@ -1,6 +1,8 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+package ${package};
+
 import com.gdevelop.gwt.syncrpc.SyncProxy;
 import ${package}.client.Airline;
 import ${package}.client.PingService;

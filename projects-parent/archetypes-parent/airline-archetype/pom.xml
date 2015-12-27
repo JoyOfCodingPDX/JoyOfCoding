@@ -9,8 +9,9 @@
   <artifactId>airline-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>airline-archetype</name>
-  <description>A Maven Archetype for creating the Airline Project</description>
+
   <build>
     <extensions>
       <extension>

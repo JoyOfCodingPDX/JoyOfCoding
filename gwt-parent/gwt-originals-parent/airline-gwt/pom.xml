@@ -79,7 +79,7 @@
             <configuration>
                 <runTarget>AirlineGwt.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs410J.original.AirlineGwt</module>
+                  <module>edu.pdx.cs410J.airlinegwt.AirlineGwt</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>

@@ -6,7 +6,7 @@
   <display-name>Appointment Book REST Service</display-name>
   <servlet>
     <servlet-name>AppointmentBookServlet</servlet-name>
-    <servlet-class>edu.pdx.cs410J.original.AppointmentBookServlet</servlet-class>
+    <servlet-class>edu.pdx.cs410J.apptbookweb.AppointmentBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AppointmentBookServlet</servlet-name>

@@ -79,7 +79,7 @@
             <configuration>
                 <runTarget>AppointmentBookGwt.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs410J.original.AppointmentBookGwt</module>
+                  <module>edu.pdx.cs410J.apptbookgwt.AppointmentBookGwt</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>

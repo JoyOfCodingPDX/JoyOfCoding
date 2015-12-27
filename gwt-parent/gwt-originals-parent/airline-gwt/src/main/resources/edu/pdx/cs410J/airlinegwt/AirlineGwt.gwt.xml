@@ -1,0 +1,8 @@
+<module rename-to="airline">
+  <inherits name="com.google.gwt.user.User"/>
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+  <inherits name='edu.pdx.cs410J.Projects'/>
+  <entry-point class="edu.pdx.cs410J.airlinegwt.client.AirlineGwt"/>
+
+  <servlet path="/ping" class="edu.pdx.cs410J.airlinegwt.server.PingServiceImpl"/>
+</module>
