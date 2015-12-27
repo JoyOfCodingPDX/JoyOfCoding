@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class D2LSurveyResponsesCSVParserTest {
@@ -16,6 +17,18 @@ public class D2LSurveyResponsesCSVParserTest {
 
     assertThat(parser.questionColumnIndex, equalTo(4));
     assertThat(parser.responseColumnIndex, equalTo(7));
+
+  }
+
+  @Test
+  public void canParseOneResponseLine() throws IOException {
+    String question = "What is your response?";
+    String response = "This is my response";
+    Reader reader = createReaderWithLines("Q Text,Answer", question + "," + response);
+
+    D2LSurveyResponsesCSVParser parser = new D2LSurveyResponsesCSVParser(reader);
+    SurveyResponsesFromD2L responses = parser.getSurveyResponses();
+    assertThat(responses.getResponsesTo(question), hasItem(response));
 
   }
 
