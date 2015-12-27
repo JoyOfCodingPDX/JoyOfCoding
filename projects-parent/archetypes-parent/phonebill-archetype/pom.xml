@@ -9,8 +9,9 @@
   <artifactId>phonebill-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>phonebill-archetype</name>
-  <description>A Maven Archetype for creating the Phone Bill Project</description>
+
   <build>
     <extensions>
       <extension>
