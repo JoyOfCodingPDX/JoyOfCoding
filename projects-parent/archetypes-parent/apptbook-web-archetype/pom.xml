@@ -9,8 +9,9 @@
   <artifactId>apptbook-web-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>apptbook-web-archetype</name>
-  <description> Maven Archetype for creating a Web/REST Project for the Appointment Book</description>
+
   <build>
     <extensions>
       <extension>

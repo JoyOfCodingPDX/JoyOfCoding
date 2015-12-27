@@ -9,8 +9,8 @@
   <artifactId>apptbook-gwt-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>apptbook-gwt-archetype</name>
-  <description>A Maven Archetype for creating a GWT Project for the Appointment Book</description>
 
   <build>
     <extensions>

@@ -9,8 +9,9 @@
   <artifactId>phonebill-gwt-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>phonebill-gwt-archetype</name>
-  <description>A Maven Archetype for creating a GWT Project for the Phone Bill</description>
+
   <build>
     <extensions>
       <extension>

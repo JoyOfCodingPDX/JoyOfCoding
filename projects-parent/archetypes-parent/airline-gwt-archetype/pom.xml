@@ -9,8 +9,9 @@
   <artifactId>airline-gwt-archetype</artifactId>
   <version>Summer2016</version>
   <packaging>maven-archetype</packaging>
+
   <name>airline-gwt-archetype</name>
-  <description>A Maven Archetype for creating a GWT Project for the Airline</description>
+
   <build>
     <extensions>
       <extension>
