@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original;
+package edu.pdx.cs410J.phonebill;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
 
