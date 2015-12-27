@@ -79,7 +79,7 @@
             <configuration>
                 <runTarget>PhoneBillGwt.html</runTarget>
                 <modules>
-                  <module>edu.pdx.cs410J.original.PhoneBillGwt</module>
+                  <module>edu.pdx.cs410J.phonebillgwt.PhoneBillGwt</module>
                 </modules>
                 <extraJvmArgs>-Xmx512m</extraJvmArgs>
                 <style>DETAILED</style>

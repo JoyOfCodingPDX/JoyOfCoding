@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.phonebillgwt.client;
 
 import edu.pdx.cs410J.AbstractPhoneCall;
 

@@ -1,9 +1,9 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.phonebillgwt.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs410J.original.client.PhoneBill;
-import edu.pdx.cs410J.original.client.PhoneCall;
-import edu.pdx.cs410J.original.client.PingService;
+import edu.pdx.cs410J.phonebillgwt.client.PhoneBill;
+import edu.pdx.cs410J.phonebillgwt.client.PhoneCall;
+import edu.pdx.cs410J.phonebillgwt.client.PingService;
 
 /**
  * The server-side implementation of the Phone Bill service

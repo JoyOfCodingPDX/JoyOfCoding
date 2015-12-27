@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.phonebillgwt.server;
 
-import edu.pdx.cs410J.original.client.PhoneBill;
+import edu.pdx.cs410J.phonebillgwt.client.PhoneBill;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

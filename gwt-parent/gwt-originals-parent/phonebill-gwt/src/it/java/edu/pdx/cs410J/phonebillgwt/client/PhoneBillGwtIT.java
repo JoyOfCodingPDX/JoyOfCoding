@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.phonebillgwt.client;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
@@ -16,7 +16,7 @@ import org.junit.Test;
 public class PhoneBillGwtIT extends GWTTestCase {
   @Override
   public String getModuleName() {
-    return "edu.pdx.cs410J.original.PhoneBillIntegrationTests";
+    return "edu.pdx.cs410J.phonebillgwt.PhoneBillIntegrationTests";
   }
 
   @Test
