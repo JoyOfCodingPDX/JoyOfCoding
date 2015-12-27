@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.airlinegwt.client;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
@@ -16,7 +16,7 @@ import org.junit.Test;
 public class AirlineGwtIT extends GWTTestCase {
   @Override
   public String getModuleName() {
-    return "edu.pdx.cs410J.original.AirlineIntegrationTests";
+    return "edu.pdx.cs410J.airlinegwt.AirlineIntegrationTests";
   }
 
   @Test

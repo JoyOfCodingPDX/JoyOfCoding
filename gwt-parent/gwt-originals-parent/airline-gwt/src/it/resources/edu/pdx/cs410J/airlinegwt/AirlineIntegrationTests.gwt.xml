@@ -8,7 +8,7 @@
 
   -->
 
-  <inherits name='edu.pdx.cs410J.original.AirlineGwt'/>
+  <inherits name='edu.pdx.cs410J.airlinegwt.AirlineGwt'/>
 
   <source path="client">
     <include name="**/*.java"/>
@@ -22,6 +22,6 @@
   </source>
 
   <!-- Need to define the servlet in .gwt.xml in order to use service in a GwtTest -->
-  <servlet path="/ping" class="edu.pdx.cs410J.original.server.PingServiceImpl"/>
+  <servlet path="/ping" class="edu.pdx.cs410J.airlinegwt.server.PingServiceImpl"/>
 
 </module>

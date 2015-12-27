@@ -1,6 +1,8 @@
+package edu.pdx.cs410J.airlinegwt;
+
 import com.gdevelop.gwt.syncrpc.SyncProxy;
-import edu.pdx.cs410J.original.client.Airline;
-import edu.pdx.cs410J.original.client.PingService;
+import edu.pdx.cs410J.airlinegwt.client.Airline;
+import edu.pdx.cs410J.airlinegwt.client.PingService;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 

@@ -1,8 +1,7 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.airlinegwt.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import edu.pdx.cs410J.AbstractAirline;
 
 /**
  * A GWT remote service that returns a dummy airline

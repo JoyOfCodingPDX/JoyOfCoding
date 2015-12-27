@@ -1,9 +1,9 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.airlinegwt.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import edu.pdx.cs410J.original.client.Airline;
-import edu.pdx.cs410J.original.client.Flight;
-import edu.pdx.cs410J.original.client.PingService;
+import edu.pdx.cs410J.airlinegwt.client.Airline;
+import edu.pdx.cs410J.airlinegwt.client.Flight;
+import edu.pdx.cs410J.airlinegwt.client.PingService;
 
 /**
  * The server-side implementation of the Airline service

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.original.client;
+package edu.pdx.cs410J.airlinegwt.client;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 import junit.framework.Test;

@@ -1,6 +1,6 @@
-package edu.pdx.cs410J.original.server;
+package edu.pdx.cs410J.airlinegwt.server;
 
-import edu.pdx.cs410J.original.client.Airline;
+import edu.pdx.cs410J.airlinegwt.client.Airline;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
