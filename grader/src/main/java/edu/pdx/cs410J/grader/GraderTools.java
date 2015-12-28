@@ -64,6 +64,9 @@ public class GraderTools {
       case "generateGradeSummary":
         return SummaryReport.class;
 
+      case "htmlForSurveyResults":
+        return SurveyResponsesFromD2LGenerator.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -93,6 +96,7 @@ public class GraderTools {
     err.println("    mailFileToStudent         Email text files to students");
     err.println("    gradePOAs                 Tool for downloading and grading POAs");
     err.println("    generateGradeSummary      Generate grade summary report for one or more students");
+    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 

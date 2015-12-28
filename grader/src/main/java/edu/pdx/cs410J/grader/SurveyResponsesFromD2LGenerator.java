@@ -97,7 +97,7 @@ public class SurveyResponsesFromD2LGenerator {
   }
 
   private static HtmlGenerator getHtmlGenerator(String htmlFileName) throws IOException {
-    File htmlFile = new File(htmlFileName);
+    File htmlFile = new File(htmlFileName).getAbsoluteFile();
     File parent = htmlFile.getParentFile();
     if (!parent.exists()) {
       usage("Parent of HTML file " + htmlFileName + " does not exist");
