@@ -14,17 +14,27 @@ public class HtmlGenerator {
   public HtmlGenerator(Writer writer) {
     this.openTags = new ArrayDeque<>();
 
-    this.writer = new PrintWriter(writer);
+    this.writer = new PrintWriter(writer, true);
     this.writer.println(DOC_TYPE);
   }
 
   public void beginTag(String tagName) {
+    indent();
     this.writer.println("<" + tagName + ">");
     this.openTags.push(tagName);
   }
 
+  private void indent() {
+    int indent = this.openTags.size() * 2;
+    for (int i = 0; i < indent; i++) {
+      this.writer.print(" ");
+    }
+
+  }
+
   public void endTag() {
     String openTag = this.openTags.pop();
-    this.writer.print("</" + openTag + ">");
+    indent();
+    this.writer.println("</" + openTag + ">");
   }
 }
