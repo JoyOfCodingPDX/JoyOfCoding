@@ -97,4 +97,40 @@ public class HtmlGeneratorTest {
     assertThat(lines[6], equalTo("</html>"));
   }
 
+  @Test
+  public void textIsWritten() {
+    String text = "This is some text";
+
+    StringWriter writer = new StringWriter();
+    HtmlGenerator generator = new HtmlGenerator(writer);
+    generator.beginTag("html");
+    generator.beginTag("head");
+    generator.beginTag("title");
+    generator.text(text);
+    generator.endTag();
+    generator.endTag();
+    generator.endTag();
+
+    String html = writer.toString();
+    assertThat(html, containsString(text));
+  }
+
+  @Test
+  public void textIsWrittenOnTheSameLineAsOpenTag() {
+    String text = "This is some text";
+
+    StringWriter writer = new StringWriter();
+    HtmlGenerator generator = new HtmlGenerator(writer);
+    generator.beginTag("html");
+    generator.beginTag("head");
+    generator.beginTag("title");
+    generator.text(text);
+    generator.endTag();
+    generator.endTag();
+    generator.endTag();
+
+    String html = writer.toString();
+    assertThat(html, containsString("<title>" + text + "</title>"));
+  }
+
 }
