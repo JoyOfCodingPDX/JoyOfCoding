@@ -43,6 +43,7 @@ public class HtmlGenerator {
       indent();
     }
     this.writer.print("</" + openTag + ">");
+    this.writer.flush();
   }
 
   public void text(String text) {

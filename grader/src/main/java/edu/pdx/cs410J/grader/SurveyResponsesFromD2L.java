@@ -21,4 +21,8 @@ public class SurveyResponsesFromD2L {
 
     responses.add(response);
   }
+
+  public Iterable<String> getQuestions() {
+    return this.questionsAndResponses.keySet();
+  }
 }

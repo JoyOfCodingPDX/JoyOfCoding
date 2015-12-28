@@ -1,13 +1,11 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 
 public class SurveyResponsesFromD2LGenerator {
 
@@ -38,24 +36,75 @@ public class SurveyResponsesFromD2LGenerator {
     }
 
     SurveyResponsesFromD2L d2lSurveyResponses = parseD2lCsvFile(d2lCsvFileName);
-    File htmlFile = getHtmlFile(htmlFileName);
-    generateHtmlForSurveyResponses(d2lSurveyResponses, htmlFile);
-
+    HtmlGenerator htmlGenerator = getHtmlGenerator(htmlFileName);
+    generateHtmlForSurveyResponses(d2lSurveyResponses, htmlGenerator);
   }
 
-  private static void generateHtmlForSurveyResponses(SurveyResponsesFromD2L d2lSurveyResponses, File htmlFile) {
+  @VisibleForTesting
+  static void generateHtmlForSurveyResponses(SurveyResponsesFromD2L d2lSurveyResponses, HtmlGenerator html) {
+    String title = "Previously on CS410J...";
 
+    html.beginTag("html");
 
+    outputHtmlHead(html, title);
+
+    html.beginTag("body");
+
+    outputHtmlBodyHeader(html, title);
+    outputHtmlForEachSurveyResponse(d2lSurveyResponses, html);
+
+    html.endTag();
+
+    html.endTag();
   }
 
-  private static File getHtmlFile(String htmlFileName) {
+  private static void outputHtmlForEachSurveyResponse(SurveyResponsesFromD2L allResponses, HtmlGenerator html) {
+    html.beginTag("ol");
+
+    allResponses.getQuestions().forEach((question) -> {
+      html.beginTag("li");
+      html.text(question);
+      html.endTag();
+      html.beginTag("ul");
+
+      allResponses.getResponsesTo(question).forEach((response) -> {
+        html.beginTag("li");
+        html.text(response);
+        html.endTag();
+      });
+
+      html.endTag();
+    });
+
+    html.endTag();
+  }
+
+  private static void outputHtmlBodyHeader(HtmlGenerator html, String title) {
+    html.beginTag("h1");
+    html.text(title);
+    html.endTag();
+    html.beginTag("p");
+    html.text("Say something witty here");
+    html.endTag();
+  }
+
+  private static void outputHtmlHead(HtmlGenerator html, String title) {
+    html.beginTag("head");
+    html.beginTag("title");
+    html.text(title);
+    html.endTag();
+    html.endTag();
+  }
+
+  private static HtmlGenerator getHtmlGenerator(String htmlFileName) throws IOException {
     File htmlFile = new File(htmlFileName);
     File parent = htmlFile.getParentFile();
     if (!parent.exists()) {
       usage("Parent of HTML file " + htmlFileName + " does not exist");
     }
 
-    return htmlFile;
+    Writer writer = new FileWriter(htmlFile);
+    return new HtmlGenerator(writer);
   }
 
 
@@ -74,11 +123,11 @@ public class SurveyResponsesFromD2LGenerator {
 
     err.println("+++ " + message);
     err.println();
-    err.println("usage: java GradesFromD2LImporter d2lGradesCsvFileName gradeBookFileName");
-    err.println("    d2lGradesCsvFileName       Name of the CSV grades file exported from D2L");
-    err.println("    gradeBookFileName    Gradebook file");
+    err.println("usage: java SurveyResponsesFromD2LGenerator d2lSurveyResponsesCsvFileName htmlFileName");
+    err.println("    d2lSurveyResponsesCsvFileName     Name of the CSV survey reponses file exported from D2L");
+    err.println("    htmlFileName                      Name of file to which generated HTML is written");
     err.println();
-    err.println("Imports grades from D2L into a gradebook");
+    err.println("Generates an HTML file that lists the responses to a survey from D2L");
     err.println();
 
     System.exit(1);
