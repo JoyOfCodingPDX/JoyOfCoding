@@ -95,7 +95,7 @@ public class GradesFromD2LImporter {
       usage("D2L CSV file \"" + d2lCsvFile + "\" does not exist");
     }
 
-    D2LCSVParser parser = new D2LCSVParser(new FileReader(d2lCsvFile));
+    D2LGradesCSVParser parser = new D2LGradesCSVParser(new FileReader(d2lCsvFile));
     return parser.getGrades();
   }
 
@@ -104,8 +104,8 @@ public class GradesFromD2LImporter {
 
     err.println("+++ " + message);
     err.println();
-    err.println("usage: java GradesFromD2LImporter d2lCsvFileName gradeBookFileName");
-    err.println("    d2lCsvFileName       Name of the CSV file exported from D2L");
+    err.println("usage: java GradesFromD2LImporter d2lGradesCsvFileName gradeBookFileName");
+    err.println("    d2lGradesCsvFileName       Name of the CSV grades file exported from D2L");
     err.println("    gradeBookFileName    Gradebook file");
     err.println();
     err.println("Imports grades from D2L into a gradebook");
