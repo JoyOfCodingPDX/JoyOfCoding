@@ -181,7 +181,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.8</version>
       </plugin>
       <plugin>
         <!-- In order for the project info plugin report to work with Java 8,
