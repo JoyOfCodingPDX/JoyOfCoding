@@ -34,7 +34,6 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.0.M2</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopPort>9999</stopPort>
