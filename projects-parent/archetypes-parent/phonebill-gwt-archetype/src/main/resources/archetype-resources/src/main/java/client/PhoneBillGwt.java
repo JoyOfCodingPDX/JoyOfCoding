@@ -12,7 +12,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import edu.pdx.cs410J.AbstractPhoneCall;
 
 import java.util.Collection;
 
@@ -57,8 +56,8 @@ public class PhoneBillGwt implements EntryPoint {
           @Override
           public void onSuccess(PhoneBill bill) {
             StringBuilder sb = new StringBuilder(bill.toString());
-            Collection<AbstractPhoneCall> calls = bill.getPhoneCalls();
-            for (AbstractPhoneCall call : calls) {
+            Collection<PhoneCall> calls = bill.getPhoneCalls();
+            for (PhoneCall call : calls) {
               sb.append(call);
               sb.append("${symbol_escape}n");
             }
