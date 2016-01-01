@@ -9,7 +9,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import edu.pdx.cs410J.AbstractFlight;
 
 import java.util.Collection;
 
@@ -55,8 +54,8 @@ public class AirlineGwt implements EntryPoint {
           @Override
           public void onSuccess(Airline airline) {
             StringBuilder sb = new StringBuilder(airline.toString());
-            Collection<AbstractFlight> flights = airline.getFlights();
-            for (AbstractFlight flight : flights) {
+            Collection<Flight> flights = airline.getFlights();
+            for (Flight flight : flights) {
               sb.append(flight);
               sb.append("\n");
             }
