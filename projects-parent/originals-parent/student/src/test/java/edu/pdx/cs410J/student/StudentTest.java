@@ -18,7 +18,7 @@ public class StudentTest
   @Test
   public void studentNamedPatIsNamedPat() {
     String name = "Pat";
-    Student pat = new Student(name, new ArrayList(), 0.0, "Doesn't matter");
+    Student pat = new Student(name, new ArrayList<>(), 0.0, "Doesn't matter");
     assertThat(pat.getName(), equalTo(name));
   }
 

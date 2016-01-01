@@ -22,7 +22,7 @@ public class Student extends Human {
    * @param gender                                                                  
    *        The student's gender ("male" or "female", case insensitive)             
    */                                                                               
-  public Student(String name, ArrayList classes, double gpa, String gender) {
+  public Student(String name, ArrayList<String> classes, double gpa, String gender) {
     super(name);
   }
 
