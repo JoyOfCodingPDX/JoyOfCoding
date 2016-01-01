@@ -54,8 +54,8 @@ public class PhoneBillGwt implements EntryPoint {
           @Override
           public void onSuccess(PhoneBill bill) {
             StringBuilder sb = new StringBuilder(bill.toString());
-            Collection<AbstractPhoneCall> calls = bill.getPhoneCalls();
-            for (AbstractPhoneCall call : calls) {
+            Collection<PhoneCall> calls = bill.getPhoneCalls();
+            for (PhoneCall call : calls) {
               sb.append(call);
               sb.append("\n");
             }

@@ -1,15 +1,14 @@
 package edu.pdx.cs410J.phonebillgwt.client;
 
-import edu.pdx.cs410J.AbstractPhoneCall;
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 import java.lang.Override;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class PhoneBill extends AbstractPhoneBill
+public class PhoneBill extends AbstractPhoneBill<PhoneCall>
 {
-  private Collection<AbstractPhoneCall> calls = new ArrayList<AbstractPhoneCall>();
+  private Collection<PhoneCall> calls = new ArrayList<>();
 
   @Override
   public String getCustomer() {
@@ -17,12 +16,12 @@ public class PhoneBill extends AbstractPhoneBill
   }
 
   @Override
-  public void addPhoneCall(AbstractPhoneCall call) {
+  public void addPhoneCall(PhoneCall call) {
     this.calls.add(call);
   }
 
   @Override
-  public Collection getPhoneCalls() {
+  public Collection<PhoneCall> getPhoneCalls() {
     return this.calls;
   }
 }
