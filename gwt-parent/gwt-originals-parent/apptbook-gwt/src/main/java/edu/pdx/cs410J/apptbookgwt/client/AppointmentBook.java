@@ -1,15 +1,14 @@
 package edu.pdx.cs410J.apptbookgwt.client;
 
-import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AppointmentBook extends AbstractAppointmentBook
+public class AppointmentBook extends AbstractAppointmentBook<Appointment>
 {
 
-    private Collection<AbstractAppointment> appts = new ArrayList<AbstractAppointment>();
+    private Collection<Appointment> appts = new ArrayList<>();
 
     @Override
     public String getOwnerName()
@@ -18,13 +17,13 @@ public class AppointmentBook extends AbstractAppointmentBook
     }
 
     @Override
-    public Collection getAppointments()
+    public Collection<Appointment> getAppointments()
     {
         return this.appts;
     }
 
     @Override
-    public void addAppointment( AbstractAppointment appt )
+    public void addAppointment( Appointment appt )
     {
         this.appts.add(appt);
     }
