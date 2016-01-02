@@ -118,7 +118,7 @@ public class Submit extends EmailSender {
   /**
    * Sets the name of the SMTP server that is used to send emails
    */
-  public void setServerName(String serverName) {
+  public void setEmailServerHostName(String serverName) {
     EmailSender.serverName = serverName;
   }
 
@@ -690,7 +690,7 @@ public class Submit extends EmailSender {
           usage("No SMTP server specified");
         }
 
-        submit.setServerName(args[i]);
+        submit.setEmailServerHostName(args[i]);
 
       } else if (args[i].equals("-verbose")) {
         submit.setDebug(true);

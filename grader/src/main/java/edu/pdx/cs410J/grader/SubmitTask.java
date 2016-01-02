@@ -156,7 +156,7 @@ public class SubmitTask extends Task {
    * Sets the name of the SMTP server that is used to send emails
    */
   public void setServer(String serverName) {
-    this.submit.setServerName(serverName);
+    this.submit.setEmailServerHostName(serverName);
   }
 
   /**
