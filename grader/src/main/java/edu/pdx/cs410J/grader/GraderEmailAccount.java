@@ -1,10 +1,13 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -14,14 +17,25 @@ public class GraderEmailAccount {
 
   private final String password;
   private final String userName;
+  private final String emailServerHostName;
+  private final int emailServerPort;
+  private final boolean trustLocalhostSSL;
 
   public GraderEmailAccount(String password) {
     this("sjavata", password);
   }
 
   public GraderEmailAccount(String userName, String password) {
+    this("imap.gmail.com", 993, userName, password, false);
+  }
+
+  @VisibleForTesting
+  GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
     this.userName = userName;
     this.password = password;
+    this.emailServerHostName = emailServerHostName;
+    this.emailServerPort = emailServerPort;
+    this.trustLocalhostSSL = trustLocalhostSSL;
   }
 
   private void fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, EmailAttachmentProcessor processor) {
@@ -186,7 +200,11 @@ public class GraderEmailAccount {
     }
   }
 
-  private StringBuilder addresses(Address[] addresses) {
+  private String addresses(Address[] addresses) {
+    if (addresses == null) {
+      return "<None>";
+    }
+
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < addresses.length; i++) {
       Address address = addresses[i];
@@ -196,7 +214,7 @@ public class GraderEmailAccount {
       }
     }
 
-    return sb;
+    return sb.toString();
   }
 
   private void printFolderInformation(Folder folder) {
@@ -235,21 +253,28 @@ public class GraderEmailAccount {
 
   }
 
-  private Store connectToGmail() {
-    Properties props = new Properties();
-    Session session = Session.getInstance(props, null);
+  private Store connectToIMAPServer() {
     try {
+      Properties props = new Properties();
+
+      if (this.trustLocalhostSSL) {
+        MailSSLSocketFactory socketFactory= new MailSSLSocketFactory();
+        socketFactory.setTrustedHosts(new String[] { "127.0.0.1", "localhost" });
+        props.put("mail.imaps.ssl.socketFactory", socketFactory);
+      }
+
+      Session session = Session.getInstance(props, null);
       Store store = session.getStore("imaps");
-      store.connect("imap.gmail.com", this.userName, this.password);
+      store.connect(this.emailServerHostName, this.emailServerPort, this.userName, this.password);
       return store;
 
-    } catch (MessagingException ex) {
-      throw new IllegalStateException("While connecting to Gmail", ex);
+    } catch (MessagingException | GeneralSecurityException ex) {
+      throw new IllegalStateException("While connecting to " + this.emailServerHostName + ":" + this.emailServerPort, ex);
     }
   }
 
   public void fetchAttachmentsFromUnreadMessagesInFolder(String folderName, EmailAttachmentProcessor processor) {
-    Store store = connectToGmail();
+    Store store = connectToIMAPServer();
     Folder folder = openFolder(store, folderName);
     printFolderInformation(folder);
 

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -51,10 +52,15 @@ public class FetchAndProcessGraderEmail {
     GradeBook gradeBook = getGradeBook(gradeBookFile);
 
     GraderEmailAccount account = new GraderEmailAccount(password);
-    StudentEmailAttachmentProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
-    account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
+    fetchAndProcessGraderEmails(whatToFetch, account, directory, gradeBook);
 
     saveGradeBookIfModified(gradeBook, gradeBookFile);
+  }
+
+  @VisibleForTesting
+  static void fetchAndProcessGraderEmails(String whatToFetch, GraderEmailAccount account, File directory, GradeBook gradeBook) {
+    StudentEmailAttachmentProcessor processor = getStudentEmailAttachmentProcessor(whatToFetch, directory, gradeBook);
+    account.fetchAttachmentsFromUnreadMessagesInFolder(processor.getEmailFolder(), processor);
   }
 
   private static void saveGradeBookIfModified(GradeBook gradeBook, String gradeBookFile) {
