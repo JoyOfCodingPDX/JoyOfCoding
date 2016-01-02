@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.grader;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,9 @@ public class SubmitIT {
   private Collection<File> filesToSubmit = new ArrayList<>();
   private final String userId = "student";
   private final String projectName = "Project";
+  private GreenMail emailServer;
+  private String emailServerHost = "127.0.0.1";
+  private final int smtpPort = 2525;
 
   @Before
   public void createFilesToSubmit() throws IOException {
@@ -30,9 +35,21 @@ public class SubmitIT {
     }
   }
 
+  @Before
+  public void startEmailServer() {
+    ServerSetup smtp = new ServerSetup(smtpPort, emailServerHost, ServerSetup.PROTOCOL_SMTP);
+    emailServer = new GreenMail(smtp);
+    emailServer.start();
+  }
+
   @After
   public void deleteFilesToSubmit() {
     filesToSubmit.forEach(File::delete);
+  }
+
+  @After
+  public void stopEmailServer() {
+    emailServer.stop();
   }
 
   private File createEmptyFile(File dir, String fileName) throws IOException {
@@ -64,6 +81,8 @@ public class SubmitIT {
       submit.addFile(file.getAbsolutePath());
     }
 
+    submit.setEmailServerHostName(emailServerHost);
+    submit.setEmailServerPort(smtpPort);
     submit.setDebug(true);
     submit.submit(false);
   }
