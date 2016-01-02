@@ -387,12 +387,19 @@ public class Submit extends EmailSender {
     return isInAKoansDirectory;
   }
 
-  private boolean isInEduPdxCs410JDirectory(File file) {
+  @VisibleForTesting
+  boolean isInEduPdxCs410JDirectory(File file) {
     return hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
   }
 
   private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
     File parent = file.getParentFile();
+
+    // Skip over subpackages
+    while (parent != null && !parent.getName().equals(parentDirectoryNames[0])) {
+      parent = parent.getParentFile();
+    }
+
     for (String parentDirectoryName : parentDirectoryNames) {
       if (parent == null || !parent.getName().equals(parentDirectoryName)) {
         return false;
