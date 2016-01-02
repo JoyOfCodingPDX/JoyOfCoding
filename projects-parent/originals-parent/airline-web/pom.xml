@@ -99,7 +99,6 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.2.10.v20150310</version>
         <configuration>
           <httpConnector port="8080"/>
           <stopKey>stop-key</stopKey>
@@ -168,7 +167,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.7.1</version>
         <executions>
           <execution>
             <phase>package</phase>
