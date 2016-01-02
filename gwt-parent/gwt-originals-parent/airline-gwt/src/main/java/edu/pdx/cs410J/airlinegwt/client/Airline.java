@@ -1,24 +1,26 @@
 package edu.pdx.cs410J.airlinegwt.client;
 
-import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Airline extends AbstractAirline
+public class Airline extends AbstractAirline<Flight>
 {
-  private Collection<AbstractFlight> flights = new ArrayList<AbstractFlight>();
+  private Collection<Flight> flights = new ArrayList<>();
 
+  @Override
   public String getName() {
     return "Air CS410J";
   }
 
-  public void addFlight(AbstractFlight flight) {
+  @Override
+  public void addFlight(Flight flight) {
     this.flights.add(flight);
   }
 
-  public Collection getFlights() {
+  @Override
+  public Collection<Flight> getFlights() {
     return this.flights;
   }
 }

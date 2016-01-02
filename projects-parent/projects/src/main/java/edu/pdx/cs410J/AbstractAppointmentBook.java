@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  * @author David Whitlock
  */
-public abstract class AbstractAppointmentBook implements Serializable {
+public abstract class AbstractAppointmentBook<T extends AbstractAppointment> implements Serializable {
 
   /**
    * Returns the name of the owner of this appointment book.
@@ -20,12 +20,12 @@ public abstract class AbstractAppointmentBook implements Serializable {
    * Returns all of the appointments in this appointment book as a
    * collection of {@link AbstractAppointment}s.
    */
-  public abstract Collection getAppointments();
+  public abstract Collection<T> getAppointments();
 
   /**
    * Adds an appointment to this appointment book
    */
-  public abstract void addAppointment(AbstractAppointment appt);
+  public abstract void addAppointment(T appt);
 
   /**
    * Returns a brief textual description of this appointment book

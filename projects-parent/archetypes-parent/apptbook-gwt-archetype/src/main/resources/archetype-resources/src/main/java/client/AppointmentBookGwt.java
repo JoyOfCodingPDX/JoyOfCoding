@@ -57,8 +57,8 @@ public class AppointmentBookGwt implements EntryPoint {
           @Override
           public void onSuccess(AppointmentBook airline) {
             StringBuilder sb = new StringBuilder(airline.toString());
-            Collection<AbstractAppointment> flights = airline.getAppointments();
-            for (AbstractAppointment flight : flights) {
+            Collection<Appointment> flights = airline.getAppointments();
+            for (Appointment flight : flights) {
               sb.append(flight);
               sb.append("${symbol_escape}n");
             }

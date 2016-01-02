@@ -21,6 +21,7 @@ public class PhoneCall extends AbstractPhoneCall
     return new Date();
   }
 
+  @Override
   public String getStartTimeString() {
     return "START " + getStartTime();
   }
@@ -30,10 +31,12 @@ public class PhoneCall extends AbstractPhoneCall
     return "345-677-2341";
   }
 
+  @Override
   public Date getEndTime() {
     return new Date();
   }
 
+  @Override
   public String getEndTimeString() {
     return "END " + getEndTime();
   }
