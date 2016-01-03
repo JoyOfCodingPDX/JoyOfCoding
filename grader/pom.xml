@@ -14,8 +14,13 @@
   <dependencies>
     <dependency>
       <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.5.0-b01</version>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.5.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>mailapi</artifactId>
+      <version>1.5.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
@@ -172,7 +177,14 @@
                 <verbose>false</verbose>
             </configuration>
         </plugin>
-
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 </project>
