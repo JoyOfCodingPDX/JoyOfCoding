@@ -8,6 +8,7 @@ import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,20 +21,16 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.*;
-import java.util.*;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import java.security.GeneralSecurityException;
+import java.util.Properties;
 
 public class SendAndReceiveWithGreenmailIT {
 
   private final String studentEmail = "student@email.com";
-  private final String studentLoginId = "student";
-  private final String projectName = "Project";
+  private final String emailFolderName = ProjectSubmissionsProcessor.EMAIL_FOLDER_NAME;
   private GreenMail emailServer;
   private final String emailServerHost = "127.0.0.1";
   private final int smtpPort = 2525;
-  private final File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
   private final String imapUserName = "emailUser";
   private final String imapPassword = "emailPassword";
   private final int imapsPort = 9933;
@@ -53,7 +50,7 @@ public class SendAndReceiveWithGreenmailIT {
 
   private void moveEmailsFromInboxToProjectSubmissions(GreenMailUser user) throws AuthorizationException, FolderException {
     ImapHostManager manager = emailServer.getManagers().getImapHostManager();
-    MailFolder submissions = manager.createMailbox(user, ProjectSubmissionsProcessor.EMAIL_FOLDER_NAME);
+    MailFolder submissions = manager.createMailbox(user, emailFolderName);
     MailFolder inbox = manager.getInbox(user);
     inbox.addListener(new FolderListener() {
       @Override
@@ -95,20 +92,124 @@ public class SendAndReceiveWithGreenmailIT {
   }
 
   @Test
-  public void sendAndFetchMailMessageWithInlineAttachment() throws IOException, MessagingException {
+  public void sendAndFetchMailMessageWithInlineAttachment() throws IOException, MessagingException, GeneralSecurityException {
     sendMailMessageWithInlineAttachment();
+    fetchEmailWithInlineAttachment();
+  }
 
-    GradeBook gradeBook = new GradeBook("SubmitIT");
-    gradeBook.addStudent(new Student(studentLoginId));
-    gradeBook.addAssignment(new Assignment(projectName, 3.5));
+  private void fetchEmailWithInlineAttachment() throws MessagingException, GeneralSecurityException {
+    Store store = connectToIMAPServer();
+    Folder folder = openFolder(store, emailFolderName);
 
-    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, imapUserName, imapPassword, true);
-    FetchAndProcessGraderEmail.fetchAndProcessGraderEmails("projects", account, this.tempDirectory, gradeBook);
+    Message[] messages = folder.getMessages();
 
-    Grade grade = gradeBook.getStudent(studentLoginId).get().getGrade(projectName);
-    assertThat(grade, is(notNullValue()));
-    assertThat(grade.getScore(), equalTo(Grade.NO_GRADE));
-    assertThat(grade.getSubmissionTimes().size(), equalTo(1));
+    FetchProfile profile = new FetchProfile();
+    profile.add(FetchProfile.Item.ENVELOPE);
+    profile.add(FetchProfile.Item.FLAGS);
+
+    folder.fetch(messages, profile);
+
+    for (Message message : messages) {
+      if (isUnread(message)) {
+        printMessageDetails(message);
+      }
+    }
+  }
+
+  private void debug(String s) {
+    System.out.println(s);
+  }
+
+  private void printMessageDetails(Message message) throws MessagingException {
+    debug("  To: " + addresses(message.getRecipients(Message.RecipientType.TO)));
+    debug("  From: " + addresses(message.getFrom()));
+    debug("  Subject: " + message.getSubject());
+    debug("  Sent: " + message.getSentDate());
+    debug("  Flags: " + flags(message.getFlags()));
+    debug("  Content Type: " + message.getContentType());
+  }
+
+  private StringBuilder flags(Flags flags) {
+    StringBuilder sb = new StringBuilder();
+    systemFlags(flags, sb);
+    return sb;
+  }
+
+  private void systemFlags(Flags flags, StringBuilder sb) {
+    Flags.Flag[] systemFlags = flags.getSystemFlags();
+    for (int i = 0; i < systemFlags.length; i++) {
+      Flags.Flag flag = systemFlags[i];
+      if (flag == Flags.Flag.ANSWERED) {
+        sb.append("ANSWERED");
+
+      } else if (flag == Flags.Flag.DELETED) {
+        sb.append("DELETED");
+
+      } else if (flag == Flags.Flag.DRAFT) {
+        sb.append("DRAFT");
+
+      } else if (flag == Flags.Flag.FLAGGED) {
+        sb.append("FLAGGED");
+
+      } else if (flag == Flags.Flag.RECENT) {
+        sb.append("RECENT");
+
+      } else if (flag == Flags.Flag.SEEN) {
+        sb.append("SEEN");
+
+      } else if (flag == Flags.Flag.USER) {
+        sb.append("USER");
+
+      } else {
+        sb.append("UNKNOWN");
+      }
+
+      if (i > systemFlags.length - 1) {
+        sb.append(", ");
+      }
+    }
+  }
+
+  private String addresses(Address[] addresses) {
+    if (addresses == null) {
+      return "<None>";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < addresses.length; i++) {
+      Address address = addresses[i];
+      sb.append(address.toString());
+      if (i > addresses.length - 1) {
+        sb.append(", ");
+      }
+    }
+
+    return sb.toString();
+  }
+
+  private boolean isUnread(Message message) throws MessagingException {
+    return !message.getFlags().contains(Flags.Flag.SEEN);
+  }
+
+  private Folder openFolder(Store store, String folderName) throws MessagingException {
+    Folder folder = store.getDefaultFolder();
+    folder = folder.getFolder(folderName);
+    folder.open(Folder.READ_WRITE);
+    return folder;
+  }
+
+  private Store connectToIMAPServer() throws GeneralSecurityException, MessagingException {
+    Properties props = new Properties();
+
+    MailSSLSocketFactory socketFactory = new MailSSLSocketFactory();
+    socketFactory.setTrustedHosts(new String[]{"127.0.0.1", "localhost"});
+    props.put("mail.imaps.ssl.socketFactory", socketFactory);
+
+    Session session = Session.getInstance(props, null);
+    Store store = session.getStore("imaps");
+    store.connect(emailServerHost, imapsPort, imapUserName, imapPassword);
+
+    return store;
   }
 
   protected MimeMessage newEmailTo(Session session, String recipient, String subject) throws MessagingException {
