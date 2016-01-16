@@ -54,7 +54,7 @@ public class GraderEmailAccount {
           if (isMultipartMessage(message)) {
             processAttachments(message, processor);
           } else {
-            warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart");
+            warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
           }
         }
       }
