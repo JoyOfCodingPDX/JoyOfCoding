@@ -39,6 +39,7 @@ public class SubmitIT {
   private final String imapUserName = "emailUser";
   private final String imapPassword = "emailPassword";
   private final int imapsPort = 9933;
+  private String graderEmail = Submit.TA_EMAIL;
 
   @Before
   public void createFilesToSubmit() throws IOException {
@@ -55,9 +56,9 @@ public class SubmitIT {
     ServerSetup imaps = new ServerSetup(imapsPort, emailServerHost, ServerSetup.PROTOCOL_IMAPS);
     emailServer = new GreenMail(new ServerSetup[]{ smtp, imaps });
 
-    GreenMailUser user = emailServer.setUser(studentEmail, imapUserName, imapPassword);
+    GreenMailUser graderUser = emailServer.setUser(graderEmail, imapUserName, imapPassword);
 
-    moveEmailsFromInboxToProjectSubmissions(user);
+    moveEmailsFromInboxToProjectSubmissions(graderUser);
 
     emailServer.start();
   }
@@ -141,6 +142,7 @@ public class SubmitIT {
     submit.setEmailServerHostName(emailServerHost);
     submit.setEmailServerPort(smtpPort);
     submit.setDebug(true);
+    submit.setSendReceipt(false);
     submit.submit(false);
 
     GradeBook gradeBook = new GradeBook("SubmitIT");

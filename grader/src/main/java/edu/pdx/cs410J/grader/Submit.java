@@ -44,7 +44,8 @@ public class Submit extends EmailSender {
   /**
    * The grader's email address
    */
-  private static final String TA_EMAIL = "sjavata@gmail.com";
+  @VisibleForTesting
+  static final String TA_EMAIL = "sjavata@gmail.com";
 
   /**
    * A URL containing a list of files that should not be submitted
@@ -103,6 +104,7 @@ public class Submit extends EmailSender {
   private Set<String> fileNames = new HashSet<>();
 
   private boolean isSubmittingKoans = false;
+  private boolean sendReceipt = true;
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -292,8 +294,9 @@ public class Submit extends EmailSender {
     // Send the zip file as an email attachment to the TA
     mailTA(zipFile, sourceFiles);
 
-    // Send a receipt to the user
-    mailReceipt(sourceFiles);
+    if (sendReceipt) {
+      mailReceipt(sourceFiles);
+    }
 
     return true;
   }
@@ -745,6 +748,11 @@ public class Submit extends EmailSender {
     } else {
       out.println(submit.projName + " not submitted.");
     }
+  }
+
+  public void setSendReceipt(boolean sendReceipt) {
+    this.sendReceipt = sendReceipt;
+
   }
 
   static class ManifestAttributes {
