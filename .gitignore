@@ -11,6 +11,7 @@
 *.iml
 *.ipr
 *.iws
+*.idea
 
 # Maven build artifacts should not be committed #
 target
