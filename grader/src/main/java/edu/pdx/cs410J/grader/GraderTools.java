@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,8 @@ public class GraderTools {
     invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));
   }
 
-  private static void setLoggingLevelToDebug() {
+  @VisibleForTesting
+  static void setLoggingLevelToDebug() {
     Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");
     logger.setLevel(Level.DEBUG);
   }

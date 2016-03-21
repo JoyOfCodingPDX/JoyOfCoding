@@ -18,6 +18,9 @@ import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
 
 class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
+  @VisibleForTesting
+  static final String EMAIL_FOLDER_NAME = "Project Submissions";
+
   public ProjectSubmissionsProcessor(File directory, GradeBook gradeBook) {
     super(directory, gradeBook);
   }
@@ -227,7 +230,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
   @Override
   public String getEmailFolder() {
-    return "Project Submissions";
+    return EMAIL_FOLDER_NAME;
   }
 
 }
