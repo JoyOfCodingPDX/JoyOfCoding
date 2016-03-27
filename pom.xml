@@ -21,6 +21,10 @@
     <name>Portland State University</name>
     <url>http://www.pdx.edu</url>
   </organization>
+  <issueManagement>
+    <system>github</system>
+    <url>https://github.com/DavidWhitlock/PortlandStateJava/issues</url>
+  </issueManagement>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
