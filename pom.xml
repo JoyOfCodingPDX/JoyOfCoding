@@ -463,9 +463,9 @@
   </reporting>
   <distributionManagement>
     <repository>
-      <id>whitlock-PSU</id>
-      <name>David Whitlock's PSU Repository</name>
-      <url>scpexe://cs.pdx.edu/u/whitlock/public_html/repository/maven2</url>
+      <id>bintray-davidwhitlock-maven</id>
+      <name>DavidWhitlock-maven</name>
+      <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
     </repository>
     <site>
       <id>whitlock-PSU</id>
