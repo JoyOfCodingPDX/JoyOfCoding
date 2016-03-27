@@ -157,13 +157,6 @@
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.7</version>
-        <dependencies>
-         <dependency>
-           <groupId>org.apache.maven.wagon</groupId>
-           <artifactId>wagon-ssh-external</artifactId>
-           <version>2.10</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
