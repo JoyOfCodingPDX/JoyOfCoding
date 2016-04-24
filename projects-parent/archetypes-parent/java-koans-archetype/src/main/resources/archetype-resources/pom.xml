@@ -45,14 +45,14 @@
     <repository>
       <id>CS410J</id>
       <name>CS410J Maven Repository</name>
-      <url>http://web.cecs.pdx.edu/~whitlock/repository/maven2</url>
+      <url>https://dl.bintray.com/davidwhitlock/maven</url>
     </repository>
   </repositories>
   <dependencies>
     <dependency>
       <groupId>com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>Summer2014</version>
+      <version>Summer2016</version>
     </dependency>
   </dependencies>
   <build>
@@ -93,7 +93,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.4.0</version>
         <executions>
           <execution>
             <goals>
@@ -103,6 +103,9 @@
         </executions>
         <configuration>
             <mainClass>com.sandwich.koan.runner.AppLauncher</mainClass>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${basedir}/app/config</additionalClasspathElement>
+         </additionalClasspathElements>
         </configuration>
       </plugin>
       <plugin>
