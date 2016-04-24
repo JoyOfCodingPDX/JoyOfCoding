@@ -28,6 +28,9 @@
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
           <version>2.4</version>
+          <configuration>
+            <settingsFile>${basedir}/src/test/resources/projects/settings.xml</settingsFile>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
