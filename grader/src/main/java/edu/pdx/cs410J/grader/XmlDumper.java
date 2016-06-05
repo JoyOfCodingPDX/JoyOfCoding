@@ -398,6 +398,14 @@ public class XmlDumper extends XmlHelper {
     appendTextElementIfValueIsNotNull(root, "major", student.getMajor());
     appendTextElementIfValueIsNotNull(root, "d2l-id", student.getD2LId());
     appendTextElementIfValueIsNotNull(root, "letter-grade", Objects.toString(student.getLetterGrade(), null));
+
+    setAttributeIfValueIsNotNull(root, "enrolled-section", Objects.toString(student.getEnrolledSection(), null));
+  }
+
+  private static void setAttributeIfValueIsNotNull(Element root, String name, String value) {
+    if (value != null) {
+      root.setAttribute(name, value);
+    }
   }
 
   private static Document createXmlDocument() {

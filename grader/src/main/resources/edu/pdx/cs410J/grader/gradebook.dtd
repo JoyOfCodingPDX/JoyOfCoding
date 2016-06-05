@@ -55,6 +55,9 @@ address, social security number, a major, some grades, some late
 assignments, and some notes -->
 <!ELEMENT student (id, firstName?, lastName?, nickName?, email?, ssn?,
                    major?, d2l-id?, letter-grade?, grades?, late?, resubmitted?, notes?)>
+<!ATTLIST student
+          enrolled-section (undergraduate | graduate) #IMPLIED
+>
 
 <!ELEMENT id (#PCDATA)>
 
