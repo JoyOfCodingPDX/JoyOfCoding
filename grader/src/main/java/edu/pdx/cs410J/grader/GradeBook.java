@@ -323,12 +323,12 @@ public class GradeBook {
     }
   }
 
-  public LetterGradeRanges getLetterGradeRanges() {
+  public LetterGradeRanges getLetterGradeRanges(Student.Section section) {
     return letterGradeRanges;
   }
 
-  public LetterGrade getLetterGradeForScore(double score) {
-    for (LetterGradeRange range : this.getLetterGradeRanges()) {
+  public LetterGrade getLetterGradeForScore(Student.Section section, double score) {
+    for (LetterGradeRange range : this.getLetterGradeRanges(section)) {
       if (range.isScoreInRange(score)) {
         return range.letterGrade();
       }

@@ -225,7 +225,7 @@ public class XmlGradeBookParser extends XmlHelper {
   private void extractLetterGradeRangeFrom(Element element) {
     String letterGradeString = element.getAttribute("letter-grade");
     LetterGrade letterGrade = LetterGrade.fromString(letterGradeString);
-    LetterGradeRange range = this.book.getLetterGradeRanges().getRange(letterGrade);
+    LetterGradeRange range = this.book.getLetterGradeRanges(Student.Section.UNDERGRADUATE).getRange(letterGrade);
     range.setRange(toInt(element.getAttribute("minimum-score")), toInt(element.getAttribute("maximum-score")));
 
   }

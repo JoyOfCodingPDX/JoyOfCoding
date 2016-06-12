@@ -182,7 +182,7 @@ public class SummaryReportTest {
     Assignment assignment = new Assignment("assignment", 10.0);
     gradeBook.addAssignment(assignment);
 
-    GradeBook.LetterGradeRanges letterGradeRanges = gradeBook.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges letterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
     letterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);
     letterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);
     letterGradeRanges.validate();

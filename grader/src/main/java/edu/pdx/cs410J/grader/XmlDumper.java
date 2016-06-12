@@ -110,7 +110,7 @@ public class XmlDumper extends XmlHelper {
 
   private static void appendXmlForLetterGradeRanges(GradeBook book, Document doc, Element root) {
     Element lgrNode = doc.createElement("letter-grade-ranges");
-    for (LetterGradeRange range : book.getLetterGradeRanges()) {
+    for (LetterGradeRange range : book.getLetterGradeRanges(Student.Section.UNDERGRADUATE)) {
       appendXmlForLetterGradeRange(range, doc, lgrNode);
     }
     root.appendChild(lgrNode);
