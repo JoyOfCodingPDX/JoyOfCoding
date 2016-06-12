@@ -40,6 +40,7 @@ public class Survey extends EmailSender {
     if (student.getMajor() != null) {
       sb.append("Major: ").append(student.getMajor()).append("\n");
     }
+    sb.append("Enrolled in: ").append(student.getEnrolledSection().asString()).append("\n");
     return sb.toString();
   }
 
@@ -55,8 +56,7 @@ public class Survey extends EmailSender {
       response = in.readLine();
 
     } catch (IOException ex) {
-      err.println("** IOException while reading response: " + ex);
-      System.exit(1);
+      printErrorMessageAndExit("** IOException while reading response: " + ex);
     }
 
     return response;
@@ -106,8 +106,7 @@ public class Survey extends EmailSender {
     String id = ask("MANDATORY: What is your UNIX login id?");
 
     if (isEmpty(id)) {
-      err.println("** You must enter a valid UNIX login id");
-      System.exit(1);
+      printErrorMessageAndExit("** You must enter a valid UNIX login id");
     }
 
     Student student = new Student(id);
@@ -119,7 +118,27 @@ public class Survey extends EmailSender {
     askQuestionAndSetValue("What is your student id (XXXXXXXXX)?", student::setSsn);
     askQuestionAndSetValue("What is your major?", student::setMajor);
 
+    askEnrolledSectionQuestion(student);
+
     return student;
+  }
+
+  private static void askEnrolledSectionQuestion(Student student) {
+    String answer = ask("Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
+    if (isEmpty(answer)) {
+      printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");
+    }
+
+    if (answer.toLowerCase().startsWith("u")) {
+      student.setEnrolledSection(Student.Section.UNDERGRADUATE);
+
+    } else if (answer.toLowerCase().startsWith("g")) {
+      student.setEnrolledSection(Student.Section.GRADUATE);
+
+    } else {
+      printErrorMessageAndExit("Unknown section \"" + answer + "\".  Please enter a \"u\" or \"g\"");
+    }
+
   }
 
   private static void askQuestionAndSetValue(String question, Consumer<String> setter) {
@@ -158,9 +177,8 @@ public class Survey extends EmailSender {
       logSentEmail(message);
 
     } catch (MessagingException ex) {
-      err.println("** Exception while adding parts and sending: " +
+      printErrorMessageAndExit("** Exception while adding parts and sending: " +
 		  ex);
-      System.exit(1);
     }
   }
 
@@ -199,8 +217,7 @@ public class Survey extends EmailSender {
       filePart.setDescription("XML file for " + student.getFullName());
 
     } catch (MessagingException ex) {
-      err.println("** Exception with file part: " + ex);
-      System.exit(1);
+      printErrorMessageAndExit("** Exception with file part: " + ex);
     }
     return filePart;
   }
@@ -224,8 +241,7 @@ public class Survey extends EmailSender {
       textPart.setDisposition("inline");
 
     } catch (MessagingException ex) {
-      err.println("** Exception with text part: " + ex);
-      System.exit(1);
+      printErrorMessageAndExit("** Exception with text part: " + ex);
     }
     return textPart;
   }
@@ -242,13 +258,11 @@ public class Survey extends EmailSender {
       }
 
     } catch (AddressException ex) {
-      err.println("** Exception with email address " + ex);
-      System.exit(1);
+      printErrorMessageAndExit("** Exception with email address " + ex);
 
     } catch (MessagingException ex) {
-      err.println("** Exception while setting recipients email:" +
+      printErrorMessageAndExit("** Exception while setting recipients email:" +
                   ex);
-      System.exit(1);
     }
     return message;
   }
@@ -281,10 +295,15 @@ public class Survey extends EmailSender {
 
     String verify = ask("\nIs this information correct (y/n)?");
     if (!verify.equals("y")) {
-      err.println("** Not sending information.  Exiting.");
-      System.exit(1);
+      String x = "** Not sending information.  Exiting.";
+      printErrorMessageAndExit(x);
     }
     return summary;
+  }
+
+  private static void printErrorMessageAndExit(String message) {
+    err.println(message);
+    System.exit(1);
   }
 
   private static boolean isNotEmpty(String string) {
