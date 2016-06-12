@@ -19,9 +19,7 @@ import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
 import static edu.pdx.cs410J.grader.SummaryReport.GRADUATE_DIRECTORY_NAME;
 import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.stringContainsInOrder;
+import static org.hamcrest.Matchers.*;
 
 public class SummaryReportTest {
 
@@ -177,4 +175,30 @@ public class SummaryReportTest {
       return ((StringWriter) this.out).getBuffer().toString();
     }
   }
+
+  @Test
+  public void assignLetterGradesAccordingToGradeBookRanges() {
+    GradeBook gradeBook = new GradeBook("test");
+    Assignment assignment = new Assignment("assignment", 10.0);
+    gradeBook.addAssignment(assignment);
+
+    GradeBook.LetterGradeRanges letterGradeRanges = gradeBook.getLetterGradeRanges();
+    letterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);
+    letterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);
+    letterGradeRanges.validate();
+
+    String undergradStudentName = "undergrad";
+    Student undergrad = addStudentInSectionWithScore(gradeBook, assignment, undergradStudentName, UNDERGRADUATE, 9.7);
+    assertThat(undergrad.getLetterGrade(), nullValue());
+
+    String gradStudentName = "grad";
+    Student grad = addStudentInSectionWithScore(gradeBook, assignment, gradStudentName, GRADUATE, 9.2);
+    assertThat(undergrad.getLetterGrade(), nullValue());
+
+    calculateTotalGradesForStudents(gradeBook, true);
+
+    assertThat(undergrad.getLetterGrade(), equalTo(LetterGrade.A));
+    assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));
+  }
+
 }
