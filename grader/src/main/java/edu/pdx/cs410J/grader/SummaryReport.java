@@ -21,7 +21,8 @@ public class SummaryReport {
   /**
    * Computes the student's final average and makes a pretty report.
    */
-  private static void dumpReportTo(GradeBook book, Student student,
+  @VisibleForTesting
+  static void dumpReportTo(GradeBook book, Student student,
                                    PrintWriter pw, boolean assignLetterGrades) {
     NumberFormat format = NumberFormat.getNumberInstance();
     format.setMinimumFractionDigits(1);
@@ -250,11 +251,28 @@ public class SummaryReport {
     dumpReports(studentIds, book, outDir, assignLetterGrades);
 
     // Sort students by totals and print out results:
-    SortedSet<Student> sorted = getStudentSortedByTotalPoints();
-    printOutStudentTotals(sorted);
+    Set<Student> students1 = allTotals.keySet();
+    printOutStudentTotals(students1, out);
 
     saveGradeBookIfDirty(xmlFileName, book);
 
+  }
+
+  @VisibleForTesting
+  static void printOutStudentTotals(Set<Student> allStudents, PrintWriter out) {
+    SortedSet<Student> sorted = getStudentSortedByTotalPoints(allStudents);
+    NumberFormat format = NumberFormat.getPercentInstance();
+
+    for (Student student : sorted) {
+      Double d = allTotals.get(student);
+      out.print(student + ": " + format.format(d.doubleValue()));
+
+      if (student.getLetterGrade() != null) {
+        out.print(" " + student.getLetterGrade());
+      }
+
+      out.println();
+    }
   }
 
   private static void saveGradeBookIfDirty(String xmlFileName, GradeBook book) {
@@ -269,22 +287,7 @@ public class SummaryReport {
     }
   }
 
-  private static void printOutStudentTotals(Iterable<Student> students) {
-    NumberFormat format = NumberFormat.getPercentInstance();
-
-    for (Student student : students) {
-      Double d = allTotals.get(student);
-      out.print(student + ": " + format.format(d.doubleValue()));
-
-      if (student.getLetterGrade() != null) {
-        out.print(" " + student.getLetterGrade());
-      }
-
-      out.println();
-    }
-  }
-
-  private static SortedSet<Student> getStudentSortedByTotalPoints() {
+  private static SortedSet<Student> getStudentSortedByTotalPoints(Set<Student> students) {
     SortedSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
         @Override
         public int compare(Student s1, Student s2) {
@@ -303,7 +306,7 @@ public class SummaryReport {
         }
       });
 
-    sorted.addAll(allTotals.keySet());
+    sorted.addAll(students);
     return sorted;
   }
 

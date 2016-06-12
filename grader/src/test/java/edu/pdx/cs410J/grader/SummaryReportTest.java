@@ -5,15 +5,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;
 import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
@@ -22,6 +21,7 @@ import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 public class SummaryReportTest {
 
@@ -115,5 +115,61 @@ public class SummaryReportTest {
     StringWriter writer = new StringWriter();
     CharStreams.copy(new FileReader(file), writer);
     return writer.getBuffer().toString();
+  }
+
+  @Test
+  public void totalsArePrintedForAllStudents() {
+    GradeBook gradeBook = new GradeBook("test");
+    Assignment assignment = new Assignment("assignment", 4.0);
+    gradeBook.addAssignment(assignment);
+
+    double worseScore = 3.0;
+    String worseStudentName = "worse";
+    addStudentInSectionWithScore(gradeBook, assignment, worseStudentName, UNDERGRADUATE, worseScore);
+
+    double betterScore = 3.5;
+    String betterStudentName = "better";
+    addStudentInSectionWithScore(gradeBook, assignment, betterStudentName, UNDERGRADUATE, betterScore);
+
+    calculateTotalGradesForStudents(gradeBook, false);
+
+    CapturingPrintWriter out = new CapturingPrintWriter();
+    SummaryReport.printOutStudentTotals(gradeBook.studentsStream().collect(Collectors.toSet()), out);
+
+    String written = out.getTextWrittenToWriter();
+    assertThat(written, stringContainsInOrder(Arrays.asList(betterStudentName, worseStudentName)));
+  }
+
+  private void calculateTotalGradesForStudents(GradeBook gradeBook, boolean assignLetterGrades) {
+    PrintWriter pw = new PrintWriter(new Writer() {
+      @Override
+      public void write(char[] cbuf, int off, int len) throws IOException {
+
+      }
+
+      @Override
+      public void flush() throws IOException {
+
+      }
+
+      @Override
+      public void close() throws IOException {
+
+      }
+    });
+
+    gradeBook.studentsStream().forEach(student -> {
+      SummaryReport.dumpReportTo(gradeBook, student, pw, assignLetterGrades);
+    });
+  }
+
+  private class CapturingPrintWriter extends PrintWriter {
+    public CapturingPrintWriter() {
+      super(new StringWriter());
+    }
+
+    public String getTextWrittenToWriter() {
+      return ((StringWriter) this.out).getBuffer().toString();
+    }
   }
 }
