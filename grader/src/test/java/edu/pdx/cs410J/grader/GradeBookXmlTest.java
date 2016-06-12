@@ -20,13 +20,19 @@ public class GradeBookXmlTest {
   public void letterGradeRangesArePersistedToXml() throws IOException, TransformerException, ParserException {
     GradeBook book = new GradeBook("test");
 
-    LetterGradeRanges ranges = book.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
-    morphLetterGradeRanges(ranges, 1);
+    LetterGradeRanges undergradRanges = book.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
+    morphLetterGradeRanges(undergradRanges, 1);
+
+    LetterGradeRanges gradRanges = book.getLetterGradeRanges(Student.Section.GRADUATE);
+    morphLetterGradeRanges(gradRanges, 2);
 
     GradeBook book2 = writeAndReadGradeBookAsXml(book);
 
-    LetterGradeRanges ranges2 = book2.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
-    assertRangesAreEqual(ranges, ranges2);
+    LetterGradeRanges undergradRanges2 = book2.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
+    assertRangesAreEqual(undergradRanges, undergradRanges2);
+
+    LetterGradeRanges gradRanges2 = book2.getLetterGradeRanges(Student.Section.GRADUATE);
+    assertRangesAreEqual(gradRanges, gradRanges2);
   }
 
   private void assertRangesAreEqual(LetterGradeRanges ranges, LetterGradeRanges ranges2) {

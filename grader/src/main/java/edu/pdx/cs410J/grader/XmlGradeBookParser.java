@@ -210,6 +210,16 @@ public class XmlGradeBookParser extends XmlHelper {
   }
 
   private void extractLetterGradeRangesFrom(Element parent) {
+    Student.Section section;
+    String attributeName = "for-section";
+    if (parent.hasAttribute(attributeName)) {
+      String value = parent.getAttribute(attributeName);
+      section = Student.Section.fromString(value);
+
+    } else {
+      section = Student.Section.UNDERGRADUATE;
+    }
+
     NodeList ranges = parent.getChildNodes();
     for (int j = 0; j < ranges.getLength(); j++) {
       Node range = ranges.item(j);
@@ -218,14 +228,14 @@ public class XmlGradeBookParser extends XmlHelper {
         continue;
       }
 
-      extractLetterGradeRangeFrom((Element) range);
+      extractLetterGradeRangeFrom((Element) range, section);
     }
   }
 
-  private void extractLetterGradeRangeFrom(Element element) {
+  private void extractLetterGradeRangeFrom(Element element, Student.Section section) {
     String letterGradeString = element.getAttribute("letter-grade");
     LetterGrade letterGrade = LetterGrade.fromString(letterGradeString);
-    LetterGradeRange range = this.book.getLetterGradeRanges(Student.Section.UNDERGRADUATE).getRange(letterGrade);
+    LetterGradeRange range = this.book.getLetterGradeRanges(section).getRange(letterGrade);
     range.setRange(toInt(element.getAttribute("minimum-score")), toInt(element.getAttribute("maximum-score")));
 
   }

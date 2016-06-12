@@ -49,7 +49,7 @@ public class GradeBook {
     }
   }
 
-  private Iterable<Section> getSections() {
+  public Iterable<Section> getSections() {
     return Arrays.asList(Section.UNDERGRADUATE, Section.GRADUATE);
   }
 

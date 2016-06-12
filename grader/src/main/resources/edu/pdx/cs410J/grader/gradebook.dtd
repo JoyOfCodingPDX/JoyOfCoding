@@ -23,7 +23,10 @@ number of late days allowed in the class -->
           maximum-score  CDATA  #REQUIRED
 >
 <!ELEMENT letter-grade-ranges (letter-grade-range+)>
-<!ELEMENT gradebook (name, assignments, letter-grade-ranges?, students, lateDays?)>
+<!ATTLIST letter-grade-ranges
+          for-section (undergraduate | graduate) #IMPLIED
+>
+<!ELEMENT gradebook (name, assignments, letter-grade-ranges*, students, lateDays?)>
 <!ATTLIST gradebook
           crn CDATA #IMPLIED
 >
