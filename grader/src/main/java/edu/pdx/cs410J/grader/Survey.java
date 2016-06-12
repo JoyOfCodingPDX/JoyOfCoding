@@ -58,7 +58,7 @@ public class Survey extends EmailSender {
       response = in.readLine();
 
     } catch (IOException ex) {
-      printErrorMessageAndExit("** IOException while reading response: " + ex);
+      printErrorMessageAndExit("** IOException while reading response", ex);
     }
 
     return response;
@@ -180,8 +180,7 @@ public class Survey extends EmailSender {
       logSentEmail(message);
 
     } catch (MessagingException ex) {
-      printErrorMessageAndExit("** Exception while adding parts and sending: " +
-		  ex);
+      printErrorMessageAndExit("** Exception while adding parts and sending", ex);
     }
   }
 
@@ -224,7 +223,7 @@ public class Survey extends EmailSender {
       filePart.setDescription("XML file for " + student.getFullName());
 
     } catch (MessagingException ex) {
-      printErrorMessageAndExit("** Exception with file part: " + ex);
+      printErrorMessageAndExit("** Exception with file part", ex);
     }
     return filePart;
   }
@@ -262,7 +261,7 @@ public class Survey extends EmailSender {
       textPart.setDisposition("inline");
 
     } catch (MessagingException ex) {
-      printErrorMessageAndExit("** Exception with text part: " + ex);
+      printErrorMessageAndExit("** Exception with text part", ex);
     }
     return textPart;
   }
@@ -279,11 +278,10 @@ public class Survey extends EmailSender {
       }
 
     } catch (AddressException ex) {
-      printErrorMessageAndExit("** Exception with email address " + ex);
+      printErrorMessageAndExit("** Exception with email address", ex);
 
     } catch (MessagingException ex) {
-      printErrorMessageAndExit("** Exception while setting recipients email:" +
-                  ex);
+      printErrorMessageAndExit("** Exception while setting recipients email", ex);
     }
     return message;
   }
@@ -316,8 +314,7 @@ public class Survey extends EmailSender {
 
     String verify = ask("\nIs this information correct (y/n)?");
     if (!verify.equals("y")) {
-      String x = "** Not sending information.  Exiting.";
-      printErrorMessageAndExit(x);
+      printErrorMessageAndExit("** Not sending information.  Exiting.");
     }
     return summary;
   }
