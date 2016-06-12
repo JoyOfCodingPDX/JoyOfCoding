@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -232,25 +233,7 @@ public class SummaryReport {
       usage("Grade book file " + xmlFile + " does not exist");
     }
 
-    // Parse XML file
-    GradeBook book = null;
-    try {
-      err.println("Parsing " + file);
-      XmlGradeBookParser parser = new XmlGradeBookParser(file);
-      book = parser.parse();
-
-    } catch (FileNotFoundException ex) {
-      err.println("** Could not find file: " + ex.getMessage());
-      System.exit(1);
-
-    } catch (IOException ex) {
-      err.println("** IOException during parsing: " + ex.getMessage());
-      System.exit(1);
-
-    } catch (ParserException ex) {
-      err.println("** Exception while parsing " + file + ": " + ex);
-      System.exit(1);
-    }
+    GradeBook book = parseGradeBook(file);
 
     // Create a SummaryReport for every student
     Iterable<String> studentIds;
@@ -262,26 +245,45 @@ public class SummaryReport {
       studentIds = book.getStudentIds();
     }
 
-    for (String id : studentIds) {
-      err.println(id);
-
-      Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
-      
-      File outFile = new File(outDir, id + ".report");
-      try {
-        PrintWriter pw = 
-          new PrintWriter(new FileWriter(outFile), true);
-        dumpReportTo(book, student, pw, assignLetterGrades);
-
-//         dumpReportTo(book, student, out);
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        System.exit(1);
-      }
-    }
+    dumpReports(studentIds, book, outDir, assignLetterGrades);
 
     // Sort students by totals and print out results:
-    TreeSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
+    SortedSet<Student> sorted = getStudentSortedByTotalPoints();
+    printOutStudentTotals(sorted);
+
+    saveGradeBookIfDirty(xmlFileName, book);
+
+  }
+
+  private static void saveGradeBookIfDirty(String xmlFileName, GradeBook book) {
+    if (book.isDirty()) {
+      try {
+        XmlDumper dumper = new XmlDumper(xmlFileName);
+        dumper.dump(book);
+
+      } catch (IOException ex) {
+        printErrorMessageAndExit("While saving gradebook to " + xmlFileName, ex);
+      }
+    }
+  }
+
+  private static void printOutStudentTotals(Iterable<Student> students) {
+    NumberFormat format = NumberFormat.getPercentInstance();
+
+    for (Student student : students) {
+      Double d = allTotals.get(student);
+      out.print(student + ": " + format.format(d.doubleValue()));
+
+      if (student.getLetterGrade() != null) {
+        out.print(" " + student.getLetterGrade());
+      }
+
+      out.println();
+    }
+  }
+
+  private static SortedSet<Student> getStudentSortedByTotalPoints() {
+    SortedSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
         @Override
         public int compare(Student s1, Student s2) {
           Double d1 = allTotals.get(s1);
@@ -300,31 +302,53 @@ public class SummaryReport {
       });
 
     sorted.addAll(allTotals.keySet());
+    return sorted;
+  }
 
-    NumberFormat format = NumberFormat.getPercentInstance();
+  @VisibleForTesting
+  static void dumpReports(Iterable<String> studentIds, GradeBook book, File outDir, boolean assignLetterGrades) {
+    for (String id : studentIds) {
+      err.println(id);
 
-    for (Student student : sorted) {
-      Double d = allTotals.get(student);
-      out.print(student + ": " + format.format(d.doubleValue()));
+      Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
 
-      if (student.getLetterGrade() != null) {
-        out.print(" " + student.getLetterGrade());
-      }
-
-      out.println();
-    }
-
-    if (book.isDirty()) {
+      File outFile = new File(outDir, getReportFileName(id));
       try {
-        XmlDumper dumper = new XmlDumper(xmlFileName);
-        dumper.dump(book);
+        PrintWriter pw =
+          new PrintWriter(new FileWriter(outFile), true);
+        dumpReportTo(book, student, pw, assignLetterGrades);
 
+//         dumpReportTo(book, student, out);
       } catch (IOException ex) {
-        ex.printStackTrace();
-        System.exit(1);
+        printErrorMessageAndExit("While writing report to " + outFile, ex);
       }
     }
+  }
 
+  @VisibleForTesting
+  static String getReportFileName(String studentId) {
+    return studentId + ".report";
+  }
+
+  private static GradeBook parseGradeBook(File gradeBookFile) {
+    GradeBook book = null;
+    try {
+      err.println("Parsing " + gradeBookFile);
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFile);
+      book = parser.parse();
+
+    } catch (FileNotFoundException ex) {
+      printErrorMessageAndExit("** Could not find grade book file: " + gradeBookFile, ex);
+
+    } catch (ParserException | IOException ex) {
+      printErrorMessageAndExit("** Exception while parsing " + gradeBookFile, ex);
+    }
+    return book;
+  }
+
+  private static void printErrorMessageAndExit(String message, Throwable ex) {
+    err.println(message);
+    System.exit(1);
   }
 
   @SuppressWarnings("ThrowableInstanceNeverThrown")
