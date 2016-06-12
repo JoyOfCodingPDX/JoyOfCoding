@@ -17,12 +17,14 @@ import java.util.function.Consumer;
  * receipt back to the student.
  */
 public class Survey extends EmailSender {
-  private static PrintWriter out = new PrintWriter(System.out, true);
-  private static PrintWriter err = new PrintWriter(System.err, true);
-  private static BufferedReader in = 
+  private static final PrintWriter out = new PrintWriter(System.out, true);
+  private static final PrintWriter err = new PrintWriter(System.err, true);
+  private static final BufferedReader in =
     new BufferedReader(new InputStreamReader(System.in));
 
   private static final String TA_EMAIL = "sjavata@gmail.com";
+
+  private static boolean saveStudentXmlFile = false;
 
   /**
    * Returns a textual summary of a <code>Student</code>
@@ -69,6 +71,7 @@ public class Survey extends EmailSender {
     err.println("\nusage: java Survey [options]");
     err.println("  where [options] are:");
     err.println("  -mailServer serverName    Mail server to send mail");
+    err.println("  -saveStudentXmlFile       Save a copy of the generated student.xml file");
     err.println("\n");
     System.exit(1);
   }
@@ -206,6 +209,10 @@ public class Survey extends EmailSender {
   private static MimeBodyPart createXmlAttachment(Student student) {
     byte[] xmlBytes = getXmlBytes(student);
 
+    if (saveStudentXmlFile) {
+      writeStudentXmlToFile(xmlBytes, student);
+    }
+
     DataSource ds = new ByteArrayDataSource(xmlBytes, "text/xml");
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
@@ -220,6 +227,20 @@ public class Survey extends EmailSender {
       printErrorMessageAndExit("** Exception with file part: " + ex);
     }
     return filePart;
+  }
+
+  private static void writeStudentXmlToFile(byte[] xmlBytes, Student student) {
+    File directory = new File(System.getProperty("user.dir"));
+    File file = new File(directory, student.getId() + ".xml");
+    try (FileOutputStream fos = new FileOutputStream(file)) {
+      fos.write(xmlBytes);
+      fos.flush();
+
+    } catch (IOException e) {
+      printErrorMessageAndExit("Could not write student XML file: " + file, e);
+    }
+
+    out.println("\nSaved student XML file to " + file + "\n");
   }
 
   private static MimeBodyPart createEmailText(String learn, String comments, String summary) {
@@ -302,7 +323,14 @@ public class Survey extends EmailSender {
   }
 
   private static void printErrorMessageAndExit(String message) {
+    printErrorMessageAndExit(message, null);
+  }
+
+  private static void printErrorMessageAndExit(String message, Throwable ex) {
     err.println(message);
+    if (ex != null) {
+      ex.printStackTrace(err);
+    }
     System.exit(1);
   }
 
@@ -329,20 +357,24 @@ public class Survey extends EmailSender {
   private static void parseCommandLine(String[] args) {
     // Parse the command line
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-mailServer")) {
+      String arg = args[i];
+      if (arg.equals("-mailServer")) {
         if (++i >= args.length) {
           err.println("** Missing mail server name");
           usage();
         }
 
-        serverName = args[i];
+        serverName = arg;
 
-      } else if (args[i].startsWith("-")) {
-        err.println("** Unknown command line option: " + args[i]);
+      } else if (arg.equals("-saveStudentXmlFile")) {
+        saveStudentXmlFile = true;
+
+      } else if (arg.startsWith("-")) {
+        err.println("** Unknown command line option: " + arg);
         usage();
 
       } else {
-        err.println("** Spurious command line: " + args[i]);
+        err.println("** Spurious command line: " + arg);
         usage();
       }
     }
