@@ -14,6 +14,8 @@ import java.util.function.Supplier;
  * grades.
  */
 public class SummaryReport {
+  static final String UNDERGRADUATE_DIRECTORY_NAME = "undergraduates";
+  static final String GRADUATE_DIRECTORY_NAME = "graduates";
   private static HashMap<Student, Double> allTotals = new HashMap<>();
 
   /**
@@ -312,7 +314,7 @@ public class SummaryReport {
 
       Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
 
-      File outFile = new File(outDir, getReportFileName(id));
+      File outFile = new File(getDirectoryForReportFileForStudent(outDir, student), getReportFileName(id));
       try {
         PrintWriter pw =
           new PrintWriter(new FileWriter(outFile), true);
@@ -323,6 +325,24 @@ public class SummaryReport {
         printErrorMessageAndExit("While writing report to " + outFile, ex);
       }
     }
+  }
+
+  private static File getDirectoryForReportFileForStudent(File parentDirectory, Student student) {
+    String directoryName;
+    Student.Section enrolledSection = student.getEnrolledSection();
+    switch (enrolledSection) {
+      case UNDERGRADUATE:
+        directoryName = UNDERGRADUATE_DIRECTORY_NAME;
+        break;
+      case GRADUATE:
+        directoryName = GRADUATE_DIRECTORY_NAME;
+        break;
+      default:
+        throw new IllegalStateException("Don't know directory name for " + enrolledSection);
+    }
+    File directory = new File(parentDirectory, directoryName);
+    directory.mkdirs();
+    return directory;
   }
 
   @VisibleForTesting

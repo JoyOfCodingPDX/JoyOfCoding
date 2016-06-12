@@ -14,8 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collections;
 
+import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;
+import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
+import static edu.pdx.cs410J.grader.SummaryReport.GRADUATE_DIRECTORY_NAME;
+import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -39,11 +42,19 @@ public class SummaryReportTest {
     Files.walkFileTree(tempDirectory.toPath(), new SimpleFileVisitor<Path>() {
       @Override
       public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+        return deleteFile(file);
+      }
+
+      @Override
+      public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+        return deleteFile(dir);
+      }
+
+      private FileVisitResult deleteFile(Path file) throws IOException {
         Files.delete(file);
         return FileVisitResult.CONTINUE;
       }
     });
-    Files.delete(tempDirectory.toPath());
 
     assertThat(tempDirectory.exists(), equalTo(false));
   }
@@ -64,23 +75,40 @@ public class SummaryReportTest {
   }
 
   @Test
-  public void reportsAreGenerated() throws IOException {
+  public void reportsAreGeneratedInCorrectDirectories() throws IOException {
     GradeBook gradeBook = new GradeBook("test");
-    Student student = new Student("student");
-    gradeBook.addStudent(student);
-
     Assignment assignment = new Assignment("assignment", 4.0);
     gradeBook.addAssignment(assignment);
 
-    student.setGrade(assignment, 3.0);
+    double undergradScore = 3.0;
+    Student undergrad = addStudentInSectionWithScore(gradeBook, assignment, "undergrad", UNDERGRADUATE, undergradScore);
 
-    SummaryReport.dumpReports(Collections.singletonList(student.getId()), gradeBook, tempDirectory, false);
+    double gradScore = 3.5;
+    Student grad = addStudentInSectionWithScore(gradeBook, assignment, "grad", GRADUATE, gradScore);
 
-    File file = new File(tempDirectory, SummaryReport.getReportFileName(student.getId()));
-    assertThat(file.exists(), equalTo(true));
+    SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);
 
-    String reportContents = readTextFromFile(file);
-    assertThat(reportContents, containsString("3.0"));
+    assertThatStudentHasReportInDirectoryWithScore(undergrad, UNDERGRADUATE_DIRECTORY_NAME, undergradScore);
+    assertThatStudentHasReportInDirectoryWithScore(grad, GRADUATE_DIRECTORY_NAME, gradScore);
+  }
+
+  private Student addStudentInSectionWithScore(GradeBook gradeBook, Assignment assignment, String studentId, Student.Section enrolledSection, double undergradScore) {
+    Student undergrad = new Student(studentId);
+    undergrad.setEnrolledSection(enrolledSection);
+    gradeBook.addStudent(undergrad);
+    undergrad.setGrade(assignment, undergradScore);
+    return undergrad;
+  }
+
+  private void assertThatStudentHasReportInDirectoryWithScore(Student student, String dirFileName, double studentScore) throws IOException {
+    File directory = new File(tempDirectory, dirFileName);
+    assertThat(directory.exists(), equalTo(true));
+
+    File reportFile = new File(directory, SummaryReport.getReportFileName(student.getId()));
+    assertThat(reportFile.exists(), equalTo(true));
+
+    String reportContents = readTextFromFile(reportFile);
+    assertThat(reportContents, containsString(String.valueOf(studentScore)));
   }
 
   private String readTextFromFile(File file) throws IOException {
