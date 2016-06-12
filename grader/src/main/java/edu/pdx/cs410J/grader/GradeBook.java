@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.Student.Section;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,13 +37,20 @@ public class GradeBook {
   /** The Course Request Number (CRN) for this gradebook */
   private int crn = 0;
 
-  private final LetterGradeRanges letterGradeRanges = new LetterGradeRanges();
+  private final Map<Section, LetterGradeRanges> letterGradeRanges = new HashMap<>();
   
   /**
    * Creates a new <code>GradeBook</code> for a given class
    */
   public GradeBook(String className) {
     this.className = className;
+    for(Section section : getSections()) {
+      letterGradeRanges.put(section, new LetterGradeRanges());
+    }
+  }
+
+  private Iterable<Section> getSections() {
+    return Arrays.asList(Section.UNDERGRADUATE, Section.GRADUATE);
   }
 
   /**
@@ -83,7 +91,7 @@ public class GradeBook {
    * Returns the <code>Assignment</code> of a given name
    */
   public Assignment getAssignment(String name) {
-    return (Assignment) this.assignments.get(name);
+    return this.assignments.get(name);
   }
 
   /**
@@ -323,11 +331,11 @@ public class GradeBook {
     }
   }
 
-  public LetterGradeRanges getLetterGradeRanges(Student.Section section) {
-    return letterGradeRanges;
+  public LetterGradeRanges getLetterGradeRanges(Section section) {
+    return letterGradeRanges.get(section);
   }
 
-  public LetterGrade getLetterGradeForScore(Student.Section section, double score) {
+  public LetterGrade getLetterGradeForScore(Section section, double score) {
     for (LetterGradeRange range : this.getLetterGradeRanges(section)) {
       if (range.isScoreInRange(score)) {
         return range.letterGrade();

@@ -138,7 +138,7 @@ public class SummaryReport {
     double overallScore = total / best;
 
     if (assignLetterGrades) {
-      LetterGrade letterGrade = book.getLetterGradeForScore(UNDERGRADUATE, overallScore * 100.0);
+      LetterGrade letterGrade = book.getLetterGradeForScore(student.getEnrolledSection(), overallScore * 100.0);
       student.setLetterGrade(letterGrade);
     }
 

@@ -177,28 +177,38 @@ public class SummaryReportTest {
   }
 
   @Test
-  public void assignLetterGradesAccordingToGradeBookRanges() {
+  public void assignLetterGradesAccordingToGradeBookRangesForSection() {
     GradeBook gradeBook = new GradeBook("test");
     Assignment assignment = new Assignment("assignment", 10.0);
     gradeBook.addAssignment(assignment);
 
-    GradeBook.LetterGradeRanges letterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
-    letterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);
-    letterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);
-    letterGradeRanges.validate();
+    GradeBook.LetterGradeRanges undergradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
+    undergradLetterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);
+    undergradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);
+    undergradLetterGradeRanges.validate();
 
-    String undergradStudentName = "undergrad";
-    Student undergrad = addStudentInSectionWithScore(gradeBook, assignment, undergradStudentName, UNDERGRADUATE, 9.7);
-    assertThat(undergrad.getLetterGrade(), nullValue());
+    GradeBook.LetterGradeRanges gradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.GRADUATE);
+    gradLetterGradeRanges.getRange(LetterGrade.A).setRange(92, 100);
+    gradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 91);
+    gradLetterGradeRanges.validate();
+
+    String betterUndergradStudentName = "betterUndergrad";
+    Student betterUndergrad = addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 9.7);
+    assertThat(betterUndergrad.getLetterGrade(), nullValue());
+
+    String worseUndergradStudentName = "worseUndergrad";
+    Student worseUndergrad = addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 9.2);
+    assertThat(worseUndergrad.getLetterGrade(), nullValue());
 
     String gradStudentName = "grad";
     Student grad = addStudentInSectionWithScore(gradeBook, assignment, gradStudentName, GRADUATE, 9.2);
-    assertThat(undergrad.getLetterGrade(), nullValue());
+    assertThat(grad.getLetterGrade(), nullValue());
 
     calculateTotalGradesForStudents(gradeBook, true);
 
-    assertThat(undergrad.getLetterGrade(), equalTo(LetterGrade.A));
-    assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));
+    assertThat(betterUndergrad.getLetterGrade(), equalTo(LetterGrade.A));
+    assertThat(worseUndergrad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));
+    assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A));
   }
 
 }
