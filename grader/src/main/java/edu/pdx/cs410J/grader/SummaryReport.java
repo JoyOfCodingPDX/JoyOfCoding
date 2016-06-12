@@ -8,6 +8,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static edu.pdx.cs410J.grader.Student.Section.*;
 
 /**
  * Class that creates a pretty report that summarizes a student's
@@ -261,18 +264,30 @@ public class SummaryReport {
   @VisibleForTesting
   static void printOutStudentTotals(Set<Student> allStudents, PrintWriter out) {
     SortedSet<Student> sorted = getStudentSortedByTotalPoints(allStudents);
+
+    out.println("Undergraduates:");
+    Stream<Student> undergrads = sorted.stream().filter(student -> student.getEnrolledSection() == UNDERGRADUATE);
+    printOutStudentTotals(out, undergrads);
+
+    out.println("Graduate Students:");
+    Stream<Student> grads = sorted.stream().filter(student -> student.getEnrolledSection() == GRADUATE);
+    printOutStudentTotals(out, grads);
+
+  }
+
+  private static void printOutStudentTotals(PrintWriter out, Stream<Student> students) {
     NumberFormat format = NumberFormat.getPercentInstance();
 
-    for (Student student : sorted) {
+    students.forEach(student -> {
       Double d = allTotals.get(student);
-      out.print(student + ": " + format.format(d.doubleValue()));
+      out.print("  " + student + ": " + format.format(d.doubleValue()));
 
       if (student.getLetterGrade() != null) {
         out.print(" " + student.getLetterGrade());
       }
 
       out.println();
-    }
+    });
   }
 
   private static void saveGradeBookIfDirty(String xmlFileName, GradeBook book) {

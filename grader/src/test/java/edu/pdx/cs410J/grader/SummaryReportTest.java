@@ -123,13 +123,17 @@ public class SummaryReportTest {
     Assignment assignment = new Assignment("assignment", 4.0);
     gradeBook.addAssignment(assignment);
 
-    double worseScore = 3.0;
-    String worseStudentName = "worse";
-    addStudentInSectionWithScore(gradeBook, assignment, worseStudentName, UNDERGRADUATE, worseScore);
+    String worseUndergradStudentName = "worseUndergrad";
+    addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 3.0);
 
-    double betterScore = 3.5;
-    String betterStudentName = "better";
-    addStudentInSectionWithScore(gradeBook, assignment, betterStudentName, UNDERGRADUATE, betterScore);
+    String betterUndergradStudentName = "betterUndergrad";
+    addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 3.5);
+
+    String worseGradStudentName = "worseGrad";
+    addStudentInSectionWithScore(gradeBook, assignment, worseGradStudentName, GRADUATE, 3.0);
+
+    String betterGradStudentName = "betterGrad";
+    addStudentInSectionWithScore(gradeBook, assignment, betterGradStudentName, GRADUATE, 3.5);
 
     calculateTotalGradesForStudents(gradeBook, false);
 
@@ -137,7 +141,8 @@ public class SummaryReportTest {
     SummaryReport.printOutStudentTotals(gradeBook.studentsStream().collect(Collectors.toSet()), out);
 
     String written = out.getTextWrittenToWriter();
-    assertThat(written, stringContainsInOrder(Arrays.asList(betterStudentName, worseStudentName)));
+    String[] strings = { betterUndergradStudentName, worseUndergradStudentName, betterGradStudentName, worseGradStudentName };
+    assertThat(written, stringContainsInOrder(Arrays.asList(strings)));
   }
 
   private void calculateTotalGradesForStudents(GradeBook gradeBook, boolean assignLetterGrades) {
