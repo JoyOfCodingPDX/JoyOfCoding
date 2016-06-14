@@ -33,6 +33,7 @@ public class StudentPanel extends JPanel {
   private JTextField majorField;
   private JTextField d2lIdField;
   private final JComboBox<LetterGrade> letterGraderComboBox;
+  private final JComboBox<Student.Section> enrolledSectionComboBox;
 
   /**
    * Creates and lays out a new <code>StudentPanel</code>
@@ -57,6 +58,7 @@ public class StudentPanel extends JPanel {
     labels.add(new JLabel("Major:"));
     labels.add(new JLabel("D2L Id:"));
     labels.add(new JLabel("Letter Grade:"));
+    labels.add(new JLabel("Enrolled Section:"));
 
     JPanel fields = new JPanel();
     fields.setLayout(new GridLayout(0, 1));
@@ -79,6 +81,8 @@ public class StudentPanel extends JPanel {
     fields.add(this.d2lIdField);
     this.letterGraderComboBox = createLetterGradeComboBox();
     fields.add(this.letterGraderComboBox);
+    this.enrolledSectionComboBox= createEnrolledSectionComboBox();
+    fields.add(this.enrolledSectionComboBox);
 
     infoPanel.add(labels, BorderLayout.WEST);
     infoPanel.add(fields, BorderLayout.CENTER);
@@ -105,10 +109,18 @@ public class StudentPanel extends JPanel {
     this.add(buttons, BorderLayout.SOUTH);
   }
 
+  private JComboBox<Student.Section> createEnrolledSectionComboBox() {
+    return createComboBoxWithEnumValues(Student.Section.values());
+  }
+
   private JComboBox<LetterGrade> createLetterGradeComboBox() {
-    Vector<LetterGrade> vector = new Vector<>();
+    return createComboBoxWithEnumValues(LetterGrade.values());
+  }
+
+  private <E> JComboBox<E> createComboBoxWithEnumValues(E[] values) {
+    Vector<E> vector = new Vector<>();
     vector.add(null);
-    vector.addAll(Arrays.asList(LetterGrade.values()));
+    vector.addAll(Arrays.asList(values));
     return new JComboBox<>(vector);
   }
 
@@ -125,6 +137,7 @@ public class StudentPanel extends JPanel {
     this.majorField.setText("");
     this.d2lIdField.setText("");
     this.letterGraderComboBox.setSelectedItem(null);
+    this.enrolledSectionComboBox.setSelectedItem(null);
     this.notes.clearNotes();
   }
 
@@ -180,6 +193,11 @@ public class StudentPanel extends JPanel {
     LetterGrade letterGrade = student.getLetterGrade();
     if (letterGrade != null) {
       this.letterGraderComboBox.setSelectedItem(letterGrade);
+    }
+
+    Student.Section section = student.getEnrolledSection();
+    if (section != null) {
+      this.enrolledSectionComboBox.setSelectedItem(section);
     }
 
     this.notes.setNotable(student);
@@ -251,6 +269,9 @@ public class StudentPanel extends JPanel {
 
     LetterGrade letterGrade = (LetterGrade) this.letterGraderComboBox.getSelectedItem();
     student.setLetterGrade(letterGrade);
+
+    Student.Section section = (Student.Section) this.enrolledSectionComboBox.getSelectedItem();
+    student.setEnrolledSection(section);
 
     // The NotesPanel takes care of adding notes
 

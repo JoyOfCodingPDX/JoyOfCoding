@@ -109,11 +109,23 @@ public class XmlDumper extends XmlHelper {
   }
 
   private static void appendXmlForLetterGradeRanges(GradeBook book, Document doc, Element root) {
+    for (Student.Section section : book.getSections()) {
+      Element lgrNode = appendXmlForLetterGradeRange(book, section, doc);
+      root.appendChild(lgrNode);
+    }
+  }
+
+  private static Element appendXmlForLetterGradeRange(GradeBook book, Student.Section section, Document doc) {
     Element lgrNode = doc.createElement("letter-grade-ranges");
-    for (LetterGradeRange range : book.getLetterGradeRanges()) {
+    lgrNode.setAttribute("for-section", getSectionXmlAttributeValue(section));
+    for (LetterGradeRange range : book.getLetterGradeRanges(section)) {
       appendXmlForLetterGradeRange(range, doc, lgrNode);
     }
-    root.appendChild(lgrNode);
+    return lgrNode;
+  }
+
+  private static String getSectionXmlAttributeValue(Student.Section section) {
+    return Objects.toString(section, null);
   }
 
   private static void appendXmlForLetterGradeRange(LetterGradeRange range, Document doc, Element parent) {
@@ -398,6 +410,14 @@ public class XmlDumper extends XmlHelper {
     appendTextElementIfValueIsNotNull(root, "major", student.getMajor());
     appendTextElementIfValueIsNotNull(root, "d2l-id", student.getD2LId());
     appendTextElementIfValueIsNotNull(root, "letter-grade", Objects.toString(student.getLetterGrade(), null));
+
+    setAttributeIfValueIsNotNull(root, "enrolled-section", getSectionXmlAttributeValue(student.getEnrolledSection()));
+  }
+
+  private static void setAttributeIfValueIsNotNull(Element root, String name, String value) {
+    if (value != null) {
+      root.setAttribute(name, value);
+    }
   }
 
   private static Document createXmlDocument() {

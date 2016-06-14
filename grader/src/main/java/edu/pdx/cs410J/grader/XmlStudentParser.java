@@ -223,6 +223,11 @@ class XmlStudentParser extends XmlHelper {
     }
 
     if (student != null) {
+      if (root.hasAttribute("enrolled-section")) {
+        String section = root.getAttribute("enrolled-section");
+        student.setEnrolledSection(Student.Section.fromString(section));
+      }
+
       // Students are initially clean
       student.makeClean();
     }

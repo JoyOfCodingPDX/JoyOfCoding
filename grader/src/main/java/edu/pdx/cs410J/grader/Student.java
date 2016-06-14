@@ -30,6 +30,7 @@ public class Student extends NotableImpl {
   private List<String> late;   // Names of late Assignments
   private List<String> resubmitted;  // Names of resubmitted Assignments
   private String d2LId;
+  private Section enrolledSection;
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -543,6 +544,43 @@ public class Student extends NotableImpl {
 
   public void setGrade(Assignment assignment, double score) {
     this.setGrade(assignment, new Grade(assignment, score));
+
+  }
+
+  public void setEnrolledSection(Section enrolledSection) {
+    this.enrolledSection = enrolledSection;
+  }
+
+  public Section getEnrolledSection() {
+    return enrolledSection;
+  }
+
+  public enum Section {
+    UNDERGRADUATE("undergraduate"), GRADUATE("graduate");
+
+    private final String stringValue;
+
+    Section(String stringValue) {
+      this.stringValue = stringValue;
+    }
+
+    public static Section fromString(String string) {
+      for (Section section : values()) {
+        if (section.asString().equals(string)) {
+          return section;
+        }
+      }
+
+      throw new IllegalArgumentException("Could not find LetterGrade for string \"" + string + "\"");
+    }
+
+    public String asString() {
+      return stringValue;
+    }
+
+    public String toString() {
+      return asString();
+    }
 
   }
 }

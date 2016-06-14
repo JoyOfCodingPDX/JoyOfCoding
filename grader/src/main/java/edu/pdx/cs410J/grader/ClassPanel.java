@@ -244,7 +244,7 @@ public class ClassPanel extends JPanel {
   }
 
   private void displayLetterGradeRanges(GradeBook book) {
-    this.letterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges());
+    this.letterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges(Student.Section.UNDERGRADUATE));
   }
 
   /**

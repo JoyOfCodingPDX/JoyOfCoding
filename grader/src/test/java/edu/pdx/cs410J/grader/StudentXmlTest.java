@@ -66,4 +66,26 @@ public class StudentXmlTest {
     assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime1, submissionTime2));
   }
 
+  @Test
+  public void enrolledUndergraduateSectionIsPersistedInXml() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    Student.Section section = Student.Section.UNDERGRADUATE;
+    student.setEnrolledSection(section);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getEnrolledSection(), equalTo(section));
+  }
+
+  @Test
+  public void enrolledGraduateSectionIsPersistedInXml() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    Student.Section section = Student.Section.GRADUATE;
+    student.setEnrolledSection(section);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getEnrolledSection(), equalTo(section));
+  }
+
 }
