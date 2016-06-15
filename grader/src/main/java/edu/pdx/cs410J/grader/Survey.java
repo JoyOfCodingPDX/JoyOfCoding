@@ -51,7 +51,8 @@ public class Survey extends EmailSender {
    * Ask the student a question and return his response
    */
   private static String ask(String question) {
-    out.print(question + " ");
+    out.print(breakUpInto80CharacterLines(question));
+    out.print(" ");
     out.flush();
 
     String response = null;
@@ -128,7 +129,7 @@ public class Survey extends EmailSender {
   }
 
   private static void askEnrolledSectionQuestion(Student student) {
-    String answer = ask("Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
+    String answer = ask("MANDATORY: Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
     if (isEmpty(answer)) {
       printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");
     }
@@ -342,12 +343,11 @@ public class Survey extends EmailSender {
 
   private static void printIntroduction() {
     // Ask the student a bunch of questions
-    String welcome = "Welcome to the CS410J Survey Program.  I'd like " +
-      "to ask you a couple of" +
-      "questions about yourself.  Except for your UNIX " +
-                      "login id, no question" +
-      "is mandatory.  Your answers will be emailed to " +
-                      "the TA and a receipt" +
+    String welcome =
+      "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +
+      "questions about yourself.  Except for your UNIX login id and the section " +
+      "that you are enrolled in, no question" +
+      "is mandatory.  Your answers will be emailed to the TA and a receipt " +
       "will be emailed to you.";
 
     out.println("");
