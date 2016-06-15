@@ -204,7 +204,7 @@ public class Survey extends EmailSender {
       }
     }
 
-    System.out.println(sb);
+    out.println(breakUpInto80CharacterLines(sb.toString()));
   }
 
   private static MimeBodyPart createXmlAttachment(Student student) {
