@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
@@ -50,7 +51,8 @@ public class Survey extends EmailSender {
    * Ask the student a question and return his response
    */
   private static String ask(String question) {
-    out.print(question + " ");
+    out.print(breakUpInto80CharacterLines(question));
+    out.print(" ");
     out.flush();
 
     String response = null;
@@ -127,7 +129,7 @@ public class Survey extends EmailSender {
   }
 
   private static void askEnrolledSectionQuestion(Student student) {
-    String answer = ask("Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
+    String answer = ask("MANDATORY: Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
     if (isEmpty(answer)) {
       printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");
     }
@@ -202,7 +204,7 @@ public class Survey extends EmailSender {
       }
     }
 
-    System.out.println(sb);
+    out.println(breakUpInto80CharacterLines(sb.toString()));
   }
 
   private static MimeBodyPart createXmlAttachment(Student student) {
@@ -341,14 +343,39 @@ public class Survey extends EmailSender {
 
   private static void printIntroduction() {
     // Ask the student a bunch of questions
-    out.println("\nWelcome to the CS410J Survey Program.  I'd like " +
-                "to ask you a couple of");
-    out.println("questions about yourself.  Except for your UNIX " +
-                "login id, no question");
-    out.println("is mandatory.  Your answers will be emailed to " +
-                "the TA and a receipt");
-    out.println("will be emailed to you.");
+    String welcome =
+      "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +
+      "questions about yourself.  Except for your UNIX login id and the section " +
+      "that you are enrolled in, no question" +
+      "is mandatory.  Your answers will be emailed to the TA and a receipt " +
+      "will be emailed to you.";
+
     out.println("");
+    out.println(breakUpInto80CharacterLines(welcome));
+    out.println("");
+  }
+
+  @VisibleForTesting
+  static String breakUpInto80CharacterLines(String message) {
+    StringBuilder sb = new StringBuilder();
+    int currentLineLength = 0;
+    String[] words = message.split(" ");
+    for (String word : words) {
+      if (currentLineLength + word.length() > 80) {
+        sb.append('\n');
+        sb.append(word);
+        currentLineLength = word.length();
+
+      } else {
+        if (currentLineLength > 0) {
+          sb.append(' ');
+        }
+        sb.append(word);
+        currentLineLength += word.length() + 1;
+      }
+
+    }
+    return sb.toString();
   }
 
   private static void parseCommandLine(String[] args) {
