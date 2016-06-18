@@ -10,15 +10,15 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>app/data</directory>
-      <includes>
-        <include>**/*.java</include>
-      </includes>
-    </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
       <directory>app/config</directory>
       <includes>
         <include>**/*.xml</include>
+        <include>**/*.properties</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>gradle/wrapper</directory>
+      <includes>
         <include>**/*.properties</include>
       </includes>
     </fileSet>
@@ -53,18 +53,6 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>app/bin</directory>
-      <includes>
-        <include>**/*.class</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory>app/data</directory>
-      <includes>
-        <include>**/*.jar</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
       <directory>app/lib</directory>
       <includes>
         <include>**/*.jar</include>
@@ -73,13 +61,21 @@
     <fileSet encoding="UTF-8">
       <directory>app/config</directory>
       <includes>
-        <include>**/*.dat</include>
         <include>**/*.gitignore</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>gradle/wrapper</directory>
+      <includes>
+        <include>**/*.jar</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
+        <include>build.gradle</include>
+        <include>gradlew</include>
+        <include>gradlew.bat</include>
         <include>LICENSE</include>
         <include>README.md</include>
         <include>run.bat</include>
