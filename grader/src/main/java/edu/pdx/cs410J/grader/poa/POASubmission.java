@@ -59,7 +59,18 @@ public class POASubmission {
     private String content;
 
     public POASubmission create() {
+      assertNotNull("subject", subject);
+      assertNotNull("submitter", submitter);
+      assertNotNull("submitTime", submitTime);
+      assertNotNull("content", content);
+
       return new POASubmission(subject, submitter, submitTime, content);
+    }
+
+    private void assertNotNull(String description, Object object) {
+      if (object == null) {
+        throw new IllegalStateException(description + " cannot be null");
+      }
     }
 
     public Builder setSubject(String subject) {
