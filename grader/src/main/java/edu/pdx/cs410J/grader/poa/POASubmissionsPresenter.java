@@ -49,12 +49,9 @@ public class POASubmissionsPresenter {
   public void displayNextPOA(DisplayNextPOAEvent event) {
     int nextIndex = this.selectedSubmissionIndex + 1;
 
-    if (nextIndex >= this.submissions.size()) {
-      throw new IllegalStateException("Can't select submission " + nextIndex +
-        " because there are only " + this.submissions.size() + " submissions");
+    if (nextIndex < this.submissions.size()) {
+      view.selectPOASubmission(nextIndex);
+      poaSubmissionSelected(nextIndex);
     }
-
-    view.selectPOASubmission(nextIndex);
-    poaSubmissionSelected(nextIndex);
   }
 }

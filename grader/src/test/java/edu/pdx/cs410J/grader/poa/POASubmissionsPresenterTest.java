@@ -115,6 +115,31 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     verifyNoMoreInteractions(handler);
   }
 
+  @Test
+  public void displayingNextPOAAtEndOfSubmissionListDoesNothing() {
+    // Given that there is only one POA Submission
+    String subject1 = "POA for Project 1";
+    String submitter = "Test Student";
+    LocalDateTime submitTime = LocalDateTime.now();
+
+    POASubmissionSelectedHandler handler = mock(POASubmissionSelectedHandler.class);
+    bus.register(handler);
+
+    ArgumentCaptor<POASubmissionsView.POASubmissionSelectedListener> listener = ArgumentCaptor.forClass(POASubmissionsView.POASubmissionSelectedListener.class);
+    verify(view).addSubmissionSelectedListener(listener.capture());
+
+    POASubmission submission1 = createPOASubmission(subject1, submitter, submitTime);
+    bus.post(submission1);
+
+    // When a DisplayNextPOAEvent is posted
+    bus.post(new DisplayNextPOAEvent());
+
+    // Then nothing happens
+    verify(view, times(0)).selectPOASubmission(anyInt());
+
+    verifyNoMoreInteractions(handler);
+  }
+
   private interface POASubmissionSelectedHandler {
     @Subscribe
     public void handle(POASubmissionSelected selected);
