@@ -13,12 +13,14 @@ public class POASubmissionsPresenter {
   private final POASubmissionsView view;
   private final List<POASubmission> submissions = new ArrayList<>();
 
+  private int selectedSubmissionIndex = 0;
+
   @Inject
   public POASubmissionsPresenter(EventBus bus, POASubmissionsView view) {
     this.bus = bus;
     this.view = view;
 
-    this.view.addSubmissionSelectedListener(this::selectPOASubmission);
+    this.view.addSubmissionSelectedListener(this::poaSubmissionSelected);
     this.view.addDownloadSubmissionsListener(this::fireDownloadSubmissionsEvent);
 
     this.bus.register(this);
@@ -28,7 +30,8 @@ public class POASubmissionsPresenter {
     this.bus.post(new DownloadPOASubmissionsRequest());
   }
 
-  private void selectPOASubmission(int index) {
+  private void poaSubmissionSelected(int index) {
+    this.selectedSubmissionIndex = index;
     this.bus.post(new POASubmissionSelected(this.submissions.get(index)));
   }
 
@@ -40,5 +43,18 @@ public class POASubmissionsPresenter {
 
   private List<String> getSubmissionsDescriptions() {
     return submissions.stream().map(POASubmission::getSubject).collect(Collectors.toList());
+  }
+
+  @Subscribe
+  public void displayNextPOA(DisplayNextPOAEvent event) {
+    int nextIndex = this.selectedSubmissionIndex + 1;
+
+    if (nextIndex >= this.submissions.size()) {
+      throw new IllegalStateException("Can't select submission " + nextIndex +
+        " because there are only " + this.submissions.size() + " submissions");
+    }
+
+    view.selectPOASubmission(nextIndex);
+    poaSubmissionSelected(nextIndex);
   }
 }
