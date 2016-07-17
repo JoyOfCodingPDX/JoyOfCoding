@@ -397,7 +397,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     scoreHandler.getValue().scoreValue(formatTotalPoints(score));
     recordGrade.getValue().recordGrade();
 
-    ArgumentCaptor<DisplayNextPOAEvent> eventCaptor = ArgumentCaptor.forClass(DisplayNextPOAEvent.class);
+    ArgumentCaptor<SelectNextPOAEvent> eventCaptor = ArgumentCaptor.forClass(SelectNextPOAEvent.class);
     verify(eventHandler).handleDisplayNextPOAEvent(eventCaptor.capture());
   }
 
@@ -453,6 +453,6 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   private interface DisplayNextPOAEventHandler {
     @Subscribe
-    public void handleDisplayNextPOAEvent(DisplayNextPOAEvent event);
+    public void handleDisplayNextPOAEvent(SelectNextPOAEvent event);
   }
 }

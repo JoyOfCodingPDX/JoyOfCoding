@@ -46,7 +46,7 @@ public class POASubmissionsPresenter {
   }
 
   @Subscribe
-  public void displayNextPOA(DisplayNextPOAEvent event) {
+  public void selectNextPOA(SelectNextPOAEvent event) {
     int nextIndex = this.selectedSubmissionIndex + 1;
 
     if (nextIndex < this.submissions.size()) {

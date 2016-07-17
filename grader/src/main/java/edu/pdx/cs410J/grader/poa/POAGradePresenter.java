@@ -45,7 +45,7 @@ public class POAGradePresenter {
     this.bus.post(recordGrade);
     this.view.setScoreHasBeenRecorded(true);
 
-    DisplayNextPOAEvent displayNextPOA = new DisplayNextPOAEvent();
+    SelectNextPOAEvent displayNextPOA = new SelectNextPOAEvent();
     this.bus.post(displayNextPOA);
   }
 

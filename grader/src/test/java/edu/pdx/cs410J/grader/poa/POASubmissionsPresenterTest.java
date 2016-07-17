@@ -101,7 +101,7 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     bus.post(submission2);
 
     // When a DisplayNextPOAEvent is posted
-    bus.post(new DisplayNextPOAEvent());
+    bus.post(new SelectNextPOAEvent());
 
     // Then the View is updated
     verify(view).selectPOASubmission(1);
@@ -132,7 +132,7 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     bus.post(submission1);
 
     // When a DisplayNextPOAEvent is posted
-    bus.post(new DisplayNextPOAEvent());
+    bus.post(new SelectNextPOAEvent());
 
     // Then nothing happens
     verify(view, times(0)).selectPOASubmission(anyInt());

@@ -1,4 +1,4 @@
 package edu.pdx.cs410J.grader.poa;
 
-public class DisplayNextPOAEvent {
+public class SelectNextPOAEvent {
 }
