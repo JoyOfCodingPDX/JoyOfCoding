@@ -51,7 +51,7 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
 
   @Override
   public void selectPOASubmission(int index) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.submissions.setSelectedIndex(index);
   }
 
   private boolean isFinalEventInUserSelection(ListSelectionEvent e) {
