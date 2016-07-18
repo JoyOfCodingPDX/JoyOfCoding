@@ -33,17 +33,20 @@ public class POAGradePresenter {
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
     this.view.addScoreValueHandler(this::setScoreValue);
-    this.view.addRecordGradeHandler(this::publishScoreToMessageBus);
+    this.view.addRecordGradeHandler(this::publishScoreToMessageBusAndDisplayNextPOA);
   }
 
-  private void publishScoreToMessageBus() {
+  private void publishScoreToMessageBusAndDisplayNextPOA() {
     if (this.score == null) {
       throw new IllegalStateException("No score specified");
     }
 
-    RecordGradeEvent event = new RecordGradeEvent(this.score, this.student, this.assignment, this.isLate);
-    this.bus.post(event);
+    RecordGradeEvent recordGrade = new RecordGradeEvent(this.score, this.student, this.assignment, this.isLate);
+    this.bus.post(recordGrade);
     this.view.setScoreHasBeenRecorded(true);
+
+    SelectNextPOAEvent displayNextPOA = new SelectNextPOAEvent();
+    this.bus.post(displayNextPOA);
   }
 
   @Subscribe

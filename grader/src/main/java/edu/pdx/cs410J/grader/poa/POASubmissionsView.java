@@ -11,6 +11,8 @@ public interface POASubmissionsView {
 
   void addDownloadSubmissionsListener(DownloadSubmissionsListener listener);
 
+  void selectPOASubmission(int index);
+
   interface POASubmissionSelectedListener {
     public void submissionSelected(int index);
   }
