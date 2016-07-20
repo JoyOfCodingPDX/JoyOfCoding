@@ -386,13 +386,18 @@ public class Submit extends EmailSender {
       hasParentDirectories(file, "java8");
     if (isInAKoansDirectory) {
       this.isSubmittingKoans = true;
+      db(file + " is in a koans directory");
     }
     return isInAKoansDirectory;
   }
 
   @VisibleForTesting
   boolean isInEduPdxCs410JDirectory(File file) {
-    return hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
+    boolean isInEduPdxCs410JDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
+    if (isInEduPdxCs410JDirectory) {
+      db(file + " is in the edu/pdx/cs410J directory");
+    }
+    return isInEduPdxCs410JDirectory;
   }
 
   private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
