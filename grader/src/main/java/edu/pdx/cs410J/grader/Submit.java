@@ -367,7 +367,7 @@ public class Submit extends EmailSender {
     }
 
     // Verify that file is in the correct directory.
-    if (!isInEduPdxCs410JDirectory(file) && !isInAKoansDirectory(file)) {
+    if (!isInAKoansDirectory(file) && !isInEduPdxCs410JDirectory(file)) {
       err.println("** Not submitting file " + file +
         ": it does not reside in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
