@@ -119,10 +119,10 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.2.10.v20150310</version>
         <configuration>
-          <httpConnector port="8080" />
-          <stopKey>stop-key</stopKey>
+          <httpConnector>
+            <port>${jetty.http.port}</port>
+          </httpConnector>          <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
             <contextPath>/${project.build.finalName}</contextPath>
