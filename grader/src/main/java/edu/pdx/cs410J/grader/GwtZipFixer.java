@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -74,8 +77,22 @@ public class GwtZipFixer {
     }
   }
 
-  private static String getFixedEntryName(String entryName) {
-    return entryName;
+  @VisibleForTesting
+  static String getFixedEntryName(String entryName) {
+    if (entryName.contains("pom.xml")) {
+      return "pom.xml";
+    }
+
+    Pattern pattern = Pattern.compile(".*main(.*)");
+    Matcher matcher = pattern.matcher(entryName);
+
+    if (matcher.matches()) {
+      String portionUnderMain = matcher.group(1);
+      return "src/main" + portionUnderMain;
+
+    } else {
+      return null;
+    }
   }
 
   private static File getFixedZipFile(File zipFile, File outputDirectory) {
