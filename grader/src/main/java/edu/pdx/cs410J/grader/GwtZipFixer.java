@@ -87,7 +87,17 @@ public class GwtZipFixer {
       return "pom.xml";
     }
 
-    Pattern pattern = Pattern.compile(".*main/(.*)");
+    String fixedName = replaceRegexWithPrefix(entryName, ".*main/(.*)", "src/main/");
+
+    if (fixedName == null) {
+      fixedName = replaceRegexWithPrefix(entryName, ".*java/(.*)", "src/main/java/");
+    }
+
+    return fixedName;
+  }
+
+  private static String replaceRegexWithPrefix(String entryName, String regex, String replaceWithPrefix) {
+    Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(entryName);
 
     if (matcher.matches()) {
@@ -96,7 +106,7 @@ public class GwtZipFixer {
         return null;
 
       } else {
-        return "src/main/" + portionUnderMain;
+        return replaceWithPrefix + portionUnderMain;
       }
 
     } else {
