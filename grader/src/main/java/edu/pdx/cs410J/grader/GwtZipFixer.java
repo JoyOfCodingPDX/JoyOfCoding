@@ -87,12 +87,17 @@ public class GwtZipFixer {
       return "pom.xml";
     }
 
-    Pattern pattern = Pattern.compile(".*main(.*)");
+    Pattern pattern = Pattern.compile(".*main/(.*)");
     Matcher matcher = pattern.matcher(entryName);
 
     if (matcher.matches()) {
       String portionUnderMain = matcher.group(1);
-      return "src/main" + portionUnderMain;
+      if ("".equals(portionUnderMain)) {
+        return null;
+
+      } else {
+        return "src/main/" + portionUnderMain;
+      }
 
     } else {
       return null;

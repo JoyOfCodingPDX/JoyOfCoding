@@ -57,4 +57,10 @@ public class GwtZipFixerTest {
     String entry = "__MACOSX/apptbook-gwt/._pom.xml";
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
   }
+  @Test
+  public void mainThatIsNotSourceMainIsIgnored() {
+    String entry = "apptbook-gwt/out/production/main/";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
+  }
+
 }
