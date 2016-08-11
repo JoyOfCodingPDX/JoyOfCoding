@@ -49,7 +49,7 @@ public class GwtZipFixer {
         fixZipFile(zipFile, outputDirectory);
 
       } catch (IOException e) {
-        usage("While fixing zip file: " + e);
+        usage("While fixing zip file " + zipFile + ": " + e);
       }
 
     }
