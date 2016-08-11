@@ -79,6 +79,10 @@ public class GwtZipFixer {
 
   @VisibleForTesting
   static String getFixedEntryName(String entryName) {
+    if (entryName.contains("__MACOSX")) {
+      return null;
+    }
+
     if (entryName.contains("pom.xml")) {
       return "pom.xml";
     }

@@ -52,5 +52,9 @@ public class GwtZipFixerTest {
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo("src/" + entry));
   }
 
-
+  @Test
+  public void macosDirectoryIsIgnored() {
+    String entry = "__MACOSX/apptbook-gwt/._pom.xml";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
+  }
 }
