@@ -60,6 +60,18 @@
       <scope>runtime</scope>
       <type>pom</type>
     </dependency>
+    <dependency>
+      <groupId>org.gwtbootstrap3</groupId>
+      <artifactId>gwtbootstrap3</artifactId>
+      <version>0.9.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gwtbootstrap3</groupId>
+      <artifactId>gwtbootstrap3-extras</artifactId>
+      <version>0.9.3</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>apptbook</finalName>
@@ -122,7 +134,9 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.2.10.v20150310</version>
         <configuration>
-          <httpConnector port="8080" />
+          <httpConnector>
+            <port>${jetty.http.port}</port>
+          </httpConnector>
           <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
