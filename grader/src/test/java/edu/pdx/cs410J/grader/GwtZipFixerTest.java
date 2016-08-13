@@ -65,9 +65,21 @@ public class GwtZipFixerTest {
 
   @Test
   public void directoryWithJavaIsMovedToSrcMain() {
-    String entry = "kledford/java/edu/pdx/cs410J/student/client/Appointment.java";
+    String entry = "student/java/edu/pdx/cs410J/student/client/Appointment.java";
     String fixed = "src/main/java/edu/pdx/cs410J/student/client/Appointment.java";
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void srcTestIsIgnored() {
+    String entry = "apptbook-gwt-submission/src/test/java/edu/";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
+  }
+
+  @Test
+  public void srcItIsIgnored() {
+    String entry = "apptbook-gwt-submission/src/it/java/edu/";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
   }
 
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -60,7 +61,7 @@ public class GwtZipFixer {
 
     try (
       ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile));
-      ZipOutputStream output = new ZipOutputStream(new FileOutputStream(fixedZipFile));
+      ZipOutputStream output = new ZipOutputStream(new FileOutputStream(fixedZipFile))
     ) {
       for (ZipEntry entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {
         String entryName = entry.getName();
@@ -85,7 +86,8 @@ public class GwtZipFixer {
 
   @VisibleForTesting
   static String getFixedEntryName(String entryName) {
-    if (entryName.contains("__MACOSX")) {
+    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it");
+    if (ignore.anyMatch(entryName::contains)) {
       return null;
     }
 
