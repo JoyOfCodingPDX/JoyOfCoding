@@ -122,7 +122,8 @@
         <configuration>
           <httpConnector>
             <port>${jetty.http.port}</port>
-          </httpConnector>          <stopKey>stop-key</stopKey>
+          </httpConnector>
+          <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
           <webApp>
             <contextPath>/${project.build.finalName}</contextPath>
