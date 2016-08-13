@@ -63,13 +63,19 @@ public class GwtZipFixer {
       ZipOutputStream output = new ZipOutputStream(new FileOutputStream(fixedZipFile));
     ) {
       for (ZipEntry entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {
-        String fixedEntryName = getFixedEntryName(entry.getName());
+        String entryName = entry.getName();
+        String fixedEntryName = getFixedEntryName(entryName);
 
         if (fixedEntryName != null) {
+          logger.debug(entryName + " fixed to " + fixedEntryName);
+
           ZipEntry fixedEntry = new ZipEntry(fixedEntryName);
           output.putNextEntry(fixedEntry);
 
           ByteStreams.copy(input, output);
+
+        } else {
+          logger.debug(entryName + " ignored");
         }
 
         output.flush();
