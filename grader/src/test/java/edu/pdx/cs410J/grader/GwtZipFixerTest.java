@@ -82,4 +82,17 @@ public class GwtZipFixerTest {
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(null));
   }
 
+  @Test
+  public void directoryWithResourcesIsMovedToSrcMain() {
+    String entry = "student/resources/edu/pdx/cs410J/student/AppointmentBookGwt.gwt.xml";
+    String fixed = "src/main/resources/edu/pdx/cs410J/student/AppointmentBookGwt.gwt.xml";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void directoryWithWebappIsMovedToSrcMain() {
+    String entry = "student/webapp/WEB-INF/web.xml";
+    String fixed = "src/main/webapp/WEB-INF/web.xml";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
 }

@@ -101,6 +101,14 @@ public class GwtZipFixer {
       fixedName = replaceRegexWithPrefix(entryName, ".*java/(.*)", "src/main/java/");
     }
 
+    if (fixedName == null) {
+      fixedName = replaceRegexWithPrefix(entryName, ".*resources/(.*)", "src/main/resources/");
+    }
+
+    if (fixedName == null) {
+      fixedName = replaceRegexWithPrefix(entryName, ".*webapp/(.*)", "src/main/webapp/");
+    }
+
     return fixedName;
   }
 
