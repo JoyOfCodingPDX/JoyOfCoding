@@ -7,12 +7,12 @@
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
         <artifactId>CS410J</artifactId>
-        <version>Summer2016</version>
+        <version>Summer2017</version>
     </parent>
 
     <groupId>edu.pdx.cs410J</groupId>
     <artifactId>gwt-parent</artifactId>
-    <version>Summer2016</version>
+    <version>Summer2017</version>
 
     <packaging>pom</packaging>
 

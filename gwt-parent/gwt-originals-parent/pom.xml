@@ -6,11 +6,11 @@
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
         <artifactId>gwt-parent</artifactId>
-        <version>Summer2016</version>
+        <version>Summer2017</version>
     </parent>
 
     <artifactId>gwt-originals-parent</artifactId>
-    <version>Summer2016</version>
+    <version>Summer2017</version>
 
     <packaging>pom</packaging>
 
