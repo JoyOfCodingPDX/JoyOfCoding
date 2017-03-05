@@ -145,7 +145,7 @@
           <deployables>
             <deployable>
               <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
-              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/appointments</pingURL>
+              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/index.html</pingURL>
               <pingTimeout>20000</pingTimeout>
             </deployable>
           </deployables>
