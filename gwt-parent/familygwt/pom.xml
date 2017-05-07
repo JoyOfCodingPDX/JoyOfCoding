@@ -4,13 +4,13 @@
   <parent>
     <artifactId>gwt-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2016</version>
+    <version>Summer2017</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>familygwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2016</version>
+  <version>Summer2017</version>
   <name>Family Tree Web Applications</name>
   <dependencies>
     <dependency>
@@ -26,12 +26,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>Summer2016</version>
+      <version>Summer2017</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>Summer2016</version>
+      <version>Summer2017</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
