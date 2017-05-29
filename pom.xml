@@ -12,6 +12,7 @@
     <module>examples</module>
     <module>web</module>
     <module>family</module>
+    <module>family-android</module>
     <module>grader</module>
     <module>gwt-parent</module>
     <module>projects-parent</module>
