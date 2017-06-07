@@ -13,17 +13,16 @@
   <name>CS410J Family Tree Application</name>
   <description>An example Java application for CS410J: Advanced Java Programming</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
-      <artifactId>projects</artifactId>
-      <version>Summer2017</version>
     </dependency>
   </dependencies>
   <build>
