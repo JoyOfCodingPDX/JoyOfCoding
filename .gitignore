@@ -18,3 +18,7 @@ target
 */target
 dependency-reduced-pom.xml
 
+# Gradle cache #
+.gradle
+gen-external-apklibs
+
