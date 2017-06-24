@@ -211,6 +211,7 @@
                 <version>Summer2017</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
             </configuration>
           </plugin>
         </plugins>
