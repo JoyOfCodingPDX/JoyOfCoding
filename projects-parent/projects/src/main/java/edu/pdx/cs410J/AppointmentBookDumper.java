@@ -10,7 +10,7 @@ import java.io.IOException;
  * @version $Revision: 1.2 $
  * @since Fall 2000
  */
-public interface AppointmentBookDumper {
+public interface AppointmentBookDumper<T extends AbstractAppointmentBook> {
 
   /**
    * Dumps an appointment book to some destination.
@@ -21,6 +21,6 @@ public interface AppointmentBookDumper {
    * @throws IOException
    *         Something went wrong while dumping the appointment book
    */
-  public void dump(AbstractAppointmentBook book) throws IOException;
+  public void dump(T book) throws IOException;
 
 }
