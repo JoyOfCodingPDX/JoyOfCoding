@@ -10,7 +10,7 @@ import java.io.IOException;
  * @version $Revision: 1.3 $
  * @since Fall 2001
  */
-public interface AirlineDumper {
+public interface AirlineDumper<T extends AbstractAirline> {
 
   /**
    * Dumps an airline to some destination.
@@ -21,6 +21,6 @@ public interface AirlineDumper {
    * @throws IOException
    *         Something went wrong while writing the airline
    */
-  public void dump(AbstractAirline airline) throws IOException;
+  public void dump(T airline) throws IOException;
 
 }

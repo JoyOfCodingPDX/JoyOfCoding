@@ -6,12 +6,12 @@ package edu.pdx.cs410J;
  *
  * @author David Whitlock
  */
-public interface AppointmentBookParser {
+public interface AppointmentBookParser<T extends AbstractAppointmentBook> {
 
   /**
    * Parses the contents of a file or other input source and returns
    * an appointment book.
    */
-  public AbstractAppointmentBook parse() throws ParserException;
+  public T parse() throws ParserException;
 
 }
