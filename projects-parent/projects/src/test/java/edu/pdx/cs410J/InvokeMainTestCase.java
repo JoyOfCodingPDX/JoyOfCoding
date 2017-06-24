@@ -125,7 +125,7 @@ public abstract class InvokeMainTestCase
          * Returns the data written to standard out
          * @return the data written to standard out
          */
-        public String getOut()
+        public String getTextWrittenToStandardOut()
         {
             return out;
         }
@@ -134,7 +134,7 @@ public abstract class InvokeMainTestCase
          * Returns the data written to standard err
          * @return the data written to standard err
          */
-        public String getErr()
+        public String getTextWrittenToStandardError()
         {
             return err;
         }

@@ -22,7 +22,7 @@ public class StudentIT extends InvokeMainTestCase {
   @Test
   public void invokingMainWithNoArgumentsPrintsMissingArgumentsToStandardError() {
     InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class);
-    assertThat(result.getErr(), containsString("Missing command line arguments"));
+    assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
   }
 
 

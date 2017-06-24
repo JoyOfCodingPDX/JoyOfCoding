@@ -31,14 +31,14 @@ public class Project4IT extends InvokeMainTestCase {
     public void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getErr(), containsString(Project4.MISSING_ARGS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
 
     @Test
     public void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.getMappingCount(0)));
     }
 
@@ -46,8 +46,8 @@ public class Project4IT extends InvokeMainTestCase {
     public void test3NoValues() {
         String key = "KEY";
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.getMappingCount(0)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, null)));
     }
@@ -58,17 +58,17 @@ public class Project4IT extends InvokeMainTestCase {
         String value = "VALUE";
 
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key, value );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.mappedKeyValue(key, value)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT, key );
-        out = result.getOut();
+        out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.getMappingCount(1)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT );
-        out = result.getOut();
+        out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.getMappingCount(1)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
     }
