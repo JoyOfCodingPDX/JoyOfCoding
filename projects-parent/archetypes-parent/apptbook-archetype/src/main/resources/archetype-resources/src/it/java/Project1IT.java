@@ -29,7 +29,7 @@ public class Project1IT extends InvokeMainTestCase {
   public void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain();
     assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getErr(), containsString("Missing command line arguments"));
+    assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
   }
 
 }

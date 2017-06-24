@@ -40,20 +40,20 @@ public class InvokeMainIT extends InvokeMainTestCase {
     @Test
     public void testStandardOutput() {
         MainMethodResult result = invokeMain( WriteArgsToStandardOut.class, "1", "2", "3", "4", "5" );
-        assertEquals( "12345", result.getOut() );
+        assertEquals( "12345", result.getTextWrittenToStandardOut() );
     }
 
     @Test
     public void testStandardError() {
         MainMethodResult result = invokeMain( WriteArgsToStandardErr.class, "1", "2", "3", "4", "5" );
-        assertEquals( "12345", result.getErr() );
+        assertEquals( "12345", result.getTextWrittenToStandardError() );
     }
 
   @Test
   public void codeAfterSystemExitIsNotExecuted() {
     MainMethodResult result = invokeMain(CodeAfterSystemExit.class);
     assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getOut(), equalTo(""));
+    assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
   }
 
     private static class NoExitCode
