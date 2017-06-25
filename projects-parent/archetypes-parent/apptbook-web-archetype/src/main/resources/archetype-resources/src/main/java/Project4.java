@@ -3,8 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -88,19 +86,6 @@ public class Project4 {
         System.out.println(message);
 
         System.exit(0);
-    }
-
-    /**
-     * Makes sure that the give response has the expected HTTP status code
-     * @param code The expected status code
-     * @param response The response from the server
-     */
-    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
-    {
-        if (response.getCode() != code) {
-            error(String.format("Expected HTTP code %d, got code %d.${symbol_escape}n${symbol_escape}n%s", code,
-                                response.getCode(), response.getContent()));
-        }
     }
 
     private static void error( String message )
