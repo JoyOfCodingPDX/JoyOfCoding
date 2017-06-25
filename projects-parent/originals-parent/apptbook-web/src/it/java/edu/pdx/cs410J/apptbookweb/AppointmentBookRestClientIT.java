@@ -7,6 +7,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -34,10 +35,8 @@ public class AppointmentBookRestClientIT {
   @Test
   public void test1EmptyServerContainsNoMappings() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    Response response = client.getAllKeysAndValues();
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.formatMappingCount(0)));
+    Map<String, String> allKeysAndValues = client.getAllKeysAndValues();
+    assertThat(allKeysAndValues.size(), equalTo(0));
   }
 
   @Test

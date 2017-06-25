@@ -4,6 +4,9 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
 
 /**
  * The main class that parses the command line and communicates with the
@@ -59,7 +62,10 @@ public class Project4 {
         try {
             if (key == null) {
                 // Print all key/value pairs
-                message = client.getAllKeysAndValues().getContent();
+                Map<String, String> keysAndValues = client.getAllKeysAndValues();
+                StringWriter sw = new StringWriter();
+                Messages.formatKeyValueMap(new PrintWriter(sw, true), keysAndValues);
+                message = sw.toString();
 
             } else if (value == null) {
                 // Print all values of key

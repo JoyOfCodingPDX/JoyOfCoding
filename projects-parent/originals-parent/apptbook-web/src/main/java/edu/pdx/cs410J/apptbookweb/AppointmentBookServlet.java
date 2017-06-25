@@ -105,8 +105,8 @@ public class AppointmentBookServlet extends HttpServlet
     /**
      * Writes the value of the given key to the HTTP response.
      *
-     * The text of the message is formatted with {@link Messages#formatMappingCount(int)}
-     * and {@link Messages#formatKeyValuePair(String, String)}
+     * The text of the message is formatted with
+     * {@link Messages#formatKeyValuePair(String, String)}
      */
     private void writeValue( String key, HttpServletResponse response ) throws IOException
     {
@@ -129,11 +129,7 @@ public class AppointmentBookServlet extends HttpServlet
     private void writeAllMappings( HttpServletResponse response ) throws IOException
     {
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.formatMappingCount(data.size()));
-
-        for (Map.Entry<String, String> entry : this.data.entrySet()) {
-            pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
-        }
+        Messages.formatKeyValueMap(pw, data);
 
         pw.flush();
 

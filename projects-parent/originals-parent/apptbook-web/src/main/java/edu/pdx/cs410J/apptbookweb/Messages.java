@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.apptbookweb;
 
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,5 +64,26 @@ public class Messages
                 throw new UnsupportedOperationException("This method is not implemented yet");
             }
         };
+    }
+
+    public static void formatKeyValueMap(PrintWriter pw, Map<String, String> map) {
+        pw.println(Messages.formatMappingCount(map.size()));
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
+        }
+    }
+
+    public static Map<String, String> parseKeyValueMap(String content) {
+        Map<String, String> map = new HashMap<>();
+
+        String[] lines = content.split("\n");
+        for (int i = 1; i < lines.length; i++) {
+            String line = lines[i];
+            Map.Entry<String, String> entry = parseKeyValuePair(line);
+            map.put(entry.getKey(), entry.getValue());
+        }
+
+        return map;
     }
 }

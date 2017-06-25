@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -30,8 +31,9 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   /**
    * Returns all keys and values from the server
    */
-  public Response getAllKeysAndValues() throws IOException {
-    return get(this.url);
+  public Map<String, String> getAllKeysAndValues() throws IOException {
+    Response response = get(this.url);
+    return Messages.parseKeyValueMap(response.getContent());
   }
 
   /**
