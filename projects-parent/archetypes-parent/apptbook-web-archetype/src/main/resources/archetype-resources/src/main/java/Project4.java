@@ -7,7 +7,9 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.HttpURLConnection;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
 
 /**
  * The main class that parses the command line and communicates with the
@@ -59,29 +61,31 @@ public class Project4 {
 
         AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);
 
-        HttpRequestHelper.Response response;
+        String message;
         try {
             if (key == null) {
                 // Print all key/value pairs
-                response = client.getAllKeysAndValues();
+                Map<String, String> keysAndValues = client.getAllKeysAndValues();
+                StringWriter sw = new StringWriter();
+                Messages.formatKeyValueMap(new PrintWriter(sw, true), keysAndValues);
+                message = sw.toString();
 
             } else if (value == null) {
                 // Print all values of key
-                response = client.getValues(key);
+                message = Messages.formatKeyValuePair(key, client.getValue(key));
 
             } else {
                 // Post the key/value pair
-                response = client.addKeyValuePair(key, value);
+                client.addKeyValuePair(key, value);
+                message = Messages.mappedKeyValue(key, value);
             }
-
-            checkResponseCode( HttpURLConnection.HTTP_OK, response);
 
         } catch ( IOException ex ) {
             error("While contacting server: " + ex);
             return;
         }
 
-        System.out.println(response.getContent());
+        System.out.println(message);
 
         System.exit(0);
     }
