@@ -35,10 +35,13 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   /**
-   * Returns all values for the given key
+   * Returns the value for the given key
    */
-  public Response getValues(String key) throws IOException {
-    return get(this.url, "key", key);
+  public String getValue(String key) throws IOException {
+    Response response = get(this.url, "key", key);
+    throwExceptionIfNotOkayHttpStatus(response);
+    String content = response.getContent();
+    return Messages.parseKeyValuePair(content).getValue();
   }
 
   public void addKeyValuePair(String key, String value) throws IOException {
@@ -51,8 +54,9 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return post(this.url, keysAndValues);
   }
 
-  public Response removeAllMappings() throws IOException {
-    return delete(this.url);
+  public void removeAllMappings() throws IOException {
+    Response response = delete(this.url);
+    throwExceptionIfNotOkayHttpStatus(response);
   }
 
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {

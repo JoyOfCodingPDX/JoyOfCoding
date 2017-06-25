@@ -28,8 +28,7 @@ public class AppointmentBookRestClientIT {
   @Test
   public void test0RemoveAllMappings() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    Response response = client.removeAllMappings();
-    assertThat(response.getContent(), response.getCode(), equalTo(200));
+    client.removeAllMappings();
   }
 
   @Test
@@ -38,7 +37,7 @@ public class AppointmentBookRestClientIT {
     Response response = client.getAllKeysAndValues();
     String content = response.getContent();
     assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.getMappingCount(0)));
+    assertThat(content, containsString(Messages.formatMappingCount(0)));
   }
 
   @Test
@@ -48,10 +47,8 @@ public class AppointmentBookRestClientIT {
     String testValue = "TEST VALUE";
     client.addKeyValuePair(testKey, testValue);
 
-    Response response = client.getValues(testKey);
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(testValue));
+    String value = client.getValue(testKey);
+    assertThat(value, equalTo(testValue));
   }
 
   @Test

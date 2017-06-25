@@ -63,7 +63,7 @@ public class Project4 {
 
             } else if (value == null) {
                 // Print all values of key
-                message = client.getValues(key).getContent();
+                message = Messages.formatKeyValuePair(key, client.getValue(key));
 
             } else {
                 // Post the key/value pair
