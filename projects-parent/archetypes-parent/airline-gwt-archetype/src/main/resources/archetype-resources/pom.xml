@@ -183,6 +183,9 @@
   <profiles>
     <profile>
       <id>grader</id>
+      <activation>
+        <activeByDefault>${grader}</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -197,6 +200,7 @@
                 <version>Summer2017</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
             </configuration>
           </plugin>
         </plugins>
