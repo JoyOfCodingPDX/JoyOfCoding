@@ -10,6 +10,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -31,17 +32,14 @@ public class AirlineRestClientIT {
   @Test
   public void test0RemoveAllMappings() throws IOException {
     AirlineRestClient client = newAirlineRestClient();
-    Response response = client.removeAllMappings();
-    assertThat(response.getContent(), response.getCode(), equalTo(200));
+    client.removeAllMappings();
   }
 
   @Test
   public void test1EmptyServerContainsNoMappings() throws IOException {
     AirlineRestClient client = newAirlineRestClient();
-    Response response = client.getAllKeysAndValues();
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.getMappingCount(0)));
+    Map<String, String> allKeysAndValues = client.getAllKeysAndValues();
+    assertThat(allKeysAndValues.size(), equalTo(0));
   }
 
   @Test
@@ -49,14 +47,14 @@ public class AirlineRestClientIT {
     AirlineRestClient client = newAirlineRestClient();
     String testKey = "TEST KEY";
     String testValue = "TEST VALUE";
-    Response response = client.addKeyValuePair(testKey, testValue);
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.mappedKeyValue(testKey, testValue)));
+    client.addKeyValuePair(testKey, testValue);
+
+    String value = client.getValue(testKey);
+    assertThat(value, equalTo(testValue));
   }
 
   @Test
-  public void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AirlineRestClient client = newAirlineRestClient();
     Response response = client.postToMyURL();
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
