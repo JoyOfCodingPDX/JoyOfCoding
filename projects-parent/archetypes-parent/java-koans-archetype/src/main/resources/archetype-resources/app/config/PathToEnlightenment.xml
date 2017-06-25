@@ -55,5 +55,6 @@
         <suite class="AboutLambdas"/>
         <suite class="AboutStreams"/>
         <suite class="AboutMultipleInheritance"/>
+        <suite class="AboutBase64"/>
     </package>
 </packages>
