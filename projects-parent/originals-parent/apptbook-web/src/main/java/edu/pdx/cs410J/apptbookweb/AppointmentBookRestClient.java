@@ -5,6 +5,8 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 
+import static java.net.HttpURLConnection.HTTP_OK;
+
 /**
  * A helper class for accessing the rest client
  */
@@ -39,8 +41,9 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return get(this.url, "key", key);
   }
 
-  public Response addKeyValuePair(String key, String value) throws IOException {
-    return postToMyURL("key", key, "value", value);
+  public void addKeyValuePair(String key, String value) throws IOException {
+    Response response = postToMyURL("key", key, "value", value);
+    throwExceptionIfNotOkayHttpStatus(response);
   }
 
   @VisibleForTesting
@@ -50,5 +53,19 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 
   public Response removeAllMappings() throws IOException {
     return delete(this.url);
+  }
+
+  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+    int code = response.getCode();
+    if (code != HTTP_OK) {
+      throw new AppointmentBookRestException(code);
+    }
+    return response;
+  }
+
+  private class AppointmentBookRestException extends RuntimeException {
+    public AppointmentBookRestException(int httpStatusCode) {
+      super("Got an HTTP Status Code of " + httpStatusCode);
+    }
   }
 }

@@ -46,14 +46,16 @@ public class AppointmentBookRestClientIT {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     String testKey = "TEST KEY";
     String testValue = "TEST VALUE";
-    Response response = client.addKeyValuePair(testKey, testValue);
+    client.addKeyValuePair(testKey, testValue);
+
+    Response response = client.getValues(testKey);
     String content = response.getContent();
     assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.mappedKeyValue(testKey, testValue)));
+    assertThat(content, containsString(testValue));
   }
 
   @Test
-  public void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     Response response = client.postToMyURL();
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
