@@ -187,6 +187,9 @@
   <profiles>
     <profile>
       <id>grader</id>
+      <activation>
+        <activeByDefault>${grader}</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>

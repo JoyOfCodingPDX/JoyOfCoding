@@ -116,4 +116,33 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>grader</id>
+      <activation>
+        <activeByDefault>${grader}</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9</version>
+            <configuration>
+              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <docletArtifact>
+                <groupId>edu.pdx.cs410J</groupId>
+                <artifactId>grader</artifactId>
+                <version>Summer2017</version>
+              </docletArtifact>
+              <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
