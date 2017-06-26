@@ -7,6 +7,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -28,17 +29,14 @@ public class PhoneBillRestClientIT {
   @Test
   public void test0RemoveAllMappings() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.removeAllMappings();
-    assertThat(response.getContent(), response.getCode(), equalTo(200));
+    client.removeAllMappings();
   }
 
   @Test
   public void test1EmptyServerContainsNoMappings() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.getAllKeysAndValues();
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.getMappingCount(0)));
+    Map<String, String> allKeysAndValues = client.getAllKeysAndValues();
+    assertThat(allKeysAndValues.size(), equalTo(0));
   }
 
   @Test
@@ -46,14 +44,14 @@ public class PhoneBillRestClientIT {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String testKey = "TEST KEY";
     String testValue = "TEST VALUE";
-    HttpRequestHelper.Response response = client.addKeyValuePair(testKey, testValue);
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.mappedKeyValue(testKey, testValue)));
+    client.addKeyValuePair(testKey, testValue);
+
+    String value = client.getValue(testKey);
+    assertThat(value, equalTo(testValue));
   }
 
   @Test
-  public void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     HttpRequestHelper.Response response = client.postToMyURL();
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));

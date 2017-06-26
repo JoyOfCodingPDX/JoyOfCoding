@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.airlineweb;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -24,8 +23,7 @@ public class Project4IT extends InvokeMainTestCase {
     @Test
     public void test0RemoveAllMappings() throws IOException {
       AirlineRestClient client = new AirlineRestClient(HOSTNAME, Integer.parseInt(PORT));
-      HttpRequestHelper.Response response = client.removeAllMappings();
-      assertThat(response.getContent(), response.getCode(), equalTo(200));
+        client.removeAllMappings();
     }
 
     @Test
@@ -40,7 +38,7 @@ public class Project4IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(0)));
+        assertThat(out, out, containsString(Messages.formatMappingCount(0)));
     }
 
     @Test
@@ -49,7 +47,6 @@ public class Project4IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(0)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, null)));
     }
 
@@ -65,12 +62,10 @@ public class Project4IT extends InvokeMainTestCase {
 
         result = invokeMain( Project4.class, HOSTNAME, PORT, key );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(1)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(1)));
         assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
     }
 }

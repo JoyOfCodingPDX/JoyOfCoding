@@ -34,7 +34,7 @@ public class AppointmentBookServletTest {
     servlet.doGet(request, response);
 
     int expectedMappings = 0;
-    verify(pw).println(Messages.getMappingCount(expectedMappings));
+    verify(pw).println(Messages.formatMappingCount(expectedMappings));
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 

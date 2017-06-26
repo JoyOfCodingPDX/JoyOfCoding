@@ -26,16 +26,17 @@ public class AirlineServlet extends HttpServlet {
    * HTTP response.
    */
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("text/plain");
+  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  {
+      response.setContentType( "text/plain" );
 
-    String key = getParameter("key", request);
-    if (key != null) {
-      writeValue(key, response);
+      String key = getParameter( "key", request );
+      if (key != null) {
+          writeValue(key, response);
 
-    } else {
-      writeAllMappings(response);
-    }
+      } else {
+          writeAllMappings(response);
+      }
   }
 
   /**
@@ -44,28 +45,29 @@ public class AirlineServlet extends HttpServlet {
    * HTTP response.
    */
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("text/plain");
+  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  {
+      response.setContentType( "text/plain" );
 
-    String key = getParameter("key", request);
-    if (key == null) {
-      missingRequiredParameter(response, "key");
-      return;
-    }
+      String key = getParameter( "key", request );
+      if (key == null) {
+          missingRequiredParameter(response, "key");
+          return;
+      }
 
-    String value = getParameter("value", request);
-    if (value == null) {
-      missingRequiredParameter(response, "value");
-      return;
-    }
+      String value = getParameter( "value", request );
+      if ( value == null) {
+          missingRequiredParameter( response, "value" );
+          return;
+      }
 
-    this.data.put(key, value);
+      this.data.put(key, value);
 
-    PrintWriter pw = response.getWriter();
-    pw.println(Messages.mappedKeyValue(key, value));
-    pw.flush();
+      PrintWriter pw = response.getWriter();
+      pw.println(Messages.mappedKeyValue(key, value));
+      pw.flush();
 
-    response.setStatus(HttpServletResponse.SC_OK);
+      response.setStatus( HttpServletResponse.SC_OK);
   }
 
   /**
@@ -92,28 +94,28 @@ public class AirlineServlet extends HttpServlet {
    *
    * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
    */
-  private void missingRequiredParameter(HttpServletResponse response, String parameterName)
-    throws IOException {
-    String message = Messages.missingRequiredParameter(parameterName);
-    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+  private void missingRequiredParameter( HttpServletResponse response, String parameterName )
+      throws IOException
+  {
+      String message = Messages.missingRequiredParameter(parameterName);
+      response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
   }
 
   /**
    * Writes the value of the given key to the HTTP response.
    *
-   * The text of the message is formatted with {@link Messages#getMappingCount(int)}
-   * and {@link Messages#formatKeyValuePair(String, String)}
+   * The text of the message is formatted with
+   * {@link Messages#formatKeyValuePair(String, String)}
    */
-  private void writeValue(String key, HttpServletResponse response) throws IOException {
-    String value = this.data.get(key);
+  private void writeValue( String key, HttpServletResponse response ) throws IOException {
+      String value = this.data.get(key);
 
-    PrintWriter pw = response.getWriter();
-    pw.println(Messages.getMappingCount(value != null ? 1 : 0));
-    pw.println(Messages.formatKeyValuePair(key, value));
+      PrintWriter pw = response.getWriter();
+      pw.println(Messages.formatKeyValuePair(key, value));
 
-    pw.flush();
+      pw.flush();
 
-    response.setStatus(HttpServletResponse.SC_OK);
+      response.setStatus( HttpServletResponse.SC_OK );
   }
 
   /**
@@ -122,17 +124,13 @@ public class AirlineServlet extends HttpServlet {
    * The text of the message is formatted with
    * {@link Messages#formatKeyValuePair(String, String)}
    */
-  private void writeAllMappings(HttpServletResponse response) throws IOException {
-    PrintWriter pw = response.getWriter();
-    pw.println(Messages.getMappingCount(data.size()));
+  private void writeAllMappings( HttpServletResponse response ) throws IOException {
+      PrintWriter pw = response.getWriter();
+      Messages.formatKeyValueMap(pw, data);
 
-    for (Map.Entry<String, String> entry : this.data.entrySet()) {
-      pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
-    }
+      pw.flush();
 
-    pw.flush();
-
-    response.setStatus(HttpServletResponse.SC_OK);
+      response.setStatus( HttpServletResponse.SC_OK );
   }
 
   /**
