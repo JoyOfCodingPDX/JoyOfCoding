@@ -30,6 +30,7 @@ public class EmailSender {
     Properties props = new Properties();
     props.put("mail.smtp.host", serverName);
     props.put("mail.smtp.port", emailServerPort);
+    props.put("mail.smtp.localhost", "127.0.0.1");
     Session session = Session.getDefaultInstance(props, null);
     session.setDebug(debug);
     return session;
