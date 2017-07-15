@@ -43,25 +43,29 @@ public class AirlineGwt implements EntryPoint {
     button.addClickHandler(new ClickHandler() {
       @Override
       public void onClick(ClickEvent clickEvent) {
-        AirlineServiceAsync async = GWT.create(AirlineService.class);
-        async.getAirline(new AsyncCallback<Airline>() {
+        showAirline();
+      }
+    });
+  }
 
-          @Override
-          public void onFailure(Throwable ex) {
-            alerter.alert(ex.toString());
-          }
+  private void showAirline() {
+    AirlineServiceAsync async = GWT.create(AirlineService.class);
+    async.getAirline(new AsyncCallback<Airline>() {
 
-          @Override
-          public void onSuccess(Airline airline) {
-            StringBuilder sb = new StringBuilder(airline.toString());
-            Collection<Flight> flights = airline.getFlights();
-            for (Flight flight : flights) {
-              sb.append(flight);
-              sb.append("\n");
-            }
-            alerter.alert(sb.toString());
-          }
-        });
+      @Override
+      public void onFailure(Throwable ex) {
+        alerter.alert(ex.toString());
+      }
+
+      @Override
+      public void onSuccess(Airline airline) {
+        StringBuilder sb = new StringBuilder(airline.toString());
+        Collection<Flight> flights = airline.getFlights();
+        for (Flight flight : flights) {
+          sb.append(flight);
+          sb.append("\n");
+        }
+        alerter.alert(sb.toString());
       }
     });
   }
