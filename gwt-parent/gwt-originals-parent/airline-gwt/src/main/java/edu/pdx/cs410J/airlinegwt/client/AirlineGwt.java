@@ -39,12 +39,12 @@ public class AirlineGwt implements EntryPoint {
   }
 
   private void addWidgets() {
-    button = new Button("Ping Server");
+    button = new Button("Get Airline");
     button.addClickHandler(new ClickHandler() {
       @Override
       public void onClick(ClickEvent clickEvent) {
-        PingServiceAsync async = GWT.create(PingService.class);
-        async.ping(new AsyncCallback<Airline>() {
+        AirlineServiceAsync async = GWT.create(AirlineService.class);
+        async.getAirline(new AsyncCallback<Airline>() {
 
           @Override
           public void onFailure(Throwable ex) {

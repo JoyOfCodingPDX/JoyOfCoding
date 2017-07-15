@@ -3,12 +3,12 @@ package edu.pdx.cs410J.airlinegwt.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * The client-side interface to the ping service
+ * The client-side interface to the airline service
  */
-public interface PingServiceAsync {
+public interface AirlineServiceAsync {
 
   /**
    * Return the current date/time on the server
    */
-  void ping(AsyncCallback<Airline> async);
+  void getAirline(AsyncCallback<Airline> async);
 }
