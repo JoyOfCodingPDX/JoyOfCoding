@@ -7,6 +7,14 @@ import java.util.Collection;
 
 public class Airline extends AbstractAirline<Flight>
 {
+  /**
+   * In order for GWT to serialize this class (so that it can be sent between
+   * the client and the server), it must have a zero-argument constructor.
+   */
+  public Airline() {
+
+  }
+
   private Collection<Flight> flights = new ArrayList<>();
 
   @Override
