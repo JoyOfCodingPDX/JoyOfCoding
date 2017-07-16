@@ -3,12 +3,14 @@ package edu.pdx.cs410J.airlinegwt.client;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import java.util.Collection;
 
@@ -18,9 +20,19 @@ import java.util.Collection;
 public class AirlineGwt implements EntryPoint {
 
   private final Alerter alerter;
+  private final AirlineServiceAsync airlineService;
 
   @VisibleForTesting
-  Button button;
+  Button showAirlineButton;
+
+  @VisibleForTesting
+  Button showUndeclaredExceptionButton;
+
+  @VisibleForTesting
+  Button showDeclaredExceptionButton;
+
+  @VisibleForTesting
+  Button showClientSideExceptionButton;
 
   public AirlineGwt() {
     this(new Alerter() {
@@ -34,27 +46,90 @@ public class AirlineGwt implements EntryPoint {
   @VisibleForTesting
   AirlineGwt(Alerter alerter) {
     this.alerter = alerter;
-
-    addWidgets();
+    airlineService = GWT.create(AirlineService.class);
   }
 
-  private void addWidgets() {
-    button = new Button("Get Airline");
-    button.addClickHandler(new ClickHandler() {
+  private void alertOnException(Throwable throwable) {
+    this.alerter.alert(throwable.toString());
+  }
+
+  private void addWidgets(VerticalPanel panel) {
+    showAirlineButton = new Button("Show Airline");
+    showAirlineButton.addClickHandler(new ClickHandler() {
       @Override
       public void onClick(ClickEvent clickEvent) {
         showAirline();
       }
     });
+
+    showUndeclaredExceptionButton = new Button("Show undeclared exception");
+    showUndeclaredExceptionButton.addClickHandler(new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent clickEvent) {
+        showUndeclaredException();
+      }
+    });
+
+    showDeclaredExceptionButton = new Button("Show declared exception");
+    showDeclaredExceptionButton.addClickHandler(new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent clickEvent) {
+        showDeclaredException();
+      }
+    });
+
+    showClientSideExceptionButton= new Button("Show client-side exception");
+    showClientSideExceptionButton.addClickHandler(new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent clickEvent) {
+        throwClientSideException();
+      }
+    });
+
+    panel.add(showAirlineButton);
+    panel.add(showUndeclaredExceptionButton);
+    panel.add(showDeclaredExceptionButton);
+    panel.add(showClientSideExceptionButton);
+  }
+
+  private void throwClientSideException() {
+    throw new IllegalStateException("Expected exception on the client side");
+  }
+
+  private void showUndeclaredException() {
+    airlineService.throwUndeclaredException(new AsyncCallback<Void>() {
+      @Override
+      public void onFailure(Throwable ex) {
+        alertOnException(ex);
+      }
+
+      @Override
+      public void onSuccess(Void aVoid) {
+        alerter.alert("This shouldn't happen");
+      }
+    });
+  }
+
+  private void showDeclaredException() {
+    airlineService.throwDeclaredException(new AsyncCallback<Void>() {
+      @Override
+      public void onFailure(Throwable ex) {
+        alertOnException(ex);
+      }
+
+      @Override
+      public void onSuccess(Void aVoid) {
+        alerter.alert("This shouldn't happen");
+      }
+    });
   }
 
   private void showAirline() {
-    AirlineServiceAsync async = GWT.create(AirlineService.class);
-    async.getAirline(new AsyncCallback<Airline>() {
+    airlineService.getAirline(new AsyncCallback<Airline>() {
 
       @Override
       public void onFailure(Throwable ex) {
-        alerter.alert(ex.toString());
+        alertOnException(ex);
       }
 
       @Override
@@ -72,8 +147,34 @@ public class AirlineGwt implements EntryPoint {
 
   @Override
   public void onModuleLoad() {
+    setUpUncaughtExceptionHandler();
+
+    // The UncaughtExceptionHandler won't catch exceptions during module load
+    // So, you have to set up the UI after module load...
+    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+      @Override
+      public void execute() {
+        setupUI();
+      }
+    });
+
+  }
+
+  private void setupUI() {
     RootPanel rootPanel = RootPanel.get();
-    rootPanel.add(button);
+    VerticalPanel panel = new VerticalPanel();
+    rootPanel.add(panel);
+
+    addWidgets(panel);
+  }
+
+  private void setUpUncaughtExceptionHandler() {
+    GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+      @Override
+      public void onUncaughtException(Throwable throwable) {
+        alertOnException(throwable);
+      }
+    });
   }
 
   @VisibleForTesting
