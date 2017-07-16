@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A basic GWT class that makes sure that we can send an airline back from the server
@@ -22,6 +24,7 @@ public class AirlineGwt implements EntryPoint {
 
   private final Alerter alerter;
   private final AirlineServiceAsync airlineService;
+  private final Logger logger;
 
   @VisibleForTesting
   Button showAirlineButton;
@@ -47,7 +50,9 @@ public class AirlineGwt implements EntryPoint {
   @VisibleForTesting
   AirlineGwt(Alerter alerter) {
     this.alerter = alerter;
-    airlineService = GWT.create(AirlineService.class);
+    this.airlineService = GWT.create(AirlineService.class);
+    this.logger = Logger.getLogger("airline");
+    Logger.getLogger("").setLevel(Level.INFO);  // Quiet down the default logging
   }
 
   private void alertOnException(Throwable throwable) {
@@ -107,10 +112,12 @@ public class AirlineGwt implements EntryPoint {
   }
 
   private void throwClientSideException() {
+    logger.info("About to throw a client-side exception");
     throw new IllegalStateException("Expected exception on the client side");
   }
 
   private void showUndeclaredException() {
+    logger.info("Calling throwUndeclaredException");
     airlineService.throwUndeclaredException(new AsyncCallback<Void>() {
       @Override
       public void onFailure(Throwable ex) {
@@ -125,6 +132,7 @@ public class AirlineGwt implements EntryPoint {
   }
 
   private void showDeclaredException() {
+    logger.info("Calling throwDeclaredException");
     airlineService.throwDeclaredException(new AsyncCallback<Void>() {
       @Override
       public void onFailure(Throwable ex) {
@@ -139,6 +147,7 @@ public class AirlineGwt implements EntryPoint {
   }
 
   private void showAirline() {
+    logger.info("Calling getAirline");
     airlineService.getAirline(new AsyncCallback<Airline>() {
 
       @Override
