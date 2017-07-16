@@ -57,7 +57,17 @@ public class AirlineGwt implements EntryPoint {
 
   private void alertOnException(Throwable throwable) {
     Throwable unwrapped = unwrapUmbrellaException(throwable);
-    this.alerter.alert(unwrapped.toString());
+    StringBuilder sb = new StringBuilder();
+    sb.append(unwrapped.toString());
+    sb.append('\n');
+
+    for (StackTraceElement element : unwrapped.getStackTrace()) {
+      sb.append("  at ");
+      sb.append(element.toString());
+      sb.append('\n');
+    }
+
+    this.alerter.alert(sb.toString());
   }
 
   private Throwable unwrapUmbrellaException(Throwable throwable) {
