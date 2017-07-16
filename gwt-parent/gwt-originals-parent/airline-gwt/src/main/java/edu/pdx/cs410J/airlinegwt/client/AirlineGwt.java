@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -50,7 +51,20 @@ public class AirlineGwt implements EntryPoint {
   }
 
   private void alertOnException(Throwable throwable) {
-    this.alerter.alert(throwable.toString());
+    Throwable unwrapped = unwrapUmbrellaException(throwable);
+    this.alerter.alert(unwrapped.toString());
+  }
+
+  private Throwable unwrapUmbrellaException(Throwable throwable) {
+    if (throwable instanceof UmbrellaException) {
+      UmbrellaException umbrella = (UmbrellaException) throwable;
+      if (umbrella.getCauses().size() == 1) {
+        return unwrapUmbrellaException(umbrella.getCauses().iterator().next());
+      }
+
+    }
+
+    return throwable;
   }
 
   private void addWidgets(VerticalPanel panel) {
