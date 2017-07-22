@@ -3,19 +3,17 @@ package edu.pdx.cs410J.grader.scoring;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProjectSubmissionsPresenter {
-  private final EventBus bus;
+public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
   private final ProjectSubmissionsView view;
 
   public ProjectSubmissionsPresenter(EventBus bus, ProjectSubmissionsView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
-
-    this.bus.register(this);
   }
 
   @Subscribe

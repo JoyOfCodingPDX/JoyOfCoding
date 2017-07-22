@@ -6,31 +6,29 @@ import com.google.inject.Inject;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.io.File;
 
-public class GradeBookPresenter {
+public class GradeBookPresenter extends PresenterOnEventBus {
   private final GradeBookView view;
-  private final EventBus bus;
   private GradeBook gradeBook;
 
   @Inject
   public GradeBookPresenter(EventBus bus, GradeBookView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
-
-    bus.register(this);
 
     view.addGradeBookFileListener(this::publishLoadGradeBookEvent);
     view.addSaveGradeBookListener(this::publishSaveGradeBookEvent);
   }
 
   private void publishSaveGradeBookEvent() {
-    this.bus.post(new SaveGradeBook(this.gradeBook));
+    publishEvent(new SaveGradeBook(this.gradeBook));
   }
 
   private void publishLoadGradeBookEvent(File file) {
-    this.bus.post(new LoadGradeBook(file));
+    publishEvent(new LoadGradeBook(file));
   }
 
   @Subscribe

@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,17 +14,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
-public class StudentsPresenter {
-  private final EventBus bus;
+public class StudentsPresenter extends PresenterOnEventBus {
   private final StudentsView view;
   private List<Student> students = Collections.emptyList();
 
   @Inject
   public StudentsPresenter(EventBus bus, StudentsView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
-
-    this.bus.register(this);
 
     this.view.addSelectStudentHandler(this::fireSelectedStudentEventForStudentAtIndex);
   }
@@ -40,7 +38,7 @@ public class StudentsPresenter {
   }
 
   private void fireStudentSelectedEvent(Student student) {
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
   }
 
   @Subscribe

@@ -5,20 +5,18 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 @Singleton
-public class EmailCredentialsPresenter {
-  private final EventBus bus;
+public class EmailCredentialsPresenter extends PresenterOnEventBus {
   private final EmailCredentialsView view;
   private String emailAddress;
   private String password;
 
   @Inject
   public EmailCredentialsPresenter(EventBus bus, EmailCredentialsView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
-
-    this.bus.register(this);
 
     this.view.addEmailAddressValueListener(this::setEmailAddress);
     this.view.addPasswordValueListener(this::setPassword);
@@ -26,7 +24,7 @@ public class EmailCredentialsPresenter {
   }
 
   private void fireEmailCredentialsEvent() {
-    this.bus.post(new EmailCredentials(this.emailAddress, this.password));
+    publishEvent(new EmailCredentials(this.emailAddress, this.password));
   }
 
   @Subscribe
