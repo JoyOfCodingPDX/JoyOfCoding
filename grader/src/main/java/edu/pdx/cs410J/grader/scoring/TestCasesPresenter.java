@@ -25,5 +25,7 @@ public class TestCasesPresenter extends PresenterOnEventBus {
     testCaseOutputs = selected.getProjectSubmission().getTestCaseOutputs();
     List<String> testCaseNames = testCaseOutputs.stream().map(TestCaseOutput::getName).collect(Collectors.toList());
     view.setTestCaseNames(testCaseNames);
+
+    view.setSelectedTestCaseName(0);
   }
 }
