@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 

@@ -2,7 +2,7 @@ package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.poa.UnhandledExceptionView;
+import edu.pdx.cs410J.grader.mvp.UnhandledExceptionView;
 
 import javax.swing.*;
 import java.awt.*;

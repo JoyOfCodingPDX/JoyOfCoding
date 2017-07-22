@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
+import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
