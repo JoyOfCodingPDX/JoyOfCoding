@@ -10,9 +10,11 @@ import edu.pdx.cs410J.grader.mvp.ui.UIMain;
 import edu.pdx.cs410J.grader.poa.ui.TopLevelJFrame;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmission;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded;
+import edu.pdx.cs410J.grader.scoring.TestCaseOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +24,20 @@ public class ProjectSubmissionScorer extends UIMain {
   private static final Logger logger = LoggerFactory.getLogger(ProjectSubmissionScorer.class);
 
   @Inject
-  public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions) {
+  public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases) {
     super(parent);
 
     parent.setTitle("Project Submission Scorer");
 
     Container content = parent.getContentPane();
     content.setLayout(new BorderLayout());
-    content.add(submissions, BorderLayout.WEST);
+
+    JPanel submissionsAndTestCases = new JPanel();
+    submissionsAndTestCases.setLayout(new BorderLayout());
+    submissionsAndTestCases.add(submissions, BorderLayout.WEST);
+    submissionsAndTestCases.add(testCases, BorderLayout.EAST);
+
+    content.add(submissionsAndTestCases, BorderLayout.WEST);
   }
 
   static void setLoggingLevelToDebug() {
@@ -60,6 +68,12 @@ public class ProjectSubmissionScorer extends UIMain {
       ProjectSubmission submission = new ProjectSubmission();
       submission.setProjectName(projectName);
       submission.setStudentId(studentId);
+
+      for (int j = 0; j < 10; j++) {
+        String testCaseName = studentId + "'s test " + j;
+        submission.addTestCaseOutput(new TestCaseOutput().setName(testCaseName));
+      }
+
       submissions.add(submission);
     }
 
