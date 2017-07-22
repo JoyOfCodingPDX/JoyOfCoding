@@ -4,13 +4,12 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsView;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.util.List;
 import java.util.Vector;
 
 @Singleton
-public class ProjectSubmissionsPanel extends JPanel implements ProjectSubmissionsView {
+public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectSubmissionsView {
 
   private final JList<String> submissionNames;
 
@@ -30,23 +29,12 @@ public class ProjectSubmissionsPanel extends JPanel implements ProjectSubmission
 
   @Override
   public void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
-    this.submissionNames.addListSelectionListener(e -> {
-      if (isFinalEventInUserSelection(e)) {
-        int selectedIndex = submissionNames.getSelectedIndex();
-        if (selectedIndex >= 0) {
-          listener.submissionSelected(selectedIndex);
-        }
-      }
-    });
+    registerListenerOnListItemSelection(this.submissionNames, listener::submissionNameSelected);
   }
 
   @Override
   public void setSelectedSubmission(int index) {
     this.submissionNames.setSelectedIndex(index);
-  }
-
-  private boolean isFinalEventInUserSelection(ListSelectionEvent e) {
-    return !e.getValueIsAdjusting();
   }
 
 }

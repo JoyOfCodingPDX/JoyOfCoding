@@ -55,10 +55,10 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
     bus.post(loaded);
 
-    // When the user selects the second POA submission...
+    // When the user selects the second project submission...
     ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
     bus.register(handler);
-    listener.getValue().submissionSelected(1);
+    listener.getValue().submissionNameSelected(1);
 
     // Then a ProjectSubmissionSelected event for that submission is published
 

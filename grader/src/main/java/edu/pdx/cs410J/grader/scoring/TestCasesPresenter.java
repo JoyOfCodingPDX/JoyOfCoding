@@ -18,6 +18,13 @@ public class TestCasesPresenter extends PresenterOnEventBus {
   public TestCasesPresenter(EventBus bus, TestCasesView view) {
     super(bus);
     this.view = view;
+
+    this.view.addTestCaseNameSelectedListener(this::publishTestCaseNameSelectedEvent);
+  }
+
+  private void publishTestCaseNameSelectedEvent(int index) {
+    TestCaseOutput selected = this.testCaseOutputs.get(index);
+    publishEvent(new TestCaseSelected(selected));
   }
 
   @Subscribe

@@ -10,6 +10,6 @@ public interface ProjectSubmissionsView {
   void setSelectedSubmission(int index);
 
   interface SubmissionNameSelectedListener {
-    void submissionSelected(int index);
+    void submissionNameSelected(int index);
   }
 }

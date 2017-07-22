@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 @Singleton
-public class TestCasesPanel extends JPanel implements TestCasesView{
+public class TestCasesPanel extends JPanelWithJList implements TestCasesView{
   private final JList<String> testCaseNames;
 
   public TestCasesPanel() {
@@ -29,5 +29,10 @@ public class TestCasesPanel extends JPanel implements TestCasesView{
   @Override
   public void setSelectedTestCaseName(int index) {
     this.testCaseNames.setSelectedIndex(index);
+  }
+
+  @Override
+  public void addTestCaseNameSelectedListener(TestCaseNameSelectedListener listener) {
+    registerListenerOnListItemSelection(this.testCaseNames, listener::testCaseNameSelected);
   }
 }

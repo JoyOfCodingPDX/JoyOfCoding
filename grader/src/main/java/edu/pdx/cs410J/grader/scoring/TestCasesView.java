@@ -6,4 +6,10 @@ public interface TestCasesView {
   void setTestCaseNames(List<String> testCaseNames);
 
   void setSelectedTestCaseName(int index);
+
+  void addTestCaseNameSelectedListener(TestCaseNameSelectedListener listener);
+
+  interface TestCaseNameSelectedListener {
+    void testCaseNameSelected(int index);
+  }
 }
