@@ -3,18 +3,28 @@ package edu.pdx.cs410J.airlinegwt.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.pdx.cs410J.airlinegwt.client.Airline;
 import edu.pdx.cs410J.airlinegwt.client.Flight;
-import edu.pdx.cs410J.airlinegwt.client.PingService;
+import edu.pdx.cs410J.airlinegwt.client.AirlineService;
 
 /**
  * The server-side implementation of the Airline service
  */
-public class PingServiceImpl extends RemoteServiceServlet implements PingService
+public class AirlineServiceImpl extends RemoteServiceServlet implements AirlineService
 {
   @Override
-  public Airline ping() {
+  public Airline getAirline() {
     Airline airline = new Airline();
     airline.addFlight(new Flight());
     return airline;
+  }
+
+  @Override
+  public void throwUndeclaredException() {
+    throw new IllegalStateException("Expected undeclared exception");
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+    throw new IllegalStateException("Expected declared exception");
   }
 
   /**

@@ -25,6 +25,6 @@
   </source>
 
   <!-- Need to define the servlet in .gwt.xml in order to use service in a GwtTest -->
-  <servlet path="/ping" class="${package}.server.PingServiceImpl"/>
+  <servlet path="/airline" class="${package}.server.AirlineServiceImpl"/>
 
 </module>

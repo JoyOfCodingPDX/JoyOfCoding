@@ -6,18 +6,28 @@ package ${package}.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import ${package}.client.Airline;
 import ${package}.client.Flight;
-import ${package}.client.PingService;
+import ${package}.client.AirlineService;
 
 /**
  * The server-side implementation of the Airline service
  */
-public class PingServiceImpl extends RemoteServiceServlet implements PingService
+public class AirlineServiceImpl extends RemoteServiceServlet implements AirlineService
 {
   @Override
-  public Airline ping() {
+  public Airline getAirline() {
     Airline airline = new Airline();
     airline.addFlight(new Flight());
     return airline;
+  }
+
+  @Override
+  public void throwUndeclaredException() {
+    throw new IllegalStateException("Expected undeclared exception");
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+    throw new IllegalStateException("Expected declared exception");
   }
 
   /**

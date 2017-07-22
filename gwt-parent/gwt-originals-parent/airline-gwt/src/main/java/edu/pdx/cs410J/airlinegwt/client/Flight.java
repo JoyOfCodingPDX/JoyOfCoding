@@ -6,6 +6,14 @@ import java.util.Date;
 
 public class Flight extends AbstractFlight
 {
+  /**
+   * In order for GWT to serialize this class (so that it can be sent between
+   * the client and the server), it must have a zero-argument constructor.
+   */
+  public Flight() {
+
+  }
+
   @Override
   public int getNumber() {
     return 42;
