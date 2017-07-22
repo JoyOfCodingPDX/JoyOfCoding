@@ -1,11 +1,11 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.mvp.ui.UIMain;
 import edu.pdx.cs410J.grader.poa.DownloadPOASubmissionsRequest;
 import edu.pdx.cs410J.grader.poa.LoadGradeBook;
 import edu.pdx.cs410J.grader.poa.POASubmission;
@@ -17,13 +17,12 @@ import java.io.File;
 import java.time.LocalDateTime;
 
 @Singleton
-public class PlanOfAttackGrader {
+public class PlanOfAttackGrader extends UIMain {
   private static final Logger logger = LoggerFactory.getLogger(PlanOfAttackGrader.class);
-  private final TopLevelJFrame parent;
 
   @Inject
   public PlanOfAttackGrader(TopLevelJFrame parent, POASubmissionsPanel submissions, POASubmissionInformationPanel submissionInfo) {
-    this.parent = parent;
+    super(parent);
 
     parent.setTitle("Plan Of Attack Grader");
 
@@ -34,12 +33,12 @@ public class PlanOfAttackGrader {
   }
 
   public static void main(String[] args) {
-    Thread.currentThread().setUncaughtExceptionHandler((t, e) -> printStackTrace(e));
+    logAllUncaughtExceptions(logger);
 
     Injector injector = Guice.createInjector(new POAGraderUIModule());
 
     EventBus bus = injector.getInstance(EventBus.class);
-    registerEventLogger(bus);
+    logAllEventsOnBusAtDebugLevel(bus, logger);
 
     PlanOfAttackGrader ui = injector.getInstance(PlanOfAttackGrader.class);
     ui.display();
@@ -51,26 +50,6 @@ public class PlanOfAttackGrader {
     }
 
     bus.post(new DownloadPOASubmissionsRequest());
-  }
-
-  private static void printStackTrace(Throwable e) {
-    e.fillInStackTrace();
-    e.printStackTrace(System.err);
-  }
-
-  private void display() {
-    parent.pack();
-    parent.setVisible(true);
-  }
-
-  private static void registerEventLogger(EventBus bus) {
-    bus.register(new Object() {
-      @Subscribe
-      public void logEvent(Object event) {
-        logger.debug("Event " + event);
-      }
-    });
-
   }
 
   private static POASubmission createPOASubmission(String subject) {
