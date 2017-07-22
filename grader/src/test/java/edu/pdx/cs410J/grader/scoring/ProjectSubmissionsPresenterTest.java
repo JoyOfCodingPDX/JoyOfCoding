@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.grader.scoring;
 
 import com.google.common.eventbus.Subscribe;
-import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsView.SubmissionNameSelectedListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +12,9 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
-public class ProjectSubmissionsPresenterTest extends EventBusTestCase {
+public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
 
   private ProjectSubmissionsView view;
 
@@ -41,13 +38,6 @@ public class ProjectSubmissionsPresenterTest extends EventBusTestCase {
 
     String submissionName = ProjectSubmissionsPresenter.getProjectSubmissionName(studentId, projectName);
     verify(view).setProjectSubmissionNames(Collections.singletonList(submissionName));
-  }
-
-  private ProjectSubmission createProjectSubmission(String projectName, String studentId) {
-    ProjectSubmission submission = new ProjectSubmission();
-    submission.setProjectName(projectName);
-    submission.setStudentId(studentId);
-    return submission;
   }
 
   @Test
