@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.util.List;
 import java.util.Vector;
@@ -26,4 +27,21 @@ public class ProjectSubmissionsPanel extends JPanel implements ProjectSubmission
   public void setProjectSubmissionNames(List<String> submissionNames) {
     this.submissionNames.setListData(new Vector<>(submissionNames));
   }
+
+  @Override
+  public void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
+    this.submissionNames.addListSelectionListener(e -> {
+      if (isFinalEventInUserSelection(e)) {
+        int selectedIndex = submissionNames.getSelectedIndex();
+        if (selectedIndex >= 0) {
+          listener.submissionSelected(selectedIndex);
+        }
+      }
+    });
+  }
+
+  private boolean isFinalEventInUserSelection(ListSelectionEvent e) {
+    return !e.getValueIsAdjusting();
+  }
+
 }

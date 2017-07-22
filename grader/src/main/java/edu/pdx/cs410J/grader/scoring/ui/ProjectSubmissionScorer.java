@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.scoring.ui;
 
+import ch.qos.logback.classic.Level;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -31,7 +32,13 @@ public class ProjectSubmissionScorer extends UIMain {
     content.add(submissions, BorderLayout.WEST);
   }
 
+  static void setLoggingLevelToDebug() {
+    ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+    logger.setLevel(Level.DEBUG);
+  }
+
   public static void main(String[] args) {
+    setLoggingLevelToDebug();
     logAllUncaughtExceptions(logger);
 
     Injector injector = Guice.createInjector(new ProjectSubmissionScorerUIModule());

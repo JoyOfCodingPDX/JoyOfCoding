@@ -11,16 +11,28 @@ import java.util.stream.Collectors;
 
 public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
   private final ProjectSubmissionsView view;
+  private List<ProjectSubmission> submissions;
 
   @Inject
   public ProjectSubmissionsPresenter(EventBus bus, ProjectSubmissionsView view) {
     super(bus);
     this.view = view;
+
+    view.addSubmissionNameSelectedListener(this::publishSubmissionSelected);
+  }
+
+  private void publishSubmissionSelected(int selectedIndex) {
+    if (this.submissions != null) {
+      ProjectSubmission selected = this.submissions.get(selectedIndex);
+      publishEvent(new ProjectSubmissionSelected(selected));
+    }
   }
 
   @Subscribe
   public void populateViewWithNamesOfSubmissions(ProjectSubmissionsLoaded loaded) {
-    List<String> submissionNames = loaded.getSubmissions().stream().map(this::getSubmissionName).collect(Collectors.toList());
+    submissions = loaded.getSubmissions();
+
+    List<String> submissionNames = submissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
     this.view.setProjectSubmissionNames(submissionNames);
   }
 
