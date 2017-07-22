@@ -52,9 +52,6 @@ public class ProjectSubmissionsPresenterTest extends EventBusTestCase {
 
   @Test
   public void eventIsPublishedWhenProjectSubmissionIsSelected() {
-    ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
-    bus.register(handler);
-
     ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
     verify(view).addSubmissionNameSelectedListener(listener.capture());
 
@@ -69,6 +66,8 @@ public class ProjectSubmissionsPresenterTest extends EventBusTestCase {
     bus.post(loaded);
 
     // When the user selects the second POA submission...
+    ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
+    bus.register(handler);
     listener.getValue().submissionSelected(1);
 
     // Then a ProjectSubmissionSelected event for that submission is published
@@ -78,6 +77,23 @@ public class ProjectSubmissionsPresenterTest extends EventBusTestCase {
     assertThat(eventCaptor.getValue().getProjectSubmission(), equalTo(submission1));
 
     verifyNoMoreInteractions(handler);
+  }
+
+  @Test
+  public void firstSubmissionIsSelectedWhenSubmissionsAreLoaded() {
+    ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
+    verify(view).addSubmissionNameSelectedListener(listener.capture());
+
+    String projectName = "Project";
+
+    List<ProjectSubmission> submissions = new ArrayList<>();
+    ProjectSubmission submission0 = createProjectSubmission(projectName, "student0");
+    submissions.add(submission0);
+    submissions.add(createProjectSubmission(projectName, "student1"));
+
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
+    bus.post(loaded);
+    verify(view).setSelectedSubmission(0);
   }
 
   private interface ProjectSubmissionSelectedHandler {

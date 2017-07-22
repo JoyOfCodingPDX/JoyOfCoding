@@ -40,6 +40,11 @@ public class ProjectSubmissionsPanel extends JPanel implements ProjectSubmission
     });
   }
 
+  @Override
+  public void setSelectedSubmission(int index) {
+    this.submissionNames.setSelectedIndex(index);
+  }
+
   private boolean isFinalEventInUserSelection(ListSelectionEvent e) {
     return !e.getValueIsAdjusting();
   }

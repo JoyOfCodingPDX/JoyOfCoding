@@ -7,6 +7,8 @@ public interface ProjectSubmissionsView {
 
   void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener);
 
+  void setSelectedSubmission(int index);
+
   interface SubmissionNameSelectedListener {
     void submissionSelected(int index);
   }
