@@ -5,6 +5,7 @@ import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.grader.gradebook.GradeBookGUI;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
+import edu.pdx.cs410J.grader.scoring.ui.ProjectSubmissionScorer;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
@@ -73,6 +74,9 @@ public class GraderTools {
       case "fixGwtZips":
         return GwtZipFixer.class;
 
+      case "scoreProjectSubmissions":
+        return ProjectSubmissionScorer.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -104,6 +108,7 @@ public class GraderTools {
     err.println("    generateGradeSummary      Generate grade summary report for one or more students");
     err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");
     err.println("    fixGwtZips                Fix zip files for the GWT project to work with grading script");
+    err.println("    scoreProjectSubmissions   Review project submissions and assign them scores");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
