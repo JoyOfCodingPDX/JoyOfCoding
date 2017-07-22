@@ -1,6 +1,7 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -257,7 +258,7 @@ public class ClassPanel extends JPanel {
     assignmentNames.addAll(book.getAssignmentNames());
     this.assignmentsList.setListData(assignmentNames);
   }
-  
+
   /**
    * Displays an assignment in the appropriate fields
    */
@@ -285,7 +286,7 @@ public class ClassPanel extends JPanel {
     } catch (FileNotFoundException ex) {
       System.err.println("** Could not find file: " + ex.getMessage());
       System.exit(1);
-      
+
     } catch (IOException ex) {
       System.err.println("** IOException during parsing: " + ex.getMessage());
       System.exit(1);
@@ -317,7 +318,7 @@ public class ClassPanel extends JPanel {
       });
 
     frame.getContentPane().add(classPanel);
-    
+
     frame.pack();
     frame.setVisible(true);
   }

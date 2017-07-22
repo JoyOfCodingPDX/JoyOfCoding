@@ -1,4 +1,6 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
+
+import edu.pdx.cs410J.grader.Notable;
 
 import java.awt.*;
 import java.awt.event.*;

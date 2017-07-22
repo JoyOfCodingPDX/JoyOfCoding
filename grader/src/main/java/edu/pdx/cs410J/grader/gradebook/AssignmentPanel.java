@@ -1,6 +1,10 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.Notable;
+import edu.pdx.cs410J.grader.XmlGradeBookParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -326,4 +330,5 @@ public class AssignmentPanel extends JPanel {
     frame.pack();
     frame.setVisible(true);
   }
+
 }
