@@ -4,13 +4,16 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.scoring.TestCaseOutputView;
 
 import javax.swing.*;
+import java.awt.*;
 
 @Singleton
-public class TestCaseOutputPanel extends JPanel implements TestCaseOutputView {
+public class TestCaseOutputPanel extends ScorePanel implements TestCaseOutputView {
 
   private final JLabel description;
   private final JLabel command;
   private final JTextArea output;
+  private final JTextField pointsDeducted;
+  private final JTextField graderComment;
 
   public TestCaseOutputPanel() {
     description = new JLabel();
@@ -21,12 +24,29 @@ public class TestCaseOutputPanel extends JPanel implements TestCaseOutputView {
     output = new JTextArea();
     output.setEditable(false);
 
-    this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    pointsDeducted = new JTextField(3);
+    graderComment = new JTextField(20);
 
-    this.add(description);
-    this.add(Box.createVerticalStrut(5));
-    this.add(command);
-    this.add(new JScrollPane(output));
+
+    this.setLayout(new BorderLayout());
+
+    JPanel north = new JPanel();
+    north.setLayout(new BoxLayout(north, BoxLayout.PAGE_AXIS));
+    north.add(description);
+    north.add(Box.createVerticalStrut(5));
+    north.add(command);
+    this.add(north, BorderLayout.NORTH);
+
+    this.add(new JScrollPane(output), BorderLayout.CENTER);
+
+    JPanel feedback = new JPanel();
+    feedback.setLayout(new BoxLayout(feedback, BoxLayout.LINE_AXIS));
+    feedback.add(new JLabel("Points Deducted: "));
+    feedback.add(pointsDeducted);
+    feedback.add(new JLabel("Grader Comment: "));
+    feedback.add(graderComment);
+
+    this.add(feedback, BorderLayout.SOUTH);
   }
 
   @Override
@@ -46,26 +66,26 @@ public class TestCaseOutputPanel extends JPanel implements TestCaseOutputView {
 
   @Override
   public void setPointsDeducted(String pointsDeducted) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.pointsDeducted.setText(pointsDeducted);
   }
 
   @Override
   public void addGraderCommentChangeListener(GraderCommentChangeListener listener) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    registerListenerOnTextFieldChange(this.graderComment, listener::onGraderCommentChange);
   }
 
   @Override
   public void setGraderComment(String comment) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.graderComment.setText(comment);
   }
 
   @Override
   public void addPointsDeductedChangeListener(PointsDeductedChangeListener listener) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    registerListenerOnTextFieldChange(this.pointsDeducted, listener::onPointsDeductedChange);
   }
 
   @Override
   public void setPointsDeductedIsValid(boolean isValidPointsDeducted) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    setBorderBasedOnValidity(this.pointsDeducted, isValidPointsDeducted);
   }
 }

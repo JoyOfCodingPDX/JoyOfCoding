@@ -4,12 +4,9 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionScoreView;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 @Singleton
-public class ProjectSubmissionScorePanel extends JPanel implements ProjectSubmissionScoreView {
+public class ProjectSubmissionScorePanel extends ScorePanel implements ProjectSubmissionScoreView {
   private final JLabel totalPoints;
   private final JTextField score;
 
@@ -35,22 +32,12 @@ public class ProjectSubmissionScorePanel extends JPanel implements ProjectSubmis
 
   @Override
   public void addScoreChangedListener(ScoreChangedListener listener) {
-    this.score.addActionListener(e -> listener.scoreChanged(score.getText()));
-    this.score.addFocusListener(new FocusAdapter() {
-      @Override
-      public void focusLost(FocusEvent e) {
-        listener.scoreChanged(score.getText());
-      }
-    });
+    registerListenerOnTextFieldChange(this.score, listener::scoreChanged);
   }
 
   @Override
   public void setScoreIsValid(boolean scoreIsValid) {
-    if (scoreIsValid) {
-      this.score.setBorder(BorderFactory.createEmptyBorder());
-
-    } else {
-      this.score.setBorder(BorderFactory.createLineBorder(Color.red, 2));
-    }
+    setBorderBasedOnValidity(this.score, scoreIsValid);
   }
+
 }
