@@ -24,29 +24,14 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
       this.submission.setScore(value);
       this.view.setScoreIsValid(true);
 
-    } catch (InvalidScoreValue invalidScoreValue) {
+    } catch (InvalidScoreValue ex) {
       this.view.setScoreIsValid(false);
     }
   }
 
-  private Double getValidScoreValue(String score) throws InvalidScoreValue {
-    if ("".equals(score)) {
-      return null;
-
-    } else {
-      try {
-        Double value = Double.parseDouble(score);
-        if (value >= 0.0 && value <= this.submission.getTotalPoints()) {
-          return value;
-
-        } else {
-          throw new InvalidScoreValue(score);
-        }
-
-      } catch (NumberFormatException ex) {
-        throw new InvalidScoreValue(score);
-      }
-    }
+  @Override
+  protected boolean isScoreInValidRange(Double score) {
+    return score >= 0.0 && score <= this.submission.getTotalPoints();
   }
 
   @Subscribe
@@ -64,9 +49,4 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
     this.view.setTotalPoints(format.format(submission.getTotalPoints()));
   }
 
-  private class InvalidScoreValue extends Exception {
-    public InvalidScoreValue(String score) {
-      super(score);
-    }
-  }
 }

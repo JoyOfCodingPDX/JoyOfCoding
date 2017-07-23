@@ -48,4 +48,24 @@ public class TestCaseOutputPanel extends JPanel implements TestCaseOutputView {
   public void setPointsDeducted(String pointsDeducted) {
     throw new UnsupportedOperationException("This method is not implemented yet");
   }
+
+  @Override
+  public void addGraderCommentChangeListener(GraderCommentChangeListener listener) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
+  @Override
+  public void setGraderComment(String comment) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
+  @Override
+  public void addPointsDeductedChangeListener(PointsDeductedChangeListener listener) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
+  @Override
+  public void setPointsDeductedIsValid(boolean isValidPointsDeducted) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
 }

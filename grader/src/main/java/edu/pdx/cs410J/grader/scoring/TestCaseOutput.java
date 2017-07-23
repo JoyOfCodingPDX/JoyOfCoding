@@ -6,6 +6,7 @@ public class TestCaseOutput {
   private String command;
   private String output;
   private Double pointsDeducted;
+  private String graderComment;
 
   public TestCaseOutput setName(String name) {
     this.name = name;
@@ -50,5 +51,14 @@ public class TestCaseOutput {
 
   public Double getPointsDeducted() {
     return pointsDeducted;
+  }
+
+  public TestCaseOutput setGraderComment(String graderComment) {
+    this.graderComment = graderComment;
+    return this;
+  }
+
+  public String getGraderComment() {
+    return graderComment;
   }
 }
