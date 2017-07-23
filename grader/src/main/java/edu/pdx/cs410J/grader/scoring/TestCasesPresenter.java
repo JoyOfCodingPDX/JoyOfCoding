@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -30,9 +31,23 @@ public class TestCasesPresenter extends PresenterOnEventBus {
   @Subscribe
   public void populateViewWhenSubmissionIsSelected(ProjectSubmissionSelected selected) {
     testCaseOutputs = selected.getProjectSubmission().getTestCaseOutputs();
-    List<String> testCaseNames = testCaseOutputs.stream().map(TestCaseOutput::getName).collect(Collectors.toList());
+    List<String> testCaseNames = testCaseOutputs.stream().map(this::getDisplay).collect(Collectors.toList());
     view.setTestCaseNames(testCaseNames);
 
     view.setSelectedTestCaseName(0);
+  }
+
+  private String getDisplay(TestCaseOutput testCase) {
+    return formatTestCase(testCase.getName(), testCase.getPointsDeducted());
+  }
+
+  @VisibleForTesting
+  static String formatTestCase(String testCaseName, Double pointsDeducted) {
+    if (pointsDeducted == null || pointsDeducted == 0.0) {
+      return testCaseName;
+
+    } else {
+      return testCaseName + " (-" + pointsDeducted + ")";
+    }
   }
 }

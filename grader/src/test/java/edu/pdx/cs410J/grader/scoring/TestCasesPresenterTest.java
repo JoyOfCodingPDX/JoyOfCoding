@@ -72,6 +72,22 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
 
   }
 
+  @Test
+  public void pointsDeductedIsDisplayedInView() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    String testCaseName = "Test 1";
+    double pointsDeducted = 0.5;
+    TestCaseOutput testCase = new TestCaseOutput()
+      .setName(testCaseName)
+      .setPointsDeducted(pointsDeducted);
+    submission.addTestCaseOutput(testCase);
+
+    this.bus.post(new ProjectSubmissionSelected(submission));
+
+    String expected = TestCasesPresenter.formatTestCase(testCaseName, pointsDeducted);
+    verify(view).setTestCaseNames(Collections.singletonList(expected));
+  }
+
   private interface TestCaseOutputSelectedHandler {
     @Subscribe
     public void handle(TestCaseSelected event);
