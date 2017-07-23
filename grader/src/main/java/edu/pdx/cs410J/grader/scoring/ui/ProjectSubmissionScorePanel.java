@@ -9,15 +9,18 @@ import javax.swing.*;
 public class ProjectSubmissionScorePanel extends ScorePanel implements ProjectSubmissionScoreView {
   private final JLabel totalPoints;
   private final JTextField score;
+  private final JButton saveScore;
 
   public ProjectSubmissionScorePanel() {
     totalPoints = new JLabel();
     score = new JTextField(3);
+    saveScore = new JButton("Save Score");
 
     this.add(new JLabel("Total score for submission:"));
     this.add(score);
     this.add(new JLabel("out of"));
     this.add(totalPoints);
+    this.add(saveScore);
   }
 
   @Override
@@ -42,7 +45,7 @@ public class ProjectSubmissionScorePanel extends ScorePanel implements ProjectSu
 
   @Override
   public void addScoreSavedListener(ScoreSavedListener listener) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    saveScore.addActionListener(e -> listener.submissionSaved());
   }
 
 }
