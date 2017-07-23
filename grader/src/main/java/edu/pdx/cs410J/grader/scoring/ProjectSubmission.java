@@ -7,6 +7,8 @@ public class ProjectSubmission {
   private String projectName;
   private String studentId;
   private final List<TestCaseOutput> testCaseOutputs = new ArrayList<>();
+  private double totalPoints;
+  private Double score;
 
   public void setProjectName(String projectName) {
     this.projectName = projectName;
@@ -30,5 +32,21 @@ public class ProjectSubmission {
 
   public List<TestCaseOutput> getTestCaseOutputs() {
     return testCaseOutputs;
+  }
+
+  public void setTotalPoints(double totalPoints) {
+    this.totalPoints = totalPoints;
+  }
+
+  public double getTotalPoints() {
+    return totalPoints;
+  }
+
+  public void setScore(Double score) {
+    this.score = score;
+  }
+
+  public Double getScore() {
+    return score;
   }
 }
