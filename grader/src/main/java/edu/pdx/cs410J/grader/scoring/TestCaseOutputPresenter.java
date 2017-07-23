@@ -23,6 +23,8 @@ public class TestCaseOutputPresenter extends ScorePresenter {
     try {
       Double value = getValidScoreValue(pointsDeducted);
       this.testCase.setPointsDeducted(value);
+      publishEvent(new TestCaseOutputUpdated(this.testCase));
+
       this.view.setPointsDeductedIsValid(true);
 
     } catch (InvalidScoreValue ex) {

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.scoring.TestCaseOutputView.GraderCommentChangeListener;
 import edu.pdx.cs410J.grader.scoring.TestCaseOutputView.PointsDeductedChangeListener;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
 
@@ -93,5 +95,28 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     listener.getValue().onGraderCommentChange(comment);
 
     assertThat(testCase.getGraderComment(), equalTo(comment));
+  }
+
+  @Test
+  public void deductingPublishesTestCaseOutputUpdatedEvent() {
+    ArgumentCaptor<PointsDeductedChangeListener> listener = ArgumentCaptor.forClass(PointsDeductedChangeListener.class);
+    verify(view).addPointsDeductedChangeListener(listener.capture());
+
+    this.bus.post(new TestCaseSelected(new TestCaseOutput()));
+
+    TestCaseOutputUpdatedHandler handler = mock(TestCaseOutputUpdatedHandler.class);
+    bus.register(handler);
+    listener.getValue().onPointsDeductedChange("2.0");
+
+    ArgumentCaptor<TestCaseOutputUpdated> eventCaptor = ArgumentCaptor.forClass(TestCaseOutputUpdated.class);
+    verify(handler).handle(eventCaptor.capture());
+    assertThat(eventCaptor.getValue().getTestCaseOutput().getPointsDeducted(), equalTo(2.0));
+
+    verifyNoMoreInteractions(handler);
+  }
+
+  interface TestCaseOutputUpdatedHandler {
+    @Subscribe
+    void handle(TestCaseOutputUpdated event);
   }
 }
