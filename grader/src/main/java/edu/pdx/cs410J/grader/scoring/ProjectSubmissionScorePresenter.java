@@ -16,6 +16,12 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
     this.view = view;
 
     this.view.addScoreChangedListener(this::setSubmissionScore);
+    this.view.addScoreSavedListener(this::publishSavedScoreMessage);
+  }
+
+  private void publishSavedScoreMessage() {
+    ProjectSubmissionScoreSaved saved = new ProjectSubmissionScoreSaved(this.submission);
+    publishEvent(saved);
   }
 
   private void setSubmissionScore(String score) {
@@ -39,11 +45,9 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
     submission = selected.getProjectSubmission();
     Double score = submission.getScore();
     if (score == null) {
-      this.view.setScore("");
-
-    } else {
-      this.view.setScore(format.format(score));
+      score = submission.getTotalPoints();
     }
+    this.view.setScore(format.format(score));
     this.view.setScoreIsValid(true);
 
     this.view.setTotalPoints(format.format(submission.getTotalPoints()));

@@ -40,4 +40,9 @@ public class ProjectSubmissionScorePanel extends ScorePanel implements ProjectSu
     setBorderBasedOnValidity(this.score, scoreIsValid);
   }
 
+  @Override
+  public void addScoreSavedListener(ScoreSavedListener listener) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
 }

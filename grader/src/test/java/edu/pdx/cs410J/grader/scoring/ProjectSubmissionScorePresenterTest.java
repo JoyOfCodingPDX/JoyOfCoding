@@ -1,14 +1,16 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionScoreView.ScoreChangedListener;
+import edu.pdx.cs410J.grader.scoring.ProjectSubmissionScoreView.ScoreSavedListener;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.function.BiConsumer;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCase {
 
@@ -31,17 +33,6 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     verify(view).setTotalPoints("6.0");
     verify(view).setScore("4.5");
     verify(view).setScoreIsValid(true);
-  }
-
-  @Test
-  public void submissionWithNoScoreDisplaysEmptyString() {
-    ProjectSubmission submission = createProjectSubmission("Project", "student");
-    submission.setTotalPoints(6.0);
-    submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
-
-    verify(view).setTotalPoints("6.0");
-    verify(view).setScore("");
   }
 
   @Test
@@ -127,5 +118,53 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     assertThat(submission.getScore(), equalTo(null));
   }
 
+  @Test
+  public void scoreInitiallyPopulatedWithTotalPoints() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    submission.setTotalPoints(6.0);
+    submission.setScore(null);
+    this.bus.post(new ProjectSubmissionSelected(submission));
 
+    verify(view).setTotalPoints("6.0");
+    verify(view).setScore("6.0");
+    verify(view).setScoreIsValid(true);
+  }
+
+  @Test
+  public void savingScorePublishesProjectSubmissionScoreSaved() {
+    // When a score of 5.0 has been set for a project submission
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    submission.setTotalPoints(6.0);
+    submission.setScore(null);
+    this.bus.post(new ProjectSubmissionSelected(submission));
+
+    double newScore = 5.2;
+    ScoreChangedListener scoreChanged =
+      captureListener(ScoreChangedListener.class, ProjectSubmissionScoreView::addScoreChangedListener);
+    scoreChanged.scoreChanged(String.valueOf(newScore));
+
+    ProjectSubmissionSavedHandler handler = mock(ProjectSubmissionSavedHandler.class);
+    bus.register(handler);
+
+    // When submission is saved...
+    ScoreSavedListener scoreSaved =
+      captureListener(ScoreSavedListener.class, ProjectSubmissionScoreView::addScoreSavedListener);
+    scoreSaved.submissionSaved();
+
+    // Then a ProjectSubmissionScoreSaved message is published
+    ArgumentCaptor<ProjectSubmissionScoreSaved> eventCaptor = ArgumentCaptor.forClass(ProjectSubmissionScoreSaved.class);
+    verify(handler).handle(eventCaptor.capture());
+    assertThat(eventCaptor.getValue().getProjectSubmission().getScore(), equalTo(newScore));
+  }
+
+  private interface ProjectSubmissionSavedHandler {
+    @Subscribe
+    void handle(ProjectSubmissionScoreSaved event);
+  }
+
+  private <L> L captureListener(Class<L> listenerClass, BiConsumer<ProjectSubmissionScoreView, L> addListener) {
+    ArgumentCaptor<L> listener = ArgumentCaptor.forClass(listenerClass);
+    addListener.accept(verify(view), listener.capture());
+    return listener.getValue();
+  }
 }

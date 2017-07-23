@@ -9,7 +9,13 @@ public interface ProjectSubmissionScoreView {
 
   void setScoreIsValid(boolean scoreIsInvalid);
 
+  void addScoreSavedListener(ScoreSavedListener listener);
+
   interface ScoreChangedListener {
     void scoreChanged(String newScore);
+  }
+
+  interface ScoreSavedListener {
+    void submissionSaved();
   }
 }
