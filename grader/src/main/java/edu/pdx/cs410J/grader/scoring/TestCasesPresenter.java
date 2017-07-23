@@ -31,14 +31,27 @@ public class TestCasesPresenter extends PresenterOnEventBus {
   @Subscribe
   public void populateViewWhenSubmissionIsSelected(ProjectSubmissionSelected selected) {
     testCaseOutputs = selected.getProjectSubmission().getTestCaseOutputs();
-    List<String> testCaseNames = testCaseOutputs.stream().map(this::getDisplay).collect(Collectors.toList());
-    view.setTestCaseNames(testCaseNames);
+    setTestCaseNamesInView();
 
     view.setSelectedTestCaseName(0);
   }
 
+  private void setTestCaseNamesInView() {
+    List<String> testCaseNames = testCaseOutputs.stream().map(this::getDisplay).collect(Collectors.toList());
+    view.setTestCaseNames(testCaseNames);
+  }
+
   private String getDisplay(TestCaseOutput testCase) {
     return formatTestCase(testCase.getName(), testCase.getPointsDeducted());
+  }
+
+  @Subscribe
+  public void repopulateViewWhenTestCaseOutputIsUpdated(TestCaseOutputUpdated update) {
+    int index = this.testCaseOutputs.indexOf(update.getTestCaseOutput());
+    if (index >= 0) {
+      setTestCaseNamesInView();
+      this.view.setSelectedTestCaseName(index);
+    }
   }
 
   @VisibleForTesting

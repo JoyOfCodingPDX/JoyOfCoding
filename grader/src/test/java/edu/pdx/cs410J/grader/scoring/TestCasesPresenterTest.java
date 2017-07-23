@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.scoring.TestCasesView.TestCaseNameSelectedListener;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -86,6 +87,30 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
 
     String expected = TestCasesPresenter.formatTestCase(testCaseName, pointsDeducted);
     verify(view).setTestCaseNames(Collections.singletonList(expected));
+  }
+
+  @Test
+  public void viewIsUpdatedWhenPointsAreDeducted() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+
+    String testName0 = "Test 0";
+    submission.addTestCaseOutput(new TestCaseOutput().setName(testName0));
+    String testName1 = "Test 1";
+    TestCaseOutput testCase1 = new TestCaseOutput().setName(testName1);
+    assertThat(testCase1.getPointsDeducted(), equalTo(null));
+    submission.addTestCaseOutput(testCase1);
+
+    this.bus.post(new ProjectSubmissionSelected(submission));
+    verify(view).setTestCaseNames(Arrays.asList(testName0, testName1));
+    verify(view).setSelectedTestCaseName(0);
+
+    double pointsDeducted = 0.5;
+    testCase1.setPointsDeducted(pointsDeducted);
+    this.bus.post(new TestCaseOutputUpdated(testCase1));
+
+    String expected = TestCasesPresenter.formatTestCase(testName1, pointsDeducted);
+    verify(view).setTestCaseNames(Arrays.asList(testName0, expected));
+    verify(view).setSelectedTestCaseName(1);
   }
 
   private interface TestCaseOutputSelectedHandler {

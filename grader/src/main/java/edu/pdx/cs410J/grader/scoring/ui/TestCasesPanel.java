@@ -24,6 +24,7 @@ public class TestCasesPanel extends JPanelWithJList implements TestCasesView{
   @Override
   public void setTestCaseNames(List<String> testCaseNames) {
     this.testCaseNames.setListData(new Vector<>(testCaseNames));
+    this.updateUI();
   }
 
   @Override
