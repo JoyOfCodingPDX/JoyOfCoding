@@ -14,10 +14,12 @@ public class ProjectSubmissionScorerUIModule extends AbstractModule {
     bind(ProjectSubmissionsView.class).to(ProjectSubmissionsPanel.class);
     bind(TestCasesView.class).to(TestCasesPanel.class);
     bind(TestCaseOutputView.class).to(TestCaseOutputPanel.class);
+    bind(ProjectSubmissionScoreView.class).to(ProjectSubmissionScorePanel.class);
 
     bind(ProjectSubmissionsPresenter.class).asEagerSingleton();
     bind(TestCasesPresenter.class).asEagerSingleton();
     bind(TestCaseOutputPresenter.class).asEagerSingleton();
+    bind(ProjectSubmissionScorePresenter.class).asEagerSingleton();
   }
 
   @Provides

@@ -2,15 +2,19 @@ package edu.pdx.cs410J.grader.scoring;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.text.NumberFormat;
 
+@Singleton
 public class ProjectSubmissionScorePresenter extends PresenterOnEventBus {
   private final ProjectSubmissionScoreView view;
   private final NumberFormat format;
   private ProjectSubmission submission;
 
+  @Inject
   public ProjectSubmissionScorePresenter(EventBus bus, ProjectSubmissionScoreView view) {
     super(bus);
     this.view = view;
@@ -22,22 +26,34 @@ public class ProjectSubmissionScorePresenter extends PresenterOnEventBus {
   }
 
   private void setSubmissionScore(String score) {
-    Double value;
+    try {
+      Double value = getValidScoreValue(score);
+      this.submission.setScore(value);
+      this.view.setScoreIsValid(true);
+
+    } catch (InvalidScoreValue invalidScoreValue) {
+      this.view.setScoreIsValid(false);
+    }
+  }
+
+  private Double getValidScoreValue(String score) throws InvalidScoreValue {
     if ("".equals(score)) {
-      value = null;
+      return null;
 
     } else {
       try {
-        value = Double.parseDouble(score);
+        Double value = Double.parseDouble(score);
+        if (value >= 0.0 && value <= this.submission.getTotalPoints()) {
+          return value;
+
+        } else {
+          throw new InvalidScoreValue(score);
+        }
 
       } catch (NumberFormatException ex) {
-        this.view.setScoreIsValid(false);
-        return;
+        throw new InvalidScoreValue(score);
       }
     }
-
-    this.submission.setScore(value);
-    this.view.setScoreIsValid(true);
   }
 
   @Subscribe
@@ -50,7 +66,14 @@ public class ProjectSubmissionScorePresenter extends PresenterOnEventBus {
     } else {
       this.view.setScore(format.format(score));
     }
+    this.view.setScoreIsValid(true);
 
     this.view.setTotalPoints(format.format(submission.getTotalPoints()));
+  }
+
+  private class InvalidScoreValue extends Exception {
+    public InvalidScoreValue(String score) {
+      super(score);
+    }
   }
 }

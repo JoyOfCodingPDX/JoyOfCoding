@@ -25,7 +25,7 @@ public class ProjectSubmissionScorer extends UIMain {
 
   @Inject
   public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases,
-                                 TestCaseOutputPanel testCaseOutput) {
+                                 TestCaseOutputPanel testCaseOutput, ProjectSubmissionScorePanel score) {
     super(parent);
 
     parent.setTitle("Project Submission Scorer");
@@ -33,14 +33,17 @@ public class ProjectSubmissionScorer extends UIMain {
     Container content = parent.getContentPane();
     content.setLayout(new BorderLayout());
 
-    JPanel submissionsAndTestCases = new JPanel();
-    submissionsAndTestCases.setLayout(new BorderLayout());
+    JPanel submissionsAndTestCases = new JPanel(new BorderLayout());
     submissionsAndTestCases.add(submissions, BorderLayout.WEST);
     submissionsAndTestCases.add(testCases, BorderLayout.EAST);
 
     content.add(submissionsAndTestCases, BorderLayout.WEST);
 
-    content.add(testCaseOutput, BorderLayout.CENTER);
+    JPanel scoreAndOutput = new JPanel(new BorderLayout());
+    scoreAndOutput.add(score, BorderLayout.NORTH);
+    scoreAndOutput.add(testCaseOutput, BorderLayout.CENTER);
+
+    content.add(scoreAndOutput, BorderLayout.CENTER);
   }
 
   static void setLoggingLevelToDebug() {
@@ -71,6 +74,7 @@ public class ProjectSubmissionScorer extends UIMain {
       ProjectSubmission submission = new ProjectSubmission();
       submission.setProjectName(projectName);
       submission.setStudentId(studentId);
+      submission.setTotalPoints(8.0);
 
       for (int j = 0; j < 10; j++) {
         String testCaseName = studentId + "'s test " + j;

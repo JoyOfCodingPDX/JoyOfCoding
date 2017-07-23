@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.scoring;
 
-interface ProjectSubmissionScoreView {
+public interface ProjectSubmissionScoreView {
   void setTotalPoints(String totalPoints);
 
   void setScore(String score);
