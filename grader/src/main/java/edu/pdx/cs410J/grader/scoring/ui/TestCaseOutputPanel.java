@@ -43,4 +43,9 @@ public class TestCaseOutputPanel extends JPanel implements TestCaseOutputView {
   public void setOutput(String output) {
     this.output.setText(output);
   }
+
+  @Override
+  public void setPointsDeducted(String pointsDeducted) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
 }

@@ -24,12 +24,24 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     TestCaseOutput testCase = new TestCaseOutput()
       .setDescription(description)
       .setCommand(command)
-      .setOutput(output);
+      .setOutput(output)
+      .setPointsDeducted(null);
 
     this.bus.post(new TestCaseSelected(testCase));
 
     verify(view).setDescription(description);
     verify(view).setCommand(command);
     verify(view).setOutput(output);
+    verify(view).setPointsDeducted("");
+  }
+
+  @Test
+  public void pointDeductedAreDisplayedInView() {
+    TestCaseOutput testCase = new TestCaseOutput()
+      .setPointsDeducted(0.5);
+
+    this.bus.post(new TestCaseSelected(testCase));
+
+    verify(view).setPointsDeducted("0.5");
   }
 }

@@ -4,23 +4,16 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
-
-import java.text.NumberFormat;
 
 @Singleton
-public class ProjectSubmissionScorePresenter extends PresenterOnEventBus {
+public class ProjectSubmissionScorePresenter extends ScorePresenter {
   private final ProjectSubmissionScoreView view;
-  private final NumberFormat format;
   private ProjectSubmission submission;
 
   @Inject
   public ProjectSubmissionScorePresenter(EventBus bus, ProjectSubmissionScoreView view) {
     super(bus);
     this.view = view;
-
-    format = NumberFormat.getNumberInstance();
-    format.setMinimumFractionDigits(1);
 
     this.view.addScoreChangedListener(this::setSubmissionScore);
   }

@@ -5,6 +5,7 @@ public class TestCaseOutput {
   private String description;
   private String command;
   private String output;
+  private Double pointsDeducted;
 
   public TestCaseOutput setName(String name) {
     this.name = name;
@@ -40,5 +41,14 @@ public class TestCaseOutput {
 
   public String getOutput() {
     return output;
+  }
+
+  public TestCaseOutput setPointsDeducted(Double pointsDeducted) {
+    this.pointsDeducted = pointsDeducted;
+    return this;
+  }
+
+  public Double getPointsDeducted() {
+    return pointsDeducted;
   }
 }

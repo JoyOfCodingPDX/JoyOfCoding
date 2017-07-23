@@ -4,10 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 @Singleton
-public class TestCaseOutputPresenter extends PresenterOnEventBus {
+public class TestCaseOutputPresenter extends ScorePresenter {
   private final TestCaseOutputView view;
 
   @Inject
@@ -22,5 +21,13 @@ public class TestCaseOutputPresenter extends PresenterOnEventBus {
     view.setCommand(testCase.getCommand());
     view.setDescription(testCase.getDescription());
     view.setOutput(testCase.getOutput());
+
+    Double pointsDeducted = testCase.getPointsDeducted();
+    if (pointsDeducted == null) {
+      view.setPointsDeducted("");
+
+    } else {
+      view.setPointsDeducted(format.format(pointsDeducted));
+    }
   }
 }

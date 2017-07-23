@@ -6,4 +6,6 @@ public interface TestCaseOutputView {
   void setCommand(String command);
 
   void setOutput(String output);
+
+  void setPointsDeducted(String pointsDeducted);
 }
