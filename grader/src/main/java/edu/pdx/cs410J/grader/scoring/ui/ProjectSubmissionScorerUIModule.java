@@ -5,10 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.mvp.EventBusThatPublishesUnhandledExceptionEvents;
-import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsPresenter;
-import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsView;
-import edu.pdx.cs410J.grader.scoring.TestCasesPresenter;
-import edu.pdx.cs410J.grader.scoring.TestCasesView;
+import edu.pdx.cs410J.grader.scoring.*;
 
 public class ProjectSubmissionScorerUIModule extends AbstractModule {
   @Override
@@ -16,9 +13,11 @@ public class ProjectSubmissionScorerUIModule extends AbstractModule {
 
     bind(ProjectSubmissionsView.class).to(ProjectSubmissionsPanel.class);
     bind(TestCasesView.class).to(TestCasesPanel.class);
+    bind(TestCaseOutputView.class).to(TestCaseOutputPanel.class);
 
     bind(ProjectSubmissionsPresenter.class).asEagerSingleton();
     bind(TestCasesPresenter.class).asEagerSingleton();
+    bind(TestCaseOutputPresenter.class).asEagerSingleton();
   }
 
   @Provides

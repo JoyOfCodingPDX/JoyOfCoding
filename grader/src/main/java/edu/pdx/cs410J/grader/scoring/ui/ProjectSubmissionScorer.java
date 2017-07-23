@@ -24,7 +24,8 @@ public class ProjectSubmissionScorer extends UIMain {
   private static final Logger logger = LoggerFactory.getLogger(ProjectSubmissionScorer.class);
 
   @Inject
-  public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases) {
+  public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases,
+                                 TestCaseOutputPanel testCaseOutput) {
     super(parent);
 
     parent.setTitle("Project Submission Scorer");
@@ -38,6 +39,8 @@ public class ProjectSubmissionScorer extends UIMain {
     submissionsAndTestCases.add(testCases, BorderLayout.EAST);
 
     content.add(submissionsAndTestCases, BorderLayout.WEST);
+
+    content.add(testCaseOutput, BorderLayout.CENTER);
   }
 
   static void setLoggingLevelToDebug() {
@@ -71,13 +74,31 @@ public class ProjectSubmissionScorer extends UIMain {
 
       for (int j = 0; j < 10; j++) {
         String testCaseName = studentId + "'s test " + j;
-        submission.addTestCaseOutput(new TestCaseOutput().setName(testCaseName));
+        TestCaseOutput testCaseOutput =
+          new TestCaseOutput()
+            .setName(testCaseName)
+            .setDescription("Test " + j + ": Test " + studentId + "'s " + projectName + " submission")
+            .setCommand("java -jar " + studentId + "/project.jar Test" + j)
+            .setOutput(generateOutput(studentId, j));
+        submission.addTestCaseOutput(testCaseOutput);
       }
 
       submissions.add(submission);
     }
 
     return submissions;
+  }
+
+  private static String generateOutput(String studentId, int j) {
+    String output = "Output of " + studentId + "'s Test " + j;
+    if (j % 2 == 0) {
+      for (int i = 0; i < 100; i++) {
+        output += "\nq";
+      }
+
+    }
+
+    return output;
   }
 
 }
