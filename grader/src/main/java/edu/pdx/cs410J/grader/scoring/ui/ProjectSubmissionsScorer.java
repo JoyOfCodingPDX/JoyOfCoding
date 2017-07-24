@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class ProjectSubmissionScorer extends UIMain {
-  private static final Logger logger = LoggerFactory.getLogger(ProjectSubmissionScorer.class);
+public class ProjectSubmissionsScorer extends UIMain {
+  private static final Logger logger = LoggerFactory.getLogger(ProjectSubmissionsScorer.class);
 
   @Inject
-  public ProjectSubmissionScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases,
-                                 TestCaseOutputPanel testCaseOutput, ProjectSubmissionScorePanel score) {
+  public ProjectSubmissionsScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases,
+                                  TestCaseOutputPanel testCaseOutput, ProjectSubmissionScorePanel score) {
     super(parent);
 
     parent.setTitle("Project Submission Scorer");
@@ -60,7 +60,7 @@ public class ProjectSubmissionScorer extends UIMain {
     EventBus bus = injector.getInstance(EventBus.class);
     logAllEventsOnBusAtDebugLevel(bus, logger);
 
-    ProjectSubmissionScorer scorer = injector.getInstance(ProjectSubmissionScorer.class);
+    ProjectSubmissionsScorer scorer = injector.getInstance(ProjectSubmissionsScorer.class);
     scorer.display();
 
     bus.post(new ProjectSubmissionsLoaded(createProjectSubmissions()));

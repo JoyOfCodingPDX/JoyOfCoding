@@ -5,7 +5,7 @@ import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.grader.gradebook.GradeBookGUI;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
-import edu.pdx.cs410J.grader.scoring.ui.ProjectSubmissionScorer;
+import edu.pdx.cs410J.grader.scoring.ui.ProjectSubmissionsScorer;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
@@ -75,7 +75,7 @@ public class GraderTools {
         return GwtZipFixer.class;
 
       case "scoreProjectSubmissions":
-        return ProjectSubmissionScorer.class;
+        return ProjectSubmissionsScorer.class;
 
       default:
         usage("Unknown tool: " + tool);
