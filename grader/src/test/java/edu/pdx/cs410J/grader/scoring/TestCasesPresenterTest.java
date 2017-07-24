@@ -10,9 +10,7 @@ import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
 
@@ -110,7 +108,7 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
 
     String expected = TestCasesPresenter.formatTestCase(testName1, pointsDeducted);
     verify(view).setTestCaseNames(Arrays.asList(testName0, expected));
-    verify(view).setSelectedTestCaseName(1);
+    verify(view, never()).setSelectedTestCaseName(1);
   }
 
   @Test
