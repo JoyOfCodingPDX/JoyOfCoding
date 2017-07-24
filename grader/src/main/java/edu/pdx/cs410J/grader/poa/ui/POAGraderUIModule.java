@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.mvp.EventBusThatPublishesUnhandledExceptionEvents;
 import edu.pdx.cs410J.grader.mvp.UnhandledExceptionPresenter;
 import edu.pdx.cs410J.grader.mvp.UnhandledExceptionView;
+import edu.pdx.cs410J.grader.mvp.ui.UnhandledExceptionDialog;
 import edu.pdx.cs410J.grader.poa.*;
 
 public class POAGraderUIModule extends AbstractModule {

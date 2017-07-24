@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.mvp.ui.UIMain;
-import edu.pdx.cs410J.grader.poa.ui.TopLevelJFrame;
+import edu.pdx.cs410J.grader.mvp.ui.TopLevelJFrame;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmission;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded;
 import edu.pdx.cs410J.grader.scoring.TestCaseOutput;

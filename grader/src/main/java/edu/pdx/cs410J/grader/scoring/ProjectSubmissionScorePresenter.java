@@ -53,4 +53,25 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
     this.view.setTotalPoints(format.format(submission.getTotalPoints()));
   }
 
+  @Subscribe
+  public void updateScoreWhenTestCaseOutputIsUpdate(TestCaseOutputUpdated updated) {
+    if (submission.getTestCaseOutputs().contains(updated.getTestCaseOutput())) {
+      double score = submission.getTotalPoints();
+      double totalPointsDeducted = submission.getTestCaseOutputs().stream().mapToDouble(this::getPointsDeducted).sum();
+      score -= totalPointsDeducted;
+      this.submission.setScore(score);
+      this.view.setScoreIsValid(true);
+      this.view.setScore(format.format(score));
+    }
+  }
+
+  private double getPointsDeducted(TestCaseOutput testCaseOutput) {
+    Double pointsDeducted = testCaseOutput.getPointsDeducted();
+    if (pointsDeducted == null) {
+      return 0.0;
+
+    } else {
+      return pointsDeducted.doubleValue();
+    }
+  }
 }

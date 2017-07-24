@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader.poa.ui;
+package edu.pdx.cs410J.grader.mvp.ui;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

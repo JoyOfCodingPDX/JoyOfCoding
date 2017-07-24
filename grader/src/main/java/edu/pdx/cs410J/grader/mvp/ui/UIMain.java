@@ -2,7 +2,6 @@ package edu.pdx.cs410J.grader.mvp.ui;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import edu.pdx.cs410J.grader.poa.ui.TopLevelJFrame;
 import org.slf4j.Logger;
 
 public class UIMain {
