@@ -38,7 +38,7 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
   }
 
   @Override
-  public void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
+  public void addUngradedSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
     registerListenerOnListItemSelection(this.ungradedSubmissionNames, listener::submissionNameSelected);
   }
 

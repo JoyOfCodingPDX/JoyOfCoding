@@ -5,7 +5,7 @@ import java.util.List;
 public interface ProjectSubmissionsView {
   void setUngradedProjectSubmissionNames(List<String> submissionNames);
 
-  void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener);
+  void addUngradedSubmissionNameSelectedListener(SubmissionNameSelectedListener listener);
 
   void setSelectedUngradedSubmission(int index);
 

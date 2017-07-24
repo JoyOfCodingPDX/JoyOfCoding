@@ -65,7 +65,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
   @Test
   public void eventIsPublishedWhenProjectSubmissionIsSelected() {
     ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
-    verify(view).addSubmissionNameSelectedListener(listener.capture());
+    verify(view).addUngradedSubmissionNameSelectedListener(listener.capture());
 
     String projectName = "Project";
     String studentId = "student1";
@@ -94,7 +94,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
   @Test
   public void firstSubmissionIsSelectedWhenSubmissionsAreLoaded() {
     ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
-    verify(view).addSubmissionNameSelectedListener(listener.capture());
+    verify(view).addUngradedSubmissionNameSelectedListener(listener.capture());
 
     String projectName = "Project";
 
@@ -125,6 +125,28 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     publishEvent(new ProjectSubmissionScoreSaved(submission));
 
     verify(view).setGradedProjectSubmissionNames(Collections.singletonList(submissionName));
+  }
+
+  @Test
+  public void nextSubmissionSelectedWhenSubmissionGraded() {
+    ProjectSubmission submission0 = createProjectSubmission("Project", "student0");
+    submission0.setScore(null);
+    ProjectSubmission submission1 = createProjectSubmission("Project", "student1");
+    submission1.setScore(null);
+
+    publishEvent(new ProjectSubmissionsLoaded(Arrays.asList(submission0, submission1)));
+
+    ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
+    this.bus.register(handler);
+
+    submission0.setScore(3.0);
+    publishEvent(new ProjectSubmissionScoreSaved(submission0));
+
+    ArgumentCaptor<ProjectSubmissionSelected> eventCaptor = ArgumentCaptor.forClass(ProjectSubmissionSelected.class);
+    verify(handler).handle(eventCaptor.capture());
+
+    assertThat(eventCaptor.getValue().getProjectSubmission(), equalTo(submission1));
+
   }
 
   private interface ProjectSubmissionSelectedHandler {
