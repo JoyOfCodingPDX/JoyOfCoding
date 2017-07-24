@@ -33,7 +33,11 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
 
   @Subscribe
   public void populateViewWithNamesOfSubmissions(ProjectSubmissionsLoaded loaded) {
-    setSubmissions(loaded.getSubmissions());
+    populateViewWithSubmissions(loaded.getSubmissions());
+  }
+
+  private void populateViewWithSubmissions(List<ProjectSubmission> submissions) {
+    setSubmissions(submissions);
 
     List<String> ungradedSubmissionNames = ungradedSubmissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
     this.view.setUngradedProjectSubmissionNames(ungradedSubmissionNames);
@@ -42,6 +46,13 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
     List<String> gradedSubmissionNames = gradedSubmissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
     this.view.setGradedProjectSubmissionNames(gradedSubmissionNames);
     this.view.setSelectedGradedSubmission(0);
+  }
+
+  @Subscribe
+  public void populateViewWithNamesOfUpdatedSubmissions(ProjectSubmissionScoreSaved saved) {
+    if (this.submissions.contains(saved.getProjectSubmission())) {
+      populateViewWithSubmissions(this.submissions);
+    }
   }
 
   private void setSubmissions(List<ProjectSubmission> submissions) {

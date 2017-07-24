@@ -109,6 +109,27 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     verify(view).setSelectedUngradedSubmission(0);
   }
 
+  @Test
+  public void submissionMovedToGradedWhenUpdated() {
+    String projectName = "Project";
+    String studentId = "student";
+    ProjectSubmission submission = createProjectSubmission(projectName, studentId);
+    submission.setScore(null);
+
+    publishEvent(new ProjectSubmissionsLoaded(Collections.singletonList(submission)));
+
+    String submissionName = ProjectSubmissionsPresenter.getProjectSubmissionName(studentId, projectName);
+    verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(submissionName));
+    verify(view).setSelectedUngradedSubmission(0);
+
+    submission.setScore(3.0);
+    publishEvent(new ProjectSubmissionScoreSaved(submission));
+
+    verify(view).setGradedProjectSubmissionNames(Collections.singletonList(submissionName));
+    verify(view, times(2)).setSelectedGradedSubmission(0);
+
+  }
+
   private interface ProjectSubmissionSelectedHandler {
     @Subscribe
     public void handle(ProjectSubmissionSelected event);
