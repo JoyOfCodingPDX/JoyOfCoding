@@ -113,6 +113,30 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
     verify(view).setSelectedTestCaseName(1);
   }
 
+  @Test
+  public void nextTestCaseIsSelectedWhenTestCaseIsUpdated() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+
+    TestCaseOutput testCase0 = new TestCaseOutput().setName("Test 0");
+    submission.addTestCaseOutput(testCase0);
+    TestCaseOutput testCase1 = new TestCaseOutput().setName("Test 1");
+    assertThat(testCase1.getPointsDeducted(), equalTo(null));
+    submission.addTestCaseOutput(testCase1);
+
+    publishEvent(new ProjectSubmissionSelected(submission));
+    verify(view).setSelectedTestCaseName(0);
+
+    TestCaseOutputSelectedHandler handler = mock(TestCaseOutputSelectedHandler.class);
+    this.bus.register(handler);
+
+    publishEvent(new TestCaseOutputUpdated(testCase0));
+    verify(view).setSelectedTestCaseName(1);
+
+    ArgumentCaptor<TestCaseSelected> eventCaptor = ArgumentCaptor.forClass(TestCaseSelected.class);
+    verify(handler).handle(eventCaptor.capture());
+    assertThat(eventCaptor.getValue().getTestCaseOutput(), equalTo(testCase1));
+  }
+
   private interface TestCaseOutputSelectedHandler {
     @Subscribe
     public void handle(TestCaseSelected event);

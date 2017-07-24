@@ -46,11 +46,16 @@ public class TestCasesPresenter extends PresenterOnEventBus {
   }
 
   @Subscribe
-  public void repopulateViewWhenTestCaseOutputIsUpdated(TestCaseOutputUpdated update) {
+  public void repopulateViewAndSelectNextTestCaseWhenTestCaseOutputIsUpdated(TestCaseOutputUpdated update) {
     int index = this.testCaseOutputs.indexOf(update.getTestCaseOutput());
     if (index >= 0) {
       setTestCaseNamesInView();
-      this.view.setSelectedTestCaseName(index);
+      if (index < this.testCaseOutputs.size() - 1) {
+        int nextIndex = index + 1;
+        this.view.setSelectedTestCaseName(nextIndex);
+        TestCaseOutput next = this.testCaseOutputs.get(nextIndex);
+        publishEvent(new TestCaseSelected(next));
+      }
     }
   }
 
