@@ -7,11 +7,14 @@ import com.google.inject.Inject;
 import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
   private final ProjectSubmissionsView view;
   private List<ProjectSubmission> submissions;
+  private List<ProjectSubmission> gradedSubmissions;
+  private List<ProjectSubmission> ungradedSubmissions;
 
   @Inject
   public ProjectSubmissionsPresenter(EventBus bus, ProjectSubmissionsView view) {
@@ -30,12 +33,31 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
 
   @Subscribe
   public void populateViewWithNamesOfSubmissions(ProjectSubmissionsLoaded loaded) {
-    submissions = loaded.getSubmissions();
+    setSubmissions(loaded.getSubmissions());
 
-    List<String> submissionNames = submissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
-    this.view.setProjectSubmissionNames(submissionNames);
+    List<String> ungradedSubmissionNames = ungradedSubmissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
+    this.view.setUngradedProjectSubmissionNames(ungradedSubmissionNames);
+    this.view.setSelectedUngradedSubmission(0);
 
-    this.view.setSelectedSubmission(0);
+    List<String> gradedSubmissionNames = gradedSubmissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
+    this.view.setGradedProjectSubmissionNames(gradedSubmissionNames);
+    this.view.setSelectedGradedSubmission(0);
+  }
+
+  private void setSubmissions(List<ProjectSubmission> submissions) {
+    this.submissions = submissions;
+
+    gradedSubmissions = submissions.stream()
+      .filter(this::isGraded)
+      .collect(Collectors.toList());
+
+    ungradedSubmissions = submissions.stream()
+      .filter(((Predicate<ProjectSubmission>) this::isGraded).negate())
+      .collect(Collectors.toList());
+  }
+
+  private boolean isGraded(ProjectSubmission submission) {
+    return submission.getScore() != null;
   }
 
   private String getSubmissionName(ProjectSubmission submission) {

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +35,32 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission submission = createProjectSubmission(projectName, studentId);
 
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(Collections.singletonList(submission));
-    this.bus.post(loaded);
+    publishEvent(loaded);
 
     String submissionName = ProjectSubmissionsPresenter.getProjectSubmissionName(studentId, projectName);
-    verify(view).setProjectSubmissionNames(Collections.singletonList(submissionName));
+    verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(submissionName));
+  }
+
+  @Test
+  public void viewIsPopulatedWithGradedAndUngradedSubmissions() {
+    String projectName = "Project";
+    String ungradedStudentName = "student0";
+    ProjectSubmission ungraded = createProjectSubmission(projectName, ungradedStudentName);
+    ungraded.setScore(null);
+
+    String gradedStudentName = "student1";
+    ProjectSubmission graded = createProjectSubmission(projectName, gradedStudentName);
+    graded.setScore(4.0);
+
+    publishEvent(new ProjectSubmissionsLoaded(Arrays.asList(ungraded, graded)));
+
+    String ungradedName = ProjectSubmissionsPresenter.getProjectSubmissionName(ungradedStudentName, projectName);
+    verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(ungradedName));
+    verify(view).setSelectedUngradedSubmission(0);
+
+    String gradedName = ProjectSubmissionsPresenter.getProjectSubmissionName(gradedStudentName, projectName);
+    verify(view).setGradedProjectSubmissionNames(Collections.singletonList(gradedName));
+    verify(view).setSelectedGradedSubmission(0);
   }
 
   @Test
@@ -83,7 +106,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
 
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
     publishEvent(loaded);
-    verify(view).setSelectedSubmission(0);
+    verify(view).setSelectedUngradedSubmission(0);
   }
 
   private interface ProjectSubmissionSelectedHandler {

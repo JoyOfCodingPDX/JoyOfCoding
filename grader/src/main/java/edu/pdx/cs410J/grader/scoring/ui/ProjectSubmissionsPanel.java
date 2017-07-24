@@ -25,7 +25,7 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
   }
 
   @Override
-  public void setProjectSubmissionNames(List<String> submissionNames) {
+  public void setUngradedProjectSubmissionNames(List<String> submissionNames) {
     this.submissionNames.setListData(new Vector<>(submissionNames));
   }
 
@@ -35,8 +35,18 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
   }
 
   @Override
-  public void setSelectedSubmission(int index) {
+  public void setSelectedUngradedSubmission(int index) {
     this.submissionNames.setSelectedIndex(index);
+  }
+
+  @Override
+  public void setGradedProjectSubmissionNames(List<String> submissionNames) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
+  }
+
+  @Override
+  public void setSelectedGradedSubmission(int index) {
+    throw new UnsupportedOperationException("This method is not implemented yet");
   }
 
 }
