@@ -45,7 +45,6 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
 
     List<String> gradedSubmissionNames = gradedSubmissions.stream().map(this::getSubmissionName).collect(Collectors.toList());
     this.view.setGradedProjectSubmissionNames(gradedSubmissionNames);
-    this.view.setSelectedGradedSubmission(0);
   }
 
   @Subscribe

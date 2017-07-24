@@ -11,8 +11,6 @@ public interface ProjectSubmissionsView {
 
   void setGradedProjectSubmissionNames(List<String> submissionNames);
 
-  void setSelectedGradedSubmission(int index);
-
   interface SubmissionNameSelectedListener {
     void submissionNameSelected(int index);
   }

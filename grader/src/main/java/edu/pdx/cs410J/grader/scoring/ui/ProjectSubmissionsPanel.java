@@ -52,9 +52,4 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
     this.gradedSubmissionNames.setListData(new Vector<>(submissionNames));
   }
 
-  @Override
-  public void setSelectedGradedSubmission(int index) {
-    this.gradedSubmissionNames.setSelectedIndex(index);
-  }
-
 }

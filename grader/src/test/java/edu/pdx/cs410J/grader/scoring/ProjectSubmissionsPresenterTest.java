@@ -60,7 +60,6 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
 
     String gradedName = ProjectSubmissionsPresenter.getProjectSubmissionName(gradedStudentName, projectName);
     verify(view).setGradedProjectSubmissionNames(Collections.singletonList(gradedName));
-    verify(view).setSelectedGradedSubmission(0);
   }
 
   @Test
@@ -126,8 +125,6 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     publishEvent(new ProjectSubmissionScoreSaved(submission));
 
     verify(view).setGradedProjectSubmissionNames(Collections.singletonList(submissionName));
-    verify(view, times(2)).setSelectedGradedSubmission(0);
-
   }
 
   private interface ProjectSubmissionSelectedHandler {
