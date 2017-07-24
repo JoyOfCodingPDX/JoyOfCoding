@@ -52,4 +52,9 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
     this.gradedSubmissionNames.setListData(new Vector<>(submissionNames));
   }
 
+  @Override
+  public void addGradedSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
+    registerListenerOnListItemSelection(this.gradedSubmissionNames, listener::submissionNameSelected);
+  }
+
 }

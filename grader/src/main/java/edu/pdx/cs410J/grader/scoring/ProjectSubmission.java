@@ -42,8 +42,9 @@ public class ProjectSubmission {
     return totalPoints;
   }
 
-  public void setScore(Double score) {
+  public ProjectSubmission setScore(Double score) {
     this.score = score;
+    return this;
   }
 
   public Double getScore() {

@@ -63,7 +63,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
   }
 
   @Test
-  public void eventIsPublishedWhenProjectSubmissionIsSelected() {
+  public void eventIsPublishedWhenUngradedProjectSubmissionIsSelected() {
     ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
     verify(view).addUngradedSubmissionNameSelectedListener(listener.capture());
 
@@ -73,6 +73,36 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     List<ProjectSubmission> submissions = new ArrayList<>();
     submissions.add(createProjectSubmission(projectName, "student0"));
     ProjectSubmission submission1 = createProjectSubmission(projectName, studentId);
+    submissions.add(submission1);
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
+    publishEvent(loaded);
+
+    // When the user selects the second project submission...
+    ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
+    bus.register(handler);
+    listener.getValue().submissionNameSelected(1);
+
+    // Then a ProjectSubmissionSelected event for that submission is published
+
+    ArgumentCaptor<ProjectSubmissionSelected> eventCaptor = ArgumentCaptor.forClass(ProjectSubmissionSelected.class);
+    verify(handler).handle(eventCaptor.capture());
+    assertThat(eventCaptor.getValue().getProjectSubmission(), equalTo(submission1));
+
+    verifyNoMoreInteractions(handler);
+  }
+
+  @Test
+  public void eventIsPublishedWhenGradedProjectSubmissionIsSelected() {
+    ArgumentCaptor<SubmissionNameSelectedListener> listener = ArgumentCaptor.forClass(SubmissionNameSelectedListener.class);
+    verify(view).addGradedSubmissionNameSelectedListener(listener.capture());
+
+    String projectName = "Project";
+    String studentId = "student1";
+
+    List<ProjectSubmission> submissions = new ArrayList<>();
+    submissions.add(createProjectSubmission(projectName, "student0").setScore(3.0));
+    ProjectSubmission submission1 = createProjectSubmission(projectName, studentId);
+    submission1.setScore(4.0);
     submissions.add(submission1);
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
     publishEvent(loaded);

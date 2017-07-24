@@ -21,11 +21,12 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
     super(bus);
     this.view = view;
 
-    view.addUngradedSubmissionNameSelectedListener((selectedIndex) -> publishSubmissionSelected(selectedIndex, this.submissions));
+    view.addUngradedSubmissionNameSelectedListener((selectedIndex) -> publishSubmissionSelected(selectedIndex, ungradedSubmissions));
+    view.addGradedSubmissionNameSelectedListener((selectedIndex) -> publishSubmissionSelected(selectedIndex, gradedSubmissions));
   }
 
   private void publishSubmissionSelected(int selectedIndex, List<ProjectSubmission> submissions) {
-    if (submissions != null) {
+    if (submissions != null && !submissions.isEmpty()) {
       ProjectSubmission selected = submissions.get(selectedIndex);
       publishEvent(new ProjectSubmissionSelected(selected));
     }
