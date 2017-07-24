@@ -18,7 +18,9 @@ public class TestCasesPanel extends JPanelWithJList implements TestCasesView{
 
     this.setLayout(new BorderLayout());
 
-    this.add(new JScrollPane(testCaseNames), BorderLayout.CENTER);
+    JScrollPane scroll = new JScrollPane(testCaseNames);
+    scroll.setBorder(BorderFactory.createTitledBorder("Test Cases"));
+    this.add(scroll, BorderLayout.CENTER);
   }
 
   @Override

@@ -19,7 +19,9 @@ public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectS
 
     this.setLayout(new BorderLayout());
 
-    this.add(new JScrollPane(submissionNames), BorderLayout.CENTER);
+    JScrollPane scroll = new JScrollPane(submissionNames);
+    scroll.setBorder(BorderFactory.createTitledBorder("Project Submissions"));
+    this.add(scroll, BorderLayout.CENTER);
   }
 
   @Override
