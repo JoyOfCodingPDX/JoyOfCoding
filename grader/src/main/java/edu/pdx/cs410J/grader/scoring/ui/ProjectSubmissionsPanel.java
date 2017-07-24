@@ -11,42 +11,50 @@ import java.util.Vector;
 @Singleton
 public class ProjectSubmissionsPanel extends JPanelWithJList implements ProjectSubmissionsView {
 
-  private final JList<String> submissionNames;
+  private final JList<String> ungradedSubmissionNames;
+  private final JList<String> gradedSubmissionNames;
 
   public ProjectSubmissionsPanel() {
-    submissionNames = new JList<>();
-    submissionNames.setVisibleRowCount(30);
+    ungradedSubmissionNames = new JList<>();
+    ungradedSubmissionNames.setVisibleRowCount(15);
+
+    gradedSubmissionNames = new JList<>();
+    gradedSubmissionNames.setVisibleRowCount(15);
 
     this.setLayout(new BorderLayout());
 
-    JScrollPane scroll = new JScrollPane(submissionNames);
-    scroll.setBorder(BorderFactory.createTitledBorder("Project Submissions"));
-    this.add(scroll, BorderLayout.CENTER);
+    JScrollPane ungradedScroll = new JScrollPane(ungradedSubmissionNames);
+    ungradedScroll.setBorder(BorderFactory.createTitledBorder("Ungraded Submissions"));
+    this.add(ungradedScroll, BorderLayout.NORTH);
+
+    JScrollPane gradedScroll = new JScrollPane(gradedSubmissionNames);
+    gradedScroll.setBorder(BorderFactory.createTitledBorder("Graded Submissions"));
+    this.add(gradedScroll, BorderLayout.SOUTH);
   }
 
   @Override
   public void setUngradedProjectSubmissionNames(List<String> submissionNames) {
-    this.submissionNames.setListData(new Vector<>(submissionNames));
+    this.ungradedSubmissionNames.setListData(new Vector<>(submissionNames));
   }
 
   @Override
   public void addSubmissionNameSelectedListener(SubmissionNameSelectedListener listener) {
-    registerListenerOnListItemSelection(this.submissionNames, listener::submissionNameSelected);
+    registerListenerOnListItemSelection(this.ungradedSubmissionNames, listener::submissionNameSelected);
   }
 
   @Override
   public void setSelectedUngradedSubmission(int index) {
-    this.submissionNames.setSelectedIndex(index);
+    this.ungradedSubmissionNames.setSelectedIndex(index);
   }
 
   @Override
   public void setGradedProjectSubmissionNames(List<String> submissionNames) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.gradedSubmissionNames.setListData(new Vector<>(submissionNames));
   }
 
   @Override
   public void setSelectedGradedSubmission(int index) {
-    throw new UnsupportedOperationException("This method is not implemented yet");
+    this.gradedSubmissionNames.setSelectedIndex(index);
   }
 
 }
