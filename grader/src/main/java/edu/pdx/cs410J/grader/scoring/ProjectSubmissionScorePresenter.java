@@ -20,6 +20,9 @@ public class ProjectSubmissionScorePresenter extends ScorePresenter {
   }
 
   private void publishSavedScoreMessage() {
+    if (this.submission.getScore() == null) {
+      this.submission.setScore(this.submission.getTotalPoints());
+    }
     ProjectSubmissionScoreSaved saved = new ProjectSubmissionScoreSaved(this.submission);
     publishEvent(saved);
   }

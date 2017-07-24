@@ -194,6 +194,29 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     verify(view).setScore("5.0");
   }
 
+  @Test
+  public void savingSubmissionScoreWithNoDeductionsUpdatesToFullCredit() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    submission.setTotalPoints(8.0);
+
+    publishEvent(new ProjectSubmissionSelected(submission));
+    verify(view).setScoreIsValid(true);
+    verify(view).setScore("8.0");
+
+    ProjectSubmissionSavedHandler handler = mock(ProjectSubmissionSavedHandler.class);
+    bus.register(handler);
+
+    // When submission is saved...
+    ScoreSavedListener scoreSaved =
+      captureListener(ScoreSavedListener.class, ProjectSubmissionScoreView::addScoreSavedListener);
+    scoreSaved.submissionSaved();
+
+    // Then a ProjectSubmissionScoreSaved with the full credit score
+    ArgumentCaptor<ProjectSubmissionScoreSaved> eventCaptor = ArgumentCaptor.forClass(ProjectSubmissionScoreSaved.class);
+    verify(handler).handle(eventCaptor.capture());
+    assertThat(eventCaptor.getValue().getProjectSubmission().getScore(), equalTo(submission.getTotalPoints()));
+  }
+
 
   private interface ProjectSubmissionSavedHandler {
     @Subscribe
