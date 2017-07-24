@@ -31,7 +31,7 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
     String testCaseName = "test";
     submission.addTestCaseOutput(new TestCaseOutput().setName(testCaseName));
 
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     verify(view).setTestCaseNames(Collections.singletonList(testCaseName));
   }
@@ -46,7 +46,7 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
     TestCaseOutput testCase1 = new TestCaseOutput().setName("test1");
     submission.addTestCaseOutput(testCase1);
 
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     // When the user selects the second test case...
     TestCaseOutputSelectedHandler handler = mock(TestCaseOutputSelectedHandler.class);
@@ -67,7 +67,7 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
     submission.addTestCaseOutput(new TestCaseOutput().setName("test1"));
     submission.addTestCaseOutput(new TestCaseOutput().setName("test2"));
 
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     verify(view).setSelectedTestCaseName(0);
 
@@ -83,7 +83,7 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
       .setPointsDeducted(pointsDeducted);
     submission.addTestCaseOutput(testCase);
 
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     String expected = TestCasesPresenter.formatTestCase(testCaseName, pointsDeducted);
     verify(view).setTestCaseNames(Collections.singletonList(expected));
@@ -100,13 +100,13 @@ public class TestCasesPresenterTest extends ProjectSubmissionTestCase {
     assertThat(testCase1.getPointsDeducted(), equalTo(null));
     submission.addTestCaseOutput(testCase1);
 
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
     verify(view).setTestCaseNames(Arrays.asList(testName0, testName1));
     verify(view).setSelectedTestCaseName(0);
 
     double pointsDeducted = 0.5;
     testCase1.setPointsDeducted(pointsDeducted);
-    this.bus.post(new TestCaseOutputUpdated(testCase1));
+    publishEvent(new TestCaseOutputUpdated(testCase1));
 
     String expected = TestCasesPresenter.formatTestCase(testName1, pointsDeducted);
     verify(view).setTestCaseNames(Arrays.asList(testName0, expected));

@@ -36,7 +36,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
       .setPointsDeducted(null)
       .setGraderComment(comment);
 
-    this.bus.post(new TestCaseSelected(testCase));
+    publishEvent(new TestCaseSelected(testCase));
 
     verify(view).setDescription(description);
     verify(view).setCommand(command);
@@ -50,7 +50,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     TestCaseOutput testCase = new TestCaseOutput()
       .setPointsDeducted(0.5);
 
-    this.bus.post(new TestCaseSelected(testCase));
+    publishEvent(new TestCaseSelected(testCase));
 
     verify(view).setPointsDeductedIsValid(true);
     verify(view).setPointsDeducted("0.5");
@@ -61,7 +61,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     ArgumentCaptor<PointsDeductedChangeListener> listener = ArgumentCaptor.forClass(PointsDeductedChangeListener.class);
     verify(view).addPointsDeductedChangeListener(listener.capture());
 
-    this.bus.post(new TestCaseSelected(new TestCaseOutput()));
+    publishEvent(new TestCaseSelected(new TestCaseOutput()));
 
     String invalidPoints = "QQ";
     listener.getValue().onPointsDeductedChange(invalidPoints);
@@ -74,7 +74,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     ArgumentCaptor<PointsDeductedChangeListener> listener = ArgumentCaptor.forClass(PointsDeductedChangeListener.class);
     verify(view).addPointsDeductedChangeListener(listener.capture());
 
-    this.bus.post(new TestCaseSelected(new TestCaseOutput()));
+    publishEvent(new TestCaseSelected(new TestCaseOutput()));
 
     String invalidPoints = "-1.0";
     listener.getValue().onPointsDeductedChange(invalidPoints);
@@ -89,7 +89,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
 
     TestCaseOutput testCase = new TestCaseOutput();
 
-    this.bus.post(new TestCaseSelected(testCase));
+    publishEvent(new TestCaseSelected(testCase));
 
     String comment = "My new comment";
     listener.getValue().onGraderCommentChange(comment);
@@ -102,7 +102,7 @@ public class TestCaseOutputPresenterTest extends ProjectSubmissionTestCase {
     ArgumentCaptor<PointsDeductedChangeListener> listener = ArgumentCaptor.forClass(PointsDeductedChangeListener.class);
     verify(view).addPointsDeductedChangeListener(listener.capture());
 
-    this.bus.post(new TestCaseSelected(new TestCaseOutput()));
+    publishEvent(new TestCaseSelected(new TestCaseOutput()));
 
     TestCaseOutputUpdatedHandler handler = mock(TestCaseOutputUpdatedHandler.class);
     bus.register(handler);

@@ -28,7 +28,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(4.5);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     verify(view).setTotalPoints("6.0");
     verify(view).setScore("4.5");
@@ -43,7 +43,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     listener.getValue().scoreChanged("5.0");
 
@@ -59,7 +59,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     listener.getValue().scoreChanged("qq");
 
@@ -76,7 +76,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     listener.getValue().scoreChanged("");
 
@@ -92,7 +92,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
     verify(view).setScoreIsValid(true);
 
     listener.getValue().scoreChanged("-1.0");
@@ -109,7 +109,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
     verify(view).setScoreIsValid(true);
 
     listener.getValue().scoreChanged("7.0");
@@ -123,7 +123,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     verify(view).setTotalPoints("6.0");
     verify(view).setScore("6.0");
@@ -136,7 +136,7 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     ProjectSubmission submission = createProjectSubmission("Project", "student");
     submission.setTotalPoints(6.0);
     submission.setScore(null);
-    this.bus.post(new ProjectSubmissionSelected(submission));
+    publishEvent(new ProjectSubmissionSelected(submission));
 
     double newScore = 5.2;
     ScoreChangedListener scoreChanged =

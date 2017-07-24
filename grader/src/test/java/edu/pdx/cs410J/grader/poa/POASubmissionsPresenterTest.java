@@ -32,7 +32,7 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     LocalDateTime submitTime = LocalDateTime.now();
 
     POASubmission submission = createPOASubmission(subject, submitter, submitTime);
-    bus.post(submission);
+    publishEvent(submission);
 
     verify(view).setPOASubmissionsDescriptions(Arrays.asList(subject));
   }
@@ -44,8 +44,8 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     String submitter = "Test Student";
     LocalDateTime submitTime = LocalDateTime.now();
 
-    bus.post(createPOASubmission(subject1, submitter, submitTime));
-    bus.post(createPOASubmission(subject2, submitter, submitTime));
+    publishEvent(createPOASubmission(subject1, submitter, submitTime));
+    publishEvent(createPOASubmission(subject2, submitter, submitTime));
 
     verify(view).setPOASubmissionsDescriptions(Arrays.asList(subject1));
     verify(view).setPOASubmissionsDescriptions(Arrays.asList(subject1, subject2));
@@ -65,9 +65,9 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     ArgumentCaptor<POASubmissionsView.POASubmissionSelectedListener> listener = ArgumentCaptor.forClass(POASubmissionsView.POASubmissionSelectedListener.class);
     verify(view).addSubmissionSelectedListener(listener.capture());
 
-    bus.post(createPOASubmission(subject1, submitter, submitTime));
+    publishEvent(createPOASubmission(subject1, submitter, submitTime));
     POASubmission submission = createPOASubmission(subject2, submitter, submitTime);
-    bus.post(submission);
+    publishEvent(submission);
 
     // When the user selects the second POA submission...
     listener.getValue().submissionSelected(1);
@@ -96,12 +96,12 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     verify(view).addSubmissionSelectedListener(listener.capture());
 
     POASubmission submission1 = createPOASubmission(subject1, submitter, submitTime);
-    bus.post(submission1);
+    publishEvent(submission1);
     POASubmission submission2 = createPOASubmission(subject2, submitter, submitTime);
-    bus.post(submission2);
+    publishEvent(submission2);
 
     // When a DisplayNextPOAEvent is posted
-    bus.post(new SelectNextPOAEvent());
+    publishEvent(new SelectNextPOAEvent());
 
     // Then the View is updated
     verify(view).selectPOASubmission(1);
@@ -129,10 +129,10 @@ public class POASubmissionsPresenterTest extends POASubmissionTestCase {
     verify(view).addSubmissionSelectedListener(listener.capture());
 
     POASubmission submission1 = createPOASubmission(subject1, submitter, submitTime);
-    bus.post(submission1);
+    publishEvent(submission1);
 
     // When a DisplayNextPOAEvent is posted
-    bus.post(new SelectNextPOAEvent());
+    publishEvent(new SelectNextPOAEvent());
 
     // Then nothing happens
     verify(view, times(0)).selectPOASubmission(anyInt());

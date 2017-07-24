@@ -53,7 +53,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission submission1 = createProjectSubmission(projectName, studentId);
     submissions.add(submission1);
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
-    bus.post(loaded);
+    publishEvent(loaded);
 
     // When the user selects the second project submission...
     ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
@@ -82,7 +82,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     submissions.add(createProjectSubmission(projectName, "student1"));
 
     ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
-    bus.post(loaded);
+    publishEvent(loaded);
     verify(view).setSelectedSubmission(0);
   }
 

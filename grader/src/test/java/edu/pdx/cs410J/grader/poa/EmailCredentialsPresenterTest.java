@@ -29,7 +29,7 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
 
   @Test
   public void downloadingSubmissionsDisplaysEmailCredentialsView() {
-    this.bus.post(new DownloadPOASubmissionsRequest());
+    publishEvent(new DownloadPOASubmissionsRequest());
 
     verify(this.view).setIsVisible(true);
   }

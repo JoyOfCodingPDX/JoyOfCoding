@@ -38,4 +38,7 @@ public class EventBusTestCase {
 
   }
 
+  protected void publishEvent(Object event) {
+    this.bus.post(event);
+  }
 }
