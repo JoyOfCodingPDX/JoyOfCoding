@@ -157,6 +157,44 @@ public class ProjectSubmissionScorePresenterTest extends ProjectSubmissionTestCa
     assertThat(eventCaptor.getValue().getProjectSubmission().getScore(), equalTo(newScore));
   }
 
+  @Test
+  public void testCaseScoreChangeUpdatesSubmissionScore() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    submission.setTotalPoints(8.0);
+    TestCaseOutput testCase = new TestCaseOutput();
+    submission.addTestCaseOutput(testCase);
+
+    publishEvent(new ProjectSubmissionSelected(submission));
+    verify(view).setScoreIsValid(true);
+    verify(view).setScore("8.0");
+
+    testCase.setPointsDeducted(3.0);
+    publishEvent(new TestCaseOutputUpdated(testCase));
+
+    verify(view, times(2)).setScoreIsValid(true);
+    verify(view).setScore("5.0");
+  }
+
+  @Test
+  public void testCaseScoreChangeUpdatesSubmissionScoreWhenATestCaseHasNoScore() {
+    ProjectSubmission submission = createProjectSubmission("Project", "student");
+    submission.setTotalPoints(8.0);
+    TestCaseOutput testCase = new TestCaseOutput();
+    submission.addTestCaseOutput(testCase);
+    submission.addTestCaseOutput(new TestCaseOutput());
+
+    publishEvent(new ProjectSubmissionSelected(submission));
+    verify(view).setScoreIsValid(true);
+    verify(view).setScore("8.0");
+
+    testCase.setPointsDeducted(3.0);
+    publishEvent(new TestCaseOutputUpdated(testCase));
+
+    verify(view, times(2)).setScoreIsValid(true);
+    verify(view).setScore("5.0");
+  }
+
+
   private interface ProjectSubmissionSavedHandler {
     @Subscribe
     void handle(ProjectSubmissionScoreSaved event);
