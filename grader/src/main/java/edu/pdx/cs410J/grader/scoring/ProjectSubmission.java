@@ -1,9 +1,11 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@XmlRootElement(name = "project-submission")
 public class ProjectSubmission {
   private String projectName;
   private String studentId;
