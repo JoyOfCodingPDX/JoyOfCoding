@@ -3,6 +3,10 @@ package edu.pdx.cs410J.grader.scoring;
 import java.io.Reader;
 import java.util.Date;
 
+/**
+ * Author: Susham Kumar
+ */
+
 public class ProjectSubmissionOutputFileParser {
   public ProjectSubmissionOutputFileParser(Reader source) {
 
