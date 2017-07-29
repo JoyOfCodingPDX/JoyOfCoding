@@ -17,13 +17,27 @@ public class ProjectSubmissionXmlConverterTest {
     String projectName = "Project";
     expected.setProjectName(projectName);
 
+    ProjectSubmission actual = convertToXmlAndBack(expected);
+    assertThat(actual.getProjectName(), equalTo(projectName));
+  }
+
+  private ProjectSubmission convertToXmlAndBack(ProjectSubmission submission) throws JAXBException {
     ProjectSubmissionXmlConverter converter = new ProjectSubmissionXmlConverter();
     StringWriter sw = new StringWriter();
-    converter.convertToXml(expected, sw);
+    converter.convertToXml(submission, sw);
     String xml = sw.toString();
     System.out.println(xml);
-    ProjectSubmission actual = converter.convertFromXml(new StringReader(xml));
-    assertThat(actual.getProjectName(), equalTo(projectName));
+    return converter.convertFromXml(new StringReader(xml));
+  }
+
+  @Test
+  public void convertStudentId() throws JAXBException {
+    ProjectSubmission expected = new ProjectSubmission();
+    String studentId = "studentId";
+    expected.setStudentId(studentId);
+
+    ProjectSubmission actual = convertToXmlAndBack(expected);
+    assertThat(actual.getStudentId(), equalTo(studentId));
   }
 
 }
