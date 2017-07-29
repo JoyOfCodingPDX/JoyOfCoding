@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader.scoring;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProjectSubmission {
@@ -9,6 +10,8 @@ public class ProjectSubmission {
   private final List<TestCaseOutput> testCaseOutputs = new ArrayList<>();
   private double totalPoints;
   private Double score;
+  private String studentName;
+  private Date submissionTime;
 
   public void setProjectName(String projectName) {
     this.projectName = projectName;
@@ -49,5 +52,21 @@ public class ProjectSubmission {
 
   public Double getScore() {
     return score;
+  }
+
+  public String getStudentName() {
+    return studentName;
+  }
+
+  public void setStudentName(String studentName) {
+    this.studentName = studentName;
+  }
+
+  public Date getSubmissionTime() {
+    return submissionTime;
+  }
+
+  public void setSubmissionTime(Date submissionTime) {
+    this.submissionTime = submissionTime;
   }
 }
