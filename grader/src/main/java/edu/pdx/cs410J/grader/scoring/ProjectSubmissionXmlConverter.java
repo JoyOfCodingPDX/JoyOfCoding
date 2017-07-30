@@ -16,6 +16,7 @@ public class ProjectSubmissionXmlConverter {
 
   public void convertToXml(ProjectSubmission submission, Writer writer) throws JAXBException {
     Marshaller marshaller = this.xmlContext.createMarshaller();
+    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
     marshaller.marshal(submission, writer);
   }
 

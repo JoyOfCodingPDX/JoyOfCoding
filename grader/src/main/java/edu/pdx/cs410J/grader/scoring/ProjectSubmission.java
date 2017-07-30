@@ -1,14 +1,17 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@XmlRootElement(name = "project-submission")
+@XmlRootElement(name = "ProjectSubmission")
 public class ProjectSubmission {
   private String projectName;
   private String studentId;
+
+  @XmlElementWrapper
   private final List<TestCaseOutput> testCaseOutputs = new ArrayList<>();
   private double totalPoints;
   private Double score;
