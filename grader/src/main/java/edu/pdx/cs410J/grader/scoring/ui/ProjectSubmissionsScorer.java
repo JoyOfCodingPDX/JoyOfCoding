@@ -27,7 +27,8 @@ public class ProjectSubmissionsScorer extends UIMain {
 
   @Inject
   public ProjectSubmissionsScorer(TopLevelJFrame parent, ProjectSubmissionsPanel submissions, TestCasesPanel testCases,
-                                  TestCaseOutputPanel testCaseOutput, ProjectSubmissionScorePanel score) {
+                                  TestCaseOutputPanel testCaseOutput, ProjectSubmissionScorePanel score,
+                                  ProjectSubmissionsLoaderSaverPanel loadAndSave) {
     super(parent);
 
     parent.setTitle("Project Submission Scorer");
@@ -36,6 +37,7 @@ public class ProjectSubmissionsScorer extends UIMain {
     content.setLayout(new BorderLayout());
 
     JPanel submissionsAndTestCases = new JPanel(new BorderLayout());
+    submissionsAndTestCases.add(loadAndSave, BorderLayout.NORTH);
     submissionsAndTestCases.add(submissions, BorderLayout.WEST);
     submissionsAndTestCases.add(testCases, BorderLayout.EAST);
 

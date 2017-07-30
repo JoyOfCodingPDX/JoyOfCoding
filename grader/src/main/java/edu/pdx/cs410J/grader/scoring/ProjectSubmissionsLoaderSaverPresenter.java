@@ -2,6 +2,8 @@ package edu.pdx.cs410J.grader.scoring;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded.LoadedProjectSubmission;
 
@@ -11,11 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Singleton
 public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus {
   private final ProjectSubmissionsLoaderSaverView view;
   private final ProjectSubmissionXmlConverter converter;
   private final ProjectSubmissionXmlLoader xmlLoader;
 
+  @Inject
   public ProjectSubmissionsLoaderSaverPresenter(EventBus bus, ProjectSubmissionsLoaderSaverView view) throws JAXBException {
     this(bus, view, new ProjectSubmissionXmlLoader() {
       @Override

@@ -18,6 +18,7 @@ public class ProjectSubmissionScorerUIModule extends AbstractModule {
     bind(TestCasesView.class).to(TestCasesPanel.class);
     bind(TestCaseOutputView.class).to(TestCaseOutputPanel.class);
     bind(ProjectSubmissionScoreView.class).to(ProjectSubmissionScorePanel.class);
+    bind(ProjectSubmissionsLoaderSaverView.class).to(ProjectSubmissionsLoaderSaverPanel.class);
     bind(UnhandledExceptionView.class).to(UnhandledExceptionDialog.class).asEagerSingleton();
 
     bind(ProjectSubmissionsPresenter.class).asEagerSingleton();
@@ -25,6 +26,7 @@ public class ProjectSubmissionScorerUIModule extends AbstractModule {
     bind(TestCaseOutputPresenter.class).asEagerSingleton();
     bind(ProjectSubmissionScorePresenter.class).asEagerSingleton();
     bind(UnhandledExceptionPresenter.class).asEagerSingleton();
+    bind(ProjectSubmissionsLoaderSaverPresenter.class).asEagerSingleton();
   }
 
   @Provides
