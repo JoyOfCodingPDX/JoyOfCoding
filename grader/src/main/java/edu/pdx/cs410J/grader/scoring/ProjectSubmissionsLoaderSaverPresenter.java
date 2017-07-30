@@ -15,6 +15,7 @@ import java.util.List;
 
 @Singleton
 public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus {
+  public static final String CLICK_HERE_MESSAGE = "Click above to load submission files";
   private final ProjectSubmissionsLoaderSaverView view;
   private final ProjectSubmissionXmlConverter converter;
   private final ProjectSubmissionXmlLoader xmlLoader;
@@ -58,6 +59,7 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
 
     this.view.addDirectorySelectedListener(this::loadSubmissionsFromDirectory);
     this.view.addSaveSubmissionsListener(this::saveSubmissionsToXmlFiles);
+    this.view.setDisplayMessage(CLICK_HERE_MESSAGE);
   }
 
   private void saveSubmissionsToXmlFiles() {
@@ -88,6 +90,7 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
       loadedProjectSubmissions.add(new LoadedProjectSubmission(xmlFile, submission));
     }
 
+    this.view.setDisplayMessage(loadedSubmissionsFrom(directory));
     publishEvent(new ProjectSubmissionsLoaded(loadedProjectSubmissions));
   }
 
@@ -97,6 +100,10 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
 
   private List<File> getSubmissionFiles(File directory) {
     return this.xmlLoader.getSubmissionFiles(directory);
+  }
+
+  public static String loadedSubmissionsFrom(File testDirectory) {
+    return testDirectory.getAbsolutePath();
   }
 
   @VisibleForTesting

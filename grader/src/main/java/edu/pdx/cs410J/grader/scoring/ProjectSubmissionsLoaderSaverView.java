@@ -7,6 +7,8 @@ public interface ProjectSubmissionsLoaderSaverView {
 
   void addSaveSubmissionsListener(SaveSubmissionsListener listener);
 
+  void setDisplayMessage(String message);
+
   interface DirectorySelectedListener {
     void directorySelected(File directory);
   }

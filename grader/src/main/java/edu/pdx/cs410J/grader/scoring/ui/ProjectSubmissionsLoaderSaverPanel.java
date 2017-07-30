@@ -18,19 +18,27 @@ public class ProjectSubmissionsLoaderSaverPanel extends JPanel implements Projec
   private final TopLevelJFrame parent;
   private final List<DirectorySelectedListener> loadListeners = new ArrayList<>();
   private ArrayList<SaveSubmissionsListener> saveListeners = new ArrayList<>();
+  private final JLabel message;
 
   @Inject
   public ProjectSubmissionsLoaderSaverPanel(TopLevelJFrame parent) {
     this.parent = parent;
-    this.setLayout(new FlowLayout());
+    this.setLayout(new BorderLayout());
+
+    JPanel buttons = new JPanel();
 
     JButton load = new JButton("Load XML files");
     load.addActionListener(this::showDirectoryChooser);
-    this.add(load);
+    buttons.add(load);
 
     JButton save = new JButton("Save XML files");
     save.addActionListener(this::saveXmlFiles);
-    this.add(save);
+    buttons.add(save);
+
+    this.add(buttons, BorderLayout.NORTH);
+
+    message = new JLabel();
+    this.add(message, BorderLayout.SOUTH);
   }
 
   private void saveXmlFiles(ActionEvent event) {
@@ -80,5 +88,10 @@ public class ProjectSubmissionsLoaderSaverPanel extends JPanel implements Projec
   @Override
   public void addSaveSubmissionsListener(SaveSubmissionsListener listener) {
     this.saveListeners.add(listener);
+  }
+
+  @Override
+  public void setDisplayMessage(String message) {
+    this.message.setText(message);
   }
 }

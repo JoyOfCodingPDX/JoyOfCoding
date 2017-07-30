@@ -76,6 +76,9 @@ public class ProjectSubmissionsLoaderSaverPresenterTest extends ProjectSubmissio
     for (LoadedProjectSubmission submission : submissions) {
       assertThat(submission.getFile().getName(), equalTo(submission.getSubmission().getStudentId() + ".xml"));
     }
+
+    String message = ProjectSubmissionsLoaderSaverPresenter.loadedSubmissionsFrom(testDirectory);
+    verify(view).setDisplayMessage(message);
   }
 
   @Test
@@ -89,6 +92,11 @@ public class ProjectSubmissionsLoaderSaverPresenterTest extends ProjectSubmissio
     listener.getValue().onSaveSubmissions();
 
     verify(xmlWriter, times(2)).writeXmlToFile(notNull(File.class), notNull(String.class));
+  }
+
+  @Test
+  public void clickHereMessageIsInitiallyDisplayed() {
+    verify(view).setDisplayMessage(ProjectSubmissionsLoaderSaverPresenter.CLICK_HERE_MESSAGE);
   }
 
   interface ProjectSubmissionsLoadedHandler {
