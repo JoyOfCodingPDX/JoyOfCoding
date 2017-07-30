@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -34,7 +35,11 @@ public class ProjectSubmissionsPresenter extends PresenterOnEventBus {
 
   @Subscribe
   public void populateViewWithNamesOfSubmissions(ProjectSubmissionsLoaded loaded) {
-    populateViewWithSubmissions(loaded.getSubmissions());
+    List<ProjectSubmission> list = new ArrayList<>();
+    loaded.getLoadedSubmissions().forEach(l -> {
+      list.add(l.getSubmission());
+    });
+    populateViewWithSubmissions(list);
   }
 
   private void populateViewWithSubmissions(List<ProjectSubmission> submissions) {

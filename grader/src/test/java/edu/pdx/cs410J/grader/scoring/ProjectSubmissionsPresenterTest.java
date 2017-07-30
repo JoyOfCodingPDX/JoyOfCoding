@@ -1,11 +1,13 @@
 package edu.pdx.cs410J.grader.scoring;
 
 import com.google.common.eventbus.Subscribe;
+import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded.LoadedProjectSubmission;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsView.SubmissionNameSelectedListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,11 +36,25 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
 
     ProjectSubmission submission = createProjectSubmission(projectName, studentId);
 
-    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(Collections.singletonList(submission));
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(newLoadedSubmission(Collections.singletonList(submission)));
     publishEvent(loaded);
 
     String submissionName = ProjectSubmissionsPresenter.getProjectSubmissionName(studentId, projectName);
     verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(submissionName));
+  }
+
+  private List<LoadedProjectSubmission> newLoadedSubmission(Iterable<ProjectSubmission> submissions) {
+    List<LoadedProjectSubmission> list = new ArrayList<>();
+    for (ProjectSubmission submission : submissions) {
+      list.add(newLoadedSubmission(submission));
+    }
+    return list;
+  }
+
+  private LoadedProjectSubmission newLoadedSubmission(ProjectSubmission submission) {
+    String studentId = submission.getStudentId();
+    File file = new File(new File(System.getProperty("user.dir")), studentId + ".xml");
+    return new LoadedProjectSubmission(file, submission);
   }
 
   @Test
@@ -52,7 +68,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission graded = createProjectSubmission(projectName, gradedStudentName);
     graded.setScore(4.0);
 
-    publishEvent(new ProjectSubmissionsLoaded(Arrays.asList(ungraded, graded)));
+    publishEvent(new ProjectSubmissionsLoaded(newLoadedSubmission(Arrays.asList(ungraded, graded))));
 
     String ungradedName = ProjectSubmissionsPresenter.getProjectSubmissionName(ungradedStudentName, projectName);
     verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(ungradedName));
@@ -74,7 +90,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     submissions.add(createProjectSubmission(projectName, "student0"));
     ProjectSubmission submission1 = createProjectSubmission(projectName, studentId);
     submissions.add(submission1);
-    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(newLoadedSubmission(submissions));
     publishEvent(loaded);
 
     // When the user selects the second project submission...
@@ -104,7 +120,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission submission1 = createProjectSubmission(projectName, studentId);
     submission1.setScore(4.0);
     submissions.add(submission1);
-    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(newLoadedSubmission(submissions));
     publishEvent(loaded);
 
     // When the user selects the second project submission...
@@ -133,7 +149,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     submissions.add(submission0);
     submissions.add(createProjectSubmission(projectName, "student1"));
 
-    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(submissions);
+    ProjectSubmissionsLoaded loaded = new ProjectSubmissionsLoaded(newLoadedSubmission(submissions));
     publishEvent(loaded);
     verify(view).setSelectedUngradedSubmission(0);
   }
@@ -145,7 +161,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission submission = createProjectSubmission(projectName, studentId);
     submission.setScore(null);
 
-    publishEvent(new ProjectSubmissionsLoaded(Collections.singletonList(submission)));
+    publishEvent(new ProjectSubmissionsLoaded(newLoadedSubmission(Collections.singletonList(submission))));
 
     String submissionName = ProjectSubmissionsPresenter.getProjectSubmissionName(studentId, projectName);
     verify(view).setUngradedProjectSubmissionNames(Collections.singletonList(submissionName));
@@ -164,7 +180,7 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
     ProjectSubmission submission1 = createProjectSubmission("Project", "student1");
     submission1.setScore(null);
 
-    publishEvent(new ProjectSubmissionsLoaded(Arrays.asList(submission0, submission1)));
+    publishEvent(new ProjectSubmissionsLoaded(newLoadedSubmission(Arrays.asList(submission0, submission1))));
 
     ProjectSubmissionSelectedHandler handler = mock(ProjectSubmissionSelectedHandler.class);
     this.bus.register(handler);
@@ -181,6 +197,6 @@ public class ProjectSubmissionsPresenterTest extends ProjectSubmissionTestCase {
 
   private interface ProjectSubmissionSelectedHandler {
     @Subscribe
-    public void handle(ProjectSubmissionSelected event);
+    void handle(ProjectSubmissionSelected event);
   }
 }

@@ -6,16 +6,18 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.mvp.ui.UIMain;
 import edu.pdx.cs410J.grader.mvp.ui.TopLevelJFrame;
+import edu.pdx.cs410J.grader.mvp.ui.UIMain;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmission;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded;
+import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaded.LoadedProjectSubmission;
 import edu.pdx.cs410J.grader.scoring.TestCaseOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +68,8 @@ public class ProjectSubmissionsScorer extends UIMain {
     bus.post(new ProjectSubmissionsLoaded(createProjectSubmissions()));
   }
 
-  private static List<ProjectSubmission> createProjectSubmissions() {
-    List<ProjectSubmission> submissions = new ArrayList<>();
+  private static List<LoadedProjectSubmission> createProjectSubmissions() {
+    List<LoadedProjectSubmission> submissions = new ArrayList<>();
     String projectName = "Project";
     for (int i = 0; i < 50; i++) {
       String studentId = "student" + i;
@@ -87,7 +89,8 @@ public class ProjectSubmissionsScorer extends UIMain {
         submission.addTestCaseOutput(testCaseOutput);
       }
 
-      submissions.add(submission);
+      File file = new File(new File(System.getProperty("user.dir")), studentId + ".xml");
+      submissions.add(new LoadedProjectSubmission(file, submission));
     }
 
     return submissions;
