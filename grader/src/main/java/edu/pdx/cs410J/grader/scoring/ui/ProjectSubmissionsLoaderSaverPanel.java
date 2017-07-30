@@ -6,6 +6,7 @@ import edu.pdx.cs410J.grader.mvp.ui.TopLevelJFrame;
 import edu.pdx.cs410J.grader.scoring.ProjectSubmissionsLoaderSaverView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -15,17 +16,28 @@ import java.util.List;
 public class ProjectSubmissionsLoaderSaverPanel extends JPanel implements ProjectSubmissionsLoaderSaverView {
 
   private final TopLevelJFrame parent;
-  private final List<DirectorySelectedListener> listeners = new ArrayList<>();
+  private final List<DirectorySelectedListener> loadListeners = new ArrayList<>();
+  private ArrayList<SaveSubmissionsListener> saveListeners = new ArrayList<>();
 
   @Inject
   public ProjectSubmissionsLoaderSaverPanel(TopLevelJFrame parent) {
     this.parent = parent;
+    this.setLayout(new FlowLayout());
+
     JButton load = new JButton("Load XML files");
     load.addActionListener(this::showDirectoryChooser);
     this.add(load);
+
+    JButton save = new JButton("Save XML files");
+    save.addActionListener(this::saveXmlFiles);
+    this.add(save);
   }
 
-  private void showDirectoryChooser(ActionEvent actionEvent) {
+  private void saveXmlFiles(ActionEvent event) {
+    this.saveListeners.forEach(SaveSubmissionsListener::onSaveSubmissions);
+  }
+
+  private void showDirectoryChooser(ActionEvent Event) {
     JFileChooser chooser = getFileChooser();
     int response = chooser.showOpenDialog(parent);
 
@@ -36,7 +48,7 @@ public class ProjectSubmissionsLoaderSaverPanel extends JPanel implements Projec
   }
 
   private void loadFromDirectory(File directory) {
-    this.listeners.forEach(l -> l.directorySelected(directory));
+    this.loadListeners.forEach(l -> l.directorySelected(directory));
   }
 
   private JFileChooser getFileChooser() {
@@ -62,6 +74,11 @@ public class ProjectSubmissionsLoaderSaverPanel extends JPanel implements Projec
 
   @Override
   public void addDirectorySelectedListener(DirectorySelectedListener listener) {
-    this.listeners.add(listener);
+    this.loadListeners.add(listener);
+  }
+
+  @Override
+  public void addSaveSubmissionsListener(SaveSubmissionsListener listener) {
+    this.saveListeners.add(listener);
   }
 }

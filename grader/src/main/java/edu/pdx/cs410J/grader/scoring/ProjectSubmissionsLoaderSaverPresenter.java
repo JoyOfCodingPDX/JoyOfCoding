@@ -18,6 +18,8 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
   private final ProjectSubmissionsLoaderSaverView view;
   private final ProjectSubmissionXmlConverter converter;
   private final ProjectSubmissionXmlLoader xmlLoader;
+  private final ProjectSubmissionXmlWriter xmlWriter;
+  private List<LoadedProjectSubmission> loadedProjectSubmissions;
 
   @Inject
   public ProjectSubmissionsLoaderSaverPresenter(EventBus bus, ProjectSubmissionsLoaderSaverView view) throws JAXBException {
@@ -32,34 +34,61 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
         File[] xmlFiles = directory.listFiles((dir, name) -> name.endsWith(".xml"));
         return Arrays.asList(xmlFiles);
       }
+    }, new ProjectSubmissionXmlWriter() {
+      @Override
+      public void writeXmlToFile(File file, String xml) throws IOException {
+        try (FileWriter writer = new FileWriter(file)) {
+          writer.write(xml);
+          writer.flush();
+        }
+      }
     });
   }
 
   @VisibleForTesting
-  ProjectSubmissionsLoaderSaverPresenter(EventBus bus, ProjectSubmissionsLoaderSaverView view, ProjectSubmissionXmlLoader xmlLoader) throws JAXBException {
+  ProjectSubmissionsLoaderSaverPresenter(EventBus bus, ProjectSubmissionsLoaderSaverView view,
+                                         ProjectSubmissionXmlLoader xmlLoader,
+                                         ProjectSubmissionXmlWriter xmlWriter) throws JAXBException {
     super(bus);
     this.view = view;
     this.xmlLoader = xmlLoader;
+    this.xmlWriter = xmlWriter;
+
+    this.converter = new ProjectSubmissionXmlConverter();
 
     this.view.addDirectorySelectedListener(this::loadSubmissionsFromDirectory);
-    this.converter = new ProjectSubmissionXmlConverter();
+    this.view.addSaveSubmissionsListener(this::saveSubmissionsToXmlFiles);
+  }
+
+  private void saveSubmissionsToXmlFiles() {
+    loadedProjectSubmissions.forEach(this::saveSubmissionToXmlFile);
+  }
+
+  private void saveSubmissionToXmlFile(LoadedProjectSubmission submission) {
+    try {
+      String xml = this.converter.getXmlString(submission.getSubmission());
+      this.xmlWriter.writeXmlToFile(submission.getFile(), xml);
+
+    } catch (JAXBException | IOException e) {
+      throw new IllegalStateException("While saving XML", e);
+    }
+
   }
 
   private void loadSubmissionsFromDirectory(File directory) {
-    List<LoadedProjectSubmission> loaded = new ArrayList<>();
+    loadedProjectSubmissions = new ArrayList<>();
     List<File> xmlFiles = getSubmissionFiles(directory);
     for (File xmlFile : xmlFiles) {
       ProjectSubmission submission = null;
       try {
         submission = this.converter.convertFromXml(getReader(xmlFile));
       } catch (JAXBException | FileNotFoundException e) {
-        Object result;
         throw new IllegalStateException("While parsing XML", e);
       }
-      loaded.add(new LoadedProjectSubmission(xmlFile, submission));
+      loadedProjectSubmissions.add(new LoadedProjectSubmission(xmlFile, submission));
     }
 
-    publishEvent(new ProjectSubmissionsLoaded(loaded));
+    publishEvent(new ProjectSubmissionsLoaded(loadedProjectSubmissions));
   }
 
   private Reader getReader(File file) throws FileNotFoundException {
@@ -71,9 +100,14 @@ public class ProjectSubmissionsLoaderSaverPresenter extends PresenterOnEventBus 
   }
 
   @VisibleForTesting
-  static interface ProjectSubmissionXmlLoader {
+  interface ProjectSubmissionXmlLoader {
     Reader getReader(File file) throws FileNotFoundException;
 
     List<File> getSubmissionFiles(File directory);
+  }
+
+  @VisibleForTesting
+  interface ProjectSubmissionXmlWriter {
+    void writeXmlToFile(File file, String xml) throws IOException;
   }
 }
