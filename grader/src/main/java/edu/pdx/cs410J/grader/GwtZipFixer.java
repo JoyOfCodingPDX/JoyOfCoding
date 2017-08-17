@@ -95,18 +95,18 @@ public class GwtZipFixer {
       return "pom.xml";
     }
 
-    String fixedName = replaceRegexWithPrefix(entryName, ".*main/(.*)", "src/main/");
+    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "src/main/");
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*java/(.*)", "src/main/java/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "src/main/java/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*resources/(.*)", "src/main/resources/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/resources/(.*)", "src/main/resources/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*webapp/(.*)", "src/main/webapp/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/webapp/(.*)", "src/main/webapp/");
     }
 
     return fixedName;

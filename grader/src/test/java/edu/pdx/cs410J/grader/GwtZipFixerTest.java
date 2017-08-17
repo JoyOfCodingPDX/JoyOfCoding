@@ -95,4 +95,18 @@ public class GwtZipFixerTest {
     String fixed = "src/main/webapp/WEB-INF/web.xml";
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
+
+  @Test
+  public void directoryWithJavaSubPackageNamedDomainIsMovedToSrcMain() {
+    String entry = "student/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void directoryWithJavaSubPackageNamedDomainRemainsInSrcMain() {
+    String entry = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(entry));
+  }
+
 }
