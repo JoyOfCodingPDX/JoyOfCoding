@@ -123,4 +123,10 @@ public class GwtZipFixerTest {
     assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
   }
 
+  @Test
+  public void dsStoreIsIgnored() {
+    String entry = "student/airline/src/main/.DS_Store";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
+  }
+
 }
