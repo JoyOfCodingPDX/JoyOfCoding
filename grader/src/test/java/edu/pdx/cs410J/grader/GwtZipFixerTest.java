@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.nullValue;
 
 public class GwtZipFixerTest {
 
@@ -114,6 +115,12 @@ public class GwtZipFixerTest {
     String entry = "edu/pdx/cs410J/student/client/domain/Appointment.java";
     String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void pomFileInTargetIsIgnored() {
+    String entry = "airline-gwt/target/airline/META-INF/maven/edu.pdx.cs410J.student/airline-gwt/pom.xml";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
   }
 
 }

@@ -86,7 +86,7 @@ public class GwtZipFixer {
 
   @VisibleForTesting
   static String getFixedEntryName(String entryName) {
-    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it");
+    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it", "/target/");
     if (ignore.anyMatch(entryName::contains)) {
       return null;
     }
