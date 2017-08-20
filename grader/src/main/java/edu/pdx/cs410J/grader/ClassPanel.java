@@ -32,7 +32,8 @@ public class ClassPanel extends JPanel {
 
   private JButton newAssignmentButton;
   private JButton newStudentButton;
-  private LetterGradeRangesPanel letterGradeRangesPanel;
+  private LetterGradeRangesPanel undergradLetterGradeRangesPanel;
+  private LetterGradeRangesPanel gradLetterGradeRangesPanel;
 
   /**
    * Creats a <code>ClassPanel</code> and initializes its components.
@@ -49,13 +50,16 @@ public class ClassPanel extends JPanel {
   }
 
   private void addLetterGradeRangesPanel() {
-    JPanel letterGradeRangesPanel = new JPanel();
+    JTabbedPane letterGradeRangesPanel = new JTabbedPane();
     Border letterGradeRangesBorder = BorderFactory.createTitledBorder("Letter Grades");
     letterGradeRangesPanel.setBorder(letterGradeRangesBorder);
-    letterGradeRangesPanel.setLayout(new BorderLayout());
 
-    this.letterGradeRangesPanel = new LetterGradeRangesPanel();
-    letterGradeRangesPanel.add(this.letterGradeRangesPanel);
+    this.undergradLetterGradeRangesPanel = new LetterGradeRangesPanel(Student.Section.UNDERGRADUATE);
+    letterGradeRangesPanel.add("Undergraduate", this.undergradLetterGradeRangesPanel);
+
+    this.gradLetterGradeRangesPanel = new LetterGradeRangesPanel(Student.Section.GRADUATE);
+    letterGradeRangesPanel.add("Graduate", this.gradLetterGradeRangesPanel);
+
     this.add(letterGradeRangesPanel, BorderLayout.EAST);
   }
 
@@ -244,7 +248,8 @@ public class ClassPanel extends JPanel {
   }
 
   private void displayLetterGradeRanges(GradeBook book) {
-    this.letterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges(Student.Section.UNDERGRADUATE));
+    this.undergradLetterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges(Student.Section.UNDERGRADUATE));
+    this.gradLetterGradeRangesPanel.displayLetterGradeRanges(book.getLetterGradeRanges(Student.Section.GRADUATE));
   }
 
   /**
