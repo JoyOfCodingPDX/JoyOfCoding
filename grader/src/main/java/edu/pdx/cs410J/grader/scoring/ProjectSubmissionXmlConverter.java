@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.scoring;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,5 +85,12 @@ public class ProjectSubmissionXmlConverter {
     err.println();
 
     System.exit(1);
+  }
+
+  @VisibleForTesting
+  String getXmlString(ProjectSubmission submission) throws JAXBException {
+    StringWriter sw = new StringWriter();
+    this.convertToXml(submission, sw);
+    return sw.toString();
   }
 }

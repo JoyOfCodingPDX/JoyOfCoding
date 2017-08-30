@@ -86,7 +86,7 @@ public class GwtZipFixer {
 
   @VisibleForTesting
   static String getFixedEntryName(String entryName) {
-    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it");
+    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it", "/target/", ".DS_Store");
     if (ignore.anyMatch(entryName::contains)) {
       return null;
     }
@@ -95,18 +95,22 @@ public class GwtZipFixer {
       return "pom.xml";
     }
 
-    String fixedName = replaceRegexWithPrefix(entryName, ".*main/(.*)", "src/main/");
+    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "src/main/");
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*java/(.*)", "src/main/java/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "src/main/java/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*resources/(.*)", "src/main/resources/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/resources/(.*)", "src/main/resources/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*webapp/(.*)", "src/main/webapp/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/webapp/(.*)", "src/main/webapp/");
+    }
+
+    if (fixedName == null) {
+      fixedName = replaceRegexWithPrefix(entryName, "^edu/(.*)", "src/main/java/edu/");
     }
 
     return fixedName;

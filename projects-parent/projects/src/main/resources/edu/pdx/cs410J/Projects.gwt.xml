@@ -3,6 +3,7 @@
     <include name="Abstract*.*"/>
     <exclude name="AbstractLRUMap*.*"/>
     <include name="AirportNames.*"/>
-    <include name="ParserException*.*"/>
+    <include name="*Parser*.*"/>
+    <include name="*Dumper*.*"/>
   </source>
 </module>

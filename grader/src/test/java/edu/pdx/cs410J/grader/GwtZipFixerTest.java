@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.nullValue;
 
 public class GwtZipFixerTest {
 
@@ -95,4 +96,37 @@ public class GwtZipFixerTest {
     String fixed = "src/main/webapp/WEB-INF/web.xml";
     assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
+
+  @Test
+  public void directoryWithJavaSubPackageNamedDomainIsMovedToSrcMain() {
+    String entry = "student/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void directoryWithJavaSubPackageNamedDomainRemainsInSrcMain() {
+    String entry = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(entry));
+  }
+
+  @Test
+  public void fileSubmittedWithSubmitProgramIsMovedToSrcMainJava() {
+    String entry = "edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
+  public void pomFileInTargetIsIgnored() {
+    String entry = "airline-gwt/target/airline/META-INF/maven/edu.pdx.cs410J.student/airline-gwt/pom.xml";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
+  }
+
+  @Test
+  public void dsStoreIsIgnored() {
+    String entry = "student/airline/src/main/.DS_Store";
+    assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
+  }
+
 }
