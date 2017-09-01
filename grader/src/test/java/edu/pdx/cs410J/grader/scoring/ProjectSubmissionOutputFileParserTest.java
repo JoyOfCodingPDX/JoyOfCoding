@@ -3,9 +3,11 @@ package edu.pdx.cs410J.grader.scoring;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +27,6 @@ public class ProjectSubmissionOutputFileParserTest {
 
    */
 
-  @Ignore
   @Test
   public void parseProjectName() {
     OutputFile file = new OutputFile();
@@ -35,7 +36,6 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getProjectName(), equalTo("Project3"));
   }
 
-  @Ignore
   @Test
   public void parseStudentId() {
     OutputFile file = new OutputFile();
@@ -45,7 +45,6 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getStudentId(), equalTo("whitlock"));
   }
 
-  @Ignore
   @Test
   public void parseStudentName() {
     OutputFile file = new OutputFile();
@@ -56,9 +55,8 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getStudentName(), equalTo("David Whitlock"));
   }
 
-  @Ignore
   @Test
-  public void parseSubmissionTime() {
+  public void parseSubmissionTime() throws ParseException {
     OutputFile file = new OutputFile();
     String submissionTimeString = "2017-Jul-28 19:51:41";
 
@@ -71,9 +69,9 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getSubmissionTime(), equalTo(submissionTime));
   }
 
-  @Ignore
   @Test
-  public void parseGradingTime() {
+
+  public void parseGradingTime() throws ParseException {
     OutputFile file = new OutputFile();
     String gradingTimeString = "Fri Jul 28 19:53:58 PDT 2017";
 
@@ -84,10 +82,10 @@ public class ProjectSubmissionOutputFileParserTest {
 
     ProjectSubmission submission = parse(file);
     Date gradingTime = ProjectSubmissionOutputFileParser.parseGradingTime(gradingTimeString);
-    assertThat(submission.getSubmissionTime(), equalTo(gradingTime));
+    assertThat(submission.getGradedTime(), equalTo(gradingTime));
   }
 
-  @Ignore
+
   @Test
   public void parseTotalPoints() {
     OutputFile file = new OutputFile();
@@ -103,7 +101,7 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getTotalPoints(), equalTo(8.0));
   }
 
-  @Ignore
+
   @Test
   public void parseEmptyGrade() {
     OutputFile file = new OutputFile();
@@ -119,7 +117,7 @@ public class ProjectSubmissionOutputFileParserTest {
     assertThat(submission.getScore(), equalTo(null));
   }
 
-  @Ignore
+
   @Test
   public void parseSpecifiedGrade() {
     OutputFile file = new OutputFile();
@@ -185,7 +183,10 @@ public class ProjectSubmissionOutputFileParserTest {
     file.line();
     file.line("*****  Test 1: No arguments");
 
-    ProjectSubmission submission = parse(file);
+    ProjectSubmission submission = null;
+ 
+      submission = parse(file);
+  
     List<TestCaseOutput> testCases = submission.getTestCaseOutputs();
     assertThat(testCases.size(), equalTo(2));
 
@@ -198,7 +199,7 @@ public class ProjectSubmissionOutputFileParserTest {
 
   @Ignore
   @Test
-  public void parseTest1() {
+  public void parseTest1() throws IOException, ParseException {
     OutputFile file = new OutputFile();
     String testName = "Test 1";
     String description = "No arguments";
@@ -234,9 +235,21 @@ public class ProjectSubmissionOutputFileParserTest {
 
 
   private ProjectSubmission parse(OutputFile file) {
+    ProjectSubmission projectSubmission = null;
+    try {
     String text = file.getText();
     ProjectSubmissionOutputFileParser parser = new ProjectSubmissionOutputFileParser(new StringReader(text));
-    return parser.parse();
+    projectSubmission= parser.parse();
+   
+       parser.parse();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (InvalidFileContentException e) {
+      e.printStackTrace();
+    }
+    return projectSubmission;
   }
 
   private class OutputFile {

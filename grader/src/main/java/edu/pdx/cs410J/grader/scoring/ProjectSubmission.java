@@ -17,6 +17,13 @@ public class ProjectSubmission {
   private Double score;
   private String studentName;
   private Date submissionTime;
+  private Date gradedTime;
+
+
+
+  public Date getGradedTime() {return gradedTime;}
+
+  public void setGradedTime(Date gradedTime) {this.gradedTime = gradedTime;}
 
   public void setProjectName(String projectName) {
     this.projectName = projectName;
