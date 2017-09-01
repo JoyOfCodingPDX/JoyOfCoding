@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -22,19 +23,27 @@ import java.util.regex.Pattern;
 
 public class ProjectSubmissionOutputFileParser {
 
+    private final BufferedReader bufferedReader;
+    private static final String SUBMITTEDBY="Submitted by";
+    private static final String SUBMITTEDON="Submitted on";
+    private static final String GRADEDON="Graded on";
+
+
   public ProjectSubmissionOutputFileParser(Reader source) {
       if(source != null) {
           bufferedReader = new BufferedReader(source);
       }
+      else
+          throw new NullPointerException();
 
   }
 
-  public ProjectSubmission parse()  {
+  public ProjectSubmission parse() throws ParseException, IOException, InvalidFileContentException {
 
      projectSubmission = new ProjectSubmission();
      String fileContents=null;
 
-      try {
+
           while((fileContents= bufferedReader.readLine()) !=null) {
             fileContents=fileContents.trim();
           if(fileContents.contains("CS410J")){              // fileContents has the student Id and Project Name.
@@ -44,43 +53,44 @@ public class ProjectSubmissionOutputFileParser {
 
             }
 
-            if(fileContents.contains("Submitted by")){ //fileContents has StudentName
-             String [] splitContent=fileContents.split("Submitted by ");
-             projectSubmission.setStudentName(splitContent[splitContent.length -1]);
+            if(fileContents.contains(SUBMITTEDBY)){ //fileContents has StudentName
+             String [] splitContent=fileContents.split(SUBMITTEDBY);
+             projectSubmission.setStudentName(splitContent[splitContent.length -1].trim());
             }
 
-            if(fileContents.contains("Submitted on")){ //fileContents has Submission Time
-                String [] splitContent=fileContents.split("Submitted on ");
-                projectSubmission.setSubmissionTime(parseSubmissionTime(splitContent[splitContent.length -1]));
+            if(fileContents.contains(SUBMITTEDON)){ //fileContents has Submission Time
+                String [] splitContent=fileContents.split(SUBMITTEDON);
+                projectSubmission.setSubmissionTime(parseSubmissionTime(splitContent[splitContent.length -1].trim()));
 
             }
 
-            if(fileContents.contains("Graded on")){ //fileContents has Graded Time
-                String [] splitContent=fileContents.split("Graded on");
+            if(fileContents.contains(GRADEDON)){ //fileContents has Graded Time
+                String [] splitContent=fileContents.split(GRADEDON);
                 projectSubmission.setGradedTime(parseGradingTime(splitContent[splitContent.length -1].trim()));
             }
-              if(fileContents.contains("out of")){ //fileContents has Total Points and Awarded Points
-                  String [] splitContent=fileContents.split("out of");
-                  String keyword="out of";
-                  String awardedPoints=fileContents.substring(0, fileContents.indexOf(keyword));
-                  if(!awardedPoints.isEmpty() && awardedPoints != "") {
-                      double specifiedGrade = Double.parseDouble(awardedPoints);
-                      projectSubmission.setScore(specifiedGrade);
+
+            if(fileContents.contains("out of")){ //fileContents has Total Points and Awarded Points
+
+                  Pattern rightpattern = Pattern.compile("(?<=out of).*");
+                  Pattern leftpattern=Pattern.compile(".*(?=out of)");
+                  Matcher rightmatcher = rightpattern.matcher(fileContents);
+                  Matcher leftmatcher = leftpattern.matcher(fileContents);
+                  if (rightmatcher.find()) {
+                      projectSubmission.setTotalPoints(Double.parseDouble(rightmatcher.group().trim()));
                   }
-                  projectSubmission.setTotalPoints(Double.parseDouble(splitContent[splitContent.length -1].trim()));
+                  else
+                  {
+                      throw new InvalidFileContentException("Not able to retrieve Total Points");
+                  }
+                  if(leftmatcher.find()){
+
+                      projectSubmission.setScore(Double.parseDouble(leftmatcher.group().trim()));
+                  }
+                  else {
+                      throw new InvalidFileContentException("Not able to retrieve the Score");
+                  }
               }
-
-
           }
-
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      catch(ParseException pe)
-      {
-          logger.error("While Parsing the Date"+ pe);
-      }
-
       return  projectSubmission;
   }
 
@@ -100,7 +110,7 @@ public class ProjectSubmissionOutputFileParser {
       return date;
   }
 
-    private BufferedReader bufferedReader=null;
-    private ProjectSubmission projectSubmission=null;
+
+    private ProjectSubmission projectSubmission;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 }

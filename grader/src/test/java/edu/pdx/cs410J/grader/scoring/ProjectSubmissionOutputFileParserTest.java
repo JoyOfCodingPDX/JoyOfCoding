@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader.scoring;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -182,7 +183,10 @@ public class ProjectSubmissionOutputFileParserTest {
     file.line();
     file.line("*****  Test 1: No arguments");
 
-    ProjectSubmission submission = parse(file);
+    ProjectSubmission submission = null;
+ 
+      submission = parse(file);
+  
     List<TestCaseOutput> testCases = submission.getTestCaseOutputs();
     assertThat(testCases.size(), equalTo(2));
 
@@ -195,7 +199,7 @@ public class ProjectSubmissionOutputFileParserTest {
 
   @Ignore
   @Test
-  public void parseTest1() {
+  public void parseTest1() throws IOException, ParseException {
     OutputFile file = new OutputFile();
     String testName = "Test 1";
     String description = "No arguments";
@@ -231,9 +235,21 @@ public class ProjectSubmissionOutputFileParserTest {
 
 
   private ProjectSubmission parse(OutputFile file) {
+    ProjectSubmission projectSubmission = null;
+    try {
     String text = file.getText();
     ProjectSubmissionOutputFileParser parser = new ProjectSubmissionOutputFileParser(new StringReader(text));
-    return parser.parse();
+    projectSubmission= parser.parse();
+   
+       parser.parse();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (InvalidFileContentException e) {
+      e.printStackTrace();
+    }
+    return projectSubmission;
   }
 
   private class OutputFile {
