@@ -3,13 +3,13 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class POASubmissionsPresenter {
-  private final EventBus bus;
+public class POASubmissionsPresenter extends PresenterOnEventBus {
   private final POASubmissionsView view;
   private final List<POASubmission> submissions = new ArrayList<>();
 
@@ -17,22 +17,20 @@ public class POASubmissionsPresenter {
 
   @Inject
   public POASubmissionsPresenter(EventBus bus, POASubmissionsView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
 
     this.view.addSubmissionSelectedListener(this::poaSubmissionSelected);
     this.view.addDownloadSubmissionsListener(this::fireDownloadSubmissionsEvent);
-
-    this.bus.register(this);
   }
 
   private void fireDownloadSubmissionsEvent() {
-    this.bus.post(new DownloadPOASubmissionsRequest());
+    publishEvent(new DownloadPOASubmissionsRequest());
   }
 
   private void poaSubmissionSelected(int index) {
     this.selectedSubmissionIndex = index;
-    this.bus.post(new POASubmissionSelected(this.submissions.get(index)));
+    publishEvent(new POASubmissionSelected(this.submissions.get(index)));
   }
 
   @Subscribe

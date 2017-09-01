@@ -44,7 +44,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
 
   @Test
   public void assignmentListPopulatedInViewWhenGradeBookLoaded() {
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setAssignments(Arrays.asList("POA 0", "POA 1", "POA 2"));
     verify(this.view).setSelectedAssignment(0);
@@ -58,7 +58,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     viewHandler.getValue().assignmentSelected(1);
 
@@ -79,7 +79,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     assignment1.setDueDate(LocalDateTime.now().minusDays(2));
     assignment2.setDueDate(LocalDateTime.now().plusDays(2));
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setSelectedAssignment(1);
   }
@@ -90,10 +90,10 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     POASubmission submission = createPOASubmission("POA for Project 2", "me", LocalDateTime.now());
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedAssignment(2);
 
@@ -117,7 +117,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     assignment1.setDueDate(LocalDateTime.now().minusDays(2));
     assignment2.setDueDate(LocalDateTime.now().plusDays(2));
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment1));
   }
@@ -133,7 +133,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
     verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment0));
 
     viewHandler.getValue().assignmentSelected(1);
@@ -152,7 +152,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
     verify(this.view).setSelectedAssignmentDueDate(POAAssignmentsPresenter.formatDueDate(assignment0));
 
     viewHandler.getValue().assignmentSelected(1);
@@ -162,7 +162,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
 
   @Test
   public void noAssignmentSelectedWhenGradeBookHasNoPOAAssignments() {
-    this.bus.post(new GradeBookLoaded(new GradeBook("No POA assignments")));
+    publishEvent(new GradeBookLoaded(new GradeBook("No POA assignments")));
 
     verify(this.view, never()).setAssignments(anyList());
     verify(this.view, never()).setSelectedAssignment(anyInt());

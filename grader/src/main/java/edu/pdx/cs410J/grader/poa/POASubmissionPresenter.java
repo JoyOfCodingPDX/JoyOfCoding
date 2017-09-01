@@ -4,19 +4,19 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Singleton
-public class POASubmissionPresenter {
+public class POASubmissionPresenter extends PresenterOnEventBus {
   private final POASubmissionView view;
 
   @Inject
   public POASubmissionPresenter(EventBus bus, POASubmissionView view) {
+    super(bus);
     this.view = view;
-
-    bus.register(this);
   }
 
   @Subscribe

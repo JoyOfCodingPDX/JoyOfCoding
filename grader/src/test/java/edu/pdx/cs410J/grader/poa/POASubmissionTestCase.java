@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
+import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
+
 import java.time.LocalDateTime;
 
 public abstract class POASubmissionTestCase extends EventBusTestCase {

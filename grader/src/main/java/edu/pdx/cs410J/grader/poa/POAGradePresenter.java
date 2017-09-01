@@ -9,12 +9,12 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.util.Optional;
 
 @Singleton
-public class POAGradePresenter {
-  private final EventBus bus;
+public class POAGradePresenter extends PresenterOnEventBus {
   private final POAGradeView view;
 
   private POASubmission submission;
@@ -26,10 +26,8 @@ public class POAGradePresenter {
 
   @Inject
   public POAGradePresenter(EventBus bus, POAGradeView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
-
-    this.bus.register(this);
 
     this.view.addIsLateHandler(POAGradePresenter.this::setIsLate);
     this.view.addScoreValueHandler(this::setScoreValue);
@@ -42,11 +40,11 @@ public class POAGradePresenter {
     }
 
     RecordGradeEvent recordGrade = new RecordGradeEvent(this.score, this.student, this.assignment, this.isLate);
-    this.bus.post(recordGrade);
+    publishEvent(recordGrade);
     this.view.setScoreHasBeenRecorded(true);
 
     SelectNextPOAEvent displayNextPOA = new SelectNextPOAEvent();
-    this.bus.post(displayNextPOA);
+    publishEvent(displayNextPOA);
   }
 
   @Subscribe

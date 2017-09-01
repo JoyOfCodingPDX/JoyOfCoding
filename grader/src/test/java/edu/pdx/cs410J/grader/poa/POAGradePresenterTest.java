@@ -57,7 +57,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void onlySubmissionSelectedDisablesView() {
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
@@ -69,7 +69,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void onlyStudentSelectedDisablesView() {
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
 
     verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
@@ -77,8 +77,8 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void onlyAssignmentSelectedDisablesView() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     verifyIsLate(false);
     verify(this.view).setIsEnabled(eq(false));
@@ -150,8 +150,8 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
   public void assignmentTotalPointsDisplayedInViewWhenAssignmentSelected() {
     double points = 2.75;
     assignment.setPoints(points);
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setTotalPoints("2.75");
   }
@@ -172,8 +172,8 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment.setPoints(2.0d)));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment.setPoints(2.0d)));
     reset(this.view);
 
     handler.getValue().scoreValue("1.75");
@@ -202,7 +202,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
     verify(this.view).setErrorInScore(true);
 
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setErrorInScore(false);
   }
@@ -214,7 +214,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
     handler.getValue().scoreValue("-4.3");
 
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setScore("");
     assertThat(this.presenter.getScore(), nullValue());
@@ -228,7 +228,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     handler.getValue().scoreValue("-4.3");
     verify(this.view).setErrorInScore(true);
 
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
 
     verify(this.view).setErrorInScore(false);
     verify(this.view, times(2)).setScore("");
@@ -243,8 +243,8 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     handler.getValue().scoreValue("-4.3");
     verify(this.view).setErrorInScore(true);
 
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     verify(this.view, times(2)).setErrorInScore(false);
     verify(this.view).setScore(formatTotalPoints(assignment.getPoints()));
@@ -259,10 +259,10 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
   }
 
   private void postEventsToBus() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new POASubmissionSelected(submission));
-    this.bus.post(new StudentSelectedEvent(student));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new POASubmissionSelected(submission));
+    publishEvent(new StudentSelectedEvent(student));
+    publishEvent(new AssignmentSelectedEvent(assignment));
   }
 
   @Test
@@ -281,8 +281,8 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     ArgumentCaptor<ScoreValueHandler> handler = ArgumentCaptor.forClass(ScoreValueHandler.class);
     verify(view).addScoreValueHandler(handler.capture());
 
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     handler.getValue().scoreValue(String.valueOf(assignment.getPoints() + 1.0d));
 
@@ -302,16 +302,16 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void scoreDefaultsToTotalPointsWhenNoStudentIsSelected() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     verify(this.view).setScore(formatTotalPoints(assignment.getPoints()));
   }
 
   @Test
   public void scoreHasNotBeenRecordedWhenNoStudentIsSelected() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new AssignmentSelectedEvent(assignment));
 
     verify(this.view, times(2)).setScoreHasBeenRecorded(false);
   }
@@ -337,14 +337,14 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void scoreHasBeenRecordedShouldBeFalseWhenNewSubmissionIsSelected() {
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setScoreHasBeenRecorded(false);
   }
 
   @Test
   public void scoreHasBeenRecordedShouldBeFalseWhenNewStudentIsSelected() {
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
 
     verify(this.view, times(2)).setScoreHasBeenRecorded(false);
   }
@@ -408,14 +408,14 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void currentGradeIsDisplayedWhenGradedSubmissionIsSelected() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new POASubmissionSelected(submissionForPOAWithGrade));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new POASubmissionSelected(submissionForPOAWithGrade));
     verify(this.view).setScore("");
 
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
     verify(this.view, times(3)).setScore("");
 
-    this.bus.post(new AssignmentSelectedEvent(assignmentWithPOAGrade));
+    publishEvent(new AssignmentSelectedEvent(assignmentWithPOAGrade));
 
     InOrder inOrder = inOrder(this.view);
     inOrder.verify(this.view).setScore(formatTotalPoints(scoreForPOAWithGrade));
@@ -423,19 +423,19 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   @Test
   public void currentGradeIsDisplayedWhenStudentIsSelected() {
-    this.bus.post(new GradeBookLoaded(book));
-    this.bus.post(new POASubmissionSelected(submissionForPOAWithGrade));
+    publishEvent(new GradeBookLoaded(book));
+    publishEvent(new POASubmissionSelected(submissionForPOAWithGrade));
     verify(this.view, times(1)).setScore("");
 
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
     verify(this.view, times(3)).setScore("");
 
-    this.bus.post(new AssignmentSelectedEvent(assignmentWithPOAGrade));
+    publishEvent(new AssignmentSelectedEvent(assignmentWithPOAGrade));
 
     InOrder inOrder = inOrder(this.view);
     inOrder.verify(this.view).setScore(formatTotalPoints(scoreForPOAWithGrade));
 
-    this.bus.post(new StudentSelectedEvent(student));
+    publishEvent(new StudentSelectedEvent(student));
     inOrder.verify(this.view).setScore(formatTotalPoints(scoreForPOAWithGrade));
   }
 
@@ -445,7 +445,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     verify(this.view, times(4)).setScore("");
     verifyIsLate(3, false);
 
-    this.bus.post(new StudentSelectedEvent(null));
+    publishEvent(new StudentSelectedEvent(null));
 
     verify(this.view, times(5)).setScore("");
     verifyIsLate(4, false);

@@ -29,7 +29,7 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
     String content = "Test Content";
     POASubmission submission = createPOASubmission(subject, submitter, submitTime, content);
 
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(view).setSubmissionSubject(subject);
     verify(view).setSubmissionSubmitter(submitter);

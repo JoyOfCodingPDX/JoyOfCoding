@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -33,7 +34,7 @@ public class GradeBookPresenterTest extends EventBusTestCase {
   public void gradeBookNameDisplayedWhenLoaded() {
     String className = "Test Class";
     GradeBook book = new GradeBook(className);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(view).setGradeBookName(className);
   }
@@ -68,11 +69,11 @@ public class GradeBookPresenterTest extends EventBusTestCase {
     book.addStudent(student);
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     boolean isLate = true;
     double score = 0.5;
-    this.bus.post(new RecordGradeEvent(score, student, poa, isLate));
+    publishEvent(new RecordGradeEvent(score, student, poa, isLate));
 
     Grade grade = student.getGrade(poa.getName());
     assertThat(grade, notNullValue());
@@ -88,11 +89,11 @@ public class GradeBookPresenterTest extends EventBusTestCase {
     book.addStudent(student);
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     boolean isLate = false;
     double score = 0.6;
-    this.bus.post(new RecordGradeEvent(score, student, poa, isLate));
+    publishEvent(new RecordGradeEvent(score, student, poa, isLate));
 
     Grade grade = student.getGrade(poa.getName());
     assertThat(grade, notNullValue());
@@ -108,11 +109,11 @@ public class GradeBookPresenterTest extends EventBusTestCase {
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
     student.setGrade(poa, 0.9);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     boolean isLate = false;
     double newScore = 0.6;
-    this.bus.post(new RecordGradeEvent(newScore, student, poa, isLate));
+    publishEvent(new RecordGradeEvent(newScore, student, poa, isLate));
 
     Grade grade = student.getGrade(poa.getName());
     assertThat(grade, notNullValue());
@@ -128,13 +129,13 @@ public class GradeBookPresenterTest extends EventBusTestCase {
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
     student.setGrade(poa, 0.9);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(view).canSaveGradeBook(false);
 
     boolean isLate = false;
     double newScore = 0.6;
-    this.bus.post(new RecordGradeEvent(newScore, student, poa, isLate));
+    publishEvent(new RecordGradeEvent(newScore, student, poa, isLate));
 
     verify(view).canSaveGradeBook(true);
   }
@@ -150,7 +151,7 @@ public class GradeBookPresenterTest extends EventBusTestCase {
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
     student.setGrade(poa, 0.9);
-    bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     SaveGradeBookEventHandler eventHandler = mock(SaveGradeBookEventHandler.class);
     bus.register(eventHandler);

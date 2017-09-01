@@ -3,6 +3,8 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.grader.*;
+import edu.pdx.cs410J.grader.mvp.EventBusTestCase;
+import edu.pdx.cs410J.grader.mvp.UnhandledExceptionEvent;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -32,7 +34,7 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
     GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.class);
     this.bus.register(handler);
 
-    this.bus.post(new LoadGradeBook(file));
+    publishEvent(new LoadGradeBook(file));
 
     ArgumentCaptor<GradeBookLoaded> event = ArgumentCaptor.forClass(GradeBookLoaded.class);
     verify(handler).handle(event.capture());
@@ -64,7 +66,7 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
 
     this.unhandledExceptionHandler = this::doNotFailTestWhenUnhandledExceptionEncountered;
 
-    this.bus.post(new LoadGradeBook(badFile));
+    publishEvent(new LoadGradeBook(badFile));
 
     ArgumentCaptor<UnhandledExceptionEvent> event = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
     verify(handler).handle(event.capture());
@@ -85,7 +87,7 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
     GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.class);
     this.bus.register(handler);
 
-    this.bus.post(new LoadGradeBook(file));
+    publishEvent(new LoadGradeBook(file));
 
     ArgumentCaptor<GradeBookLoaded> event = ArgumentCaptor.forClass(GradeBookLoaded.class);
     verify(handler).handle(event.capture());
@@ -94,7 +96,7 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
     Assignment poa = new Assignment("poa", 1.0);
     book.addAssignment(poa);
 
-    this.bus.post(new SaveGradeBook(book));
+    publishEvent(new SaveGradeBook(book));
 
     book = readGradeBookFromFile(file);
     assertThat(book.getAssignmentNames(), contains(poa.getName()));

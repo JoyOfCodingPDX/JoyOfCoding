@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.poa.ui;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import edu.pdx.cs410J.grader.mvp.ui.TopLevelJFrame;
 import edu.pdx.cs410J.grader.poa.GradeBookView;
 
 import javax.swing.*;

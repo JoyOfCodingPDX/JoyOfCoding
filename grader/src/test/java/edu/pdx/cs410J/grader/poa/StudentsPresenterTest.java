@@ -42,7 +42,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
 
   @Test
   public void viewIsPopulatedWhenGradeBookLoaded() {
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setStudents(Arrays.asList("<unknown student>", "First0 Last0 <email0@mail.com>", "First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>"));
   }
@@ -54,14 +54,14 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     book.addStudent(new Student("3").setFirstName("First3").setLastName("Last3").setEmail("email3@mail.com"));
     book.addStudent(new Student("1").setFirstName("First2").setLastName("Last2").setEmail("email2@mail.com"));
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setStudents(Arrays.asList("<unknown student>", "First1 Last1 <email1@mail.com>", "First2 Last2 <email2@mail.com>", "First3 Last3 <email3@mail.com>"));
   }
 
   @Test
   public void firstStudentIsSelectedWhenGradeBookLoaded() {
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     verify(this.view).setSelectedStudentIndex(0);
   }
@@ -74,7 +74,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     viewHandler.getValue().studentSelected(2);
 
@@ -99,7 +99,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     Student student2 = new Student("1").setFirstName("First2").setLastName("Last2").setEmail("email2@mail.com");
     book.addStudent(student2);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     viewHandler.getValue().studentSelected(2);
 
@@ -117,7 +117,7 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(book));
+    publishEvent(new GradeBookLoaded(book));
 
     viewHandler.getValue().studentSelected(0);
 
@@ -137,11 +137,11 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(this.book));
+    publishEvent(new GradeBookLoaded(this.book));
 
     POASubmission submission =
       createPOASubmission("Subject", student1.getFirstName() + " " + student1.getLastName() + " <wrong@mail.com>", LocalDateTime.now());
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(2);
 
@@ -156,11 +156,11 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(this.book));
+    publishEvent(new GradeBookLoaded(this.book));
 
     POASubmission submission =
       createPOASubmission("Subject", student2.getEmail(), LocalDateTime.now());
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view).setSelectedStudentIndex(3);
 
@@ -175,11 +175,11 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
     this.bus.register(eventHandler);
 
-    this.bus.post(new GradeBookLoaded(this.book));
+    publishEvent(new GradeBookLoaded(this.book));
 
     POASubmission submission =
       createPOASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
-    this.bus.post(new POASubmissionSelected(submission));
+    publishEvent(new POASubmissionSelected(submission));
 
     verify(this.view, times(2)).setSelectedStudentIndex(0);
 

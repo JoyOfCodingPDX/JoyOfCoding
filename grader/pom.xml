@@ -175,7 +175,7 @@
             <configuration>
                 <jnlp>
                     <outputFile>grader.jnlp</outputFile>
-                    <mainClass>edu.pdx.cs410J.grader.GradeBookGUI</mainClass>
+                    <mainClass>edu.pdx.cs410J.grader.gradebook.GradeBookGUI</mainClass>
                 </jnlp>
                 <!--
                  defining this will automatically sign the jar and its dependencies

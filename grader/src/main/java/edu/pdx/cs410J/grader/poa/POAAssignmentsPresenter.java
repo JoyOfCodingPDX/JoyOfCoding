@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.mvp.PresenterOnEventBus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,18 +20,15 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Singleton
-public class POAAssignmentsPresenter {
-  private final EventBus bus;
+public class POAAssignmentsPresenter extends PresenterOnEventBus {
   private final POAAssignmentsView view;
   private List<Assignment> poaAssignments = Collections.emptyList();
 
   @Inject
   public POAAssignmentsPresenter(EventBus bus, POAAssignmentsView view) {
-    this.bus = bus;
+    super(bus);
     this.view = view;
     this.view.addAssignmentSelectedHandler(this::fireAssignmentSelectedForAssignment);
-
-    this.bus.register(this);
   }
 
   private void fireAssignmentSelectedForAssignment(int index) {
@@ -40,7 +38,7 @@ public class POAAssignmentsPresenter {
   }
 
   private void fireAssignmentSelectedEvent(Assignment assignment) {
-    this.bus.post(new AssignmentSelectedEvent(assignment));
+    publishEvent(new AssignmentSelectedEvent(assignment));
   }
 
   @Subscribe

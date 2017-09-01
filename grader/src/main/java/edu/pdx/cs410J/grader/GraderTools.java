@@ -3,7 +3,10 @@ package edu.pdx.cs410J.grader;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.grader.gradebook.GradeBookGUI;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
+import edu.pdx.cs410J.grader.scoring.ProjectSubmissionXmlConverter;
+import edu.pdx.cs410J.grader.scoring.ui.ProjectSubmissionsScorer;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
@@ -72,6 +75,12 @@ public class GraderTools {
       case "fixGwtZips":
         return GwtZipFixer.class;
 
+      case "scoreProjectSubmissions":
+        return ProjectSubmissionsScorer.class;
+
+      case "convertProjectOutFilesToXml":
+        return ProjectSubmissionXmlConverter.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -93,16 +102,18 @@ public class GraderTools {
     err.println();
     err.println("usage: GraderTools tool toolArg*");
     err.println("  tool                        The tool to execute");
-    err.println("    gradebook                 The Grade Book GUI");
-    err.println("    fetch                     Fetch student surveys or projects from the Grader's");
-    err.println("                              emails account");
-    err.println("    importFromD2L             Import grades from a D2L CSV");
-    err.println("    importFromProjectReports  Import grades from graded project reports");
-    err.println("    mailFileToStudent         Email text files to students");
-    err.println("    gradePOAs                 Tool for downloading and grading POAs");
-    err.println("    generateGradeSummary      Generate grade summary report for one or more students");
-    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");
-    err.println("    fixGwtZips                Fix zip files for the GWT project to work with grading script");
+    err.println("    gradebook                     The Grade Book GUI");
+    err.println("    fetch                         Fetch student surveys or projects from the Grader's");
+    err.println("                                  emails account");
+    err.println("    importFromD2L                 Import grades from a D2L CSV");
+    err.println("    importFromProjectReports      Import grades from graded project reports");
+    err.println("    mailFileToStudent             Email text files to students");
+    err.println("    gradePOAs                     Tool for downloading and grading POAs");
+    err.println("    generateGradeSummary          Generate grade summary report for one or more students");
+    err.println("    htmlForSurveyResults          Generate an html file for the responses to a D2L survey");
+    err.println("    fixGwtZips                    Fix zip files for the GWT project to work with grading script");
+    err.println("    scoreProjectSubmissions       Review project submissions and assign them scores");
+    err.println("    convertProjectOutFilesToXml   Review project submissions and assign them scores");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 
