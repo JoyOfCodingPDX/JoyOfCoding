@@ -4,10 +4,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2017</version>
+    <version>Summer2018</version>
   </parent>
   <artifactId>apptbook-web-archetype</artifactId>
-  <version>Summer2017</version>
+  <version>Summer2018</version>
   <packaging>maven-archetype</packaging>
 
   <name>apptbook-web-archetype</name>

@@ -3,13 +3,13 @@
   <parent>
     <artifactId>gwt-originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2017</version>
+    <version>Summer2018</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>apptbook-gwt</artifactId>
   <packaging>war</packaging>
-  <version>Summer2017</version>
+  <version>Summer2018</version>
   <name>Appointment Book GWT Application</name>
 
   <properties>
@@ -27,12 +27,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2017</version>
+      <version>Summer2018</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2017</version>
+      <version>Summer2018</version>
       <classifier>sources</classifier>
       <scope>compile</scope>
     </dependency>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2017</version>
+      <version>Summer2018</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -199,7 +199,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2017</version>
+                <version>Summer2018</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
