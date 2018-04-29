@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
   <version>Summer2018</version>
   <name>CS410J Phone Bill Project</name>
-  <description>An Phone Bill application for CS410J at Portland State University</description>
+  <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <developers>
