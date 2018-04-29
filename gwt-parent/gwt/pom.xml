@@ -23,13 +23,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.0.7-beta</version>
+      <version>2.18.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>18.0</version>
+      <version>25.0-jre</version>
       <!-- Can't use guava in GWT client code yet -->
     </dependency>
     <dependency>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>3.0</version>
+      <version>4.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
