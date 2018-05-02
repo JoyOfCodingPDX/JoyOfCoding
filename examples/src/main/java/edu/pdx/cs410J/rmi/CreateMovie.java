@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.*;
-import java.rmi.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 /**
  * This program contacts the remote movie database and creates a new
@@ -15,27 +16,12 @@ public class CreateMovie {
     String title = args[2];
     int year = Integer.parseInt(args[3]);
 
-    // Install an RMISecurityManager, if there is not a
-    // SecurityManager already installed
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
-
-    String name = "//" + host + ":" + port + "/MovieDatabase";
-
     try {
-      MovieDatabase db = 
-        (MovieDatabase) Naming.lookup(name);
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup("/MovieDatabase");
       long id = db.createMovie(title, year);
       System.out.println("Created movie " + id);
 
-    } catch (RemoteException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (NotBoundException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException ex) {
       ex.printStackTrace(System.err);
     }
 
