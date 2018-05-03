@@ -16,7 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MoveDatabaseRmiTest {
+public class MovieDatabaseRmiTest {
 
   static final int RMI_PORT = 7777;
   static final String RMI_HOST = "localhost";
