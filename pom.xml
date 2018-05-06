@@ -56,7 +56,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <groovy.version>2.4.4</groovy.version>
+        <groovy.version>2.4.10</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -196,13 +196,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19</version>
-        <!--<configuration>-->
-          <!--<argLine>-->
-            <!--&#45;&#45;add-modules java.xml.bind-->
-            <!--&#45;&#45;illegal-access=deny-->
-          <!--</argLine>-->
-        <!--</configuration>-->
+        <version>2.21.0</version>
+        <configuration>
+          <!-- Let reflection code run in Java 10 -->
+          <argLine>
+            --add-modules java.xml.bind
+            --add-opens java.base/java.lang=ALL-UNNAMED
+            --add-opens java.base/java.util=ALL-UNNAMED
+            --illegal-access=deny
+          </argLine>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
