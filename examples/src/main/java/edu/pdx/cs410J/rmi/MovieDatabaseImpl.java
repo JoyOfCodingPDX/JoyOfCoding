@@ -141,7 +141,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
 
   @Override
   public Collection<Movie> getMovies() {
-    return this.movies.values();
+    return new HashSet<>(this.movies.values());
   }
 
   @Override
