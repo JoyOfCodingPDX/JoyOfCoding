@@ -56,29 +56,16 @@
       <artifactId>groovy-all</artifactId>
       <version>${groovy.version}</version>
     </dependency>
+    <dependency>
+      <groupId>edu.pdx.cs410J</groupId>
+      <artifactId>projects</artifactId>
+      <version>Summer2016</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>rmic-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <id>rmic-process-classes</id>
-            <goals>
-              <goal>rmic</goal>
-            </goals>
-            <configuration>
-              <verbose>true</verbose>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <includes>
-                <include>edu/pdx/cs410J/rmi/*Impl.class</include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>

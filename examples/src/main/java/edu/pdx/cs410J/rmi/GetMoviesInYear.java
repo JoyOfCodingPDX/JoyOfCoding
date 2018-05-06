@@ -1,8 +1,9 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.*;
-import java.rmi.*;
-import java.util.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.util.Comparator;
 
 /**
  * This program queries the remote movie database an prints out the
@@ -16,18 +17,8 @@ public class GetMoviesInYear {
     String host = args[0];
     int port = Integer.parseInt(args[1]);
     final int year = Integer.parseInt(args[2]);
-
-    // Install an RMISecurityManager, if there is not a
-    // SecurityManager already installed
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
-
-    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
-
     try {
-      MovieDatabase db = 
-        (MovieDatabase) Naming.lookup(name);
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
 
       Query query = movie -> movie.getYear() == year;
 
@@ -35,7 +26,7 @@ public class GetMoviesInYear {
 
       db.executeQuery(query, sorter).forEach(System.out::println);
 
-    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException ex) {
       ex.printStackTrace(System.err);
     }
 

@@ -31,12 +31,7 @@ public class MovieDatabaseServlet extends HttpServlet {
 
   @Override
   public void init() throws ServletException {
-    try {
-      this.database = new MovieDatabaseImpl();
-
-    } catch (RemoteException ex) {
-      throw new ServletException(ex);
-    }
+    this.database = new MovieDatabaseImpl();
   }
 
   /**

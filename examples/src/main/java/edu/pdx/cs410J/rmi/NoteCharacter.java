@@ -1,9 +1,10 @@
 package edu.pdx.cs410J.rmi;
 
 import java.io.PrintStream;
-import java.net.*;
-import java.rmi.*;
-import java.util.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.util.Map;
 
 /**
  * This program contacts the remote movie database and makes note of a
@@ -17,31 +18,24 @@ public class NoteCharacter {
   public static void main(String[] args) {
     String host = args[0];
     int port = Integer.parseInt(args[1]);
-    long id = Long.parseLong(args[2]);
+    long movieId = Long.parseLong(args[2]);
     String character = args[3];
     long actorId = Long.parseLong(args[4]);
 
-    // Install an RMISecurityManager, if there is not a
-    // SecurityManager already installed
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
-
-    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
-
     try {
-      MovieDatabase db = 
-        (MovieDatabase) Naming.lookup(name);
-      db.noteCharacter(id, character, actorId);
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
+      db.noteCharacter(movieId, character, actorId);
 
-      Movie movie = db.getMovie(id);
+      Movie movie = db.getMovie(movieId);
       out.println(movie.getTitle());
       for (Map.Entry entry : movie.getCharacters().entrySet()) {
         out.println("  " + entry.getKey() + "\t" + entry.getValue());
       }
+      System.exit(0);
 
-    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
+    } catch (RemoteException | NotBoundException ex) {
       ex.printStackTrace(System.err);
+      System.exit(1);
     }
 
   }

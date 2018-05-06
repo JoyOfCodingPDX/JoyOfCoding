@@ -1,9 +1,9 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.RMISecurityManager;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,14 +24,12 @@ public class MovieDatabaseImpl implements MovieDatabase {
 
   /**
    * Creates a new <code>MovieDatabaseImpl</code>.
-   * @throws java.rmi.RemoteException
    */
-  public MovieDatabaseImpl() throws RemoteException {
+  public MovieDatabaseImpl() {
     // Sort movies by their id, so the lookup is O(lg n)
     this.movies = new TreeMap<>(Long::compareTo);
 
     System.out.println("Starting Movie Database");
-    UnicastRemoteObject.exportObject(this);
   }
 
   ///////////////////////  Remote Methods  ////////////////////////
@@ -46,8 +44,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    *        The year in which the movie was released
    */
   @Override
-  public long createMovie(String title, int year)
-    throws RemoteException {
+  public long createMovie(String title, int year) {
     Movie movie = new Movie(title, year);
     long id = movie.getId();
     this.movies.put(id, movie);
@@ -59,7 +56,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * Returns the <code>Movie</code> with the given id.
    */
   @Override
-  public Movie getMovie(long id) throws RemoteException {
+  public Movie getMovie(long id) {
     return this.movies.get(id);
   }
 
@@ -72,13 +69,12 @@ public class MovieDatabaseImpl implements MovieDatabase {
    *         character is already played by someone else
    */
   @Override
-  public void noteCharacter(long movieId, String character, long actorId)
-    throws RemoteException {
+  public void noteCharacter(long movieId, String character, long actorId) {
     Movie movie = getExistingMovie(movieId);
     movie.addCharacter(character, actorId);
   }
 
-  private Movie getExistingMovie(long movieId) throws RemoteException {
+  private Movie getExistingMovie(long movieId) {
     // Note local call of remote method
     Movie movie = this.getMovie(movieId);
     if (movie == null) {
@@ -93,8 +89,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * sorted by release date.
    */
   @Override
-  public SortedSet<Movie> getFilmography(final long actorId)
-    throws RemoteException {
+  public SortedSet<Movie> getFilmography(final long actorId) {
 
     Query query = movie -> movie.getActors().contains(actorId);
 
@@ -116,7 +111,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
     public int compare(Movie movie1, Movie movie2) {
       int year1 = movie1.getYear();
       int year2 = movie2.getYear();
-      return year1 > year2 ? 1 : year1 < year2 ? -1 : 0;
+      return Integer.compare(year1, year2);
     }
   }
 
@@ -125,8 +120,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * query are sorted using the given comparator.
    */
   @Override
-  public SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter)
-    throws RemoteException {
+  public SortedSet<Movie> executeQuery(Query query, Comparator<Movie> sorter) {
 
     return this.movies.values().stream()
       .filter(query::satisfies)
@@ -145,12 +139,12 @@ public class MovieDatabaseImpl implements MovieDatabase {
   }
 
   @Override
-  public Collection<Movie> getMovies() throws RemoteException {
-    return this.movies.values();
+  public Collection<Movie> getMovies() {
+    return new HashSet<>(this.movies.values());
   }
 
   @Override
-  public void deleteMovie(long movieId) throws RemoteException {
+  public void deleteMovie(long movieId) {
     Movie movie = getExistingMovie(movieId);
     this.movies.remove(movie.getId());
   }
@@ -162,22 +156,14 @@ public class MovieDatabaseImpl implements MovieDatabase {
    * an RMI registry.
    */
   public static void main(String[] args) {
-    String host = args[0];
-    int port = Integer.parseInt(args[1]);
-
-    // Install an RMISecurityManager, if there is not a
-    // SecurityManager already installed
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
-
-    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
+    int port = Integer.parseInt(args[0]);
 
     try {
-      MovieDatabase db  = new MovieDatabaseImpl();
-      Naming.rebind(name, db);
+      MovieDatabase database = (MovieDatabase) UnicastRemoteObject.exportObject(new MovieDatabaseImpl(), port);
+      Registry registry = LocateRegistry.createRegistry(port);
+      registry.bind(MovieDatabase.RMI_OBJECT_NAME, database);
 
-    } catch (RemoteException | MalformedURLException ex) {
+    } catch (RemoteException | AlreadyBoundException ex) {
       ex.printStackTrace(System.err);
     }
 
