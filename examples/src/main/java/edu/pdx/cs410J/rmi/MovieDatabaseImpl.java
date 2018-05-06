@@ -69,8 +69,7 @@ public class MovieDatabaseImpl implements MovieDatabase {
    *         character is already played by someone else
    */
   @Override
-  public void noteCharacter(long movieId, String character, long actorId)
-    throws RemoteException {
+  public void noteCharacter(long movieId, String character, long actorId) {
     Movie movie = getExistingMovie(movieId);
     movie.addCharacter(character, actorId);
   }
@@ -160,10 +159,9 @@ public class MovieDatabaseImpl implements MovieDatabase {
     int port = Integer.parseInt(args[0]);
 
     try {
-      String name = "/MovieDatabase";
       MovieDatabase database = (MovieDatabase) UnicastRemoteObject.exportObject(new MovieDatabaseImpl(), port);
       Registry registry = LocateRegistry.createRegistry(port);
-      registry.bind(name, database);
+      registry.bind(MovieDatabase.RMI_OBJECT_NAME, database);
 
     } catch (RemoteException | AlreadyBoundException ex) {
       ex.printStackTrace(System.err);

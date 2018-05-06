@@ -16,7 +16,7 @@ public class GetFilmography {
     Long actor = Long.parseLong(args[2]);
 
     try {
-      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup("/MovieDatabase");
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
       db.getFilmography(actor).forEach(System.out::println);
 
     } catch (RemoteException | NotBoundException ex) {

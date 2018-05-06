@@ -18,7 +18,7 @@ public class GetMoviesInYear {
     int port = Integer.parseInt(args[1]);
     final int year = Integer.parseInt(args[2]);
     try {
-      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup("/MovieDatabase");
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
 
       Query query = movie -> movie.getYear() == year;
 

@@ -17,7 +17,7 @@ public class CreateMovie {
     int year = Integer.parseInt(args[3]);
 
     try {
-      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup("/MovieDatabase");
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
       long id = db.createMovie(title, year);
       System.out.println("Created movie " + id);
       System.exit(0);

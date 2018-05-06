@@ -15,7 +15,6 @@ import java.rmi.server.UnicastRemoteObject;
 public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
   static final int RMI_PORT = 7777;
   static final String RMI_HOST = "localhost";
-  private static final String RMI_OBJECT_NAME = "/MovieDatabase";
   private static MovieDatabaseImpl movieDatabaseImpl;
   private static Registry rmiRegistry;
 
@@ -24,14 +23,14 @@ public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
     movieDatabaseImpl = new MovieDatabaseImpl();
     MovieDatabase database = (MovieDatabase) UnicastRemoteObject.exportObject(movieDatabaseImpl, RMI_PORT);
     rmiRegistry = LocateRegistry.createRegistry(RMI_PORT);
-    rmiRegistry.bind(RMI_OBJECT_NAME, database);
+    rmiRegistry.bind(MovieDatabase.RMI_OBJECT_NAME, database);
   }
 
   @AfterClass
   public static void unbindMovieDatabaseFromRmiRegistry() throws RemoteException, MalformedURLException, AlreadyBoundException, NotBoundException {
     Registry registry = rmiRegistry;
     UnicastRemoteObject.unexportObject(movieDatabaseImpl, true);
-    registry.unbind(RMI_OBJECT_NAME);
+    registry.unbind(MovieDatabase.RMI_OBJECT_NAME);
     UnicastRemoteObject.unexportObject(rmiRegistry, true);
     movieDatabaseImpl = null;
   }
@@ -41,6 +40,6 @@ public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
   }
 
   static MovieDatabase getMovieDatabase() throws RemoteException, NotBoundException {
-    return (MovieDatabase) getRmiRegistry().lookup(RMI_OBJECT_NAME);
+    return (MovieDatabase) getRmiRegistry().lookup(MovieDatabase.RMI_OBJECT_NAME);
   }
 }
