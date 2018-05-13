@@ -54,13 +54,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.cobertura</groupId>
-      <artifactId>cobertura-runtime</artifactId>
-      <version>2.1.1</version>
-      <scope>runtime</scope>
-      <type>pom</type>
-    </dependency>
-    <dependency>
       <groupId>org.gwtbootstrap3</groupId>
       <artifactId>gwtbootstrap3</artifactId>
       <version>0.9.3</version>
