@@ -19,7 +19,7 @@
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
         <artifactId>archetype-packaging</artifactId>
-        <version>2.4</version>
+        <version>3.0.1</version>
       </extension>
     </extensions>
 
@@ -33,7 +33,7 @@
     </pluginManagement>
   </build>
 
-  <description>Maven archetype for the Student sample project</description>
+  <description>A simple Student program to get you started with Java</description>
 
   <url>http://www.cs.pdx.edu</url>
 
