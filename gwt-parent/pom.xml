@@ -62,7 +62,7 @@
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-dev</artifactId>
         <version>${gwt.version}</version>
-        <scope>test</scope><!-- Needed for running GwtTests in IntelliJ -->
+        <scope>provided</scope><!-- Needed for running GwtTests in IntelliJ -->
       </dependency>
       <dependency>
         <groupId>junit</groupId>
