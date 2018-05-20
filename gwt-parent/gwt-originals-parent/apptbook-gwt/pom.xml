@@ -78,6 +78,8 @@
                 <style>DETAILED</style>
                 <copyWebapp>true</copyWebapp>
                 <sourceLevel>${gwt.client.source.level}</sourceLevel>
+                <compileReport>true</compileReport>
+                <compilerMetrics>true</compilerMetrics>
             </configuration>
           <executions>
             <execution>
