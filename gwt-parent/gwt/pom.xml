@@ -88,6 +88,8 @@
                 <style>PRETTY</style>
                 <copyWebapp>true</copyWebapp>
                 <sourceLevel>${gwt.client.source.level}</sourceLevel>
+                <compileReport>true</compileReport>
+                <compilerMetrics>true</compilerMetrics>
             </configuration>
           <executions>
             <execution>
@@ -184,4 +186,20 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>compile-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
