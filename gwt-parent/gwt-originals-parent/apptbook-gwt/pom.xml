@@ -53,13 +53,6 @@
       <version>0.5</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>net.sourceforge.cobertura</groupId>
-      <artifactId>cobertura-runtime</artifactId>
-      <version>2.1.1</version>
-      <scope>runtime</scope>
-      <type>pom</type>
-    </dependency>
   </dependencies>
   <build>
     <finalName>apptbook</finalName>
@@ -85,6 +78,8 @@
                 <style>DETAILED</style>
                 <copyWebapp>true</copyWebapp>
                 <sourceLevel>${gwt.client.source.level}</sourceLevel>
+                <compileReport>true</compileReport>
+                <compilerMetrics>true</compilerMetrics>
             </configuration>
           <executions>
             <execution>
@@ -179,6 +174,10 @@
              you need to declare it in the <build> section, apparently. -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

@@ -66,13 +66,6 @@
       <version>0.5</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>net.sourceforge.cobertura</groupId>
-      <artifactId>cobertura-runtime</artifactId>
-      <version>2.1.1</version>
-      <scope>runtime</scope>
-      <type>pom</type>
-    </dependency>
   </dependencies>
   <build>
     <finalName>gwt</finalName>
@@ -95,6 +88,8 @@
                 <style>PRETTY</style>
                 <copyWebapp>true</copyWebapp>
                 <sourceLevel>${gwt.client.source.level}</sourceLevel>
+                <compileReport>true</compileReport>
+                <compilerMetrics>true</compilerMetrics>
             </configuration>
           <executions>
             <execution>
@@ -191,4 +186,20 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>compile-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

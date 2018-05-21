@@ -36,11 +36,11 @@ public class AirlineGwtIT extends GWTTestCase {
     });
 
     // Wait for the RPC call to return
-    waitBeforeRunning(500, new Runnable() {
+    waitBeforeRunning(1000, new Runnable() {
       @Override
       public void run() {
         String message = alerter.getMessage();
-        assertNotNull(message);
+        assertNotNull("No message was displayed", message);
         assertTrue(message, message.contains("Air CS410J with 1 flights"));
         finishTest();
       }
@@ -65,11 +65,11 @@ public class AirlineGwtIT extends GWTTestCase {
     });
 
     // Wait for the RPC call to return
-    waitBeforeRunning(500, new Runnable() {
+    waitBeforeRunning(1000, new Runnable() {
       @Override
       public void run() {
         String message = alerter.getMessage();
-        assertNotNull(message);
+        assertNotNull("No message was displayed", message);
         assertTrue(message, message.contains("StatusCodeException: 500 Server Error"));
         finishTest();
       }
@@ -95,11 +95,11 @@ public class AirlineGwtIT extends GWTTestCase {
     });
 
     // Wait for the RPC call to return
-    waitBeforeRunning(500, new Runnable() {
+    waitBeforeRunning(1000, new Runnable() {
       @Override
       public void run() {
         String message = alerter.getMessage();
-        assertNotNull(message);
+        assertNotNull("No message was displayed", message);
         assertTrue(message, message.contains("IllegalStateException: Expected declared exception"));
         finishTest();
       }

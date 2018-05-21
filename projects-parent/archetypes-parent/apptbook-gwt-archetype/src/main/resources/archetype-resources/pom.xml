@@ -54,13 +54,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.cobertura</groupId>
-      <artifactId>cobertura-runtime</artifactId>
-      <version>2.1.1</version>
-      <scope>runtime</scope>
-      <type>pom</type>
-    </dependency>
-    <dependency>
       <groupId>org.gwtbootstrap3</groupId>
       <artifactId>gwtbootstrap3</artifactId>
       <version>0.9.3</version>
@@ -97,6 +90,8 @@
                 <style>DETAILED</style>
                 <copyWebapp>true</copyWebapp>
                 <sourceLevel>${gwt.client.source.level}</sourceLevel>
+                <compileReport>true</compileReport>
+                <compilerMetrics>true</compilerMetrics>
             </configuration>
           <executions>
             <execution>
@@ -192,8 +187,28 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>compile-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
   <profiles>
     <profile>
       <id>grader</id>

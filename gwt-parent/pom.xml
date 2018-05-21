@@ -26,12 +26,11 @@
 
     <properties>
 
-        <gwt.version>2.7.0</gwt.version>
+        <gwt.version>2.8.2</gwt.version>
 
-        <!--  GWT server-side code can use Java 8 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <gwt.client.source.level>1.7</gwt.client.source.level>
+        <gwt.client.source.level>1.8</gwt.client.source.level>
     </properties>
 
     <dependencyManagement>
@@ -63,7 +62,7 @@
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-dev</artifactId>
         <version>${gwt.version}</version>
-        <scope>test</scope><!-- Needed for running GwtTests in IntelliJ -->
+        <scope>provided</scope><!-- Needed for running GwtTests in IntelliJ -->
       </dependency>
       <dependency>
         <groupId>junit</groupId>
