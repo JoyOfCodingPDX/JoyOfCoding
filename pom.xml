@@ -53,8 +53,8 @@
         <maven>3.5.2</maven>
     </prerequisites>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
 
         <groovy.version>2.4.10</groovy.version>
 
@@ -247,6 +247,12 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>--add-modules=java.xml.bind</arg>
+            <arg>--add-opens=java.base/java.lang=ALL-UNNAMED</arg>
+            <arg>--add-opens=java.base/java.util=ALL-UNNAMED</arg>
+          </compilerArgs>
         </configuration>
         <executions>
           <execution>
