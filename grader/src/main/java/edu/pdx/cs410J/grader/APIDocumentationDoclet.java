@@ -42,7 +42,7 @@ public class APIDocumentationDoclet implements Doclet {
 
   @Override
   public SourceVersion getSupportedSourceVersion() {
-    return SourceVersion.RELEASE_10;
+    return SourceVersion.RELEASE_9;
   }
 
   @Override
