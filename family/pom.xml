@@ -32,15 +32,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.6</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.family.FamilyTreeGUI</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
         <executions>
           <execution>
             <goals>
