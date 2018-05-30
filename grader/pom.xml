@@ -103,17 +103,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>default-tools.jar</id>
-      <activation>
-        <property>
-          <name>java.vendor</name>
-          <value>Oracle Corporation</value>
-       </property>
-     </activation>
-   </profile>
-  </profiles>
   <build>
     <plugins>
       <plugin>
