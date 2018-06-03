@@ -1,6 +1,10 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.sun.source.doctree.DocCommentTree;
+import com.sun.source.doctree.DocTree;
+import com.sun.source.doctree.ParamTree;
+import com.sun.source.doctree.ThrowsTree;
 import com.sun.source.util.DocTrees;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
@@ -10,13 +14,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic;
 import java.io.PrintWriter;
 import java.text.BreakIterator;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +34,11 @@ import java.util.stream.Stream;
 public class APIDocumentationDoclet implements Doclet {
 
   private Reporter reporter;
+
+  @VisibleForTesting
+  static String removePackageNames(String name) {
+    return name.replaceAll("(\\w+\\.)*(\\w+)", "$2");
+  }
 
   @Override
   public void init(Locale locale, Reporter reporter) {
@@ -114,8 +119,6 @@ public class APIDocumentationDoclet implements Doclet {
 
   @Override
   public boolean run(DocletEnvironment environment) {
-    reporter.print(Diagnostic.Kind.NOTE, "Doclet.run()");
-
     PrintWriter pw = new PrintWriter(System.out, true);
 
     DocTrees docTrees = environment.getDocTrees();
@@ -141,29 +144,52 @@ public class APIDocumentationDoclet implements Doclet {
       generateMethodDocumentation(docTrees, (ExecutableElement) method, pw);
     });
 
-
-    for (Element e : aClass.getEnclosedElements()) {
-      printElement(docTrees, e);
-    }
   }
 
-  private void generateMethodDocumentation(DocTrees docTrees, ExecutableElement m, PrintWriter pw) {
+  private void generateMethodDocumentation(DocTrees docTrees, ExecutableElement method, PrintWriter pw) {
     StringBuilder sb = new StringBuilder();
-    sb.append(joinObjectsToStrings(m.getModifiers(), " ")).append(" ");
-    appendTypeVariables(m, sb);
-    appendReturnType(m, sb);
-    sb.append(getMethodOrConstructorName(m));
+    sb.append(joinObjectsToStrings(method.getModifiers(), " ")).append(" ");
+    appendTypeVariables(method, sb);
+    appendReturnType(method, sb);
+    sb.append(getMethodOrConstructorName(method));
     sb.append("(");
-    sb.append(m.getParameters().stream().map(this::getParameterTypeAndName).collect(Collectors.joining(", ")));
+    sb.append(method.getParameters().stream().map(this::getParameterTypeAndName).collect(Collectors.joining(", ")));
     sb.append(")");
 
     indent(sb.toString(), 2, pw);
+
+    String comment = getFullBodyComment(docTrees, method);
+    if (comment != null && !comment.equals("")) {
+      indent(comment, 4, pw);
+    }
+    pw.println("");
+
+    DocCommentTree methodDocs = docTrees.getDocCommentTree(method);
+    if (methodDocs != null) {
+      List<? extends DocTree> blockTags = methodDocs.getBlockTags();
+      blockTags.stream().filter(d -> d.getKind() == DocTree.Kind.PARAM).forEach(parameter -> {
+        ParamTree paramTag = (ParamTree) parameter;
+        String paramDoc = paramTag.getName() + " - " + paramTag.getDescription();
+        indent(paramDoc, 4, pw);
+        pw.println("");
+      });
+
+      blockTags.stream().filter(d -> d.getKind() == DocTree.Kind.THROWS).forEach(exception -> {
+        ThrowsTree throwsTag = (ThrowsTree) exception;
+        String paramDoc = "throws " + throwsTag.getExceptionName() + " - " + throwsTag.getDescription();
+        indent(paramDoc, 4, pw);
+        pw.println("");
+      });
+    }
+
   }
 
   private String getParameterTypeAndName(VariableElement parameter) {
-    return parameter.asType() +
-    " " +
-    parameter.getSimpleName();
+    return removePackageNames(parameter.asType()) + " " + parameter.getSimpleName();
+  }
+
+  private String removePackageNames(TypeMirror type) {
+    return removePackageNames(type.toString());
   }
 
   private Name getMethodOrConstructorName(ExecutableElement method) {
@@ -183,8 +209,7 @@ public class APIDocumentationDoclet implements Doclet {
   }
 
   private StringBuilder appendType(TypeMirror type, StringBuilder sb) {
-    sb.append(type.toString());
-
+    sb.append(removePackageNames(type));
     return sb;
   }
 
@@ -192,7 +217,7 @@ public class APIDocumentationDoclet implements Doclet {
     // Not sure how to do this yet
   }
 
-  private String getFullBodyComment(DocTrees docTrees, TypeElement element) {
+  private String getFullBodyComment(DocTrees docTrees, Element element) {
     DocCommentTree commentTree = docTrees.getDocCommentTree(element);
     if (commentTree == null) {
       return "";
