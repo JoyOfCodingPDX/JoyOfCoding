@@ -63,7 +63,8 @@ public class APIDocumentationDoclet implements Doclet {
   /**
    * Indents a block of text a given amount.
    */
-  private static void indent(String text, final int indent,
+  @VisibleForTesting
+  static void indent(String text, final int indent,
                              PrintWriter pw) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < indent; i++) {
@@ -73,8 +74,7 @@ public class APIDocumentationDoclet implements Doclet {
 
     pw.print(spaces);
 
-    int printed = indent;
-    boolean firstWord = true;
+    int currentLineLength = indent;
 
     BreakIterator boundary = BreakIterator.getWordInstance();
     boundary.setText(text);
@@ -83,38 +83,31 @@ public class APIDocumentationDoclet implements Doclet {
          start = end, end = boundary.next()) {
 
       String word = text.substring(start, end);
-
-      if (printed + word.length() > 72) {
-        pw.println("");
-        pw.print(spaces);
-        printed = indent;
-        firstWord = true;
+      if (word.length() > 1) {
+        word = word.trim();
+        if (start > 0 && text.charAt(start - 1) == '.') {
+          pw.print(" ");
+          currentLineLength++;
+        }
       }
 
-      if (word.charAt(word.length() - 1) == '\n') {
-        pw.write(word, 0, word.length() - 1);
+      if (currentLineLength + word.length() > 72) {
+        pw.println("");
+        pw.print(spaces);
+        currentLineLength = indent;
+      }
 
-      } else if (firstWord &&
-                 Character.isWhitespace(word.charAt(0))) {
-        pw.write(word, 1, word.length() - 1);
+      if (word.length() > 0 && word.charAt(word.length() - 1) == '\n') {
+        pw.write(word, 0, word.length() - 1);
+        currentLineLength += word.length() - 1;
 
       } else {
         pw.print(word);
+        currentLineLength += word.length();
       }
-      printed += (end - start);
-      firstWord = false;
     }
 
     pw.println("");
-  }
-  public void printElement(DocTrees trees, Element e) {
-    DocCommentTree docCommentTree = trees.getDocCommentTree(e);
-    if (docCommentTree != null) {
-      System.out.println("Element (" + e.getKind() + ": "
-        + e + ") has the following comments:");
-      System.out.println("Entire body: " + docCommentTree.getFullBody());
-      System.out.println("Block tags: " + docCommentTree.getBlockTags());
-    }
   }
 
   @Override
