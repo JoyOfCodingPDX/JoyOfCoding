@@ -24,7 +24,7 @@ public class HttpRequestHelperTest {
 
   @Test
   public void testGetWithParameters() throws IOException {
-    HttpRequestHelper.Response response = helper.get("http://search.yahoo.com/search", "p", "Java");
+    HttpRequestHelper.Response response = helper.get("https://www.google.com/search", "p", "Java");
     assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
     assertTrue(response.getContent().contains("Java"));
 
