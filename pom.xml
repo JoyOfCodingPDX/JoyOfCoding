@@ -506,6 +506,7 @@
           </links>
           <detectJavaApiLink/>
           <detectLinks/>
+          <additionalOptions>-html5</additionalOptions>
         </configuration>
         <reportSets>
           <reportSet>
