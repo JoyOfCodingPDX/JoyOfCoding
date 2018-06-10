@@ -53,13 +53,14 @@
         <maven>3.5.2</maven>
     </prerequisites>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>10</maven.compiler.source>
+        <maven.compiler.target>10</maven.compiler.target>
 
-        <groovy.version>2.4.4</groovy.version>
+        <groovy.version>2.4.10</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <pmd.version>6.4.0</pmd.version>
     </properties>
     <repositories>
       <repository>
@@ -85,7 +86,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.0.5</version> <!-- Cloudbees only supports 3.0.5 -->
+              <version>3.5.2</version>
             </requireMavenVersion>
             <requireJavaVersion>
               <version>${maven.compiler.target}</version>
@@ -196,13 +197,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19</version>
-        <!--<configuration>-->
-          <!--<argLine>-->
-            <!--&#45;&#45;add-modules java.xml.bind-->
-            <!--&#45;&#45;illegal-access=deny-->
-          <!--</argLine>-->
-        <!--</configuration>-->
+        <version>2.21.0</version>
+        <configuration>
+          <!-- Let reflection code run in Java 10 -->
+          <argLine>
+            --add-modules java.xml.bind
+            --add-opens java.base/java.lang=ALL-UNNAMED
+            --add-opens java.base/java.util=ALL-UNNAMED
+            --illegal-access=deny
+          </argLine>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -244,6 +248,12 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>--add-modules=java.xml.bind</arg>
+            <arg>--add-opens=java.base/java.lang=ALL-UNNAMED</arg>
+            <arg>--add-opens=java.base/java.util=ALL-UNNAMED</arg>
+          </compilerArgs>
         </configuration>
         <executions>
           <execution>
@@ -265,7 +275,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.19</version>
+          <version>2.21.0</version>
           <configuration>
             <testSourceDirectory>src/it/java</testSourceDirectory>
             <testClassesDirectory>${project.build.directory}/it-classes</testClassesDirectory>
@@ -364,7 +374,59 @@
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.3.6.v20151106</version>
+          <version>9.4.10.v20180503</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.9.0</version>
+          <dependencies>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-core</artifactId>
+              <version>${pmd.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-java</artifactId>
+              <version>${pmd.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-javascript</artifactId>
+              <version>${pmd.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>net.sourceforge.pmd</groupId>
+              <artifactId>pmd-jsp</artifactId>
+              <version>${pmd.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>3.1.3</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <!-- Explicitly use version 3.1.3 of spotbugs because the 3.1.3 plugin uses spotbugs 3.1.2 which doesn't
+                   support Java 10 (https://github.com/spotbugs/spotbugs/issues/593) -->
+              <version>3.1.3</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>xml-apis</groupId>
+                  <artifactId>xml-apis</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -374,7 +436,6 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.3</version>
         <configuration>
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put spotbugs xdoc xml report -->
@@ -429,7 +490,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
         <configuration>
           <aggregate>true</aggregate>
           <linksource>true</linksource>
@@ -445,6 +506,7 @@
           </links>
           <detectJavaApiLink/>
           <detectLinks/>
+          <additionalOptions>-html5</additionalOptions>
         </configuration>
         <reportSets>
           <reportSet>
