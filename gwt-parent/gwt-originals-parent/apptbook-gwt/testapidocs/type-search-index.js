@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"edu.pdx.cs410J.apptbookgwt.client","l":"AppointmentBookGwtIT"},{"p":"edu.pdx.cs410J.apptbookgwt.client","l":"AppointmentBookGwtTestSuite"},{"p":"edu.pdx.cs410J.apptbookgwt.server","l":"PingServiceImplTest"},{"p":"edu.pdx.cs410J.apptbookgwt","l":"PingServiceSyncProxyIT"}]

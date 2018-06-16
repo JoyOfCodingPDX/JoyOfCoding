@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.server,PingServiceImpl,21,0,0,0,7,0,3,0,3,0
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,Appointment,18,3,0,0,5,1,5,1,5,1
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,AppointmentBookGwt.new AppointmentBookGwt.Alerter() {...},6,0,0,0,3,0,2,0,2,0
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,AppointmentBookGwt.new ClickHandler() {...},17,0,0,0,4,0,2,0,2,0
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,AppointmentBook,6,13,0,0,2,4,1,3,1,3
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,AppointmentBookGwt.2.new AsyncCallback() {...},50,0,2,0,11,0,4,0,3,0
+Appointment Book GWT Application,edu.pdx.cs410J.apptbookgwt.client,AppointmentBookGwt,36,0,0,0,12,0,4,0,4,0
