@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.family;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.File;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.io.IOException;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.io.PrintStream;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.rmi.Naming;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.rmi.RMISecurityManager;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.rmi.RemoteException;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.rmi.server.UnicastRemoteObject;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.*;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">/**</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * This class is a remote family tree whose contents are read from and</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * saved to an XML file.  It extends &lt;code&gt;UnicastRemoteObject&lt;/code&gt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * because it is going to be bound into the RMI registry.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> */</a>
+<span class="sourceLineNo">017</span><a id="line.17">@SuppressWarnings("serial")</a>
+<span class="sourceLineNo">018</span><a id="line.18">public class XmlRemoteFamilyTree extends UnicastRemoteObject </a>
+<span class="sourceLineNo">019</span><a id="line.19">  implements RemoteFamilyTree {</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">  /** The underlying family tree whose contents this remote family</a>
+<span class="sourceLineNo">022</span><a id="line.22">   * tree serves up. */</a>
+<span class="sourceLineNo">023</span><a id="line.23">  private transient FamilyTree tree;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /** The XML file that serves as the source of this family tree */</a>
+<span class="sourceLineNo">026</span><a id="line.26">  private transient File xmlFile;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">  /** The highest id in the family tree */</a>
+<span class="sourceLineNo">029</span><a id="line.29">  private int highestId;</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">  /** Maps ids to their RemotePerson.  This way there is always a</a>
+<span class="sourceLineNo">032</span><a id="line.32">   * one-to-one correspondence between a Person and a RemotePerson */</a>
+<span class="sourceLineNo">033</span><a id="line.33">  private Map&lt;Integer, RemotePerson&gt; remotePersons = new TreeMap&lt;Integer, RemotePerson&gt;();</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">  /** Maps a Long that represents the husband and wife to their</a>
+<span class="sourceLineNo">036</span><a id="line.36">   * RemoteMarriage */</a>
+<span class="sourceLineNo">037</span><a id="line.37">  private Map&lt;Long, RemoteMarriage&gt; remoteMarriages = new TreeMap&lt;Long, RemoteMarriage&gt;();</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">  ///////////////////////  Constructors  ///////////////////////</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">  /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">   * Creates a new &lt;code&gt;XmlRemoteFamilyTree&lt;/code&gt; that gets its data</a>
+<span class="sourceLineNo">043</span><a id="line.43">   * from a given XML file.</a>
+<span class="sourceLineNo">044</span><a id="line.44">   *</a>
+<span class="sourceLineNo">045</span><a id="line.45">   * @throws FamilyTreeException</a>
+<span class="sourceLineNo">046</span><a id="line.46">   *         A problem occurred while parsing the XML file</a>
+<span class="sourceLineNo">047</span><a id="line.47">   */</a>
+<span class="sourceLineNo">048</span><a id="line.48">  public XmlRemoteFamilyTree(File xmlFile) </a>
+<span class="sourceLineNo">049</span><a id="line.49">    throws RemoteException, IOException, FamilyTreeException {</a>
+<span class="sourceLineNo">050</span><a id="line.50">    super();   // Register this object with RMI runtime</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">    if (xmlFile.exists()) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">      out.println("Reading Family Tree from " + xmlFile);</a>
+<span class="sourceLineNo">054</span><a id="line.54">      XmlParser parser = new XmlParser(xmlFile);</a>
+<span class="sourceLineNo">055</span><a id="line.55">      this.tree = parser.parse();</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">      // Compute the highest id of any person</a>
+<span class="sourceLineNo">058</span><a id="line.58">      Iterator iter = this.tree.getPeople().iterator();</a>
+<span class="sourceLineNo">059</span><a id="line.59">      while (iter.hasNext()) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">        Person person = (Person) iter.next();</a>
+<span class="sourceLineNo">061</span><a id="line.61">        if (person.getId() &gt; this.highestId) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">          this.highestId = person.getId();</a>
+<span class="sourceLineNo">063</span><a id="line.63">        }</a>
+<span class="sourceLineNo">064</span><a id="line.64">      }</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">    } else {</a>
+<span class="sourceLineNo">067</span><a id="line.67">      this.tree = new FamilyTree();</a>
+<span class="sourceLineNo">068</span><a id="line.68">      this.highestId = 0;</a>
+<span class="sourceLineNo">069</span><a id="line.69">    }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">    this.xmlFile = xmlFile;</a>
+<span class="sourceLineNo">072</span><a id="line.72">  }</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">  //////////////////////  Instance Methods  //////////////////////</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">  /**</a>
+<span class="sourceLineNo">077</span><a id="line.77">   * Helper method that manages the cache of RemotePersons</a>
+<span class="sourceLineNo">078</span><a id="line.78">   */</a>
+<span class="sourceLineNo">079</span><a id="line.79">  private RemotePerson getRemotePerson(Person person) </a>
+<span class="sourceLineNo">080</span><a id="line.80">    throws RemoteException {</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">    if (person == null) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">      return null;</a>
+<span class="sourceLineNo">084</span><a id="line.84">    }</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    int id = person.getId();</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">    RemotePerson rPerson = </a>
+<span class="sourceLineNo">089</span><a id="line.89">      (RemotePerson) this.remotePersons.get(new Integer(id));</a>
+<span class="sourceLineNo">090</span><a id="line.90">    if (rPerson == null) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">      // Is there a person with that id</a>
+<span class="sourceLineNo">092</span><a id="line.92">      if (!this.tree.containsPerson(id)) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">        return null;</a>
+<span class="sourceLineNo">094</span><a id="line.94">      }</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">      rPerson = new RemotePersonImpl(this, person);</a>
+<span class="sourceLineNo">097</span><a id="line.97">      this.remotePersons.put(new Integer(person.getId()), rPerson);</a>
+<span class="sourceLineNo">098</span><a id="line.98">    }</a>
+<span class="sourceLineNo">099</span><a id="line.99">    </a>
+<span class="sourceLineNo">100</span><a id="line.100">    return rPerson;</a>
+<span class="sourceLineNo">101</span><a id="line.101">  }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">  public RemotePerson createPerson(Person.Gender gender) throws RemoteException {</a>
+<span class="sourceLineNo">104</span><a id="line.104">    Person person = new Person(++this.highestId, gender);</a>
+<span class="sourceLineNo">105</span><a id="line.105">    this.tree.addPerson(person);</a>
+<span class="sourceLineNo">106</span><a id="line.106">    return getRemotePerson(person);</a>
+<span class="sourceLineNo">107</span><a id="line.107">  }</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">  public RemotePerson getPerson(int id) throws RemoteException {</a>
+<span class="sourceLineNo">110</span><a id="line.110">    return getRemotePerson(this.tree.getPerson(id));</a>
+<span class="sourceLineNo">111</span><a id="line.111">  }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">  public RemotePerson getPerson(String firstName, String lastName) </a>
+<span class="sourceLineNo">114</span><a id="line.114">    throws RemoteException {</a>
+<span class="sourceLineNo">115</span><a id="line.115">    Person person = null;</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">    Iterator people = this.tree.getPeople().iterator();</a>
+<span class="sourceLineNo">118</span><a id="line.118">    while (people.hasNext()) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">      Person p = (Person) people.next();</a>
+<span class="sourceLineNo">120</span><a id="line.120">      if (p.getFirstName().equals(firstName) &amp;&amp;</a>
+<span class="sourceLineNo">121</span><a id="line.121">          p.getLastName().equals(lastName)) {</a>
+<span class="sourceLineNo">122</span><a id="line.122">        if (person == null) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">          person = p;</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">        } else {</a>
+<span class="sourceLineNo">126</span><a id="line.126">          String s = "Multiple people named \"" + firstName + " " +</a>
+<span class="sourceLineNo">127</span><a id="line.127">            lastName + " exist: " + p + " AND " + person;</a>
+<span class="sourceLineNo">128</span><a id="line.128">          throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">129</span><a id="line.129">        }</a>
+<span class="sourceLineNo">130</span><a id="line.130">      }</a>
+<span class="sourceLineNo">131</span><a id="line.131">    }</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">    if (person == null) {</a>
+<span class="sourceLineNo">134</span><a id="line.134">      return null;</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">    } else {</a>
+<span class="sourceLineNo">137</span><a id="line.137">      return getPerson(person.getId());</a>
+<span class="sourceLineNo">138</span><a id="line.138">    }</a>
+<span class="sourceLineNo">139</span><a id="line.139">  }</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">  public RemoteMarriage getMarriage(int husbandId, int wifeId) </a>
+<span class="sourceLineNo">142</span><a id="line.142">    throws RemoteException {</a>
+<span class="sourceLineNo">143</span><a id="line.143">    </a>
+<span class="sourceLineNo">144</span><a id="line.144">    // Make sure that both the husband and the wife exist</a>
+<span class="sourceLineNo">145</span><a id="line.145">    if (!this.tree.containsPerson(husbandId)) {</a>
+<span class="sourceLineNo">146</span><a id="line.146">      String s = "Could not find person with id " + husbandId;</a>
+<span class="sourceLineNo">147</span><a id="line.147">      throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">148</span><a id="line.148"></a>
+<span class="sourceLineNo">149</span><a id="line.149">    } else if (!this.tree.containsPerson(wifeId)) {</a>
+<span class="sourceLineNo">150</span><a id="line.150">      String s = "Could not find person with id " + wifeId;</a>
+<span class="sourceLineNo">151</span><a id="line.151">      throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">152</span><a id="line.152">    }</a>
+<span class="sourceLineNo">153</span><a id="line.153"></a>
+<span class="sourceLineNo">154</span><a id="line.154">    Person husband = this.tree.getPerson(husbandId);</a>
+<span class="sourceLineNo">155</span><a id="line.155">    Iterator marriages = husband.getMarriages().iterator();</a>
+<span class="sourceLineNo">156</span><a id="line.156">    while (marriages.hasNext()) {</a>
+<span class="sourceLineNo">157</span><a id="line.157">      Marriage marriage = (Marriage) marriages.next();</a>
+<span class="sourceLineNo">158</span><a id="line.158">      if (marriage.getWife().getId() == wifeId) {</a>
+<span class="sourceLineNo">159</span><a id="line.159">        return getRemoteMarriage(marriage);</a>
+<span class="sourceLineNo">160</span><a id="line.160">      }</a>
+<span class="sourceLineNo">161</span><a id="line.161">    }</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">    return null;</a>
+<span class="sourceLineNo">164</span><a id="line.164">  }</a>
+<span class="sourceLineNo">165</span><a id="line.165"></a>
+<span class="sourceLineNo">166</span><a id="line.166">  /**</a>
+<span class="sourceLineNo">167</span><a id="line.167">   * Helper method that maintains the map of RemoteMarriages</a>
+<span class="sourceLineNo">168</span><a id="line.168">   */</a>
+<span class="sourceLineNo">169</span><a id="line.169">  private RemoteMarriage getRemoteMarriage(Marriage marriage) </a>
+<span class="sourceLineNo">170</span><a id="line.170">    throws RemoteException {</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">    long key = (((long) marriage.getHusband().getId()) &lt;&lt; 32) | </a>
+<span class="sourceLineNo">173</span><a id="line.173">      ((long) marriage.getWife().getId());</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">    RemoteMarriage rMarriage =</a>
+<span class="sourceLineNo">176</span><a id="line.176">      (RemoteMarriage) this.remoteMarriages.get(new Long(key));</a>
+<span class="sourceLineNo">177</span><a id="line.177">    if (rMarriage == null) {</a>
+<span class="sourceLineNo">178</span><a id="line.178">      rMarriage = new RemoteMarriageImpl(marriage);</a>
+<span class="sourceLineNo">179</span><a id="line.179">      this.remoteMarriages.put(new Long(key), rMarriage);</a>
+<span class="sourceLineNo">180</span><a id="line.180">    }</a>
+<span class="sourceLineNo">181</span><a id="line.181"></a>
+<span class="sourceLineNo">182</span><a id="line.182">    return rMarriage;</a>
+<span class="sourceLineNo">183</span><a id="line.183">  }</a>
+<span class="sourceLineNo">184</span><a id="line.184"></a>
+<span class="sourceLineNo">185</span><a id="line.185">  public RemoteMarriage createMarriage(int husbandId, int wifeId) </a>
+<span class="sourceLineNo">186</span><a id="line.186">    throws RemoteException {</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">    // Make sure that both the husband and the wife exist</a>
+<span class="sourceLineNo">189</span><a id="line.189">    if (!this.tree.containsPerson(husbandId)) {</a>
+<span class="sourceLineNo">190</span><a id="line.190">      String s = "Could not find person with id " + husbandId;</a>
+<span class="sourceLineNo">191</span><a id="line.191">      throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">192</span><a id="line.192"></a>
+<span class="sourceLineNo">193</span><a id="line.193">    } else if (!this.tree.containsPerson(wifeId)) {</a>
+<span class="sourceLineNo">194</span><a id="line.194">      String s = "Could not find person with id " + wifeId;</a>
+<span class="sourceLineNo">195</span><a id="line.195">      throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">196</span><a id="line.196">    }</a>
+<span class="sourceLineNo">197</span><a id="line.197"></a>
+<span class="sourceLineNo">198</span><a id="line.198">    Person husband = this.tree.getPerson(husbandId);</a>
+<span class="sourceLineNo">199</span><a id="line.199">    Person wife = this.tree.getPerson(wifeId);</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">    Marriage marriage = new Marriage(husband, wife);</a>
+<span class="sourceLineNo">202</span><a id="line.202">    husband.addMarriage(marriage);</a>
+<span class="sourceLineNo">203</span><a id="line.203">    wife.addMarriage(marriage);</a>
+<span class="sourceLineNo">204</span><a id="line.204">    return getRemoteMarriage(marriage);</a>
+<span class="sourceLineNo">205</span><a id="line.205">  }</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">  public Collection&lt;RemotePerson&gt; getLiving() throws RemoteException {</a>
+<span class="sourceLineNo">208</span><a id="line.208">    Collection&lt;RemotePerson&gt; living = new ArrayList&lt;RemotePerson&gt;();</a>
+<span class="sourceLineNo">209</span><a id="line.209"></a>
+<span class="sourceLineNo">210</span><a id="line.210">    Iterator people = this.tree.getPeople().iterator();</a>
+<span class="sourceLineNo">211</span><a id="line.211">    while (people.hasNext()) {</a>
+<span class="sourceLineNo">212</span><a id="line.212">      Person person = (Person) people.next();</a>
+<span class="sourceLineNo">213</span><a id="line.213">      if (person.getDateOfBirth() != null &amp;&amp;</a>
+<span class="sourceLineNo">214</span><a id="line.214">          person.getDateOfDeath() == null) {</a>
+<span class="sourceLineNo">215</span><a id="line.215">        living.add(getRemotePerson(person));</a>
+<span class="sourceLineNo">216</span><a id="line.216">      }</a>
+<span class="sourceLineNo">217</span><a id="line.217">    }</a>
+<span class="sourceLineNo">218</span><a id="line.218"></a>
+<span class="sourceLineNo">219</span><a id="line.219">    return living;</a>
+<span class="sourceLineNo">220</span><a id="line.220">  }</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">  public Collection&lt;RemotePerson&gt; getLiving(Date date) throws RemoteException {</a>
+<span class="sourceLineNo">223</span><a id="line.223">    Collection&lt;RemotePerson&gt; alive = new ArrayList&lt;RemotePerson&gt;();</a>
+<span class="sourceLineNo">224</span><a id="line.224"></a>
+<span class="sourceLineNo">225</span><a id="line.225">    Iterator people = this.tree.getPeople().iterator();</a>
+<span class="sourceLineNo">226</span><a id="line.226">    while (people.hasNext()) {</a>
+<span class="sourceLineNo">227</span><a id="line.227">      Person person = (Person) people.next();</a>
+<span class="sourceLineNo">228</span><a id="line.228">      Date dob = person.getDateOfBirth();</a>
+<span class="sourceLineNo">229</span><a id="line.229">      Date dod = person.getDateOfDeath();</a>
+<span class="sourceLineNo">230</span><a id="line.230"></a>
+<span class="sourceLineNo">231</span><a id="line.231">      if (dob != null &amp;&amp; date.before(dob)) {</a>
+<span class="sourceLineNo">232</span><a id="line.232">        continue;</a>
+<span class="sourceLineNo">233</span><a id="line.233">      }</a>
+<span class="sourceLineNo">234</span><a id="line.234"></a>
+<span class="sourceLineNo">235</span><a id="line.235">      if (dod != null &amp;&amp; date.after(dod)) {</a>
+<span class="sourceLineNo">236</span><a id="line.236">        continue;</a>
+<span class="sourceLineNo">237</span><a id="line.237">      }</a>
+<span class="sourceLineNo">238</span><a id="line.238"></a>
+<span class="sourceLineNo">239</span><a id="line.239">      if (dob == null &amp;&amp; dod == null) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">        continue;</a>
+<span class="sourceLineNo">241</span><a id="line.241">      }</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">      alive.add(getRemotePerson(person));</a>
+<span class="sourceLineNo">244</span><a id="line.244">    }</a>
+<span class="sourceLineNo">245</span><a id="line.245"></a>
+<span class="sourceLineNo">246</span><a id="line.246">    return alive;</a>
+<span class="sourceLineNo">247</span><a id="line.247">  } </a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">  public void shutdown() throws IOException, RemoteException {</a>
+<span class="sourceLineNo">250</span><a id="line.250">    // Write the contents of this family tree back to the XML file</a>
+<span class="sourceLineNo">251</span><a id="line.251">    out.println("Writing family tree to " + this.xmlFile.getPath());</a>
+<span class="sourceLineNo">252</span><a id="line.252">    XmlDumper dumper = new XmlDumper(this.xmlFile.getPath());</a>
+<span class="sourceLineNo">253</span><a id="line.253">    dumper.dump(this.tree);</a>
+<span class="sourceLineNo">254</span><a id="line.254"></a>
+<span class="sourceLineNo">255</span><a id="line.255">    UnicastRemoteObject.unexportObject(this, false /* force */);</a>
+<span class="sourceLineNo">256</span><a id="line.256">  }</a>
+<span class="sourceLineNo">257</span><a id="line.257"></a>
+<span class="sourceLineNo">258</span><a id="line.258">  //////////////////////////  Main Program  //////////////////////////</a>
+<span class="sourceLineNo">259</span><a id="line.259"></a>
+<span class="sourceLineNo">260</span><a id="line.260">  private static PrintStream out = System.out;</a>
+<span class="sourceLineNo">261</span><a id="line.261">  private static PrintStream err = System.err;</a>
+<span class="sourceLineNo">262</span><a id="line.262"></a>
+<span class="sourceLineNo">263</span><a id="line.263">  /**</a>
+<span class="sourceLineNo">264</span><a id="line.264">   * Prints usage information about this program</a>
+<span class="sourceLineNo">265</span><a id="line.265">   */</a>
+<span class="sourceLineNo">266</span><a id="line.266">  private static void usage(String s) {</a>
+<span class="sourceLineNo">267</span><a id="line.267">    err.println("\n** " + s + "\n");</a>
+<span class="sourceLineNo">268</span><a id="line.268">    err.println("usage: java XmlRemoteFamilyTree [-start xmlFile " +</a>
+<span class="sourceLineNo">269</span><a id="line.269">                "| -stop] familyName host port");</a>
+<span class="sourceLineNo">270</span><a id="line.270">    err.println("");</a>
+<span class="sourceLineNo">271</span><a id="line.271">    err.println("This program creates a new XmlRemoteFamilyTree " +</a>
+<span class="sourceLineNo">272</span><a id="line.272">                "that reads its contents from a given XML file and " +</a>
+<span class="sourceLineNo">273</span><a id="line.273">                "binds it into the RMI registry.  If the XML file " +</a>
+<span class="sourceLineNo">274</span><a id="line.274">                "doesn't exist, a new one will be created");</a>
+<span class="sourceLineNo">275</span><a id="line.275">    System.exit(1);</a>
+<span class="sourceLineNo">276</span><a id="line.276">  }</a>
+<span class="sourceLineNo">277</span><a id="line.277"></a>
+<span class="sourceLineNo">278</span><a id="line.278">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">    String xmlFileName = null;</a>
+<span class="sourceLineNo">280</span><a id="line.280">    String familyName = null;</a>
+<span class="sourceLineNo">281</span><a id="line.281">    String host = null;</a>
+<span class="sourceLineNo">282</span><a id="line.282">    int port = -1;</a>
+<span class="sourceLineNo">283</span><a id="line.283">    String command = null;</a>
+<span class="sourceLineNo">284</span><a id="line.284"></a>
+<span class="sourceLineNo">285</span><a id="line.285">    for (int i = 0; i &lt; args.length; i++) {</a>
+<span class="sourceLineNo">286</span><a id="line.286">      if (args[i].equals("-start")) {</a>
+<span class="sourceLineNo">287</span><a id="line.287">        if (++i &gt;= args.length) {</a>
+<span class="sourceLineNo">288</span><a id="line.288">          usage("Missing XML file");</a>
+<span class="sourceLineNo">289</span><a id="line.289">        }</a>
+<span class="sourceLineNo">290</span><a id="line.290">        xmlFileName = args[i];</a>
+<span class="sourceLineNo">291</span><a id="line.291"></a>
+<span class="sourceLineNo">292</span><a id="line.292">        command = "START";</a>
+<span class="sourceLineNo">293</span><a id="line.293"></a>
+<span class="sourceLineNo">294</span><a id="line.294">      } else if (args[i].equals("-stop")) {</a>
+<span class="sourceLineNo">295</span><a id="line.295">        command = "STOP";</a>
+<span class="sourceLineNo">296</span><a id="line.296"></a>
+<span class="sourceLineNo">297</span><a id="line.297">      } else if (familyName == null) {</a>
+<span class="sourceLineNo">298</span><a id="line.298">        familyName = args[i];</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">      } else if (host == null) {</a>
+<span class="sourceLineNo">301</span><a id="line.301">        host = args[i];</a>
+<span class="sourceLineNo">302</span><a id="line.302"></a>
+<span class="sourceLineNo">303</span><a id="line.303">      } else if (port == -1) {</a>
+<span class="sourceLineNo">304</span><a id="line.304">        try {</a>
+<span class="sourceLineNo">305</span><a id="line.305">          port = Integer.parseInt(args[i]);</a>
+<span class="sourceLineNo">306</span><a id="line.306"></a>
+<span class="sourceLineNo">307</span><a id="line.307">        } catch (NumberFormatException ex) {</a>
+<span class="sourceLineNo">308</span><a id="line.308">          usage("Invalid port: " + args[i]);</a>
+<span class="sourceLineNo">309</span><a id="line.309">        }</a>
+<span class="sourceLineNo">310</span><a id="line.310"></a>
+<span class="sourceLineNo">311</span><a id="line.311">      } else {</a>
+<span class="sourceLineNo">312</span><a id="line.312">        usage("Spurious command line: " + args[i]);</a>
+<span class="sourceLineNo">313</span><a id="line.313">      }</a>
+<span class="sourceLineNo">314</span><a id="line.314">    }</a>
+<span class="sourceLineNo">315</span><a id="line.315"></a>
+<span class="sourceLineNo">316</span><a id="line.316">    if (command == null) {</a>
+<span class="sourceLineNo">317</span><a id="line.317">      usage("Missing command");</a>
+<span class="sourceLineNo">318</span><a id="line.318">    }</a>
+<span class="sourceLineNo">319</span><a id="line.319"></a>
+<span class="sourceLineNo">320</span><a id="line.320">    if (familyName == null) {</a>
+<span class="sourceLineNo">321</span><a id="line.321">      usage("Missing family name");</a>
+<span class="sourceLineNo">322</span><a id="line.322">    }</a>
+<span class="sourceLineNo">323</span><a id="line.323"></a>
+<span class="sourceLineNo">324</span><a id="line.324">    if (host == null) {</a>
+<span class="sourceLineNo">325</span><a id="line.325">      usage("Missing host name");</a>
+<span class="sourceLineNo">326</span><a id="line.326">    }</a>
+<span class="sourceLineNo">327</span><a id="line.327"></a>
+<span class="sourceLineNo">328</span><a id="line.328">    if (port == -1) {</a>
+<span class="sourceLineNo">329</span><a id="line.329">      usage("Missing port number");</a>
+<span class="sourceLineNo">330</span><a id="line.330">    }</a>
+<span class="sourceLineNo">331</span><a id="line.331"></a>
+<span class="sourceLineNo">332</span><a id="line.332">    if (command.equals("START")) {</a>
+<span class="sourceLineNo">333</span><a id="line.333">      // Install an RMISecurityManager, if there is not a</a>
+<span class="sourceLineNo">334</span><a id="line.334">      // SecurityManager already installed</a>
+<span class="sourceLineNo">335</span><a id="line.335">      if (System.getSecurityManager() == null) {</a>
+<span class="sourceLineNo">336</span><a id="line.336">        System.setSecurityManager(new RMISecurityManager());</a>
+<span class="sourceLineNo">337</span><a id="line.337">      }</a>
+<span class="sourceLineNo">338</span><a id="line.338"></a>
+<span class="sourceLineNo">339</span><a id="line.339">      String name = "rmi://" + host + ":" + port + "/" + familyName;</a>
+<span class="sourceLineNo">340</span><a id="line.340"></a>
+<span class="sourceLineNo">341</span><a id="line.341">      try {</a>
+<span class="sourceLineNo">342</span><a id="line.342">        XmlRemoteFamilyTree tree =</a>
+<span class="sourceLineNo">343</span><a id="line.343">          new XmlRemoteFamilyTree(new File(xmlFileName));</a>
+<span class="sourceLineNo">344</span><a id="line.344">        Naming.rebind(name, tree);</a>
+<span class="sourceLineNo">345</span><a id="line.345">        out.println("Successfully bound XmlRemoteFamilyTree");</a>
+<span class="sourceLineNo">346</span><a id="line.346"></a>
+<span class="sourceLineNo">347</span><a id="line.347">      } catch (Exception ex) {</a>
+<span class="sourceLineNo">348</span><a id="line.348">        ex.printStackTrace(System.err);</a>
+<span class="sourceLineNo">349</span><a id="line.349">      }</a>
+<span class="sourceLineNo">350</span><a id="line.350"></a>
+<span class="sourceLineNo">351</span><a id="line.351"></a>
+<span class="sourceLineNo">352</span><a id="line.352">    } else if (command.equals("STOP")) {</a>
+<span class="sourceLineNo">353</span><a id="line.353">      // Install an RMISecurityManager, if there is not a</a>
+<span class="sourceLineNo">354</span><a id="line.354">      // SecurityManager already installed</a>
+<span class="sourceLineNo">355</span><a id="line.355">      if (System.getSecurityManager() == null) {</a>
+<span class="sourceLineNo">356</span><a id="line.356">        System.setSecurityManager(new RMISecurityManager());</a>
+<span class="sourceLineNo">357</span><a id="line.357">      }</a>
+<span class="sourceLineNo">358</span><a id="line.358"></a>
+<span class="sourceLineNo">359</span><a id="line.359">      String name = "rmi://" + host + ":" + port + "/" + familyName;</a>
+<span class="sourceLineNo">360</span><a id="line.360"></a>
+<span class="sourceLineNo">361</span><a id="line.361">      try {</a>
+<span class="sourceLineNo">362</span><a id="line.362">        RemoteFamilyTree tree = </a>
+<span class="sourceLineNo">363</span><a id="line.363">          (RemoteFamilyTree) Naming.lookup(name);</a>
+<span class="sourceLineNo">364</span><a id="line.364">        tree.shutdown();</a>
+<span class="sourceLineNo">365</span><a id="line.365">        Naming.unbind(name);</a>
+<span class="sourceLineNo">366</span><a id="line.366"></a>
+<span class="sourceLineNo">367</span><a id="line.367">      } catch (Exception ex) {</a>
+<span class="sourceLineNo">368</span><a id="line.368">        ex.printStackTrace(err);</a>
+<span class="sourceLineNo">369</span><a id="line.369">      }</a>
+<span class="sourceLineNo">370</span><a id="line.370">      </a>
+<span class="sourceLineNo">371</span><a id="line.371"></a>
+<span class="sourceLineNo">372</span><a id="line.372">    } else {</a>
+<span class="sourceLineNo">373</span><a id="line.373">      String s = "Unknown command: " + command;</a>
+<span class="sourceLineNo">374</span><a id="line.374">      throw new IllegalStateException(s);</a>
+<span class="sourceLineNo">375</span><a id="line.375">    }</a>
+<span class="sourceLineNo">376</span><a id="line.376">  }</a>
+<span class="sourceLineNo">377</span><a id="line.377"></a>
+<span class="sourceLineNo">378</span><a id="line.378">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
