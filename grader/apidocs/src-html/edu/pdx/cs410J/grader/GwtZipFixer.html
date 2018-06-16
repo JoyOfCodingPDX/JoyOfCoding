@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.grader;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.google.common.annotations.VisibleForTesting;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.google.common.io.ByteStreams;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.slf4j.Logger;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.slf4j.LoggerFactory;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.io.*;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.ArrayList;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.List;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.util.regex.Matcher;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.regex.Pattern;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.zip.ZipEntry;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.zip.ZipInputStream;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.zip.ZipOutputStream;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">public class GwtZipFixer {</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">023</span><a id="line.23">    String outputDirectoryName = null;</a>
+<span class="sourceLineNo">024</span><a id="line.24">    List&lt;String&gt; zipFileNames = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">    for (String arg : args) {</a>
+<span class="sourceLineNo">027</span><a id="line.27">      if (outputDirectoryName == null) {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        outputDirectoryName = arg;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">      } else {</a>
+<span class="sourceLineNo">031</span><a id="line.31">        zipFileNames.add(arg);</a>
+<span class="sourceLineNo">032</span><a id="line.32">      }</a>
+<span class="sourceLineNo">033</span><a id="line.33">    }</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">    if (outputDirectoryName == null) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">      usage("Missing output directory");</a>
+<span class="sourceLineNo">037</span><a id="line.37">      return;</a>
+<span class="sourceLineNo">038</span><a id="line.38">    }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    if (zipFileNames.isEmpty()) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">      usage("Missing zip file");</a>
+<span class="sourceLineNo">042</span><a id="line.42">      return;</a>
+<span class="sourceLineNo">043</span><a id="line.43">    }</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">    File outputDirectory = new File(outputDirectoryName);</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    for (String zipFileName : zipFileNames) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">      File zipFile = new File(zipFileName);</a>
+<span class="sourceLineNo">049</span><a id="line.49">      try {</a>
+<span class="sourceLineNo">050</span><a id="line.50">        fixZipFile(zipFile, outputDirectory);</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">      } catch (IOException e) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">        usage("While fixing zip file " + zipFile + ": " + e);</a>
+<span class="sourceLineNo">054</span><a id="line.54">      }</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">    }</a>
+<span class="sourceLineNo">057</span><a id="line.57">  }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">  private static void fixZipFile(File zipFile, File outputDirectory) throws IOException {</a>
+<span class="sourceLineNo">060</span><a id="line.60">    File fixedZipFile = getFixedZipFile(zipFile, outputDirectory);</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">    try (</a>
+<span class="sourceLineNo">063</span><a id="line.63">      ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile));</a>
+<span class="sourceLineNo">064</span><a id="line.64">      ZipOutputStream output = new ZipOutputStream(new FileOutputStream(fixedZipFile))</a>
+<span class="sourceLineNo">065</span><a id="line.65">    ) {</a>
+<span class="sourceLineNo">066</span><a id="line.66">      for (ZipEntry entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {</a>
+<span class="sourceLineNo">067</span><a id="line.67">        String entryName = entry.getName();</a>
+<span class="sourceLineNo">068</span><a id="line.68">        String fixedEntryName = getFixedEntryName(entryName);</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">        if (fixedEntryName != null) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">          logger.debug(entryName + " fixed to " + fixedEntryName);</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">          ZipEntry fixedEntry = new ZipEntry(fixedEntryName);</a>
+<span class="sourceLineNo">074</span><a id="line.74">          output.putNextEntry(fixedEntry);</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">          ByteStreams.copy(input, output);</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">        } else {</a>
+<span class="sourceLineNo">079</span><a id="line.79">          logger.debug(entryName + " ignored");</a>
+<span class="sourceLineNo">080</span><a id="line.80">        }</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">        output.flush();</a>
+<span class="sourceLineNo">083</span><a id="line.83">      }</a>
+<span class="sourceLineNo">084</span><a id="line.84">    }</a>
+<span class="sourceLineNo">085</span><a id="line.85">  }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">  @VisibleForTesting</a>
+<span class="sourceLineNo">088</span><a id="line.88">  static String getFixedEntryName(String entryName) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">    Stream&lt;String&gt; ignore = Stream.of("__MACOSX", "/test", "/it", "/target/", ".DS_Store");</a>
+<span class="sourceLineNo">090</span><a id="line.90">    if (ignore.anyMatch(entryName::contains)) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">      return null;</a>
+<span class="sourceLineNo">092</span><a id="line.92">    }</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">    if (entryName.contains("pom.xml")) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">      return "pom.xml";</a>
+<span class="sourceLineNo">096</span><a id="line.96">    }</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "src/main/");</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">    if (fixedName == null) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">      fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "src/main/java/");</a>
+<span class="sourceLineNo">102</span><a id="line.102">    }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">    if (fixedName == null) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">      fixedName = replaceRegexWithPrefix(entryName, ".*/resources/(.*)", "src/main/resources/");</a>
+<span class="sourceLineNo">106</span><a id="line.106">    }</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">    if (fixedName == null) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">      fixedName = replaceRegexWithPrefix(entryName, ".*/webapp/(.*)", "src/main/webapp/");</a>
+<span class="sourceLineNo">110</span><a id="line.110">    }</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">    if (fixedName == null) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">      fixedName = replaceRegexWithPrefix(entryName, "^edu/(.*)", "src/main/java/edu/");</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">    return fixedName;</a>
+<span class="sourceLineNo">117</span><a id="line.117">  }</a>
+<span class="sourceLineNo">118</span><a id="line.118"></a>
+<span class="sourceLineNo">119</span><a id="line.119">  private static String replaceRegexWithPrefix(String entryName, String regex, String replaceWithPrefix) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">    Pattern pattern = Pattern.compile(regex);</a>
+<span class="sourceLineNo">121</span><a id="line.121">    Matcher matcher = pattern.matcher(entryName);</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">    if (matcher.matches()) {</a>
+<span class="sourceLineNo">124</span><a id="line.124">      String portionUnderMain = matcher.group(1);</a>
+<span class="sourceLineNo">125</span><a id="line.125">      if ("".equals(portionUnderMain)) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">        return null;</a>
+<span class="sourceLineNo">127</span><a id="line.127"></a>
+<span class="sourceLineNo">128</span><a id="line.128">      } else {</a>
+<span class="sourceLineNo">129</span><a id="line.129">        return replaceWithPrefix + portionUnderMain;</a>
+<span class="sourceLineNo">130</span><a id="line.130">      }</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">    } else {</a>
+<span class="sourceLineNo">133</span><a id="line.133">      return null;</a>
+<span class="sourceLineNo">134</span><a id="line.134">    }</a>
+<span class="sourceLineNo">135</span><a id="line.135">  }</a>
+<span class="sourceLineNo">136</span><a id="line.136"></a>
+<span class="sourceLineNo">137</span><a id="line.137">  private static File getFixedZipFile(File zipFile, File outputDirectory) {</a>
+<span class="sourceLineNo">138</span><a id="line.138">    return new File(outputDirectory, zipFile.getName());</a>
+<span class="sourceLineNo">139</span><a id="line.139">  }</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">  private static void usage(String message) {</a>
+<span class="sourceLineNo">142</span><a id="line.142">    PrintStream err = System.err;</a>
+<span class="sourceLineNo">143</span><a id="line.143"></a>
+<span class="sourceLineNo">144</span><a id="line.144">    err.println("+++ " + message);</a>
+<span class="sourceLineNo">145</span><a id="line.145">    err.println();</a>
+<span class="sourceLineNo">146</span><a id="line.146">    err.println("usage: java GwtZipFixer outputDirectory zipFile+");</a>
+<span class="sourceLineNo">147</span><a id="line.147">    err.println("    outputDirectory     Name of direct into which fixed zip files should be written");</a>
+<span class="sourceLineNo">148</span><a id="line.148">    err.println("    zipFile             Name of zip file to be fixed");</a>
+<span class="sourceLineNo">149</span><a id="line.149">    err.println();</a>
+<span class="sourceLineNo">150</span><a id="line.150">    err.println("Fixes the contents of a zip file submitted for the GWT ");</a>
+<span class="sourceLineNo">151</span><a id="line.151">    err.println("project so that it will work with the grading scripts");</a>
+<span class="sourceLineNo">152</span><a id="line.152">    err.println();</a>
+<span class="sourceLineNo">153</span><a id="line.153"></a>
+<span class="sourceLineNo">154</span><a id="line.154">    System.exit(1);</a>
+<span class="sourceLineNo">155</span><a id="line.155">  }</a>
+<span class="sourceLineNo">156</span><a id="line.156">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

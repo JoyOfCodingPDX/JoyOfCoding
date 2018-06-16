@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.grader;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.junit.Test;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange.InvalidLetterGradeRange;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import static org.hamcrest.MatcherAssert.assertThat;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import static org.hamcrest.Matchers.*;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">public class GradeBookTest {</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">  @Test</a>
+<span class="sourceLineNo">015</span><a id="line.15">  public void defaultLetterGradeRanges() {</a>
+<span class="sourceLineNo">016</span><a id="line.16">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">017</span><a id="line.17">    GradeBook.LetterGradeRanges undergrad = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">018</span><a id="line.18">    assertDefaultLetterGradeRanges(undergrad);</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">    GradeBook.LetterGradeRanges grad = book.getLetterGradeRanges(GRADUATE);</a>
+<span class="sourceLineNo">021</span><a id="line.21">    assertDefaultLetterGradeRanges(grad);</a>
+<span class="sourceLineNo">022</span><a id="line.22">  }</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">  private void assertDefaultLetterGradeRanges(GradeBook.LetterGradeRanges ranges) {</a>
+<span class="sourceLineNo">025</span><a id="line.25">    assertLetterGradeRange(ranges, LetterGrade.A, 94, 100);</a>
+<span class="sourceLineNo">026</span><a id="line.26">    assertLetterGradeRange(ranges, LetterGrade.A_MINUS, 90, 93);</a>
+<span class="sourceLineNo">027</span><a id="line.27">    assertLetterGradeRange(ranges, LetterGrade.B_PLUS, 87, 89);</a>
+<span class="sourceLineNo">028</span><a id="line.28">    assertLetterGradeRange(ranges, LetterGrade.B, 83, 86);</a>
+<span class="sourceLineNo">029</span><a id="line.29">    assertLetterGradeRange(ranges, LetterGrade.B_MINUS, 80, 82);</a>
+<span class="sourceLineNo">030</span><a id="line.30">    assertLetterGradeRange(ranges, LetterGrade.C_PLUS, 77, 79);</a>
+<span class="sourceLineNo">031</span><a id="line.31">    assertLetterGradeRange(ranges, LetterGrade.C, 73, 76);</a>
+<span class="sourceLineNo">032</span><a id="line.32">    assertLetterGradeRange(ranges, LetterGrade.C_MINUS, 70, 72);</a>
+<span class="sourceLineNo">033</span><a id="line.33">    assertLetterGradeRange(ranges, LetterGrade.D_PLUS, 67, 69);</a>
+<span class="sourceLineNo">034</span><a id="line.34">    assertLetterGradeRange(ranges, LetterGrade.D, 63, 66);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    assertLetterGradeRange(ranges, LetterGrade.D_MINUS, 60, 62);</a>
+<span class="sourceLineNo">036</span><a id="line.36">    assertLetterGradeRange(ranges, LetterGrade.F, 0, 59);</a>
+<span class="sourceLineNo">037</span><a id="line.37">  }</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">  private void assertLetterGradeRange(GradeBook.LetterGradeRanges ranges, LetterGrade letterGrade, int minimum, int maximum) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">    LetterGradeRange range = ranges.getRange(letterGrade);</a>
+<span class="sourceLineNo">041</span><a id="line.41">    assertThat("No range for " + letterGrade, range, not(nullValue()));</a>
+<span class="sourceLineNo">042</span><a id="line.42">    assertThat("Less than for " + letterGrade, range.maximum(), equalTo(maximum));</a>
+<span class="sourceLineNo">043</span><a id="line.43">    assertThat(range.minimum(), equalTo(minimum));</a>
+<span class="sourceLineNo">044</span><a id="line.44">  }</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">047</span><a id="line.47">  public void minimumValueGreaterThanMaximumValue() {</a>
+<span class="sourceLineNo">048</span><a id="line.48">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">049</span><a id="line.49">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">050</span><a id="line.50">    LetterGradeRange range = ranges.getRange(LetterGrade.A);</a>
+<span class="sourceLineNo">051</span><a id="line.51">    range.setRange(100, 99);</a>
+<span class="sourceLineNo">052</span><a id="line.52">  }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">055</span><a id="line.55">  public void minimumValueEqualsMaximumValue() {</a>
+<span class="sourceLineNo">056</span><a id="line.56">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">057</span><a id="line.57">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">058</span><a id="line.58">    LetterGradeRange range = ranges.getRange(LetterGrade.A);</a>
+<span class="sourceLineNo">059</span><a id="line.59">    range.setRange(99, 99);</a>
+<span class="sourceLineNo">060</span><a id="line.60">  }</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">  @Test</a>
+<span class="sourceLineNo">063</span><a id="line.63">  public void defaultLetterGradeRangesAreValid() {</a>
+<span class="sourceLineNo">064</span><a id="line.64">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">065</span><a id="line.65">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">066</span><a id="line.66">    ranges.validate();</a>
+<span class="sourceLineNo">067</span><a id="line.67">  }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">070</span><a id="line.70">  public void rangesDoNotStartAtZero() {</a>
+<span class="sourceLineNo">071</span><a id="line.71">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">072</span><a id="line.72">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">073</span><a id="line.73">    LetterGradeRange range = ranges.getRange(LetterGrade.F);</a>
+<span class="sourceLineNo">074</span><a id="line.74">    range.setRange(2, range.maximum());</a>
+<span class="sourceLineNo">075</span><a id="line.75">    ranges.validate();</a>
+<span class="sourceLineNo">076</span><a id="line.76">  }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">079</span><a id="line.79">  public void rangesDoNotContain100() {</a>
+<span class="sourceLineNo">080</span><a id="line.80">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">081</span><a id="line.81">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">082</span><a id="line.82">    LetterGradeRange range = ranges.getRange(LetterGrade.A);</a>
+<span class="sourceLineNo">083</span><a id="line.83">    range.setRange(range.minimum(), 99);</a>
+<span class="sourceLineNo">084</span><a id="line.84">    ranges.validate();</a>
+<span class="sourceLineNo">085</span><a id="line.85">  }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">088</span><a id="line.88">  public void rangesAreContiguous() {</a>
+<span class="sourceLineNo">089</span><a id="line.89">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">090</span><a id="line.90">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">091</span><a id="line.91">    LetterGradeRange range = ranges.getRange(LetterGrade.A);</a>
+<span class="sourceLineNo">092</span><a id="line.92">    range.setRange(range.minimum() + 1, range.maximum());</a>
+<span class="sourceLineNo">093</span><a id="line.93">    ranges.validate();</a>
+<span class="sourceLineNo">094</span><a id="line.94">  }</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">  @Test(expected = InvalidLetterGradeRange.class)</a>
+<span class="sourceLineNo">097</span><a id="line.97">  public void rangesAreContiguousNotARange() {</a>
+<span class="sourceLineNo">098</span><a id="line.98">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">099</span><a id="line.99">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">100</span><a id="line.100">    LetterGradeRange range = ranges.getRange(LetterGrade.C);</a>
+<span class="sourceLineNo">101</span><a id="line.101">    range.setRange(range.minimum(), range.maximum() - 1);</a>
+<span class="sourceLineNo">102</span><a id="line.102">    ranges.validate();</a>
+<span class="sourceLineNo">103</span><a id="line.103">  }</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">  @Test</a>
+<span class="sourceLineNo">106</span><a id="line.106">  public void scoreIsInRange() {</a>
+<span class="sourceLineNo">107</span><a id="line.107">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">108</span><a id="line.108">    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);</a>
+<span class="sourceLineNo">109</span><a id="line.109">    LetterGradeRange range = ranges.getRange(LetterGrade.A);</a>
+<span class="sourceLineNo">110</span><a id="line.110">    range.setRange(90, 100);</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">    assertThat(range.isScoreInRange(90.0), is(true));</a>
+<span class="sourceLineNo">113</span><a id="line.113">    assertThat(range.isScoreInRange(100.0), is(true));</a>
+<span class="sourceLineNo">114</span><a id="line.114">    assertThat(range.isScoreInRange(95.0), is(true));</a>
+<span class="sourceLineNo">115</span><a id="line.115">    assertThat(range.isScoreInRange(89.5), is(true));</a>
+<span class="sourceLineNo">116</span><a id="line.116">    assertThat(range.isScoreInRange(101.0), is(false));</a>
+<span class="sourceLineNo">117</span><a id="line.117">    assertThat(range.isScoreInRange(89.0), is(false));</a>
+<span class="sourceLineNo">118</span><a id="line.118">    assertThat(range.isScoreInRange(89.4), is(false));</a>
+<span class="sourceLineNo">119</span><a id="line.119"></a>
+<span class="sourceLineNo">120</span><a id="line.120">  }</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">  @Test</a>
+<span class="sourceLineNo">123</span><a id="line.123">  public void scoresAreCorrectlyMappedToLetterGrades() {</a>
+<span class="sourceLineNo">124</span><a id="line.124">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">125</span><a id="line.125">    assertThat(book.getLetterGradeForScore(UNDERGRADUATE, 99.0), equalTo(LetterGrade.A));</a>
+<span class="sourceLineNo">126</span><a id="line.126">    assertThat(book.getLetterGradeForScore(UNDERGRADUATE, 93.0), equalTo(LetterGrade.A_MINUS));</a>
+<span class="sourceLineNo">127</span><a id="line.127">  }</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">  @Test</a>
+<span class="sourceLineNo">130</span><a id="line.130">  public void getStudentBySsnForNonExistentStudentReturnsNonPresentOptional() {</a>
+<span class="sourceLineNo">131</span><a id="line.131">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">132</span><a id="line.132">    assertThat(book.getStudentWithSsn("123").isPresent(), equalTo(false));</a>
+<span class="sourceLineNo">133</span><a id="line.133">  }</a>
+<span class="sourceLineNo">134</span><a id="line.134"></a>
+<span class="sourceLineNo">135</span><a id="line.135">  @Test</a>
+<span class="sourceLineNo">136</span><a id="line.136">  public void getStudentBySsnForStudentReturnsStudent() {</a>
+<span class="sourceLineNo">137</span><a id="line.137">    GradeBook book = new GradeBook("test");</a>
+<span class="sourceLineNo">138</span><a id="line.138">    String ssn = "123456789";</a>
+<span class="sourceLineNo">139</span><a id="line.139">    Student student = new Student("id").setSsn(ssn);</a>
+<span class="sourceLineNo">140</span><a id="line.140">    book.addStudent(student);</a>
+<span class="sourceLineNo">141</span><a id="line.141">    assertThat(book.getStudentWithSsn(ssn).get(), equalTo(student));</a>
+<span class="sourceLineNo">142</span><a id="line.142">  }</a>
+<span class="sourceLineNo">143</span><a id="line.143">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
