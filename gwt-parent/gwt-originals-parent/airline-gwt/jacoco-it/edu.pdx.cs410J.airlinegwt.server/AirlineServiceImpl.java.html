@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AirlineServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Airline GWT Application</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs410J.airlinegwt.server</a> &gt; <span class="el_source">AirlineServiceImpl.java</span></div><h1>AirlineServiceImpl.java</h1><pre class="source lang-java linenums">package edu.pdx.cs410J.airlinegwt.server;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import edu.pdx.cs410J.airlinegwt.client.Airline;
+import edu.pdx.cs410J.airlinegwt.client.Flight;
+import edu.pdx.cs410J.airlinegwt.client.AirlineService;
+
+/**
+ * The server-side implementation of the Airline service
+ */
+<span class="nc" id="L11">public class AirlineServiceImpl extends RemoteServiceServlet implements AirlineService</span>
+{
+  @Override
+  public Airline getAirline() {
+<span class="nc" id="L15">    Airline airline = new Airline();</span>
+<span class="nc" id="L16">    airline.addFlight(new Flight());</span>
+<span class="nc" id="L17">    return airline;</span>
+  }
+
+  @Override
+  public void throwUndeclaredException() {
+<span class="nc" id="L22">    throw new IllegalStateException(&quot;Expected undeclared exception&quot;);</span>
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+<span class="nc" id="L27">    throw new IllegalStateException(&quot;Expected declared exception&quot;);</span>
+  }
+
+  /**
+   * Log unhandled exceptions to standard error
+   *
+   * @param unhandled
+   *        The exception that wasn't handled
+   */
+  @Override
+  protected void doUnexpectedFailure(Throwable unhandled) {
+<span class="nc" id="L38">    unhandled.printStackTrace(System.err);</span>
+<span class="nc" id="L39">    super.doUnexpectedFailure(unhandled);</span>
+<span class="nc" id="L40">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
