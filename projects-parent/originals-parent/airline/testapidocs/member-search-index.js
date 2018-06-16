@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"edu.pdx.cs410J.airline","c":"FlightTest","l":"FlightTest()"},{"p":"edu.pdx.cs410J.airline","c":"FlightTest","l":"forProject1ItIsOkayIfGetDepartureTimeReturnsNull()"},{"p":"edu.pdx.cs410J.airline","c":"FlightTest","l":"getArrivalStringNeedsToBeImplemented()"},{"p":"edu.pdx.cs410J.airline","c":"FlightTest","l":"initiallyAllFlightsHaveTheSameNumber()"}]
