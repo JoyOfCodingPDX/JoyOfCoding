@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.family;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.*;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.text.*;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.*;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * This class dumps a family tree to a text file in a format that can</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * be read by a person.</a>
+<span class="sourceLineNo">010</span><a id="line.10"> *</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * @author David Whitlock</a>
+<span class="sourceLineNo">012</span><a id="line.12"> */</a>
+<span class="sourceLineNo">013</span><a id="line.13">public class PrettyPrinter implements Dumper {</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">  private PrintWriter pw;     // Where to pretty print to</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">  /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">   * Creates a new pretty printer that prints to a file of a given</a>
+<span class="sourceLineNo">019</span><a id="line.19">   * name.  If the file does not exist, it is created.</a>
+<span class="sourceLineNo">020</span><a id="line.20">   */</a>
+<span class="sourceLineNo">021</span><a id="line.21">  public PrettyPrinter(String fileName) throws IOException {</a>
+<span class="sourceLineNo">022</span><a id="line.22">    this(new File(fileName));</a>
+<span class="sourceLineNo">023</span><a id="line.23">  }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * Creates a new pretty printer that prints to a given file.</a>
+<span class="sourceLineNo">027</span><a id="line.27">   */</a>
+<span class="sourceLineNo">028</span><a id="line.28">  public PrettyPrinter(File file) throws IOException {</a>
+<span class="sourceLineNo">029</span><a id="line.29">    this(new PrintWriter(new FileWriter(file), true));</a>
+<span class="sourceLineNo">030</span><a id="line.30">  }</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">  /**</a>
+<span class="sourceLineNo">033</span><a id="line.33">   * Creates a new pretty printer that prints to a</a>
+<span class="sourceLineNo">034</span><a id="line.34">   * &lt;code&gt;PrintWriter&lt;/code&gt;.  This way, we can print to destinations</a>
+<span class="sourceLineNo">035</span><a id="line.35">   * other than files (such as the console).</a>
+<span class="sourceLineNo">036</span><a id="line.36">   */</a>
+<span class="sourceLineNo">037</span><a id="line.37">  PrettyPrinter(PrintWriter pw) {</a>
+<span class="sourceLineNo">038</span><a id="line.38">    this.pw = pw;</a>
+<span class="sourceLineNo">039</span><a id="line.39">  }</a>
+<span class="sourceLineNo">040</span><a id="line.40">  </a>
+<span class="sourceLineNo">041</span><a id="line.41">  /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">   * Prints the contents of the given family tree in a human-readable</a>
+<span class="sourceLineNo">043</span><a id="line.43">   * format.</a>
+<span class="sourceLineNo">044</span><a id="line.44">   */</a>
+<span class="sourceLineNo">045</span><a id="line.45">  public void dump(FamilyTree tree) {</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    // We want to print the contents of the family tree sorted by id</a>
+<span class="sourceLineNo">048</span><a id="line.48">    // number.  We'll use an instance of PersonSorter along with a</a>
+<span class="sourceLineNo">049</span><a id="line.49">    // TreeSet to sort the Persons.</a>
+<span class="sourceLineNo">050</span><a id="line.50">    SortedSet&lt;Person&gt; sortedTree = new TreeSet&lt;Person&gt;(new PersonSorter());</a>
+<span class="sourceLineNo">051</span><a id="line.51">    sortedTree.addAll(tree.getPeople());</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">    // Print a banner</a>
+<span class="sourceLineNo">054</span><a id="line.54">    pw.println("Your Family Tree\n");</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">    DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">    // Iterate over the people in the sorted tree in order and print</a>
+<span class="sourceLineNo">059</span><a id="line.59">    // out a description of each person.</a>
+<span class="sourceLineNo">060</span><a id="line.60">    Iterator iter = sortedTree.iterator();</a>
+<span class="sourceLineNo">061</span><a id="line.61">    while (iter.hasNext()) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">      Person person = (Person) iter.next();</a>
+<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">064</span><a id="line.64">      pw.println("Person " + person.getId() + ": " +</a>
+<span class="sourceLineNo">065</span><a id="line.65">                 person.getFullName());</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">      Date dob = person.getDateOfBirth();</a>
+<span class="sourceLineNo">068</span><a id="line.68">      if (dob != null) {</a>
+<span class="sourceLineNo">069</span><a id="line.69">        pw.print("  Born on " + df.format(dob));</a>
+<span class="sourceLineNo">070</span><a id="line.70">      }</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">      Date dod = person.getDateOfDeath();</a>
+<span class="sourceLineNo">073</span><a id="line.73">      if (dod != null) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">        pw.print(", died on " + df.format(dod));</a>
+<span class="sourceLineNo">075</span><a id="line.75">      }</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">      if (dob != null || dod != null) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">        // Only print a newline if a date was printed</a>
+<span class="sourceLineNo">079</span><a id="line.79">        pw.println("");</a>
+<span class="sourceLineNo">080</span><a id="line.80">      }</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">      Person mother = person.getMother();</a>
+<span class="sourceLineNo">083</span><a id="line.83">      if (mother != null) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">        pw.println("  Mother: " + mother.getFullName() + " (" +</a>
+<span class="sourceLineNo">085</span><a id="line.85">                   mother.getId() + ")");</a>
+<span class="sourceLineNo">086</span><a id="line.86">      }</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">      Person father = person.getFather();</a>
+<span class="sourceLineNo">089</span><a id="line.89">      if (father != null) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">        pw.println("  Father: " + father.getFullName() + " (" +</a>
+<span class="sourceLineNo">091</span><a id="line.91">                   father.getId() + ")");</a>
+<span class="sourceLineNo">092</span><a id="line.92">      }</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">      Iterator marriages = person.getMarriages().iterator();</a>
+<span class="sourceLineNo">095</span><a id="line.95">      while (marriages.hasNext()) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">        Marriage marriage = (Marriage) marriages.next();</a>
+<span class="sourceLineNo">097</span><a id="line.97">        Person spouse;</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">        if(marriage.getWife().equals(person)) {</a>
+<span class="sourceLineNo">100</span><a id="line.100">          spouse = marriage.getHusband();</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">        } else {</a>
+<span class="sourceLineNo">103</span><a id="line.103">          spouse = marriage.getWife();</a>
+<span class="sourceLineNo">104</span><a id="line.104">        }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">        pw.print("  Married " + spouse.getFullName());</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">        Date date = marriage.getDate();</a>
+<span class="sourceLineNo">109</span><a id="line.109">        if(date != null) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">          pw.print(" on " + df.format(date));</a>
+<span class="sourceLineNo">111</span><a id="line.111">        }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">        String location = marriage.getLocation();</a>
+<span class="sourceLineNo">114</span><a id="line.114">        if(location != null) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">          pw.print(" in " + location);</a>
+<span class="sourceLineNo">116</span><a id="line.116">        }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">        pw.println("");</a>
+<span class="sourceLineNo">119</span><a id="line.119">      }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">      // Put a blank line between people for readability</a>
+<span class="sourceLineNo">122</span><a id="line.122">      pw.println("");</a>
+<span class="sourceLineNo">123</span><a id="line.123"></a>
+<span class="sourceLineNo">124</span><a id="line.124">    }</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">    // Flush and close the PrintWriter for good measure</a>
+<span class="sourceLineNo">127</span><a id="line.127">    pw.flush();</a>
+<span class="sourceLineNo">128</span><a id="line.128">    pw.close();</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">  }</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">  /**</a>
+<span class="sourceLineNo">133</span><a id="line.133">   * Inner class used only by the dump method.  It is used to sort</a>
+<span class="sourceLineNo">134</span><a id="line.134">   * &lt;code&gt;Person&lt;/code&gt;s by their id.</a>
+<span class="sourceLineNo">135</span><a id="line.135">   */</a>
+<span class="sourceLineNo">136</span><a id="line.136">  class PersonSorter implements Comparator&lt;Person&gt; {</a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">    /**</a>
+<span class="sourceLineNo">139</span><a id="line.139">     * Compares two &lt;code&gt;Person&lt;/code&gt;s.  If the id of person one is less</a>
+<span class="sourceLineNo">140</span><a id="line.140">     * than the id of person two, then person one is less than person</a>
+<span class="sourceLineNo">141</span><a id="line.141">     * two.  If the id of person one is greater than the id of person</a>
+<span class="sourceLineNo">142</span><a id="line.142">     * two, then person one greater than person two.  If the id of</a>
+<span class="sourceLineNo">143</span><a id="line.143">     * person one is equal to the id of person two, then the two</a>
+<span class="sourceLineNo">144</span><a id="line.144">     * persons are equal.</a>
+<span class="sourceLineNo">145</span><a id="line.145">     */</a>
+<span class="sourceLineNo">146</span><a id="line.146">    public int compare(Person p1, Person p2) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">      return p1.getId() - p2.getId();</a>
+<span class="sourceLineNo">148</span><a id="line.148">    }</a>
+<span class="sourceLineNo">149</span><a id="line.149"></a>
+<span class="sourceLineNo">150</span><a id="line.150">    /**</a>
+<span class="sourceLineNo">151</span><a id="line.151">     * Compares one &lt;code&gt;PersonSorter&lt;/code&gt; to another.  All</a>
+<span class="sourceLineNo">152</span><a id="line.152">     * &lt;code&gt;PersonSorter&lt;/code&gt;s are the same.</a>
+<span class="sourceLineNo">153</span><a id="line.153">     */</a>
+<span class="sourceLineNo">154</span><a id="line.154">    public boolean equals(Object o) {</a>
+<span class="sourceLineNo">155</span><a id="line.155">      if (o instanceof PersonSorter) {</a>
+<span class="sourceLineNo">156</span><a id="line.156">        return(true);</a>
+<span class="sourceLineNo">157</span><a id="line.157"></a>
+<span class="sourceLineNo">158</span><a id="line.158">      } else {</a>
+<span class="sourceLineNo">159</span><a id="line.159">        return(false);</a>
+<span class="sourceLineNo">160</span><a id="line.160">      }</a>
+<span class="sourceLineNo">161</span><a id="line.161">    }</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">  }</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">  /**</a>
+<span class="sourceLineNo">166</span><a id="line.166">   * Test program.  Create a simple family tree and print it to the</a>
+<span class="sourceLineNo">167</span><a id="line.167">   * console.</a>
+<span class="sourceLineNo">168</span><a id="line.168">   */</a>
+<span class="sourceLineNo">169</span><a id="line.169">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">170</span><a id="line.170">    // Make some people</a>
+<span class="sourceLineNo">171</span><a id="line.171">    Person me = PersonMain.me();</a>
+<span class="sourceLineNo">172</span><a id="line.172">    Person mom = PersonMain.mom(me);</a>
+<span class="sourceLineNo">173</span><a id="line.173">    Person dad = PersonMain.dad(me);</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">    me.setMother(mom);</a>
+<span class="sourceLineNo">176</span><a id="line.176">    me.setFather(dad);</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">    Marriage marriage = new Marriage(dad, mom);</a>
+<span class="sourceLineNo">179</span><a id="line.179">    marriage.setLocation("Durham, NH");</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">    try {</a>
+<span class="sourceLineNo">182</span><a id="line.182">      DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);</a>
+<span class="sourceLineNo">183</span><a id="line.183">      marriage.setDate(df.parse("Jul 12, 1969"));</a>
+<span class="sourceLineNo">184</span><a id="line.184"></a>
+<span class="sourceLineNo">185</span><a id="line.185">    } catch (ParseException ex) {</a>
+<span class="sourceLineNo">186</span><a id="line.186">      System.out.println("** Malformed marriage date?");</a>
+<span class="sourceLineNo">187</span><a id="line.187">      System.exit(1);</a>
+<span class="sourceLineNo">188</span><a id="line.188">    }</a>
+<span class="sourceLineNo">189</span><a id="line.189"></a>
+<span class="sourceLineNo">190</span><a id="line.190">    mom.addMarriage(marriage);</a>
+<span class="sourceLineNo">191</span><a id="line.191">    dad.addMarriage(marriage);</a>
+<span class="sourceLineNo">192</span><a id="line.192"></a>
+<span class="sourceLineNo">193</span><a id="line.193">    // Create a family tree.  Add people in an interesting order.</a>
+<span class="sourceLineNo">194</span><a id="line.194">    FamilyTree tree = new FamilyTree();</a>
+<span class="sourceLineNo">195</span><a id="line.195">    tree.addPerson(dad);</a>
+<span class="sourceLineNo">196</span><a id="line.196">    tree.addPerson(mom);</a>
+<span class="sourceLineNo">197</span><a id="line.197">    tree.addPerson(me);</a>
+<span class="sourceLineNo">198</span><a id="line.198"></a>
+<span class="sourceLineNo">199</span><a id="line.199">    // Pretty print the tree to the console</a>
+<span class="sourceLineNo">200</span><a id="line.200">    PrintWriter out = new PrintWriter(System.out, true);</a>
+<span class="sourceLineNo">201</span><a id="line.201">    PrettyPrinter pretty = new PrettyPrinter(out);</a>
+<span class="sourceLineNo">202</span><a id="line.202">    pretty.dump(tree);</a>
+<span class="sourceLineNo">203</span><a id="line.203">  }</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

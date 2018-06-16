@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.di;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import javax.swing.table.AbstractTableModel;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.text.NumberFormat;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Iterator;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Set;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * A swing table model that lists the contents of a {@link BookInventory}</a>
+<span class="sourceLineNo">010</span><a id="line.10"> */</a>
+<span class="sourceLineNo">011</span><a id="line.11">public class BookInventoryTableModel extends AbstractTableModel</a>
+<span class="sourceLineNo">012</span><a id="line.12">{</a>
+<span class="sourceLineNo">013</span><a id="line.13">    private static final int AUTHOR_COLUMN = 0;</a>
+<span class="sourceLineNo">014</span><a id="line.14">    private static final int TITLE_COLUMN = 1;</a>
+<span class="sourceLineNo">015</span><a id="line.15">    private static final int PRICE_COLUMN = 2;</a>
+<span class="sourceLineNo">016</span><a id="line.16">    private static final int QUANTITY_COLUMN = 3;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">    protected final BookInventory inventory;</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">    public BookInventoryTableModel( BookInventory inventory )</a>
+<span class="sourceLineNo">022</span><a id="line.22">    {</a>
+<span class="sourceLineNo">023</span><a id="line.23">        this.inventory = inventory;</a>
+<span class="sourceLineNo">024</span><a id="line.24">    }</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">    public int getRowCount()</a>
+<span class="sourceLineNo">027</span><a id="line.27">    {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        return inventory.getBooks().size();</a>
+<span class="sourceLineNo">029</span><a id="line.29">    }</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">    public int getColumnCount()</a>
+<span class="sourceLineNo">032</span><a id="line.32">    {</a>
+<span class="sourceLineNo">033</span><a id="line.33">        return 4;</a>
+<span class="sourceLineNo">034</span><a id="line.34">    }</a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
+<span class="sourceLineNo">036</span><a id="line.36">    @Override</a>
+<span class="sourceLineNo">037</span><a id="line.37">    public String getColumnName( int column )</a>
+<span class="sourceLineNo">038</span><a id="line.38">    {</a>
+<span class="sourceLineNo">039</span><a id="line.39">        switch(column) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">            case AUTHOR_COLUMN:</a>
+<span class="sourceLineNo">041</span><a id="line.41">                return "Author";</a>
+<span class="sourceLineNo">042</span><a id="line.42">            case TITLE_COLUMN:</a>
+<span class="sourceLineNo">043</span><a id="line.43">                return "Title";</a>
+<span class="sourceLineNo">044</span><a id="line.44">            case PRICE_COLUMN:</a>
+<span class="sourceLineNo">045</span><a id="line.45">                return "Price";</a>
+<span class="sourceLineNo">046</span><a id="line.46">            case QUANTITY_COLUMN:</a>
+<span class="sourceLineNo">047</span><a id="line.47">                return "Quantity";</a>
+<span class="sourceLineNo">048</span><a id="line.48">            default:</a>
+<span class="sourceLineNo">049</span><a id="line.49">                throw new IllegalArgumentException( "Unknown column: " + column );</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">    }</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">    public Object getValueAt( int row, int column )</a>
+<span class="sourceLineNo">054</span><a id="line.54">    {</a>
+<span class="sourceLineNo">055</span><a id="line.55">        Book book = getBook( row );</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">        switch(column) {</a>
+<span class="sourceLineNo">058</span><a id="line.58">            case AUTHOR_COLUMN:</a>
+<span class="sourceLineNo">059</span><a id="line.59">                return book.getAuthor();</a>
+<span class="sourceLineNo">060</span><a id="line.60">            case TITLE_COLUMN:</a>
+<span class="sourceLineNo">061</span><a id="line.61">                return book.getTitle();</a>
+<span class="sourceLineNo">062</span><a id="line.62">            case PRICE_COLUMN:</a>
+<span class="sourceLineNo">063</span><a id="line.63">                return NumberFormat.getCurrencyInstance().format( book.getPrice() );</a>
+<span class="sourceLineNo">064</span><a id="line.64">            case QUANTITY_COLUMN:</a>
+<span class="sourceLineNo">065</span><a id="line.65">                return inventory.getCopies( book );</a>
+<span class="sourceLineNo">066</span><a id="line.66">            default:</a>
+<span class="sourceLineNo">067</span><a id="line.67">                throw new IllegalArgumentException( "Unknown column: " + column );</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
+<span class="sourceLineNo">069</span><a id="line.69">    }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">    public Book getBook( int i )</a>
+<span class="sourceLineNo">072</span><a id="line.72">    {</a>
+<span class="sourceLineNo">073</span><a id="line.73">        Set&lt;Book&gt; books = inventory.getBooks();</a>
+<span class="sourceLineNo">074</span><a id="line.74">        assert i &lt; books.size();</a>
+<span class="sourceLineNo">075</span><a id="line.75">        Iterator&lt;Book&gt; iter = books.iterator();</a>
+<span class="sourceLineNo">076</span><a id="line.76">        for (int j = 0; j &lt; i; j++) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">            iter.next();</a>
+<span class="sourceLineNo">078</span><a id="line.78">        }</a>
+<span class="sourceLineNo">079</span><a id="line.79">        return iter.next();</a>
+<span class="sourceLineNo">080</span><a id="line.80">    }</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">    public Book decrementInventry( int row )</a>
+<span class="sourceLineNo">083</span><a id="line.83">    {</a>
+<span class="sourceLineNo">084</span><a id="line.84">        Book book = getBook( row );</a>
+<span class="sourceLineNo">085</span><a id="line.85">        inventory.remove( book );</a>
+<span class="sourceLineNo">086</span><a id="line.86">        fireTableCellUpdated( row, QUANTITY_COLUMN );</a>
+<span class="sourceLineNo">087</span><a id="line.87">        return book;</a>
+<span class="sourceLineNo">088</span><a id="line.88">    }</a>
+<span class="sourceLineNo">089</span><a id="line.89">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

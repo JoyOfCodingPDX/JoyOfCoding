@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.grader;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import edu.pdx.cs410J.ParserException;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.io.*;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Comparator;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Iterator;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.SortedSet;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.TreeSet;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">/**</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * This program generates a .mailrc file containing a mail alias for</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * every student in a given grade book.</a>
+<span class="sourceLineNo">014</span><a id="line.14"> */</a>
+<span class="sourceLineNo">015</span><a id="line.15">public class GenerateMailrc {</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">  /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">   * Generates a mailrc file for the students in a given grade book.</a>
+<span class="sourceLineNo">019</span><a id="line.19">   */</a>
+<span class="sourceLineNo">020</span><a id="line.20">  static void generateMailrc(GradeBook book, PrintWriter mailrc) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">    mailrc.println("# Mail aliases for " + book.getClassName());</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    // Sort all of the students by their id</a>
+<span class="sourceLineNo">024</span><a id="line.24">    SortedSet&lt;Student&gt; sorted = new TreeSet&lt;Student&gt;(new Comparator&lt;Student&gt;() {</a>
+<span class="sourceLineNo">025</span><a id="line.25">      public int compare(Student o1, Student o2) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        String id1 = o1.getId();</a>
+<span class="sourceLineNo">027</span><a id="line.27">        String id2 = o2.getId();</a>
+<span class="sourceLineNo">028</span><a id="line.28">        return id1.compareTo(id2);</a>
+<span class="sourceLineNo">029</span><a id="line.29">      }</a>
+<span class="sourceLineNo">030</span><a id="line.30">    });</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">    book.forEachStudent(sorted::add);</a>
+<span class="sourceLineNo">033</span><a id="line.33"></a>
+<span class="sourceLineNo">034</span><a id="line.34">    Iterator iter = sorted.iterator();</a>
+<span class="sourceLineNo">035</span><a id="line.35">    while (iter.hasNext()) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">      // alias id "email (firstName LastName)"</a>
+<span class="sourceLineNo">037</span><a id="line.37">      Student student = (Student) iter.next();</a>
+<span class="sourceLineNo">038</span><a id="line.38">      String email = student.getEmail();</a>
+<span class="sourceLineNo">039</span><a id="line.39">      if (email != null) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">        mailrc.print("alias " + student.getId() + " \"");</a>
+<span class="sourceLineNo">041</span><a id="line.41">        StringBuffer name = new StringBuffer();</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        if (student.getNickName() != null) {</a>
+<span class="sourceLineNo">044</span><a id="line.44">          name.append(student.getNickName());</a>
+<span class="sourceLineNo">045</span><a id="line.45">          name.append(" ");</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">        } else if (student.getFirstName() != null) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">          name.append(student.getFirstName());</a>
+<span class="sourceLineNo">049</span><a id="line.49">          name.append(" ");</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">        if(student.getLastName() != null) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">          name.append(student.getLastName());</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        if(!name.toString().equals("")) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">          mailrc.print(name.toString().trim() + " &lt;" + email + "&gt;");</a>
+<span class="sourceLineNo">056</span><a id="line.56">        }</a>
+<span class="sourceLineNo">057</span><a id="line.57">        mailrc.println("\"");</a>
+<span class="sourceLineNo">058</span><a id="line.58">      }</a>
+<span class="sourceLineNo">059</span><a id="line.59">    }</a>
+<span class="sourceLineNo">060</span><a id="line.60">  }</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">  /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">   * Displays usage information for this program</a>
+<span class="sourceLineNo">064</span><a id="line.64">   */</a>
+<span class="sourceLineNo">065</span><a id="line.65">  private static void usage() {</a>
+<span class="sourceLineNo">066</span><a id="line.66">    PrintStream err = System.err;</a>
+<span class="sourceLineNo">067</span><a id="line.67">    err.println("usage: java GenerateMailrc gradeBookFile mailrcFile");</a>
+<span class="sourceLineNo">068</span><a id="line.68">    System.exit(1);</a>
+<span class="sourceLineNo">069</span><a id="line.69">  }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  /**</a>
+<span class="sourceLineNo">072</span><a id="line.72">   * Main program.</a>
+<span class="sourceLineNo">073</span><a id="line.73">   */</a>
+<span class="sourceLineNo">074</span><a id="line.74">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">    if (args.length &lt; 2) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">      System.err.println("** Missing arguments");</a>
+<span class="sourceLineNo">077</span><a id="line.77">      usage();</a>
+<span class="sourceLineNo">078</span><a id="line.78">    }</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    String bookName = args[0];</a>
+<span class="sourceLineNo">081</span><a id="line.81">    String mailrcName = args[1];</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
+<span class="sourceLineNo">083</span><a id="line.83">    GradeBook book = null;</a>
+<span class="sourceLineNo">084</span><a id="line.84">    PrintWriter mailrc = null;</a>
+<span class="sourceLineNo">085</span><a id="line.85">    try {</a>
+<span class="sourceLineNo">086</span><a id="line.86">      XmlGradeBookParser parser = new XmlGradeBookParser(bookName);</a>
+<span class="sourceLineNo">087</span><a id="line.87">      book = parser.parse();</a>
+<span class="sourceLineNo">088</span><a id="line.88">      mailrc = new PrintWriter(new FileWriter(mailrcName), true);</a>
+<span class="sourceLineNo">089</span><a id="line.89"></a>
+<span class="sourceLineNo">090</span><a id="line.90">    } catch (FileNotFoundException ex) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">      System.err.println("** Could not find file: " + ex.getMessage());</a>
+<span class="sourceLineNo">092</span><a id="line.92">      System.exit(1);</a>
+<span class="sourceLineNo">093</span><a id="line.93">      </a>
+<span class="sourceLineNo">094</span><a id="line.94">    } catch (IOException ex) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">      System.err.println("** IOException during parsing: " + ex.getMessage());</a>
+<span class="sourceLineNo">096</span><a id="line.96">      System.exit(1);</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">    } catch (ParserException ex) {</a>
+<span class="sourceLineNo">099</span><a id="line.99">      System.err.println("** Error during parsing: " + ex);</a>
+<span class="sourceLineNo">100</span><a id="line.100">      System.exit(1);</a>
+<span class="sourceLineNo">101</span><a id="line.101">    }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">    generateMailrc(book, mailrc);</a>
+<span class="sourceLineNo">104</span><a id="line.104">  }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

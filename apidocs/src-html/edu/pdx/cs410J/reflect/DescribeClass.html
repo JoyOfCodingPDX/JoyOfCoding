@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.reflect;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.*;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.lang.reflect.*;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">/**</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * This program uses Java reflection to describe a class, its methods,</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * and fields.</a>
+<span class="sourceLineNo">009</span><a id="line.9"> */</a>
+<span class="sourceLineNo">010</span><a id="line.10">public class DescribeClass {</a>
+<span class="sourceLineNo">011</span><a id="line.11">  private static PrintStream out = System.out;</a>
+<span class="sourceLineNo">012</span><a id="line.12">  private static PrintStream err = System.err;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">  /**</a>
+<span class="sourceLineNo">015</span><a id="line.15">   * Prints a description of a field</a>
+<span class="sourceLineNo">016</span><a id="line.16">   */</a>
+<span class="sourceLineNo">017</span><a id="line.17">  private static void describe(Field f) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">    out.print("  ");</a>
+<span class="sourceLineNo">019</span><a id="line.19">    out.print(Modifier.toString(f.getModifiers()));</a>
+<span class="sourceLineNo">020</span><a id="line.20">    out.print(" ");</a>
+<span class="sourceLineNo">021</span><a id="line.21">    out.print(f.getType().getName());</a>
+<span class="sourceLineNo">022</span><a id="line.22">    out.print(" ");</a>
+<span class="sourceLineNo">023</span><a id="line.23">    out.println(f.getName());</a>
+<span class="sourceLineNo">024</span><a id="line.24">  }</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">  /**</a>
+<span class="sourceLineNo">027</span><a id="line.27">   * Prints a description of a method</a>
+<span class="sourceLineNo">028</span><a id="line.28">   */</a>
+<span class="sourceLineNo">029</span><a id="line.29">  private static void describe(Method m) {</a>
+<span class="sourceLineNo">030</span><a id="line.30">    out.print("  ");</a>
+<span class="sourceLineNo">031</span><a id="line.31">    out.print(Modifier.toString(m.getModifiers()));</a>
+<span class="sourceLineNo">032</span><a id="line.32">    out.print(" ");</a>
+<span class="sourceLineNo">033</span><a id="line.33">    out.print(m.getReturnType().getName());</a>
+<span class="sourceLineNo">034</span><a id="line.34">    out.print(" ");</a>
+<span class="sourceLineNo">035</span><a id="line.35">    out.print(m.getName());</a>
+<span class="sourceLineNo">036</span><a id="line.36">    out.print("(");</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">    Class[] params = m.getParameterTypes();</a>
+<span class="sourceLineNo">039</span><a id="line.39">    for (int i = 0; i &lt; params.length; i++) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">      out.print(params[i].getName());</a>
+<span class="sourceLineNo">041</span><a id="line.41">      if (i &lt; params.length - 1)</a>
+<span class="sourceLineNo">042</span><a id="line.42">        out.print(", ");</a>
+<span class="sourceLineNo">043</span><a id="line.43">    }</a>
+<span class="sourceLineNo">044</span><a id="line.44">    out.println(")");</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    Class[] exs = m.getExceptionTypes();</a>
+<span class="sourceLineNo">047</span><a id="line.47">    if (exs.length &gt; 0) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">      out.print("    throws ");</a>
+<span class="sourceLineNo">049</span><a id="line.49">      for (int i = 0; i &lt; exs.length; i++) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">        out.print(exs[i].getName());</a>
+<span class="sourceLineNo">051</span><a id="line.51">        if (i &lt; exs.length - 1)</a>
+<span class="sourceLineNo">052</span><a id="line.52">          out.print(", ");</a>
+<span class="sourceLineNo">053</span><a id="line.53">      }</a>
+<span class="sourceLineNo">054</span><a id="line.54">      out.println("");</a>
+<span class="sourceLineNo">055</span><a id="line.55">    }</a>
+<span class="sourceLineNo">056</span><a id="line.56">  }</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">  /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">   * Prints a description of a class</a>
+<span class="sourceLineNo">060</span><a id="line.60">   */</a>
+<span class="sourceLineNo">061</span><a id="line.61">  private static void describe(Class c) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">    out.print(Modifier.toString(c.getModifiers()));</a>
+<span class="sourceLineNo">063</span><a id="line.63">    out.print(" ");</a>
+<span class="sourceLineNo">064</span><a id="line.64">    out.print((c.isInterface() ? "interface " : "class "));</a>
+<span class="sourceLineNo">065</span><a id="line.65">    out.println(c.getName());</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">    Class superclass = c.getSuperclass();</a>
+<span class="sourceLineNo">068</span><a id="line.68">    if (superclass != null) {</a>
+<span class="sourceLineNo">069</span><a id="line.69">      out.print("  extends ");</a>
+<span class="sourceLineNo">070</span><a id="line.70">      out.println(superclass.getName());</a>
+<span class="sourceLineNo">071</span><a id="line.71">    }</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">    Class[] ifaces = c.getInterfaces();</a>
+<span class="sourceLineNo">074</span><a id="line.74">    if (ifaces.length &gt; 0) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">      out.print("  implements ");</a>
+<span class="sourceLineNo">076</span><a id="line.76">      for (int i = 0; i &lt; ifaces.length; i++) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">        out.print(ifaces[i].getName());</a>
+<span class="sourceLineNo">078</span><a id="line.78">        if (i &lt; ifaces.length - 1)</a>
+<span class="sourceLineNo">079</span><a id="line.79">          out.print(", ");</a>
+<span class="sourceLineNo">080</span><a id="line.80">      }</a>
+<span class="sourceLineNo">081</span><a id="line.81">      out.println("");</a>
+<span class="sourceLineNo">082</span><a id="line.82">    }</a>
+<span class="sourceLineNo">083</span><a id="line.83"></a>
+<span class="sourceLineNo">084</span><a id="line.84">    out.println("{");</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    Field[] fields = c.getDeclaredFields();</a>
+<span class="sourceLineNo">087</span><a id="line.87">    for (int i = 0; i &lt; fields.length; i++) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">      describe(fields[i]);</a>
+<span class="sourceLineNo">089</span><a id="line.89">    }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">    out.println("");</a>
+<span class="sourceLineNo">092</span><a id="line.92"></a>
+<span class="sourceLineNo">093</span><a id="line.93">    Method[] methods = c.getDeclaredMethods();</a>
+<span class="sourceLineNo">094</span><a id="line.94">    for (int i = 0; i &lt; methods.length; i++) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">      describe(methods[i]);</a>
+<span class="sourceLineNo">096</span><a id="line.96">    }</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">    out.println("}");</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">  }</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">  /**</a>
+<span class="sourceLineNo">103</span><a id="line.103">   * Main program that reads the name of a class from the command</a>
+<span class="sourceLineNo">104</span><a id="line.104">   * line, loads it, and prints out a description of it.</a>
+<span class="sourceLineNo">105</span><a id="line.105">   */</a>
+<span class="sourceLineNo">106</span><a id="line.106">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">    String className = args[0];</a>
+<span class="sourceLineNo">108</span><a id="line.108">    try {</a>
+<span class="sourceLineNo">109</span><a id="line.109">      Class c = Class.forName(className);</a>
+<span class="sourceLineNo">110</span><a id="line.110">      describe(c);</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">    } catch (ClassNotFoundException ex) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">      err.println("Could not load " + className);</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115">  }</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

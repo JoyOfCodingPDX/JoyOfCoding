@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.lang;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * This class demonstrate the &lt;code&gt;instanceof&lt;/code&gt; operator and the</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * concept of interfaces using the animal hierarchy.  It uses the</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * &lt;code&gt;instanceof&lt;/code&gt; operator to determine whether or not an</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * animal implements the &lt;code&gt;Flies&lt;/code&gt; interface.</a>
+<span class="sourceLineNo">008</span><a id="line.8"> */</a>
+<span class="sourceLineNo">009</span><a id="line.9">public class DoIFly {</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">  /**</a>
+<span class="sourceLineNo">012</span><a id="line.12">   * Prints out whether or not an animal can fly.  It checks the</a>
+<span class="sourceLineNo">013</span><a id="line.13">   * run-time type of the &lt;code&gt;Animal&lt;/code&gt;.  If the animal</a>
+<span class="sourceLineNo">014</span><a id="line.14">   * implements the &lt;code&gt;Flies&lt;/code&gt; interface, then the animal can</a>
+<span class="sourceLineNo">015</span><a id="line.15">   * fly.</a>
+<span class="sourceLineNo">016</span><a id="line.16">   */</a>
+<span class="sourceLineNo">017</span><a id="line.17">  private static void doIFly(Animal animal) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">    boolean iFly = (animal instanceof Flies);</a>
+<span class="sourceLineNo">019</span><a id="line.19">    System.out.print("Does " + animal.getName() + " fly?  ");</a>
+<span class="sourceLineNo">020</span><a id="line.20">    System.out.println((iFly ? "Yes." : "No."));</a>
+<span class="sourceLineNo">021</span><a id="line.21">  }</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">  /**</a>
+<span class="sourceLineNo">024</span><a id="line.24">   * This main program creates several animals and then prints out</a>
+<span class="sourceLineNo">025</span><a id="line.25">   * whether or not they can fly.</a>
+<span class="sourceLineNo">026</span><a id="line.26">   */</a>
+<span class="sourceLineNo">027</span><a id="line.27">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">028</span><a id="line.28">    doIFly(new Cow("Bessy"));</a>
+<span class="sourceLineNo">029</span><a id="line.29">    doIFly(new Bee("Buzz"));</a>
+<span class="sourceLineNo">030</span><a id="line.30">    doIFly(new Turkey("Tom"));</a>
+<span class="sourceLineNo">031</span><a id="line.31">  }</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

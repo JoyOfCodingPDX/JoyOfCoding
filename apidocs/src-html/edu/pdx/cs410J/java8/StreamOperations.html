@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.java8;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import edu.pdx.cs410J.rmi.Movie;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.*;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.function.*;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.stream.Collectors;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.stream.IntStream;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">public class StreamOperations {</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">  public void printElementsInStream() {</a>
+<span class="sourceLineNo">014</span><a id="line.14">    Stream&lt;String&gt; stream = Arrays.asList("A", "B", "C").stream();</a>
+<span class="sourceLineNo">015</span><a id="line.15">    stream.forEach(new Consumer&lt;String&gt;() {</a>
+<span class="sourceLineNo">016</span><a id="line.16">      @Override</a>
+<span class="sourceLineNo">017</span><a id="line.17">      public void accept(String s) {</a>
+<span class="sourceLineNo">018</span><a id="line.18">        System.out.println(s);</a>
+<span class="sourceLineNo">019</span><a id="line.19">      }</a>
+<span class="sourceLineNo">020</span><a id="line.20">    });</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">    stream.forEach(System.out::println);</a>
+<span class="sourceLineNo">023</span><a id="line.23">  }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  public void sumIntsUsingStream() {</a>
+<span class="sourceLineNo">026</span><a id="line.26">    int[] ints = {1, 2, 3};</a>
+<span class="sourceLineNo">027</span><a id="line.27">    IntStream stream = IntStream.of(ints);</a>
+<span class="sourceLineNo">028</span><a id="line.28">    long count = stream.count();</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">    stream = IntStream.of(ints);</a>
+<span class="sourceLineNo">031</span><a id="line.31">    long sum = stream.sum();</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">    stream = IntStream.of(ints);</a>
+<span class="sourceLineNo">034</span><a id="line.34">    IntSummaryStatistics stats = stream.summaryStatistics();</a>
+<span class="sourceLineNo">035</span><a id="line.35">  }</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">  public void findStringsWithMoreThanOneCharacter() {</a>
+<span class="sourceLineNo">038</span><a id="line.38">    Stream&lt;String&gt; strings = Stream.of("A", "BB", "C", "");</a>
+<span class="sourceLineNo">039</span><a id="line.39">    Stream&lt;String&gt; moreThanTwoChars = strings.filter(new Predicate&lt;String&gt;() {</a>
+<span class="sourceLineNo">040</span><a id="line.40">      @Override</a>
+<span class="sourceLineNo">041</span><a id="line.41">      public boolean test(String s) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">        return s.length() &gt; 1;</a>
+<span class="sourceLineNo">043</span><a id="line.43">      }</a>
+<span class="sourceLineNo">044</span><a id="line.44">    });</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    moreThanTwoChars = strings.filter(s -&gt; s.length() &gt; 1);</a>
+<span class="sourceLineNo">047</span><a id="line.47">  }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">  public void parseListOfStrings() {</a>
+<span class="sourceLineNo">050</span><a id="line.50">    Stream&lt;String&gt; strings = Stream.of("1", "2", "3");</a>
+<span class="sourceLineNo">051</span><a id="line.51">    Stream&lt;Integer&gt; ints = strings.map(new Function&lt;String, Integer&gt;() {</a>
+<span class="sourceLineNo">052</span><a id="line.52">      @Override</a>
+<span class="sourceLineNo">053</span><a id="line.53">      public Integer apply(String s) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">        return Integer.parseInt(s);</a>
+<span class="sourceLineNo">055</span><a id="line.55">      }</a>
+<span class="sourceLineNo">056</span><a id="line.56">    });</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">    IntStream stream = strings.mapToInt(Integer::parseInt);</a>
+<span class="sourceLineNo">059</span><a id="line.59">  }</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">  public String getLongestString(Stream&lt;String&gt; strings) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">    Optional&lt;String&gt; longest = strings.max((s1, s2) -&gt; s1.length() &gt; s2.length() ? 1 : 0);</a>
+<span class="sourceLineNo">063</span><a id="line.63">    return longest.orElse("");</a>
+<span class="sourceLineNo">064</span><a id="line.64">  }</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">  public Movie findMovieWithId(long id, Stream&lt;Movie&gt; movies) {</a>
+<span class="sourceLineNo">067</span><a id="line.67">    Optional&lt;Movie&gt; movie = movies.filter(m -&gt; m.getId() == id).findAny();</a>
+<span class="sourceLineNo">068</span><a id="line.68">    return movie.orElseThrow(() -&gt; new IllegalArgumentException("Can't find movie"));</a>
+<span class="sourceLineNo">069</span><a id="line.69">  }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  public long countMoviesWithActor(long actorId, Stream&lt;Movie&gt; movies) {</a>
+<span class="sourceLineNo">072</span><a id="line.72">    return movies.parallel()</a>
+<span class="sourceLineNo">073</span><a id="line.73">      .filter(m -&gt; m.getActors().contains(actorId))</a>
+<span class="sourceLineNo">074</span><a id="line.74">      .count();</a>
+<span class="sourceLineNo">075</span><a id="line.75">  }</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">  public List&lt;Movie&gt; getMoviesWithActorUnsafe(long actorId, Stream&lt;Movie&gt; allMovies) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">    List&lt;Movie&gt; movies = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">079</span><a id="line.79">    allMovies.parallel()</a>
+<span class="sourceLineNo">080</span><a id="line.80">      .filter(m -&gt; m.getActors().contains(actorId))</a>
+<span class="sourceLineNo">081</span><a id="line.81">      .forEach(m -&gt; movies.add(m));</a>
+<span class="sourceLineNo">082</span><a id="line.82">    return movies;</a>
+<span class="sourceLineNo">083</span><a id="line.83">  }</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">  public List&lt;Movie&gt; getMoviesWithActorSafe(long actorId, Stream&lt;Movie&gt; allMovies) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">    return allMovies.parallel()</a>
+<span class="sourceLineNo">087</span><a id="line.87">      .filter(m -&gt; m.getActors().contains(actorId))</a>
+<span class="sourceLineNo">088</span><a id="line.88">      .collect(Collectors.toList());</a>
+<span class="sourceLineNo">089</span><a id="line.89">  }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">  public int countAwardsForMoviesWithActor(long actorId, Stream&lt;Movie&gt; allMovies) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">    return allMovies.filter(m -&gt; m.getActors().contains(actorId))</a>
+<span class="sourceLineNo">093</span><a id="line.93">      .map(m -&gt; m.getNumberOfAwards())</a>
+<span class="sourceLineNo">094</span><a id="line.94">      .reduce(0, new BinaryOperator&lt;Integer&gt;() {</a>
+<span class="sourceLineNo">095</span><a id="line.95">        @Override</a>
+<span class="sourceLineNo">096</span><a id="line.96">        public Integer apply(Integer i1, Integer i2) {</a>
+<span class="sourceLineNo">097</span><a id="line.97">          return i1 + i2;</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">      });</a>
+<span class="sourceLineNo">100</span><a id="line.100">  }</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">  public String concatenateStrings(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">    return stream.reduce("", (s1, s2) -&gt; s1 + s2);</a>
+<span class="sourceLineNo">104</span><a id="line.104">  }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">  public String concatenateStrings2(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">    Supplier&lt;StringBuilder&gt; supplier = () -&gt; new StringBuilder();</a>
+<span class="sourceLineNo">108</span><a id="line.108">    BiConsumer&lt;StringBuilder, StringBuilder&gt; combiner = (sb1, sb2) -&gt; sb1.append(sb2);</a>
+<span class="sourceLineNo">109</span><a id="line.109">    BiConsumer&lt;StringBuilder, String&gt; accumulator = (sb, s) -&gt; sb.append(s);</a>
+<span class="sourceLineNo">110</span><a id="line.110">    StringBuilder sb = stream.collect(supplier, accumulator, combiner);</a>
+<span class="sourceLineNo">111</span><a id="line.111">    return sb.toString();</a>
+<span class="sourceLineNo">112</span><a id="line.112">  }</a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">  public String concatenateStrings3(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">    return stream.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();</a>
+<span class="sourceLineNo">116</span><a id="line.116">  }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">  public String concatenateStrings4(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">    return stream.collect(Collectors.joining());</a>
+<span class="sourceLineNo">120</span><a id="line.120">  }</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">  public SortedSet&lt;String&gt; getSortedStrings(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">    return stream.collect(Collectors.toCollection(TreeSet::new));</a>
+<span class="sourceLineNo">124</span><a id="line.124">  }</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">  public double getAverageStringLength(Stream&lt;String&gt; stream) {</a>
+<span class="sourceLineNo">127</span><a id="line.127">    return stream.collect(Collectors.averagingInt(s -&gt; s.length()));</a>
+<span class="sourceLineNo">128</span><a id="line.128">  }</a>
+<span class="sourceLineNo">129</span><a id="line.129">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
