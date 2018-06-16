@@ -61,6 +61,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <pmd.version>6.4.0</pmd.version>
+
+        <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
+        <wagon-ssh.version>3.0.0</wagon-ssh.version>
     </properties>
     <repositories>
       <repository>
@@ -378,11 +381,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
           <version>3.9.0</version>
           <dependencies>
@@ -447,6 +445,23 @@
             <detectLinks/>
             <additionalOptions>-html5 --add-modules java.xml.bind</additionalOptions>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+          <dependencies>
+            <dependency>
+              <groupId>net.trajano.wagon</groupId>
+              <artifactId>wagon-git</artifactId>
+              <version>${wagon-git.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>${wagon-ssh.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -563,9 +578,9 @@
       <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
     </repository>
     <site>
-      <id>whitlock-PSU</id>
-      <name>David Whitlock's PSU Web Site</name>
-      <url>scpexe://cs.pdx.edu/u/whitlock/public_html/site</url>
+      <id>gh-pages</id>
+      <name>GitHub Pages</name>
+      <url>git:ssh://git@github.com/DavidWhitlock/PortlandStateJava.git?gh-pages#</url>
     </site>
   </distributionManagement>
 </project>
