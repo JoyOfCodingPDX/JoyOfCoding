@@ -30,8 +30,8 @@ import java.util.stream.Stream;
  *
  * More information about the JavaMail API can be found at:
  *
- * <center><a href="http://java.sun.com/products/javamail">
- * http://java.sun.com/products/javamail</a></center>
+ * <a href="http://java.sun.com/products/javamail">
+ * http://java.sun.com/products/javamail</a>
  *
  * @author David Whitlock
  * @since Fall 2000 (Refactored to use fewer static methods in Spring 2006)

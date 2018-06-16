@@ -52,7 +52,40 @@ public class APIDocumentationDoclet implements Doclet {
 
   @Override
   public Set<? extends Option> getSupportedOptions() {
-    return new HashSet<>();
+    HashSet<Option> options = new HashSet<>();
+    options.add(new Option() {
+      @Override
+      public int getArgumentCount() {
+        return 0;
+      }
+
+      @Override
+      public String getDescription() {
+        return "Ignored option until HTML 5 is the default";
+      }
+
+      @Override
+      public Kind getKind() {
+        return Kind.OTHER;
+      }
+
+      @Override
+      public List<String> getNames() {
+        return List.of("-html5");
+      }
+
+      @Override
+      public String getParameters() {
+        return "";
+      }
+
+      @Override
+      public boolean process(String option, List<String> arguments) {
+        // Nothing to do
+        return true;
+      }
+    });
+    return options;
   }
 
   @Override
