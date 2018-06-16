@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhoneBillGwt.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Phone Bill GWT Application</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs410J.phonebillgwt.client</a> &gt; <span class="el_source">PhoneBillGwt.java</span></div><h1>PhoneBillGwt.java</h1><pre class="source lang-java linenums">package edu.pdx.cs410J.phonebillgwt.client;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.RootPanel;
+
+import java.util.Collection;
+
+/**
+ * A basic GWT class that makes sure that we can send an Phone Bill back from the server
+ */
+public class PhoneBillGwt implements EntryPoint {
+  private final Alerter alerter;
+
+  @VisibleForTesting
+  Button button;
+
+  public PhoneBillGwt() {
+<span class="nc" id="L25">    this(new Alerter() {</span>
+      @Override
+      public void alert(String message) {
+<span class="nc" id="L28">        Window.alert(message);</span>
+<span class="nc" id="L29">      }</span>
+    });
+<span class="nc" id="L31">  }</span>
+
+  @VisibleForTesting
+<span class="nc" id="L34">  PhoneBillGwt(Alerter alerter) {</span>
+<span class="nc" id="L35">    this.alerter = alerter;</span>
+
+<span class="nc" id="L37">    addWidgets();</span>
+<span class="nc" id="L38">  }</span>
+
+  private void addWidgets() {
+<span class="nc" id="L41">    button = new Button(&quot;Ping Server&quot;);</span>
+<span class="nc" id="L42">    button.addClickHandler(new ClickHandler() {</span>
+      @Override
+      public void onClick(ClickEvent clickEvent) {
+<span class="nc" id="L45">        PingServiceAsync async = GWT.create(PingService.class);</span>
+<span class="nc" id="L46">        async.ping(new AsyncCallback&lt;PhoneBill&gt;() {</span>
+
+          @Override
+          public void onFailure(Throwable ex) {
+<span class="nc" id="L50">            alerter.alert(ex.toString());</span>
+<span class="nc" id="L51">          }</span>
+
+          @Override
+          public void onSuccess(PhoneBill bill) {
+<span class="nc" id="L55">            StringBuilder sb = new StringBuilder(bill.toString());</span>
+<span class="nc" id="L56">            Collection&lt;PhoneCall&gt; calls = bill.getPhoneCalls();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            for (PhoneCall call : calls) {</span>
+<span class="nc" id="L58">              sb.append(call);</span>
+<span class="nc" id="L59">              sb.append(&quot;\n&quot;);</span>
+<span class="nc" id="L60">            }</span>
+<span class="nc" id="L61">            alerter.alert(sb.toString());</span>
+<span class="nc" id="L62">          }</span>
+        });
+<span class="nc" id="L64">      }</span>
+    });
+<span class="nc" id="L66">  }</span>
+
+  @Override
+  public void onModuleLoad() {
+<span class="nc" id="L70">    RootPanel rootPanel = RootPanel.get();</span>
+<span class="nc" id="L71">    rootPanel.add(button);</span>
+<span class="nc" id="L72">  }</span>
+
+  @VisibleForTesting
+  interface Alerter {
+    void alert(String message);
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

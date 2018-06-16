@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<script type="text/javascript">
+function show(elementName)
+{
+hp = document.getElementById(elementName);
+hp.style.visibility = "Visible";
+}
+function hide(elementName)
+{
+hp = document.getElementById(elementName);
+hp.style.visibility = "Hidden";
+}
+</script>
+<title>
+Compiler Metrics for Permutation 0
+</title>
+<style type="text/css" media="screen">
+@import url('goog.css');
+@import url('inlay.css');
+@import url('soyc.css');
+</style>
+</head>
+<body>
+<div class="g-doc">
+<div id="hd" class="g-section g-tpl-50-50 g-split">
+<div class="g-unit g-first">
+<p>
+<a href="index.html" id="gwt-logo" class="soyc-ir">
+<span>Google Web Toolkit</span>
+</a>
+</p>
+</div>
+<div class="g-unit">
+</div>
+</div>
+<div id="soyc-appbar-lrg">
+<div class="g-section g-tpl-75-25 g-split">
+<div class="g-unit g-first">
+<h1>Compiler Metrics for Permutation 0</h1>
+</div>
+<div class="g-unit"></div>
+</div>
+</div>
+<div id="bd">
+<h2>Build Time Metrics</h2>
+<div id="bd">
+<table class="soyc-table">
+<colgroup>
+<col id="soyc-buildTimePhase-col">
+<col id="soyc-buildTimeElapsed-col">
+</colgroup>
+<thead>
+<th>Phase</th>
+<th class="soyc-numerical-col-header">Elapsed Time</th>
+</thead>
+<tr>
+<td>
+Module Analysis
+</td>
+<td class="soyc-numerical-col">16.267 s
+</td>
+</tr>
+<tr>
+<td>
+Precompile (may include Module Analysis)
+</td>
+<td class="soyc-numerical-col">18.372 s
+</td>
+</tr>
+<tr>
+<td>
+Compile
+</td>
+<td class="soyc-numerical-col">29.895 s
+</td>
+</tr>
+</table>
+<p></p>
+<h2>Source/Type Metrics</h2>
+<table class="soyc-table">
+<colgroup>
+<col id="soyc-typeList-col">
+<col id="soyc-typeReferences-col">
+</colgroup>
+<thead>
+<th>Description</th>
+<th class="soyc-numerical-col-header">References</th>
+</thead>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-sources.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsSourceFiles');" onMouseOut="hide('compilerMetricsSourceFiles');">Source files</a>
+<div class="soyc-popup" id="compilerMetricsSourceFiles">
+<table>
+<tr><th><b>Source files</b></th></tr>
+<tr><td>All source files on the module source path.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+3,075
+</td>
+</tr>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-initialTypes-0.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsInitialTypes');" onMouseOut="hide('compilerMetricsInitialTypes');">Initial Type Oracle Types</a>
+<div class="soyc-popup" id="compilerMetricsInitialTypes">
+<table>
+<tr><th><b>Initial Type Oracle Types</b></th></tr>
+<tr><td>All types in the type oracle after compiling sources on the source path.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+3,783
+</td>
+</tr>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-finalTypes-0.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsFinalTypes');" onMouseOut="hide('compilerMetricsFinalTypes');">Final Type Oracle Types</a>
+<div class="soyc-popup" id="compilerMetricsFinalTypes">
+<table>
+<tr><th><b>Final Type Oracle Types</b></th></tr>
+<tr><td>All types in the type oracle after constructing the Java AST.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+3,824
+</td>
+</tr>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-generatedTypes-0.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsGeneratedTypes');" onMouseOut="hide('compilerMetricsGeneratedTypes');">GeneratedTypes</a>
+<div class="soyc-popup" id="compilerMetricsGeneratedTypes">
+<table>
+<tr><th><b>GeneratedTypes</b></th></tr>
+<tr><td>Types that were added to the type oracle while running generators.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+41
+</td>
+</tr>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-ast-0.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsAstTypes');" onMouseOut="hide('compilerMetricsAstTypes');">AST Referenced Types</a>
+<div class="soyc-popup" id="compilerMetricsAstTypes">
+<table>
+<tr><th><b>AST Referenced Types</b></th></tr>
+<tr><td>All types referenced by the Java AST after performing reachability analysis from the module EntryPoint.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+707
+</td>
+</tr>
+<tr>
+<td>
+<a 
+href="CompilerMetrics-unreferencedTypes-0.html"
+style="cursor:default;" onMouseOver="show('compilerMetricsUnreferenceTypes');" onMouseOut="hide('compilerMetricsUnreferenceTypes');">Unreferenced Types</a>
+<div class="soyc-popup" id="compilerMetricsUnreferenceTypes">
+<table>
+<tr><th><b>Unreferenced Types</b></th></tr>
+<tr><td>Types that were on the initial source path but never referenced in the Java AST.</td></tr>
+</table>
+</div>
+</td>
+<td class="soyc-numerical-col">
+3,538
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

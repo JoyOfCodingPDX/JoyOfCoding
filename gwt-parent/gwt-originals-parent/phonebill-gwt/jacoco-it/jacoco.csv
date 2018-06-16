@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneCall,20,3,0,0,6,1,6,1,6,1
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneBill,6,13,0,0,2,4,1,3,1,3
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneBillGwt.2.new AsyncCallback() {...},50,0,2,0,11,0,4,0,3,0
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneBillGwt.new ClickHandler() {...},17,0,0,0,4,0,2,0,2,0
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneBillGwt.new PhoneBillGwt.Alerter() {...},6,0,0,0,3,0,2,0,2,0
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.client,PhoneBillGwt,36,0,0,0,12,0,4,0,4,0
+Phone Bill GWT Application,edu.pdx.cs410J.phonebillgwt.server,PingServiceImpl,21,0,0,0,7,0,3,0,3,0
