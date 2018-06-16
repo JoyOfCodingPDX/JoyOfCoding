@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.rmi;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.junit.Test;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.rmi.RemoteException;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.Iterator;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.SortedSet;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import static org.hamcrest.CoreMatchers.nullValue;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import static org.hamcrest.MatcherAssert.assertThat;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import static org.junit.Assert.assertEquals;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import static org.junit.Assert.assertNotNull;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">/**</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Tests the behavior of the {@link MovieDatabase} class.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> */</a>
+<span class="sourceLineNo">017</span><a id="line.17">public class MovieDatabaseTest {</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">  private MovieDatabase getMovieDatabase() throws RemoteException {</a>
+<span class="sourceLineNo">020</span><a id="line.20">    return new MovieDatabaseImpl();</a>
+<span class="sourceLineNo">021</span><a id="line.21">  }</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">  @Test</a>
+<span class="sourceLineNo">024</span><a id="line.24">  public void testCreateMovie() throws RemoteException {</a>
+<span class="sourceLineNo">025</span><a id="line.25">    MovieDatabase db = getMovieDatabase();</a>
+<span class="sourceLineNo">026</span><a id="line.26">    String title = "Movie 1";</a>
+<span class="sourceLineNo">027</span><a id="line.27">    int year = 2008;</a>
+<span class="sourceLineNo">028</span><a id="line.28">    long id = db.createMovie(title, year);</a>
+<span class="sourceLineNo">029</span><a id="line.29">    Movie movie = db.getMovie(id);</a>
+<span class="sourceLineNo">030</span><a id="line.30">    assertNotNull(movie);</a>
+<span class="sourceLineNo">031</span><a id="line.31">    assertEquals(title, movie.getTitle());</a>
+<span class="sourceLineNo">032</span><a id="line.32">    assertEquals(year, movie.getYear());</a>
+<span class="sourceLineNo">033</span><a id="line.33">    assertEquals(0, db.getFilmography(99L).size());</a>
+<span class="sourceLineNo">034</span><a id="line.34">  }</a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
+<span class="sourceLineNo">036</span><a id="line.36">  @Test</a>
+<span class="sourceLineNo">037</span><a id="line.37">  public void testFilmography() throws RemoteException {</a>
+<span class="sourceLineNo">038</span><a id="line.38">    long bobId = 56l;</a>
+<span class="sourceLineNo">039</span><a id="line.39">    long billId = 57l;</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">    String title1 = "Bob's Movie 1";</a>
+<span class="sourceLineNo">042</span><a id="line.42">    int year1 = 2007;</a>
+<span class="sourceLineNo">043</span><a id="line.43">    String title2 = "Bob's Movie 2";</a>
+<span class="sourceLineNo">044</span><a id="line.44">    int year2 = 2008;</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    MovieDatabase db = getMovieDatabase();</a>
+<span class="sourceLineNo">047</span><a id="line.47">    long id1 = db.createMovie(title1, year1);</a>
+<span class="sourceLineNo">048</span><a id="line.48">    long id2 = db.createMovie(title2, year2);</a>
+<span class="sourceLineNo">049</span><a id="line.49">    db.noteCharacter(id1, "Joe", bobId);</a>
+<span class="sourceLineNo">050</span><a id="line.50">    db.noteCharacter(id2, "Frank", bobId);</a>
+<span class="sourceLineNo">051</span><a id="line.51">    db.noteCharacter(id2, "Henry", billId);</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">    assertEquals(0, db.getFilmography(78L).size());</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">    SortedSet&lt;Movie&gt; bobMovies = db.getFilmography(bobId);</a>
+<span class="sourceLineNo">056</span><a id="line.56">    assertEquals(2, bobMovies.size());</a>
+<span class="sourceLineNo">057</span><a id="line.57">    Iterator&lt;Movie&gt; bobIter = bobMovies.iterator();</a>
+<span class="sourceLineNo">058</span><a id="line.58">    Movie bobMovie1 = bobIter.next();</a>
+<span class="sourceLineNo">059</span><a id="line.59">    assertEquals(title1, bobMovie1.getTitle());</a>
+<span class="sourceLineNo">060</span><a id="line.60">    assertEquals(year1, bobMovie1.getYear());</a>
+<span class="sourceLineNo">061</span><a id="line.61">    Movie bobMovie2 = bobIter.next();</a>
+<span class="sourceLineNo">062</span><a id="line.62">    assertEquals(title2, bobMovie2.getTitle());</a>
+<span class="sourceLineNo">063</span><a id="line.63">    assertEquals(year2, bobMovie2.getYear());</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">    SortedSet&lt;Movie&gt; billMovies = db.getFilmography(billId);</a>
+<span class="sourceLineNo">066</span><a id="line.66">    assertEquals(1, billMovies.size());</a>
+<span class="sourceLineNo">067</span><a id="line.67">    Movie billMovie = billMovies.iterator().next();</a>
+<span class="sourceLineNo">068</span><a id="line.68">    assertEquals(title2, billMovie.getTitle());</a>
+<span class="sourceLineNo">069</span><a id="line.69">    assertEquals(year2, billMovie.getYear());</a>
+<span class="sourceLineNo">070</span><a id="line.70">  }</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">  @Test(expected = IllegalArgumentException.class)</a>
+<span class="sourceLineNo">073</span><a id="line.73">  public void deletingAnNonExistentMovieThrowsIllegalArgumentException() throws RemoteException {</a>
+<span class="sourceLineNo">074</span><a id="line.74">    MovieDatabase db = getMovieDatabase();</a>
+<span class="sourceLineNo">075</span><a id="line.75">    db.deleteMovie(-1);</a>
+<span class="sourceLineNo">076</span><a id="line.76">  }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">  @Test</a>
+<span class="sourceLineNo">079</span><a id="line.79">  public void testDeleteMovie() throws RemoteException {</a>
+<span class="sourceLineNo">080</span><a id="line.80">    MovieDatabase db = getMovieDatabase();</a>
+<span class="sourceLineNo">081</span><a id="line.81">    long movieId = db.createMovie("Movie 1", 2015);</a>
+<span class="sourceLineNo">082</span><a id="line.82">    db.deleteMovie(movieId);</a>
+<span class="sourceLineNo">083</span><a id="line.83">    assertThat(db.getMovie(movieId), nullValue());</a>
+<span class="sourceLineNo">084</span><a id="line.84">  }</a>
+<span class="sourceLineNo">085</span><a id="line.85">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
