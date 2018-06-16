@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"edu.pdx.cs410J.student","l":"StudentTest"}]
