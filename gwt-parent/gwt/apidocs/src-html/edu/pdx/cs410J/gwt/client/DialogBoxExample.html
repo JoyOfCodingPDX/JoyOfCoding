@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.gwt.client;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.google.gwt.user.client.ui.*;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.google.gwt.event.dom.client.ClickHandler;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.google.gwt.event.dom.client.ClickEvent;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Pops up a GWT {@link DialogBox}</a>
+<span class="sourceLineNo">009</span><a id="line.9"> */</a>
+<span class="sourceLineNo">010</span><a id="line.10">public class DialogBoxExample extends Example {</a>
+<span class="sourceLineNo">011</span><a id="line.11">  public DialogBoxExample() {</a>
+<span class="sourceLineNo">012</span><a id="line.12">    super("Dialog Box");</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">    Button autoHide = new Button("Auto-hide dialog");</a>
+<span class="sourceLineNo">015</span><a id="line.15">    autoHide.addClickHandler(new ClickHandler() {</a>
+<span class="sourceLineNo">016</span><a id="line.16">        public void onClick( ClickEvent clickEvent )</a>
+<span class="sourceLineNo">017</span><a id="line.17">        {</a>
+<span class="sourceLineNo">018</span><a id="line.18">            createDialogBox(true, false).show();</a>
+<span class="sourceLineNo">019</span><a id="line.19">        }</a>
+<span class="sourceLineNo">020</span><a id="line.20">    });</a>
+<span class="sourceLineNo">021</span><a id="line.21">    add(autoHide);</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    Button modal = new Button("Modal dialog");</a>
+<span class="sourceLineNo">024</span><a id="line.24">    modal.addClickHandler(new ClickHandler() {</a>
+<span class="sourceLineNo">025</span><a id="line.25">      public void onClick(ClickEvent event) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        createDialogBox(false, true).show();</a>
+<span class="sourceLineNo">027</span><a id="line.27">      }</a>
+<span class="sourceLineNo">028</span><a id="line.28">    });</a>
+<span class="sourceLineNo">029</span><a id="line.29">    add(modal);</a>
+<span class="sourceLineNo">030</span><a id="line.30">  }</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">  private DialogBox createDialogBox(boolean autoHide, boolean modal) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">    final DialogBox box = new DialogBox(autoHide, modal);</a>
+<span class="sourceLineNo">034</span><a id="line.34">    box.setText("Auto-hide dialog");</a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
+<span class="sourceLineNo">036</span><a id="line.36">    DockPanel panel = new DockPanel();</a>
+<span class="sourceLineNo">037</span><a id="line.37">    panel.add(new Label("Click outside me"), DockPanel.CENTER);</a>
+<span class="sourceLineNo">038</span><a id="line.38">    panel.add(new Button("Close", new ClickHandler() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">      public void onClick(ClickEvent event) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">        box.hide();</a>
+<span class="sourceLineNo">041</span><a id="line.41">      }</a>
+<span class="sourceLineNo">042</span><a id="line.42">    }), DockPanel.SOUTH);</a>
+<span class="sourceLineNo">043</span><a id="line.43">    box.setWidget(panel);</a>
+<span class="sourceLineNo">044</span><a id="line.44">    box.center();</a>
+<span class="sourceLineNo">045</span><a id="line.45">    return box;</a>
+<span class="sourceLineNo">046</span><a id="line.46">  }</a>
+<span class="sourceLineNo">047</span><a id="line.47">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
