@@ -439,7 +439,7 @@
               <link>http://download.oracle.com/javaee/7/api</link>
               <link>http://junit.org/junit4/javadoc/latest</link>
               <link>http://www.gwtproject.org/javadoc/latest</link>
-              <link>http://web.cecs.pdx.edu/~whitlock/docs</link>
+              <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
             </links>
             <detectJavaApiLink/>
             <detectLinks/>
@@ -577,12 +577,14 @@
             <id>non-aggregate</id>
             <reports>
               <report>javadoc</report>
+              <report>test-javadoc</report>
             </reports>
           </reportSet>
           <reportSet>
             <id>aggregate</id>
             <reports>
               <report>aggregate</report>
+              <report>test-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
