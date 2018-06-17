@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.family;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.junit.Assert;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import static org.junit.Assert.assertTrue;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import static org.junit.Assert.assertNull;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.junit.Test;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.rmi.RemoteException;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.Date;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">/**</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * This class tests the functionality of implementors of</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;code&gt;RemotePerson&lt;/code&gt;.  Note that it just looks up a</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * &lt;code&gt;RemotePerson&lt;/code&gt; in the RMI namespace.  It doesn't pay any</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * matter what the concrete implementation of</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;code&gt;RemotePerson&lt;/code&gt; is.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> */</a>
+<span class="sourceLineNo">018</span><a id="line.18">public class RemotePersonTest extends RemoteTestCase {</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">  @Test</a>
+<span class="sourceLineNo">021</span><a id="line.21">  public void testGetId() throws RemoteException{</a>
+<span class="sourceLineNo">022</span><a id="line.22">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">023</span><a id="line.23">    assertTrue(tree.createPerson(Person.MALE).getId() &gt;= 0);</a>
+<span class="sourceLineNo">024</span><a id="line.24">  }</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">  @Test</a>
+<span class="sourceLineNo">027</span><a id="line.27">  public void testGetGenderMale() throws RemoteException {</a>
+<span class="sourceLineNo">028</span><a id="line.28">    RemotePerson male = getTree().createPerson(Person.MALE);</a>
+<span class="sourceLineNo">029</span><a id="line.29">    Assert.assertEquals(Person.MALE, male.getGender());</a>
+<span class="sourceLineNo">030</span><a id="line.30">  }</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">  @Test</a>
+<span class="sourceLineNo">033</span><a id="line.33">  public void testGetGenderFemale() throws RemoteException {</a>
+<span class="sourceLineNo">034</span><a id="line.34">    RemotePerson female = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    Assert.assertEquals(Person.FEMALE, female.getGender());</a>
+<span class="sourceLineNo">036</span><a id="line.36">  }</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">  @Test</a>
+<span class="sourceLineNo">039</span><a id="line.39">  public void testGetFirstName() throws RemoteException {</a>
+<span class="sourceLineNo">040</span><a id="line.40">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">041</span><a id="line.41">    String firstName = "firstName";</a>
+<span class="sourceLineNo">042</span><a id="line.42">    person.setFirstName(firstName);</a>
+<span class="sourceLineNo">043</span><a id="line.43">    Assert.assertEquals(firstName, person.getFirstName());</a>
+<span class="sourceLineNo">044</span><a id="line.44">  }</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">  @Test</a>
+<span class="sourceLineNo">047</span><a id="line.47">  public void testGetFirstNameNull() throws RemoteException {</a>
+<span class="sourceLineNo">048</span><a id="line.48">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">049</span><a id="line.49">    assertNull(person.getFirstName());</a>
+<span class="sourceLineNo">050</span><a id="line.50">  }</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">  @Test</a>
+<span class="sourceLineNo">053</span><a id="line.53">  public void testGetMiddleName() throws RemoteException {</a>
+<span class="sourceLineNo">054</span><a id="line.54">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">055</span><a id="line.55">    String middleName = "middleName";</a>
+<span class="sourceLineNo">056</span><a id="line.56">    person.setMiddleName(middleName);</a>
+<span class="sourceLineNo">057</span><a id="line.57">    Assert.assertEquals(middleName, person.getMiddleName());</a>
+<span class="sourceLineNo">058</span><a id="line.58">  }</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">  @Test</a>
+<span class="sourceLineNo">061</span><a id="line.61">  public void testGetMiddleNameNull() throws RemoteException {</a>
+<span class="sourceLineNo">062</span><a id="line.62">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">063</span><a id="line.63">    assertNull(person.getMiddleName());</a>
+<span class="sourceLineNo">064</span><a id="line.64">  }</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">  @Test</a>
+<span class="sourceLineNo">067</span><a id="line.67">  public void testGetLastName() throws RemoteException {</a>
+<span class="sourceLineNo">068</span><a id="line.68">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">069</span><a id="line.69">    String lastName = "lastName";</a>
+<span class="sourceLineNo">070</span><a id="line.70">    person.setLastName(lastName);</a>
+<span class="sourceLineNo">071</span><a id="line.71">    Assert.assertEquals(lastName, person.getLastName());</a>
+<span class="sourceLineNo">072</span><a id="line.72">  }</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">  @Test</a>
+<span class="sourceLineNo">075</span><a id="line.75">  public void testGetLastNameNull() throws RemoteException {</a>
+<span class="sourceLineNo">076</span><a id="line.76">    RemotePerson person = getTree().createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">077</span><a id="line.77">    assertNull(person.getLastName());</a>
+<span class="sourceLineNo">078</span><a id="line.78">  }</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">  @Test</a>
+<span class="sourceLineNo">081</span><a id="line.81">  public void testGetFatherId() throws RemoteException {</a>
+<span class="sourceLineNo">082</span><a id="line.82">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">083</span><a id="line.83">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">084</span><a id="line.84">    RemotePerson father = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">085</span><a id="line.85">    person.setFatherId(father.getId());</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">    Assert.assertEquals(father.getId(), person.getFatherId());</a>
+<span class="sourceLineNo">088</span><a id="line.88">  }</a>
+<span class="sourceLineNo">089</span><a id="line.89"></a>
+<span class="sourceLineNo">090</span><a id="line.90">  @Test</a>
+<span class="sourceLineNo">091</span><a id="line.91">  public void testSetFatherIdBadId() throws RemoteException {</a>
+<span class="sourceLineNo">092</span><a id="line.92">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">093</span><a id="line.93">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">094</span><a id="line.94">    try {</a>
+<span class="sourceLineNo">095</span><a id="line.95">      person.setFatherId(40000);</a>
+<span class="sourceLineNo">096</span><a id="line.96">      Assert.fail("Should have thrown FamilyTreeException");</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">    } catch (FamilyTreeException ex) {</a>
+<span class="sourceLineNo">099</span><a id="line.99">      // pass...</a>
+<span class="sourceLineNo">100</span><a id="line.100">    }</a>
+<span class="sourceLineNo">101</span><a id="line.101">  }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">  @Test</a>
+<span class="sourceLineNo">104</span><a id="line.104">  public void testSetFatherIdNotMale() throws RemoteException {</a>
+<span class="sourceLineNo">105</span><a id="line.105">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">106</span><a id="line.106">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">107</span><a id="line.107">    RemotePerson father = tree.createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">    try {</a>
+<span class="sourceLineNo">110</span><a id="line.110">      person.setFatherId(father.getId());</a>
+<span class="sourceLineNo">111</span><a id="line.111">      Assert.fail("Should have thrown an FamilyTreeException");</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">    } catch (FamilyTreeException ex) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">      // pass...</a>
+<span class="sourceLineNo">115</span><a id="line.115">    }</a>
+<span class="sourceLineNo">116</span><a id="line.116">  }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">  @Test</a>
+<span class="sourceLineNo">119</span><a id="line.119">  public void testGetMotherId() throws RemoteException {</a>
+<span class="sourceLineNo">120</span><a id="line.120">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">121</span><a id="line.121">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">122</span><a id="line.122">    RemotePerson mother = tree.createPerson(Person.FEMALE);</a>
+<span class="sourceLineNo">123</span><a id="line.123">    person.setMotherId(mother.getId());</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">    Assert.assertEquals(mother.getId(), person.getMotherId());</a>
+<span class="sourceLineNo">126</span><a id="line.126">  }</a>
+<span class="sourceLineNo">127</span><a id="line.127"></a>
+<span class="sourceLineNo">128</span><a id="line.128">  @Test</a>
+<span class="sourceLineNo">129</span><a id="line.129">  public void testSetMotherIdBadId() throws RemoteException {</a>
+<span class="sourceLineNo">130</span><a id="line.130">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">131</span><a id="line.131">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">132</span><a id="line.132">    try {</a>
+<span class="sourceLineNo">133</span><a id="line.133">      person.setMotherId(40000);</a>
+<span class="sourceLineNo">134</span><a id="line.134">      Assert.fail("Should have thrown FamilyTreeException");</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">    } catch (FamilyTreeException ex) {</a>
+<span class="sourceLineNo">137</span><a id="line.137">      // pass...</a>
+<span class="sourceLineNo">138</span><a id="line.138">    }</a>
+<span class="sourceLineNo">139</span><a id="line.139">  }</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">  @Test</a>
+<span class="sourceLineNo">142</span><a id="line.142">  public void testSetMotherIdNotFemale() throws RemoteException {</a>
+<span class="sourceLineNo">143</span><a id="line.143">    RemoteFamilyTree tree = getTree();</a>
+<span class="sourceLineNo">144</span><a id="line.144">    RemotePerson person = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">145</span><a id="line.145">    RemotePerson mother = tree.createPerson(Person.MALE);</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">    try {</a>
+<span class="sourceLineNo">148</span><a id="line.148">      person.setMotherId(mother.getId());</a>
+<span class="sourceLineNo">149</span><a id="line.149">      Assert.fail("Should have thrown an FamilyTreeException");</a>
+<span class="sourceLineNo">150</span><a id="line.150"></a>
+<span class="sourceLineNo">151</span><a id="line.151">    } catch (FamilyTreeException ex) {</a>
+<span class="sourceLineNo">152</span><a id="line.152">      // pass...</a>
+<span class="sourceLineNo">153</span><a id="line.153">    }</a>
+<span class="sourceLineNo">154</span><a id="line.154">  }</a>
+<span class="sourceLineNo">155</span><a id="line.155"></a>
+<span class="sourceLineNo">156</span><a id="line.156">  @Test</a>
+<span class="sourceLineNo">157</span><a id="line.157">  public void testSetDateOfBirth() throws RemoteException {</a>
+<span class="sourceLineNo">158</span><a id="line.158">    Date dob = new Date();</a>
+<span class="sourceLineNo">159</span><a id="line.159">    RemotePerson person = getTree().createPerson(Person.MALE);</a>
+<span class="sourceLineNo">160</span><a id="line.160">    person.setDateOfBirth(dob);</a>
+<span class="sourceLineNo">161</span><a id="line.161">    assertEquals(dob, person.getDateOfBirth());</a>
+<span class="sourceLineNo">162</span><a id="line.162">  }</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">  @Test</a>
+<span class="sourceLineNo">165</span><a id="line.165">  public void testSetDateOfDeath() throws RemoteException {</a>
+<span class="sourceLineNo">166</span><a id="line.166">    Date dob = new Date();</a>
+<span class="sourceLineNo">167</span><a id="line.167">    RemotePerson person = getTree().createPerson(Person.MALE);</a>
+<span class="sourceLineNo">168</span><a id="line.168">    person.setDateOfDeath(dob);</a>
+<span class="sourceLineNo">169</span><a id="line.169">    assertEquals(dob, person.getDateOfDeath());</a>
+<span class="sourceLineNo">170</span><a id="line.170">  }</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
