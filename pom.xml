@@ -61,6 +61,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <pmd.version>6.4.0</pmd.version>
+
+        <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
+        <wagon-ssh.version>3.0.0</wagon-ssh.version>
     </properties>
     <repositories>
       <repository>
@@ -378,11 +381,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
           <version>3.9.0</version>
           <dependencies>
@@ -425,6 +423,43 @@
                   <artifactId>xml-apis</artifactId>
                 </exclusion>
               </exclusions>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.1</version>
+          <configuration>
+            <aggregate>true</aggregate>
+            <linksource>true</linksource>
+            <overview>overview.html</overview>
+            <links>
+              <link>http://download.oracle.com/javase/10/docs/api</link>
+              <link>http://download.oracle.com/javaee/7/api</link>
+              <link>http://junit.org/junit4/javadoc/latest</link>
+              <link>http://www.gwtproject.org/javadoc/latest</link>
+              <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
+            </links>
+            <detectJavaApiLink/>
+            <detectLinks/>
+            <additionalOptions>-html5 --add-modules java.xml.bind</additionalOptions>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+          <dependencies>
+            <dependency>
+              <groupId>net.trajano.wagon</groupId>
+              <artifactId>wagon-git</artifactId>
+              <version>${wagon-git.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>${wagon-ssh.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -490,24 +525,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
-        <configuration>
-          <aggregate>true</aggregate>
-          <linksource>true</linksource>
-          <overview>overview.html</overview>
-          <links>
-            <link>http://download.oracle.com/javase/8/docs/api</link>
-            <link>http://download.oracle.com/javaee/7/api</link>
-            <link>http://junit.org/junit4/javadoc/latest</link>
-            <link>http://docs.oracle.com/javase/8/docs/jdk/api/javadoc/doclet</link>
-            <link>http://www.jajakarta.org/ant/ant-1.6.1/docs/en/manual/api</link>
-            <link>http://www.gwtproject.org/javadoc/latest</link>
-            <link>http://web.cecs.pdx.edu/~whitlock/docs</link>
-          </links>
-          <detectJavaApiLink/>
-          <detectLinks/>
-          <additionalOptions>-html5</additionalOptions>
-        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -552,6 +569,26 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <id>non-aggregate</id>
+            <reports>
+              <report>javadoc</report>
+              <report>test-javadoc</report>
+            </reports>
+          </reportSet>
+          <reportSet>
+            <id>aggregate</id>
+            <reports>
+              <report>aggregate</report>
+              <report>test-aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
   <distributionManagement>
@@ -561,9 +598,9 @@
       <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
     </repository>
     <site>
-      <id>whitlock-PSU</id>
-      <name>David Whitlock's PSU Web Site</name>
-      <url>scpexe://cs.pdx.edu/u/whitlock/public_html/site</url>
+      <id>gh-pages</id>
+      <name>GitHub Pages</name>
+      <url>git:ssh://git@github.com/DavidWhitlock/PortlandStateJava.git?gh-pages#</url>
     </site>
   </distributionManagement>
 </project>
