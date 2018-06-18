@@ -48,7 +48,7 @@ public abstract class AbstractAppointment implements Serializable
   /**
    * Returns a brief textual summary of this appointment.
    */
-  public String toString() {
+  public final String toString() {
     return this.getDescription() + " from " +
       this.getBeginTimeString() + " until " + this.getEndTimeString();
   }

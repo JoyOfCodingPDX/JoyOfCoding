@@ -28,7 +28,7 @@ public abstract class AbstractAirline<T extends AbstractFlight> implements Seria
   /**
    * Returns a brief textual description of this airline.
    */
-  public String toString() {
+  public final String toString() {
     return this.getName() + " with " + this.getFlights().size() + 
            " flights";
   }
