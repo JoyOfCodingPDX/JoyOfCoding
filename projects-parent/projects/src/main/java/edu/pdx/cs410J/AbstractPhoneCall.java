@@ -56,7 +56,7 @@ public abstract class AbstractPhoneCall implements Serializable {
   /**
    * Returns a brief textual description of this phone call.
    */
-  public String toString() {
+  public final String toString() {
     return "Phone call from " + this.getCaller() + " to " +
       this.getCallee() + " from " + this.getStartTimeString() + 
       " to " + this.getEndTimeString();
