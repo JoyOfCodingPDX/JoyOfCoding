@@ -6,12 +6,12 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class PingServiceImplTest {
+public class PhoneBillServiceImplTest {
 
   @Test
   public void pingReturnsExpectedAirline() {
-    PingServiceImpl service = new PingServiceImpl();
-    PhoneBill airline = service.ping();
+    PhoneBillServiceImpl service = new PhoneBillServiceImpl();
+    PhoneBill airline = service.getPhoneBill();
     assertThat(airline.getPhoneCalls().size(), equalTo(1));
   }
 }

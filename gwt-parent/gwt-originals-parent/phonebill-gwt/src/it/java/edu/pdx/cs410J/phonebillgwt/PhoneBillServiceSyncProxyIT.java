@@ -2,7 +2,7 @@ package edu.pdx.cs410J.phonebillgwt;
 
 import com.gdevelop.gwt.syncrpc.SyncProxy;
 import edu.pdx.cs410J.phonebillgwt.client.PhoneBill;
-import edu.pdx.cs410J.phonebillgwt.client.PingService;
+import edu.pdx.cs410J.phonebillgwt.client.PhoneBillService;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class PingServiceSyncProxyIT extends HttpRequestHelper {
+public class PhoneBillServiceSyncProxyIT extends HttpRequestHelper {
 
   private final int httpPort = Integer.getInteger("http.port", 8080);
   private String webAppUrl = "http://localhost:" + httpPort + "/phonebill";
@@ -22,14 +22,14 @@ public class PingServiceSyncProxyIT extends HttpRequestHelper {
   }
 
   @Test
-  public void canInvokePingServiceWithGwtSyncProxy() {
+  public void canInvokeAirlineServiceWithGwtSyncProxy() {
     String moduleName = "phonebill";
     SyncProxy.setBaseURL(this.webAppUrl + "/" + moduleName + "/");
 
-    PingService ping = SyncProxy.createSync(PingService.class);
-    PhoneBill airline = ping.ping();
-    assertEquals("CS410J", airline.getCustomer());
-    assertEquals(1, airline.getPhoneCalls().size());
+    PhoneBillService ping = SyncProxy.createSync(PhoneBillService.class);
+    PhoneBill bill = ping.getPhoneBill();
+    assertEquals("CS410J", bill.getCustomer());
+    assertEquals(1, bill.getPhoneCalls().size());
   }
 
 }
