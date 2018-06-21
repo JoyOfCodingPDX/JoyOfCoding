@@ -3,18 +3,28 @@ package edu.pdx.cs410J.phonebillgwt.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.pdx.cs410J.phonebillgwt.client.PhoneBill;
 import edu.pdx.cs410J.phonebillgwt.client.PhoneCall;
-import edu.pdx.cs410J.phonebillgwt.client.PingService;
+import edu.pdx.cs410J.phonebillgwt.client.PhoneBillService;
 
 /**
  * The server-side implementation of the Phone Bill service
  */
-public class PingServiceImpl extends RemoteServiceServlet implements PingService
+public class PhoneBillServiceImpl extends RemoteServiceServlet implements PhoneBillService
 {
   @Override
-  public PhoneBill ping() {
+  public PhoneBill getPhoneBill() {
     PhoneBill phonebill = new PhoneBill();
     phonebill.addPhoneCall(new PhoneCall());
     return phonebill;
+  }
+
+  @Override
+  public void throwUndeclaredException() {
+    throw new IllegalStateException("Expected undeclared exception");
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+    throw new IllegalStateException("Expected declared exception");
   }
 
   /**
@@ -28,4 +38,5 @@ public class PingServiceImpl extends RemoteServiceServlet implements PingService
     unhandled.printStackTrace(System.err);
     super.doUnexpectedFailure(unhandled);
   }
+
 }

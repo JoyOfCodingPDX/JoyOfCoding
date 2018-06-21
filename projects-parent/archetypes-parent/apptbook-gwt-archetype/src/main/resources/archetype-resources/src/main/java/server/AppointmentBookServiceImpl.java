@@ -6,18 +6,28 @@ package ${package}.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import ${package}.client.Appointment;
 import ${package}.client.AppointmentBook;
-import ${package}.client.PingService;
+import ${package}.client.AppointmentBookService;
 
 /**
  * The server-side implementation of the division service
  */
-public class PingServiceImpl extends RemoteServiceServlet implements PingService
+public class AppointmentBookServiceImpl extends RemoteServiceServlet implements AppointmentBookService
 {
   @Override
-  public AppointmentBook ping() {
+  public AppointmentBook getAppointmentBook() {
     AppointmentBook book = new AppointmentBook();
     book.addAppointment(new Appointment());
     return book;
+  }
+
+  @Override
+  public void throwUndeclaredException() {
+    throw new IllegalStateException("Expected undeclared exception");
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+    throw new IllegalStateException("Expected declared exception");
   }
 
   @Override

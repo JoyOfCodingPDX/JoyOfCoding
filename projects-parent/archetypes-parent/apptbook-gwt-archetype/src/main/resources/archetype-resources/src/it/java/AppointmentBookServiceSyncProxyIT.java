@@ -4,8 +4,8 @@
 package ${package};
 
 import com.gdevelop.gwt.syncrpc.SyncProxy;
-import ${package}.client.PhoneBill;
-import ${package}.client.PingService;
+import ${package}.client.AppointmentBook;
+import ${package}.client.AppointmentBookService;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 
@@ -13,10 +13,10 @@ import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class PingServiceSyncProxyIT extends HttpRequestHelper {
+public class AppointmentBookServiceSyncProxyIT extends HttpRequestHelper {
 
   private final int httpPort = Integer.getInteger("http.port", 8080);
-  private String webAppUrl = "http://localhost:" + httpPort + "/phonebill";
+  private String webAppUrl = "http://localhost:" + httpPort + "/apptbook";
 
   @Test
   public void gwtWebApplicationIsRunning() throws IOException {
@@ -25,14 +25,14 @@ public class PingServiceSyncProxyIT extends HttpRequestHelper {
   }
 
   @Test
-  public void canInvokePingServiceWithGwtSyncProxy() {
-    String moduleName = "phonebill";
+  public void canInvokeAppointmentBookServiceWithGwtSyncProxy() {
+    String moduleName = "apptbook";
     SyncProxy.setBaseURL(this.webAppUrl + "/" + moduleName + "/");
 
-    PingService ping = SyncProxy.createSync(PingService.class);
-    PhoneBill airline = ping.ping();
-    assertEquals("CS410J", airline.getCustomer());
-    assertEquals(1, airline.getPhoneCalls().size());
+    AppointmentBookService service = SyncProxy.createSync(AppointmentBookService.class);
+    AppointmentBook apptbook = service.getAppointmentBook();
+    assertEquals("My Owner", apptbook.getOwnerName());
+    assertEquals(1, apptbook.getAppointments().size());
   }
 
 }

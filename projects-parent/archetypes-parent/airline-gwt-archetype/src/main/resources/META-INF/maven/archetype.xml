@@ -4,9 +4,6 @@
     <source>src/main/java/client/Flight.java</source>
     <source>src/main/java/client/Airline.java</source>
     <source>src/main/java/client/AirlineGwt.java</source>
-    <source>src/main/java/client/PingService.java</source>
-    <source>src/main/java/client/PingServiceAsync.java</source>
-    <source>src/main/java/server/PingServiceImpl.java</source>
   </sources>
   <resources>
     <resource>src/main/resources/edu/pdx/cs410J/YOU/AirlineGwt.gwt.xml</resource>

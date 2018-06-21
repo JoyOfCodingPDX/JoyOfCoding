@@ -9,12 +9,12 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class PingServiceImplTest {
+public class PhoneBillServiceImplTest {
 
   @Test
-  public void pingReturnsExpectedAirline() {
-    PingServiceImpl service = new PingServiceImpl();
-    PhoneBill airline = service.ping();
-    assertThat(airline.getPhoneCalls().size(), equalTo(1));
+  public void serviceReturnsExpectedPhoneBill() {
+    PhoneBillServiceImpl service = new PhoneBillServiceImpl();
+    PhoneBill bill = service.getPhoneBill();
+    assertThat(bill.getPhoneCalls().size(), equalTo(1));
   }
 }
