@@ -5,37 +5,44 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 import java.lang.Override;
 import java.util.Date;
 
-<span class="fc" id="L8">public class PhoneCall extends AbstractPhoneCall</span>
-{
+public class PhoneCall extends AbstractPhoneCall {
+
+  /**
+   * In order for GWT to serialize this class (so that it can be sent between
+   * the client and the server), it must have a zero-argument constructor.
+   */
+<span class="fc" id="L14">  public PhoneCall() {</span>
+
+<span class="fc" id="L16">  }</span>
 
   @Override
   public String getCaller() {
-<span class="nc" id="L13">    return &quot;123-345-6789&quot;;</span>
+<span class="nc" id="L20">    return &quot;123-345-6789&quot;;</span>
   }
 
   @Override
   public Date getStartTime() {
-<span class="nc" id="L18">    return new Date();</span>
+<span class="nc" id="L25">    return new Date();</span>
   }
 
   @Override
   public String getStartTimeString() {
-<span class="nc" id="L23">    return &quot;START &quot; + getStartTime();</span>
+<span class="nc" id="L30">    return &quot;START &quot; + getStartTime();</span>
   }
 
   @Override
   public String getCallee() {
-<span class="nc" id="L28">    return &quot;345-677-2341&quot;;</span>
+<span class="nc" id="L35">    return &quot;345-677-2341&quot;;</span>
   }
 
   @Override
   public Date getEndTime() {
-<span class="nc" id="L33">    return new Date();</span>
+<span class="nc" id="L40">    return new Date();</span>
   }
 
   @Override
   public String getEndTimeString() {
-<span class="nc" id="L38">    return &quot;END &quot; + getEndTime();</span>
+<span class="nc" id="L45">    return &quot;END &quot; + getEndTime();</span>
   }
 
 }

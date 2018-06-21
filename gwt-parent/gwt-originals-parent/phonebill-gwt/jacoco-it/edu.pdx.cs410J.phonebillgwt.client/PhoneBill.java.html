@@ -6,23 +6,30 @@ import java.lang.Override;
 import java.util.ArrayList;
 import java.util.Collection;
 
-<span class="fc" id="L9">public class PhoneBill extends AbstractPhoneBill&lt;PhoneCall&gt;</span>
-{
-<span class="fc" id="L11">  private Collection&lt;PhoneCall&gt; calls = new ArrayList&lt;&gt;();</span>
+public class PhoneBill extends AbstractPhoneBill&lt;PhoneCall&gt; {
+<span class="fc" id="L10">  private Collection&lt;PhoneCall&gt; calls = new ArrayList&lt;&gt;();</span>
+
+  /**
+   * In order for GWT to serialize this class (so that it can be sent between
+   * the client and the server), it must have a zero-argument constructor.
+   */
+<span class="fc" id="L16">  public PhoneBill() {</span>
+
+<span class="fc" id="L18">  }</span>
 
   @Override
   public String getCustomer() {
-<span class="fc" id="L15">    return &quot;CS410J&quot;;</span>
+<span class="fc" id="L22">    return &quot;CS410J&quot;;</span>
   }
 
   @Override
   public void addPhoneCall(PhoneCall call) {
-<span class="nc" id="L20">    this.calls.add(call);</span>
-<span class="nc" id="L21">  }</span>
+<span class="nc" id="L27">    this.calls.add(call);</span>
+<span class="nc" id="L28">  }</span>
 
   @Override
   public Collection&lt;PhoneCall&gt; getPhoneCalls() {
-<span class="fc" id="L25">    return this.calls;</span>
+<span class="fc" id="L32">    return this.calls;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
