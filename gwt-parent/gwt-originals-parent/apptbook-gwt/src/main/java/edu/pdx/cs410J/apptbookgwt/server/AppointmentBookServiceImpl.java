@@ -18,6 +18,16 @@ public class AppointmentBookServiceImpl extends RemoteServiceServlet implements 
   }
 
   @Override
+  public void throwUndeclaredException() {
+    throw new IllegalStateException("Expected undeclared exception");
+  }
+
+  @Override
+  public void throwDeclaredException() throws IllegalStateException {
+    throw new IllegalStateException("Expected declared exception");
+  }
+
+  @Override
   protected void doUnexpectedFailure(Throwable unhandled) {
     unhandled.printStackTrace(System.err);
     super.doUnexpectedFailure(unhandled);

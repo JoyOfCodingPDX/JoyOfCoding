@@ -14,4 +14,14 @@ public interface AppointmentBookService extends RemoteService {
    */
   public AppointmentBook getAppointmentBook();
 
+  /**
+   * Always throws an undeclared exception so that we can see GWT handles it.
+   */
+  void throwUndeclaredException();
+
+  /**
+   * Always throws a declared exception so that we can see GWT handles it.
+   */
+  void throwDeclaredException() throws IllegalStateException;
+
 }
