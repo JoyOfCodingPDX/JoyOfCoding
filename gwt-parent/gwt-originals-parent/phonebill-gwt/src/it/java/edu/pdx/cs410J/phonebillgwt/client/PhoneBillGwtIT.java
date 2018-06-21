@@ -21,7 +21,7 @@ public class PhoneBillGwtIT extends GWTTestCase {
   }
 
   @Test
-  public void testClickingShowAirlineButtonAlertsWithAirlineInformation() {
+  public void testClickingShowPhoneBillButtonAlertsWithPhoneBillInformation() {
     final CapturingAlerter alerter = new CapturingAlerter();
 
     final PhoneBillGwt ui = new PhoneBillGwt(alerter);

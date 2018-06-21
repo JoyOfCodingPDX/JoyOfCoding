@@ -9,9 +9,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class PhoneBillServiceImplTest {
 
   @Test
-  public void pingReturnsExpectedAirline() {
+  public void serviceReturnsExpectedPhoneBill() {
     PhoneBillServiceImpl service = new PhoneBillServiceImpl();
-    PhoneBill airline = service.getPhoneBill();
-    assertThat(airline.getPhoneCalls().size(), equalTo(1));
+    PhoneBill bill = service.getPhoneBill();
+    assertThat(bill.getPhoneCalls().size(), equalTo(1));
   }
 }

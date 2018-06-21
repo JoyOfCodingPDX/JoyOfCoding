@@ -3,7 +3,7 @@ package edu.pdx.cs410J.phonebillgwt.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * The client-side interface to the ping service
+ * The client-side interface to the phone bill service
  */
 public interface PhoneBillServiceAsync {
 
