@@ -8,8 +8,15 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 import java.lang.Override;
 import java.util.Date;
 
-public class PhoneCall extends AbstractPhoneCall
-{
+public class PhoneCall extends AbstractPhoneCall {
+
+  /**
+   * In order for GWT to serialize this class (so that it can be sent between
+   * the client and the server), it must have a zero-argument constructor.
+   */
+  public PhoneCall() {
+
+  }
 
   @Override
   public String getCaller() {
