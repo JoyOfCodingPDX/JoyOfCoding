@@ -112,6 +112,9 @@ public class Survey extends EmailSender {
 
     if (isEmpty(id)) {
       printErrorMessageAndExit("** You must enter a valid UNIX login id");
+
+    } else if (isEmailAddress(id)) {
+      printErrorMessageAndExit("** Your student id cannot be an email address");
     }
 
     Student student = new Student(id);
@@ -126,6 +129,18 @@ public class Survey extends EmailSender {
     askEnrolledSectionQuestion(student);
 
     return student;
+  }
+
+  @VisibleForTesting
+  static boolean isEmailAddress(String id) {
+    try {
+      boolean strict = true;
+      new InternetAddress(id, strict);
+      return true;
+
+    } catch (AddressException e) {
+      return false;
+    }
   }
 
   private static void askEnrolledSectionQuestion(Student student) {
@@ -161,6 +176,7 @@ public class Survey extends EmailSender {
     String summary = verifyInformation(student);
 
     // Email the results of the survey to the TA and CC the student
+    out.println("Emailing your information to the Grader");
 
     MimeMessage message = createEmailMessage(student);
     MimeBodyPart textPart = createEmailText(learn, comments, summary);

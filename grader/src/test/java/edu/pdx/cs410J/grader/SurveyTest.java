@@ -48,4 +48,17 @@ public class SurveyTest {
     assertThat(lines, not(startsWith(" ")));
     assertThat(lines, containsString("here\nit"));
   }
+
+  @Test
+  public void validEmailAddressIsValid() {
+    String address = "whitlock@cs.pdx.edu";
+    assertThat(Survey.isEmailAddress(address), equalTo(true));
+  }
+
+  @Test
+  public void invalidEmailAddressIsInvalid() {
+    String address = "whitlock";
+    assertThat(Survey.isEmailAddress(address), equalTo(false));
+  }
+
 }
