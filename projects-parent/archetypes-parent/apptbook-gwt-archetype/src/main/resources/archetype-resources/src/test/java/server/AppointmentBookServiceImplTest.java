@@ -1,6 +1,9 @@
-package edu.pdx.cs410J.apptbookgwt.server;
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+package ${package}.server;
 
-import edu.pdx.cs410J.apptbookgwt.client.AppointmentBook;
+import ${package}.client.AppointmentBook;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

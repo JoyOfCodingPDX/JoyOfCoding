@@ -9,13 +9,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>pingServlet</servlet-name>
-    <servlet-class>${package}.server.PingServiceImpl</servlet-class>
+    <servlet-name>apptbookServlet</servlet-name>
+    <servlet-class>${package}.server.AppointmentBookServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>pingServlet</servlet-name>
-    <url-pattern>/apptbook/ping</url-pattern>
+    <servlet-name>apptbookServlet</servlet-name>
+    <url-pattern>/apptbook/apptbook</url-pattern>
   </servlet-mapping>
 
   <!-- Default page to serve -->
