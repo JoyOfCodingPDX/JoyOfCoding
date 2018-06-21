@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment">   * Returns a brief textual description of this flight.</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> String toString() {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Flight "</span> + <strong class="jxr_keyword">this</strong>.getNumber() + <span class="jxr_string">" departs "</span> + <strong class="jxr_keyword">this</strong>.getSource()
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>             + <span class="jxr_string">" at "</span> + <strong class="jxr_keyword">this</strong>.getDepartureString() + <span class="jxr_string">" arrives "</span> +
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>             <strong class="jxr_keyword">this</strong>.getDestination() + <span class="jxr_string">" at "</span> + <strong class="jxr_keyword">this</strong>.getArrivalString();
