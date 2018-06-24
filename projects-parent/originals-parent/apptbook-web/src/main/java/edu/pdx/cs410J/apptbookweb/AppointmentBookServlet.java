@@ -59,16 +59,16 @@ public class AppointmentBookServlet extends HttpServlet
             return;
         }
 
-        String definitin = getParameter(DEFINITION_PARAMETER, request );
-        if ( definitin == null) {
+        String definition = getParameter(DEFINITION_PARAMETER, request );
+        if ( definition == null) {
             missingRequiredParameter( response, DEFINITION_PARAMETER );
             return;
         }
 
-        this.dictionary.put(word, definitin);
+        this.dictionary.put(word, definition);
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.definedWordAs(word, definitin));
+        pw.println(Messages.definedWordAs(word, definition));
         pw.flush();
 
         response.setStatus( HttpServletResponse.SC_OK);
