@@ -23,7 +23,7 @@ public class Project4IT extends InvokeMainTestCase {
     @Test
     public void test0RemoveAllMappings() throws IOException {
       AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
-      client.removeAllMappings();
+      client.removeAllDictionaryEntries();
     }
 
     @Test
@@ -38,35 +38,34 @@ public class Project4IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatMappingCount(0)));
+        assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
     @Test
-    public void test3NoValues() {
-        String key = "KEY";
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key );
+    public void test3NoDefinitions() {
+        String word = "WORD";
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, null)));
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, null)));
     }
 
     @Test
-    public void test4AddValue() {
-        String key = "KEY";
-        String value = "VALUE";
+    public void test4AddDefinition() {
+        String word = "WORD";
+        String definition = "DEFINITION";
 
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key, value );
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.mappedKeyValue(key, value)));
+        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
-        result = invokeMain( Project4.class, HOSTNAME, PORT, key );
+        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatMappingCount(1)));
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
     }
 }
