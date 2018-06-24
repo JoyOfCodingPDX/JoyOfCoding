@@ -287,9 +287,9 @@ public class Survey extends EmailSender {
   private static MimeMessage createEmailMessage(Student student) {
     MimeMessage message = null;
     try {
-      message = newEmailTo(newEmailSession(false), TA_EMAIL, "CS410J Survey for " + student.getFullName());
-
       String studentEmail = student.getEmail();
+      message = newEmailTo(newEmailSession(false), studentEmail, TA_EMAIL, "CS410J Survey for " + student.getFullName());
+
       if (studentEmail != null) {
         InternetAddress[] cc = {new InternetAddress(studentEmail)};
         message.setRecipients(Message.RecipientType.CC, cc);

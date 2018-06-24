@@ -39,7 +39,7 @@ public class SubmitIT {
   private final String imapUserName = "emailUser";
   private final String imapPassword = "emailPassword";
   private final int imapsPort = 9933;
-  private String graderEmail = Submit.TA_EMAIL;
+  private String graderEmail = EmailSender.TA_EMAIL;
 
   @Before
   public void createFilesToSubmit() throws IOException {

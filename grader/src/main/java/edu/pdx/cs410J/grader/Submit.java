@@ -42,12 +42,6 @@ public class Submit extends EmailSender {
   private static final PrintWriter err = new PrintWriter(System.err, true);
 
   /**
-   * The grader's email address
-   */
-  @VisibleForTesting
-  static final String TA_EMAIL = "sjavata@gmail.com";
-
-  /**
    * A URL containing a list of files that should not be submitted
    */
   private static final String NO_SUBMIT_LIST_URL =
@@ -562,7 +556,7 @@ public class Submit extends EmailSender {
    * a textual summary of the contents of the Zip file.
    */
   private void mailTA(File zipFile, Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
+    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
     MimeBodyPart filePart = createZipAttachment(zipFile);
@@ -630,7 +624,7 @@ public class Submit extends EmailSender {
    * Sends a email to the user as a receipt of the submission.
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), userEmail, "CS410J " + projName + " submission");
+    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, "CS410J " + projName + " submission");
 
     // Create the contents of the message
     StringBuilder text = new StringBuilder();
