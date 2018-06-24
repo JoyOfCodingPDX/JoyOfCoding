@@ -70,13 +70,13 @@ public class PhoneBillRestClient extends HttpRequestHelper
     private Response throwExceptionIfNotOkayHttpStatus(Response response) {
       int code = response.getCode();
       if (code != HTTP_OK) {
-        throw new AppointmentBookRestException(code);
+        throw new PhoneBillRestException(code);
       }
       return response;
     }
 
-    private class AppointmentBookRestException extends RuntimeException {
-      public AppointmentBookRestException(int httpStatusCode) {
+    private class PhoneBillRestException extends RuntimeException {
+      public PhoneBillRestException(int httpStatusCode) {
         super("Got an HTTP Status Code of " + httpStatusCode);
       }
     }
