@@ -34,13 +34,12 @@ public class EmailCredentialsPresenter {
 
   @Subscribe
   public void displayEmailCredentialsView(DownloadPOASubmissionsRequest event) {
-    this.view.setIsVisible(true);
     fireStatusMessageEvent(ENTER_CREDENTIALS_MESSAGE);
+    this.view.setIsVisible(true);
   }
 
   private void fireStatusMessageEvent(String message) {
     this.bus.post(new StatusMessage(message));
-
   }
 
   public String getEmailAddress() {

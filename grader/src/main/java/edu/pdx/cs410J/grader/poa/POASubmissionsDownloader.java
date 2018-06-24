@@ -32,8 +32,13 @@ public class POASubmissionsDownloader {
 
   @Subscribe
   public void downloadSubmissions(EmailCredentials credentials) throws MessagingException {
-    GraderEmailAccount account = new GraderEmailAccount(credentials.getEmailAddress(), credentials.getPassword());
+    GraderEmailAccount account =
+      new GraderEmailAccount(credentials.getEmailAddress(), credentials.getPassword(), this::fireStatusMessage);
     account.fetchAttachmentsFromUnreadMessagesInFolder("poa", new POAAttachmentProcessor());
+  }
+
+  private void fireStatusMessage(String statusMessage) {
+    this.bus.post(new StatusMessage(statusMessage));
   }
 
   private void extractPOASubmissionFromAttachment(Message message, String fileName, InputStream inputStream) {

@@ -20,26 +20,33 @@ public class GraderEmailAccount {
   private final String emailServerHostName;
   private final int emailServerPort;
   private final boolean trustLocalhostSSL;
+  private final StatusLogger statusLogger;
 
   public GraderEmailAccount(String password) {
-    this("sjavata", password);
+    this("sjavata", password, m -> { });
   }
 
-  public GraderEmailAccount(String userName, String password) {
-    this("imap.gmail.com", 993, userName, password, false);
+  public GraderEmailAccount(String userName, String password, StatusLogger statusLogger) {
+    this("imap.gmail.com", 993, userName, password, false, statusLogger);
   }
 
   @VisibleForTesting
   GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
+    this(emailServerHostName, emailServerPort, userName, password, trustLocalhostSSL, m -> { });
+  }
+
+  private GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL, StatusLogger statusLogger) {
     this.userName = userName;
     this.password = password;
     this.emailServerHostName = emailServerHostName;
     this.emailServerPort = emailServerPort;
     this.trustLocalhostSSL = trustLocalhostSSL;
+    this.statusLogger = statusLogger;
   }
 
   private void fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, EmailAttachmentProcessor processor) {
     try {
+      this.statusLogger.logStatus(String.format("Getting messages from \"%s\" folder", folder.getFullName()));
       Message[] messages = folder.getMessages();
 
       FetchProfile profile = new FetchProfile();
@@ -287,6 +294,9 @@ public class GraderEmailAccount {
     } catch (MessagingException ex) {
       throw new IllegalStateException("While closing folder and store", ex);
     }
+  }
 
+  public interface StatusLogger {
+    public void logStatus(String statusMessage);
   }
 }

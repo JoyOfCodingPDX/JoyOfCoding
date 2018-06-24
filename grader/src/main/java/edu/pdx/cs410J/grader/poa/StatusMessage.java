@@ -10,4 +10,9 @@ public class StatusMessage {
   public String getStatusMessage() {
     return this.message;
   }
+
+  @Override
+  public String toString() {
+    return "Status of \"" + this.message + "\"";
+  }
 }
