@@ -58,6 +58,4 @@ public class PhoneBillServletTest {
     assertThat(servlet.getDefinition(word), equalTo(definition));
   }
 
-
-
 }
