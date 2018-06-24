@@ -30,34 +30,34 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllMappings() throws IOException {
+  public void test0RemoveAllDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    client.removeAllMappings();
+    client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoMappings() throws IOException {
+  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    Map<String, String> allKeysAndValues = client.getAllKeysAndValues();
-    assertThat(allKeysAndValues.size(), equalTo(0));
+    Map<String, String> dictionary = client.getAllDictionaryEntries();
+    assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2AddOneKeyValuePair() throws IOException {
+  public void test2DefineOneWord() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    String testKey = "TEST KEY";
-    String testValue = "TEST VALUE";
-    client.addKeyValuePair(testKey, testValue);
+    String testWord = "TEST WORD";
+    String testDefinition = "TEST DEFINITION";
+    client.addDictionaryEntry(testWord, testDefinition);
 
-    String value = client.getValue(testKey);
-    assertThat(value, equalTo(testValue));
+    String definition = client.getDefinition(testWord);
+    assertThat(definition, equalTo(testDefinition));
   }
 
   @Test
   public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     HttpRequestHelper.Response response = client.postToMyURL();
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 
