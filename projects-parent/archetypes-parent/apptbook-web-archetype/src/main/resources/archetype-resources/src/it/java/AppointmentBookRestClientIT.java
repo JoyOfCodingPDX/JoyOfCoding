@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -30,34 +30,34 @@ public class AppointmentBookRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllMappings() throws IOException {
+  public void test0RemoveAllDictionaryEntries() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    client.removeAllMappings();
+    client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoMappings() throws IOException {
+  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    Map<String, String> allKeysAndValues = client.getAllKeysAndValues();
-    assertThat(allKeysAndValues.size(), equalTo(0));
+    Map<String, String> dictionary = client.getAllDictionaryEntries();
+    assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2AddOneKeyValuePair() throws IOException {
+  public void test2DefineOneWord() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    String testKey = "TEST KEY";
-    String testValue = "TEST VALUE";
-    client.addKeyValuePair(testKey, testValue);
+    String testWord = "TEST WORD";
+    String testDefinition = "TEST DEFINITION";
+    client.addDictionaryEntry(testWord, testDefinition);
 
-    String value = client.getValue(testKey);
-    assertThat(value, equalTo(testValue));
+    String definition = client.getDefinition(testWord);
+    assertThat(definition, equalTo(testDefinition));
   }
 
   @Test
   public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    Response response = client.postToMyURL();
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
+    HttpRequestHelper.Response response = client.postToMyURL();
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 

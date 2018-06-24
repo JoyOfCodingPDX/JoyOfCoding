@@ -20,8 +20,8 @@ public class Project4 {
     public static void main(String... args) {
         String hostName = null;
         String portString = null;
-        String key = null;
-        String value = null;
+        String word = null;
+        String definition = null;
 
         for (String arg : args) {
             if (hostName == null) {
@@ -30,11 +30,11 @@ public class Project4 {
             } else if ( portString == null) {
                 portString = arg;
 
-            } else if (key == null) {
-                key = arg;
+            } else if (word == null) {
+                word = arg;
 
-            } else if (value == null) {
-                value = arg;
+            } else if (definition == null) {
+                definition = arg;
 
             } else {
                 usage("Extraneous command line argument: " + arg);
@@ -51,7 +51,7 @@ public class Project4 {
         int port;
         try {
             port = Integer.parseInt( portString );
-            
+
         } catch (NumberFormatException ex) {
             usage("Port ${symbol_escape}"" + portString + "${symbol_escape}" must be an integer");
             return;
@@ -61,21 +61,21 @@ public class Project4 {
 
         String message;
         try {
-            if (key == null) {
-                // Print all key/value pairs
-                Map<String, String> keysAndValues = client.getAllKeysAndValues();
+            if (word == null) {
+                // Print all word/definition pairs
+                Map<String, String> dictionary = client.getAllDictionaryEntries();
                 StringWriter sw = new StringWriter();
-                Messages.formatKeyValueMap(new PrintWriter(sw, true), keysAndValues);
+                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
                 message = sw.toString();
 
-            } else if (value == null) {
-                // Print all values of key
-                message = Messages.formatKeyValuePair(key, client.getValue(key));
+            } else if (definition == null) {
+                // Print all dictionary entries
+                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
 
             } else {
-                // Post the key/value pair
-                client.addKeyValuePair(key, value);
-                message = Messages.mappedKeyValue(key, value);
+                // Post the word/definition pair
+                client.addDictionaryEntry(word, definition);
+                message = Messages.definedWordAs(word, definition);
             }
 
         } catch ( IOException ex ) {
@@ -105,15 +105,17 @@ public class Project4 {
         PrintStream err = System.err;
         err.println("** " + message);
         err.println();
-        err.println("usage: java Project4 host port [key] [value]");
-        err.println("  host    Host of web server");
-        err.println("  port    Port of web server");
-        err.println("  key     Key to query");
-        err.println("  value   Value to add to server");
+        err.println("usage: java Project4 host port [word] [definition]");
+        err.println("  host         Host of web server");
+        err.println("  port         Port of web server");
+        err.println("  word         Word in dictionary");
+        err.println("  definition   Definition of word");
         err.println();
-        err.println("This simple program posts key/value pairs to the server");
-        err.println("If no value is specified, then all values are printed");
-        err.println("If no key is specified, all key/value pairs are printed");
+        err.println("This simple program posts words and their definitions");
+        err.println("to the server.");
+        err.println("If no definition is specified, then the word's definition");
+        err.println("is printed.");
+        err.println("If no word is specified, all dictionary entries are printed");
         err.println();
 
         System.exit(1);
