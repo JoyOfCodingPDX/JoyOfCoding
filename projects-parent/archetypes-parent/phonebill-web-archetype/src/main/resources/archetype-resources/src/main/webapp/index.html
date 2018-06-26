@@ -24,28 +24,28 @@
 </h1>
 
 <h2>
-    These forms let you interact with the simple key/value REST API that
+    These forms let you interact with the simple dictionary REST API that
     is created by the project archetype.
 </h2>
 
 
 <div>
     <form method="get" action="calls">
-        List all key/value pairs <input type="submit" value="Submit"/>
+        List all dictionary entries <input type="submit" value="Submit"/>
     </form>
 </div>
 
 <div>
     <form method="get" action="calls">
-        List value for key <input name="key" type="text" size="10" title="key"/>
+        List definition for word <input name="word" type="text" size="10" title="key"/>
         <input type="submit" value="Submit"/>
     </form>
 </div>
 
 <div>
     <form method="post" action="calls">
-        Create a new key/value pair <input name="key" type="text" size="10" title="key"/> /
-        <input name="value" type="text" size="10" title="value"/>
+        Create a dictionary entry <input name="word" type="text" size="10" title="word"/> :
+        <input name="definition" type="text" size="100" title="definition"/>
         <input type="submit" value="Submit"/>
     </form>
 </div>

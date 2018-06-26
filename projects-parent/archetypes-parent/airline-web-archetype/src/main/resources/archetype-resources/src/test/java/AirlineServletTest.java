@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class AirlineServletTest {
 
   @Test
-  public void initiallyServletContainsNoKeyValueMappings() throws ServletException, IOException {
+  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
     AirlineServlet servlet = new AirlineServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -33,21 +33,21 @@ public class AirlineServletTest {
 
     servlet.doGet(request, response);
 
-    int expectedMappings = 0;
-    verify(pw).println(Messages.formatMappingCount(expectedMappings));
+    int expectedWords = 0;
+    verify(pw).println(Messages.formatWordCount(expectedWords));
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 
   @Test
-  public void addOneMapping() throws ServletException, IOException {
+  public void addOneWordToDictionary() throws ServletException, IOException {
     AirlineServlet servlet = new AirlineServlet();
 
-    String testKey = "TEST KEY";
-    String testValue = "TEST VALUE";
+    String word = "TEST WORD";
+    String definition = "TEST DEFINITION";
 
     HttpServletRequest request = mock(HttpServletRequest.class);
-    when(request.getParameter("key")).thenReturn(testKey);
-    when(request.getParameter("value")).thenReturn(testValue);
+    when(request.getParameter("word")).thenReturn(word);
+    when(request.getParameter("definition")).thenReturn(definition);
 
     HttpServletResponse response = mock(HttpServletResponse.class);
     PrintWriter pw = mock(PrintWriter.class);
@@ -55,9 +55,9 @@ public class AirlineServletTest {
     when(response.getWriter()).thenReturn(pw);
 
     servlet.doPost(request, response);
-    verify(pw).println(Messages.mappedKeyValue(testKey, testValue));
+    verify(pw).println(Messages.definedWordAs(word, definition));
     verify(response).setStatus(HttpServletResponse.SC_OK);
 
-    assertThat(servlet.getValueForKey(testKey), equalTo(testValue));
+    assertThat(servlet.getDefinition(word), equalTo(definition));
   }
 }
