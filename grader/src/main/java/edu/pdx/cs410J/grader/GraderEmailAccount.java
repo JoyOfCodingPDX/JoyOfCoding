@@ -46,7 +46,7 @@ public class GraderEmailAccount {
 
   private void fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, EmailAttachmentProcessor processor) {
     try {
-      this.statusLogger.logStatus(String.format("Getting messages from \"%s\" folder", folder.getFullName()));
+      logStatus("Getting messages from \"%s\" folder", folder.getFullName());
       Message[] messages = folder.getMessages();
 
       FetchProfile profile = new FetchProfile();
@@ -55,7 +55,9 @@ public class GraderEmailAccount {
 
       folder.fetch(messages, profile);
 
-      for (Message message : messages) {
+      for (int i = 0; i < messages.length; i++) {
+        Message message = messages[i];
+        logStatus("Processing message %d of %d from %s", i+1, messages.length, message.getFrom()[0]);
         if (isUnread(message)) {
           printMessageInformation(message);
           if (isMultipartMessage(message)) {
@@ -69,6 +71,14 @@ public class GraderEmailAccount {
     } catch (MessagingException | IOException ex ) {
       throw new IllegalStateException("While printing unread messages", ex);
     }
+  }
+
+  private void logStatus(String format, Object... args) {
+    this.logStatus(String.format(format, args));
+  }
+
+  private void logStatus(String statusMessage) {
+    this.statusLogger.logStatus(statusMessage);
   }
 
   private void processAttachments(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
