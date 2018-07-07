@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
 
 public class GradeBookXmlTest {
 
@@ -93,4 +94,16 @@ public class GradeBookXmlTest {
 
     assertThat(book2.getAssignment(assignmentName).getType(), equalTo(Assignment.AssignmentType.POA));
   }
+
+  @Test
+  public void xmlHasNewlinesButNotIndentation() throws TransformerException, IOException {
+    GradeBook book = new GradeBook("test");
+    Document doc = XmlDumper.dumpGradeBook(book, new XmlHelper());;
+    byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
+    String string = new String(bytes);
+    assertThat(string, containsString("\n"));
+    assertThat(string.chars().filter(c -> '\n' == c).count(), greaterThan(4L));
+    assertThat(string, not(containsString(" <")));
+  }
+
 }

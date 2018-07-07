@@ -134,6 +134,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
     TransformerFactory xFactory = TransformerFactory.newInstance();
     Transformer xform = xFactory.newTransformer();
     xform.setOutputProperty(OutputKeys.INDENT, "yes");
+    xform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "0");
     xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
     xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
 

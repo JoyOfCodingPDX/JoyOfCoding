@@ -10,8 +10,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class StudentXmlTest {
 
@@ -86,6 +85,17 @@ public class StudentXmlTest {
     Student student2 = writeAndReadStudentAsXml(student);
 
     assertThat(student2.getEnrolledSection(), equalTo(section));
+  }
+
+  @Test
+  public void xmlHasNewlinesButNotIndentation() throws TransformerException {
+    Student student = new Student("test");
+    Document doc = XmlDumper.toXml(student);
+    byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
+    String string = new String(bytes);
+    assertThat(string, containsString("\n"));
+    assertThat(string.chars().filter(c -> '\n' == c).count(), greaterThan(4L));
+    assertThat(string, not(containsString(" <")));
   }
 
 }
