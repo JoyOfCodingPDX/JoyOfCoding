@@ -101,7 +101,7 @@ public class SummaryReport {
         line.append(" (INCOMPLETE)");
 
       } else if (grade.isNotGraded()) {
-        line.append( "(NOT GRADED)");
+        line.append( " (NOT GRADED)");
       }
 
       pw.println(line);
