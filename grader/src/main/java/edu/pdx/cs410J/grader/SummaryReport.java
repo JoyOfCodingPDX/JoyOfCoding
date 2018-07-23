@@ -6,6 +6,9 @@ import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -87,7 +90,12 @@ public class SummaryReport {
 
       // Skip incompletes and no grades
       if (grade == null) {
-        line.append(" (MISSING GRADE)");
+        if (dueDateHasPassed(assignment)) {
+          line.append(" (MISSING GRADE)");
+
+        } else {
+          line.append(String.format(" (due %s)", formatDueDate(assignment)));
+        }
 
       } else if (grade.isIncomplete()) {
         line.append(" (INCOMPLETE)");
@@ -147,6 +155,18 @@ public class SummaryReport {
     }
 
     allTotals.put(student, overallScore);
+  }
+
+  private static String formatDueDate(Assignment assignment) {
+    LocalDateTime dueDate = assignment.getDueDate();
+    return dueDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+  }
+
+  @VisibleForTesting
+  static boolean dueDateHasPassed(Assignment assignment) {
+    LocalDateTime dueDate = assignment.getDueDate();
+    LocalDateTime now = LocalDateTime.now();
+    return now.isAfter(dueDate);
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
