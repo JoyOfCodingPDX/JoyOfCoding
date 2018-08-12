@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -24,7 +24,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
 
   @Override
   public Iterable<? extends String> getSupportedContentTypes() {
-    return Collections.singleton("application/zip");
+    return List.of("application/zip", "application/x-zip-compressed");
   }
 
   @Override
