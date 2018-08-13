@@ -538,7 +538,7 @@ public class Submit extends EmailSender {
     Map<File, String> sourceFilesWithNames =
       sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
 
-    return new ZipMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();
+    return new ZipFileOfFilesMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();
   }
 
   private Map<Attributes.Name, String> getManifestEntries() {
