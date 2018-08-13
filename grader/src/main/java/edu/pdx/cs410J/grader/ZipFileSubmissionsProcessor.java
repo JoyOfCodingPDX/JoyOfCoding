@@ -24,7 +24,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
 
   @Override
   public Iterable<? extends String> getSupportedContentTypes() {
-    return List.of("application/zip", "application/x-zip-compressed");
+    return List.of("application/zip", "application/x-zip-compressed", "application/x-gzip");
   }
 
   @Override
