@@ -1,19 +1,19 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.io.ByteStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public class GwtZipFixer {
 
@@ -58,11 +58,13 @@ public class GwtZipFixer {
 
   private static void fixZipFile(File zipFile, File outputDirectory) throws IOException {
     File fixedZipFile = getFixedZipFile(zipFile, outputDirectory);
+    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, new HashMap<>());
 
     try (
       ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile));
-      ZipOutputStream output = new ZipOutputStream(new FileOutputStream(fixedZipFile))
     ) {
+      Map<ZipEntry, InputStream> zipFileEntries = new HashMap<>();
+
       for (ZipEntry entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {
         String entryName = entry.getName();
         String fixedEntryName = getFixedEntryName(entryName);
@@ -71,17 +73,20 @@ public class GwtZipFixer {
           logger.debug(entryName + " fixed to " + fixedEntryName);
 
           ZipEntry fixedEntry = new ZipEntry(fixedEntryName);
-          output.putNextEntry(fixedEntry);
+          fixedEntry.setLastModifiedTime(entry.getLastModifiedTime());
+          fixedEntry.setSize(entry.getSize());
+          fixedEntry.setMethod(ZipEntry.DEFLATED);
 
-          ByteStreams.copy(input, output);
+          zipFileEntries.put(fixedEntry, input);
 
         } else {
           logger.debug(entryName + " ignored");
         }
-
-        output.flush();
       }
+
+      maker.makeZipFile(zipFileEntries);
     }
+
   }
 
   @VisibleForTesting
