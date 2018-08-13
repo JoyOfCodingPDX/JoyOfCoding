@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -127,6 +128,19 @@ public class GwtZipFixerTest {
   public void dsStoreIsIgnored() {
     String entry = "student/airline/src/main/.DS_Store";
     assertThat(GwtZipFixer.getFixedEntryName(entry), nullValue());
+  }
+
+  @Ignore
+  @Test
+  public void manifestContainsStudentId() {
+    String studentId = "studentId";
+
+    GradeBook book = new GradeBook("test");
+    book.addStudent(new Student(studentId));
+
+    GwtZipFixer fixer = new GwtZipFixer(book);
+    assertThat(fixer.getManifestEntriesForString(studentId).get(Submit.ManifestAttributes.USER_ID), equalTo(studentId));
+
   }
 
 }

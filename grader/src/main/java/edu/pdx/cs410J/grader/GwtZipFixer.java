@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -19,17 +21,33 @@ public class GwtZipFixer {
 
   private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
 
+  private final GradeBook gradeBook;
+
+  @VisibleForTesting
+  GwtZipFixer(GradeBook book) {
+    this.gradeBook = book;
+  }
+
   public static void main(String[] args) {
+    String gradeBookFileName = null;
     String outputDirectoryName = null;
     List<String> zipFileNames = new ArrayList<>();
 
     for (String arg : args) {
-      if (outputDirectoryName == null) {
+      if (gradeBookFileName == null) {
+        gradeBookFileName = arg;
+
+      } else if (outputDirectoryName == null) {
         outputDirectoryName = arg;
 
       } else {
         zipFileNames.add(arg);
       }
+    }
+
+    if (gradeBookFileName == null) {
+      usage("Missing grade book file name");
+      return;
     }
 
     if (outputDirectoryName == null) {
@@ -43,25 +61,43 @@ public class GwtZipFixer {
     }
 
     File outputDirectory = new File(outputDirectoryName);
+    GradeBook book;
+    try {
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFileName);
+      book = parser.parse();
+
+    } catch (IOException | ParserException ex) {
+      exitWithExceptionMessage("While parsing grade book", ex);
+      return;
+    }
+    GwtZipFixer fixer = new GwtZipFixer(book);
 
     for (String zipFileName : zipFileNames) {
       File zipFile = new File(zipFileName);
       try {
-        fixZipFile(zipFile, outputDirectory);
+        fixer.fixZipFile(zipFile, outputDirectory);
 
       } catch (IOException e) {
-        usage("While fixing zip file " + zipFile + ": " + e);
+        exitWithExceptionMessage("While fixing zip file " + zipFile, e);
       }
 
     }
   }
 
-  private static void fixZipFile(File zipFile, File outputDirectory) throws IOException {
+  private static void exitWithExceptionMessage(String message, Exception ex) {
+    System.err.println("+++ " + message);
+    System.err.println(ex.getMessage());
+
+    System.exit(1);
+  }
+
+  private void fixZipFile(File zipFile, File outputDirectory) throws IOException {
     File fixedZipFile = getFixedZipFile(zipFile, outputDirectory);
-    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, new HashMap<>());
+    String studentId = getStudentIdFromZipFileName(zipFile);
+    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, getManifestEntriesForString(studentId));
 
     try (
-      ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile));
+      ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile))
     ) {
       Map<ZipEntry, InputStream> zipFileEntries = new HashMap<>();
 
@@ -87,6 +123,27 @@ public class GwtZipFixer {
       maker.makeZipFile(zipFileEntries);
     }
 
+  }
+
+  private String getStudentIdFromZipFileName(File zipFile) {
+    String fileName = zipFile.getName();
+    int index = fileName.indexOf(".zip");
+    if (index < 0) {
+      return fileName;
+
+    } else {
+      return fileName.substring(0, index);
+    }
+  }
+
+  @VisibleForTesting
+  HashMap<Attributes.Name, String> getManifestEntriesForString(String studentId) {
+    Student student =
+      this.gradeBook.getStudent(studentId).orElseThrow(() -> new IllegalArgumentException("Unknown student: " + studentId));
+
+    HashMap<Attributes.Name, String> manifest = new HashMap<>();
+    manifest.put(Submit.ManifestAttributes.USER_ID, student.getId());
+    return manifest;
   }
 
   @VisibleForTesting
@@ -148,7 +205,8 @@ public class GwtZipFixer {
 
     err.println("+++ " + message);
     err.println();
-    err.println("usage: java GwtZipFixer outputDirectory zipFile+");
+    err.println("usage: java GwtZipFixer gradeBook outputDirectory zipFile+");
+    err.println("    gradeBook           Grade book XML file");
     err.println("    outputDirectory     Name of direct into which fixed zip files should be written");
     err.println("    zipFile             Name of zip file to be fixed");
     err.println();
