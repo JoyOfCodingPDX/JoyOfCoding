@@ -144,7 +144,36 @@ public class GwtZipFixer {
     HashMap<Attributes.Name, String> manifest = new HashMap<>();
     manifest.put(Submit.ManifestAttributes.USER_ID, student.getId());
     manifest.put(Submit.ManifestAttributes.USER_NAME, student.getFullName());
+
+    String submissionTime = getSubmissionTime(student);
+
     return manifest;
+  }
+
+  private String getSubmissionTime(Student student) {
+    Grade gwtProject = student.getGrade("Project5");
+    if (gwtProject == null) {
+      logger.warn("No Project5 submission for " + student.getId());
+      return null;
+    }
+
+    List<String> notes = gwtProject.getNotes();
+    if (notes == null) {
+      logger.warn("No notes for Project5 submission for " + student.getId());
+      return null;
+    }
+
+    Stream<String> submissionTimes = getSubmissionTimes(notes);
+    return submissionTimes.findFirst().orElseGet(() -> null);
+  }
+
+  @VisibleForTesting
+  static Stream<String> getSubmissionTimes(List<String> notes) {
+    Pattern pattern = Pattern.compile("Submitted by (.*) on (.*)");
+    return notes.stream().map(note -> {
+      Matcher matcher = pattern.matcher(note);
+      return matcher.find() ? matcher.group(2) : null;
+    });
   }
 
   @VisibleForTesting

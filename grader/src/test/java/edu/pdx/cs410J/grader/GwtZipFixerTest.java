@@ -3,6 +3,12 @@ package edu.pdx.cs410J.grader;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static edu.pdx.cs410J.grader.Submit.ManifestAttributes;
+import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -139,11 +145,10 @@ public class GwtZipFixerTest {
     book.addStudent(new Student(studentId));
 
     GwtZipFixer fixer = new GwtZipFixer(book);
-    assertThat(fixer.getManifestEntriesForStudent(studentId).get(Submit.ManifestAttributes.USER_ID), equalTo(studentId));
+    assertThat(fixer.getManifestEntriesForStudent(studentId).get(USER_ID), equalTo(studentId));
 
   }
 
-  @Ignore
   @Test
   public void manifestContainsStudentName() {
 
@@ -154,8 +159,38 @@ public class GwtZipFixerTest {
     book.addStudent(student);
 
     GwtZipFixer fixer = new GwtZipFixer(book);
-    assertThat(fixer.getManifestEntriesForStudent("studentId").get(Submit.ManifestAttributes.USER_NAME), equalTo(student.getFullName()));
+    assertThat(fixer.getManifestEntriesForStudent("studentId").get(USER_NAME), equalTo(student.getFullName()));
 
+  }
+
+  @Ignore
+  @Test
+  public void manifestContainsSubmissionTime() {
+    GradeBook book = new GradeBook("test");
+    String studentId = "studentId";
+    Student student = new Student(studentId);
+    book.addStudent(student);
+
+    Assignment gwtProject = new Assignment("Project5", 12.0);
+    book.addAssignment(gwtProject);
+
+    Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
+    LocalDateTime submissionTime = LocalDateTime.now();
+    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, submissionTime));
+
+    student.setGrade(gwtProject, grade);
+
+    GwtZipFixer fixer = new GwtZipFixer(book);
+    assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(submissionTime)));
+
+  }
+
+  @Test
+  public void canIdentifySubmissionTimesInGradeNotes() {
+    LocalDateTime submissionTime = LocalDateTime.now();
+    String note = ZipFileSubmissionsProcessor.getSubmissionNote("student", submissionTime);
+    Stream<String> times = GwtZipFixer.getSubmissionTimes(List.of(note));
+    assertThat(times.anyMatch(s -> s.equals(ManifestAttributes.formatSubmissionTime(submissionTime))), equalTo(true));
   }
 
 }
