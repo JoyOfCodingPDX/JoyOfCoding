@@ -94,7 +94,7 @@ public class GwtZipFixer {
   private void fixZipFile(File zipFile, File outputDirectory) throws IOException {
     File fixedZipFile = getFixedZipFile(zipFile, outputDirectory);
     String studentId = getStudentIdFromZipFileName(zipFile);
-    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, getManifestEntriesForString(studentId));
+    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, getManifestEntriesForStudent(studentId));
 
     try (
       ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile))
@@ -137,12 +137,13 @@ public class GwtZipFixer {
   }
 
   @VisibleForTesting
-  HashMap<Attributes.Name, String> getManifestEntriesForString(String studentId) {
+  HashMap<Attributes.Name, String> getManifestEntriesForStudent(String studentId) {
     Student student =
       this.gradeBook.getStudent(studentId).orElseThrow(() -> new IllegalArgumentException("Unknown student: " + studentId));
 
     HashMap<Attributes.Name, String> manifest = new HashMap<>();
     manifest.put(Submit.ManifestAttributes.USER_ID, student.getId());
+    manifest.put(Submit.ManifestAttributes.USER_NAME, student.getFullName());
     return manifest;
   }
 

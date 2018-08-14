@@ -139,7 +139,22 @@ public class GwtZipFixerTest {
     book.addStudent(new Student(studentId));
 
     GwtZipFixer fixer = new GwtZipFixer(book);
-    assertThat(fixer.getManifestEntriesForString(studentId).get(Submit.ManifestAttributes.USER_ID), equalTo(studentId));
+    assertThat(fixer.getManifestEntriesForStudent(studentId).get(Submit.ManifestAttributes.USER_ID), equalTo(studentId));
+
+  }
+
+  @Ignore
+  @Test
+  public void manifestContainsStudentName() {
+
+    GradeBook book = new GradeBook("test");
+    Student student = new Student("studentId");
+    student.setFirstName("First");
+    student.setLastName("Last");
+    book.addStudent(student);
+
+    GwtZipFixer fixer = new GwtZipFixer(book);
+    assertThat(fixer.getManifestEntriesForStudent("studentId").get(Submit.ManifestAttributes.USER_NAME), equalTo(student.getFullName()));
 
   }
 
