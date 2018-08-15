@@ -538,7 +538,7 @@ public class Submit extends EmailSender {
     Map<File, String> sourceFilesWithNames =
       sourceFiles.stream().collect(Collectors.toMap(file -> file, this::getRelativeName));
 
-    return new ZipMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();
+    return new ZipFileOfFilesMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();
   }
 
   private Map<Attributes.Name, String> getManifestEntries() {
@@ -769,6 +769,11 @@ public class Submit extends EmailSender {
 
     public static String formatSubmissionTime(LocalDateTime submitTime) {
       return submitTime.format(DATE_TIME_FORMATTER);
+    }
+
+    @VisibleForTesting
+    static String formatSubmissionTimeUsingLegacyFormat(LocalDateTime submitTime) {
+      return submitTime.format(LEGACY_DATE_TIME_FORMATTER);
     }
 
     public static LocalDateTime parseSubmissionTime(String string) {
