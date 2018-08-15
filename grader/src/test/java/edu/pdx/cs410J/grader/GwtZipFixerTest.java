@@ -163,7 +163,6 @@ public class GwtZipFixerTest {
 
   }
 
-  @Ignore
   @Test
   public void manifestContainsSubmissionTime() {
     GradeBook book = new GradeBook("test");
@@ -182,7 +181,6 @@ public class GwtZipFixerTest {
 
     GwtZipFixer fixer = new GwtZipFixer(book);
     assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(submissionTime)));
-
   }
 
   @Test
@@ -191,6 +189,29 @@ public class GwtZipFixerTest {
     String note = ZipFileSubmissionsProcessor.getSubmissionNote("student", submissionTime);
     Stream<String> times = GwtZipFixer.getSubmissionTimes(List.of(note));
     assertThat(times.anyMatch(s -> s.equals(ManifestAttributes.formatSubmissionTime(submissionTime))), equalTo(true));
+  }
+
+  @Test
+  public void manifestContainsLatestSubmissionTime() {
+    GradeBook book = new GradeBook("test");
+    String studentId = "studentId";
+    Student student = new Student(studentId);
+    book.addStudent(student);
+
+    Assignment gwtProject = new Assignment("Project5", 12.0);
+    book.addAssignment(gwtProject);
+
+    Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime firstSubmissionTime = now.minusDays(1);
+    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, firstSubmissionTime));
+    LocalDateTime secondSubmissionTime = now.minusHours(6);
+    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, secondSubmissionTime));
+
+    student.setGrade(gwtProject, grade);
+
+    GwtZipFixer fixer = new GwtZipFixer(book);
+    assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(secondSubmissionTime)));
   }
 
 }

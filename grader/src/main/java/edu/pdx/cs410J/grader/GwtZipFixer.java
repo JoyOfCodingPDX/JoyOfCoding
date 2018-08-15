@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,8 +141,7 @@ public class GwtZipFixer {
     HashMap<Attributes.Name, String> manifest = new HashMap<>();
     manifest.put(Submit.ManifestAttributes.USER_ID, student.getId());
     manifest.put(Submit.ManifestAttributes.USER_NAME, student.getFullName());
-
-    String submissionTime = getSubmissionTime(student);
+    manifest.put(Submit.ManifestAttributes.SUBMISSION_TIME, getSubmissionTime(student));
 
     return manifest;
   }
@@ -164,7 +160,7 @@ public class GwtZipFixer {
     }
 
     Stream<String> submissionTimes = getSubmissionTimes(notes);
-    return submissionTimes.findFirst().orElseGet(() -> null);
+    return submissionTimes.max(Comparator.naturalOrder()).orElse(null);
   }
 
   @VisibleForTesting
