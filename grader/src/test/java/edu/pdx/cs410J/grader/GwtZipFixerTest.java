@@ -234,4 +234,22 @@ public class GwtZipFixerTest {
     assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(secondSubmissionTime)));
   }
 
+  @Test
+  public void missingSubmissionDateResultsInNullManifestEntry() {
+    GradeBook book = new GradeBook("test");
+    String studentId = "studentId";
+    Student student = new Student(studentId);
+    book.addStudent(student);
+
+    Assignment gwtProject = new Assignment("Project5", 12.0);
+    book.addAssignment(gwtProject);
+
+    Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
+
+    student.setGrade(gwtProject, grade);
+
+    GwtZipFixer fixer = new GwtZipFixer(book);
+    assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(null));
+  }
+
 }
