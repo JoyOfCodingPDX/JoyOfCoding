@@ -771,6 +771,11 @@ public class Submit extends EmailSender {
       return submitTime.format(DATE_TIME_FORMATTER);
     }
 
+    @VisibleForTesting
+    static String formatSubmissionTimeUsingLegacyFormat(LocalDateTime submitTime) {
+      return submitTime.format(LEGACY_DATE_TIME_FORMATTER);
+    }
+
     public static LocalDateTime parseSubmissionTime(String string) {
       try {
         return LocalDateTime.parse(string, DATE_TIME_FORMATTER);

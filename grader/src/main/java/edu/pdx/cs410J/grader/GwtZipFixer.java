@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.regex.Matcher;
@@ -141,12 +142,16 @@ public class GwtZipFixer {
     HashMap<Attributes.Name, String> manifest = new HashMap<>();
     manifest.put(Submit.ManifestAttributes.USER_ID, student.getId());
     manifest.put(Submit.ManifestAttributes.USER_NAME, student.getFullName());
-    manifest.put(Submit.ManifestAttributes.SUBMISSION_TIME, getSubmissionTime(student));
+
+    LocalDateTime submissionTime = getSubmissionTime(student);
+    if (submissionTime != null) {
+      manifest.put(Submit.ManifestAttributes.SUBMISSION_TIME, Submit.ManifestAttributes.formatSubmissionTime(submissionTime));
+    }
 
     return manifest;
   }
 
-  private String getSubmissionTime(Student student) {
+  private LocalDateTime getSubmissionTime(Student student) {
     Grade gwtProject = student.getGrade("Project5");
     if (gwtProject == null) {
       logger.warn("No Project5 submission for " + student.getId());
@@ -160,7 +165,10 @@ public class GwtZipFixer {
     }
 
     Stream<String> submissionTimes = getSubmissionTimes(notes);
-    return submissionTimes.max(Comparator.naturalOrder()).orElse(null);
+    return submissionTimes
+      .map(Submit.ManifestAttributes::parseSubmissionTime)
+      .max(Comparator.naturalOrder())
+      .orElse(null);
   }
 
   @VisibleForTesting

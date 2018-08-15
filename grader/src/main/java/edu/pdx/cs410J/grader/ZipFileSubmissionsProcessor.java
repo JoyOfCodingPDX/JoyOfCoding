@@ -95,11 +95,12 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
 
   @VisibleForTesting
   static String getSubmissionNote(String senderName, LocalDateTime submissionTime) {
-    return "Submitted by " + senderName + " on " + formatSubmissionTime(submissionTime);
+    return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTime(submissionTime);
   }
 
-  private static String formatSubmissionTime(LocalDateTime sentDate) {
-    return Submit.ManifestAttributes.formatSubmissionTime(sentDate);
+  @VisibleForTesting
+  static String getSubmissionNoteUsingLegacyDateFormat(String senderName, LocalDateTime submissionTime) {
+    return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTimeUsingLegacyFormat(submissionTime);
   }
 
   private Assignment getKoansProjectFromGradeBook() throws SubmissionException {
