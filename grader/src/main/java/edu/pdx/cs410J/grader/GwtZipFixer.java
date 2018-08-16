@@ -92,9 +92,17 @@ public class GwtZipFixer {
   private void fixZipFile(File zipFile, File outputDirectory) throws IOException {
     File fixedZipFile = getFixedZipFile(zipFile, outputDirectory);
     String studentId = getStudentIdFromZipFileName(zipFile);
-    ZipFileMaker maker = new ZipFileMaker(fixedZipFile, getManifestEntriesForStudent(studentId));
+    FileOutputStream fixZipStream = new FileOutputStream(fixedZipFile);
 
     InputStream zipStream = new FileInputStream(zipFile);
+
+    HashMap<Attributes.Name, String> manifestEntries = getManifestEntriesForStudent(studentId);
+    fixZipFile(zipStream, fixZipStream, manifestEntries);
+  }
+
+  @VisibleForTesting
+  void fixZipFile(InputStream zipStream, OutputStream fixedZipStream, HashMap<Attributes.Name, String> manifestEntries) throws IOException {
+    ZipFileMaker maker = new ZipFileMaker(fixedZipStream, manifestEntries);
     try (
       ZipInputStream input = new ZipInputStream(zipStream)
     ) {
@@ -121,7 +129,6 @@ public class GwtZipFixer {
 
       maker.makeZipFile(zipFileEntries);
     }
-
   }
 
   private String getStudentIdFromZipFileName(File zipFile) {

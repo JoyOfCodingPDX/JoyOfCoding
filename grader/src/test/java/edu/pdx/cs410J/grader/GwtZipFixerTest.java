@@ -1,15 +1,25 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.io.ByteStreams;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import static edu.pdx.cs410J.grader.Submit.ManifestAttributes;
 import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
 public class GwtZipFixerTest {
@@ -250,6 +260,47 @@ public class GwtZipFixerTest {
 
     GwtZipFixer fixer = new GwtZipFixer(book);
     assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(null));
+  }
+
+  @Ignore
+  @Test
+  public void contentsOfZipEntriesAreNotModified() throws IOException {
+    String entryName = "TestEntry.txt";
+    String entryContent = "This is a test entry";
+
+    ByteArrayOutputStream zippedBytes = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(zippedBytes);
+    zos.setMethod(ZipOutputStream.DEFLATED);
+
+    ZipEntry entry = new ZipEntry(entryName);
+    zos.putNextEntry(entry);
+    zos.write(entryContent.getBytes());
+    zos.closeEntry();
+    zos.close();
+
+    GwtZipFixer fixer = new GwtZipFixer(new GradeBook("test"));
+    ByteArrayOutputStream fixedBytes = new ByteArrayOutputStream();
+    fixer.fixZipFile(new ByteArrayInputStream(zippedBytes.toByteArray()), fixedBytes, new HashMap<>());
+
+    ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(fixedBytes.toByteArray()));
+
+    ZipEntry fixedEntry = zis.getNextEntry();
+    while (fixedEntry != null) {
+      if (fixedEntry.getName().equals(entryName)) {
+        break;
+      }
+      fixedEntry = zis.getNextEntry();
+    }
+
+    assertThat(fixedEntry, notNullValue());
+
+    ByteArrayOutputStream fixedEntryBytes = new ByteArrayOutputStream();
+    ByteStreams.copy(zis, fixedEntryBytes);
+    String fixedEntryContent = new String(fixedEntryBytes.toByteArray());
+
+    assertThat(fixedEntryContent, equalTo(entryContent));
+
+
   }
 
 }
