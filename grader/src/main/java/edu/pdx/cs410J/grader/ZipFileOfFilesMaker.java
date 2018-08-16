@@ -26,7 +26,7 @@ class ZipFileOfFilesMaker extends ZipFileMaker {
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
       File file = fileEntry.getKey();
       String fileName = fileEntry.getValue();
-      System.out.println("Adding " + fileName + " to zip");
+      logger.debug("Adding " + fileName + " to zip");
       ZipEntry entry = new ZipEntry(fileName);
       entry.setTime(file.lastModified());
       entry.setSize(file.length());

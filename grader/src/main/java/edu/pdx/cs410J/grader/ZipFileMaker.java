@@ -1,6 +1,8 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFileMaker {
+  protected static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+
   protected final Map<Attributes.Name, String> manifestEntries;
   private OutputStream zipStream;
 
@@ -52,7 +56,7 @@ public class ZipFileMaker {
 
     String entryName = JarFile.MANIFEST_NAME;
 
-    System.out.println("Adding " + entryName + " to zip");
+    logger.debug("Adding " + entryName + " to zip");
     ZipEntry entry = new ZipEntry(entryName);
     entry.setTime(System.currentTimeMillis());
     entry.setMethod(ZipEntry.DEFLATED);

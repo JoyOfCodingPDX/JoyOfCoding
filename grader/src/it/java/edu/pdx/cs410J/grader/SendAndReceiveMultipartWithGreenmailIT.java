@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.grader;
 
-import com.google.common.io.ByteStreams;
 import com.icegreen.greenmail.imap.AuthorizationException;
 import com.icegreen.greenmail.imap.ImapHostManager;
 import com.icegreen.greenmail.store.FolderException;
@@ -17,15 +16,15 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 
 public class SendAndReceiveMultipartWithGreenmailIT extends GreenmailIntegrationTestCase {
 
@@ -119,29 +118,12 @@ public class SendAndReceiveMultipartWithGreenmailIT extends GreenmailIntegration
     mailTA(makeZipFile(zipFile, filesToSubmit));
   }
 
-  public File makeZipFile(File zipFile, File[] files) throws IOException {
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
-    zos.setMethod(ZipOutputStream.DEFLATED);
+  private File makeZipFile(File zipFile, File[] files) throws IOException {
+    Map<File, String> sourceFilesAndNames =
+      Arrays.stream(files).collect(Collectors.toMap(file -> file, File::getName));
 
-    // Add the source files to the Zip
-    for (File file : files) {
-      String fileName = file.getName();
-      System.out.println("Adding " + fileName + " to zip");
-      ZipEntry entry = new ZipEntry(fileName);
-      entry.setTime(file.lastModified());
-      entry.setSize(file.length());
-
-      entry.setMethod(ZipEntry.DEFLATED);
-
-      // Add the entry to the ZIP file
-      zos.putNextEntry(entry);
-
-      ByteStreams.copy(new FileInputStream(file), zos);
-
-      zos.closeEntry();
-    }
-
-    zos.close();
+    ZipFileOfFilesMaker maker = new ZipFileOfFilesMaker(sourceFilesAndNames, zipFile, new HashMap<>());
+    maker.makeZipFile();
 
     return zipFile;
   }
