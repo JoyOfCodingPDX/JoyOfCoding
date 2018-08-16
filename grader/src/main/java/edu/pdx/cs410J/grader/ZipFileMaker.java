@@ -13,15 +13,19 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipFileMaker {
   protected final Map<Attributes.Name, String> manifestEntries;
-  protected final File zipFile;
+  private OutputStream zipStream;
 
-  public ZipFileMaker(File zipFile, Map<Attributes.Name, String> manifestEntries) {
-    this.zipFile = zipFile;
-    this.manifestEntries = manifestEntries;
+  public ZipFileMaker(File zipFile, Map<Attributes.Name, String> manifestEntries) throws FileNotFoundException {
+    this(new FileOutputStream(zipFile), manifestEntries);
   }
 
-  protected File makeZipFile(Map<ZipEntry, InputStream> zipFileEntries) throws IOException {
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
+  public ZipFileMaker(OutputStream zipStream, Map<Attributes.Name, String> manifestEntries) {
+    this.manifestEntries = manifestEntries;
+    this.zipStream = zipStream;
+  }
+
+  protected void makeZipFile(Map<ZipEntry, InputStream> zipFileEntries) throws IOException {
+    ZipOutputStream zos = new ZipOutputStream(zipStream);
     zos.setMethod(ZipOutputStream.DEFLATED);
 
     // Create a Manifest for the Zip file containing the name of the
@@ -40,8 +44,6 @@ public class ZipFileMaker {
     }
 
     zos.close();
-
-    return zipFile;
   }
 
   private void writeManifestAsEntryInZipFile(ZipOutputStream zos) throws IOException {

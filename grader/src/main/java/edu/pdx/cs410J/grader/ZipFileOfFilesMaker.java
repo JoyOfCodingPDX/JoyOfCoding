@@ -15,12 +15,12 @@ class ZipFileOfFilesMaker extends ZipFileMaker {
 
   private final Map<File, String> sourceFilesAndNames;
 
-  public ZipFileOfFilesMaker(Map<File, String> sourceFilesAndNames, File zipFile, Map<Attributes.Name, String> manifestEntries) {
-    super(zipFile, manifestEntries);
+  public ZipFileOfFilesMaker(Map<File, String> sourceFilesAndNames, File zipFile, Map<Attributes.Name, String> manifestEntries) throws FileNotFoundException {
+    super(new FileOutputStream(zipFile), manifestEntries);
     this.sourceFilesAndNames = sourceFilesAndNames;
   }
 
-  public File makeZipFile() throws IOException {
+  public void makeZipFile() throws IOException {
     Map<ZipEntry, InputStream> zipFileEntries = new HashMap<>();
 
     for (Map.Entry<File, String> fileEntry : sourceFilesAndNames.entrySet()) {
@@ -37,7 +37,7 @@ class ZipFileOfFilesMaker extends ZipFileMaker {
     }
 
 
-    return makeZipFile(zipFileEntries);
+    makeZipFile(zipFileEntries);
   }
 
   public static void main(String[] args) throws IOException {

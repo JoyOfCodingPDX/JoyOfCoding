@@ -94,8 +94,9 @@ public class GwtZipFixer {
     String studentId = getStudentIdFromZipFileName(zipFile);
     ZipFileMaker maker = new ZipFileMaker(fixedZipFile, getManifestEntriesForStudent(studentId));
 
+    InputStream zipStream = new FileInputStream(zipFile);
     try (
-      ZipInputStream input = new ZipInputStream(new FileInputStream(zipFile))
+      ZipInputStream input = new ZipInputStream(zipStream)
     ) {
       Map<ZipEntry, InputStream> zipFileEntries = new HashMap<>();
 
