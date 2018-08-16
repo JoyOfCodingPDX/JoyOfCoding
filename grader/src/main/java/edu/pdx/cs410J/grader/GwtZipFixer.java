@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.io.ByteStreams;
 import edu.pdx.cs410J.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,10 +118,10 @@ public class GwtZipFixer {
 
           ZipEntry fixedEntry = new ZipEntry(fixedEntryName);
           fixedEntry.setLastModifiedTime(entry.getLastModifiedTime());
-          fixedEntry.setSize(entry.getSize());
           fixedEntry.setMethod(ZipEntry.DEFLATED);
 
-          zipFileEntries.put(fixedEntry, input);
+          byte[] entryBytes = ByteStreams.toByteArray(input);
+          zipFileEntries.put(fixedEntry, new ByteArrayInputStream(entryBytes));
 
         } else {
           logger.debug(entryName + " ignored");

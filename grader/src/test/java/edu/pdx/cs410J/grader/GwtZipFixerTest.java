@@ -262,10 +262,9 @@ public class GwtZipFixerTest {
     assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(null));
   }
 
-  @Ignore
   @Test
   public void contentsOfZipEntriesAreNotModified() throws IOException {
-    String entryName = "TestEntry.txt";
+    String entryName = "pom.xml";
     String entryContent = "This is a test entry";
 
     ByteArrayOutputStream zippedBytes = new ByteArrayOutputStream();
