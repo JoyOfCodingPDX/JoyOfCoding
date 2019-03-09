@@ -22,13 +22,10 @@
         <module>java-koans-archetype</module>
         <module>apptbook-archetype</module>
         <module>apptbook-web-archetype</module>
-        <module>apptbook-gwt-archetype</module>
         <module>airline-archetype</module>
         <module>airline-web-archetype</module>
-        <module>airline-gwt-archetype</module>
         <module>phonebill-archetype</module>
         <module>phonebill-web-archetype</module>
-        <module>phonebill-gwt-archetype</module>
     </modules>
 
 </project>
