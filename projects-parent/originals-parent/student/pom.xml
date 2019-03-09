@@ -4,11 +4,11 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2018</version>
+    <version>Summer2019</version>
   </parent>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>student</artifactId>
-  <version>Summer2018</version>
+  <version>Summer2019</version>
   <packaging>jar</packaging>
 
   <name>Student Project</name>
@@ -102,12 +102,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>Summer2018</version>
+      <version>Summer2019</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Summer2018</version>
+      <version>Summer2019</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -142,7 +142,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2018</version>
+                <version>Summer2019</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
