@@ -83,9 +83,6 @@ public class FetchAndProcessGraderEmail {
     } else if (whatToFetch.equalsIgnoreCase("surveys")) {
       return new SurveySubmissionsProcessor(directory, gradeBook);
 
-    } else if (whatToFetch.equalsIgnoreCase("gwtProjects")) {
-      return new GwtProjectSubmissionsProcessor(directory, gradeBook);
-
     } else {
       return usage("Cannot fetch \"" + whatToFetch + "\"");
     }
@@ -142,7 +139,6 @@ public class FetchAndProcessGraderEmail {
     err.println("  whatToFetch     What kind of student emails should be fetched");
     err.println("      projects    Project submissions");
     err.println("      surveys     Student surveys");
-    err.println("      gwtProjects GWT Project submissions");
     err.println();
 
     System.exit(1);
