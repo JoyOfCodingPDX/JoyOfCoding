@@ -3,19 +3,19 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2018</version>
+    <version>Summer2019</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>Summer2018</version>
+  <version>Summer2019</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>Summer2018</version>
+      <version>Summer2019</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -55,6 +55,17 @@
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>${groovy.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>2.3.1</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>

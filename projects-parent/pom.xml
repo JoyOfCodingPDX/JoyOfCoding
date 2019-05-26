@@ -7,11 +7,11 @@
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
         <artifactId>CS410J</artifactId>
-        <version>Summer2018</version>
+        <version>Summer2019</version>
     </parent>
 
     <artifactId>projects-parent</artifactId>
-    <version>Summer2018</version>
+    <version>Summer2019</version>
 
     <packaging>pom</packaging>
 

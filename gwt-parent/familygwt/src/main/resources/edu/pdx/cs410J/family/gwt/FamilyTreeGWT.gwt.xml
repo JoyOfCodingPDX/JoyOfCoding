@@ -1,8 +1,0 @@
-<module rename-to="family">
-  <inherits name="com.google.gwt.user.User"/>
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-  <inherits name="edu.pdx.cs410J.family.FamilyTreeCore"/>
-  <entry-point class="edu.pdx.cs410J.family.gwt.client.FamilyTreeGWT"/>
-
-  <servlet path="/tree" class="edu.pdx.cs410J.family.gwt.server.FamilyTreeServiceImpl"/>
-</module>
