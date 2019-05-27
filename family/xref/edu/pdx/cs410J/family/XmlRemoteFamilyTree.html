@@ -23,12 +23,12 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * because it is going to be bound into the RMI registry.</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html">XmlRemoteFamilyTree</a> <strong class="jxr_keyword">extends</strong> UnicastRemoteObject 
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">implements</strong> <a href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html">RemoteFamilyTree</a> {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="XmlRemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html#XmlRemoteFamilyTree">XmlRemoteFamilyTree</a> <strong class="jxr_keyword">extends</strong> UnicastRemoteObject 
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">implements</strong> <a name="RemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html#RemoteFamilyTree">RemoteFamilyTree</a> {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <em class="jxr_javadoccomment">/** The underlying family tree whose contents this remote family</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">   * tree serves up. */</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">transient</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>    <em class="jxr_javadoccomment">/** The XML file that serves as the source of this family tree */</em>
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">transient</strong> File xmlFile;
@@ -53,26 +53,26 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">   * @throws FamilyTreeException</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">   *         A problem occurred while parsing the XML file</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html">XmlRemoteFamilyTree</a>(File xmlFile) 
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">throws</strong> RemoteException, IOException, <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a> {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">public</strong> <a name="XmlRemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html#XmlRemoteFamilyTree">XmlRemoteFamilyTree</a>(File xmlFile) 
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">throws</strong> RemoteException, IOException, <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> {
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">super</strong>();   <em class="jxr_comment">// Register this object with RMI runtime</em>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">if</strong> (xmlFile.exists()) {
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>        out.println(<span class="jxr_string">"Reading Family Tree from "</span> + xmlFile);
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>        <a href="../../../../edu/pdx/cs410J/family/XmlParser.html">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlParser.html">XmlParser</a>(xmlFile);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>        <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/<a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>.html#XmlParser">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(xmlFile);
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>        <strong class="jxr_keyword">this</strong>.tree = parser.parse();
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>        <em class="jxr_comment">// Compute the highest id of any person</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>        Iterator iter = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>        <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = (Person) iter.next();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) iter.next();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">if</strong> (person.getId() &gt; <strong class="jxr_keyword">this</strong>.highestId) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>            <strong class="jxr_keyword">this</strong>.highestId = person.getId();
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>        }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>        <strong class="jxr_keyword">this</strong>.tree = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a>();
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>        <strong class="jxr_keyword">this</strong>.tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>        <strong class="jxr_keyword">this</strong>.highestId = 0;
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">   * Helper method that manages the cache of RemotePersons</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> getRemotePerson(<a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person) 
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>    <strong class="jxr_keyword">private</strong> <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> getRemotePerson(<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person) 
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">if</strong> (person == <strong class="jxr_keyword">null</strong>) {
@@ -93,38 +93,38 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">int</strong> id = person.getId();
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> rPerson = 
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>        (<a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a>) <strong class="jxr_keyword">this</strong>.remotePersons.get(<strong class="jxr_keyword">new</strong> Integer(id));
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> rPerson = 
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>        (<a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a>) <strong class="jxr_keyword">this</strong>.remotePersons.get(<strong class="jxr_keyword">new</strong> Integer(id));
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">if</strong> (rPerson == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>        <em class="jxr_comment">// Is there a person with that id</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>        <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.tree.containsPerson(id)) {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>        }
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>        rPerson = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/RemotePersonImpl.html">RemotePersonImpl</a>(<strong class="jxr_keyword">this</strong>, person);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>        rPerson = <strong class="jxr_keyword">new</strong> <a name="RemotePersonImpl" href="../../../../edu/pdx/cs410J/family/RemotePersonImpl.html#RemotePersonImpl">RemotePersonImpl</a>(<strong class="jxr_keyword">this</strong>, person);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>        <strong class="jxr_keyword">this</strong>.remotePersons.put(<strong class="jxr_keyword">new</strong> Integer(person.getId()), rPerson);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">return</strong> rPerson;
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>   }
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> createPerson(Person.Gender gender) <strong class="jxr_keyword">throws</strong> RemoteException {
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a>(++<strong class="jxr_keyword">this</strong>.highestId, gender);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>   <strong class="jxr_keyword">public</strong> <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> createPerson(Person.Gender gender) <strong class="jxr_keyword">throws</strong> RemoteException {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>.html#Person">Person</a> person = <strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>(++<strong class="jxr_keyword">this</strong>.highestId, gender);
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">this</strong>.tree.addPerson(person);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">return</strong> getRemotePerson(person);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>   }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> getPerson(<strong class="jxr_keyword">int</strong> id) <strong class="jxr_keyword">throws</strong> RemoteException {
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>   <strong class="jxr_keyword">public</strong> <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> getPerson(<strong class="jxr_keyword">int</strong> id) <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">return</strong> getRemotePerson(<strong class="jxr_keyword">this</strong>.tree.getPerson(id));
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>   }
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> 
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> getPerson(String firstName, String lastName) 
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>   <strong class="jxr_keyword">public</strong> <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> getPerson(String firstName, String lastName) 
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     <strong class="jxr_keyword">throws</strong> RemoteException {
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>     Iterator people = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>       <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> p = (Person) people.next();
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>       <a name="Per<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>ref="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> p = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>       <strong class="jxr_keyword">if</strong> (p.getFirstName().equals(firstName) &amp;&amp;
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>           p.getLastName().equals(lastName)) {
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         <strong class="jxr_keyword">if</strong> (person == <strong class="jxr_keyword">null</strong>) {
@@ -146,7 +146,7 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     }
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>   }
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html">RemoteMarriage</a> getMarriage(<strong class="jxr_keyword">int</strong> husbandId, <strong class="jxr_keyword">int</strong> wifeId) 
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>   <strong class="jxr_keyword">public</strong> <a name="RemoteMarriage" href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html#RemoteMarriage">RemoteMarriage</a> getMarriage(<strong class="jxr_keyword">int</strong> husbandId, <strong class="jxr_keyword">int</strong> wifeId) 
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     <em class="jxr_comment">// Make sure that both the husband and the wife exist</em>
@@ -159,10 +159,10 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(s);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     }
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> husband = <strong class="jxr_keyword">this</strong>.tree.getPerson(husbandId);
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> husband = <strong class="jxr_keyword">this</strong>.tree.getPerson(husbandId);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     Iterator marriages = husband.getMarriages().iterator();
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">while</strong> (marriages.hasNext()) {
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>       <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage = (Marriage) marriages.next();
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>       <a name="Marriage" hr<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>./../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a> marriage = (<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>) marriages.next();
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>       <strong class="jxr_keyword">if</strong> (marriage.getWife().getId() == wifeId) {
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">return</strong> getRemoteMarriage(marriage);
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>       }
@@ -174,23 +174,23 @@
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">   * Helper method that maintains the map of RemoteMarriages</em>
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>   <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html">RemoteMarriage</a> getRemoteMarriage(<a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage) 
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>   <strong class="jxr_keyword">private</strong> <a name="RemoteMarriage" href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html#RemoteMarriage">RemoteMarriage</a> getRemoteMarriage(<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a> marriage) 
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>     <strong class="jxr_keyword">long</strong> key = (((<strong class="jxr_keyword">long</strong>) marriage.getHusband().getId()) &lt;&lt; 32) | 
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>       ((<strong class="jxr_keyword">long</strong>) marriage.getWife().getId());
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <a href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html">RemoteMarriage</a> rMarriage =
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>       (<a href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html">RemoteMarriage</a>) <strong class="jxr_keyword">this</strong>.remoteMarriages.get(<strong class="jxr_keyword">new</strong> Long(key));
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <a name="RemoteMarriage" href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html#RemoteMarriage">RemoteMarriage</a> rMarriage =
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>       (<a name="RemoteMarriage" href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html#RemoteMarriage">RemoteMarriage</a>) <strong class="jxr_keyword">this</strong>.remoteMarriages.get(<strong class="jxr_keyword">new</strong> Long(key));
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">if</strong> (rMarriage == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>       rMarriage = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/RemoteMarriageImpl.html">RemoteMarriageImpl</a>(marriage);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>       rMarriage = <strong class="jxr_keyword">new</strong> <a name="RemoteMarriageImpl" href="../../../../edu/pdx/cs410J/family/RemoteMarriageImpl.html#RemoteMarriageImpl">RemoteMarriageImpl</a>(marriage);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>       <strong class="jxr_keyword">this</strong>.remoteMarriages.put(<strong class="jxr_keyword">new</strong> Long(key), rMarriage);
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>     }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> 
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">return</strong> rMarriage;
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>   }
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html">RemoteMarriage</a> createMarriage(<strong class="jxr_keyword">int</strong> husbandId, <strong class="jxr_keyword">int</strong> wifeId) 
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>   <strong class="jxr_keyword">public</strong> <a name="RemoteMarriage" href="../../../../edu/pdx/cs410J/family/RemoteMarriage.html#RemoteMarriage">RemoteMarriage</a> createMarriage(<strong class="jxr_keyword">int</strong> husbandId, <strong class="jxr_keyword">int</strong> wifeId) 
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     <em class="jxr_comment">// Make sure that both the husband and the wife exist</em>
@@ -203,10 +203,10 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(s);
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     }
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> 
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> husband = <strong class="jxr_keyword">this</strong>.tree.getPerson(husbandId);
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> wife = <strong class="jxr_keyword">this</strong>.tree.getPerson(wifeId);
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> husband = <strong class="jxr_keyword">this</strong>.tree.getPerson(husbandId);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> wife = <strong class="jxr_keyword">this</strong>.tree.getPerson(wifeId);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> 
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a>(husband, wife);
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Ma<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>tml#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(husband, wife);
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     husband.addMarriage(marriage);
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>     wife.addMarriage(marriage);
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>     <strong class="jxr_keyword">return</strong> getRemoteMarriage(marriage);
@@ -217,7 +217,7 @@
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> 
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>     Iterator people = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>       <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = (Person) people.next();
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>       <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>       <strong class="jxr_keyword">if</strong> (person.getDateOfBirth() != <strong class="jxr_keyword">null</strong> &amp;&amp;
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>           person.getDateOfDeath() == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>         living.add(getRemotePerson(person));
@@ -232,7 +232,7 @@
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>     Iterator people = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>     <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>       <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = (Person) people.next();
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>       <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L228" href="#L228">228</a>       Date dob = person.getDateOfBirth();
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>       Date dod = person.getDateOfDeath();
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> 
@@ -257,7 +257,7 @@
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> shutdown() <strong class="jxr_keyword">throws</strong> IOException, RemoteException {
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     <em class="jxr_comment">// Write the contents of this family tree back to the XML file</em>
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     out.println(<span class="jxr_string">"Writing family tree to "</span> + <strong class="jxr_keyword">this</strong>.xmlFile.getPath());
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.xmlFile.getPath());
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.xmlFile.getPath());
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>     dumper.dump(<strong class="jxr_keyword">this</strong>.tree);
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>     UnicastRemoteObject.unexportObject(<strong class="jxr_keyword">this</strong>, false <em class="jxr_comment">/* force */</em>);
@@ -347,8 +347,8 @@
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>       String name = <span class="jxr_string">"rmi://"</span> + host + <span class="jxr_string">":"</span> + port + <span class="jxr_string">"/"</span> + familyName;
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>         <a href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html">XmlRemoteFamilyTree</a> tree =
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>           <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html">XmlRemoteFamilyTree</a>(<strong class="jxr_keyword">new</strong> File(xmlFileName));
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>         <a name="XmlRemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html#XmlRemoteFamilyTree">XmlRemoteFamilyTree</a> tree =
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>           <strong class="jxr_keyword">new</strong> <a name="XmlRemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/XmlRemoteFamilyTree.html#XmlRemoteFamilyTree">XmlRemoteFamilyTree</a>(<strong class="jxr_keyword">new</strong> File(xmlFileName));
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>         Naming.rebind(name, tree);
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>         out.println(<span class="jxr_string">"Successfully bound XmlRemoteFamilyTree"</span>);
 <a class="jxr_linenumber" name="L346" href="#L346">346</a> 
@@ -367,8 +367,8 @@
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>       String name = <span class="jxr_string">"rmi://"</span> + host + <span class="jxr_string">":"</span> + port + <span class="jxr_string">"/"</span> + familyName;
 <a class="jxr_linenumber" name="L360" href="#L360">360</a> 
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <a href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html">RemoteFamilyTree</a> tree = 
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>           (<a href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html">RemoteFamilyTree</a>) Naming.lookup(name);
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <a name="RemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html#RemoteFamilyTree">RemoteFamilyTree</a> tree = 
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>           (<a name="RemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html#RemoteFamilyTree">RemoteFamilyTree</a>) Naming.lookup(name);
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>         tree.shutdown();
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>         Naming.unbind(name);
 <a class="jxr_linenumber" name="L366" href="#L366">366</a> 
@@ -386,6 +386,6 @@
 <a class="jxr_linenumber" name="L378" href="#L378">378</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

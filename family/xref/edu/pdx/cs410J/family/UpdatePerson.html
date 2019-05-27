@@ -17,7 +17,7 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * This program is an RMI client that adds a person to a remote family</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * tree</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/UpdatePerson.html">UpdatePerson</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="UpdatePerson" href="../../../../edu/pdx/cs410J/family/UpdatePerson.html#UpdatePerson">UpdatePerson</a> {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintStream err = System.err;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintStream out = System.out;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
@@ -180,10 +180,10 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>     String name = <span class="jxr_string">"rmi://"</span> + host + <span class="jxr_string">":"</span> + port + <span class="jxr_string">"/"</span> + familyName;
 <a class="jxr_linenumber" name="L173" href="#L173">173</a> 
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>       <a href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html">RemoteFamilyTree</a> tree = 
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         (<a href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html">RemoteFamilyTree</a>) Naming.lookup(name);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>       <a name="RemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html#RemoteFamilyTree">RemoteFamilyTree</a> tree = 
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         (<a name="RemoteFamilyTree" href="../../../../edu/pdx/cs410J/family/RemoteFamilyTree.html#RemoteFamilyTree">RemoteFamilyTree</a>) Naming.lookup(name);
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> 
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>       <a href="../../../../edu/pdx/cs410J/family/RemotePerson.html">RemotePerson</a> person = tree.getPerson(firstName, lastName);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>       <a name="RemotePerson" href="../../../../edu/pdx/cs410J/family/RemotePerson.html#RemotePerson">RemotePerson</a> person = tree.getPerson(firstName, lastName);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>       <strong class="jxr_keyword">if</strong> (person == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         person = tree.createPerson(gender);
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         person.setFirstName(firstName);
@@ -221,6 +221,6 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

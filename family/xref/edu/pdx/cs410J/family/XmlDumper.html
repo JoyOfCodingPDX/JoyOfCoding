@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * file) in XML format.  This file is meant to be used by an</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * &lt;code&gt;XmlParser&lt;/code&gt; to create a &lt;code&gt;FamilyTree&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/family/XmlHelper.html">XmlHelper</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../edu/pdx/cs410J/family/Dumper.html">Dumper</a> {
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a> <strong class="jxr_keyword">extends</strong> <a name="XmlHelper" href="../../../../edu/pdx/cs410J/family/XmlHelper.html#XmlHelper">XmlHelper</a> <strong class="jxr_keyword">implements</strong> <a name="Dumper" href="../../../../edu/pdx/cs410J/family/Dumper.html#Dumper">Dumper</a> {
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintWriter err = <strong class="jxr_keyword">new</strong> PrintWriter(System.err, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    <strong class="jxr_keyword">private</strong> PrintWriter pw;      <em class="jxr_comment">// Dumping destination</em>
@@ -52,14 +52,14 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">   * Creates a new XML dumper that dumps to a file of a given name.</em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">   * If the file does not exist, it is created.</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(String fileName) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">public</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(String fileName) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> File(fileName));
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>    }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">   * Creates a new XML dumper that dumps to a given file.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(File file) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <strong class="jxr_keyword">public</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(File file) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> PrintWriter(<strong class="jxr_keyword">new</strong> FileWriter(file), <strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>    }
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment">   * &lt;code&gt;PrintWriter&lt;/code&gt;.  This way, we can dump to destinations</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">   * other than files.</em>
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(PrintWriter pw) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>    <strong class="jxr_keyword">public</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(PrintWriter pw) {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">this</strong>.pw = pw;
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>    }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">   * @throws FamilyTreeException</em>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">   *         An error occurred while dumping the family tree</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> dump(<a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree) {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> dump(<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree) {
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     <em class="jxr_comment">// First we create a DOM tree that represents the family tree</em>
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     Document doc = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> 
@@ -130,11 +130,11 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> 
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     } <strong class="jxr_keyword">catch</strong> (ParserConfigurationException ex) {
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>       String s = <span class="jxr_string">"Illconfigured XML parser"</span>;
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(s, ex);
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(s, ex);
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     } <strong class="jxr_keyword">catch</strong> (DOMException ex) {
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>       String s = <span class="jxr_string">"While creating XML Document"</span>;
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(s, ex);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(s, ex);
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     }
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <em class="jxr_comment">// Keep track of all of the marriages</em>
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>       <em class="jxr_comment">// Make the people</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>       Iterator people = tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>       <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> 	Person person = (Person) people.next();
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> 	Person person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> 	
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> 	<em class="jxr_comment">// Create the person element</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 	Element p = doc.createElement(<span class="jxr_string">"person"</span>);
@@ -215,7 +215,7 @@
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>       <em class="jxr_comment">// Make the marriages</em>
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>       Iterator iter = marriages.iterator();
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>       <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L210" href="#L210">210</a> 	Marriage marriage = (Marriage) iter.next();
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> 	Marriage marriage = (<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>) iter.next();
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> 	
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 	Element m = doc.createElement(<span class="jxr_string">"marriage"</span>);
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 	m.setAttribute(<span class="jxr_string">"husband-id"</span>,
@@ -240,7 +240,7 @@
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> 
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>     } <strong class="jxr_keyword">catch</strong> (DOMException ex) {
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>       String s = <span class="jxr_string">"** Exception while building DOM tree"</span>;
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(s, ex);
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(s, ex);
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     }
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> 
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>     <em class="jxr_comment">// Then we simply write the DOM tree to the destination</em>
@@ -265,7 +265,7 @@
 <a class="jxr_linenumber" name="L257" href="#L257">257</a> 
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>     } <strong class="jxr_keyword">catch</strong> (TransformerException ex) {
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>       String s = <span class="jxr_string">"While transforming XML"</span>;
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(s, ex);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(s, ex);
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>     }
 <a class="jxr_linenumber" name="L262" href="#L262">262</a> 
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>     <strong class="jxr_keyword">this</strong>.pw.flush();
@@ -280,14 +280,14 @@
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>     <em class="jxr_comment">// Make a family tree and dump it</em>
 <a class="jxr_linenumber" name="L273" href="#L273">273</a> 
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>     <em class="jxr_comment">// Make some people</em>
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> me = PersonMain.me();
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> mom = PersonMain.mom(me);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> dad = PersonMain.dad(me);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> me = PersonMain.me();
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> mom = PersonMain.mom(me);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> dad = PersonMain.dad(me);
 <a class="jxr_linenumber" name="L278" href="#L278">278</a> 
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>     me.setMother(mom);
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>     me.setFather(dad);
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>     <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a>(dad, mom);
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Ma<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>tml#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(dad, mom);
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>     marriage.setLocation(<span class="jxr_string">"Durham, NH"</span>);
 <a class="jxr_linenumber" name="L284" href="#L284">284</a> 
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">try</strong> {
@@ -303,16 +303,16 @@
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>     dad.addMarriage(marriage);
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> 
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>     <em class="jxr_comment">// Create a family tree.  Add people in an interesting order.</em>
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>     <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a>();
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>     <a name="FamilyTree" href="../../../../edu/pdx/cs410J/famil<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>ee.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     tree.addPerson(dad);
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>     tree.addPerson(mom);
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>     tree.addPerson(me);
 <a class="jxr_linenumber" name="L302" href="#L302">302</a> 
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>     <em class="jxr_comment">// Dump the family tree </em>
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>     <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>     <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">if</strong> (args.length &gt; 0) {
 <a class="jxr_linenumber" name="L306" href="#L306">306</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> 	dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(args[0]);
+<a class="jxr_linenumber" name="L307" href="#L307">307</a> 	dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(args[0]);
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> 
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>       } <strong class="jxr_keyword">catch</strong> (IOException ex) {
 <a class="jxr_linenumber" name="L310" href="#L310">310</a> 	err.println(<span class="jxr_string">"** IOException: "</span> + ex);
@@ -321,7 +321,7 @@
 <a class="jxr_linenumber" name="L313" href="#L313">313</a> 
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>       PrintWriter out = <strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>       dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(out);
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>       dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(out);
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>     }
 <a class="jxr_linenumber" name="L318" href="#L318">318</a> 
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>     dumper.dump(tree);
@@ -329,6 +329,6 @@
 <a class="jxr_linenumber" name="L321" href="#L321">321</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

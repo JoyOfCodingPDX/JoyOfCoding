@@ -19,7 +19,7 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * @author David Whitlock</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * @since Fall 2000</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/NoteMarriage.html">NoteMarriage</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NoteMarriage" href="../../../../edu/pdx/cs410J/family/NoteMarriage.html#NoteMarriage">NoteMarriage</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintWriter err = <strong class="jxr_keyword">new</strong> PrintWriter(System.err, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
@@ -156,16 +156,16 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>       usage(message);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     }
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> 
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     <em class="jxr_comment">// If the data file exists, read it in</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     File file = <strong class="jxr_keyword">new</strong> File(fileName);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">if</strong> (file.exists()) {
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>       <a href="../../../../edu/pdx/cs410J/family/Parser.html">Parser</a> parser = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>       <a name="Parser" href="../../../../edu/pdx/cs410J/family/Parser.html#Parser">Parser</a> parser = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>       <strong class="jxr_keyword">if</strong> (useXml) {
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> 	<em class="jxr_comment">// File in XML format</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> 	<strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a> 	  parser = <strong class="jxr_keyword">new</strong> XmlParser(file);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> 	  parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(file);
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> 
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> 	} <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> 	  err.println(<span class="jxr_string">"** Could not find file "</span> + fileName);
@@ -175,7 +175,7 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>       } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         <em class="jxr_comment">// File in text format</em>
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>           parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a>(file);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>           parser = <strong class="jxr_keyword">new</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(file);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>           err.println(<span class="jxr_string">"** Could not find file "</span> + fileName);
@@ -187,21 +187,21 @@
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>       <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         tree = parser.parse();
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> 
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>       } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>       } <strong class="jxr_keyword">catch</strong> (<a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> ex) {
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         err.println(<span class="jxr_string">"** File "</span> + fileName + <span class="jxr_string">" is malformatted"</span>);
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         System.exit(1);
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>       }
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> 
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>     } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>       <em class="jxr_comment">// No file to read, create a new family tree</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>       tree = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a>();
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>       tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>     }
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     <em class="jxr_comment">// Get the husband the wife and set up the marriage</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> husband = tree.getPerson(husbandId);
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> wife = tree.getPerson(wifeId);
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> husband = tree.getPerson(husbandId);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> wife = tree.getPerson(wifeId);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a>(husband, wife);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Ma<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>tml#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(husband, wife);
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     husband.addMarriage(marriage);
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     wife.addMarriage(marriage);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> 
@@ -214,10 +214,10 @@
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>     }
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> 
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>     <em class="jxr_comment">// Now write the family tree to the file</em>
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>     <a href="../../../../edu/pdx/cs410J/family/Dumper.html">Dumper</a> dumper = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>     <a name="Dumper" href="../../../../edu/pdx/cs410J/family/Dumper.html#Dumper">Dumper</a> dumper = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>     <strong class="jxr_keyword">if</strong> (useXml) {
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a> 	dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/XmlDumper.html">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> 	dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>       } <strong class="jxr_keyword">catch</strong> (IOException ex) {
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 	err.println(<span class="jxr_string">"** Error while dealing with "</span> + file);
@@ -226,7 +226,7 @@
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> 
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/TextDumper.html">TextDumper</a>(file);
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         dumper = <strong class="jxr_keyword">new</strong> <a name="TextDumper" href="../../../../edu/pdx/cs410J/family/TextDumper.html#TextDumper">TextDumper</a>(file);
 <a class="jxr_linenumber" name="L222" href="#L222">222</a> 
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>       } <strong class="jxr_keyword">catch</strong> (IOException ex) {
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>         err.println(<span class="jxr_string">"** Error while dealing with "</span> + file);
@@ -241,6 +241,6 @@
 <a class="jxr_linenumber" name="L233" href="#L233">233</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
