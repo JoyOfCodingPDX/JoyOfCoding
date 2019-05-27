@@ -14,81 +14,85 @@ import java.util.Map;
 /**
  * This servlet ultimately provides a REST API for working with an
  * &lt;code&gt;PhoneBill&lt;/code&gt;.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple key/value pairs.
+ * of how to use HTTP and Java servlets to store simple dictionary of words
+ * and their definitions.
  */
-<span class="nc" id="L19">public class PhoneBillServlet extends HttpServlet</span>
+<span class="nc" id="L20">public class PhoneBillServlet extends HttpServlet</span>
 {
-<span class="nc" id="L21">    private final Map&lt;String, String&gt; data = new HashMap&lt;&gt;();</span>
+    static final String WORD_PARAMETER = &quot;word&quot;;
+    static final String DEFINITION_PARAMETER = &quot;definition&quot;;
+
+<span class="nc" id="L25">    private final Map&lt;String, String&gt; dictionary = new HashMap&lt;&gt;();</span>
 
     /**
-     * Handles an HTTP GET request from a client by writing the value of the key
-     * specified in the &quot;key&quot; HTTP parameter to the HTTP response.  If the &quot;key&quot;
-     * parameter is not specified, all of the key/value pairs are written to the
-     * HTTP response.
+     * Handles an HTTP GET request from a client by writing the definition of the
+     * word specified in the &quot;word&quot; HTTP parameter to the HTTP response.  If the
+     * &quot;word&quot; parameter is not specified, all of the entries in the dictionary
+     * are written to the HTTP response.
      */
     @Override
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
-<span class="nc" id="L32">        response.setContentType( &quot;text/plain&quot; );</span>
+<span class="nc" id="L36">        response.setContentType( &quot;text/plain&quot; );</span>
 
-<span class="nc" id="L34">        String key = getParameter( &quot;key&quot;, request );</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (key != null) {</span>
-<span class="nc" id="L36">            writeValue(key, response);</span>
+<span class="nc" id="L38">        String word = getParameter( WORD_PARAMETER, request );</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (word != null) {</span>
+<span class="nc" id="L40">            writeDefinition(word, response);</span>
 
         } else {
-<span class="nc" id="L39">            writeAllMappings(response);</span>
+<span class="nc" id="L43">            writeAllDictionaryEntries(response);</span>
         }
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L45">    }</span>
 
     /**
-     * Handles an HTTP POST request by storing the key/value pair specified by the
-     * &quot;key&quot; and &quot;value&quot; request parameters.  It writes the key/value pair to the
-     * HTTP response.
+     * Handles an HTTP POST request by storing the dictionary entry for the
+     * &quot;word&quot; and &quot;definition&quot; request parameters.  It writes the dictionary
+     * entry to the HTTP response.
      */
     @Override
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
-<span class="nc" id="L51">        response.setContentType( &quot;text/plain&quot; );</span>
+<span class="nc" id="L55">        response.setContentType( &quot;text/plain&quot; );</span>
 
-<span class="nc" id="L53">        String key = getParameter( &quot;key&quot;, request );</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (key == null) {</span>
-<span class="nc" id="L55">            missingRequiredParameter(response, &quot;key&quot;);</span>
-<span class="nc" id="L56">            return;</span>
+<span class="nc" id="L57">        String word = getParameter(WORD_PARAMETER, request );</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (word == null) {</span>
+<span class="nc" id="L59">            missingRequiredParameter(response, WORD_PARAMETER);</span>
+<span class="nc" id="L60">            return;</span>
         }
 
-<span class="nc" id="L59">        String value = getParameter( &quot;value&quot;, request );</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if ( value == null) {</span>
-<span class="nc" id="L61">            missingRequiredParameter( response, &quot;value&quot; );</span>
-<span class="nc" id="L62">            return;</span>
+<span class="nc" id="L63">        String definition = getParameter(DEFINITION_PARAMETER, request );</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if ( definition == null) {</span>
+<span class="nc" id="L65">            missingRequiredParameter( response, DEFINITION_PARAMETER );</span>
+<span class="nc" id="L66">            return;</span>
         }
 
-<span class="nc" id="L65">        this.data.put(key, value);</span>
+<span class="nc" id="L69">        this.dictionary.put(word, definition);</span>
 
-<span class="nc" id="L67">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L68">        pw.println(Messages.mappedKeyValue(key, value));</span>
-<span class="nc" id="L69">        pw.flush();</span>
+<span class="nc" id="L71">        PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L72">        pw.println(Messages.definedWordAs(word, definition));</span>
+<span class="nc" id="L73">        pw.flush();</span>
 
-<span class="nc" id="L71">        response.setStatus( HttpServletResponse.SC_OK);</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L75">        response.setStatus( HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L76">    }</span>
 
     /**
-     * Handles an HTTP DELETE request by removing all key/value pairs.  This
+     * Handles an HTTP DELETE request by removing all dictionary entries.  This
      * behavior is exposed for testing purposes only.  It's probably not
      * something that you'd want a real application to expose.
      */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-<span class="nc" id="L81">        response.setContentType(&quot;text/plain&quot;);</span>
+<span class="nc" id="L85">        response.setContentType(&quot;text/plain&quot;);</span>
 
-<span class="nc" id="L83">        this.data.clear();</span>
+<span class="nc" id="L87">        this.dictionary.clear();</span>
 
-<span class="nc" id="L85">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L86">        pw.println(Messages.allMappingsDeleted());</span>
-<span class="nc" id="L87">        pw.flush();</span>
+<span class="nc" id="L89">        PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L90">        pw.println(Messages.allDictionaryEntriesDeleted());</span>
+<span class="nc" id="L91">        pw.flush();</span>
 
-<span class="nc" id="L89">        response.setStatus(HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L93">        response.setStatus(HttpServletResponse.SC_OK);</span>
 
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L95">    }</span>
 
     /**
      * Writes an error message about a missing parameter to the HTTP response.
@@ -98,43 +102,43 @@ import java.util.Map;
     private void missingRequiredParameter( HttpServletResponse response, String parameterName )
         throws IOException
     {
-<span class="nc" id="L101">        String message = Messages.missingRequiredParameter(parameterName);</span>
-<span class="nc" id="L102">        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L105">        String message = Messages.missingRequiredParameter(parameterName);</span>
+<span class="nc" id="L106">        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);</span>
+<span class="nc" id="L107">    }</span>
 
     /**
-     * Writes the value of the given key to the HTTP response.
+     * Writes the definition of the given word to the HTTP response.
      *
      * The text of the message is formatted with
-     * {@link Messages#formatKeyValuePair(String, String)}
+     * {@link Messages#formatDictionaryEntry(String, String)}
      */
-    private void writeValue( String key, HttpServletResponse response ) throws IOException
+    private void writeDefinition(String word, HttpServletResponse response ) throws IOException
     {
-<span class="nc" id="L113">        String value = this.data.get(key);</span>
+<span class="nc" id="L117">        String definition = this.dictionary.get(word);</span>
 
-<span class="nc" id="L115">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L116">        pw.println(Messages.formatKeyValuePair(key, value));</span>
+<span class="nc" id="L119">        PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L120">        pw.println(Messages.formatDictionaryEntry(word, definition));</span>
 
-<span class="nc" id="L118">        pw.flush();</span>
+<span class="nc" id="L122">        pw.flush();</span>
 
-<span class="nc" id="L120">        response.setStatus( HttpServletResponse.SC_OK );</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L124">        response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="nc" id="L125">    }</span>
 
     /**
-     * Writes all of the key/value pairs to the HTTP response.
+     * Writes all of the dictionary entries to the HTTP response.
      *
      * The text of the message is formatted with
-     * {@link Messages#formatKeyValuePair(String, String)}
+     * {@link Messages#formatDictionaryEntry(String, String)}
      */
-    private void writeAllMappings( HttpServletResponse response ) throws IOException
+    private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
     {
-<span class="nc" id="L131">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L132">        Messages.formatKeyValueMap(pw, data);</span>
+<span class="nc" id="L135">        PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L136">        Messages.formatDictionaryEntries(pw, dictionary);</span>
 
-<span class="nc" id="L134">        pw.flush();</span>
+<span class="nc" id="L138">        pw.flush();</span>
 
-<span class="nc" id="L136">        response.setStatus( HttpServletResponse.SC_OK );</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L140">        response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="nc" id="L141">    }</span>
 
     /**
      * Returns the value of the HTTP request parameter with the given name.
@@ -143,24 +147,19 @@ import java.util.Map;
      *         &lt;code&gt;null&lt;/code&gt; or is the empty string
      */
     private String getParameter(String name, HttpServletRequest request) {
-<span class="nc" id="L146">      String value = request.getParameter(name);</span>
-<span class="nc bnc" id="L147" title="All 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
-<span class="nc" id="L148">        return null;</span>
+<span class="nc" id="L150">      String value = request.getParameter(name);</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L152">        return null;</span>
 
       } else {
-<span class="nc" id="L151">        return value;</span>
+<span class="nc" id="L155">        return value;</span>
       }
     }
 
     @VisibleForTesting
-    void setValueForKey(String key, String value) {
-<span class="nc" id="L157">        this.data.put(key, value);</span>
-<span class="nc" id="L158">    }</span>
-
-    @VisibleForTesting
-    String getValueForKey(String key) {
-<span class="nc" id="L162">        return this.data.get(key);</span>
+    String getDefinition(String word) {
+<span class="nc" id="L161">        return this.dictionary.get(word);</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

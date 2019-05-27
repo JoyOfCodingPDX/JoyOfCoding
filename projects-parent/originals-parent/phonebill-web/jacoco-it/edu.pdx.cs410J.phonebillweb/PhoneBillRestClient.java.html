@@ -11,7 +11,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 /**
  * A helper class for accessing the rest client.  Note that this class provides
  * an example of how to make gets and posts to a URL.  You'll need to change it
- * to do something other than just send key/value pairs.
+ * to do something other than just send dictionary entries.
  */
 public class PhoneBillRestClient extends HttpRequestHelper
 {
@@ -32,34 +32,34 @@ public class PhoneBillRestClient extends HttpRequestHelper
 <span class="fc" id="L32">    }</span>
 
     /**
-     * Returns all keys and values from the server
+     * Returns all dictionary entries from the server
      */
-    public Map&lt;String, String&gt; getAllKeysAndValues() throws IOException {
+    public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
 <span class="fc" id="L38">      Response response = get(this.url);</span>
-<span class="fc" id="L39">      return Messages.parseKeyValueMap(response.getContent());</span>
+<span class="fc" id="L39">      return Messages.parseDictionary(response.getContent());</span>
     }
 
     /**
-     * Returns the value for the given key
+     * Returns the definition for the given word
      */
-    public String getValue(String key) throws IOException {
-<span class="fc" id="L46">      Response response = get(this.url, &quot;key&quot;, key);</span>
+    public String getDefinition(String word) throws IOException {
+<span class="fc" id="L46">      Response response = get(this.url, &quot;word&quot;, word);</span>
 <span class="fc" id="L47">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L48">      String content = response.getContent();</span>
-<span class="fc" id="L49">      return Messages.parseKeyValuePair(content).getValue();</span>
+<span class="fc" id="L49">      return Messages.parseDictionaryEntry(content).getValue();</span>
     }
 
-    public void addKeyValuePair(String key, String value) throws IOException {
-<span class="fc" id="L53">      Response response = postToMyURL(&quot;key&quot;, key, &quot;value&quot;, value);</span>
+    public void addDictionaryEntry(String word, String definition) throws IOException {
+<span class="fc" id="L53">      Response response = postToMyURL(&quot;word&quot;, word, &quot;definition&quot;, definition);</span>
 <span class="fc" id="L54">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L55">    }</span>
 
     @VisibleForTesting
-    Response postToMyURL(String... keysAndValues) throws IOException {
-<span class="fc" id="L59">      return post(this.url, keysAndValues);</span>
+    Response postToMyURL(String... dictionaryEntries) throws IOException {
+<span class="fc" id="L59">      return post(this.url, dictionaryEntries);</span>
     }
 
-    public void removeAllMappings() throws IOException {
+    public void removeAllDictionaryEntries() throws IOException {
 <span class="fc" id="L63">      Response response = delete(this.url);</span>
 <span class="fc" id="L64">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L65">    }</span>
@@ -67,16 +67,16 @@ public class PhoneBillRestClient extends HttpRequestHelper
     private Response throwExceptionIfNotOkayHttpStatus(Response response) {
 <span class="fc" id="L68">      int code = response.getCode();</span>
 <span class="pc bpc" id="L69" title="1 of 2 branches missed.">      if (code != HTTP_OK) {</span>
-<span class="nc" id="L70">        throw new AppointmentBookRestException(code);</span>
+<span class="nc" id="L70">        throw new PhoneBillRestException(code);</span>
       }
 <span class="fc" id="L72">      return response;</span>
     }
 
-    private class AppointmentBookRestException extends RuntimeException {
-<span class="nc" id="L76">      public AppointmentBookRestException(int httpStatusCode) {</span>
+    private class PhoneBillRestException extends RuntimeException {
+<span class="nc" id="L76">      public PhoneBillRestException(int httpStatusCode) {</span>
 <span class="nc" id="L77">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
 <span class="nc" id="L78">      }</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
