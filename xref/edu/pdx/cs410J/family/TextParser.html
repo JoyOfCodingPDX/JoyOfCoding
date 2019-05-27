@@ -18,10 +18,10 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * @see TextDumper</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../edu/pdx/cs410J/family/Parser.html">Parser</a> {
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a> <strong class="jxr_keyword">implements</strong> <a name="Parser" href="../../../../edu/pdx/cs410J/family/Parser.html#Parser">Parser</a> {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> LineNumberReader in;     <em class="jxr_comment">// Read input from here</em>
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree;         <em class="jxr_comment">// The family tree we're building</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree;         <em class="jxr_comment">// The family tree we're building</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <em class="jxr_comment">///////////////////////  Static Methods  ///////////////////////</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">   * Creates a new text parser that reads its input from a file of a</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment">   * given name.</em>
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a>(String fileName) <strong class="jxr_keyword">throws</strong> FileNotFoundException{
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">public</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(String fileName) <strong class="jxr_keyword">throws</strong> FileNotFoundException{
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> File(fileName));
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>    }
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
@@ -47,7 +47,7 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">   * Creates a new text parser that reads its input from the given</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">   * file. </em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a>(File file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(File file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> FileReader(file));
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>    }
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">   * Creates a new text parser that reads its input from the given</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">   * writer.  This lets us read from a sources other than files.</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a>(Reader reader) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">public</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(Reader reader) {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">this</strong>.in = <strong class="jxr_keyword">new</strong> LineNumberReader(reader);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>    }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
@@ -65,10 +65,10 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment">   * Helper method that creates an error string and throws a</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment">   * &lt;code&gt;FamilyTreeException&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> error(String message) <strong class="jxr_keyword">throws</strong> FamilyTreeException {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> error(String message) <strong class="jxr_keyword">throws</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">int</strong> lineNumber = <strong class="jxr_keyword">this</strong>.in.getLineNumber();
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      String m = <span class="jxr_string">"Error at line "</span> + lineNumber + <span class="jxr_string">": "</span> + message;
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(m);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(m);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>    }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>    <em class="jxr_javadoccomment">/**</em>
@@ -78,8 +78,8 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment">   * @throws FamilyTreeException</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">   *         The data source is malformatted</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> parse() <strong class="jxr_keyword">throws</strong> FamilyTreeException {
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">this</strong>.tree = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a>();
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">public</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> parse() <strong class="jxr_keyword">throws</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">this</strong>.tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <em class="jxr_comment">// Examine each line of the file.  The first line should contain a</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <em class="jxr_comment">// header of the form "x n" where "x" is either "P" or "M" and "n"</em>
@@ -140,7 +140,7 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     } <strong class="jxr_keyword">catch</strong> (IOException ex) {
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>       <strong class="jxr_keyword">int</strong> lineNumber = <strong class="jxr_keyword">this</strong>.in.getLineNumber();
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>       String m = <span class="jxr_string">"Parsing error at line "</span> + lineNumber;
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html">FamilyTreeException</a>(m);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>       <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a>(m);
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> 
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     <em class="jxr_comment">// Okay, we're all done parsing the tree now we need to "patch up"</em>
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     <em class="jxr_comment">// all exist.</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     Iterator people = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>       <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = (Person) people.next();
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>       <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>       person.patchUp(<strong class="jxr_keyword">this</strong>.tree);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
@@ -159,8 +159,8 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">   * Helper method that parses the source, creates a</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">   * &lt;code&gt;Person&lt;/code&gt;, and adds it to the family tree.</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> parsePerson(<strong class="jxr_keyword">int</strong> nLines) <strong class="jxr_keyword">throws</strong> FamilyTreeException {
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> parsePerson(<strong class="jxr_keyword">int</strong> nLines) <strong class="jxr_keyword">throws</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> 
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> 
@@ -225,7 +225,7 @@
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>           } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>             <em class="jxr_comment">// Call this Person constructor because we will fill in</em>
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>             <em class="jxr_comment">// the gender later</em>
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>             person = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a>(id);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>             person = <strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>(id);
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>             <strong class="jxr_keyword">this</strong>.tree.addPerson(person);
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>           }
 <a class="jxr_linenumber" name="L223" href="#L223">223</a> 
@@ -343,8 +343,8 @@
 <a class="jxr_linenumber" name="L335" href="#L335">335</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L336" href="#L336">336</a> <em class="jxr_javadoccomment">   * Helper method that parses the source and create marriages.</em>
 <a class="jxr_linenumber" name="L337" href="#L337">337</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> parseMarriage(<strong class="jxr_keyword">int</strong> nLines) <strong class="jxr_keyword">throws</strong> FamilyTreeException {
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>     <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a> marriage = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> parseMarriage(<strong class="jxr_keyword">int</strong> nLines) <strong class="jxr_keyword">throws</strong> <a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> {
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 <a class="jxr_linenumber" name="L342" href="#L342">342</a> 
@@ -367,8 +367,8 @@
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> 
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>     <em class="jxr_comment">// The first line should be the id of the husband followed by the</em>
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>     <em class="jxr_comment">// id of the wife</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> husband = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> wife = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> husband = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> wife = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>     StringTokenizer st = <strong class="jxr_keyword">new</strong> StringTokenizer(line, <span class="jxr_string">" "</span>);
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>     <strong class="jxr_keyword">if</strong> (st.hasMoreTokens()) {
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>       String s = st.nextToken();
@@ -398,7 +398,7 @@
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>       error(<span class="jxr_string">"Missing wife id"</span>);
 <a class="jxr_linenumber" name="L391" href="#L391">391</a>     }
 <a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>     marriage = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Marriage.html">Marriage</a>(husband, wife);
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>     marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(husband, wife);
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>     wife.addMarriage(marriage);
 <a class="jxr_linenumber" name="L395" href="#L395">395</a>     husband.addMarriage(marriage);
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>     
@@ -480,17 +480,17 @@
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>     <em class="jxr_comment">// Parse the input file</em>
 <a class="jxr_linenumber" name="L473" href="#L473">473</a>     String fileName = args[0];
 <a class="jxr_linenumber" name="L474" href="#L474">474</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>       <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/TextParser.html">TextParser</a>(fileName);
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>       <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree = parser.parse();
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>       <a name="TextParser" href="../../../../edu/pdx/cs410J/family/<a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>.html#TextParser">TextParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(fileName);
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>       <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = parser.parse();
 <a class="jxr_linenumber" name="L477" href="#L477">477</a> 
 <a class="jxr_linenumber" name="L478" href="#L478">478</a>       PrintWriter out = <strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>       <a href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html">PrettyPrinter</a>(out);
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>       <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/<a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>.html#PrettyPrinter">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(out);
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>       pretty.dump(tree);
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> 
 <a class="jxr_linenumber" name="L482" href="#L482">482</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
 <a class="jxr_linenumber" name="L483" href="#L483">483</a>       System.err.println(<span class="jxr_string">"** Could not find file "</span> + fileName);
 <a class="jxr_linenumber" name="L484" href="#L484">484</a> 
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>     } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>     } <strong class="jxr_keyword">catch</strong> (<a name="FamilyTreeException" href="../../../../edu/pdx/cs410J/family/FamilyTreeException.html#FamilyTreeException">FamilyTreeException</a> ex) {
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>       System.err.println(<span class="jxr_string">"** "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
 <a class="jxr_linenumber" name="L488" href="#L488">488</a>   }
@@ -498,6 +498,6 @@
 <a class="jxr_linenumber" name="L490" href="#L490">490</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

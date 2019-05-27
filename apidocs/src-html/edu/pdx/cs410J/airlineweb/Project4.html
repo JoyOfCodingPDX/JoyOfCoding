@@ -26,8 +26,8 @@
 <span class="sourceLineNo">017</span><a id="line.17">    public static void main(String... args) {</a>
 <span class="sourceLineNo">018</span><a id="line.18">        String hostName = null;</a>
 <span class="sourceLineNo">019</span><a id="line.19">        String portString = null;</a>
-<span class="sourceLineNo">020</span><a id="line.20">        String key = null;</a>
-<span class="sourceLineNo">021</span><a id="line.21">        String value = null;</a>
+<span class="sourceLineNo">020</span><a id="line.20">        String word = null;</a>
+<span class="sourceLineNo">021</span><a id="line.21">        String definition = null;</a>
 <span class="sourceLineNo">022</span><a id="line.22"></a>
 <span class="sourceLineNo">023</span><a id="line.23">        for (String arg : args) {</a>
 <span class="sourceLineNo">024</span><a id="line.24">            if (hostName == null) {</a>
@@ -36,11 +36,11 @@
 <span class="sourceLineNo">027</span><a id="line.27">            } else if ( portString == null) {</a>
 <span class="sourceLineNo">028</span><a id="line.28">                portString = arg;</a>
 <span class="sourceLineNo">029</span><a id="line.29"></a>
-<span class="sourceLineNo">030</span><a id="line.30">            } else if (key == null) {</a>
-<span class="sourceLineNo">031</span><a id="line.31">                key = arg;</a>
+<span class="sourceLineNo">030</span><a id="line.30">            } else if (word == null) {</a>
+<span class="sourceLineNo">031</span><a id="line.31">                word = arg;</a>
 <span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">            } else if (value == null) {</a>
-<span class="sourceLineNo">034</span><a id="line.34">                value = arg;</a>
+<span class="sourceLineNo">033</span><a id="line.33">            } else if (definition == null) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">                definition = arg;</a>
 <span class="sourceLineNo">035</span><a id="line.35"></a>
 <span class="sourceLineNo">036</span><a id="line.36">            } else {</a>
 <span class="sourceLineNo">037</span><a id="line.37">                usage("Extraneous command line argument: " + arg);</a>
@@ -57,7 +57,7 @@
 <span class="sourceLineNo">048</span><a id="line.48">        int port;</a>
 <span class="sourceLineNo">049</span><a id="line.49">        try {</a>
 <span class="sourceLineNo">050</span><a id="line.50">            port = Integer.parseInt( portString );</a>
-<span class="sourceLineNo">051</span><a id="line.51">            </a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
 <span class="sourceLineNo">052</span><a id="line.52">        } catch (NumberFormatException ex) {</a>
 <span class="sourceLineNo">053</span><a id="line.53">            usage("Port \"" + portString + "\" must be an integer");</a>
 <span class="sourceLineNo">054</span><a id="line.54">            return;</a>
@@ -67,21 +67,21 @@
 <span class="sourceLineNo">058</span><a id="line.58"></a>
 <span class="sourceLineNo">059</span><a id="line.59">        String message;</a>
 <span class="sourceLineNo">060</span><a id="line.60">        try {</a>
-<span class="sourceLineNo">061</span><a id="line.61">            if (key == null) {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                // Print all key/value pairs</a>
-<span class="sourceLineNo">063</span><a id="line.63">                Map&lt;String, String&gt; keysAndValues = client.getAllKeysAndValues();</a>
+<span class="sourceLineNo">061</span><a id="line.61">            if (word == null) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                // Print all word/definition pairs</a>
+<span class="sourceLineNo">063</span><a id="line.63">                Map&lt;String, String&gt; dictionary = client.getAllDictionaryEntries();</a>
 <span class="sourceLineNo">064</span><a id="line.64">                StringWriter sw = new StringWriter();</a>
-<span class="sourceLineNo">065</span><a id="line.65">                Messages.formatKeyValueMap(new PrintWriter(sw, true), keysAndValues);</a>
+<span class="sourceLineNo">065</span><a id="line.65">                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);</a>
 <span class="sourceLineNo">066</span><a id="line.66">                message = sw.toString();</a>
 <span class="sourceLineNo">067</span><a id="line.67"></a>
-<span class="sourceLineNo">068</span><a id="line.68">            } else if (value == null) {</a>
-<span class="sourceLineNo">069</span><a id="line.69">                // Print all values of key</a>
-<span class="sourceLineNo">070</span><a id="line.70">                message = Messages.formatKeyValuePair(key, client.getValue(key));</a>
+<span class="sourceLineNo">068</span><a id="line.68">            } else if (definition == null) {</a>
+<span class="sourceLineNo">069</span><a id="line.69">                // Print all dictionary entries</a>
+<span class="sourceLineNo">070</span><a id="line.70">                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));</a>
 <span class="sourceLineNo">071</span><a id="line.71"></a>
 <span class="sourceLineNo">072</span><a id="line.72">            } else {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                // Post the key/value pair</a>
-<span class="sourceLineNo">074</span><a id="line.74">                client.addKeyValuePair(key, value);</a>
-<span class="sourceLineNo">075</span><a id="line.75">                message = Messages.mappedKeyValue(key, value);</a>
+<span class="sourceLineNo">073</span><a id="line.73">                // Post the word/definition pair</a>
+<span class="sourceLineNo">074</span><a id="line.74">                client.addDictionaryEntry(word, definition);</a>
+<span class="sourceLineNo">075</span><a id="line.75">                message = Messages.definedWordAs(word, definition);</a>
 <span class="sourceLineNo">076</span><a id="line.76">            }</a>
 <span class="sourceLineNo">077</span><a id="line.77"></a>
 <span class="sourceLineNo">078</span><a id="line.78">        } catch ( IOException ex ) {</a>
@@ -111,20 +111,22 @@
 <span class="sourceLineNo">102</span><a id="line.102">        PrintStream err = System.err;</a>
 <span class="sourceLineNo">103</span><a id="line.103">        err.println("** " + message);</a>
 <span class="sourceLineNo">104</span><a id="line.104">        err.println();</a>
-<span class="sourceLineNo">105</span><a id="line.105">        err.println("usage: java Project4 host port [key] [value]");</a>
-<span class="sourceLineNo">106</span><a id="line.106">        err.println("  host    Host of web server");</a>
-<span class="sourceLineNo">107</span><a id="line.107">        err.println("  port    Port of web server");</a>
-<span class="sourceLineNo">108</span><a id="line.108">        err.println("  key     Key to query");</a>
-<span class="sourceLineNo">109</span><a id="line.109">        err.println("  value   Value to add to server");</a>
+<span class="sourceLineNo">105</span><a id="line.105">        err.println("usage: java Project4 host port [word] [definition]");</a>
+<span class="sourceLineNo">106</span><a id="line.106">        err.println("  host         Host of web server");</a>
+<span class="sourceLineNo">107</span><a id="line.107">        err.println("  port         Port of web server");</a>
+<span class="sourceLineNo">108</span><a id="line.108">        err.println("  word         Word in dictionary");</a>
+<span class="sourceLineNo">109</span><a id="line.109">        err.println("  definition   Definition of word");</a>
 <span class="sourceLineNo">110</span><a id="line.110">        err.println();</a>
-<span class="sourceLineNo">111</span><a id="line.111">        err.println("This simple program posts key/value pairs to the server");</a>
-<span class="sourceLineNo">112</span><a id="line.112">        err.println("If no value is specified, then all values are printed");</a>
-<span class="sourceLineNo">113</span><a id="line.113">        err.println("If no key is specified, all key/value pairs are printed");</a>
-<span class="sourceLineNo">114</span><a id="line.114">        err.println();</a>
-<span class="sourceLineNo">115</span><a id="line.115"></a>
-<span class="sourceLineNo">116</span><a id="line.116">        System.exit(1);</a>
-<span class="sourceLineNo">117</span><a id="line.117">    }</a>
-<span class="sourceLineNo">118</span><a id="line.118">}</a>
+<span class="sourceLineNo">111</span><a id="line.111">        err.println("This simple program posts words and their definitions");</a>
+<span class="sourceLineNo">112</span><a id="line.112">        err.println("to the server.");</a>
+<span class="sourceLineNo">113</span><a id="line.113">        err.println("If no definition is specified, then the word's definition");</a>
+<span class="sourceLineNo">114</span><a id="line.114">        err.println("is printed.");</a>
+<span class="sourceLineNo">115</span><a id="line.115">        err.println("If no word is specified, all dictionary entries are printed");</a>
+<span class="sourceLineNo">116</span><a id="line.116">        err.println();</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">        System.exit(1);</a>
+<span class="sourceLineNo">119</span><a id="line.119">    }</a>
+<span class="sourceLineNo">120</span><a id="line.120">}</a>
 
 
 

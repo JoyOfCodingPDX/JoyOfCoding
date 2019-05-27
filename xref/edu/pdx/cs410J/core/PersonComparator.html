@@ -15,9 +15,9 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * This class is a &lt;code&gt;Comparator&lt;/code&gt; that compares</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * &lt;code&gt;Person&lt;/code&gt;s based on their shoe size.</em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/core/PersonComparator.html">PersonComparator</a> <strong class="jxr_keyword">implements</strong> Comparator&lt;Person&gt; {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="PersonComparator" href="../../../../edu/pdx/cs410J/core/PersonComparator.html#PersonComparator">PersonComparator</a> <strong class="jxr_keyword">implements</strong> Comparator&lt;Person&gt; {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a> o1, <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a> o2) {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Pe<a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a> o1, <a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a> o2) {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">double</strong> size1 = o1.shoeSize();
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">double</strong> size2 = o2.shoeSize();
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
@@ -37,16 +37,16 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">   * contents.</em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      Set&lt;Person&gt; set = <strong class="jxr_keyword">new</strong> TreeSet&lt;Person&gt;(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/core/PersonComparator.html">PersonComparator</a>());
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      set.add(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a>(<span class="jxr_string">"Quan"</span>, 10.5));
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      set.add(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a>(<span class="jxr_string">"Jerome"</span>, 11.0));
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      set.add(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a>(<span class="jxr_string">"Dave"</span>, 10.5));
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      set.add(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a>(<span class="jxr_string">"Nandini"</span>, 8.0));
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      Set&lt;Person&gt; set = <strong class="jxr_keyword">new</strong> TreeSet&lt;Person&gt;(<strong class="jxr_keyword">new</strong> <a name="PersonComparator" href="../../../../edu/pdx/cs410J/core/PersonComparator.html#PersonComparator">PersonComparator</a>());
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      set.add(<strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>(<span class="jxr_string">"Quan"</span>, 10.5));
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      set.add(<strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>(<span class="jxr_string">"Jerome"</span>, 11.0));
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      set.add(<strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>(<span class="jxr_string">"Dave"</span>, 10.5));
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      set.add(<strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>(<span class="jxr_string">"Nandini"</span>, 8.0));
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <em class="jxr_comment">// Print out the people</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      Iterator iter = set.iterator();
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>        <a href="../../../../edu/pdx/cs410J/lang/Person.html">Person</a> p = (Person) iter.next();
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>        <a name="Per<a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>ref="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a> p = (<a name="Person" href="../../../../edu/pdx/cs410J/lang/Person.html#Person">Person</a>) iter.next();
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>        System.out.println(p);
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>    }
@@ -54,6 +54,6 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

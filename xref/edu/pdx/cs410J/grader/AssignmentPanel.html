@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * This panel is used to display and edit &lt;code&gt;Assignment&lt;/code&gt;s.</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html">AssignmentPanel</a> <strong class="jxr_keyword">extends</strong> JPanel {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String QUIZ = <span class="jxr_string">"Quiz"</span>;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PROJECT = <span class="jxr_string">"Project"</span>;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String OTHER = <span class="jxr_string">"Other"</span>;
@@ -41,13 +41,13 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    <strong class="jxr_keyword">private</strong> JTextField pointsField;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">private</strong> JTextField descriptionField;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">private</strong> JTextField dueDateField;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/NotesPanel.html">NotesPanel</a> notes;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">private</strong> <a name="NotesPanel" href="../../../../edu/pdx/cs410J/grader/NotesPanel.html#NotesPanel">NotesPanel</a> notes;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">   * Creates and adds GUI components to a new</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">   * &lt;code&gt;AssignmentPanel&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html">AssignmentPanel</a>(<strong class="jxr_keyword">boolean</strong> canCreate) {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>(<strong class="jxr_keyword">boolean</strong> canCreate) {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <em class="jxr_comment">// Panel containing information about an assignment</em>
@@ -64,8 +64,8 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      <em class="jxr_comment">// Add a NotePanel</em>
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">this</strong>.notes = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/NotesPanel.html">NotesPanel</a>();
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">this</strong>.notes.setNotable(<strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/Notable.html">Notable</a>() {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">this</strong>.notes = <strong class="jxr_keyword">new</strong> <a name="NotesPanel" href="../../../../edu/pdx/cs410J/grader/NotesPanel.html#NotesPanel">NotesPanel</a>();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">this</strong>.notes.setNotable(<strong class="jxr_keyword">new</strong> <a name="Notable" href="../../../../edu/pdx/cs410J/grader/Notable.html#Notable">Notable</a>() {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">private</strong> ArrayList&lt;String&gt; notes = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          @Override
@@ -128,7 +128,7 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;Assignment&lt;/code&gt; based on the contents of</em>
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">   * this &lt;code&gt;AssignmentPanel&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> createAssignment() {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>   <strong class="jxr_keyword">public</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> createAssignment() {
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     <em class="jxr_comment">// Get the name and max points of the assignment</em>
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     String name = nameField.getText();
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">if</strong> (isNullOrEmpty(name)) {
@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     <em class="jxr_comment">// Create a new Assignment object</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>       <strong class="jxr_keyword">double</strong> d = Double.parseDouble(points);
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>       <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> newAssign = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a>(name, d);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>       <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Ass<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>ml#Assignment">Assignment</a> newAssign = <strong class="jxr_keyword">new</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>(name, d);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>       <strong class="jxr_keyword">this</strong>.notes.getNotable().getNotes().forEach(newAssign::addNote);
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>       updateAssignment(newAssign);
@@ -159,7 +159,7 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">return</strong> name == <strong class="jxr_keyword">null</strong> || name.equals(<span class="jxr_string">""</span>);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>   }
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>   <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> error(String message) {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>   <strong class="jxr_keyword">private</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> error(String message) {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     JOptionPane.showMessageDialog(AssignmentPanel.<strong class="jxr_keyword">this</strong>,
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>       <strong class="jxr_keyword">new</strong> String[]{message},
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>       <span class="jxr_string">"Error"</span>,
@@ -171,7 +171,7 @@
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">   * Displays the contents of a given &lt;code&gt;Assignment&lt;/code&gt; in this</em>
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">   * &lt;code&gt;AssignmentPanel&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> displayAssignment(<a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign) {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> displayAssignment(<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign) {
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">this</strong>.nameField.setText(assign.getName());
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">this</strong>.pointsField.setText(String.valueOf(assign.getPoints()));
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>     Assignment.AssignmentType type = assign.getType();
@@ -218,7 +218,7 @@
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">   * Fills in the contents of an &lt;code&gt;Assignment&lt;/code&gt; based on the</em>
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">   * contents of this &lt;code&gt;AssignmentPanel&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> updateAssignment(<a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign) {
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> updateAssignment(<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign) {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     String points = pointsField.getText();
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     <strong class="jxr_keyword">if</strong> (isNullOrEmpty(points)) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>       error(<span class="jxr_string">"No points value specified"</span>);
@@ -258,7 +258,7 @@
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     <em class="jxr_comment">// Adding notes is taken care of by the NotesPanel</em>
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>   }
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> setAssignmentType(<a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign) {
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> setAssignmentType(<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign) {
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>     String type = (String) <strong class="jxr_keyword">this</strong>.typeBox.getSelectedItem();
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> 
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>     <strong class="jxr_keyword">switch</strong> (type) {
@@ -294,9 +294,9 @@
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>     String fileName = args[0];
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>     String assignName = args[1];
 <a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>       <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(fileName);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(fileName);
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>       book = parser.parse();
 <a class="jxr_linenumber" name="L293" href="#L293">293</a> 
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -307,18 +307,18 @@
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>       System.err.println(<span class="jxr_string">"** IOException during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>       System.exit(1);
 <a class="jxr_linenumber" name="L301" href="#L301">301</a> 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     } <strong class="jxr_keyword">catch</strong> (ParserException ex) {
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     } <strong class="jxr_keyword">catch</strong> (<a name="ParserException" href="../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> ex) {
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>       System.err.println(<span class="jxr_string">"** Error during parsing: "</span> + ex);
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>       System.exit(1);
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>     }
 <a class="jxr_linenumber" name="L306" href="#L306">306</a> 
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign = book.getAssignment(assignName);
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign = book.getAssignment(assignName);
 <a class="jxr_linenumber" name="L308" href="#L308">308</a>     <strong class="jxr_keyword">if</strong> (assign == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>       System.err.println(<span class="jxr_string">"Not such assignment: "</span> + assignName);
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>       System.exit(1);
 <a class="jxr_linenumber" name="L311" href="#L311">311</a>     }
 <a class="jxr_linenumber" name="L312" href="#L312">312</a> 
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <a href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html">AssignmentPanel</a> assignPanel = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html">AssignmentPanel</a>(false);
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/Assig<a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>#AssignmentPanel">AssignmentPanel</a> assignPanel = <strong class="jxr_keyword">new</strong> <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>(false);
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     assignPanel.displayAssignment(assign);
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> 
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>     JFrame frame = <strong class="jxr_keyword">new</strong> JFrame(<span class="jxr_string">"AssignmentPanel test"</span>);
@@ -337,6 +337,6 @@
 <a class="jxr_linenumber" name="L329" href="#L329">329</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

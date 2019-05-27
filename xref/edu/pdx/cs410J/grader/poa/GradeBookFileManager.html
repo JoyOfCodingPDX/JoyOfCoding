@@ -19,33 +19,33 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManager.html">GradeBookFileManager</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradeBookFileManager" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManager.html#GradeBookFileManager">GradeBookFileManager</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> EventBus bus;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> File file;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    @Inject
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManager.html">GradeBookFileManager</a>(EventBus bus) {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">public</strong> <a name="GradeBookFileManager" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManager.html#GradeBookFileManager">GradeBookFileManager</a>(EventBus bus) {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">this</strong>.bus = bus;
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">this</strong>.bus.register(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    }
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>    @Subscribe
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> loadGradeBookFromFile(<a href="../../../../../edu/pdx/cs410J/grader/poa/LoadGradeBook.html">LoadGradeBook</a> event) <strong class="jxr_keyword">throws</strong> IOException, ParserException {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> loadGradeBookFromFile(<a name="LoadGradeBook" href="../../../../../edu/pdx/cs410J/grader/poa/LoadGradeBook.html#LoadGradeBook">LoadGradeBook</a> event) <strong class="jxr_keyword">throws</strong> IOException, <a name="ParserException" href="../../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      file = event.getFile();
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <a href="../../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(file);
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <a href="../../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = parser.parse();
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <a name="XmlGradeBookParser" href="../../../../../edu/pdx/cs410J/grad<a name="XmlGradeBookParser" href="../../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>ser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <a name="GradeBook" href="../../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = parser.parse();
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookLoaded.html">GradeBookLoaded</a>(book));
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> <a name="GradeBookLoaded" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookLoaded.html#GradeBookLoaded">GradeBookLoaded</a>(book));
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>    }
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    @Subscribe
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> writeGradeBookToFile(<a href="../../../../../edu/pdx/cs410J/grader/poa/SaveGradeBook.html">SaveGradeBook</a> event) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <a href="../../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.file);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> writeGradeBookToFile(<a name="SaveGradeBook" href="../../../../../edu/pdx/cs410J/grader/poa/SaveGradeBook.html#SaveGradeBook">SaveGradeBook</a> event) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <a name="XmlDumper" href="../../../../../edu/pdx/cs410J/grad<a name="XmlDumper" href="../../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>per.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.file);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      dumper.dump(event.getGradeBook());
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>    }
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

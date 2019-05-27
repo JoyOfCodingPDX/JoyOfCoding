@@ -23,10 +23,10 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * A table that shows the inventory of books and lets the user select one to be added to a shopping cart.  When a book</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * is selected, a {@link TableModelEvent} is fired to listeners on this table.</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html">CheckoutInventoryTable</a> <strong class="jxr_keyword">extends</strong> JTable
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">class</strong> <a name="CheckoutInventoryTable" href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html#CheckoutInventoryTable">CheckoutInventoryTable</a> <strong class="jxr_keyword">extends</strong> JTable
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html">CheckoutInventoryTable</a>( CheckoutInventoryTableModel model )
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">public</strong> <a name="CheckoutInventoryTable" href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html#CheckoutInventoryTable">CheckoutInventoryTable</a>( <a name="CheckoutInventoryTableModel" href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTableModel.html#CheckoutInventoryTableModel">CheckoutInventoryTableModel</a> model )
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      {
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">super</strong>(model);
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          TableColumn column = <strong class="jxr_keyword">this</strong>.getColumnModel().getColumn( model.getColumnCount() - 1 );
@@ -37,11 +37,11 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">     * Renders a button that</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html">TableButton</a> <strong class="jxr_keyword">implements</strong> TableCellRenderer, TableCellEditor
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TableButton <strong class="jxr_keyword">implements</strong> TableCellRenderer, TableCellEditor
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../edu/pdx/cs410J/di/BookInventoryTableModel.html">BookInventoryTableModel</a> model;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="BookInventoryTableModel" href="../../../../edu/pdx/cs410J/di/BookInventoryTableModel.html#BookInventoryTableModel">BookInventoryTableModel</a> model;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/di/CheckoutInventoryTable.html">TableButton</a>( BookInventoryTableModel model )
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">public</strong> TableButton( <a name="BookInventoryTableModel" href="../../../../edu/pdx/cs410J/di/BookInventoryTableModel.html#BookInventoryTableModel">BookInventoryTableModel</a> model )
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>              <strong class="jxr_keyword">this</strong>.model = model;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          }
@@ -107,6 +107,6 @@
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

@@ -29,7 +29,7 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Matchers.eq;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html">POAGradePresenterTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html">POASubmissionTestCase</a> {
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="POAGradePresenterTest" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html#POAGradePresenterTest">POAGradePresenterTest</a> <strong class="jxr_keyword">extends</strong> <a name="POASubmissionTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html#POASubmissionTestCase">POASubmissionTestCase</a> {
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> scoreForPOAWithGrade = 1.5;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>    <strong class="jxr_keyword">private</strong> POAGradeView view;
@@ -365,7 +365,7 @@
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>     ArgumentCaptor&lt;RecordGradeHandler&gt; recordGrade = ArgumentCaptor.forClass(RecordGradeHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>     verify(<strong class="jxr_keyword">this</strong>.view).addRecordGradeHandler(recordGrade.capture());
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> 
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html">RecordGradeEventHandler</a> eventHandler = mock(RecordGradeEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>     RecordGradeEventHandler eventHandler = mock(RecordGradeEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L362" href="#L362">362</a> 
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>     <strong class="jxr_keyword">this</strong>.assignment.setDueDate(LocalDateTime.now().minusDays(5));
@@ -395,7 +395,7 @@
 <a class="jxr_linenumber" name="L387" href="#L387">387</a>     ArgumentCaptor&lt;RecordGradeHandler&gt; recordGrade = ArgumentCaptor.forClass(RecordGradeHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>     verify(<strong class="jxr_keyword">this</strong>.view).addRecordGradeHandler(recordGrade.capture());
 <a class="jxr_linenumber" name="L389" href="#L389">389</a> 
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html">DisplayNextPOAEventHandler</a> eventHandler = mock(DisplayNextPOAEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     DisplayNextPOAEventHandler eventHandler = mock(DisplayNextPOAEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L392" href="#L392">392</a> 
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>     <strong class="jxr_keyword">this</strong>.assignment.setDueDate(LocalDateTime.now().minusDays(5));
@@ -409,7 +409,7 @@
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>     verify(eventHandler).handleDisplayNextPOAEvent(eventCaptor.capture());
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>   }
 <a class="jxr_linenumber" name="L403" href="#L403">403</a> 
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html">RecordGradeEventHandler</a> {
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> RecordGradeEventHandler {
 <a class="jxr_linenumber" name="L405" href="#L405">405</a>     @Subscribe
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     <strong class="jxr_keyword">void</strong> handleRecordGradeEvent(RecordGradeEvent event);
 <a class="jxr_linenumber" name="L407" href="#L407">407</a>   }
@@ -459,13 +459,13 @@
 <a class="jxr_linenumber" name="L451" href="#L451">451</a>     verifyIsLate(4, false);
 <a class="jxr_linenumber" name="L452" href="#L452">452</a>   }
 <a class="jxr_linenumber" name="L453" href="#L453">453</a> 
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html">DisplayNextPOAEventHandler</a> {
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> DisplayNextPOAEventHandler {
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>     @Subscribe
 <a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> handleDisplayNextPOAEvent(SelectNextPOAEvent event);
 <a class="jxr_linenumber" name="L457" href="#L457">457</a>   }
 <a class="jxr_linenumber" name="L458" href="#L458">458</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

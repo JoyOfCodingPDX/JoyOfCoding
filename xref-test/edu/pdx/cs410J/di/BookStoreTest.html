@@ -19,7 +19,7 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * Demonstrates how dependency injection makes it easier to test a {@link BookStore}</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/di/BookStoreTest.html">BookStoreTest</a>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="BookStoreTest" href="../../../../edu/pdx/cs410J/di/BookStoreTest.html#BookStoreTest">BookStoreTest</a>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment">     * Tests that a purchased book is removed from the {@link BookInventory} when it is purchased</em>
@@ -28,14 +28,14 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testBookIsPurchased() {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">final</strong> Book testBook = <strong class="jxr_keyword">new</strong> Book(<span class="jxr_string">"title"</span>, <span class="jxr_string">"author"</span>, 1.00d);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">final</strong> Book[] removedBook = <strong class="jxr_keyword">new</strong> Book[1];
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>          BookInventory inventory = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/di/MockBookInventory.html">MockBookInventory</a>() {
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>          BookInventory inventory = <strong class="jxr_keyword">new</strong> <a name="MockBookInventory" href="../../../../edu/pdx/cs410J/di/MockBookInventory.html#MockBookInventory">MockBookInventory</a>() {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>              @Override
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> remove( Book book )
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>              {
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>                  removedBook[0] = book;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>              }
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>          };
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          CreditCardService cardService = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/di/MockCreditCardService.html">MockCreditCardService</a>() {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          CreditCardService cardService = <strong class="jxr_keyword">new</strong> <a name="MockCreditCardService" href="../../../../edu/pdx/cs410J/di/MockCreditCardService.html#MockCreditCardService">MockCreditCardService</a>() {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              @Override
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">public</strong> CreditTransactionCode debit( CreditCard card, <strong class="jxr_keyword">double</strong> amount )
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>              {
@@ -80,6 +80,6 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

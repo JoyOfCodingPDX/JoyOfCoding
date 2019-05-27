@@ -17,13 +17,13 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.awt.event.FocusListener;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  @Singleton
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../edu/pdx/cs410J/grader/poa/ui/POAGradeWidgets.html">POAGradeWidgets</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">POAGradeView</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="POAGradeWidgets" href="../../../../../../edu/pdx/cs410J/grader/poa/ui/POAGradeWidgets.html#POAGradeWidgets">POAGradeWidgets</a> <strong class="jxr_keyword">implements</strong> <a name="POAGradeView" href="../../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html#POAGradeView">POAGradeView</a> {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox isLateCheckbox;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JLabel totalPointsLabel;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField score;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JButton recordGrade;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../edu/pdx/cs410J/grader/poa/ui/POAGradeWidgets.html">POAGradeWidgets</a>() {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> <a name="POAGradeWidgets" href="../../../../../../edu/pdx/cs410J/grader/poa/ui/POAGradeWidgets.html#POAGradeWidgets">POAGradeWidgets</a>() {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      isLateCheckbox = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Late"</span>);
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      totalPointsLabel = <strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"out of"</span>);
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      score = <strong class="jxr_keyword">new</strong> JTextField(4);
@@ -47,7 +47,7 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>    }
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    @Override
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addIsLateHandler(<a href="../../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">IsLateHandler</a> handler) {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addIsLateHandler(IsLateHandler handler) {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">this</strong>.isLateCheckbox.addItemListener(e -&gt; handler.setIsLate(isLateCheckbox.isSelected()));
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>    }
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>    }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>    @Override
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addScoreValueHandler(<a href="../../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">ScoreValueHandler</a> handler) {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addScoreValueHandler(ScoreValueHandler handler) {
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">this</strong>.score.addFocusListener(<strong class="jxr_keyword">new</strong> FocusListener() {
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>        @Override
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent e) {
@@ -100,7 +100,7 @@
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>    }
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>    @Override
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addRecordGradeHandler(<a href="../../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">RecordGradeHandler</a> handler) {
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addRecordGradeHandler(RecordGradeHandler handler) {
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">this</strong>.recordGrade.addActionListener(e -&gt; handler.recordGrade());
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>    }
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
@@ -120,6 +120,6 @@
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

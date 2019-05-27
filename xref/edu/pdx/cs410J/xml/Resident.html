@@ -17,7 +17,7 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * were doing this for real, we'd want a way of constructing an empty</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * &lt;code&gt;Resident&lt;/code&gt; and filling in its fields.</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/xml/Resident.html">Resident</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/xml/PhoneBookEntry.html">PhoneBookEntry</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Resident" href="../../../../edu/pdx/cs410J/xml/Resident.html#Resident">Resident</a> <strong class="jxr_keyword">extends</strong> <a name="PhoneBookEntry" href="../../../../edu/pdx/cs410J/xml/PhoneBookEntry.html#PhoneBookEntry">PhoneBookEntry</a> {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">protected</strong> String firstName;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">protected</strong> String middleInitial;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">protected</strong> String lastName;
@@ -27,7 +27,7 @@
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   * Create a new &lt;code&gt;Resident&lt;/code&gt; from a &lt;code&gt;Element&lt;/code&gt; in</em>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">   * a DOM tree.</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/xml/Resident.html">Resident</a>(Element root) {
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <a name="Resident" href="../../../../edu/pdx/cs410J/xml/Resident.html#Resident">Resident</a>(Element root) {
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      NodeList elements = root.getChildNodes();
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; elements.getLength(); i++) {
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>        Node node = elements.item(i);
@@ -77,6 +77,6 @@
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

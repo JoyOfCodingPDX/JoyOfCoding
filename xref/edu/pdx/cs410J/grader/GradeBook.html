@@ -28,7 +28,7 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment"> * @author David Whitlock</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * @since Fall 2000</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> {
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>    <em class="jxr_javadoccomment">/** The name of the class */</em>
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> String className;
@@ -50,10 +50,10 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;GradeBook&lt;/code&gt; for a given class</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a>(String className) {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>    <strong class="jxr_keyword">public</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a>(String className) {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">this</strong>.className = className;
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">for</strong>(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Section</a> section : getSections()) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>        letterGradeRanges.put(section, <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRanges</a>());
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">for</strong>(Section section : getSections()) {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>        letterGradeRanges.put(section, <strong class="jxr_keyword">new</strong> LetterGradeRanges());
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    }
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
@@ -98,14 +98,14 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">   * Returns the &lt;code&gt;Assignment&lt;/code&gt; of a given name</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> getAssignment(String name) {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>    <strong class="jxr_keyword">public</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> getAssignment(String name) {
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.assignments.get(name);
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>    }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">   * Adds an &lt;code&gt;Assignment&lt;/code&gt; to this class</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addAssignment(<a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign) {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addAssignment(<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign) {
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">this</strong>.setDirty(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">this</strong>.assignments.put(assign.getName(), assign);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>   }
@@ -130,7 +130,7 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">   *</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">   * @see #containsStudent</em>
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addStudent(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addStudent(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">this</strong>.setDirty(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">this</strong>.students.put(student.getId(), student);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>   }
@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">   * Removes a &lt;code&gt;Student&lt;/code&gt; from this &lt;code&gt;GradeBook&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> removeStudent(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> removeStudent(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.students.remove(student.getId()) != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>       <strong class="jxr_keyword">this</strong>.setDirty(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
@@ -165,11 +165,11 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> makeClean() {
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>     <strong class="jxr_keyword">this</strong>.setDirty(false);
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> 
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">for</strong> (Assignment assignment : <strong class="jxr_keyword">this</strong>.assignments.values()) {
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">for</strong> (<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment : <strong class="jxr_keyword">this</strong>.assignments.values()) {
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>       assignment.makeClean();
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     }
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> 
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>     <strong class="jxr_keyword">for</strong> (Student student : <strong class="jxr_keyword">this</strong>.students.values()) {
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>     <strong class="jxr_keyword">for</strong> (<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student : <strong class="jxr_keyword">this</strong>.students.values()) {
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>       student.makeClean();
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>     }
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>   }
@@ -186,7 +186,7 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     <em class="jxr_comment">// Are any of the Assignments dirty?</em>
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     Iterator iter = <strong class="jxr_keyword">this</strong>.assignments.values().iterator();
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>       <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign = (Assignment) iter.next();
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>       <a name="Assignment" <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>./../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign = (<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>) iter.next();
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>       <strong class="jxr_keyword">if</strong> (assign.isDirty()) {
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>       }
@@ -195,7 +195,7 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>     <em class="jxr_comment">// Are any of the Students dirty?</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     iter = <strong class="jxr_keyword">this</strong>.students.values().iterator();
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>       <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student = (Student) iter.next();
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>       <a name="Student" h<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>/../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = (<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>) iter.next();
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>       <strong class="jxr_keyword">if</strong> (student.isDirty()) {
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>       }
@@ -272,13 +272,13 @@
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>       usage();
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>     }
 <a class="jxr_linenumber" name="L266" href="#L266">266</a> 
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L268" href="#L268">268</a> 
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>     File file = <strong class="jxr_keyword">new</strong> File(xmlFile);
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>     <strong class="jxr_keyword">if</strong> (file.exists()) {
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>       <em class="jxr_comment">// Parse a grade book from the XML file</em>
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(file);
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         book = parser.parse();
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> 
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>       } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -289,7 +289,7 @@
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         err.println(<span class="jxr_string">"** IOException during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         System.exit(1);
 <a class="jxr_linenumber" name="L283" href="#L283">283</a> 
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>       } <strong class="jxr_keyword">catch</strong> (ParserException ex) {
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>       } <strong class="jxr_keyword">catch</strong> (<a name="ParserException" href="../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> ex) {
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>         err.println(<span class="jxr_string">"** Error during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>         System.exit(1);
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>       }
@@ -304,15 +304,15 @@
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>         }
 <a class="jxr_linenumber" name="L297" href="#L297">297</a> 
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>           <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a> sp = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a>(importFile);
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>           <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student = sp.parseStudent();
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>           <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/gra<a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>rser.html#XmlStudentParser">XmlStudentParser</a> sp = <strong class="jxr_keyword">new</strong> <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>(importFile);
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>           <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = sp.parseStudent();
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>           book.addStudent(student);
 <a class="jxr_linenumber" name="L302" href="#L302">302</a> 
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>         } <strong class="jxr_keyword">catch</strong> (IOException ex) {
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>           err.println(<span class="jxr_string">"** Error during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>           System.exit(1);
 <a class="jxr_linenumber" name="L306" href="#L306">306</a> 
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>         } <strong class="jxr_keyword">catch</strong> (ParserException ex) {
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>         } <strong class="jxr_keyword">catch</strong> (<a name="ParserException" href="../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> ex) {
 <a class="jxr_linenumber" name="L308" href="#L308">308</a>           err.println(<span class="jxr_string">"** Error during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>           System.exit(1);
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>         }
@@ -325,12 +325,12 @@
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>       
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>     } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>       <em class="jxr_comment">// Create an empty GradeBook</em>
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>       book = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a>(name);
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>       book = <strong class="jxr_keyword">new</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a>(name);
 <a class="jxr_linenumber" name="L321" href="#L321">321</a>     }
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> 
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     <em class="jxr_comment">// Write the grade book to the XML file</em>
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>       <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>       dumper.dump(book);
 <a class="jxr_linenumber" name="L327" href="#L327">327</a> 
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>     } <strong class="jxr_keyword">catch</strong> (IOException ex) {
@@ -339,11 +339,11 @@
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>     }
 <a class="jxr_linenumber" name="L332" href="#L332">332</a>   }
 <a class="jxr_linenumber" name="L333" href="#L333">333</a> 
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRanges</a> getLetterGradeRanges(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Section</a> section) {
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>   <strong class="jxr_keyword">public</strong> LetterGradeRanges getLetterGradeRanges(Section section) {
 <a class="jxr_linenumber" name="L335" href="#L335">335</a>     <strong class="jxr_keyword">return</strong> letterGradeRanges.get(section);
 <a class="jxr_linenumber" name="L336" href="#L336">336</a>   }
 <a class="jxr_linenumber" name="L337" href="#L337">337</a> 
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> getLetterGradeForScore(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Section</a> section, <strong class="jxr_keyword">double</strong> score) {
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>   <strong class="jxr_keyword">public</strong> <a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> getLetterGradeForScore(Section section, <strong class="jxr_keyword">double</strong> score) {
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>     <strong class="jxr_keyword">for</strong> (LetterGradeRange range : <strong class="jxr_keyword">this</strong>.getLetterGradeRanges(section)) {
 <a class="jxr_linenumber" name="L340" href="#L340">340</a>       <strong class="jxr_keyword">if</strong> (range.isScoreInRange(score)) {
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>         <strong class="jxr_keyword">return</strong> range.letterGrade();
@@ -365,10 +365,10 @@
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.studentsStream().filter(s -&gt; ssn.equals(s.getSsn())).findAny();
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>   }
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> 
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>   <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRanges</a> <strong class="jxr_keyword">implements</strong> Iterable&lt;LetterGradeRanges.LetterGradeRange&gt; {
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>   <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> LetterGradeRanges <strong class="jxr_keyword">implements</strong> Iterable&lt;LetterGradeRanges.LetterGradeRange&gt; {
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Map&lt;LetterGrade, LetterGradeRange&gt; ranges = <strong class="jxr_keyword">new</strong> TreeMap&lt;&gt;();
 <a class="jxr_linenumber" name="L362" href="#L362">362</a> 
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRanges</a>() {
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <strong class="jxr_keyword">private</strong> LetterGradeRanges() {
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>       createDefaultLetterGradeRange(LetterGrade.A, 94, 100);
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>       createDefaultLetterGradeRange(LetterGrade.A_MINUS, 90, 93);
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>       createDefaultLetterGradeRange(LetterGrade.B_PLUS, 87, 89);
@@ -383,11 +383,11 @@
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>       createDefaultLetterGradeRange(LetterGrade.F, 0, 59);
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>     }
 <a class="jxr_linenumber" name="L377" href="#L377">377</a> 
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createDefaultLetterGradeRange(<a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> letterGrade, <strong class="jxr_keyword">int</strong> minimum, <strong class="jxr_keyword">int</strong> maximum) {
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>       <strong class="jxr_keyword">this</strong>.ranges.put(letterGrade, <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a>(letterGrade, minimum, maximum));
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createDefaultLetterGradeRange(<a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade, <strong class="jxr_keyword">int</strong> minimum, <strong class="jxr_keyword">int</strong> maximum) {
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>       <strong class="jxr_keyword">this</strong>.ranges.put(letterGrade, <strong class="jxr_keyword">new</strong> LetterGradeRange(letterGrade, minimum, maximum));
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>     }
 <a class="jxr_linenumber" name="L381" href="#L381">381</a> 
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> getRange(<a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> letterGrade) {
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> LetterGradeRange getRange(<a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade) {
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>       <strong class="jxr_keyword">return</strong> ranges.get(letterGrade);
 <a class="jxr_linenumber" name="L384" href="#L384">384</a>     }
 <a class="jxr_linenumber" name="L385" href="#L385">385</a> 
@@ -398,10 +398,10 @@
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>     }
 <a class="jxr_linenumber" name="L391" href="#L391">391</a> 
 <a class="jxr_linenumber" name="L392" href="#L392">392</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateThatRangesAreContiguous() {
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>       <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> previous = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>       LetterGradeRange previous = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L394" href="#L394">394</a> 
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>       <strong class="jxr_keyword">for</strong> (LetterGrade letterGrade : ranges.keySet()) {
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>         <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> current = ranges.get(letterGrade);
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>       <strong class="jxr_keyword">for</strong> (<a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade : ranges.keySet()) {
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>         LetterGradeRange current = ranges.get(letterGrade);
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>         <strong class="jxr_keyword">if</strong> (previous != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>           <strong class="jxr_keyword">if</strong> (previous.minimum() != current.maximum() + 1) {
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>             String s = <span class="jxr_string">"There is a gap between the range for "</span> + previous + <span class="jxr_string">" and "</span> + current;
@@ -415,14 +415,14 @@
 <a class="jxr_linenumber" name="L407" href="#L407">407</a>     }
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> 
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateThatARangeContains100() {
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>       <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> range = getRange(LetterGrade.A);
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>       LetterGradeRange range = getRange(LetterGrade.A);
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>       <strong class="jxr_keyword">if</strong> (range.maximum() &lt; 100) {
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LetterGradeRange.InvalidLetterGradeRange(<span class="jxr_string">"The A range must contain 100"</span>);
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>       }
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>     }
 <a class="jxr_linenumber" name="L415" href="#L415">415</a> 
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateThatFRangeHasAMinimumOf0() {
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>       <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> range = getRange(LetterGrade.F);
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>       LetterGradeRange range = getRange(LetterGrade.F);
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>       <strong class="jxr_keyword">if</strong> (range.minimum() &gt; 0) {
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LetterGradeRange.InvalidLetterGradeRange(<span class="jxr_string">"The F range must contain zero"</span>);
 <a class="jxr_linenumber" name="L420" href="#L420">420</a>       }
@@ -443,12 +443,12 @@
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.ranges.values().spliterator();
 <a class="jxr_linenumber" name="L436" href="#L436">436</a>     }
 <a class="jxr_linenumber" name="L437" href="#L437">437</a> 
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a> {
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> letterGrade;
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> LetterGradeRange {
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade;
 <a class="jxr_linenumber" name="L440" href="#L440">440</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> maximum;
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> minimum;
 <a class="jxr_linenumber" name="L442" href="#L442">442</a> 
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>       <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">LetterGradeRange</a>(<a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> letterGrade, <strong class="jxr_keyword">int</strong> minimum, <strong class="jxr_keyword">int</strong> maximum) {
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>       <strong class="jxr_keyword">public</strong> LetterGradeRange(<a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade, <strong class="jxr_keyword">int</strong> minimum, <strong class="jxr_keyword">int</strong> maximum) {
 <a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">this</strong>.letterGrade = letterGrade;
 <a class="jxr_linenumber" name="L445" href="#L445">445</a>         setRange(minimum, maximum);
 <a class="jxr_linenumber" name="L446" href="#L446">446</a>       }
@@ -457,7 +457,7 @@
 <a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">if</strong> (minimum &gt;= maximum) {
 <a class="jxr_linenumber" name="L450" href="#L450">450</a>           String s = String.format(<span class="jxr_string">"Minimum value (%d) must be less than maximum value (%d)"</span>,
 <a class="jxr_linenumber" name="L451" href="#L451">451</a>             minimum, maximum);
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>           <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">InvalidLetterGradeRange</a>(s);
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>           <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> InvalidLetterGradeRange(s);
 <a class="jxr_linenumber" name="L453" href="#L453">453</a>         }
 <a class="jxr_linenumber" name="L454" href="#L454">454</a> 
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>         <strong class="jxr_keyword">this</strong>.minimum = minimum;
@@ -477,7 +477,7 @@
 <a class="jxr_linenumber" name="L469" href="#L469">469</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Range for "</span> + letterGrade() + <span class="jxr_string">" is "</span> + minimum() + <span class="jxr_string">" to "</span> + maximum();
 <a class="jxr_linenumber" name="L470" href="#L470">470</a>       }
 <a class="jxr_linenumber" name="L471" href="#L471">471</a> 
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>       <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/LetterGrade.html">LetterGrade</a> letterGrade() {
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>       <strong class="jxr_keyword">public</strong> <a name="LetterGrade" href="../../../../edu/pdx/cs410J/grader/LetterGrade.html#LetterGrade">LetterGrade</a> letterGrade() {
 <a class="jxr_linenumber" name="L473" href="#L473">473</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.letterGrade;
 <a class="jxr_linenumber" name="L474" href="#L474">474</a>       }
 <a class="jxr_linenumber" name="L475" href="#L475">475</a> 
@@ -486,8 +486,8 @@
 <a class="jxr_linenumber" name="L478" href="#L478">478</a>         <strong class="jxr_keyword">return</strong> intScore &gt;= minimum() &amp;&amp; intScore &lt;= maximum();
 <a class="jxr_linenumber" name="L479" href="#L479">479</a>       }
 <a class="jxr_linenumber" name="L480" href="#L480">480</a> 
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">InvalidLetterGradeRange</a> <strong class="jxr_keyword">extends</strong> RuntimeException {
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">InvalidLetterGradeRange</a>(String message) {
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> InvalidLetterGradeRange <strong class="jxr_keyword">extends</strong> RuntimeException {
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">public</strong> InvalidLetterGradeRange(String message) {
 <a class="jxr_linenumber" name="L483" href="#L483">483</a>           <strong class="jxr_keyword">super</strong>(message);
 <a class="jxr_linenumber" name="L484" href="#L484">484</a>         }
 <a class="jxr_linenumber" name="L485" href="#L485">485</a>       }
@@ -496,6 +496,6 @@
 <a class="jxr_linenumber" name="L488" href="#L488">488</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

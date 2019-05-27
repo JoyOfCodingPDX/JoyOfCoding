@@ -20,17 +20,17 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * This program generates a .mailrc file containing a mail alias for</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * every student in a given grade book.</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GenerateMailrc.html">GenerateMailrc</a> {
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GenerateMailrc" href="../../../../edu/pdx/cs410J/grader/GenerateMailrc.html#GenerateMailrc">GenerateMailrc</a> {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment">   * Generates a mailrc file for the students in a given grade book.</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> generateMailrc(<a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book, PrintWriter mailrc) {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> generateMailrc(<a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book, PrintWriter mailrc) {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      mailrc.println(<span class="jxr_string">"# Mail aliases for "</span> + book.getClassName());
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <em class="jxr_comment">// Sort all of the students by their id</em>
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      SortedSet&lt;Student&gt; sorted = <strong class="jxr_keyword">new</strong> TreeSet&lt;Student&gt;(<strong class="jxr_keyword">new</strong> Comparator&lt;Student&gt;() {
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> o1, <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> o2) {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Stu<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>ref="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o2) {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          String id1 = o1.getId();
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          String id2 = o2.getId();
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">return</strong> id1.compareTo(id2);
@@ -42,7 +42,7 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      Iterator iter = sorted.iterator();
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>        <em class="jxr_comment">// alias id "email (firstName LastName)"</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>        <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student = (Student) iter.next();
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>        <a name="Student" h<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>/../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = (<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>) iter.next();
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>        String email = student.getEmail();
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>        <strong class="jxr_keyword">if</strong> (email != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  	mailrc.print(<span class="jxr_string">"alias "</span> + student.getId() + <span class="jxr_string">" \&quot;"</span>);
@@ -88,10 +88,10 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      String bookName = args[0];
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      String mailrcName = args[1];
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      PrintWriter mailrc = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>        <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(bookName);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>        <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(bookName);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>        book = parser.parse();
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>        mailrc = <strong class="jxr_keyword">new</strong> PrintWriter(<strong class="jxr_keyword">new</strong> FileWriter(mailrcName), <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        System.err.println(<span class="jxr_string">"** IOException during parsing: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>        System.exit(1);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      } <strong class="jxr_keyword">catch</strong> (ParserException ex) {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      } <strong class="jxr_keyword">catch</strong> (<a name="ParserException" href="../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> ex) {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>        System.err.println(<span class="jxr_string">"** Error during parsing: "</span> + ex);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>       System.exit(1);
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     }
@@ -114,6 +114,6 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

@@ -30,22 +30,22 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * A servlet that provides REST access to a movie database</em>
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html">MovieDatabaseServlet</a> <strong class="jxr_keyword">extends</strong> HttpServlet {
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html">MovieDatabase</a> database;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="MovieDatabaseServlet" href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html#MovieDatabaseServlet">MovieDatabaseServlet</a> <strong class="jxr_keyword">extends</strong> HttpServlet {
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> <a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a> database;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>    enum <a href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html">DataType</a> {
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>    enum DataType {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      MOVIE, ACTOR, CHARACTER, UNKNOWN
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>    }
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>    @Override
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> init() <strong class="jxr_keyword">throws</strong> ServletException {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">this</strong>.database = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/rmi/MovieDatabaseImpl.html">MovieDatabaseImpl</a>();
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">this</strong>.database = <strong class="jxr_keyword">new</strong> <a name="MovieDatabaseImpl" href="../../../../edu/pdx/cs410J/rmi/MovieDatabaseImpl.html#MovieDatabaseImpl">MovieDatabaseImpl</a>();
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>    }
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment">   * Returns the type of data requested</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html">DataType</a> getDataType(HttpServletRequest request) {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>    <strong class="jxr_keyword">private</strong> DataType getDataType(HttpServletRequest request) {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      String uri = request.getRequestURI();
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">if</strong> (uri.contains(<span class="jxr_string">"actors"</span>)) {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>        <strong class="jxr_keyword">return</strong> DataType.ACTOR;
@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      Map&lt;String, String&gt; parameters = readParametersFromRequest(request);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      response.setContentType(<span class="jxr_string">"text/plain"</span>);
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <a href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html">DataType</a> dataType = getDataType(request);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      DataType dataType = getDataType(request);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">switch</strong> (dataType) {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>        <strong class="jxr_keyword">case</strong> MOVIE:
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          updateMovie(parameters, response);
@@ -172,7 +172,7 @@
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>       <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>     }
 <a class="jxr_linenumber" name="L166" href="#L166">166</a> 
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> movie;
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie;
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>       movie = <strong class="jxr_keyword">this</strong>.database.getMovie(Long.parseLong(idString));
 <a class="jxr_linenumber" name="L170" href="#L170">170</a> 
@@ -222,12 +222,12 @@
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>       <strong class="jxr_keyword">if</strong> (notExists(title) &amp;&amp; notExists(year)) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <em class="jxr_comment">// Dump all movies</em>
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <strong class="jxr_keyword">for</strong> (Movie movie : <strong class="jxr_keyword">this</strong>.database.getMovies()) {
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <strong class="jxr_keyword">for</strong> (<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie : <strong class="jxr_keyword">this</strong>.database.getMovies()) {
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>           dumpMovie(movie, pw);
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         }
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>       } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">for</strong> (Movie movie: <strong class="jxr_keyword">this</strong>.database.executeQuery(movie1 -&gt; {
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">for</strong> (<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie: <strong class="jxr_keyword">this</strong>.database.executeQuery(movie1 -&gt; {
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>           <strong class="jxr_keyword">if</strong> (notExists(title)) {
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>             <strong class="jxr_keyword">return</strong> movie1.getYear() == Integer.parseInt(year);
 <a class="jxr_linenumber" name="L225" href="#L225">225</a> 
@@ -245,7 +245,7 @@
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> 
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>     } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> movie = <strong class="jxr_keyword">this</strong>.database.getMovie(Long.parseLong(idString));
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie = <strong class="jxr_keyword">this</strong>.database.getMovie(Long.parseLong(idString));
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">if</strong> (movie == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>           response.sendError(SC_NOT_FOUND, <span class="jxr_string">"There is no movie with id "</span> + idString);
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> 
@@ -264,7 +264,7 @@
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L257" href="#L257">257</a> <em class="jxr_javadoccomment">   * Writes a description of a movie back to the client</em>
 <a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> dumpMovie(<a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> movie, PrintWriter pw) {
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> dumpMovie(<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie, PrintWriter pw) {
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>     pw.println(movie.getId() + <span class="jxr_string">" \&quot;"</span> + movie.getTitle() + <span class="jxr_string">"\&quot; ("</span> + movie.getYear() + <span class="jxr_string">")"</span>);
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>   }
 <a class="jxr_linenumber" name="L262" href="#L262">262</a> 
@@ -276,7 +276,7 @@
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>     Map&lt;String, String&gt; parameters = readParametersFromRequest(request);
 <a class="jxr_linenumber" name="L269" href="#L269">269</a> 
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>     response.setContentType(<span class="jxr_string">"text/plain"</span>);
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>     <a href="../../../../edu/pdx/cs410J/servlets/MovieDatabaseServlet.html">DataType</a> dataType = getDataType(request);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>     DataType dataType = getDataType(request);
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">switch</strong> (dataType) {
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>       <strong class="jxr_keyword">case</strong> MOVIE:
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         deleteMovie(parameters, response);
@@ -294,7 +294,7 @@
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>       <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>     }
 <a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> movie;
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie;
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>       movie = <strong class="jxr_keyword">this</strong>.database.getMovie(Long.parseLong(idString));
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> 
@@ -313,6 +313,6 @@
 <a class="jxr_linenumber" name="L305" href="#L305">305</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

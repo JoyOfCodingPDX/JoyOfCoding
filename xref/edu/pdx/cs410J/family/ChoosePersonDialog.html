@@ -18,15 +18,15 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * family tree.</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/ChoosePersonDialog.html">ChoosePersonDialog</a> <strong class="jxr_keyword">extends</strong> JDialog {
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ChoosePersonDialog" href="../../../../edu/pdx/cs410J/family/ChoosePersonDialog.html#ChoosePersonDialog">ChoosePersonDialog</a> <strong class="jxr_keyword">extends</strong> JDialog {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> person;  <em class="jxr_comment">// The chosen person</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person;  <em class="jxr_comment">// The chosen person</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;ChoosePersonDialog&lt;/code&gt; that displays the</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   * people in a given &lt;code&gt;FamilyTree&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/ChoosePersonDialog.html">ChoosePersonDialog</a>(<a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree, JDialog owner) {
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">public</strong> <a name="ChoosePersonDialog" href="../../../../edu/pdx/cs410J/family/ChoosePersonDialog.html#ChoosePersonDialog">ChoosePersonDialog</a>(<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree, JDialog owner) {
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">super</strong>(owner, <span class="jxr_string">"Select a Person"</span>, <strong class="jxr_keyword">true</strong> <em class="jxr_comment">/* modal */</em>);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      <em class="jxr_comment">// A ChoosePersonDialog consists of a FamilyTreeList and a couple</em>
@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      Container pane = <strong class="jxr_keyword">this</strong>.getContentPane();
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      pane.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">final</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeList.html">FamilyTreeList</a> treeList = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTreeList.html">FamilyTreeList</a>();
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">final</strong> <a name="FamilyTreeList" href="../../../../edu/pdx/cs410J/family/Fa<a name="FamilyTreeList" href="../../../../edu/pdx/cs410J/family/FamilyTreeList.html#FamilyTreeList">FamilyTreeList</a>tml#FamilyTreeList">FamilyTreeList</a> treeList = <strong class="jxr_keyword">new</strong> <a name="FamilyTreeList" href="../../../../edu/pdx/cs410J/family/FamilyTreeList.html#FamilyTreeList">FamilyTreeList</a>();
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      treeList.fillInList(tree);
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      JScrollPane treePane = <strong class="jxr_keyword">new</strong> JScrollPane(treeList);
@@ -78,13 +78,13 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">   * Returns the choosen person</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> getPerson() {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">public</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> getPerson() {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.person;
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>    }
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

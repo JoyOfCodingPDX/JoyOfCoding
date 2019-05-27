@@ -22,7 +22,7 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.Matchers.equalTo;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentsPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html">POASubmissionTestCase</a> {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="StudentsPresenterTest" href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html#StudentsPresenterTest">StudentsPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a name="POASubmissionTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html#POASubmissionTestCase">POASubmissionTestCase</a> {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">private</strong> StudentsView view;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> GradeBook book;
@@ -79,7 +79,7 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      ArgumentCaptor&lt;SelectStudentHandler&gt; viewHandler = ArgumentCaptor.forClass(SelectStudentHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      verify(<strong class="jxr_keyword">this</strong>.view).addSelectStudentHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -97,7 +97,7 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      ArgumentCaptor&lt;SelectStudentHandler&gt; viewHandler = ArgumentCaptor.forClass(SelectStudentHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      verify(<strong class="jxr_keyword">this</strong>.view).addSelectStudentHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      GradeBook book = <strong class="jxr_keyword">new</strong> GradeBook(<span class="jxr_string">"Test In Alphabetical Order"</span>);
@@ -122,7 +122,7 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     ArgumentCaptor&lt;SelectStudentHandler&gt; viewHandler = ArgumentCaptor.forClass(SelectStudentHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>     verify(<strong class="jxr_keyword">this</strong>.view).addSelectStudentHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> 
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -135,14 +135,14 @@
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     assertThat(event.getValue().getSelectedStudent(), equalTo(<strong class="jxr_keyword">null</strong>));
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>   }
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> StudentSelectedEventHandler {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     @Subscribe
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">void</strong> handle(StudentSelectedEvent event);
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>   }
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>   @Test
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> submissionWithMatchingStudentNameFiresStudentSelectedEvent() {
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> 
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(<strong class="jxr_keyword">this</strong>.book));
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>   @Test
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> submissionWithMatchingStudentEmailFiresStudentSelectedEvent() {
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> 
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(<strong class="jxr_keyword">this</strong>.book));
@@ -180,7 +180,7 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a> 
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>   @Test
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> submissionByNonMatchingStudentFiresUnknownStudentSelectedEvent() {
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/StudentsPresenterTest.html">StudentSelectedEventHandler</a> eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> 
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(<strong class="jxr_keyword">this</strong>.book));
@@ -200,6 +200,6 @@
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

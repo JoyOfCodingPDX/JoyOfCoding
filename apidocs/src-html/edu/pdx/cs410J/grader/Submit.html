@@ -23,773 +23,780 @@
 <span class="sourceLineNo">014</span><a id="line.14">import java.net.URL;</a>
 <span class="sourceLineNo">015</span><a id="line.15">import java.time.LocalDateTime;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import java.time.format.DateTimeFormatter;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import java.time.format.FormatStyle;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import java.util.*;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import java.util.jar.Attributes;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import java.util.stream.Collectors;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import java.util.stream.Stream;</a>
-<span class="sourceLineNo">022</span><a id="line.22"></a>
-<span class="sourceLineNo">023</span><a id="line.23">/**</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * This class is used to submit assignments in CS410J.  The user</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * specified his or her email address as well as the base directory</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * for his/her source files on the command line.  The directory is</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * searched recursively for files ending in .java.  Those files are</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * placed in a zip file and emailed to the grader.  A confirmation</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * email is sent to the submitter.</a>
-<span class="sourceLineNo">030</span><a id="line.30"> *</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * More information about the JavaMail API can be found at:</a>
-<span class="sourceLineNo">032</span><a id="line.32"> *</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * &lt;a href="http://java.sun.com/products/javamail"&gt;</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * http://java.sun.com/products/javamail&lt;/a&gt;</a>
-<span class="sourceLineNo">035</span><a id="line.35"> *</a>
-<span class="sourceLineNo">036</span><a id="line.36"> * @author David Whitlock</a>
-<span class="sourceLineNo">037</span><a id="line.37"> * @since Fall 2000 (Refactored to use fewer static methods in Spring 2006)</a>
-<span class="sourceLineNo">038</span><a id="line.38"> */</a>
-<span class="sourceLineNo">039</span><a id="line.39">public class Submit extends EmailSender {</a>
-<span class="sourceLineNo">040</span><a id="line.40"></a>
-<span class="sourceLineNo">041</span><a id="line.41">  private static final PrintWriter out = new PrintWriter(System.out, true);</a>
-<span class="sourceLineNo">042</span><a id="line.42">  private static final PrintWriter err = new PrintWriter(System.err, true);</a>
-<span class="sourceLineNo">043</span><a id="line.43"></a>
-<span class="sourceLineNo">044</span><a id="line.44">  /**</a>
-<span class="sourceLineNo">045</span><a id="line.45">   * The grader's email address</a>
-<span class="sourceLineNo">046</span><a id="line.46">   */</a>
-<span class="sourceLineNo">047</span><a id="line.47">  @VisibleForTesting</a>
-<span class="sourceLineNo">048</span><a id="line.48">  static final String TA_EMAIL = "sjavata@gmail.com";</a>
-<span class="sourceLineNo">049</span><a id="line.49"></a>
-<span class="sourceLineNo">050</span><a id="line.50">  /**</a>
-<span class="sourceLineNo">051</span><a id="line.51">   * A URL containing a list of files that should not be submitted</a>
-<span class="sourceLineNo">052</span><a id="line.52">   */</a>
-<span class="sourceLineNo">053</span><a id="line.53">  private static final String NO_SUBMIT_LIST_URL =</a>
-<span class="sourceLineNo">054</span><a id="line.54">    "http://www.cs.pdx.edu/~whitlock/no-submit";</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.time.format.DateTimeParseException;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import java.time.format.FormatStyle;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import java.util.*;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import java.util.jar.Attributes;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import java.util.stream.Collectors;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">/**</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * This class is used to submit assignments in CS410J.  The user</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * specified his or her email address as well as the base directory</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * for his/her source files on the command line.  The directory is</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * searched recursively for files ending in .java.  Those files are</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * placed in a zip file and emailed to the grader.  A confirmation</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * email is sent to the submitter.</a>
+<span class="sourceLineNo">031</span><a id="line.31"> *</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * More information about the JavaMail API can be found at:</a>
+<span class="sourceLineNo">033</span><a id="line.33"> *</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * &lt;a href="http://java.sun.com/products/javamail"&gt;</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * http://java.sun.com/products/javamail&lt;/a&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36"> *</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * @author David Whitlock</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * @since Fall 2000 (Refactored to use fewer static methods in Spring 2006)</a>
+<span class="sourceLineNo">039</span><a id="line.39"> */</a>
+<span class="sourceLineNo">040</span><a id="line.40">public class Submit extends EmailSender {</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">  private static final PrintWriter out = new PrintWriter(System.out, true);</a>
+<span class="sourceLineNo">043</span><a id="line.43">  private static final PrintWriter err = new PrintWriter(System.err, true);</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">  /**</a>
+<span class="sourceLineNo">046</span><a id="line.46">   * A URL containing a list of files that should not be submitted</a>
+<span class="sourceLineNo">047</span><a id="line.47">   */</a>
+<span class="sourceLineNo">048</span><a id="line.48">  private static final String NO_SUBMIT_LIST_URL =</a>
+<span class="sourceLineNo">049</span><a id="line.49">    "http://www.cs.pdx.edu/~whitlock/no-submit";</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">  private static final String PROJECT_NAMES_LIST_URL =</a>
+<span class="sourceLineNo">052</span><a id="line.52">    "http://www.cs.pdx.edu/~whitlock/project-names";</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">  /////////////////////  Instance Fields  //////////////////////////</a>
 <span class="sourceLineNo">055</span><a id="line.55"></a>
-<span class="sourceLineNo">056</span><a id="line.56">  private static final String PROJECT_NAMES_LIST_URL =</a>
-<span class="sourceLineNo">057</span><a id="line.57">    "http://www.cs.pdx.edu/~whitlock/project-names";</a>
-<span class="sourceLineNo">058</span><a id="line.58"></a>
-<span class="sourceLineNo">059</span><a id="line.59">  /////////////////////  Instance Fields  //////////////////////////</a>
+<span class="sourceLineNo">056</span><a id="line.56">  /**</a>
+<span class="sourceLineNo">057</span><a id="line.57">   * The name of the project being submitted</a>
+<span class="sourceLineNo">058</span><a id="line.58">   */</a>
+<span class="sourceLineNo">059</span><a id="line.59">  private String projName = null;</a>
 <span class="sourceLineNo">060</span><a id="line.60"></a>
 <span class="sourceLineNo">061</span><a id="line.61">  /**</a>
-<span class="sourceLineNo">062</span><a id="line.62">   * The name of the project being submitted</a>
+<span class="sourceLineNo">062</span><a id="line.62">   * The name of the user (student) submits the project</a>
 <span class="sourceLineNo">063</span><a id="line.63">   */</a>
-<span class="sourceLineNo">064</span><a id="line.64">  private String projName = null;</a>
+<span class="sourceLineNo">064</span><a id="line.64">  private String userName = null;</a>
 <span class="sourceLineNo">065</span><a id="line.65"></a>
 <span class="sourceLineNo">066</span><a id="line.66">  /**</a>
-<span class="sourceLineNo">067</span><a id="line.67">   * The name of the user (student) submits the project</a>
+<span class="sourceLineNo">067</span><a id="line.67">   * The submitter's email address</a>
 <span class="sourceLineNo">068</span><a id="line.68">   */</a>
-<span class="sourceLineNo">069</span><a id="line.69">  private String userName = null;</a>
+<span class="sourceLineNo">069</span><a id="line.69">  private String userEmail = null;</a>
 <span class="sourceLineNo">070</span><a id="line.70"></a>
 <span class="sourceLineNo">071</span><a id="line.71">  /**</a>
-<span class="sourceLineNo">072</span><a id="line.72">   * The submitter's email address</a>
+<span class="sourceLineNo">072</span><a id="line.72">   * The submitter's user id</a>
 <span class="sourceLineNo">073</span><a id="line.73">   */</a>
-<span class="sourceLineNo">074</span><a id="line.74">  private String userEmail = null;</a>
+<span class="sourceLineNo">074</span><a id="line.74">  private String userId = null;</a>
 <span class="sourceLineNo">075</span><a id="line.75"></a>
 <span class="sourceLineNo">076</span><a id="line.76">  /**</a>
-<span class="sourceLineNo">077</span><a id="line.77">   * The submitter's user id</a>
+<span class="sourceLineNo">077</span><a id="line.77">   * A comment describing the project</a>
 <span class="sourceLineNo">078</span><a id="line.78">   */</a>
-<span class="sourceLineNo">079</span><a id="line.79">  private String userId = null;</a>
+<span class="sourceLineNo">079</span><a id="line.79">  private String comment = null;</a>
 <span class="sourceLineNo">080</span><a id="line.80"></a>
 <span class="sourceLineNo">081</span><a id="line.81">  /**</a>
-<span class="sourceLineNo">082</span><a id="line.82">   * A comment describing the project</a>
+<span class="sourceLineNo">082</span><a id="line.82">   * Should the execution of this program be logged?</a>
 <span class="sourceLineNo">083</span><a id="line.83">   */</a>
-<span class="sourceLineNo">084</span><a id="line.84">  private String comment = null;</a>
+<span class="sourceLineNo">084</span><a id="line.84">  private boolean debug = false;</a>
 <span class="sourceLineNo">085</span><a id="line.85"></a>
 <span class="sourceLineNo">086</span><a id="line.86">  /**</a>
-<span class="sourceLineNo">087</span><a id="line.87">   * Should the execution of this program be logged?</a>
+<span class="sourceLineNo">087</span><a id="line.87">   * Should the generated zip file be saved?</a>
 <span class="sourceLineNo">088</span><a id="line.88">   */</a>
-<span class="sourceLineNo">089</span><a id="line.89">  private boolean debug = false;</a>
+<span class="sourceLineNo">089</span><a id="line.89">  private boolean saveZip = false;</a>
 <span class="sourceLineNo">090</span><a id="line.90"></a>
 <span class="sourceLineNo">091</span><a id="line.91">  /**</a>
-<span class="sourceLineNo">092</span><a id="line.92">   * Should the generated zip file be saved?</a>
+<span class="sourceLineNo">092</span><a id="line.92">   * The time at which the project was submitted</a>
 <span class="sourceLineNo">093</span><a id="line.93">   */</a>
-<span class="sourceLineNo">094</span><a id="line.94">  private boolean saveZip = false;</a>
+<span class="sourceLineNo">094</span><a id="line.94">  private LocalDateTime submitTime = null;</a>
 <span class="sourceLineNo">095</span><a id="line.95"></a>
 <span class="sourceLineNo">096</span><a id="line.96">  /**</a>
-<span class="sourceLineNo">097</span><a id="line.97">   * The time at which the project was submitted</a>
+<span class="sourceLineNo">097</span><a id="line.97">   * The names of the files to be submitted</a>
 <span class="sourceLineNo">098</span><a id="line.98">   */</a>
-<span class="sourceLineNo">099</span><a id="line.99">  private LocalDateTime submitTime = null;</a>
+<span class="sourceLineNo">099</span><a id="line.99">  private Set&lt;String&gt; fileNames = new HashSet&lt;&gt;();</a>
 <span class="sourceLineNo">100</span><a id="line.100"></a>
-<span class="sourceLineNo">101</span><a id="line.101">  /**</a>
-<span class="sourceLineNo">102</span><a id="line.102">   * The names of the files to be submitted</a>
-<span class="sourceLineNo">103</span><a id="line.103">   */</a>
-<span class="sourceLineNo">104</span><a id="line.104">  private Set&lt;String&gt; fileNames = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">101</span><a id="line.101">  private boolean isSubmittingKoans = false;</a>
+<span class="sourceLineNo">102</span><a id="line.102">  private boolean sendReceipt = true;</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">  ///////////////////////  Constructors  /////////////////////////</a>
 <span class="sourceLineNo">105</span><a id="line.105"></a>
-<span class="sourceLineNo">106</span><a id="line.106">  private boolean isSubmittingKoans = false;</a>
-<span class="sourceLineNo">107</span><a id="line.107">  private boolean sendReceipt = true;</a>
-<span class="sourceLineNo">108</span><a id="line.108"></a>
-<span class="sourceLineNo">109</span><a id="line.109">  ///////////////////////  Constructors  /////////////////////////</a>
+<span class="sourceLineNo">106</span><a id="line.106">  /**</a>
+<span class="sourceLineNo">107</span><a id="line.107">   * Creates a new &lt;code&gt;Submit&lt;/code&gt; program</a>
+<span class="sourceLineNo">108</span><a id="line.108">   */</a>
+<span class="sourceLineNo">109</span><a id="line.109">  public Submit() {</a>
 <span class="sourceLineNo">110</span><a id="line.110"></a>
-<span class="sourceLineNo">111</span><a id="line.111">  /**</a>
-<span class="sourceLineNo">112</span><a id="line.112">   * Creates a new &lt;code&gt;Submit&lt;/code&gt; program</a>
-<span class="sourceLineNo">113</span><a id="line.113">   */</a>
-<span class="sourceLineNo">114</span><a id="line.114">  public Submit() {</a>
-<span class="sourceLineNo">115</span><a id="line.115"></a>
-<span class="sourceLineNo">116</span><a id="line.116">  }</a>
-<span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">  /////////////////////  Instance Methods  ///////////////////////</a>
-<span class="sourceLineNo">119</span><a id="line.119"></a>
-<span class="sourceLineNo">120</span><a id="line.120">  /**</a>
-<span class="sourceLineNo">121</span><a id="line.121">   * Sets the name of the SMTP server that is used to send emails</a>
-<span class="sourceLineNo">122</span><a id="line.122">   */</a>
-<span class="sourceLineNo">123</span><a id="line.123">  public void setEmailServerHostName(String serverName) {</a>
-<span class="sourceLineNo">124</span><a id="line.124">    EmailSender.serverName = serverName;</a>
-<span class="sourceLineNo">125</span><a id="line.125">  }</a>
-<span class="sourceLineNo">126</span><a id="line.126"></a>
-<span class="sourceLineNo">127</span><a id="line.127">  /**</a>
-<span class="sourceLineNo">128</span><a id="line.128">   * Sets whether or not the progress of the submission should be logged.</a>
-<span class="sourceLineNo">129</span><a id="line.129">   */</a>
-<span class="sourceLineNo">130</span><a id="line.130">  public void setDebug(boolean debug) {</a>
-<span class="sourceLineNo">131</span><a id="line.131">    this.debug = debug;</a>
-<span class="sourceLineNo">132</span><a id="line.132">  }</a>
-<span class="sourceLineNo">133</span><a id="line.133"></a>
-<span class="sourceLineNo">134</span><a id="line.134">  /**</a>
-<span class="sourceLineNo">135</span><a id="line.135">   * Sets whether or not the zip file generated by the submission</a>
-<span class="sourceLineNo">136</span><a id="line.136">   * should be saved.</a>
-<span class="sourceLineNo">137</span><a id="line.137">   */</a>
-<span class="sourceLineNo">138</span><a id="line.138">  public void setSaveZip(boolean saveZip) {</a>
-<span class="sourceLineNo">139</span><a id="line.139">    this.saveZip = saveZip;</a>
-<span class="sourceLineNo">140</span><a id="line.140">  }</a>
-<span class="sourceLineNo">141</span><a id="line.141"></a>
-<span class="sourceLineNo">142</span><a id="line.142">  /**</a>
-<span class="sourceLineNo">143</span><a id="line.143">   * Sets the comment for this submission</a>
-<span class="sourceLineNo">144</span><a id="line.144">   */</a>
-<span class="sourceLineNo">145</span><a id="line.145">  public void setComment(String comment) {</a>
-<span class="sourceLineNo">146</span><a id="line.146">    this.comment = comment;</a>
-<span class="sourceLineNo">147</span><a id="line.147">  }</a>
-<span class="sourceLineNo">148</span><a id="line.148"></a>
-<span class="sourceLineNo">149</span><a id="line.149">  /**</a>
-<span class="sourceLineNo">150</span><a id="line.150">   * Sets the name of project being submitted</a>
-<span class="sourceLineNo">151</span><a id="line.151">   */</a>
-<span class="sourceLineNo">152</span><a id="line.152">  public void setProjectName(String projName) {</a>
-<span class="sourceLineNo">153</span><a id="line.153">    this.projName = projName;</a>
-<span class="sourceLineNo">154</span><a id="line.154">  }</a>
-<span class="sourceLineNo">155</span><a id="line.155"></a>
-<span class="sourceLineNo">156</span><a id="line.156">  /**</a>
-<span class="sourceLineNo">157</span><a id="line.157">   * Sets the name of the user who is submitting the project</a>
-<span class="sourceLineNo">158</span><a id="line.158">   */</a>
-<span class="sourceLineNo">159</span><a id="line.159">  public void setUserName(String userName) {</a>
-<span class="sourceLineNo">160</span><a id="line.160">    this.userName = userName;</a>
-<span class="sourceLineNo">161</span><a id="line.161">  }</a>
-<span class="sourceLineNo">162</span><a id="line.162"></a>
-<span class="sourceLineNo">163</span><a id="line.163">  /**</a>
-<span class="sourceLineNo">164</span><a id="line.164">   * Sets the id of the user who is submitting the project</a>
-<span class="sourceLineNo">165</span><a id="line.165">   */</a>
-<span class="sourceLineNo">166</span><a id="line.166">  public void setUserId(String userId) {</a>
-<span class="sourceLineNo">167</span><a id="line.167">    this.userId = userId;</a>
-<span class="sourceLineNo">168</span><a id="line.168">  }</a>
-<span class="sourceLineNo">169</span><a id="line.169"></a>
-<span class="sourceLineNo">170</span><a id="line.170">  /**</a>
-<span class="sourceLineNo">171</span><a id="line.171">   * Sets the email address of the user who is submitting the project</a>
-<span class="sourceLineNo">172</span><a id="line.172">   */</a>
-<span class="sourceLineNo">173</span><a id="line.173">  public void setUserEmail(String userEmail) {</a>
-<span class="sourceLineNo">174</span><a id="line.174">    this.userEmail = userEmail;</a>
-<span class="sourceLineNo">175</span><a id="line.175">  }</a>
-<span class="sourceLineNo">176</span><a id="line.176"></a>
-<span class="sourceLineNo">177</span><a id="line.177">  /**</a>
-<span class="sourceLineNo">178</span><a id="line.178">   * Adds the file with the given name to the list of files to be</a>
-<span class="sourceLineNo">179</span><a id="line.179">   * submitted.</a>
-<span class="sourceLineNo">180</span><a id="line.180">   */</a>
-<span class="sourceLineNo">181</span><a id="line.181">  public void addFile(String fileName) {</a>
-<span class="sourceLineNo">182</span><a id="line.182">    this.fileNames.add(fileName);</a>
-<span class="sourceLineNo">183</span><a id="line.183">  }</a>
-<span class="sourceLineNo">184</span><a id="line.184"></a>
-<span class="sourceLineNo">185</span><a id="line.185">  /**</a>
-<span class="sourceLineNo">186</span><a id="line.186">   * Validates the state of this submission</a>
-<span class="sourceLineNo">187</span><a id="line.187">   *</a>
-<span class="sourceLineNo">188</span><a id="line.188">   * @throws IllegalStateException If any state is incorrect or missing</a>
-<span class="sourceLineNo">189</span><a id="line.189">   */</a>
-<span class="sourceLineNo">190</span><a id="line.190">  public void validate() {</a>
-<span class="sourceLineNo">191</span><a id="line.191">    validateProjectName();</a>
-<span class="sourceLineNo">192</span><a id="line.192"></a>
-<span class="sourceLineNo">193</span><a id="line.193">    if (projName == null) {</a>
-<span class="sourceLineNo">194</span><a id="line.194">      throw new IllegalStateException("Missing project name");</a>
-<span class="sourceLineNo">195</span><a id="line.195">    }</a>
-<span class="sourceLineNo">196</span><a id="line.196"></a>
-<span class="sourceLineNo">197</span><a id="line.197">    if (userName == null) {</a>
-<span class="sourceLineNo">198</span><a id="line.198">      throw new IllegalStateException("Missing student name");</a>
-<span class="sourceLineNo">199</span><a id="line.199">    }</a>
-<span class="sourceLineNo">200</span><a id="line.200"></a>
-<span class="sourceLineNo">201</span><a id="line.201">    if (userId == null) {</a>
-<span class="sourceLineNo">202</span><a id="line.202">      throw new IllegalStateException("Missing login id");</a>
-<span class="sourceLineNo">203</span><a id="line.203">    }</a>
-<span class="sourceLineNo">204</span><a id="line.204"></a>
-<span class="sourceLineNo">205</span><a id="line.205">    if (isNineDigitStudentId(userId)) {</a>
-<span class="sourceLineNo">206</span><a id="line.206">      throw new IllegalStateException(loginIdShouldNotBeStudentId(userId));</a>
-<span class="sourceLineNo">207</span><a id="line.207">    }</a>
-<span class="sourceLineNo">208</span><a id="line.208"></a>
-<span class="sourceLineNo">209</span><a id="line.209">    if (looksLikeAnEmailAddress(userId)) {</a>
-<span class="sourceLineNo">210</span><a id="line.210">      throw new IllegalStateException(loginIdShouldNotBeEmailAddress(userId));</a>
-<span class="sourceLineNo">211</span><a id="line.211">    }</a>
-<span class="sourceLineNo">212</span><a id="line.212"></a>
-<span class="sourceLineNo">213</span><a id="line.213">    if (userEmail == null) {</a>
-<span class="sourceLineNo">214</span><a id="line.214">      throw new IllegalStateException("Missing email address");</a>
+<span class="sourceLineNo">111</span><a id="line.111">  }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">  /////////////////////  Instance Methods  ///////////////////////</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">  /**</a>
+<span class="sourceLineNo">116</span><a id="line.116">   * Sets the name of the SMTP server that is used to send emails</a>
+<span class="sourceLineNo">117</span><a id="line.117">   */</a>
+<span class="sourceLineNo">118</span><a id="line.118">  public void setEmailServerHostName(String serverName) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">    EmailSender.serverName = serverName;</a>
+<span class="sourceLineNo">120</span><a id="line.120">  }</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">  /**</a>
+<span class="sourceLineNo">123</span><a id="line.123">   * Sets whether or not the progress of the submission should be logged.</a>
+<span class="sourceLineNo">124</span><a id="line.124">   */</a>
+<span class="sourceLineNo">125</span><a id="line.125">  public void setDebug(boolean debug) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">    this.debug = debug;</a>
+<span class="sourceLineNo">127</span><a id="line.127">  }</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">  /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">   * Sets whether or not the zip file generated by the submission</a>
+<span class="sourceLineNo">131</span><a id="line.131">   * should be saved.</a>
+<span class="sourceLineNo">132</span><a id="line.132">   */</a>
+<span class="sourceLineNo">133</span><a id="line.133">  public void setSaveZip(boolean saveZip) {</a>
+<span class="sourceLineNo">134</span><a id="line.134">    this.saveZip = saveZip;</a>
+<span class="sourceLineNo">135</span><a id="line.135">  }</a>
+<span class="sourceLineNo">136</span><a id="line.136"></a>
+<span class="sourceLineNo">137</span><a id="line.137">  /**</a>
+<span class="sourceLineNo">138</span><a id="line.138">   * Sets the comment for this submission</a>
+<span class="sourceLineNo">139</span><a id="line.139">   */</a>
+<span class="sourceLineNo">140</span><a id="line.140">  public void setComment(String comment) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">    this.comment = comment;</a>
+<span class="sourceLineNo">142</span><a id="line.142">  }</a>
+<span class="sourceLineNo">143</span><a id="line.143"></a>
+<span class="sourceLineNo">144</span><a id="line.144">  /**</a>
+<span class="sourceLineNo">145</span><a id="line.145">   * Sets the name of project being submitted</a>
+<span class="sourceLineNo">146</span><a id="line.146">   */</a>
+<span class="sourceLineNo">147</span><a id="line.147">  public void setProjectName(String projName) {</a>
+<span class="sourceLineNo">148</span><a id="line.148">    this.projName = projName;</a>
+<span class="sourceLineNo">149</span><a id="line.149">  }</a>
+<span class="sourceLineNo">150</span><a id="line.150"></a>
+<span class="sourceLineNo">151</span><a id="line.151">  /**</a>
+<span class="sourceLineNo">152</span><a id="line.152">   * Sets the name of the user who is submitting the project</a>
+<span class="sourceLineNo">153</span><a id="line.153">   */</a>
+<span class="sourceLineNo">154</span><a id="line.154">  public void setUserName(String userName) {</a>
+<span class="sourceLineNo">155</span><a id="line.155">    this.userName = userName;</a>
+<span class="sourceLineNo">156</span><a id="line.156">  }</a>
+<span class="sourceLineNo">157</span><a id="line.157"></a>
+<span class="sourceLineNo">158</span><a id="line.158">  /**</a>
+<span class="sourceLineNo">159</span><a id="line.159">   * Sets the id of the user who is submitting the project</a>
+<span class="sourceLineNo">160</span><a id="line.160">   */</a>
+<span class="sourceLineNo">161</span><a id="line.161">  public void setUserId(String userId) {</a>
+<span class="sourceLineNo">162</span><a id="line.162">    this.userId = userId;</a>
+<span class="sourceLineNo">163</span><a id="line.163">  }</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">  /**</a>
+<span class="sourceLineNo">166</span><a id="line.166">   * Sets the email address of the user who is submitting the project</a>
+<span class="sourceLineNo">167</span><a id="line.167">   */</a>
+<span class="sourceLineNo">168</span><a id="line.168">  public void setUserEmail(String userEmail) {</a>
+<span class="sourceLineNo">169</span><a id="line.169">    this.userEmail = userEmail;</a>
+<span class="sourceLineNo">170</span><a id="line.170">  }</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">  /**</a>
+<span class="sourceLineNo">173</span><a id="line.173">   * Adds the file with the given name to the list of files to be</a>
+<span class="sourceLineNo">174</span><a id="line.174">   * submitted.</a>
+<span class="sourceLineNo">175</span><a id="line.175">   */</a>
+<span class="sourceLineNo">176</span><a id="line.176">  public void addFile(String fileName) {</a>
+<span class="sourceLineNo">177</span><a id="line.177">    this.fileNames.add(fileName);</a>
+<span class="sourceLineNo">178</span><a id="line.178">  }</a>
+<span class="sourceLineNo">179</span><a id="line.179"></a>
+<span class="sourceLineNo">180</span><a id="line.180">  /**</a>
+<span class="sourceLineNo">181</span><a id="line.181">   * Validates the state of this submission</a>
+<span class="sourceLineNo">182</span><a id="line.182">   *</a>
+<span class="sourceLineNo">183</span><a id="line.183">   * @throws IllegalStateException If any state is incorrect or missing</a>
+<span class="sourceLineNo">184</span><a id="line.184">   */</a>
+<span class="sourceLineNo">185</span><a id="line.185">  public void validate() {</a>
+<span class="sourceLineNo">186</span><a id="line.186">    validateProjectName();</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">    if (projName == null) {</a>
+<span class="sourceLineNo">189</span><a id="line.189">      throw new IllegalStateException("Missing project name");</a>
+<span class="sourceLineNo">190</span><a id="line.190">    }</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">    if (userName == null) {</a>
+<span class="sourceLineNo">193</span><a id="line.193">      throw new IllegalStateException("Missing student name");</a>
+<span class="sourceLineNo">194</span><a id="line.194">    }</a>
+<span class="sourceLineNo">195</span><a id="line.195"></a>
+<span class="sourceLineNo">196</span><a id="line.196">    if (userId == null) {</a>
+<span class="sourceLineNo">197</span><a id="line.197">      throw new IllegalStateException("Missing login id");</a>
+<span class="sourceLineNo">198</span><a id="line.198">    }</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">    if (isNineDigitStudentId(userId)) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">      throw new IllegalStateException(loginIdShouldNotBeStudentId(userId));</a>
+<span class="sourceLineNo">202</span><a id="line.202">    }</a>
+<span class="sourceLineNo">203</span><a id="line.203"></a>
+<span class="sourceLineNo">204</span><a id="line.204">    if (looksLikeAnEmailAddress(userId)) {</a>
+<span class="sourceLineNo">205</span><a id="line.205">      throw new IllegalStateException(loginIdShouldNotBeEmailAddress(userId));</a>
+<span class="sourceLineNo">206</span><a id="line.206">    }</a>
+<span class="sourceLineNo">207</span><a id="line.207"></a>
+<span class="sourceLineNo">208</span><a id="line.208">    if (userEmail == null) {</a>
+<span class="sourceLineNo">209</span><a id="line.209">      throw new IllegalStateException("Missing email address");</a>
+<span class="sourceLineNo">210</span><a id="line.210"></a>
+<span class="sourceLineNo">211</span><a id="line.211">    } else {</a>
+<span class="sourceLineNo">212</span><a id="line.212">      // Make sure user's email is okay</a>
+<span class="sourceLineNo">213</span><a id="line.213">      try {</a>
+<span class="sourceLineNo">214</span><a id="line.214">        new InternetAddress(userEmail);</a>
 <span class="sourceLineNo">215</span><a id="line.215"></a>
-<span class="sourceLineNo">216</span><a id="line.216">    } else {</a>
-<span class="sourceLineNo">217</span><a id="line.217">      // Make sure user's email is okay</a>
-<span class="sourceLineNo">218</span><a id="line.218">      try {</a>
-<span class="sourceLineNo">219</span><a id="line.219">        new InternetAddress(userEmail);</a>
-<span class="sourceLineNo">220</span><a id="line.220"></a>
-<span class="sourceLineNo">221</span><a id="line.221">      } catch (AddressException ex) {</a>
-<span class="sourceLineNo">222</span><a id="line.222">        String s = "Invalid email address: " + userEmail;</a>
-<span class="sourceLineNo">223</span><a id="line.223">        IllegalStateException ex2 = new IllegalStateException(s);</a>
-<span class="sourceLineNo">224</span><a id="line.224">        ex2.initCause(ex);</a>
-<span class="sourceLineNo">225</span><a id="line.225">        throw ex2;</a>
-<span class="sourceLineNo">226</span><a id="line.226">      }</a>
-<span class="sourceLineNo">227</span><a id="line.227">    }</a>
-<span class="sourceLineNo">228</span><a id="line.228">  }</a>
-<span class="sourceLineNo">229</span><a id="line.229"></a>
-<span class="sourceLineNo">230</span><a id="line.230">  private String loginIdShouldNotBeEmailAddress(String userId) {</a>
-<span class="sourceLineNo">231</span><a id="line.231">    return "You login id (" + userId + ") should not be an email address";</a>
+<span class="sourceLineNo">216</span><a id="line.216">      } catch (AddressException ex) {</a>
+<span class="sourceLineNo">217</span><a id="line.217">        String s = "Invalid email address: " + userEmail;</a>
+<span class="sourceLineNo">218</span><a id="line.218">        IllegalStateException ex2 = new IllegalStateException(s);</a>
+<span class="sourceLineNo">219</span><a id="line.219">        ex2.initCause(ex);</a>
+<span class="sourceLineNo">220</span><a id="line.220">        throw ex2;</a>
+<span class="sourceLineNo">221</span><a id="line.221">      }</a>
+<span class="sourceLineNo">222</span><a id="line.222">    }</a>
+<span class="sourceLineNo">223</span><a id="line.223">  }</a>
+<span class="sourceLineNo">224</span><a id="line.224"></a>
+<span class="sourceLineNo">225</span><a id="line.225">  private String loginIdShouldNotBeEmailAddress(String userId) {</a>
+<span class="sourceLineNo">226</span><a id="line.226">    return "You login id (" + userId + ") should not be an email address";</a>
+<span class="sourceLineNo">227</span><a id="line.227">  }</a>
+<span class="sourceLineNo">228</span><a id="line.228"></a>
+<span class="sourceLineNo">229</span><a id="line.229">  @VisibleForTesting</a>
+<span class="sourceLineNo">230</span><a id="line.230">  boolean looksLikeAnEmailAddress(String userId) {</a>
+<span class="sourceLineNo">231</span><a id="line.231">    return userId.contains("@");</a>
 <span class="sourceLineNo">232</span><a id="line.232">  }</a>
 <span class="sourceLineNo">233</span><a id="line.233"></a>
 <span class="sourceLineNo">234</span><a id="line.234">  @VisibleForTesting</a>
-<span class="sourceLineNo">235</span><a id="line.235">  boolean looksLikeAnEmailAddress(String userId) {</a>
-<span class="sourceLineNo">236</span><a id="line.236">    return userId.contains("@");</a>
+<span class="sourceLineNo">235</span><a id="line.235">  boolean isNineDigitStudentId(String userId) {</a>
+<span class="sourceLineNo">236</span><a id="line.236">    return userId.matches("^[0-9]{9}$");</a>
 <span class="sourceLineNo">237</span><a id="line.237">  }</a>
 <span class="sourceLineNo">238</span><a id="line.238"></a>
-<span class="sourceLineNo">239</span><a id="line.239">  @VisibleForTesting</a>
-<span class="sourceLineNo">240</span><a id="line.240">  boolean isNineDigitStudentId(String userId) {</a>
-<span class="sourceLineNo">241</span><a id="line.241">    return userId.matches("^[0-9]{9}$");</a>
-<span class="sourceLineNo">242</span><a id="line.242">  }</a>
-<span class="sourceLineNo">243</span><a id="line.243"></a>
-<span class="sourceLineNo">244</span><a id="line.244">  private String loginIdShouldNotBeStudentId(String userId) {</a>
-<span class="sourceLineNo">245</span><a id="line.245">    return "Your login id (" + userId + ") should not be your 9-digit student id";</a>
-<span class="sourceLineNo">246</span><a id="line.246">  }</a>
-<span class="sourceLineNo">247</span><a id="line.247"></a>
-<span class="sourceLineNo">248</span><a id="line.248">  private void validateProjectName() {</a>
-<span class="sourceLineNo">249</span><a id="line.249">    List&lt;String&gt; validProjectNames = fetchListOfValidProjectNames();</a>
-<span class="sourceLineNo">250</span><a id="line.250">    if (!validProjectNames.contains(projName)) {</a>
-<span class="sourceLineNo">251</span><a id="line.251">      String message = "\"" + projName + "\" is not in the list of valid project names: " + validProjectNames;</a>
-<span class="sourceLineNo">252</span><a id="line.252">      throw new IllegalStateException(message);</a>
-<span class="sourceLineNo">253</span><a id="line.253">    }</a>
-<span class="sourceLineNo">254</span><a id="line.254">  }</a>
-<span class="sourceLineNo">255</span><a id="line.255"></a>
-<span class="sourceLineNo">256</span><a id="line.256">  private List&lt;String&gt; fetchListOfValidProjectNames() {</a>
-<span class="sourceLineNo">257</span><a id="line.257">    return fetchListOfStringsFromUrl(PROJECT_NAMES_LIST_URL);</a>
-<span class="sourceLineNo">258</span><a id="line.258">  }</a>
-<span class="sourceLineNo">259</span><a id="line.259"></a>
-<span class="sourceLineNo">260</span><a id="line.260">  /**</a>
-<span class="sourceLineNo">261</span><a id="line.261">   * Submits the project to the grader</a>
-<span class="sourceLineNo">262</span><a id="line.262">   *</a>
-<span class="sourceLineNo">263</span><a id="line.263">   * @param verify Should the user be prompted to verify his submission?</a>
-<span class="sourceLineNo">264</span><a id="line.264">   * @return Whether or not the submission actually occurred</a>
-<span class="sourceLineNo">265</span><a id="line.265">   * @throws IllegalStateException If no source files were found</a>
-<span class="sourceLineNo">266</span><a id="line.266">   */</a>
-<span class="sourceLineNo">267</span><a id="line.267">  public boolean submit(boolean verify) throws IOException, MessagingException {</a>
-<span class="sourceLineNo">268</span><a id="line.268">    // Recursively search the source directory for .java files</a>
-<span class="sourceLineNo">269</span><a id="line.269">    Set&lt;File&gt; sourceFiles = searchForSourceFiles(fileNames);</a>
-<span class="sourceLineNo">270</span><a id="line.270"></a>
-<span class="sourceLineNo">271</span><a id="line.271">    db(sourceFiles.size() + " source files found");</a>
-<span class="sourceLineNo">272</span><a id="line.272"></a>
-<span class="sourceLineNo">273</span><a id="line.273">    if (sourceFiles.size() == 0) {</a>
-<span class="sourceLineNo">274</span><a id="line.274">      String s = "No source files were found.";</a>
-<span class="sourceLineNo">275</span><a id="line.275">      throw new IllegalStateException(s);</a>
-<span class="sourceLineNo">276</span><a id="line.276">    } else if (sourceFiles.size() &lt; 3) {</a>
-<span class="sourceLineNo">277</span><a id="line.277">      String s = "Too few source files were submitted. Each project requires at least 3 files be" + </a>
-<span class="sourceLineNo">278</span><a id="line.278">                 " submitted. You only submitted " + sourceFiles.size() + " files";</a>
-<span class="sourceLineNo">279</span><a id="line.279">      throw new IllegalStateException(s);</a>
-<span class="sourceLineNo">280</span><a id="line.280">    }</a>
-<span class="sourceLineNo">281</span><a id="line.281"></a>
-<span class="sourceLineNo">282</span><a id="line.282">    // Verify submission with user</a>
-<span class="sourceLineNo">283</span><a id="line.283">    if (verify &amp;&amp; !verifySubmission(sourceFiles)) {</a>
-<span class="sourceLineNo">284</span><a id="line.284">      // User does not want to submit</a>
-<span class="sourceLineNo">285</span><a id="line.285">      return false;</a>
-<span class="sourceLineNo">286</span><a id="line.286">    }</a>
-<span class="sourceLineNo">287</span><a id="line.287"></a>
-<span class="sourceLineNo">288</span><a id="line.288">    // Timestamp</a>
-<span class="sourceLineNo">289</span><a id="line.289">    this.submitTime = LocalDateTime.now();</a>
-<span class="sourceLineNo">290</span><a id="line.290"></a>
-<span class="sourceLineNo">291</span><a id="line.291">    // Create a temporary zip file to hold the source files</a>
-<span class="sourceLineNo">292</span><a id="line.292">    File zipFile = makeZipFileWith(sourceFiles);</a>
-<span class="sourceLineNo">293</span><a id="line.293"></a>
-<span class="sourceLineNo">294</span><a id="line.294">    // Send the zip file as an email attachment to the TA</a>
-<span class="sourceLineNo">295</span><a id="line.295">    mailTA(zipFile, sourceFiles);</a>
-<span class="sourceLineNo">296</span><a id="line.296"></a>
-<span class="sourceLineNo">297</span><a id="line.297">    if (sendReceipt) {</a>
-<span class="sourceLineNo">298</span><a id="line.298">      mailReceipt(sourceFiles);</a>
-<span class="sourceLineNo">299</span><a id="line.299">    }</a>
-<span class="sourceLineNo">300</span><a id="line.300"></a>
-<span class="sourceLineNo">301</span><a id="line.301">    return true;</a>
-<span class="sourceLineNo">302</span><a id="line.302">  }</a>
-<span class="sourceLineNo">303</span><a id="line.303"></a>
-<span class="sourceLineNo">304</span><a id="line.304">  /**</a>
-<span class="sourceLineNo">305</span><a id="line.305">   * Prints debugging output.</a>
-<span class="sourceLineNo">306</span><a id="line.306">   */</a>
-<span class="sourceLineNo">307</span><a id="line.307">  private void db(String s) {</a>
-<span class="sourceLineNo">308</span><a id="line.308">    if (this.debug) {</a>
-<span class="sourceLineNo">309</span><a id="line.309">      err.println("++ " + s);</a>
-<span class="sourceLineNo">310</span><a id="line.310">    }</a>
-<span class="sourceLineNo">311</span><a id="line.311">  }</a>
-<span class="sourceLineNo">312</span><a id="line.312"></a>
-<span class="sourceLineNo">313</span><a id="line.313">  /**</a>
-<span class="sourceLineNo">314</span><a id="line.314">   * Searches for the files given on the command line.  Ignores files</a>
-<span class="sourceLineNo">315</span><a id="line.315">   * that do not end in .java, or that appear on the "no submit" list.</a>
-<span class="sourceLineNo">316</span><a id="line.316">   * Files must reside in a directory named</a>
-<span class="sourceLineNo">317</span><a id="line.317">   * edu/pdx/cs410J/&lt;studentId&gt;.</a>
-<span class="sourceLineNo">318</span><a id="line.318">   */</a>
-<span class="sourceLineNo">319</span><a id="line.319">  private Set&lt;File&gt; searchForSourceFiles(Set&lt;String&gt; fileNames) {</a>
-<span class="sourceLineNo">320</span><a id="line.320">    // Files should be sorted by name</a>
-<span class="sourceLineNo">321</span><a id="line.321">    SortedSet&lt;File&gt; files =</a>
-<span class="sourceLineNo">322</span><a id="line.322">      new TreeSet&lt;&gt;((o1, o2) -&gt; o1.toString().compareTo(o2.toString()));</a>
-<span class="sourceLineNo">323</span><a id="line.323">    populateWithFilesFromSubdirectories(files, fileNames);</a>
+<span class="sourceLineNo">239</span><a id="line.239">  private String loginIdShouldNotBeStudentId(String userId) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">    return "Your login id (" + userId + ") should not be your 9-digit student id";</a>
+<span class="sourceLineNo">241</span><a id="line.241">  }</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">  private void validateProjectName() {</a>
+<span class="sourceLineNo">244</span><a id="line.244">    List&lt;String&gt; validProjectNames = fetchListOfValidProjectNames();</a>
+<span class="sourceLineNo">245</span><a id="line.245">    if (!validProjectNames.contains(projName)) {</a>
+<span class="sourceLineNo">246</span><a id="line.246">      String message = "\"" + projName + "\" is not in the list of valid project names: " + validProjectNames;</a>
+<span class="sourceLineNo">247</span><a id="line.247">      throw new IllegalStateException(message);</a>
+<span class="sourceLineNo">248</span><a id="line.248">    }</a>
+<span class="sourceLineNo">249</span><a id="line.249">  }</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">  private List&lt;String&gt; fetchListOfValidProjectNames() {</a>
+<span class="sourceLineNo">252</span><a id="line.252">    return fetchListOfStringsFromUrl(PROJECT_NAMES_LIST_URL);</a>
+<span class="sourceLineNo">253</span><a id="line.253">  }</a>
+<span class="sourceLineNo">254</span><a id="line.254"></a>
+<span class="sourceLineNo">255</span><a id="line.255">  /**</a>
+<span class="sourceLineNo">256</span><a id="line.256">   * Submits the project to the grader</a>
+<span class="sourceLineNo">257</span><a id="line.257">   *</a>
+<span class="sourceLineNo">258</span><a id="line.258">   * @param verify Should the user be prompted to verify his submission?</a>
+<span class="sourceLineNo">259</span><a id="line.259">   * @return Whether or not the submission actually occurred</a>
+<span class="sourceLineNo">260</span><a id="line.260">   * @throws IllegalStateException If no source files were found</a>
+<span class="sourceLineNo">261</span><a id="line.261">   */</a>
+<span class="sourceLineNo">262</span><a id="line.262">  public boolean submit(boolean verify) throws IOException, MessagingException {</a>
+<span class="sourceLineNo">263</span><a id="line.263">    // Recursively search the source directory for .java files</a>
+<span class="sourceLineNo">264</span><a id="line.264">    Set&lt;File&gt; sourceFiles = searchForSourceFiles(fileNames);</a>
+<span class="sourceLineNo">265</span><a id="line.265"></a>
+<span class="sourceLineNo">266</span><a id="line.266">    db(sourceFiles.size() + " source files found");</a>
+<span class="sourceLineNo">267</span><a id="line.267"></a>
+<span class="sourceLineNo">268</span><a id="line.268">    if (sourceFiles.size() == 0) {</a>
+<span class="sourceLineNo">269</span><a id="line.269">      String s = "No source files were found.";</a>
+<span class="sourceLineNo">270</span><a id="line.270">      throw new IllegalStateException(s);</a>
+<span class="sourceLineNo">271</span><a id="line.271">    } else if (sourceFiles.size() &lt; 3) {</a>
+<span class="sourceLineNo">272</span><a id="line.272">      String s = "Too few source files were submitted. Each project requires at least 3 files be" + </a>
+<span class="sourceLineNo">273</span><a id="line.273">                 " submitted. You only submitted " + sourceFiles.size() + " files";</a>
+<span class="sourceLineNo">274</span><a id="line.274">      throw new IllegalStateException(s);</a>
+<span class="sourceLineNo">275</span><a id="line.275">    }</a>
+<span class="sourceLineNo">276</span><a id="line.276"></a>
+<span class="sourceLineNo">277</span><a id="line.277">    // Verify submission with user</a>
+<span class="sourceLineNo">278</span><a id="line.278">    if (verify &amp;&amp; !verifySubmission(sourceFiles)) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">      // User does not want to submit</a>
+<span class="sourceLineNo">280</span><a id="line.280">      return false;</a>
+<span class="sourceLineNo">281</span><a id="line.281">    }</a>
+<span class="sourceLineNo">282</span><a id="line.282"></a>
+<span class="sourceLineNo">283</span><a id="line.283">    // Timestamp</a>
+<span class="sourceLineNo">284</span><a id="line.284">    this.submitTime = LocalDateTime.now();</a>
+<span class="sourceLineNo">285</span><a id="line.285"></a>
+<span class="sourceLineNo">286</span><a id="line.286">    // Create a temporary zip file to hold the source files</a>
+<span class="sourceLineNo">287</span><a id="line.287">    File zipFile = makeZipFileWith(sourceFiles);</a>
+<span class="sourceLineNo">288</span><a id="line.288"></a>
+<span class="sourceLineNo">289</span><a id="line.289">    // Send the zip file as an email attachment to the TA</a>
+<span class="sourceLineNo">290</span><a id="line.290">    mailTA(zipFile, sourceFiles);</a>
+<span class="sourceLineNo">291</span><a id="line.291"></a>
+<span class="sourceLineNo">292</span><a id="line.292">    if (sendReceipt) {</a>
+<span class="sourceLineNo">293</span><a id="line.293">      mailReceipt(sourceFiles);</a>
+<span class="sourceLineNo">294</span><a id="line.294">    }</a>
+<span class="sourceLineNo">295</span><a id="line.295"></a>
+<span class="sourceLineNo">296</span><a id="line.296">    return true;</a>
+<span class="sourceLineNo">297</span><a id="line.297">  }</a>
+<span class="sourceLineNo">298</span><a id="line.298"></a>
+<span class="sourceLineNo">299</span><a id="line.299">  /**</a>
+<span class="sourceLineNo">300</span><a id="line.300">   * Prints debugging output.</a>
+<span class="sourceLineNo">301</span><a id="line.301">   */</a>
+<span class="sourceLineNo">302</span><a id="line.302">  private void db(String s) {</a>
+<span class="sourceLineNo">303</span><a id="line.303">    if (this.debug) {</a>
+<span class="sourceLineNo">304</span><a id="line.304">      err.println("++ " + s);</a>
+<span class="sourceLineNo">305</span><a id="line.305">    }</a>
+<span class="sourceLineNo">306</span><a id="line.306">  }</a>
+<span class="sourceLineNo">307</span><a id="line.307"></a>
+<span class="sourceLineNo">308</span><a id="line.308">  /**</a>
+<span class="sourceLineNo">309</span><a id="line.309">   * Searches for the files given on the command line.  Ignores files</a>
+<span class="sourceLineNo">310</span><a id="line.310">   * that do not end in .java, or that appear on the "no submit" list.</a>
+<span class="sourceLineNo">311</span><a id="line.311">   * Files must reside in a directory named</a>
+<span class="sourceLineNo">312</span><a id="line.312">   * edu/pdx/cs410J/&lt;studentId&gt;.</a>
+<span class="sourceLineNo">313</span><a id="line.313">   */</a>
+<span class="sourceLineNo">314</span><a id="line.314">  private Set&lt;File&gt; searchForSourceFiles(Set&lt;String&gt; fileNames) {</a>
+<span class="sourceLineNo">315</span><a id="line.315">    // Files should be sorted by name</a>
+<span class="sourceLineNo">316</span><a id="line.316">    SortedSet&lt;File&gt; files =</a>
+<span class="sourceLineNo">317</span><a id="line.317">      new TreeSet&lt;&gt;((o1, o2) -&gt; o1.toString().compareTo(o2.toString()));</a>
+<span class="sourceLineNo">318</span><a id="line.318">    populateWithFilesFromSubdirectories(files, fileNames);</a>
+<span class="sourceLineNo">319</span><a id="line.319"></a>
+<span class="sourceLineNo">320</span><a id="line.320">    files.removeIf((file) -&gt; !canBeSubmitted(file));</a>
+<span class="sourceLineNo">321</span><a id="line.321"></a>
+<span class="sourceLineNo">322</span><a id="line.322">    return files;</a>
+<span class="sourceLineNo">323</span><a id="line.323">  }</a>
 <span class="sourceLineNo">324</span><a id="line.324"></a>
-<span class="sourceLineNo">325</span><a id="line.325">    files.removeIf((file) -&gt; !canBeSubmitted(file));</a>
-<span class="sourceLineNo">326</span><a id="line.326"></a>
-<span class="sourceLineNo">327</span><a id="line.327">    return files;</a>
-<span class="sourceLineNo">328</span><a id="line.328">  }</a>
-<span class="sourceLineNo">329</span><a id="line.329"></a>
-<span class="sourceLineNo">330</span><a id="line.330">  private void populateWithFilesFromSubdirectories(SortedSet&lt;File&gt; allFiles, Set&lt;String&gt; fileNames) {</a>
-<span class="sourceLineNo">331</span><a id="line.331">    populateWithFilesFromSubdirectories(allFiles, fileNames.stream().map(name -&gt; new File(name).getAbsoluteFile()));</a>
-<span class="sourceLineNo">332</span><a id="line.332">  }</a>
+<span class="sourceLineNo">325</span><a id="line.325">  private void populateWithFilesFromSubdirectories(SortedSet&lt;File&gt; allFiles, Set&lt;String&gt; fileNames) {</a>
+<span class="sourceLineNo">326</span><a id="line.326">    populateWithFilesFromSubdirectories(allFiles, fileNames.stream().map(name -&gt; new File(name).getAbsoluteFile()));</a>
+<span class="sourceLineNo">327</span><a id="line.327">  }</a>
+<span class="sourceLineNo">328</span><a id="line.328"></a>
+<span class="sourceLineNo">329</span><a id="line.329">  private void populateWithFilesFromSubdirectories(SortedSet&lt;File&gt; allFiles, Stream&lt;File&gt; files) {</a>
+<span class="sourceLineNo">330</span><a id="line.330">    files.forEach((file) -&gt; {</a>
+<span class="sourceLineNo">331</span><a id="line.331">      if (file.isDirectory()) {</a>
+<span class="sourceLineNo">332</span><a id="line.332">        populateWithFilesFromSubdirectories(allFiles, Arrays.stream(file.listFiles()));</a>
 <span class="sourceLineNo">333</span><a id="line.333"></a>
-<span class="sourceLineNo">334</span><a id="line.334">  private void populateWithFilesFromSubdirectories(SortedSet&lt;File&gt; allFiles, Stream&lt;File&gt; files) {</a>
-<span class="sourceLineNo">335</span><a id="line.335">    files.forEach((file) -&gt; {</a>
-<span class="sourceLineNo">336</span><a id="line.336">      if (file.isDirectory()) {</a>
-<span class="sourceLineNo">337</span><a id="line.337">        populateWithFilesFromSubdirectories(allFiles, Arrays.stream(file.listFiles()));</a>
+<span class="sourceLineNo">334</span><a id="line.334">      } else {</a>
+<span class="sourceLineNo">335</span><a id="line.335">        allFiles.add(file);</a>
+<span class="sourceLineNo">336</span><a id="line.336">      }</a>
+<span class="sourceLineNo">337</span><a id="line.337">    });</a>
 <span class="sourceLineNo">338</span><a id="line.338"></a>
-<span class="sourceLineNo">339</span><a id="line.339">      } else {</a>
-<span class="sourceLineNo">340</span><a id="line.340">        allFiles.add(file);</a>
-<span class="sourceLineNo">341</span><a id="line.341">      }</a>
-<span class="sourceLineNo">342</span><a id="line.342">    });</a>
-<span class="sourceLineNo">343</span><a id="line.343"></a>
-<span class="sourceLineNo">344</span><a id="line.344">  }</a>
-<span class="sourceLineNo">345</span><a id="line.345"></a>
-<span class="sourceLineNo">346</span><a id="line.346">  private boolean canBeSubmitted(File file) {</a>
-<span class="sourceLineNo">347</span><a id="line.347">    if (!file.exists()) {</a>
-<span class="sourceLineNo">348</span><a id="line.348">      err.println("** Not submitting file " + file +</a>
-<span class="sourceLineNo">349</span><a id="line.349">        " because it does not exist");</a>
-<span class="sourceLineNo">350</span><a id="line.350">      return false;</a>
-<span class="sourceLineNo">351</span><a id="line.351">    }</a>
-<span class="sourceLineNo">352</span><a id="line.352"></a>
-<span class="sourceLineNo">353</span><a id="line.353">    // Is the file on the "no submit" list?</a>
-<span class="sourceLineNo">354</span><a id="line.354">    List&lt;String&gt; noSubmit = fetchListOfFilesThatCanNotBeSubmitted();</a>
-<span class="sourceLineNo">355</span><a id="line.355">    String name = file.getName();</a>
-<span class="sourceLineNo">356</span><a id="line.356">    if (noSubmit.contains(name)) {</a>
-<span class="sourceLineNo">357</span><a id="line.357">      err.println("** Not submitting file " + file +</a>
-<span class="sourceLineNo">358</span><a id="line.358">        " because it is on the \"no submit\" list");</a>
-<span class="sourceLineNo">359</span><a id="line.359">      return false;</a>
-<span class="sourceLineNo">360</span><a id="line.360">    }</a>
-<span class="sourceLineNo">361</span><a id="line.361"></a>
-<span class="sourceLineNo">362</span><a id="line.362">    // Does the file name end in .java?</a>
-<span class="sourceLineNo">363</span><a id="line.363">    if (!name.endsWith(".java")) {</a>
-<span class="sourceLineNo">364</span><a id="line.364">      err.println("** Not submitting file " + file +</a>
-<span class="sourceLineNo">365</span><a id="line.365">        " because does end in \".java\"");</a>
-<span class="sourceLineNo">366</span><a id="line.366">      return false;</a>
-<span class="sourceLineNo">367</span><a id="line.367">    }</a>
-<span class="sourceLineNo">368</span><a id="line.368"></a>
-<span class="sourceLineNo">369</span><a id="line.369">    // Verify that file is in the correct directory.</a>
-<span class="sourceLineNo">370</span><a id="line.370">    if (!isInAKoansDirectory(file) &amp;&amp; !isInEduPdxCs410JDirectory(file)) {</a>
-<span class="sourceLineNo">371</span><a id="line.371">      err.println("** Not submitting file " + file +</a>
-<span class="sourceLineNo">372</span><a id="line.372">        ": it does not reside in a directory named " +</a>
-<span class="sourceLineNo">373</span><a id="line.373">        "edu" + File.separator + "pdx" + File.separator +</a>
-<span class="sourceLineNo">374</span><a id="line.374">        "cs410J" + File.separator + userId + " (or in one of the koans directories)");</a>
-<span class="sourceLineNo">375</span><a id="line.375">      return false;</a>
-<span class="sourceLineNo">376</span><a id="line.376">    }</a>
-<span class="sourceLineNo">377</span><a id="line.377"></a>
-<span class="sourceLineNo">378</span><a id="line.378">    return true;</a>
-<span class="sourceLineNo">379</span><a id="line.379">  }</a>
-<span class="sourceLineNo">380</span><a id="line.380"></a>
-<span class="sourceLineNo">381</span><a id="line.381">  private boolean isInAKoansDirectory(File file) {</a>
-<span class="sourceLineNo">382</span><a id="line.382">    boolean isInAKoansDirectory = hasParentDirectories(file, "beginner") ||</a>
-<span class="sourceLineNo">383</span><a id="line.383">      hasParentDirectories(file, "intermediate") ||</a>
-<span class="sourceLineNo">384</span><a id="line.384">      hasParentDirectories(file, "advanced") ||</a>
-<span class="sourceLineNo">385</span><a id="line.385">      hasParentDirectories(file, "java7") ||</a>
-<span class="sourceLineNo">386</span><a id="line.386">      hasParentDirectories(file, "java8");</a>
-<span class="sourceLineNo">387</span><a id="line.387">    if (isInAKoansDirectory) {</a>
-<span class="sourceLineNo">388</span><a id="line.388">      this.isSubmittingKoans = true;</a>
-<span class="sourceLineNo">389</span><a id="line.389">      db(file + " is in a koans directory");</a>
-<span class="sourceLineNo">390</span><a id="line.390">    }</a>
-<span class="sourceLineNo">391</span><a id="line.391">    return isInAKoansDirectory;</a>
-<span class="sourceLineNo">392</span><a id="line.392">  }</a>
-<span class="sourceLineNo">393</span><a id="line.393"></a>
-<span class="sourceLineNo">394</span><a id="line.394">  @VisibleForTesting</a>
-<span class="sourceLineNo">395</span><a id="line.395">  boolean isInEduPdxCs410JDirectory(File file) {</a>
-<span class="sourceLineNo">396</span><a id="line.396">    boolean isInEduPdxCs410JDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu");</a>
-<span class="sourceLineNo">397</span><a id="line.397">    if (isInEduPdxCs410JDirectory) {</a>
-<span class="sourceLineNo">398</span><a id="line.398">      db(file + " is in the edu/pdx/cs410J directory");</a>
-<span class="sourceLineNo">399</span><a id="line.399">    }</a>
-<span class="sourceLineNo">400</span><a id="line.400">    return isInEduPdxCs410JDirectory;</a>
-<span class="sourceLineNo">401</span><a id="line.401">  }</a>
-<span class="sourceLineNo">402</span><a id="line.402"></a>
-<span class="sourceLineNo">403</span><a id="line.403">  private boolean hasParentDirectories(File file, String... parentDirectoryNames) {</a>
-<span class="sourceLineNo">404</span><a id="line.404">    File parent = file.getParentFile();</a>
+<span class="sourceLineNo">339</span><a id="line.339">  }</a>
+<span class="sourceLineNo">340</span><a id="line.340"></a>
+<span class="sourceLineNo">341</span><a id="line.341">  private boolean canBeSubmitted(File file) {</a>
+<span class="sourceLineNo">342</span><a id="line.342">    if (!file.exists()) {</a>
+<span class="sourceLineNo">343</span><a id="line.343">      err.println("** Not submitting file " + file +</a>
+<span class="sourceLineNo">344</span><a id="line.344">        " because it does not exist");</a>
+<span class="sourceLineNo">345</span><a id="line.345">      return false;</a>
+<span class="sourceLineNo">346</span><a id="line.346">    }</a>
+<span class="sourceLineNo">347</span><a id="line.347"></a>
+<span class="sourceLineNo">348</span><a id="line.348">    // Is the file on the "no submit" list?</a>
+<span class="sourceLineNo">349</span><a id="line.349">    List&lt;String&gt; noSubmit = fetchListOfFilesThatCanNotBeSubmitted();</a>
+<span class="sourceLineNo">350</span><a id="line.350">    String name = file.getName();</a>
+<span class="sourceLineNo">351</span><a id="line.351">    if (noSubmit.contains(name)) {</a>
+<span class="sourceLineNo">352</span><a id="line.352">      err.println("** Not submitting file " + file +</a>
+<span class="sourceLineNo">353</span><a id="line.353">        " because it is on the \"no submit\" list");</a>
+<span class="sourceLineNo">354</span><a id="line.354">      return false;</a>
+<span class="sourceLineNo">355</span><a id="line.355">    }</a>
+<span class="sourceLineNo">356</span><a id="line.356"></a>
+<span class="sourceLineNo">357</span><a id="line.357">    // Does the file name end in .java?</a>
+<span class="sourceLineNo">358</span><a id="line.358">    if (!name.endsWith(".java")) {</a>
+<span class="sourceLineNo">359</span><a id="line.359">      err.println("** Not submitting file " + file +</a>
+<span class="sourceLineNo">360</span><a id="line.360">        " because does end in \".java\"");</a>
+<span class="sourceLineNo">361</span><a id="line.361">      return false;</a>
+<span class="sourceLineNo">362</span><a id="line.362">    }</a>
+<span class="sourceLineNo">363</span><a id="line.363"></a>
+<span class="sourceLineNo">364</span><a id="line.364">    // Verify that file is in the correct directory.</a>
+<span class="sourceLineNo">365</span><a id="line.365">    if (!isInAKoansDirectory(file) &amp;&amp; !isInEduPdxCs410JDirectory(file)) {</a>
+<span class="sourceLineNo">366</span><a id="line.366">      err.println("** Not submitting file " + file +</a>
+<span class="sourceLineNo">367</span><a id="line.367">        ": it does not reside in a directory named " +</a>
+<span class="sourceLineNo">368</span><a id="line.368">        "edu" + File.separator + "pdx" + File.separator +</a>
+<span class="sourceLineNo">369</span><a id="line.369">        "cs410J" + File.separator + userId + " (or in one of the koans directories)");</a>
+<span class="sourceLineNo">370</span><a id="line.370">      return false;</a>
+<span class="sourceLineNo">371</span><a id="line.371">    }</a>
+<span class="sourceLineNo">372</span><a id="line.372"></a>
+<span class="sourceLineNo">373</span><a id="line.373">    return true;</a>
+<span class="sourceLineNo">374</span><a id="line.374">  }</a>
+<span class="sourceLineNo">375</span><a id="line.375"></a>
+<span class="sourceLineNo">376</span><a id="line.376">  private boolean isInAKoansDirectory(File file) {</a>
+<span class="sourceLineNo">377</span><a id="line.377">    boolean isInAKoansDirectory = hasParentDirectories(file, "beginner") ||</a>
+<span class="sourceLineNo">378</span><a id="line.378">      hasParentDirectories(file, "intermediate") ||</a>
+<span class="sourceLineNo">379</span><a id="line.379">      hasParentDirectories(file, "advanced") ||</a>
+<span class="sourceLineNo">380</span><a id="line.380">      hasParentDirectories(file, "java7") ||</a>
+<span class="sourceLineNo">381</span><a id="line.381">      hasParentDirectories(file, "java8");</a>
+<span class="sourceLineNo">382</span><a id="line.382">    if (isInAKoansDirectory) {</a>
+<span class="sourceLineNo">383</span><a id="line.383">      this.isSubmittingKoans = true;</a>
+<span class="sourceLineNo">384</span><a id="line.384">      db(file + " is in a koans directory");</a>
+<span class="sourceLineNo">385</span><a id="line.385">    }</a>
+<span class="sourceLineNo">386</span><a id="line.386">    return isInAKoansDirectory;</a>
+<span class="sourceLineNo">387</span><a id="line.387">  }</a>
+<span class="sourceLineNo">388</span><a id="line.388"></a>
+<span class="sourceLineNo">389</span><a id="line.389">  @VisibleForTesting</a>
+<span class="sourceLineNo">390</span><a id="line.390">  boolean isInEduPdxCs410JDirectory(File file) {</a>
+<span class="sourceLineNo">391</span><a id="line.391">    boolean isInEduPdxCs410JDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu");</a>
+<span class="sourceLineNo">392</span><a id="line.392">    if (isInEduPdxCs410JDirectory) {</a>
+<span class="sourceLineNo">393</span><a id="line.393">      db(file + " is in the edu/pdx/cs410J directory");</a>
+<span class="sourceLineNo">394</span><a id="line.394">    }</a>
+<span class="sourceLineNo">395</span><a id="line.395">    return isInEduPdxCs410JDirectory;</a>
+<span class="sourceLineNo">396</span><a id="line.396">  }</a>
+<span class="sourceLineNo">397</span><a id="line.397"></a>
+<span class="sourceLineNo">398</span><a id="line.398">  private boolean hasParentDirectories(File file, String... parentDirectoryNames) {</a>
+<span class="sourceLineNo">399</span><a id="line.399">    File parent = file.getParentFile();</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">    // Skip over subpackages</a>
+<span class="sourceLineNo">402</span><a id="line.402">    while (parent != null &amp;&amp; !parent.getName().equals(parentDirectoryNames[0])) {</a>
+<span class="sourceLineNo">403</span><a id="line.403">      parent = parent.getParentFile();</a>
+<span class="sourceLineNo">404</span><a id="line.404">    }</a>
 <span class="sourceLineNo">405</span><a id="line.405"></a>
-<span class="sourceLineNo">406</span><a id="line.406">    // Skip over subpackages</a>
-<span class="sourceLineNo">407</span><a id="line.407">    while (parent != null &amp;&amp; !parent.getName().equals(parentDirectoryNames[0])) {</a>
-<span class="sourceLineNo">408</span><a id="line.408">      parent = parent.getParentFile();</a>
-<span class="sourceLineNo">409</span><a id="line.409">    }</a>
-<span class="sourceLineNo">410</span><a id="line.410"></a>
-<span class="sourceLineNo">411</span><a id="line.411">    for (String parentDirectoryName : parentDirectoryNames) {</a>
-<span class="sourceLineNo">412</span><a id="line.412">      if (parent == null || !parent.getName().equals(parentDirectoryName)) {</a>
-<span class="sourceLineNo">413</span><a id="line.413">        return false;</a>
+<span class="sourceLineNo">406</span><a id="line.406">    for (String parentDirectoryName : parentDirectoryNames) {</a>
+<span class="sourceLineNo">407</span><a id="line.407">      if (parent == null || !parent.getName().equals(parentDirectoryName)) {</a>
+<span class="sourceLineNo">408</span><a id="line.408">        return false;</a>
+<span class="sourceLineNo">409</span><a id="line.409"></a>
+<span class="sourceLineNo">410</span><a id="line.410">      } else {</a>
+<span class="sourceLineNo">411</span><a id="line.411">        parent = parent.getParentFile();</a>
+<span class="sourceLineNo">412</span><a id="line.412">      }</a>
+<span class="sourceLineNo">413</span><a id="line.413">    }</a>
 <span class="sourceLineNo">414</span><a id="line.414"></a>
-<span class="sourceLineNo">415</span><a id="line.415">      } else {</a>
-<span class="sourceLineNo">416</span><a id="line.416">        parent = parent.getParentFile();</a>
-<span class="sourceLineNo">417</span><a id="line.417">      }</a>
-<span class="sourceLineNo">418</span><a id="line.418">    }</a>
-<span class="sourceLineNo">419</span><a id="line.419"></a>
-<span class="sourceLineNo">420</span><a id="line.420">    return true;</a>
-<span class="sourceLineNo">421</span><a id="line.421">  }</a>
-<span class="sourceLineNo">422</span><a id="line.422"></a>
-<span class="sourceLineNo">423</span><a id="line.423">  private List&lt;String&gt; fetchListOfFilesThatCanNotBeSubmitted() {</a>
-<span class="sourceLineNo">424</span><a id="line.424">    return fetchListOfStringsFromUrl(NO_SUBMIT_LIST_URL);</a>
-<span class="sourceLineNo">425</span><a id="line.425">  }</a>
-<span class="sourceLineNo">426</span><a id="line.426"></a>
-<span class="sourceLineNo">427</span><a id="line.427">  private List&lt;String&gt; fetchListOfStringsFromUrl(String listUrl) {</a>
-<span class="sourceLineNo">428</span><a id="line.428">    List&lt;String&gt; noSubmit = new ArrayList&lt;&gt;();</a>
-<span class="sourceLineNo">429</span><a id="line.429"></a>
-<span class="sourceLineNo">430</span><a id="line.430">    try {</a>
-<span class="sourceLineNo">431</span><a id="line.431">      URL url = new URL(listUrl);</a>
-<span class="sourceLineNo">432</span><a id="line.432">      InputStreamReader isr = new InputStreamReader(url.openStream());</a>
-<span class="sourceLineNo">433</span><a id="line.433">      BufferedReader br = new BufferedReader(isr);</a>
-<span class="sourceLineNo">434</span><a id="line.434">      while (br.ready()) {</a>
-<span class="sourceLineNo">435</span><a id="line.435">        noSubmit.add(br.readLine().trim());</a>
-<span class="sourceLineNo">436</span><a id="line.436">      }</a>
-<span class="sourceLineNo">437</span><a id="line.437"></a>
-<span class="sourceLineNo">438</span><a id="line.438">    } catch (MalformedURLException ex) {</a>
-<span class="sourceLineNo">439</span><a id="line.439">      err.println("** WARNING: Cannot access " + listUrl + ": " +</a>
-<span class="sourceLineNo">440</span><a id="line.440">        ex.getMessage());</a>
-<span class="sourceLineNo">441</span><a id="line.441"></a>
-<span class="sourceLineNo">442</span><a id="line.442">    } catch (IOException ex) {</a>
-<span class="sourceLineNo">443</span><a id="line.443">      err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());</a>
-<span class="sourceLineNo">444</span><a id="line.444">    }</a>
-<span class="sourceLineNo">445</span><a id="line.445">    return noSubmit;</a>
-<span class="sourceLineNo">446</span><a id="line.446">  }</a>
-<span class="sourceLineNo">447</span><a id="line.447"></a>
-<span class="sourceLineNo">448</span><a id="line.448">  /**</a>
-<span class="sourceLineNo">449</span><a id="line.449">   * Prints a summary of what is about to be submitted and prompts the</a>
-<span class="sourceLineNo">450</span><a id="line.450">   * user to verify that it is correct.</a>
-<span class="sourceLineNo">451</span><a id="line.451">   *</a>
-<span class="sourceLineNo">452</span><a id="line.452">   * @return &lt;code&gt;true&lt;/code&gt; if the user wants to submit</a>
-<span class="sourceLineNo">453</span><a id="line.453">   */</a>
-<span class="sourceLineNo">454</span><a id="line.454">  private boolean verifySubmission(Set&lt;File&gt; sourceFiles) {</a>
-<span class="sourceLineNo">455</span><a id="line.455">    // Print out what is going to be submitted</a>
-<span class="sourceLineNo">456</span><a id="line.456">    out.print("\n" + userName);</a>
-<span class="sourceLineNo">457</span><a id="line.457">    out.print("'s submission for ");</a>
-<span class="sourceLineNo">458</span><a id="line.458">    out.println(projName);</a>
-<span class="sourceLineNo">459</span><a id="line.459"></a>
-<span class="sourceLineNo">460</span><a id="line.460">    for (File file : sourceFiles) {</a>
-<span class="sourceLineNo">461</span><a id="line.461">      out.println("  " + file);</a>
-<span class="sourceLineNo">462</span><a id="line.462">    }</a>
-<span class="sourceLineNo">463</span><a id="line.463"></a>
-<span class="sourceLineNo">464</span><a id="line.464">    if (comment != null) {</a>
-<span class="sourceLineNo">465</span><a id="line.465">      out.println("\nComment: " + comment + "\n\n");</a>
-<span class="sourceLineNo">466</span><a id="line.466">    }</a>
-<span class="sourceLineNo">467</span><a id="line.467"></a>
-<span class="sourceLineNo">468</span><a id="line.468">    out.println("A receipt will be sent to: " + userEmail + "\n");</a>
+<span class="sourceLineNo">415</span><a id="line.415">    return true;</a>
+<span class="sourceLineNo">416</span><a id="line.416">  }</a>
+<span class="sourceLineNo">417</span><a id="line.417"></a>
+<span class="sourceLineNo">418</span><a id="line.418">  private List&lt;String&gt; fetchListOfFilesThatCanNotBeSubmitted() {</a>
+<span class="sourceLineNo">419</span><a id="line.419">    return fetchListOfStringsFromUrl(NO_SUBMIT_LIST_URL);</a>
+<span class="sourceLineNo">420</span><a id="line.420">  }</a>
+<span class="sourceLineNo">421</span><a id="line.421"></a>
+<span class="sourceLineNo">422</span><a id="line.422">  private List&lt;String&gt; fetchListOfStringsFromUrl(String listUrl) {</a>
+<span class="sourceLineNo">423</span><a id="line.423">    List&lt;String&gt; noSubmit = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">424</span><a id="line.424"></a>
+<span class="sourceLineNo">425</span><a id="line.425">    try {</a>
+<span class="sourceLineNo">426</span><a id="line.426">      URL url = new URL(listUrl);</a>
+<span class="sourceLineNo">427</span><a id="line.427">      InputStreamReader isr = new InputStreamReader(url.openStream());</a>
+<span class="sourceLineNo">428</span><a id="line.428">      BufferedReader br = new BufferedReader(isr);</a>
+<span class="sourceLineNo">429</span><a id="line.429">      while (br.ready()) {</a>
+<span class="sourceLineNo">430</span><a id="line.430">        noSubmit.add(br.readLine().trim());</a>
+<span class="sourceLineNo">431</span><a id="line.431">      }</a>
+<span class="sourceLineNo">432</span><a id="line.432"></a>
+<span class="sourceLineNo">433</span><a id="line.433">    } catch (MalformedURLException ex) {</a>
+<span class="sourceLineNo">434</span><a id="line.434">      err.println("** WARNING: Cannot access " + listUrl + ": " +</a>
+<span class="sourceLineNo">435</span><a id="line.435">        ex.getMessage());</a>
+<span class="sourceLineNo">436</span><a id="line.436"></a>
+<span class="sourceLineNo">437</span><a id="line.437">    } catch (IOException ex) {</a>
+<span class="sourceLineNo">438</span><a id="line.438">      err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());</a>
+<span class="sourceLineNo">439</span><a id="line.439">    }</a>
+<span class="sourceLineNo">440</span><a id="line.440">    return noSubmit;</a>
+<span class="sourceLineNo">441</span><a id="line.441">  }</a>
+<span class="sourceLineNo">442</span><a id="line.442"></a>
+<span class="sourceLineNo">443</span><a id="line.443">  /**</a>
+<span class="sourceLineNo">444</span><a id="line.444">   * Prints a summary of what is about to be submitted and prompts the</a>
+<span class="sourceLineNo">445</span><a id="line.445">   * user to verify that it is correct.</a>
+<span class="sourceLineNo">446</span><a id="line.446">   *</a>
+<span class="sourceLineNo">447</span><a id="line.447">   * @return &lt;code&gt;true&lt;/code&gt; if the user wants to submit</a>
+<span class="sourceLineNo">448</span><a id="line.448">   */</a>
+<span class="sourceLineNo">449</span><a id="line.449">  private boolean verifySubmission(Set&lt;File&gt; sourceFiles) {</a>
+<span class="sourceLineNo">450</span><a id="line.450">    // Print out what is going to be submitted</a>
+<span class="sourceLineNo">451</span><a id="line.451">    out.print("\n" + userName);</a>
+<span class="sourceLineNo">452</span><a id="line.452">    out.print("'s submission for ");</a>
+<span class="sourceLineNo">453</span><a id="line.453">    out.println(projName);</a>
+<span class="sourceLineNo">454</span><a id="line.454"></a>
+<span class="sourceLineNo">455</span><a id="line.455">    for (File file : sourceFiles) {</a>
+<span class="sourceLineNo">456</span><a id="line.456">      out.println("  " + file);</a>
+<span class="sourceLineNo">457</span><a id="line.457">    }</a>
+<span class="sourceLineNo">458</span><a id="line.458"></a>
+<span class="sourceLineNo">459</span><a id="line.459">    if (comment != null) {</a>
+<span class="sourceLineNo">460</span><a id="line.460">      out.println("\nComment: " + comment + "\n\n");</a>
+<span class="sourceLineNo">461</span><a id="line.461">    }</a>
+<span class="sourceLineNo">462</span><a id="line.462"></a>
+<span class="sourceLineNo">463</span><a id="line.463">    out.println("A receipt will be sent to: " + userEmail + "\n");</a>
+<span class="sourceLineNo">464</span><a id="line.464"></a>
+<span class="sourceLineNo">465</span><a id="line.465">    warnIfMainProjectClassIsNotSubmitted(sourceFiles);</a>
+<span class="sourceLineNo">466</span><a id="line.466"></a>
+<span class="sourceLineNo">467</span><a id="line.467">    return doesUserWantToSubmit();</a>
+<span class="sourceLineNo">468</span><a id="line.468">  }</a>
 <span class="sourceLineNo">469</span><a id="line.469"></a>
-<span class="sourceLineNo">470</span><a id="line.470">    warnIfMainProjectClassIsNotSubmitted(sourceFiles);</a>
-<span class="sourceLineNo">471</span><a id="line.471"></a>
-<span class="sourceLineNo">472</span><a id="line.472">    return doesUserWantToSubmit();</a>
-<span class="sourceLineNo">473</span><a id="line.473">  }</a>
-<span class="sourceLineNo">474</span><a id="line.474"></a>
-<span class="sourceLineNo">475</span><a id="line.475">  private void warnIfMainProjectClassIsNotSubmitted(Set&lt;File&gt; sourceFiles) {</a>
-<span class="sourceLineNo">476</span><a id="line.476">    boolean wasMainProjectClassSubmitted = sourceFiles.stream().anyMatch((f) -&gt; f.getName().contains(this.projName));</a>
-<span class="sourceLineNo">477</span><a id="line.477">    if (!wasMainProjectClassSubmitted &amp;&amp; !this.isSubmittingKoans) {</a>
-<span class="sourceLineNo">478</span><a id="line.478">      String mainProjectClassName = this.projName + ".java";</a>
-<span class="sourceLineNo">479</span><a id="line.479">      out.println("*** WARNING: You are submitting " + this.projName +</a>
-<span class="sourceLineNo">480</span><a id="line.480">        ", but did not include " + mainProjectClassName + ".\n" +</a>
-<span class="sourceLineNo">481</span><a id="line.481">        "    You might want to check the name of the project or the files you are submitting.\n");</a>
-<span class="sourceLineNo">482</span><a id="line.482">    }</a>
-<span class="sourceLineNo">483</span><a id="line.483">  }</a>
-<span class="sourceLineNo">484</span><a id="line.484"></a>
-<span class="sourceLineNo">485</span><a id="line.485">  private boolean doesUserWantToSubmit() {</a>
-<span class="sourceLineNo">486</span><a id="line.486">    InputStreamReader isr = new InputStreamReader(System.in);</a>
-<span class="sourceLineNo">487</span><a id="line.487">    BufferedReader in = new BufferedReader(isr);</a>
-<span class="sourceLineNo">488</span><a id="line.488"></a>
-<span class="sourceLineNo">489</span><a id="line.489">    while (true) {</a>
-<span class="sourceLineNo">490</span><a id="line.490">      out.print("Do you wish to continue with the submission? (yes/no) ");</a>
-<span class="sourceLineNo">491</span><a id="line.491">      out.flush();</a>
-<span class="sourceLineNo">492</span><a id="line.492"></a>
-<span class="sourceLineNo">493</span><a id="line.493">      try {</a>
-<span class="sourceLineNo">494</span><a id="line.494">        String line = in.readLine().trim();</a>
-<span class="sourceLineNo">495</span><a id="line.495">        switch (line) {</a>
-<span class="sourceLineNo">496</span><a id="line.496">          case "yes":</a>
-<span class="sourceLineNo">497</span><a id="line.497">            return true;</a>
-<span class="sourceLineNo">498</span><a id="line.498"></a>
-<span class="sourceLineNo">499</span><a id="line.499">          case "no":</a>
-<span class="sourceLineNo">500</span><a id="line.500">            return false;</a>
+<span class="sourceLineNo">470</span><a id="line.470">  private void warnIfMainProjectClassIsNotSubmitted(Set&lt;File&gt; sourceFiles) {</a>
+<span class="sourceLineNo">471</span><a id="line.471">    boolean wasMainProjectClassSubmitted = sourceFiles.stream().anyMatch((f) -&gt; f.getName().contains(this.projName));</a>
+<span class="sourceLineNo">472</span><a id="line.472">    if (!wasMainProjectClassSubmitted &amp;&amp; !this.isSubmittingKoans) {</a>
+<span class="sourceLineNo">473</span><a id="line.473">      String mainProjectClassName = this.projName + ".java";</a>
+<span class="sourceLineNo">474</span><a id="line.474">      out.println("*** WARNING: You are submitting " + this.projName +</a>
+<span class="sourceLineNo">475</span><a id="line.475">        ", but did not include " + mainProjectClassName + ".\n" +</a>
+<span class="sourceLineNo">476</span><a id="line.476">        "    You might want to check the name of the project or the files you are submitting.\n");</a>
+<span class="sourceLineNo">477</span><a id="line.477">    }</a>
+<span class="sourceLineNo">478</span><a id="line.478">  }</a>
+<span class="sourceLineNo">479</span><a id="line.479"></a>
+<span class="sourceLineNo">480</span><a id="line.480">  private boolean doesUserWantToSubmit() {</a>
+<span class="sourceLineNo">481</span><a id="line.481">    InputStreamReader isr = new InputStreamReader(System.in);</a>
+<span class="sourceLineNo">482</span><a id="line.482">    BufferedReader in = new BufferedReader(isr);</a>
+<span class="sourceLineNo">483</span><a id="line.483"></a>
+<span class="sourceLineNo">484</span><a id="line.484">    while (true) {</a>
+<span class="sourceLineNo">485</span><a id="line.485">      out.print("Do you wish to continue with the submission? (yes/no) ");</a>
+<span class="sourceLineNo">486</span><a id="line.486">      out.flush();</a>
+<span class="sourceLineNo">487</span><a id="line.487"></a>
+<span class="sourceLineNo">488</span><a id="line.488">      try {</a>
+<span class="sourceLineNo">489</span><a id="line.489">        String line = in.readLine().trim();</a>
+<span class="sourceLineNo">490</span><a id="line.490">        switch (line) {</a>
+<span class="sourceLineNo">491</span><a id="line.491">          case "yes":</a>
+<span class="sourceLineNo">492</span><a id="line.492">            return true;</a>
+<span class="sourceLineNo">493</span><a id="line.493"></a>
+<span class="sourceLineNo">494</span><a id="line.494">          case "no":</a>
+<span class="sourceLineNo">495</span><a id="line.495">            return false;</a>
+<span class="sourceLineNo">496</span><a id="line.496"></a>
+<span class="sourceLineNo">497</span><a id="line.497">          default:</a>
+<span class="sourceLineNo">498</span><a id="line.498">            err.println("** Please enter yes or no");</a>
+<span class="sourceLineNo">499</span><a id="line.499">            break;</a>
+<span class="sourceLineNo">500</span><a id="line.500">        }</a>
 <span class="sourceLineNo">501</span><a id="line.501"></a>
-<span class="sourceLineNo">502</span><a id="line.502">          default:</a>
-<span class="sourceLineNo">503</span><a id="line.503">            err.println("** Please enter yes or no");</a>
-<span class="sourceLineNo">504</span><a id="line.504">            break;</a>
-<span class="sourceLineNo">505</span><a id="line.505">        }</a>
-<span class="sourceLineNo">506</span><a id="line.506"></a>
-<span class="sourceLineNo">507</span><a id="line.507">      } catch (IOException ex) {</a>
-<span class="sourceLineNo">508</span><a id="line.508">        err.println("** Exception while reading from System.in: " + ex);</a>
-<span class="sourceLineNo">509</span><a id="line.509">      }</a>
-<span class="sourceLineNo">510</span><a id="line.510">    }</a>
-<span class="sourceLineNo">511</span><a id="line.511">  }</a>
-<span class="sourceLineNo">512</span><a id="line.512"></a>
-<span class="sourceLineNo">513</span><a id="line.513">  /**</a>
-<span class="sourceLineNo">514</span><a id="line.514">   * Returns the name of a &lt;code&gt;File&lt;/code&gt; relative to the source</a>
-<span class="sourceLineNo">515</span><a id="line.515">   * directory.</a>
-<span class="sourceLineNo">516</span><a id="line.516">   */</a>
-<span class="sourceLineNo">517</span><a id="line.517">  private String getRelativeName(File file) {</a>
-<span class="sourceLineNo">518</span><a id="line.518">    if (isSubmittingKoans) {</a>
-<span class="sourceLineNo">519</span><a id="line.519">      return file.getParentFile().getName() + "/" + file.getName();</a>
-<span class="sourceLineNo">520</span><a id="line.520"></a>
-<span class="sourceLineNo">521</span><a id="line.521">    } else {</a>
-<span class="sourceLineNo">522</span><a id="line.522">      // We already know that the file is in the correct directory</a>
-<span class="sourceLineNo">523</span><a id="line.523">      return "edu/pdx/cs410J/" + userId + "/" + file.getName();</a>
-<span class="sourceLineNo">524</span><a id="line.524">    }</a>
-<span class="sourceLineNo">525</span><a id="line.525">  }</a>
-<span class="sourceLineNo">526</span><a id="line.526"></a>
-<span class="sourceLineNo">527</span><a id="line.527">  /**</a>
-<span class="sourceLineNo">528</span><a id="line.528">   * Creates a Zip file that contains the source files.  The Zip File</a>
-<span class="sourceLineNo">529</span><a id="line.529">   * is temporary and is deleted when the program exits.</a>
-<span class="sourceLineNo">530</span><a id="line.530">   */</a>
-<span class="sourceLineNo">531</span><a id="line.531">  private File makeZipFileWith(Set&lt;File&gt; sourceFiles) throws IOException {</a>
-<span class="sourceLineNo">532</span><a id="line.532">    String zipFileName = userName.replace(' ', '_') + "-TEMP";</a>
-<span class="sourceLineNo">533</span><a id="line.533">    File zipFile = File.createTempFile(zipFileName, ".zip");</a>
-<span class="sourceLineNo">534</span><a id="line.534">    if (!saveZip) {</a>
-<span class="sourceLineNo">535</span><a id="line.535">      zipFile.deleteOnExit();</a>
-<span class="sourceLineNo">536</span><a id="line.536"></a>
-<span class="sourceLineNo">537</span><a id="line.537">    } else {</a>
-<span class="sourceLineNo">538</span><a id="line.538">      out.println("Saving temporary Zip file: " + zipFile);</a>
-<span class="sourceLineNo">539</span><a id="line.539">    }</a>
+<span class="sourceLineNo">502</span><a id="line.502">      } catch (IOException ex) {</a>
+<span class="sourceLineNo">503</span><a id="line.503">        err.println("** Exception while reading from System.in: " + ex);</a>
+<span class="sourceLineNo">504</span><a id="line.504">      }</a>
+<span class="sourceLineNo">505</span><a id="line.505">    }</a>
+<span class="sourceLineNo">506</span><a id="line.506">  }</a>
+<span class="sourceLineNo">507</span><a id="line.507"></a>
+<span class="sourceLineNo">508</span><a id="line.508">  /**</a>
+<span class="sourceLineNo">509</span><a id="line.509">   * Returns the name of a &lt;code&gt;File&lt;/code&gt; relative to the source</a>
+<span class="sourceLineNo">510</span><a id="line.510">   * directory.</a>
+<span class="sourceLineNo">511</span><a id="line.511">   */</a>
+<span class="sourceLineNo">512</span><a id="line.512">  private String getRelativeName(File file) {</a>
+<span class="sourceLineNo">513</span><a id="line.513">    if (isSubmittingKoans) {</a>
+<span class="sourceLineNo">514</span><a id="line.514">      return file.getParentFile().getName() + "/" + file.getName();</a>
+<span class="sourceLineNo">515</span><a id="line.515"></a>
+<span class="sourceLineNo">516</span><a id="line.516">    } else {</a>
+<span class="sourceLineNo">517</span><a id="line.517">      // We already know that the file is in the correct directory</a>
+<span class="sourceLineNo">518</span><a id="line.518">      return "edu/pdx/cs410J/" + userId + "/" + file.getName();</a>
+<span class="sourceLineNo">519</span><a id="line.519">    }</a>
+<span class="sourceLineNo">520</span><a id="line.520">  }</a>
+<span class="sourceLineNo">521</span><a id="line.521"></a>
+<span class="sourceLineNo">522</span><a id="line.522">  /**</a>
+<span class="sourceLineNo">523</span><a id="line.523">   * Creates a Zip file that contains the source files.  The Zip File</a>
+<span class="sourceLineNo">524</span><a id="line.524">   * is temporary and is deleted when the program exits.</a>
+<span class="sourceLineNo">525</span><a id="line.525">   */</a>
+<span class="sourceLineNo">526</span><a id="line.526">  private File makeZipFileWith(Set&lt;File&gt; sourceFiles) throws IOException {</a>
+<span class="sourceLineNo">527</span><a id="line.527">    String zipFileName = userName.replace(' ', '_') + "-TEMP";</a>
+<span class="sourceLineNo">528</span><a id="line.528">    File zipFile = File.createTempFile(zipFileName, ".zip");</a>
+<span class="sourceLineNo">529</span><a id="line.529">    if (!saveZip) {</a>
+<span class="sourceLineNo">530</span><a id="line.530">      zipFile.deleteOnExit();</a>
+<span class="sourceLineNo">531</span><a id="line.531"></a>
+<span class="sourceLineNo">532</span><a id="line.532">    } else {</a>
+<span class="sourceLineNo">533</span><a id="line.533">      out.println("Saving temporary Zip file: " + zipFile);</a>
+<span class="sourceLineNo">534</span><a id="line.534">    }</a>
+<span class="sourceLineNo">535</span><a id="line.535"></a>
+<span class="sourceLineNo">536</span><a id="line.536">    db("Created Zip file: " + zipFile);</a>
+<span class="sourceLineNo">537</span><a id="line.537"></a>
+<span class="sourceLineNo">538</span><a id="line.538">    Map&lt;File, String&gt; sourceFilesWithNames =</a>
+<span class="sourceLineNo">539</span><a id="line.539">      sourceFiles.stream().collect(Collectors.toMap(file -&gt; file, this::getRelativeName));</a>
 <span class="sourceLineNo">540</span><a id="line.540"></a>
-<span class="sourceLineNo">541</span><a id="line.541">    db("Created Zip file: " + zipFile);</a>
-<span class="sourceLineNo">542</span><a id="line.542"></a>
-<span class="sourceLineNo">543</span><a id="line.543">    Map&lt;File, String&gt; sourceFilesWithNames =</a>
-<span class="sourceLineNo">544</span><a id="line.544">      sourceFiles.stream().collect(Collectors.toMap(file -&gt; file, this::getRelativeName));</a>
-<span class="sourceLineNo">545</span><a id="line.545"></a>
-<span class="sourceLineNo">546</span><a id="line.546">    return new ZipMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();</a>
-<span class="sourceLineNo">547</span><a id="line.547">  }</a>
-<span class="sourceLineNo">548</span><a id="line.548"></a>
-<span class="sourceLineNo">549</span><a id="line.549">  private Map&lt;Attributes.Name, String&gt; getManifestEntries() {</a>
-<span class="sourceLineNo">550</span><a id="line.550">    Map&lt;Attributes.Name, String&gt; manifestEntries = new HashMap&lt;&gt;();</a>
-<span class="sourceLineNo">551</span><a id="line.551">    manifestEntries.put(ManifestAttributes.USER_NAME, userName);</a>
-<span class="sourceLineNo">552</span><a id="line.552">    manifestEntries.put(ManifestAttributes.USER_ID, userId);</a>
-<span class="sourceLineNo">553</span><a id="line.553">    manifestEntries.put(ManifestAttributes.USER_EMAIL, userEmail);</a>
-<span class="sourceLineNo">554</span><a id="line.554">    manifestEntries.put(ManifestAttributes.PROJECT_NAME, projName);</a>
-<span class="sourceLineNo">555</span><a id="line.555">    manifestEntries.put(ManifestAttributes.SUBMISSION_COMMENT, comment);</a>
-<span class="sourceLineNo">556</span><a id="line.556">    manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));</a>
-<span class="sourceLineNo">557</span><a id="line.557">    return manifestEntries;</a>
-<span class="sourceLineNo">558</span><a id="line.558">  }</a>
-<span class="sourceLineNo">559</span><a id="line.559"></a>
-<span class="sourceLineNo">560</span><a id="line.560">  /**</a>
-<span class="sourceLineNo">561</span><a id="line.561">   * Sends the Zip file to the TA as a MIME attachment.  Also includes</a>
-<span class="sourceLineNo">562</span><a id="line.562">   * a textual summary of the contents of the Zip file.</a>
-<span class="sourceLineNo">563</span><a id="line.563">   */</a>
-<span class="sourceLineNo">564</span><a id="line.564">  private void mailTA(File zipFile, Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
-<span class="sourceLineNo">565</span><a id="line.565">    MimeMessage message = newEmailTo(newEmailSession(debug), TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);</a>
-<span class="sourceLineNo">566</span><a id="line.566"></a>
-<span class="sourceLineNo">567</span><a id="line.567">    MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);</a>
-<span class="sourceLineNo">568</span><a id="line.568">    MimeBodyPart filePart = createZipAttachment(zipFile);</a>
+<span class="sourceLineNo">541</span><a id="line.541">    new ZipFileOfFilesMaker(sourceFilesWithNames, zipFile, getManifestEntries()).makeZipFile();</a>
+<span class="sourceLineNo">542</span><a id="line.542">    return zipFile;</a>
+<span class="sourceLineNo">543</span><a id="line.543">  }</a>
+<span class="sourceLineNo">544</span><a id="line.544"></a>
+<span class="sourceLineNo">545</span><a id="line.545">  private Map&lt;Attributes.Name, String&gt; getManifestEntries() {</a>
+<span class="sourceLineNo">546</span><a id="line.546">    Map&lt;Attributes.Name, String&gt; manifestEntries = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">547</span><a id="line.547">    manifestEntries.put(ManifestAttributes.USER_NAME, userName);</a>
+<span class="sourceLineNo">548</span><a id="line.548">    manifestEntries.put(ManifestAttributes.USER_ID, userId);</a>
+<span class="sourceLineNo">549</span><a id="line.549">    manifestEntries.put(ManifestAttributes.USER_EMAIL, userEmail);</a>
+<span class="sourceLineNo">550</span><a id="line.550">    manifestEntries.put(ManifestAttributes.PROJECT_NAME, projName);</a>
+<span class="sourceLineNo">551</span><a id="line.551">    manifestEntries.put(ManifestAttributes.SUBMISSION_COMMENT, comment);</a>
+<span class="sourceLineNo">552</span><a id="line.552">    manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));</a>
+<span class="sourceLineNo">553</span><a id="line.553">    return manifestEntries;</a>
+<span class="sourceLineNo">554</span><a id="line.554">  }</a>
+<span class="sourceLineNo">555</span><a id="line.555"></a>
+<span class="sourceLineNo">556</span><a id="line.556">  /**</a>
+<span class="sourceLineNo">557</span><a id="line.557">   * Sends the Zip file to the TA as a MIME attachment.  Also includes</a>
+<span class="sourceLineNo">558</span><a id="line.558">   * a textual summary of the contents of the Zip file.</a>
+<span class="sourceLineNo">559</span><a id="line.559">   */</a>
+<span class="sourceLineNo">560</span><a id="line.560">  private void mailTA(File zipFile, Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
+<span class="sourceLineNo">561</span><a id="line.561">    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);</a>
+<span class="sourceLineNo">562</span><a id="line.562"></a>
+<span class="sourceLineNo">563</span><a id="line.563">    MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);</a>
+<span class="sourceLineNo">564</span><a id="line.564">    MimeBodyPart filePart = createZipAttachment(zipFile);</a>
+<span class="sourceLineNo">565</span><a id="line.565"></a>
+<span class="sourceLineNo">566</span><a id="line.566">    Multipart mp = new MimeMultipart();</a>
+<span class="sourceLineNo">567</span><a id="line.567">    mp.addBodyPart(textPart);</a>
+<span class="sourceLineNo">568</span><a id="line.568">    mp.addBodyPart(filePart);</a>
 <span class="sourceLineNo">569</span><a id="line.569"></a>
-<span class="sourceLineNo">570</span><a id="line.570">    Multipart mp = new MimeMultipart();</a>
-<span class="sourceLineNo">571</span><a id="line.571">    mp.addBodyPart(textPart);</a>
-<span class="sourceLineNo">572</span><a id="line.572">    mp.addBodyPart(filePart);</a>
+<span class="sourceLineNo">570</span><a id="line.570">    message.setContent(mp);</a>
+<span class="sourceLineNo">571</span><a id="line.571"></a>
+<span class="sourceLineNo">572</span><a id="line.572">    out.println("Submitting project to Grader");</a>
 <span class="sourceLineNo">573</span><a id="line.573"></a>
-<span class="sourceLineNo">574</span><a id="line.574">    message.setContent(mp);</a>
-<span class="sourceLineNo">575</span><a id="line.575"></a>
-<span class="sourceLineNo">576</span><a id="line.576">    out.println("Submitting project to Grader");</a>
-<span class="sourceLineNo">577</span><a id="line.577"></a>
-<span class="sourceLineNo">578</span><a id="line.578">    Transport.send(message);</a>
-<span class="sourceLineNo">579</span><a id="line.579">  }</a>
-<span class="sourceLineNo">580</span><a id="line.580"></a>
-<span class="sourceLineNo">581</span><a id="line.581">  private MimeBodyPart createZipAttachment(File zipFile) throws MessagingException {</a>
-<span class="sourceLineNo">582</span><a id="line.582">    // Now attach the Zip file</a>
-<span class="sourceLineNo">583</span><a id="line.583">    DataSource ds = new FileDataSource(zipFile) {</a>
-<span class="sourceLineNo">584</span><a id="line.584">      @Override</a>
-<span class="sourceLineNo">585</span><a id="line.585">      public String getContentType() {</a>
-<span class="sourceLineNo">586</span><a id="line.586">        return "application/zip";</a>
-<span class="sourceLineNo">587</span><a id="line.587">      }</a>
-<span class="sourceLineNo">588</span><a id="line.588">    };</a>
-<span class="sourceLineNo">589</span><a id="line.589">    DataHandler dh = new DataHandler(ds);</a>
-<span class="sourceLineNo">590</span><a id="line.590">    MimeBodyPart filePart = new MimeBodyPart();</a>
-<span class="sourceLineNo">591</span><a id="line.591"></a>
-<span class="sourceLineNo">592</span><a id="line.592">    String zipFileTitle = userName.replace(' ', '_') + ".zip";</a>
+<span class="sourceLineNo">574</span><a id="line.574">    Transport.send(message);</a>
+<span class="sourceLineNo">575</span><a id="line.575">  }</a>
+<span class="sourceLineNo">576</span><a id="line.576"></a>
+<span class="sourceLineNo">577</span><a id="line.577">  private MimeBodyPart createZipAttachment(File zipFile) throws MessagingException {</a>
+<span class="sourceLineNo">578</span><a id="line.578">    // Now attach the Zip file</a>
+<span class="sourceLineNo">579</span><a id="line.579">    DataSource ds = new FileDataSource(zipFile) {</a>
+<span class="sourceLineNo">580</span><a id="line.580">      @Override</a>
+<span class="sourceLineNo">581</span><a id="line.581">      public String getContentType() {</a>
+<span class="sourceLineNo">582</span><a id="line.582">        return "application/zip";</a>
+<span class="sourceLineNo">583</span><a id="line.583">      }</a>
+<span class="sourceLineNo">584</span><a id="line.584">    };</a>
+<span class="sourceLineNo">585</span><a id="line.585">    DataHandler dh = new DataHandler(ds);</a>
+<span class="sourceLineNo">586</span><a id="line.586">    MimeBodyPart filePart = new MimeBodyPart();</a>
+<span class="sourceLineNo">587</span><a id="line.587"></a>
+<span class="sourceLineNo">588</span><a id="line.588">    String zipFileTitle = userName.replace(' ', '_') + ".zip";</a>
+<span class="sourceLineNo">589</span><a id="line.589"></a>
+<span class="sourceLineNo">590</span><a id="line.590">    filePart.setDataHandler(dh);</a>
+<span class="sourceLineNo">591</span><a id="line.591">    filePart.setFileName(zipFileTitle);</a>
+<span class="sourceLineNo">592</span><a id="line.592">    filePart.setDescription(userName + "'s " + projName);</a>
 <span class="sourceLineNo">593</span><a id="line.593"></a>
-<span class="sourceLineNo">594</span><a id="line.594">    filePart.setDataHandler(dh);</a>
-<span class="sourceLineNo">595</span><a id="line.595">    filePart.setFileName(zipFileTitle);</a>
-<span class="sourceLineNo">596</span><a id="line.596">    filePart.setDescription(userName + "'s " + projName);</a>
-<span class="sourceLineNo">597</span><a id="line.597"></a>
-<span class="sourceLineNo">598</span><a id="line.598">    return filePart;</a>
-<span class="sourceLineNo">599</span><a id="line.599">  }</a>
-<span class="sourceLineNo">600</span><a id="line.600"></a>
-<span class="sourceLineNo">601</span><a id="line.601">  private MimeBodyPart createTextPartOfTAEmail(Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
-<span class="sourceLineNo">602</span><a id="line.602">    // Create the text portion of the message</a>
-<span class="sourceLineNo">603</span><a id="line.603">    StringBuilder text = new StringBuilder();</a>
-<span class="sourceLineNo">604</span><a id="line.604">    text.append("Student name: ").append(userName).append(" (").append(userEmail).append(")\n");</a>
-<span class="sourceLineNo">605</span><a id="line.605">    text.append("Project name: ").append(projName).append("\n");</a>
-<span class="sourceLineNo">606</span><a id="line.606">    text.append("Submitted on: ").append(humanReadableSubmitDate()).append("\n");</a>
-<span class="sourceLineNo">607</span><a id="line.607">    if (comment != null) {</a>
-<span class="sourceLineNo">608</span><a id="line.608">      text.append("\nComment: ").append(comment).append("\n\n");</a>
-<span class="sourceLineNo">609</span><a id="line.609">    }</a>
-<span class="sourceLineNo">610</span><a id="line.610">    text.append("Contents:\n");</a>
-<span class="sourceLineNo">611</span><a id="line.611"></a>
-<span class="sourceLineNo">612</span><a id="line.612">    for (File file : sourceFiles) {</a>
-<span class="sourceLineNo">613</span><a id="line.613">      text.append("  ").append(getRelativeName(file)).append("\n");</a>
-<span class="sourceLineNo">614</span><a id="line.614">    }</a>
-<span class="sourceLineNo">615</span><a id="line.615">    text.append("\n\n");</a>
-<span class="sourceLineNo">616</span><a id="line.616"></a>
-<span class="sourceLineNo">617</span><a id="line.617">    MimeBodyPart textPart = new MimeBodyPart();</a>
-<span class="sourceLineNo">618</span><a id="line.618">    textPart.setContent(text.toString(), "text/plain");</a>
-<span class="sourceLineNo">619</span><a id="line.619"></a>
-<span class="sourceLineNo">620</span><a id="line.620">    // Try not to display text as separate attachment</a>
-<span class="sourceLineNo">621</span><a id="line.621">    textPart.setDisposition("inline");</a>
-<span class="sourceLineNo">622</span><a id="line.622">    return textPart;</a>
+<span class="sourceLineNo">594</span><a id="line.594">    return filePart;</a>
+<span class="sourceLineNo">595</span><a id="line.595">  }</a>
+<span class="sourceLineNo">596</span><a id="line.596"></a>
+<span class="sourceLineNo">597</span><a id="line.597">  private MimeBodyPart createTextPartOfTAEmail(Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
+<span class="sourceLineNo">598</span><a id="line.598">    // Create the text portion of the message</a>
+<span class="sourceLineNo">599</span><a id="line.599">    StringBuilder text = new StringBuilder();</a>
+<span class="sourceLineNo">600</span><a id="line.600">    text.append("Student name: ").append(userName).append(" (").append(userEmail).append(")\n");</a>
+<span class="sourceLineNo">601</span><a id="line.601">    text.append("Project name: ").append(projName).append("\n");</a>
+<span class="sourceLineNo">602</span><a id="line.602">    text.append("Submitted on: ").append(humanReadableSubmitDate()).append("\n");</a>
+<span class="sourceLineNo">603</span><a id="line.603">    if (comment != null) {</a>
+<span class="sourceLineNo">604</span><a id="line.604">      text.append("\nComment: ").append(comment).append("\n\n");</a>
+<span class="sourceLineNo">605</span><a id="line.605">    }</a>
+<span class="sourceLineNo">606</span><a id="line.606">    text.append("Contents:\n");</a>
+<span class="sourceLineNo">607</span><a id="line.607"></a>
+<span class="sourceLineNo">608</span><a id="line.608">    for (File file : sourceFiles) {</a>
+<span class="sourceLineNo">609</span><a id="line.609">      text.append("  ").append(getRelativeName(file)).append("\n");</a>
+<span class="sourceLineNo">610</span><a id="line.610">    }</a>
+<span class="sourceLineNo">611</span><a id="line.611">    text.append("\n\n");</a>
+<span class="sourceLineNo">612</span><a id="line.612"></a>
+<span class="sourceLineNo">613</span><a id="line.613">    MimeBodyPart textPart = new MimeBodyPart();</a>
+<span class="sourceLineNo">614</span><a id="line.614">    textPart.setContent(text.toString(), "text/plain");</a>
+<span class="sourceLineNo">615</span><a id="line.615"></a>
+<span class="sourceLineNo">616</span><a id="line.616">    // Try not to display text as separate attachment</a>
+<span class="sourceLineNo">617</span><a id="line.617">    textPart.setDisposition("inline");</a>
+<span class="sourceLineNo">618</span><a id="line.618">    return textPart;</a>
+<span class="sourceLineNo">619</span><a id="line.619">  }</a>
+<span class="sourceLineNo">620</span><a id="line.620"></a>
+<span class="sourceLineNo">621</span><a id="line.621">  private String humanReadableSubmitDate() {</a>
+<span class="sourceLineNo">622</span><a id="line.622">    return submitTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM));</a>
 <span class="sourceLineNo">623</span><a id="line.623">  }</a>
 <span class="sourceLineNo">624</span><a id="line.624"></a>
-<span class="sourceLineNo">625</span><a id="line.625">  private String humanReadableSubmitDate() {</a>
-<span class="sourceLineNo">626</span><a id="line.626">    return submitTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM));</a>
-<span class="sourceLineNo">627</span><a id="line.627">  }</a>
-<span class="sourceLineNo">628</span><a id="line.628"></a>
-<span class="sourceLineNo">629</span><a id="line.629">  /**</a>
-<span class="sourceLineNo">630</span><a id="line.630">   * Sends a email to the user as a receipt of the submission.</a>
-<span class="sourceLineNo">631</span><a id="line.631">   */</a>
-<span class="sourceLineNo">632</span><a id="line.632">  private void mailReceipt(Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
-<span class="sourceLineNo">633</span><a id="line.633">    MimeMessage message = newEmailTo(newEmailSession(debug), userEmail, "CS410J " + projName + " submission");</a>
-<span class="sourceLineNo">634</span><a id="line.634"></a>
-<span class="sourceLineNo">635</span><a id="line.635">    // Create the contents of the message</a>
-<span class="sourceLineNo">636</span><a id="line.636">    StringBuilder text = new StringBuilder();</a>
-<span class="sourceLineNo">637</span><a id="line.637">    text.append("On ").append(humanReadableSubmitDate()).append("\n");</a>
-<span class="sourceLineNo">638</span><a id="line.638">    text.append(userName).append(" (").append(userEmail).append(")\n");</a>
-<span class="sourceLineNo">639</span><a id="line.639">    text.append("submitted the following files for ").append(projName).append(":\n");</a>
+<span class="sourceLineNo">625</span><a id="line.625">  /**</a>
+<span class="sourceLineNo">626</span><a id="line.626">   * Sends a email to the user as a receipt of the submission.</a>
+<span class="sourceLineNo">627</span><a id="line.627">   */</a>
+<span class="sourceLineNo">628</span><a id="line.628">  private void mailReceipt(Set&lt;File&gt; sourceFiles) throws MessagingException {</a>
+<span class="sourceLineNo">629</span><a id="line.629">    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, "CS410J " + projName + " submission");</a>
+<span class="sourceLineNo">630</span><a id="line.630"></a>
+<span class="sourceLineNo">631</span><a id="line.631">    // Create the contents of the message</a>
+<span class="sourceLineNo">632</span><a id="line.632">    StringBuilder text = new StringBuilder();</a>
+<span class="sourceLineNo">633</span><a id="line.633">    text.append("On ").append(humanReadableSubmitDate()).append("\n");</a>
+<span class="sourceLineNo">634</span><a id="line.634">    text.append(userName).append(" (").append(userEmail).append(")\n");</a>
+<span class="sourceLineNo">635</span><a id="line.635">    text.append("submitted the following files for ").append(projName).append(":\n");</a>
+<span class="sourceLineNo">636</span><a id="line.636"></a>
+<span class="sourceLineNo">637</span><a id="line.637">    for (File file : sourceFiles) {</a>
+<span class="sourceLineNo">638</span><a id="line.638">      text.append("  ").append(file.getAbsolutePath()).append("\n");</a>
+<span class="sourceLineNo">639</span><a id="line.639">    }</a>
 <span class="sourceLineNo">640</span><a id="line.640"></a>
-<span class="sourceLineNo">641</span><a id="line.641">    for (File file : sourceFiles) {</a>
-<span class="sourceLineNo">642</span><a id="line.642">      text.append("  ").append(file.getAbsolutePath()).append("\n");</a>
+<span class="sourceLineNo">641</span><a id="line.641">    if (comment != null) {</a>
+<span class="sourceLineNo">642</span><a id="line.642">      text.append("\nComment: ").append(comment).append("\n\n");</a>
 <span class="sourceLineNo">643</span><a id="line.643">    }</a>
 <span class="sourceLineNo">644</span><a id="line.644"></a>
-<span class="sourceLineNo">645</span><a id="line.645">    if (comment != null) {</a>
-<span class="sourceLineNo">646</span><a id="line.646">      text.append("\nComment: ").append(comment).append("\n\n");</a>
-<span class="sourceLineNo">647</span><a id="line.647">    }</a>
-<span class="sourceLineNo">648</span><a id="line.648"></a>
-<span class="sourceLineNo">649</span><a id="line.649">    text.append("\n\n");</a>
-<span class="sourceLineNo">650</span><a id="line.650">    text.append("Have a nice day.");</a>
+<span class="sourceLineNo">645</span><a id="line.645">    text.append("\n\n");</a>
+<span class="sourceLineNo">646</span><a id="line.646">    text.append("Have a nice day.");</a>
+<span class="sourceLineNo">647</span><a id="line.647"></a>
+<span class="sourceLineNo">648</span><a id="line.648">    // Add the text to the message and send it</a>
+<span class="sourceLineNo">649</span><a id="line.649">    message.setText(text.toString());</a>
+<span class="sourceLineNo">650</span><a id="line.650">    message.setDisposition("inline");</a>
 <span class="sourceLineNo">651</span><a id="line.651"></a>
-<span class="sourceLineNo">652</span><a id="line.652">    // Add the text to the message and send it</a>
-<span class="sourceLineNo">653</span><a id="line.653">    message.setText(text.toString());</a>
-<span class="sourceLineNo">654</span><a id="line.654">    message.setDisposition("inline");</a>
-<span class="sourceLineNo">655</span><a id="line.655"></a>
-<span class="sourceLineNo">656</span><a id="line.656">    out.println("Sending receipt to you at " + userEmail);</a>
-<span class="sourceLineNo">657</span><a id="line.657"></a>
-<span class="sourceLineNo">658</span><a id="line.658">    Transport.send(message);</a>
-<span class="sourceLineNo">659</span><a id="line.659">  }</a>
-<span class="sourceLineNo">660</span><a id="line.660"></a>
-<span class="sourceLineNo">661</span><a id="line.661">  /////////////////////////  Main Program  ///////////////////////////</a>
-<span class="sourceLineNo">662</span><a id="line.662"></a>
-<span class="sourceLineNo">663</span><a id="line.663">  /**</a>
-<span class="sourceLineNo">664</span><a id="line.664">   * Prints usage information about this program.</a>
-<span class="sourceLineNo">665</span><a id="line.665">   */</a>
-<span class="sourceLineNo">666</span><a id="line.666">  private static void usage(String s) {</a>
-<span class="sourceLineNo">667</span><a id="line.667">    err.println("\n** " + s + "\n");</a>
-<span class="sourceLineNo">668</span><a id="line.668">    err.println("usage: java Submit [options] args file+");</a>
-<span class="sourceLineNo">669</span><a id="line.669">    err.println("  args are (in this order):");</a>
-<span class="sourceLineNo">670</span><a id="line.670">    err.println("    project      What project is being submitted (Project1, Project2, etc.)");</a>
-<span class="sourceLineNo">671</span><a id="line.671">    err.println("    student      Who is submitting the project?");</a>
-<span class="sourceLineNo">672</span><a id="line.672">    err.println("    loginId      UNIX login id");</a>
-<span class="sourceLineNo">673</span><a id="line.673">    err.println("    email        Student's email address");</a>
-<span class="sourceLineNo">674</span><a id="line.674">    err.println("    file         Java source file (or all files in a directory) to submit");</a>
-<span class="sourceLineNo">675</span><a id="line.675">    err.println("  options are (options may appear in any order):");</a>
-<span class="sourceLineNo">676</span><a id="line.676">    err.println("    -savezip           Saves temporary Zip file");</a>
-<span class="sourceLineNo">677</span><a id="line.677">    err.println("    -smtp serverName   Name of SMTP server");</a>
-<span class="sourceLineNo">678</span><a id="line.678">    err.println("    -verbose           Log debugging output");</a>
-<span class="sourceLineNo">679</span><a id="line.679">    err.println("    -comment comment   Info for the Grader");</a>
-<span class="sourceLineNo">680</span><a id="line.680">    err.println("");</a>
-<span class="sourceLineNo">681</span><a id="line.681">    err.println("Submits Java source code to the CS410J grader.");</a>
-<span class="sourceLineNo">682</span><a id="line.682">    System.exit(1);</a>
-<span class="sourceLineNo">683</span><a id="line.683">  }</a>
-<span class="sourceLineNo">684</span><a id="line.684"></a>
-<span class="sourceLineNo">685</span><a id="line.685">  /**</a>
-<span class="sourceLineNo">686</span><a id="line.686">   * Parses the command line, finds the source files, prompts the user</a>
-<span class="sourceLineNo">687</span><a id="line.687">   * to verify whether or not the settings are correct, and then sends</a>
-<span class="sourceLineNo">688</span><a id="line.688">   * an email to the Grader.</a>
-<span class="sourceLineNo">689</span><a id="line.689">   */</a>
-<span class="sourceLineNo">690</span><a id="line.690">  public static void main(String[] args) throws IOException, MessagingException {</a>
-<span class="sourceLineNo">691</span><a id="line.691">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">692</span><a id="line.692"></a>
-<span class="sourceLineNo">693</span><a id="line.693">    // Parse the command line</a>
-<span class="sourceLineNo">694</span><a id="line.694">    for (int i = 0; i &lt; args.length; i++) {</a>
-<span class="sourceLineNo">695</span><a id="line.695">      // Check for options first</a>
-<span class="sourceLineNo">696</span><a id="line.696">      if (args[i].equals("-smtp")) {</a>
-<span class="sourceLineNo">697</span><a id="line.697">        if (++i &gt;= args.length) {</a>
-<span class="sourceLineNo">698</span><a id="line.698">          usage("No SMTP server specified");</a>
-<span class="sourceLineNo">699</span><a id="line.699">        }</a>
-<span class="sourceLineNo">700</span><a id="line.700"></a>
-<span class="sourceLineNo">701</span><a id="line.701">        submit.setEmailServerHostName(args[i]);</a>
-<span class="sourceLineNo">702</span><a id="line.702"></a>
-<span class="sourceLineNo">703</span><a id="line.703">      } else if (args[i].equals("-verbose")) {</a>
-<span class="sourceLineNo">704</span><a id="line.704">        submit.setDebug(true);</a>
-<span class="sourceLineNo">705</span><a id="line.705"></a>
-<span class="sourceLineNo">706</span><a id="line.706">      } else if (args[i].equals("-savezip")) {</a>
-<span class="sourceLineNo">707</span><a id="line.707">        submit.setSaveZip(true);</a>
-<span class="sourceLineNo">708</span><a id="line.708"></a>
-<span class="sourceLineNo">709</span><a id="line.709">      } else if (args[i].equals("-comment")) {</a>
-<span class="sourceLineNo">710</span><a id="line.710">        if (++i &gt;= args.length) {</a>
-<span class="sourceLineNo">711</span><a id="line.711">          usage("No comment specified");</a>
-<span class="sourceLineNo">712</span><a id="line.712">        }</a>
-<span class="sourceLineNo">713</span><a id="line.713"></a>
-<span class="sourceLineNo">714</span><a id="line.714">        submit.setComment(args[i]);</a>
-<span class="sourceLineNo">715</span><a id="line.715"></a>
-<span class="sourceLineNo">716</span><a id="line.716">      } else if (submit.projName == null) {</a>
-<span class="sourceLineNo">717</span><a id="line.717">        submit.setProjectName(args[i]);</a>
-<span class="sourceLineNo">718</span><a id="line.718"></a>
-<span class="sourceLineNo">719</span><a id="line.719">      } else if (submit.userName == null) {</a>
-<span class="sourceLineNo">720</span><a id="line.720">        submit.setUserName(args[i]);</a>
-<span class="sourceLineNo">721</span><a id="line.721"></a>
-<span class="sourceLineNo">722</span><a id="line.722">      } else if (submit.userId == null) {</a>
-<span class="sourceLineNo">723</span><a id="line.723">        submit.setUserId(args[i]);</a>
-<span class="sourceLineNo">724</span><a id="line.724"></a>
-<span class="sourceLineNo">725</span><a id="line.725">      } else if (submit.userEmail == null) {</a>
-<span class="sourceLineNo">726</span><a id="line.726">        submit.setUserEmail(args[i]);</a>
-<span class="sourceLineNo">727</span><a id="line.727"></a>
-<span class="sourceLineNo">728</span><a id="line.728">      } else {</a>
-<span class="sourceLineNo">729</span><a id="line.729">        // The name of a source file</a>
-<span class="sourceLineNo">730</span><a id="line.730">        submit.addFile(args[i]);</a>
-<span class="sourceLineNo">731</span><a id="line.731">      }</a>
-<span class="sourceLineNo">732</span><a id="line.732">    }</a>
-<span class="sourceLineNo">733</span><a id="line.733"></a>
-<span class="sourceLineNo">734</span><a id="line.734">    boolean submitted;</a>
+<span class="sourceLineNo">652</span><a id="line.652">    out.println("Sending receipt to you at " + userEmail);</a>
+<span class="sourceLineNo">653</span><a id="line.653"></a>
+<span class="sourceLineNo">654</span><a id="line.654">    Transport.send(message);</a>
+<span class="sourceLineNo">655</span><a id="line.655">  }</a>
+<span class="sourceLineNo">656</span><a id="line.656"></a>
+<span class="sourceLineNo">657</span><a id="line.657">  /////////////////////////  Main Program  ///////////////////////////</a>
+<span class="sourceLineNo">658</span><a id="line.658"></a>
+<span class="sourceLineNo">659</span><a id="line.659">  /**</a>
+<span class="sourceLineNo">660</span><a id="line.660">   * Prints usage information about this program.</a>
+<span class="sourceLineNo">661</span><a id="line.661">   */</a>
+<span class="sourceLineNo">662</span><a id="line.662">  private static void usage(String s) {</a>
+<span class="sourceLineNo">663</span><a id="line.663">    err.println("\n** " + s + "\n");</a>
+<span class="sourceLineNo">664</span><a id="line.664">    err.println("usage: java Submit [options] args file+");</a>
+<span class="sourceLineNo">665</span><a id="line.665">    err.println("  args are (in this order):");</a>
+<span class="sourceLineNo">666</span><a id="line.666">    err.println("    project      What project is being submitted (Project1, Project2, etc.)");</a>
+<span class="sourceLineNo">667</span><a id="line.667">    err.println("    student      Who is submitting the project?");</a>
+<span class="sourceLineNo">668</span><a id="line.668">    err.println("    loginId      UNIX login id");</a>
+<span class="sourceLineNo">669</span><a id="line.669">    err.println("    email        Student's email address");</a>
+<span class="sourceLineNo">670</span><a id="line.670">    err.println("    file         Java source file (or all files in a directory) to submit");</a>
+<span class="sourceLineNo">671</span><a id="line.671">    err.println("  options are (options may appear in any order):");</a>
+<span class="sourceLineNo">672</span><a id="line.672">    err.println("    -savezip           Saves temporary Zip file");</a>
+<span class="sourceLineNo">673</span><a id="line.673">    err.println("    -smtp serverName   Name of SMTP server");</a>
+<span class="sourceLineNo">674</span><a id="line.674">    err.println("    -verbose           Log debugging output");</a>
+<span class="sourceLineNo">675</span><a id="line.675">    err.println("    -comment comment   Info for the Grader");</a>
+<span class="sourceLineNo">676</span><a id="line.676">    err.println("");</a>
+<span class="sourceLineNo">677</span><a id="line.677">    err.println("Submits Java source code to the CS410J grader.");</a>
+<span class="sourceLineNo">678</span><a id="line.678">    System.exit(1);</a>
+<span class="sourceLineNo">679</span><a id="line.679">  }</a>
+<span class="sourceLineNo">680</span><a id="line.680"></a>
+<span class="sourceLineNo">681</span><a id="line.681">  /**</a>
+<span class="sourceLineNo">682</span><a id="line.682">   * Parses the command line, finds the source files, prompts the user</a>
+<span class="sourceLineNo">683</span><a id="line.683">   * to verify whether or not the settings are correct, and then sends</a>
+<span class="sourceLineNo">684</span><a id="line.684">   * an email to the Grader.</a>
+<span class="sourceLineNo">685</span><a id="line.685">   */</a>
+<span class="sourceLineNo">686</span><a id="line.686">  public static void main(String[] args) throws IOException, MessagingException {</a>
+<span class="sourceLineNo">687</span><a id="line.687">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">688</span><a id="line.688"></a>
+<span class="sourceLineNo">689</span><a id="line.689">    // Parse the command line</a>
+<span class="sourceLineNo">690</span><a id="line.690">    for (int i = 0; i &lt; args.length; i++) {</a>
+<span class="sourceLineNo">691</span><a id="line.691">      // Check for options first</a>
+<span class="sourceLineNo">692</span><a id="line.692">      if (args[i].equals("-smtp")) {</a>
+<span class="sourceLineNo">693</span><a id="line.693">        if (++i &gt;= args.length) {</a>
+<span class="sourceLineNo">694</span><a id="line.694">          usage("No SMTP server specified");</a>
+<span class="sourceLineNo">695</span><a id="line.695">        }</a>
+<span class="sourceLineNo">696</span><a id="line.696"></a>
+<span class="sourceLineNo">697</span><a id="line.697">        submit.setEmailServerHostName(args[i]);</a>
+<span class="sourceLineNo">698</span><a id="line.698"></a>
+<span class="sourceLineNo">699</span><a id="line.699">      } else if (args[i].equals("-verbose")) {</a>
+<span class="sourceLineNo">700</span><a id="line.700">        submit.setDebug(true);</a>
+<span class="sourceLineNo">701</span><a id="line.701"></a>
+<span class="sourceLineNo">702</span><a id="line.702">      } else if (args[i].equals("-savezip")) {</a>
+<span class="sourceLineNo">703</span><a id="line.703">        submit.setSaveZip(true);</a>
+<span class="sourceLineNo">704</span><a id="line.704"></a>
+<span class="sourceLineNo">705</span><a id="line.705">      } else if (args[i].equals("-comment")) {</a>
+<span class="sourceLineNo">706</span><a id="line.706">        if (++i &gt;= args.length) {</a>
+<span class="sourceLineNo">707</span><a id="line.707">          usage("No comment specified");</a>
+<span class="sourceLineNo">708</span><a id="line.708">        }</a>
+<span class="sourceLineNo">709</span><a id="line.709"></a>
+<span class="sourceLineNo">710</span><a id="line.710">        submit.setComment(args[i]);</a>
+<span class="sourceLineNo">711</span><a id="line.711"></a>
+<span class="sourceLineNo">712</span><a id="line.712">      } else if (submit.projName == null) {</a>
+<span class="sourceLineNo">713</span><a id="line.713">        submit.setProjectName(args[i]);</a>
+<span class="sourceLineNo">714</span><a id="line.714"></a>
+<span class="sourceLineNo">715</span><a id="line.715">      } else if (submit.userName == null) {</a>
+<span class="sourceLineNo">716</span><a id="line.716">        submit.setUserName(args[i]);</a>
+<span class="sourceLineNo">717</span><a id="line.717"></a>
+<span class="sourceLineNo">718</span><a id="line.718">      } else if (submit.userId == null) {</a>
+<span class="sourceLineNo">719</span><a id="line.719">        submit.setUserId(args[i]);</a>
+<span class="sourceLineNo">720</span><a id="line.720"></a>
+<span class="sourceLineNo">721</span><a id="line.721">      } else if (submit.userEmail == null) {</a>
+<span class="sourceLineNo">722</span><a id="line.722">        submit.setUserEmail(args[i]);</a>
+<span class="sourceLineNo">723</span><a id="line.723"></a>
+<span class="sourceLineNo">724</span><a id="line.724">      } else {</a>
+<span class="sourceLineNo">725</span><a id="line.725">        // The name of a source file</a>
+<span class="sourceLineNo">726</span><a id="line.726">        submit.addFile(args[i]);</a>
+<span class="sourceLineNo">727</span><a id="line.727">      }</a>
+<span class="sourceLineNo">728</span><a id="line.728">    }</a>
+<span class="sourceLineNo">729</span><a id="line.729"></a>
+<span class="sourceLineNo">730</span><a id="line.730">    boolean submitted;</a>
+<span class="sourceLineNo">731</span><a id="line.731"></a>
+<span class="sourceLineNo">732</span><a id="line.732">    try {</a>
+<span class="sourceLineNo">733</span><a id="line.733">      // Make sure that user entered enough information</a>
+<span class="sourceLineNo">734</span><a id="line.734">      submit.validate();</a>
 <span class="sourceLineNo">735</span><a id="line.735"></a>
-<span class="sourceLineNo">736</span><a id="line.736">    try {</a>
-<span class="sourceLineNo">737</span><a id="line.737">      // Make sure that user entered enough information</a>
-<span class="sourceLineNo">738</span><a id="line.738">      submit.validate();</a>
+<span class="sourceLineNo">736</span><a id="line.736">      submit.db("Command line successfully parsed.");</a>
+<span class="sourceLineNo">737</span><a id="line.737"></a>
+<span class="sourceLineNo">738</span><a id="line.738">      submitted = submit.submit(true);</a>
 <span class="sourceLineNo">739</span><a id="line.739"></a>
-<span class="sourceLineNo">740</span><a id="line.740">      submit.db("Command line successfully parsed.");</a>
-<span class="sourceLineNo">741</span><a id="line.741"></a>
-<span class="sourceLineNo">742</span><a id="line.742">      submitted = submit.submit(true);</a>
-<span class="sourceLineNo">743</span><a id="line.743"></a>
-<span class="sourceLineNo">744</span><a id="line.744">    } catch (IllegalStateException ex) {</a>
-<span class="sourceLineNo">745</span><a id="line.745">      usage(ex.getMessage());</a>
-<span class="sourceLineNo">746</span><a id="line.746">      return;</a>
-<span class="sourceLineNo">747</span><a id="line.747">    }</a>
+<span class="sourceLineNo">740</span><a id="line.740">    } catch (IllegalStateException ex) {</a>
+<span class="sourceLineNo">741</span><a id="line.741">      usage(ex.getMessage());</a>
+<span class="sourceLineNo">742</span><a id="line.742">      return;</a>
+<span class="sourceLineNo">743</span><a id="line.743">    }</a>
+<span class="sourceLineNo">744</span><a id="line.744"></a>
+<span class="sourceLineNo">745</span><a id="line.745">    // All done.</a>
+<span class="sourceLineNo">746</span><a id="line.746">    if (submitted) {</a>
+<span class="sourceLineNo">747</span><a id="line.747">      out.println(submit.projName + " submitted successfully.  Thank you.");</a>
 <span class="sourceLineNo">748</span><a id="line.748"></a>
-<span class="sourceLineNo">749</span><a id="line.749">    // All done.</a>
-<span class="sourceLineNo">750</span><a id="line.750">    if (submitted) {</a>
-<span class="sourceLineNo">751</span><a id="line.751">      out.println(submit.projName + " submitted successfully.  Thank you.");</a>
-<span class="sourceLineNo">752</span><a id="line.752"></a>
-<span class="sourceLineNo">753</span><a id="line.753">    } else {</a>
-<span class="sourceLineNo">754</span><a id="line.754">      out.println(submit.projName + " not submitted.");</a>
-<span class="sourceLineNo">755</span><a id="line.755">    }</a>
-<span class="sourceLineNo">756</span><a id="line.756">  }</a>
-<span class="sourceLineNo">757</span><a id="line.757"></a>
-<span class="sourceLineNo">758</span><a id="line.758">  public void setSendReceipt(boolean sendReceipt) {</a>
-<span class="sourceLineNo">759</span><a id="line.759">    this.sendReceipt = sendReceipt;</a>
+<span class="sourceLineNo">749</span><a id="line.749">    } else {</a>
+<span class="sourceLineNo">750</span><a id="line.750">      out.println(submit.projName + " not submitted.");</a>
+<span class="sourceLineNo">751</span><a id="line.751">    }</a>
+<span class="sourceLineNo">752</span><a id="line.752">  }</a>
+<span class="sourceLineNo">753</span><a id="line.753"></a>
+<span class="sourceLineNo">754</span><a id="line.754">  public void setSendReceipt(boolean sendReceipt) {</a>
+<span class="sourceLineNo">755</span><a id="line.755">    this.sendReceipt = sendReceipt;</a>
+<span class="sourceLineNo">756</span><a id="line.756"></a>
+<span class="sourceLineNo">757</span><a id="line.757">  }</a>
+<span class="sourceLineNo">758</span><a id="line.758"></a>
+<span class="sourceLineNo">759</span><a id="line.759">  static class ManifestAttributes {</a>
 <span class="sourceLineNo">760</span><a id="line.760"></a>
-<span class="sourceLineNo">761</span><a id="line.761">  }</a>
-<span class="sourceLineNo">762</span><a id="line.762"></a>
-<span class="sourceLineNo">763</span><a id="line.763">  static class ManifestAttributes {</a>
-<span class="sourceLineNo">764</span><a id="line.764"></a>
-<span class="sourceLineNo">765</span><a id="line.765">    public static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");</a>
-<span class="sourceLineNo">766</span><a id="line.766">    public static final Attributes.Name USER_ID = new Attributes.Name("Submitter-User-Id");</a>
-<span class="sourceLineNo">767</span><a id="line.767">    public static final Attributes.Name USER_EMAIL = new Attributes.Name("Submitter-Email");</a>
-<span class="sourceLineNo">768</span><a id="line.768">    public static final Attributes.Name PROJECT_NAME = new Attributes.Name("Project-Name");</a>
-<span class="sourceLineNo">769</span><a id="line.769">    public static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");</a>
-<span class="sourceLineNo">770</span><a id="line.770">    public static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");</a>
-<span class="sourceLineNo">771</span><a id="line.771"></a>
-<span class="sourceLineNo">772</span><a id="line.772">    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");</a>
-<span class="sourceLineNo">773</span><a id="line.773"></a>
-<span class="sourceLineNo">774</span><a id="line.774">    public static String formatSubmissionTime(LocalDateTime submitTime) {</a>
-<span class="sourceLineNo">775</span><a id="line.775">      return submitTime.format(DATE_TIME_FORMATTER);</a>
-<span class="sourceLineNo">776</span><a id="line.776">    }</a>
-<span class="sourceLineNo">777</span><a id="line.777"></a>
-<span class="sourceLineNo">778</span><a id="line.778">    public static LocalDateTime parseSubmissionTime(String string) {</a>
-<span class="sourceLineNo">779</span><a id="line.779">      return LocalDateTime.parse(string, DATE_TIME_FORMATTER);</a>
-<span class="sourceLineNo">780</span><a id="line.780">    }</a>
-<span class="sourceLineNo">781</span><a id="line.781">  }</a>
-<span class="sourceLineNo">782</span><a id="line.782"></a>
-<span class="sourceLineNo">783</span><a id="line.783">}</a>
+<span class="sourceLineNo">761</span><a id="line.761">    public static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");</a>
+<span class="sourceLineNo">762</span><a id="line.762">    public static final Attributes.Name USER_ID = new Attributes.Name("Submitter-User-Id");</a>
+<span class="sourceLineNo">763</span><a id="line.763">    public static final Attributes.Name USER_EMAIL = new Attributes.Name("Submitter-Email");</a>
+<span class="sourceLineNo">764</span><a id="line.764">    public static final Attributes.Name PROJECT_NAME = new Attributes.Name("Project-Name");</a>
+<span class="sourceLineNo">765</span><a id="line.765">    public static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");</a>
+<span class="sourceLineNo">766</span><a id="line.766">    public static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");</a>
+<span class="sourceLineNo">767</span><a id="line.767"></a>
+<span class="sourceLineNo">768</span><a id="line.768">    private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");</a>
+<span class="sourceLineNo">769</span><a id="line.769">    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;</a>
+<span class="sourceLineNo">770</span><a id="line.770"></a>
+<span class="sourceLineNo">771</span><a id="line.771">    public static String formatSubmissionTime(LocalDateTime submitTime) {</a>
+<span class="sourceLineNo">772</span><a id="line.772">      return submitTime.format(DATE_TIME_FORMATTER);</a>
+<span class="sourceLineNo">773</span><a id="line.773">    }</a>
+<span class="sourceLineNo">774</span><a id="line.774"></a>
+<span class="sourceLineNo">775</span><a id="line.775">    @VisibleForTesting</a>
+<span class="sourceLineNo">776</span><a id="line.776">    static String formatSubmissionTimeUsingLegacyFormat(LocalDateTime submitTime) {</a>
+<span class="sourceLineNo">777</span><a id="line.777">      return submitTime.format(LEGACY_DATE_TIME_FORMATTER);</a>
+<span class="sourceLineNo">778</span><a id="line.778">    }</a>
+<span class="sourceLineNo">779</span><a id="line.779"></a>
+<span class="sourceLineNo">780</span><a id="line.780">    public static LocalDateTime parseSubmissionTime(String string) {</a>
+<span class="sourceLineNo">781</span><a id="line.781">      try {</a>
+<span class="sourceLineNo">782</span><a id="line.782">        return LocalDateTime.parse(string, DATE_TIME_FORMATTER);</a>
+<span class="sourceLineNo">783</span><a id="line.783"></a>
+<span class="sourceLineNo">784</span><a id="line.784">      } catch (DateTimeParseException ex) {</a>
+<span class="sourceLineNo">785</span><a id="line.785">        return LocalDateTime.parse(string, LEGACY_DATE_TIME_FORMATTER);</a>
+<span class="sourceLineNo">786</span><a id="line.786">      }</a>
+<span class="sourceLineNo">787</span><a id="line.787">    }</a>
+<span class="sourceLineNo">788</span><a id="line.788">  }</a>
+<span class="sourceLineNo">789</span><a id="line.789"></a>
+<span class="sourceLineNo">790</span><a id="line.790">}</a>
 
 
 

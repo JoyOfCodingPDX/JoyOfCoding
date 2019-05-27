@@ -15,7 +15,7 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * the BigMacs(tm).  Each &lt;code&gt;McCustomer&lt;/code&gt; and</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * &lt;code&gt;McEmployee&lt;/code&gt; runs in his or her own thread.</em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/net/McDonalds.html">McDonalds</a> {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a> {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> java.io.PrintStream err = System.err;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> nBigMacs;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
@@ -23,7 +23,7 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;McDonalds&lt;/code&gt; with a given number of</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment">   * BigMacs to cook.</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/net/McDonalds.html">McDonalds</a>(<strong class="jxr_keyword">int</strong> nBigMacs) {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>(<strong class="jxr_keyword">int</strong> nBigMacs) {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">this</strong>.nBigMacs = nBigMacs;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>    }
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
@@ -59,17 +59,17 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <em class="jxr_comment">// Each customer wants a BigMac(tm)</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a href="../../../../edu/pdx/cs410J/net/McDonalds.html">McDonalds</a> mcDonalds = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/McDonalds.html">McDonalds</a>(nCustomers);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDona<a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>McDonalds">McDonalds</a> mcDonalds = <strong class="jxr_keyword">new</strong> <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>(nCustomers);
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <em class="jxr_comment">// The customers enter...</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; nCustomers; i++) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>        <a href="../../../../edu/pdx/cs410J/net/McCustomer.html">McCustomer</a> customer = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/McCustomer.html">McCustomer</a>(i, mcDonalds);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>        <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCus<a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a>#McCustomer">McCustomer</a> customer = <strong class="jxr_keyword">new</strong> <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a>(i, mcDonalds);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>        (<strong class="jxr_keyword">new</strong> Thread(customer)).start();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <em class="jxr_comment">// The employees start cooking...</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; nEmployees; i++) {
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>        <a href="../../../../edu/pdx/cs410J/net/McEmployee.html">McEmployee</a> employee = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/McEmployee.html">McEmployee</a>(i, mcDonalds);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>        <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmp<a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a>#McEmployee">McEmployee</a> employee = <strong class="jxr_keyword">new</strong> <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a>(i, mcDonalds);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>        (<strong class="jxr_keyword">new</strong> Thread(employee)).start();
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
@@ -78,6 +78,6 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

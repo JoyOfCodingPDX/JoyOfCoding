@@ -22,7 +22,7 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * @author David Whitlock</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * @since Fall 2005</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/net/DateServer.html">DateServer</a> {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="DateServer" href="../../../../edu/pdx/cs410J/net/DateServer.html#DateServer">DateServer</a> {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> PrintStream out = System.out;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> PrintStream err = System.err;
@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          out.println(<span class="jxr_string">"Server accepted client "</span> + i);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <em class="jxr_comment">// Fire off a thread to write the date</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <a href="../../../../edu/pdx/cs410J/net/DateServer.html">Worker</a> worker = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/DateServer.html">Worker</a>(socket);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          Worker worker = <strong class="jxr_keyword">new</strong> Worker(socket);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          worker.start();
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>        }
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>        
@@ -59,11 +59,11 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">   * A worker thread that waits five seconds before returning the</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">   * current date.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/net/DateServer.html">Worker</a> <strong class="jxr_keyword">extends</strong> Thread {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Worker <strong class="jxr_keyword">extends</strong> Thread {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Socket socket;
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <a href="../../../../edu/pdx/cs410J/net/DateServer.html">Worker</a>(Socket socket) {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      Worker(Socket socket) {
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>        <strong class="jxr_keyword">this</strong>.socket = socket;
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
@@ -97,6 +97,6 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

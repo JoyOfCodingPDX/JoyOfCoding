@@ -21,19 +21,19 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * This is a dialog for creating a new &lt;code&gt;Person&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html">AddPersonDialog</a> <strong class="jxr_keyword">extends</strong> JDialog {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AddPersonDialog" href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html#AddPersonDialog">AddPersonDialog</a> <strong class="jxr_keyword">extends</strong> JDialog {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <em class="jxr_comment">// The person we're creating</em>
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> newPerson = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">private</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> newPerson = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> mother;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> father;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> mother;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> father;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;AddPersonDialog&lt;/code&gt; with a given owner</em>
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment">   * &lt;code&gt;JFrame&lt;/code&gt; and &lt;code&gt;FamilyTree&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html">AddPersonDialog</a>(JFrame owner, <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree) {
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a name="AddPersonDialog" href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html#AddPersonDialog">AddPersonDialog</a>(JFrame owner, <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree) {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">super</strong>(owner, <span class="jxr_string">"Add New Person"</span>, <strong class="jxr_keyword">true</strong> <em class="jxr_comment">/* modal */</em>);
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      Container pane = <strong class="jxr_keyword">this</strong>.getContentPane();
@@ -159,7 +159,7 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>           }
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>           
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>           <em class="jxr_comment">// Okay, everything parsed alright</em>
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>           newPerson = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a>(id, gender);
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>           newPerson = <strong class="jxr_keyword">new</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>(id, gender);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>           newPerson.setFirstName(firstNameField.getText());
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>           newPerson.setMiddleName(middleNameField.getText());
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>           newPerson.setLastName(lastNameField.getText());
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">   * Returns the &lt;code&gt;Person&lt;/code&gt; created by this</em>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">   * &lt;code&gt;AddPersonDialog&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> getPerson() {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>   <strong class="jxr_keyword">public</strong> <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> getPerson() {
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.newPerson;
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>   }
 <a class="jxr_linenumber" name="L201" href="#L201">201</a> 
@@ -251,18 +251,18 @@
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     JButton button = <strong class="jxr_keyword">new</strong> JButton(<span class="jxr_string">"Click me"</span>);
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>     button.addActionListener(<strong class="jxr_keyword">new</strong> ActionListener() {
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>           <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/FamilyTree.html">FamilyTree</a>();
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>           <a href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html">AddPersonDialog</a> dialog = 
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>             <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html">AddPersonDialog</a>(frame, tree);
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>           <a name="FamilyTree" href="../../../../edu/pdx/cs410J/famil<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>ee.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>           <a name="AddPersonDialog" href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html#AddPersonDialog">AddPersonDialog</a> dialog = 
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>             <strong class="jxr_keyword">new</strong> <a name="AddPersonDialog" href="../../../../edu/pdx/cs410J/family/AddPersonDialog.html#AddPersonDialog">AddPersonDialog</a>(frame, tree);
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>           dialog.pack();
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>           dialog.setLocationRelativeTo(frame);
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>           dialog.setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>           <a href="../../../../edu/pdx/cs410J/family/Person.html">Person</a> newPerson = dialog.getPerson();
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>           <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> newPerson = dialog.getPerson();
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>           <strong class="jxr_keyword">if</strong> (newPerson != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>             tree.addPerson(newPerson);
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <a href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html">PrettyPrinter</a> pretty = 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>               <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html">PrettyPrinter</a>(<strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>));
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a> pretty = 
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>               <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(<strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>             pretty.dump(tree);
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>           }
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>         }
@@ -280,6 +280,6 @@
 <a class="jxr_linenumber" name="L272" href="#L272">272</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

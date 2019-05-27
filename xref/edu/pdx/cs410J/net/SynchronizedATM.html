@@ -13,8 +13,8 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * &lt;code&gt;BankAccount&lt;/code&gt;.  That way, it always sees a consistent</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * view of the account. </em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html">SynchronizedATM</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/net/ATM.html">ATM</a> {
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html">SynchronizedATM</a>(String name, <a href="../../../../edu/pdx/cs410J/net/BankAccount.html">BankAccount</a> account, 
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SynchronizedATM" href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html#SynchronizedATM">SynchronizedATM</a> <strong class="jxr_keyword">extends</strong> <a name="ATM" href="../../../../edu/pdx/cs410J/net/ATM.html#ATM">ATM</a> {
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>     <strong class="jxr_keyword">public</strong> <a name="SynchronizedATM" href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html#SynchronizedATM">SynchronizedATM</a>(String name, <a name="BankAccount" href="../../../../edu/pdx/cs410J/net/BankAccount.html#BankAccount">BankAccount</a> account, 
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>                           <strong class="jxr_keyword">int</strong>[] transactions) {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">super</strong>(name, account, transactions);
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>    }
@@ -47,17 +47,17 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">   * transactions, but in different orders.</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <a href="../../../../edu/pdx/cs410J/net/BankAccount.html">BankAccount</a> account = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/BankAccount.html">BankAccount</a>();
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <a name="BankAccount" href="../../../../edu/pdx/cs410J/net/Bank<a name="BankAccount" href="../../../../edu/pdx/cs410J/net/BankAccount.html#BankAccount">BankAccount</a>l#BankAccount">BankAccount</a> account = <strong class="jxr_keyword">new</strong> <a name="BankAccount" href="../../../../edu/pdx/cs410J/net/BankAccount.html#BankAccount">BankAccount</a>();
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      account.setBalance(1000);
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      out.println(<span class="jxr_string">"Initial balance: "</span> + account.getBalance());
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <em class="jxr_comment">// Make some ATMs</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">int</strong>[] trans1 = {-200, 400, 100, -300};
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a href="../../../../edu/pdx/cs410J/net/ATM.html">ATM</a> atm1 = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html">SynchronizedATM</a>(<span class="jxr_string">"ATM1"</span>, account, trans1);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a name="ATM" href="../../../../edu/pdx/cs410J/net/ATM.html#ATM">ATM</a> atm1 = <strong class="jxr_keyword">new</strong> <a name="SynchronizedATM" href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html#SynchronizedATM">SynchronizedATM</a>(<span class="jxr_string">"ATM1"</span>, account, trans1);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">int</strong>[] trans2 = {400, 100, -300, -200};
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <a href="../../../../edu/pdx/cs410J/net/ATM.html">ATM</a> atm2 = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html">SynchronizedATM</a>(<span class="jxr_string">"ATM2"</span>, account, trans2);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <a name="ATM" href="../../../../edu/pdx/cs410J/net/ATM.html#ATM">ATM</a> atm2 = <strong class="jxr_keyword">new</strong> <a name="SynchronizedATM" href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html#SynchronizedATM">SynchronizedATM</a>(<span class="jxr_string">"ATM2"</span>, account, trans2);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">int</strong>[] trans3 = {-300, -200, 100, 400};
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <a href="../../../../edu/pdx/cs410J/net/ATM.html">ATM</a> atm3 = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html">SynchronizedATM</a>(<span class="jxr_string">"ATM3"</span>, account, trans3);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <a name="ATM" href="../../../../edu/pdx/cs410J/net/ATM.html#ATM">ATM</a> atm3 = <strong class="jxr_keyword">new</strong> <a name="SynchronizedATM" href="../../../../edu/pdx/cs410J/net/SynchronizedATM.html#SynchronizedATM">SynchronizedATM</a>(<span class="jxr_string">"ATM3"</span>, account, trans3);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <em class="jxr_comment">// Make some threads and start them</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      Thread t1 = <strong class="jxr_keyword">new</strong> Thread(atm1);
@@ -83,6 +83,6 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

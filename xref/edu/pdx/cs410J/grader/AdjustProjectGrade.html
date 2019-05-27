@@ -15,7 +15,7 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * grade for a given project.  It is used when I forget to take the</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * POA into account when grading.</em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/AdjustProjectGrade.html">AdjustProjectGrade</a> {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AdjustProjectGrade" href="../../../../edu/pdx/cs410J/grader/AdjustProjectGrade.html#AdjustProjectGrade">AdjustProjectGrade</a> {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintStream err = System.err;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>    
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <em class="jxr_javadoccomment">/**</em>
@@ -81,10 +81,10 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>        usage(<span class="jxr_string">"File \&quot;"</span> + file + <span class="jxr_string">"\&quot; does not exist"</span>);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(file);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = parser.parse();
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = parser.parse();
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign = book.getAssignment(proj);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign = book.getAssignment(proj);
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">if</strong> (assign == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>        usage(<span class="jxr_string">"No such assignment: "</span> + proj);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>        <strong class="jxr_keyword">return</strong>;
@@ -96,13 +96,13 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      adjustGradeForEachStudent(book, proj, points);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      dumper.dump(book);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>    }
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> adjustGradeForEachStudent(<a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book, String projectName, <strong class="jxr_keyword">double</strong> adjustment) {
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>      book.forEachStudent((Student student) -&gt; {
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>        <a href="../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a> grade = student.getGrade(projectName);
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> adjustGradeForEachStudent(<a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book, String projectName, <strong class="jxr_keyword">double</strong> adjustment) {
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      book.forEachStudent((<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) -&gt; {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>        <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> grade = student.getGrade(projectName);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>        <strong class="jxr_keyword">if</strong> (grade != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          grade.setScore(grade.getScore() - adjustment);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>       }
@@ -112,6 +112,6 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

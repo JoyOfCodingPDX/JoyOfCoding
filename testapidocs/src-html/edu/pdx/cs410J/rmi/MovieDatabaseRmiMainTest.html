@@ -32,8 +32,8 @@
 <span class="sourceLineNo">023</span><a id="line.23"></a>
 <span class="sourceLineNo">024</span><a id="line.24">    MainMethodResult result = invokeMain(CreateMovie.class, RMI_HOST, String.valueOf(RMI_PORT), title, String.valueOf(year));</a>
 <span class="sourceLineNo">025</span><a id="line.25">    assertThat(result.getExitCode(), equalTo(0));</a>
-<span class="sourceLineNo">026</span><a id="line.26">    assertThat(result.getOut(), containsString("Created movie"));</a>
-<span class="sourceLineNo">027</span><a id="line.27">    assertThat(result.getErr(), equalTo(""));</a>
+<span class="sourceLineNo">026</span><a id="line.26">    assertThat(result.getTextWrittenToStandardOut(), containsString("Created movie"));</a>
+<span class="sourceLineNo">027</span><a id="line.27">    assertThat(result.getTextWrittenToStandardError(), equalTo(""));</a>
 <span class="sourceLineNo">028</span><a id="line.28"></a>
 <span class="sourceLineNo">029</span><a id="line.29">    MovieDatabase database = getMovieDatabase();</a>
 <span class="sourceLineNo">030</span><a id="line.30">    Collection&lt;Movie&gt; movies = database.getMovies();</a>

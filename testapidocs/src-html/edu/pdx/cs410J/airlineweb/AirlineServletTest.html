@@ -28,7 +28,7 @@
 <span class="sourceLineNo">019</span><a id="line.19">public class AirlineServletTest {</a>
 <span class="sourceLineNo">020</span><a id="line.20"></a>
 <span class="sourceLineNo">021</span><a id="line.21">  @Test</a>
-<span class="sourceLineNo">022</span><a id="line.22">  public void initiallyServletContainsNoKeyValueMappings() throws ServletException, IOException {</a>
+<span class="sourceLineNo">022</span><a id="line.22">  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {</a>
 <span class="sourceLineNo">023</span><a id="line.23">    AirlineServlet servlet = new AirlineServlet();</a>
 <span class="sourceLineNo">024</span><a id="line.24"></a>
 <span class="sourceLineNo">025</span><a id="line.25">    HttpServletRequest request = mock(HttpServletRequest.class);</a>
@@ -39,21 +39,21 @@
 <span class="sourceLineNo">030</span><a id="line.30"></a>
 <span class="sourceLineNo">031</span><a id="line.31">    servlet.doGet(request, response);</a>
 <span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">    int expectedMappings = 0;</a>
-<span class="sourceLineNo">034</span><a id="line.34">    verify(pw).println(Messages.formatMappingCount(expectedMappings));</a>
+<span class="sourceLineNo">033</span><a id="line.33">    int expectedWords = 0;</a>
+<span class="sourceLineNo">034</span><a id="line.34">    verify(pw).println(Messages.formatWordCount(expectedWords));</a>
 <span class="sourceLineNo">035</span><a id="line.35">    verify(response).setStatus(HttpServletResponse.SC_OK);</a>
 <span class="sourceLineNo">036</span><a id="line.36">  }</a>
 <span class="sourceLineNo">037</span><a id="line.37"></a>
 <span class="sourceLineNo">038</span><a id="line.38">  @Test</a>
-<span class="sourceLineNo">039</span><a id="line.39">  public void addOneMapping() throws ServletException, IOException {</a>
+<span class="sourceLineNo">039</span><a id="line.39">  public void addOneWordToDictionary() throws ServletException, IOException {</a>
 <span class="sourceLineNo">040</span><a id="line.40">    AirlineServlet servlet = new AirlineServlet();</a>
 <span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">    String testKey = "TEST KEY";</a>
-<span class="sourceLineNo">043</span><a id="line.43">    String testValue = "TEST VALUE";</a>
+<span class="sourceLineNo">042</span><a id="line.42">    String word = "TEST WORD";</a>
+<span class="sourceLineNo">043</span><a id="line.43">    String definition = "TEST DEFINITION";</a>
 <span class="sourceLineNo">044</span><a id="line.44"></a>
 <span class="sourceLineNo">045</span><a id="line.45">    HttpServletRequest request = mock(HttpServletRequest.class);</a>
-<span class="sourceLineNo">046</span><a id="line.46">    when(request.getParameter("key")).thenReturn(testKey);</a>
-<span class="sourceLineNo">047</span><a id="line.47">    when(request.getParameter("value")).thenReturn(testValue);</a>
+<span class="sourceLineNo">046</span><a id="line.46">    when(request.getParameter("word")).thenReturn(word);</a>
+<span class="sourceLineNo">047</span><a id="line.47">    when(request.getParameter("definition")).thenReturn(definition);</a>
 <span class="sourceLineNo">048</span><a id="line.48"></a>
 <span class="sourceLineNo">049</span><a id="line.49">    HttpServletResponse response = mock(HttpServletResponse.class);</a>
 <span class="sourceLineNo">050</span><a id="line.50">    PrintWriter pw = mock(PrintWriter.class);</a>
@@ -61,10 +61,10 @@
 <span class="sourceLineNo">052</span><a id="line.52">    when(response.getWriter()).thenReturn(pw);</a>
 <span class="sourceLineNo">053</span><a id="line.53"></a>
 <span class="sourceLineNo">054</span><a id="line.54">    servlet.doPost(request, response);</a>
-<span class="sourceLineNo">055</span><a id="line.55">    verify(pw).println(Messages.mappedKeyValue(testKey, testValue));</a>
+<span class="sourceLineNo">055</span><a id="line.55">    verify(pw).println(Messages.definedWordAs(word, definition));</a>
 <span class="sourceLineNo">056</span><a id="line.56">    verify(response).setStatus(HttpServletResponse.SC_OK);</a>
 <span class="sourceLineNo">057</span><a id="line.57"></a>
-<span class="sourceLineNo">058</span><a id="line.58">    assertThat(servlet.getValueForKey(testKey), equalTo(testValue));</a>
+<span class="sourceLineNo">058</span><a id="line.58">    assertThat(servlet.getDefinition(word), equalTo(definition));</a>
 <span class="sourceLineNo">059</span><a id="line.59">  }</a>
 <span class="sourceLineNo">060</span><a id="line.60">}</a>
 

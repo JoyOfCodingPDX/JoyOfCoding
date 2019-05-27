@@ -23,9 +23,9 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * @since Fall 2000</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/NotesPanel.html">NotesPanel</a> <strong class="jxr_keyword">extends</strong> JPanel {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NotesPanel" href="../../../../edu/pdx/cs410J/grader/NotesPanel.html#NotesPanel">NotesPanel</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/Notable.html">Notable</a> notable;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <a name="Notable" href="../../../../edu/pdx/cs410J/grader/Notable.html#Notable">Notable</a> notable;
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <em class="jxr_comment">// GUI components we care about</em>
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> JList notesList;
@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;NotePanel&lt;/code&gt; for displaying the notes of</em>
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">   * some &lt;code&gt;Notable&lt;/code&gt; object.</em>
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/NotesPanel.html">NotesPanel</a>() {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>    <strong class="jxr_keyword">public</strong> <a name="NotesPanel" href="../../../../edu/pdx/cs410J/grader/NotesPanel.html#NotesPanel">NotesPanel</a>() {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      Border notesBorder = BorderFactory.createTitledBorder(<span class="jxr_string">"Notes"</span>);
@@ -102,7 +102,7 @@
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">   * Sets the &lt;code&gt;Notable&lt;/code&gt; that is being displayed/edited by</em>
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">   * this &lt;code&gt;NotesPanel&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setNotable(<a href="../../../../edu/pdx/cs410J/grader/Notable.html">Notable</a> notable) {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setNotable(<a name="Notable" href="../../../../edu/pdx/cs410J/grader/Notable.html#Notable">Notable</a> notable) {
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      clearNotes();   <em class="jxr_comment">// Start from scratch</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">this</strong>.notable = notable;
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">this</strong>.notesList.setListData(notable.getNotes().toArray());
@@ -113,7 +113,7 @@
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment">   * Returns the &lt;code&gt;Notable&lt;/code&gt; edited by this</em>
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment">   * &lt;code&gt;NotesPanel&lt;/code&gt;. </em>
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Notable.html">Notable</a> getNotable() {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>   <strong class="jxr_keyword">public</strong> <a name="Notable" href="../../../../edu/pdx/cs410J/grader/Notable.html#Notable">Notable</a> getNotable() {
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.notable;
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>   }
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 
@@ -128,6 +128,6 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
