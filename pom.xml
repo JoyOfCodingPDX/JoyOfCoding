@@ -49,20 +49,24 @@
     <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
   </scm>
     <prerequisites>
-        <maven>3.5.2</maven>
+        <maven>3.6.1</maven>
     </prerequisites>
     <properties>
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
 
-        <groovy.version>2.4.10</groovy.version>
+        <groovy.version>3.0.0-beta-1</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.4.0</pmd.version>
+        <pmd.version>6.15.0</pmd.version>
 
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.0.0</wagon-ssh.version>
+
+        <junit.version>4.13-beta-3</junit.version>
+        <hamcrest.version>2.1</hamcrest.version>
+        <mockito.version>2.27.0</mockito.version>
     </properties>
     <repositories>
       <repository>
@@ -76,7 +80,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>3.0.0-M2</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -88,7 +92,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.5.2</version>
+              <version>3.6.1</version>
             </requireMavenVersion>
             <requireJavaVersion>
               <version>${maven.compiler.target}</version>
@@ -99,7 +103,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.1.0</version>
         <executions>
           <execution>
             <goals>
@@ -112,11 +116,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.1.2</version>
         <executions>
           <execution>
             <goals>
-              <goal>jar</goal>
               <goal>test-jar</goal>
             </goals>
           </execution>
@@ -137,7 +140,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.2.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -154,7 +157,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-idea-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>3.6.1</version>
         <configuration>
           <downloadJavadocs>true</downloadJavadocs>
           <downloadSources>true</downloadSources>
@@ -163,12 +166,12 @@
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>3.0.0-M1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.1.0</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -199,7 +202,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.21.0</version>
+        <version>3.0.0-M3</version>
         <configuration>
           <!-- Let reflection code run in Java 10 -->
           <argLine>
@@ -212,7 +215,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>add-it-source</id>
@@ -245,7 +248,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -275,7 +278,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.21.0</version>
+          <version>3.0.0-M3</version>
           <configuration>
             <testSourceDirectory>src/it/java</testSourceDirectory>
             <testClassesDirectory>${project.build.directory}/it-classes</testClassesDirectory>
@@ -300,7 +303,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>2.9</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -351,12 +354,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.10</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -366,17 +369,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>3.2.1</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.11.v20180605</version>
+          <version>9.4.18.v20190429</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.12.0</version>
           <dependencies>
             <dependency>
               <groupId>net.sourceforge.pmd</groupId>
@@ -458,12 +461,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>3.12.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.5</version>
+        <version>3.0.0</version>
         <configuration>
           <linkJavadoc>true</linkJavadoc>
         </configuration>
@@ -471,7 +474,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.5</version>
+        <version>2.7</version>
         <reportSets>
           <reportSet>
             <reports>
