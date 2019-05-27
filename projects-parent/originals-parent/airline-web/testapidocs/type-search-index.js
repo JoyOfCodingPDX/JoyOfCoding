@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"edu.pdx.cs410J.airlineweb","l":"AirlineServletTest"},{"p":"edu.pdx.cs410J.airlineweb","l":"MessagesTest"}]
+typeSearchIndex = [{"p":"edu.pdx.cs410J.airlineweb","l":"AirlineServletTest"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.airlineweb","l":"MessagesTest"}]

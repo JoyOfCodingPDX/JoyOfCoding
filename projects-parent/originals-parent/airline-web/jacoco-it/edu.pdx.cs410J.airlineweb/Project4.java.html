@@ -17,8 +17,8 @@ import java.util.Map;
     public static void main(String... args) {
 <span class="fc" id="L18">        String hostName = null;</span>
 <span class="fc" id="L19">        String portString = null;</span>
-<span class="fc" id="L20">        String key = null;</span>
-<span class="fc" id="L21">        String value = null;</span>
+<span class="fc" id="L20">        String word = null;</span>
+<span class="fc" id="L21">        String definition = null;</span>
 
 <span class="fc bfc" id="L23" title="All 2 branches covered.">        for (String arg : args) {</span>
 <span class="fc bfc" id="L24" title="All 2 branches covered.">            if (hostName == null) {</span>
@@ -27,11 +27,11 @@ import java.util.Map;
 <span class="fc bfc" id="L27" title="All 2 branches covered.">            } else if ( portString == null) {</span>
 <span class="fc" id="L28">                portString = arg;</span>
 
-<span class="fc bfc" id="L30" title="All 2 branches covered.">            } else if (key == null) {</span>
-<span class="fc" id="L31">                key = arg;</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">            } else if (word == null) {</span>
+<span class="fc" id="L31">                word = arg;</span>
 
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            } else if (value == null) {</span>
-<span class="fc" id="L34">                value = arg;</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            } else if (definition == null) {</span>
+<span class="fc" id="L34">                definition = arg;</span>
 
             } else {
 <span class="nc" id="L37">                usage(&quot;Extraneous command line argument: &quot; + arg);</span>
@@ -48,7 +48,7 @@ import java.util.Map;
         int port;
         try {
 <span class="fc" id="L50">            port = Integer.parseInt( portString );</span>
-            
+
 <span class="nc" id="L52">        } catch (NumberFormatException ex) {</span>
 <span class="nc" id="L53">            usage(&quot;Port \&quot;&quot; + portString + &quot;\&quot; must be an integer&quot;);</span>
 <span class="nc" id="L54">            return;</span>
@@ -58,21 +58,21 @@ import java.util.Map;
 
         String message;
         try {
-<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (key == null) {</span>
-                // Print all key/value pairs
-<span class="fc" id="L63">                Map&lt;String, String&gt; keysAndValues = client.getAllKeysAndValues();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (word == null) {</span>
+                // Print all word/definition pairs
+<span class="fc" id="L63">                Map&lt;String, String&gt; dictionary = client.getAllDictionaryEntries();</span>
 <span class="fc" id="L64">                StringWriter sw = new StringWriter();</span>
-<span class="fc" id="L65">                Messages.formatKeyValueMap(new PrintWriter(sw, true), keysAndValues);</span>
+<span class="fc" id="L65">                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);</span>
 <span class="fc" id="L66">                message = sw.toString();</span>
 
-<span class="fc bfc" id="L68" title="All 2 branches covered.">            } else if (value == null) {</span>
-                // Print all values of key
-<span class="fc" id="L70">                message = Messages.formatKeyValuePair(key, client.getValue(key));</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            } else if (definition == null) {</span>
+                // Print all dictionary entries
+<span class="fc" id="L70">                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));</span>
 
             } else {
-                // Post the key/value pair
-<span class="fc" id="L74">                client.addKeyValuePair(key, value);</span>
-<span class="fc" id="L75">                message = Messages.mappedKeyValue(key, value);</span>
+                // Post the word/definition pair
+<span class="fc" id="L74">                client.addDictionaryEntry(word, definition);</span>
+<span class="fc" id="L75">                message = Messages.definedWordAs(word, definition);</span>
             }
 
 <span class="nc" id="L78">        } catch ( IOException ex ) {</span>
@@ -102,18 +102,20 @@ import java.util.Map;
 <span class="fc" id="L102">        PrintStream err = System.err;</span>
 <span class="fc" id="L103">        err.println(&quot;** &quot; + message);</span>
 <span class="fc" id="L104">        err.println();</span>
-<span class="fc" id="L105">        err.println(&quot;usage: java Project4 host port [key] [value]&quot;);</span>
-<span class="fc" id="L106">        err.println(&quot;  host    Host of web server&quot;);</span>
-<span class="fc" id="L107">        err.println(&quot;  port    Port of web server&quot;);</span>
-<span class="fc" id="L108">        err.println(&quot;  key     Key to query&quot;);</span>
-<span class="fc" id="L109">        err.println(&quot;  value   Value to add to server&quot;);</span>
+<span class="fc" id="L105">        err.println(&quot;usage: java Project4 host port [word] [definition]&quot;);</span>
+<span class="fc" id="L106">        err.println(&quot;  host         Host of web server&quot;);</span>
+<span class="fc" id="L107">        err.println(&quot;  port         Port of web server&quot;);</span>
+<span class="fc" id="L108">        err.println(&quot;  word         Word in dictionary&quot;);</span>
+<span class="fc" id="L109">        err.println(&quot;  definition   Definition of word&quot;);</span>
 <span class="fc" id="L110">        err.println();</span>
-<span class="fc" id="L111">        err.println(&quot;This simple program posts key/value pairs to the server&quot;);</span>
-<span class="fc" id="L112">        err.println(&quot;If no value is specified, then all values are printed&quot;);</span>
-<span class="fc" id="L113">        err.println(&quot;If no key is specified, all key/value pairs are printed&quot;);</span>
-<span class="fc" id="L114">        err.println();</span>
+<span class="fc" id="L111">        err.println(&quot;This simple program posts words and their definitions&quot;);</span>
+<span class="fc" id="L112">        err.println(&quot;to the server.&quot;);</span>
+<span class="fc" id="L113">        err.println(&quot;If no definition is specified, then the word's definition&quot;);</span>
+<span class="fc" id="L114">        err.println(&quot;is printed.&quot;);</span>
+<span class="fc" id="L115">        err.println(&quot;If no word is specified, all dictionary entries are printed&quot;);</span>
+<span class="fc" id="L116">        err.println();</span>
 
-<span class="nc" id="L116">        System.exit(1);</span>
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L118">        System.exit(1);</span>
+<span class="nc" id="L119">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

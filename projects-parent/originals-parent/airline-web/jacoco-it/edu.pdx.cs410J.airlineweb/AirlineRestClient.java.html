@@ -31,51 +31,51 @@ public class AirlineRestClient extends HttpRequestHelper
 <span class="fc" id="L31">        this.url = String.format( &quot;http://%s:%d/%s/%s&quot;, hostName, port, WEB_APP, SERVLET );</span>
 <span class="fc" id="L32">    }</span>
 
-    /**
-     * Returns all keys and values from the server
-     */
-    public Map&lt;String, String&gt; getAllKeysAndValues() throws IOException {
-<span class="fc" id="L38">      Response response = get(this.url);</span>
-<span class="fc" id="L39">      return Messages.parseKeyValueMap(response.getContent());</span>
+  /**
+   * Returns all dictionary entries from the server
+   */
+  public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
+<span class="fc" id="L38">    Response response = get(this.url);</span>
+<span class="fc" id="L39">    return Messages.parseDictionary(response.getContent());</span>
+  }
+
+  /**
+   * Returns the definition for the given word
+   */
+  public String getDefinition(String word) throws IOException {
+<span class="fc" id="L46">    Response response = get(this.url, &quot;word&quot;, word);</span>
+<span class="fc" id="L47">    throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L48">    String content = response.getContent();</span>
+<span class="fc" id="L49">    return Messages.parseDictionaryEntry(content).getValue();</span>
+  }
+
+  public void addDictionaryEntry(String word, String definition) throws IOException {
+<span class="fc" id="L53">    Response response = postToMyURL(&quot;word&quot;, word, &quot;definition&quot;, definition);</span>
+<span class="fc" id="L54">    throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L55">  }</span>
+
+  @VisibleForTesting
+  Response postToMyURL(String... dictionaryEntries) throws IOException {
+<span class="fc" id="L59">    return post(this.url, dictionaryEntries);</span>
+  }
+
+  public void removeAllDictionaryEntries() throws IOException {
+<span class="fc" id="L63">    Response response = delete(this.url);</span>
+<span class="fc" id="L64">    throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L65">  }</span>
+
+  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+<span class="fc" id="L68">    int code = response.getCode();</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">    if (code != HTTP_OK) {</span>
+<span class="nc" id="L70">      throw new AirlineRestException(code);</span>
     }
+<span class="fc" id="L72">    return response;</span>
+  }
 
-    /**
-     * Returns the value for the given key
-     */
-    public String getValue(String key) throws IOException {
-<span class="fc" id="L46">      Response response = get(this.url, &quot;key&quot;, key);</span>
-<span class="fc" id="L47">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="fc" id="L48">      String content = response.getContent();</span>
-<span class="fc" id="L49">      return Messages.parseKeyValuePair(content).getValue();</span>
-    }
-
-    public void addKeyValuePair(String key, String value) throws IOException {
-<span class="fc" id="L53">      Response response = postToMyURL(&quot;key&quot;, key, &quot;value&quot;, value);</span>
-<span class="fc" id="L54">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="fc" id="L55">    }</span>
-
-    @VisibleForTesting
-    Response postToMyURL(String... keysAndValues) throws IOException {
-<span class="fc" id="L59">      return post(this.url, keysAndValues);</span>
-    }
-
-    public void removeAllMappings() throws IOException {
-<span class="fc" id="L63">      Response response = delete(this.url);</span>
-<span class="fc" id="L64">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="fc" id="L65">    }</span>
-
-    private Response throwExceptionIfNotOkayHttpStatus(Response response) {
-<span class="fc" id="L68">      int code = response.getCode();</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">      if (code != HTTP_OK) {</span>
-<span class="nc" id="L70">        throw new AppointmentBookRestException(code);</span>
-      }
-<span class="fc" id="L72">      return response;</span>
-    }
-
-    private class AppointmentBookRestException extends RuntimeException {
-<span class="nc" id="L76">      public AppointmentBookRestException(int httpStatusCode) {</span>
-<span class="nc" id="L77">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
-<span class="nc" id="L78">      }</span>
-    }
+  private class AirlineRestException extends RuntimeException {
+<span class="nc" id="L76">    public AirlineRestException(int httpStatusCode) {</span>
+<span class="nc" id="L77">      super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
+<span class="nc" id="L78">    }</span>
+  }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
