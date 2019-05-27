@@ -29,34 +29,34 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 <span class="fc" id="L29">  }</span>
 
   /**
-   * Returns all keys and values from the server
+   * Returns all dictionary entries from the server
    */
-  public Map&lt;String, String&gt; getAllKeysAndValues() throws IOException {
+  public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
 <span class="fc" id="L35">    Response response = get(this.url);</span>
-<span class="fc" id="L36">    return Messages.parseKeyValueMap(response.getContent());</span>
+<span class="fc" id="L36">    return Messages.parseDictionary(response.getContent());</span>
   }
 
   /**
-   * Returns the value for the given key
+   * Returns the definition for the given word
    */
-  public String getValue(String key) throws IOException {
-<span class="fc" id="L43">    Response response = get(this.url, &quot;key&quot;, key);</span>
+  public String getDefinition(String word) throws IOException {
+<span class="fc" id="L43">    Response response = get(this.url, &quot;word&quot;, word);</span>
 <span class="fc" id="L44">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L45">    String content = response.getContent();</span>
-<span class="fc" id="L46">    return Messages.parseKeyValuePair(content).getValue();</span>
+<span class="fc" id="L46">    return Messages.parseDictionaryEntry(content).getValue();</span>
   }
 
-  public void addKeyValuePair(String key, String value) throws IOException {
-<span class="fc" id="L50">    Response response = postToMyURL(&quot;key&quot;, key, &quot;value&quot;, value);</span>
+  public void addDictionaryEntry(String word, String definition) throws IOException {
+<span class="fc" id="L50">    Response response = postToMyURL(&quot;word&quot;, word, &quot;definition&quot;, definition);</span>
 <span class="fc" id="L51">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L52">  }</span>
 
   @VisibleForTesting
-  Response postToMyURL(String... keysAndValues) throws IOException {
-<span class="fc" id="L56">    return post(this.url, keysAndValues);</span>
+  Response postToMyURL(String... dictionaryEntries) throws IOException {
+<span class="fc" id="L56">    return post(this.url, dictionaryEntries);</span>
   }
 
-  public void removeAllMappings() throws IOException {
+  public void removeAllDictionaryEntries() throws IOException {
 <span class="fc" id="L60">    Response response = delete(this.url);</span>
 <span class="fc" id="L61">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L62">  }</span>
@@ -75,4 +75,4 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 <span class="nc" id="L75">    }</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
