@@ -21,19 +21,19 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  @Singleton
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">POAGradePresenter</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="POAGradePresenter" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html#POAGradePresenter">POAGradePresenter</a> {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> EventBus bus;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">POAGradeView</a> view;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="POAGradeView" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html#POAGradeView">POAGradeView</a> view;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POASubmission.html">POASubmission</a> submission;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assignment;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <a name="POASubmission" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmission.html#POASubmission">POASubmission</a> submission;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a name="Student" href="../../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isLate;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>    <strong class="jxr_keyword">private</strong> Double score;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">CurrentGradeCalculator</a> currentGradeCalculator;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">private</strong> CurrentGradeCalculator currentGradeCalculator;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>    @Inject
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">POAGradePresenter</a>(EventBus bus, <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html">POAGradeView</a> view) {
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a name="POAGradePresenter" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html#POAGradePresenter">POAGradePresenter</a>(EventBus bus, <a name="POAGradeView" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html#POAGradeView">POAGradeView</a> view) {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">this</strong>.bus = bus;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">this</strong>.view = view;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
@@ -49,16 +49,16 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>        <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"No score specified"</span>);
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      }
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/RecordGradeEvent.html">RecordGradeEvent</a> recordGrade = <strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/RecordGradeEvent.html">RecordGradeEvent</a>(<strong class="jxr_keyword">this</strong>.score, <strong class="jxr_keyword">this</strong>.student, <strong class="jxr_keyword">this</strong>.assignment, <strong class="jxr_keyword">this</strong>.isLate);
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <a name="RecordGradeEvent" href="../../../../../edu/pdx/cs410J/grader/po<a name="RecordGradeEvent" href="../../../../../edu/pdx/cs410J/grader/poa/RecordGradeEvent.html#RecordGradeEvent">RecordGradeEvent</a>nt.html#RecordGradeEvent">RecordGradeEvent</a> recordGrade = <strong class="jxr_keyword">new</strong> <a name="RecordGradeEvent" href="../../../../../edu/pdx/cs410J/grader/poa/RecordGradeEvent.html#RecordGradeEvent">RecordGradeEvent</a>(<strong class="jxr_keyword">this</strong>.score, <strong class="jxr_keyword">this</strong>.student, <strong class="jxr_keyword">this</strong>.assignment, <strong class="jxr_keyword">this</strong>.isLate);
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">this</strong>.bus.post(recordGrade);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">this</strong>.view.setScoreHasBeenRecorded(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/SelectNextPOAEvent.html">SelectNextPOAEvent</a> displayNextPOA = <strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/SelectNextPOAEvent.html">SelectNextPOAEvent</a>();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a name="SelectNextPOAEvent" href="../../../../../edu/pdx/cs410J/grader/poa/S<a name="SelectNextPOAEvent" href="../../../../../edu/pdx/cs410J/grader/poa/SelectNextPOAEvent.html#SelectNextPOAEvent">SelectNextPOAEvent</a>html#SelectNextPOAEvent">SelectNextPOAEvent</a> displayNextPOA = <strong class="jxr_keyword">new</strong> <a name="SelectNextPOAEvent" href="../../../../../edu/pdx/cs410J/grader/poa/SelectNextPOAEvent.html#SelectNextPOAEvent">SelectNextPOAEvent</a>();
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">this</strong>.bus.post(displayNextPOA);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    }
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>    @Subscribe
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfSubmissionIsLate(<a href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionSelected.html">POASubmissionSelected</a> event) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfSubmissionIsLate(<a name="POASubmissionSelected" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionSelected.html#POASubmissionSelected">POASubmissionSelected</a> event) {
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">this</strong>.submission = event.getSubmission();
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      clearScore();
@@ -73,14 +73,14 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>    }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>    @Subscribe
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfStudentsPOAIsLate(<a href="../../../../../edu/pdx/cs410J/grader/poa/StudentSelectedEvent.html">StudentSelectedEvent</a> event) {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfStudentsPOAIsLate(<a name="StudentSelectedEvent" href="../../../../../edu/pdx/cs410J/grader/poa/StudentSelectedEvent.html#StudentSelectedEvent">StudentSelectedEvent</a> event) {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">this</strong>.student = event.getSelectedStudent();
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      updateViewBasedOnCurrentState();
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>    }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>    @Subscribe
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfAssignmentIsLate(<a href="../../../../../edu/pdx/cs410J/grader/poa/AssignmentSelectedEvent.html">AssignmentSelectedEvent</a> event) {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> determineIfAssignmentIsLate(<a name="AssignmentSelectedEvent" href="../../../../../edu/pdx/cs410J/grader/poa/AssignmentSelectedEvent.html#AssignmentSelectedEvent">AssignmentSelectedEvent</a> event) {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">this</strong>.assignment = event.getAssignment();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      updateViewBasedOnCurrentState();
@@ -133,8 +133,8 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>   }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>   @Subscribe
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createCurrentGradeCalculator(<a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookLoaded.html">GradeBookLoaded</a> event) {
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">this</strong>.currentGradeCalculator = <strong class="jxr_keyword">new</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">CurrentGradeCalculator</a>();
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createCurrentGradeCalculator(<a name="GradeBookLoaded" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookLoaded.html#GradeBookLoaded">GradeBookLoaded</a> event) {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">this</strong>.currentGradeCalculator = <strong class="jxr_keyword">new</strong> CurrentGradeCalculator();
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>   }
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> determineIfPOAIsLate() {
@@ -214,17 +214,17 @@
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>     <strong class="jxr_keyword">return</strong> score;
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>   }
 <a class="jxr_linenumber" name="L208" href="#L208">208</a> 
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">CurrentGradeCalculator</a> {
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> CurrentGradeCalculator {
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> 
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenter.html">CurrentGradeCalculator</a>() {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">public</strong> CurrentGradeCalculator() {
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Double&gt; getCurrentGradeFor(<a href="../../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assignment, <a href="../../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Double&gt; getCurrentGradeFor(<a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment, <a name="Student" href="../../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>       <strong class="jxr_keyword">if</strong> (student == <strong class="jxr_keyword">null</strong> || assignment == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">return</strong> Optional.empty();
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>       }
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> 
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>       <a href="../../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a> grade = student.getGrade(assignment);
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>       <a name="Grade" href="../../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> grade = student.getGrade(assignment);
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>       <strong class="jxr_keyword">if</strong> (grade != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         <strong class="jxr_keyword">return</strong> Optional.of(grade.getScore());
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>       } <strong class="jxr_keyword">else</strong> {
@@ -235,6 +235,6 @@
 <a class="jxr_linenumber" name="L227" href="#L227">227</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

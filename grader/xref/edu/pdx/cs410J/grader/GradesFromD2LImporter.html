@@ -16,11 +16,11 @@
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.util.Optional;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2LImporter.html">GradesFromD2LImporter</a> {
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradesFromD2LImporter" href="../../../../edu/pdx/cs410J/grader/GradesFromD2LImporter.html#GradesFromD2LImporter">GradesFromD2LImporter</a> {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger logger = LoggerFactory.getLogger(<span class="jxr_string">"edu.pdx.cs410J.grader"</span>);
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> importGradesFromD2L(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">GradesFromD2L</a> d2lGrades, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradebook) {
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> importGradesFromD2L(<a name="GradesFromD2L" href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html#GradesFromD2L">GradesFromD2L</a> d2lGrades, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradebook) {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      List&lt;GradesFromD2L.D2LStudent&gt; students = d2lGrades.getStudents();
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      logger.debug(<span class="jxr_string">"Importing grades for "</span> + students.size() + <span class="jxr_string">" students"</span>);
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
@@ -33,11 +33,11 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>        } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">for</strong> (String quizName : d2LStudent.getQuizNames()) {
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>            Optional&lt;Assignment&gt; optional = d2lGrades.findAssignmentInGradebookForD2lQuiz(quizName, gradebook);
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>            <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> quiz = optional.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"No quiz named \&quot;"</span> + quizName + <span class="jxr_string">"\&quot; in gradebook"</span>));
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>            <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> quiz = optional.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"No quiz named \&quot;"</span> + quizName + <span class="jxr_string">"\&quot; in gradebook"</span>));
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>            Double score = d2LStudent.getScore(quizName);
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>            logger.debug(<span class="jxr_string">"Recording grade of "</span> + score + <span class="jxr_string">" for "</span> + student.get() + <span class="jxr_string">" for "</span> + quiz.getName());
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>            student.get().setGrade(quiz.getName(), <strong class="jxr_keyword">new</strong> Grade(quiz, score));
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>            student.get().setGrade(quiz.getName(), <strong class="jxr_keyword">new</strong> <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>(quiz, score));
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          }
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>        }
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      }
@@ -67,18 +67,18 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>        usage(<span class="jxr_string">"Missing grade book file name"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">GradesFromD2L</a> d2lGrades = parseD2lCsvFile(d2lCsvFileName);
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradebook = parseGradeBook(gradeBookFileName);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <a name="GradesFromD2L" href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html#GradesFromD2L">GradesFromD2L</a> d2lGrades = parseD2lCsvFile(d2lCsvFileName);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradebook = parseGradeBook(gradeBookFileName);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      importGradesFromD2L(d2lGrades, gradebook);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      saveGradeBookIfModified(gradebook, gradeBookFileName);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>    }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> saveGradeBookIfModified(<a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradeBook, String gradeBookFileName) {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> saveGradeBookIfModified(<a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradeBook, String gradeBookFileName) {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">if</strong> (gradeBook.isDirty()) {
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>        File file = <strong class="jxr_keyword">new</strong> File(gradeBookFileName);
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>        <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          dumper.dump(gradeBook);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>        } <strong class="jxr_keyword">catch</strong> (IOException e) {
@@ -87,23 +87,23 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>    }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> parseGradeBook(String gradeBookFileName) <strong class="jxr_keyword">throws</strong> IOException, ParserException {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> parseGradeBook(String gradeBookFileName) <strong class="jxr_keyword">throws</strong> IOException, ParserException {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      File gradeBookFile = <strong class="jxr_keyword">new</strong> File(gradeBookFileName);
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">if</strong> (!gradeBookFile.exists()) {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>        usage(<span class="jxr_string">"Grade Book file \&quot;"</span> + gradeBookFile + <span class="jxr_string">"\&quot; does not exist"</span>);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      }
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(gradeBookFile);
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFile);
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">return</strong> parser.parse();
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    }
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">GradesFromD2L</a> parseD2lCsvFile(String d2lCsvFileName) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="GradesFromD2L" href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html#GradesFromD2L">GradesFromD2L</a> parseD2lCsvFile(String d2lCsvFileName) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      File d2lCsvFile = <strong class="jxr_keyword">new</strong> File(d2lCsvFileName);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">if</strong> (!d2lCsvFile.exists()) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        usage(<span class="jxr_string">"D2L CSV file \&quot;"</span> + d2lCsvFile + <span class="jxr_string">"\&quot; does not exist"</span>);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      }
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <a href="../../../../edu/pdx/cs410J/grader/D2LGradesCSVParser.html">D2LGradesCSVParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/D2LGradesCSVParser.html">D2LGradesCSVParser</a>(<strong class="jxr_keyword">new</strong> FileReader(d2lCsvFile));
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <a name="D2LGradesCSVParser" href="../../../../edu/pdx/cs410J/grader/<a name="D2LGradesCSVParser" href="../../../../edu/pdx/cs410J/grader/D2LGradesCSVParser.html#D2LGradesCSVParser">D2LGradesCSVParser</a>.html#D2LGradesCSVParser">D2LGradesCSVParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="D2LGradesCSVParser" href="../../../../edu/pdx/cs410J/grader/D2LGradesCSVParser.html#D2LGradesCSVParser">D2LGradesCSVParser</a>(<strong class="jxr_keyword">new</strong> FileReader(d2lCsvFile));
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">return</strong> parser.getGrades();
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>   }
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> 
@@ -124,6 +124,6 @@
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

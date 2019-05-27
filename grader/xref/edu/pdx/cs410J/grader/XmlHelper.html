@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * This class contains fields and methods that are useful when dealing</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * with XML data.</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlHelper.html">XmlHelper</a> <strong class="jxr_keyword">implements</strong> EntityResolver, ErrorHandler {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">class</strong> <a name="XmlHelper" href="../../../../edu/pdx/cs410J/grader/XmlHelper.html#XmlHelper">XmlHelper</a> <strong class="jxr_keyword">implements</strong> EntityResolver, ErrorHandler {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <em class="jxr_javadoccomment">/** The System ID for the Grade Book DTD */</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String systemID = 
@@ -142,18 +142,19 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     TransformerFactory xFactory = TransformerFactory.newInstance();
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     Transformer xform = xFactory.newTransformer();
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     xform.setOutputProperty(OutputKeys.INDENT, <span class="jxr_string">"yes"</span>);
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <em class="jxr_comment">// Suppress warnings about "Declared encoding not matching</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <em class="jxr_comment">// actual one</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     xform.setOutputProperty(OutputKeys.ENCODING, <span class="jxr_string">"UTF-8"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>     xform.transform(src, res);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>   }
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> }
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>     xform.setOutputProperty(<span class="jxr_string">"{http://xml.apache.org/xslt}indent-amount"</span>, <span class="jxr_string">"0"</span>);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>     xform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemID);
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     xform.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicID);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a> 
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <em class="jxr_comment">// Suppress warnings about "Declared encoding not matching</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <em class="jxr_comment">// actual one</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     xform.setOutputProperty(OutputKeys.ENCODING, <span class="jxr_string">"UTF-8"</span>);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a> 
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>     xform.transform(src, res);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>   }
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

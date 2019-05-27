@@ -121,299 +121,315 @@
 <span class="sourceLineNo">112</span><a id="line.112"></a>
 <span class="sourceLineNo">113</span><a id="line.113">    if (isEmpty(id)) {</a>
 <span class="sourceLineNo">114</span><a id="line.114">      printErrorMessageAndExit("** You must enter a valid UNIX login id");</a>
-<span class="sourceLineNo">115</span><a id="line.115">    }</a>
-<span class="sourceLineNo">116</span><a id="line.116"></a>
-<span class="sourceLineNo">117</span><a id="line.117">    Student student = new Student(id);</a>
-<span class="sourceLineNo">118</span><a id="line.118">    setValueIfNotEmpty(firstName, student::setFirstName);</a>
-<span class="sourceLineNo">119</span><a id="line.119">    setValueIfNotEmpty(lastName, student::setLastName);</a>
-<span class="sourceLineNo">120</span><a id="line.120">    setValueIfNotEmpty(nickName, student::setNickName);</a>
-<span class="sourceLineNo">121</span><a id="line.121"></a>
-<span class="sourceLineNo">122</span><a id="line.122">    askQuestionAndSetValue("What is your email address (doesn't have to be PSU)?", student::setEmail);</a>
-<span class="sourceLineNo">123</span><a id="line.123">    askQuestionAndSetValue("What is your student id (XXXXXXXXX)?", student::setSsn);</a>
-<span class="sourceLineNo">124</span><a id="line.124">    askQuestionAndSetValue("What is your major?", student::setMajor);</a>
-<span class="sourceLineNo">125</span><a id="line.125"></a>
-<span class="sourceLineNo">126</span><a id="line.126">    askEnrolledSectionQuestion(student);</a>
-<span class="sourceLineNo">127</span><a id="line.127"></a>
-<span class="sourceLineNo">128</span><a id="line.128">    return student;</a>
-<span class="sourceLineNo">129</span><a id="line.129">  }</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">    } else if (isEmailAddress(id)) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">      printErrorMessageAndExit("** Your student id cannot be an email address");</a>
+<span class="sourceLineNo">118</span><a id="line.118">    }</a>
+<span class="sourceLineNo">119</span><a id="line.119"></a>
+<span class="sourceLineNo">120</span><a id="line.120">    Student student = new Student(id);</a>
+<span class="sourceLineNo">121</span><a id="line.121">    setValueIfNotEmpty(firstName, student::setFirstName);</a>
+<span class="sourceLineNo">122</span><a id="line.122">    setValueIfNotEmpty(lastName, student::setLastName);</a>
+<span class="sourceLineNo">123</span><a id="line.123">    setValueIfNotEmpty(nickName, student::setNickName);</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">    askQuestionAndSetValue("What is your email address (doesn't have to be PSU)?", student::setEmail);</a>
+<span class="sourceLineNo">126</span><a id="line.126">    askQuestionAndSetValue("What is your student id (XXXXXXXXX)?", student::setSsn);</a>
+<span class="sourceLineNo">127</span><a id="line.127">    askQuestionAndSetValue("What is your major?", student::setMajor);</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">    askEnrolledSectionQuestion(student);</a>
 <span class="sourceLineNo">130</span><a id="line.130"></a>
-<span class="sourceLineNo">131</span><a id="line.131">  private static void askEnrolledSectionQuestion(Student student) {</a>
-<span class="sourceLineNo">132</span><a id="line.132">    String answer = ask("MANDATORY: Are you enrolled in the undergraduate or graduate section of this course? [u/g]");</a>
-<span class="sourceLineNo">133</span><a id="line.133">    if (isEmpty(answer)) {</a>
-<span class="sourceLineNo">134</span><a id="line.134">      printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");</a>
-<span class="sourceLineNo">135</span><a id="line.135">    }</a>
-<span class="sourceLineNo">136</span><a id="line.136"></a>
-<span class="sourceLineNo">137</span><a id="line.137">    if (answer.toLowerCase().startsWith("u")) {</a>
-<span class="sourceLineNo">138</span><a id="line.138">      student.setEnrolledSection(Student.Section.UNDERGRADUATE);</a>
-<span class="sourceLineNo">139</span><a id="line.139"></a>
-<span class="sourceLineNo">140</span><a id="line.140">    } else if (answer.toLowerCase().startsWith("g")) {</a>
-<span class="sourceLineNo">141</span><a id="line.141">      student.setEnrolledSection(Student.Section.GRADUATE);</a>
-<span class="sourceLineNo">142</span><a id="line.142"></a>
-<span class="sourceLineNo">143</span><a id="line.143">    } else {</a>
-<span class="sourceLineNo">144</span><a id="line.144">      printErrorMessageAndExit("Unknown section \"" + answer + "\".  Please enter a \"u\" or \"g\"");</a>
-<span class="sourceLineNo">145</span><a id="line.145">    }</a>
-<span class="sourceLineNo">146</span><a id="line.146"></a>
-<span class="sourceLineNo">147</span><a id="line.147">  }</a>
-<span class="sourceLineNo">148</span><a id="line.148"></a>
-<span class="sourceLineNo">149</span><a id="line.149">  private static void askQuestionAndSetValue(String question, Consumer&lt;String&gt; setter) {</a>
-<span class="sourceLineNo">150</span><a id="line.150">    String answer = ask(question);</a>
-<span class="sourceLineNo">151</span><a id="line.151">    setValueIfNotEmpty(answer, setter);</a>
-<span class="sourceLineNo">152</span><a id="line.152">  }</a>
-<span class="sourceLineNo">153</span><a id="line.153"></a>
-<span class="sourceLineNo">154</span><a id="line.154">  static void setValueIfNotEmpty(String string, Consumer&lt;String&gt; setter) {</a>
-<span class="sourceLineNo">155</span><a id="line.155">    if (isNotEmpty(string)) {</a>
-<span class="sourceLineNo">156</span><a id="line.156">      setter.accept(string);</a>
-<span class="sourceLineNo">157</span><a id="line.157">    }</a>
-<span class="sourceLineNo">158</span><a id="line.158">  }</a>
-<span class="sourceLineNo">159</span><a id="line.159"></a>
-<span class="sourceLineNo">160</span><a id="line.160">  private static void emailSurveyResults(Student student, String learn, String comments) {</a>
-<span class="sourceLineNo">161</span><a id="line.161">    String summary = verifyInformation(student);</a>
-<span class="sourceLineNo">162</span><a id="line.162"></a>
-<span class="sourceLineNo">163</span><a id="line.163">    // Email the results of the survey to the TA and CC the student</a>
-<span class="sourceLineNo">164</span><a id="line.164"></a>
-<span class="sourceLineNo">165</span><a id="line.165">    MimeMessage message = createEmailMessage(student);</a>
-<span class="sourceLineNo">166</span><a id="line.166">    MimeBodyPart textPart = createEmailText(learn, comments, summary);</a>
-<span class="sourceLineNo">167</span><a id="line.167">    MimeBodyPart xmlFilePart = createXmlAttachment(student);</a>
-<span class="sourceLineNo">168</span><a id="line.168">    addAttachmentsAndSendEmail(message, textPart, xmlFilePart);</a>
-<span class="sourceLineNo">169</span><a id="line.169">  }</a>
-<span class="sourceLineNo">170</span><a id="line.170"></a>
-<span class="sourceLineNo">171</span><a id="line.171">  private static void addAttachmentsAndSendEmail(MimeMessage message, MimeBodyPart textPart, MimeBodyPart filePart) {</a>
-<span class="sourceLineNo">172</span><a id="line.172">    // Finally, add the attachments to the message and send it</a>
-<span class="sourceLineNo">173</span><a id="line.173">    try {</a>
-<span class="sourceLineNo">174</span><a id="line.174">      Multipart mp = new MimeMultipart();</a>
-<span class="sourceLineNo">175</span><a id="line.175">      mp.addBodyPart(textPart);</a>
-<span class="sourceLineNo">176</span><a id="line.176">      mp.addBodyPart(filePart);</a>
+<span class="sourceLineNo">131</span><a id="line.131">    return student;</a>
+<span class="sourceLineNo">132</span><a id="line.132">  }</a>
+<span class="sourceLineNo">133</span><a id="line.133"></a>
+<span class="sourceLineNo">134</span><a id="line.134">  @VisibleForTesting</a>
+<span class="sourceLineNo">135</span><a id="line.135">  static boolean isEmailAddress(String id) {</a>
+<span class="sourceLineNo">136</span><a id="line.136">    try {</a>
+<span class="sourceLineNo">137</span><a id="line.137">      boolean strict = true;</a>
+<span class="sourceLineNo">138</span><a id="line.138">      new InternetAddress(id, strict);</a>
+<span class="sourceLineNo">139</span><a id="line.139">      return true;</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">    } catch (AddressException e) {</a>
+<span class="sourceLineNo">142</span><a id="line.142">      return false;</a>
+<span class="sourceLineNo">143</span><a id="line.143">    }</a>
+<span class="sourceLineNo">144</span><a id="line.144">  }</a>
+<span class="sourceLineNo">145</span><a id="line.145"></a>
+<span class="sourceLineNo">146</span><a id="line.146">  private static void askEnrolledSectionQuestion(Student student) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">    String answer = ask("MANDATORY: Are you enrolled in the undergraduate or graduate section of this course? [u/g]");</a>
+<span class="sourceLineNo">148</span><a id="line.148">    if (isEmpty(answer)) {</a>
+<span class="sourceLineNo">149</span><a id="line.149">      printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");</a>
+<span class="sourceLineNo">150</span><a id="line.150">    }</a>
+<span class="sourceLineNo">151</span><a id="line.151"></a>
+<span class="sourceLineNo">152</span><a id="line.152">    if (answer.toLowerCase().startsWith("u")) {</a>
+<span class="sourceLineNo">153</span><a id="line.153">      student.setEnrolledSection(Student.Section.UNDERGRADUATE);</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">    } else if (answer.toLowerCase().startsWith("g")) {</a>
+<span class="sourceLineNo">156</span><a id="line.156">      student.setEnrolledSection(Student.Section.GRADUATE);</a>
+<span class="sourceLineNo">157</span><a id="line.157"></a>
+<span class="sourceLineNo">158</span><a id="line.158">    } else {</a>
+<span class="sourceLineNo">159</span><a id="line.159">      printErrorMessageAndExit("Unknown section \"" + answer + "\".  Please enter a \"u\" or \"g\"");</a>
+<span class="sourceLineNo">160</span><a id="line.160">    }</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">  }</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">  private static void askQuestionAndSetValue(String question, Consumer&lt;String&gt; setter) {</a>
+<span class="sourceLineNo">165</span><a id="line.165">    String answer = ask(question);</a>
+<span class="sourceLineNo">166</span><a id="line.166">    setValueIfNotEmpty(answer, setter);</a>
+<span class="sourceLineNo">167</span><a id="line.167">  }</a>
+<span class="sourceLineNo">168</span><a id="line.168"></a>
+<span class="sourceLineNo">169</span><a id="line.169">  static void setValueIfNotEmpty(String string, Consumer&lt;String&gt; setter) {</a>
+<span class="sourceLineNo">170</span><a id="line.170">    if (isNotEmpty(string)) {</a>
+<span class="sourceLineNo">171</span><a id="line.171">      setter.accept(string);</a>
+<span class="sourceLineNo">172</span><a id="line.172">    }</a>
+<span class="sourceLineNo">173</span><a id="line.173">  }</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">  private static void emailSurveyResults(Student student, String learn, String comments) {</a>
+<span class="sourceLineNo">176</span><a id="line.176">    String summary = verifyInformation(student);</a>
 <span class="sourceLineNo">177</span><a id="line.177"></a>
-<span class="sourceLineNo">178</span><a id="line.178">      message.setContent(mp);</a>
-<span class="sourceLineNo">179</span><a id="line.179"></a>
-<span class="sourceLineNo">180</span><a id="line.180">      Transport.send(message);</a>
-<span class="sourceLineNo">181</span><a id="line.181"></a>
-<span class="sourceLineNo">182</span><a id="line.182">      logSentEmail(message);</a>
-<span class="sourceLineNo">183</span><a id="line.183"></a>
-<span class="sourceLineNo">184</span><a id="line.184">    } catch (MessagingException ex) {</a>
-<span class="sourceLineNo">185</span><a id="line.185">      printErrorMessageAndExit("** Exception while adding parts and sending", ex);</a>
-<span class="sourceLineNo">186</span><a id="line.186">    }</a>
-<span class="sourceLineNo">187</span><a id="line.187">  }</a>
-<span class="sourceLineNo">188</span><a id="line.188"></a>
-<span class="sourceLineNo">189</span><a id="line.189">  private static void logSentEmail(MimeMessage message) throws MessagingException {</a>
-<span class="sourceLineNo">190</span><a id="line.190">    StringBuilder sb = new StringBuilder();</a>
-<span class="sourceLineNo">191</span><a id="line.191">    sb.append("\nAn email with with subject \"");</a>
-<span class="sourceLineNo">192</span><a id="line.192">    sb.append(message.getSubject());</a>
-<span class="sourceLineNo">193</span><a id="line.193">    sb.append("\" was sent to ");</a>
-<span class="sourceLineNo">194</span><a id="line.194"></a>
-<span class="sourceLineNo">195</span><a id="line.195">    Address[] recipients = message.getAllRecipients();</a>
-<span class="sourceLineNo">196</span><a id="line.196">    for (int i = 0; i &lt; recipients.length; i++) {</a>
-<span class="sourceLineNo">197</span><a id="line.197">      Address recipient = recipients[i];</a>
-<span class="sourceLineNo">198</span><a id="line.198">      sb.append(recipient);</a>
-<span class="sourceLineNo">199</span><a id="line.199">      if (i &lt; recipients.length - 2) {</a>
-<span class="sourceLineNo">200</span><a id="line.200">        sb.append(", ");</a>
-<span class="sourceLineNo">201</span><a id="line.201"></a>
-<span class="sourceLineNo">202</span><a id="line.202">      } else if (i &lt; recipients.length - 1) {</a>
-<span class="sourceLineNo">203</span><a id="line.203">        sb.append(" and ");</a>
-<span class="sourceLineNo">204</span><a id="line.204">      }</a>
-<span class="sourceLineNo">205</span><a id="line.205">    }</a>
-<span class="sourceLineNo">206</span><a id="line.206"></a>
-<span class="sourceLineNo">207</span><a id="line.207">    out.println(breakUpInto80CharacterLines(sb.toString()));</a>
-<span class="sourceLineNo">208</span><a id="line.208">  }</a>
-<span class="sourceLineNo">209</span><a id="line.209"></a>
-<span class="sourceLineNo">210</span><a id="line.210">  private static MimeBodyPart createXmlAttachment(Student student) {</a>
-<span class="sourceLineNo">211</span><a id="line.211">    byte[] xmlBytes = getXmlBytes(student);</a>
-<span class="sourceLineNo">212</span><a id="line.212"></a>
-<span class="sourceLineNo">213</span><a id="line.213">    if (saveStudentXmlFile) {</a>
-<span class="sourceLineNo">214</span><a id="line.214">      writeStudentXmlToFile(xmlBytes, student);</a>
-<span class="sourceLineNo">215</span><a id="line.215">    }</a>
-<span class="sourceLineNo">216</span><a id="line.216"></a>
-<span class="sourceLineNo">217</span><a id="line.217">    DataSource ds = new ByteArrayDataSource(xmlBytes, "text/xml");</a>
-<span class="sourceLineNo">218</span><a id="line.218">    DataHandler dh = new DataHandler(ds);</a>
-<span class="sourceLineNo">219</span><a id="line.219">    MimeBodyPart filePart = new MimeBodyPart();</a>
-<span class="sourceLineNo">220</span><a id="line.220">    try {</a>
-<span class="sourceLineNo">221</span><a id="line.221">      String xmlFileTitle = student.getId() + ".xml";</a>
+<span class="sourceLineNo">178</span><a id="line.178">    // Email the results of the survey to the TA and CC the student</a>
+<span class="sourceLineNo">179</span><a id="line.179">    out.println("Emailing your information to the Grader");</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">    MimeMessage message = createEmailMessage(student);</a>
+<span class="sourceLineNo">182</span><a id="line.182">    MimeBodyPart textPart = createEmailText(learn, comments, summary);</a>
+<span class="sourceLineNo">183</span><a id="line.183">    MimeBodyPart xmlFilePart = createXmlAttachment(student);</a>
+<span class="sourceLineNo">184</span><a id="line.184">    addAttachmentsAndSendEmail(message, textPart, xmlFilePart);</a>
+<span class="sourceLineNo">185</span><a id="line.185">  }</a>
+<span class="sourceLineNo">186</span><a id="line.186"></a>
+<span class="sourceLineNo">187</span><a id="line.187">  private static void addAttachmentsAndSendEmail(MimeMessage message, MimeBodyPart textPart, MimeBodyPart filePart) {</a>
+<span class="sourceLineNo">188</span><a id="line.188">    // Finally, add the attachments to the message and send it</a>
+<span class="sourceLineNo">189</span><a id="line.189">    try {</a>
+<span class="sourceLineNo">190</span><a id="line.190">      Multipart mp = new MimeMultipart();</a>
+<span class="sourceLineNo">191</span><a id="line.191">      mp.addBodyPart(textPart);</a>
+<span class="sourceLineNo">192</span><a id="line.192">      mp.addBodyPart(filePart);</a>
+<span class="sourceLineNo">193</span><a id="line.193"></a>
+<span class="sourceLineNo">194</span><a id="line.194">      message.setContent(mp);</a>
+<span class="sourceLineNo">195</span><a id="line.195"></a>
+<span class="sourceLineNo">196</span><a id="line.196">      Transport.send(message);</a>
+<span class="sourceLineNo">197</span><a id="line.197"></a>
+<span class="sourceLineNo">198</span><a id="line.198">      logSentEmail(message);</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">    } catch (MessagingException ex) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">      printErrorMessageAndExit("** Exception while adding parts and sending", ex);</a>
+<span class="sourceLineNo">202</span><a id="line.202">    }</a>
+<span class="sourceLineNo">203</span><a id="line.203">  }</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">  private static void logSentEmail(MimeMessage message) throws MessagingException {</a>
+<span class="sourceLineNo">206</span><a id="line.206">    StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">207</span><a id="line.207">    sb.append("\nAn email with with subject \"");</a>
+<span class="sourceLineNo">208</span><a id="line.208">    sb.append(message.getSubject());</a>
+<span class="sourceLineNo">209</span><a id="line.209">    sb.append("\" was sent to ");</a>
+<span class="sourceLineNo">210</span><a id="line.210"></a>
+<span class="sourceLineNo">211</span><a id="line.211">    Address[] recipients = message.getAllRecipients();</a>
+<span class="sourceLineNo">212</span><a id="line.212">    for (int i = 0; i &lt; recipients.length; i++) {</a>
+<span class="sourceLineNo">213</span><a id="line.213">      Address recipient = recipients[i];</a>
+<span class="sourceLineNo">214</span><a id="line.214">      sb.append(recipient);</a>
+<span class="sourceLineNo">215</span><a id="line.215">      if (i &lt; recipients.length - 2) {</a>
+<span class="sourceLineNo">216</span><a id="line.216">        sb.append(", ");</a>
+<span class="sourceLineNo">217</span><a id="line.217"></a>
+<span class="sourceLineNo">218</span><a id="line.218">      } else if (i &lt; recipients.length - 1) {</a>
+<span class="sourceLineNo">219</span><a id="line.219">        sb.append(" and ");</a>
+<span class="sourceLineNo">220</span><a id="line.220">      }</a>
+<span class="sourceLineNo">221</span><a id="line.221">    }</a>
 <span class="sourceLineNo">222</span><a id="line.222"></a>
-<span class="sourceLineNo">223</span><a id="line.223">      filePart.setDataHandler(dh);</a>
-<span class="sourceLineNo">224</span><a id="line.224">      filePart.setFileName(xmlFileTitle);</a>
-<span class="sourceLineNo">225</span><a id="line.225">      filePart.setDescription("XML file for " + student.getFullName());</a>
-<span class="sourceLineNo">226</span><a id="line.226"></a>
-<span class="sourceLineNo">227</span><a id="line.227">    } catch (MessagingException ex) {</a>
-<span class="sourceLineNo">228</span><a id="line.228">      printErrorMessageAndExit("** Exception with file part", ex);</a>
-<span class="sourceLineNo">229</span><a id="line.229">    }</a>
-<span class="sourceLineNo">230</span><a id="line.230">    return filePart;</a>
-<span class="sourceLineNo">231</span><a id="line.231">  }</a>
+<span class="sourceLineNo">223</span><a id="line.223">    out.println(breakUpInto80CharacterLines(sb.toString()));</a>
+<span class="sourceLineNo">224</span><a id="line.224">  }</a>
+<span class="sourceLineNo">225</span><a id="line.225"></a>
+<span class="sourceLineNo">226</span><a id="line.226">  private static MimeBodyPart createXmlAttachment(Student student) {</a>
+<span class="sourceLineNo">227</span><a id="line.227">    byte[] xmlBytes = getXmlBytes(student);</a>
+<span class="sourceLineNo">228</span><a id="line.228"></a>
+<span class="sourceLineNo">229</span><a id="line.229">    if (saveStudentXmlFile) {</a>
+<span class="sourceLineNo">230</span><a id="line.230">      writeStudentXmlToFile(xmlBytes, student);</a>
+<span class="sourceLineNo">231</span><a id="line.231">    }</a>
 <span class="sourceLineNo">232</span><a id="line.232"></a>
-<span class="sourceLineNo">233</span><a id="line.233">  private static void writeStudentXmlToFile(byte[] xmlBytes, Student student) {</a>
-<span class="sourceLineNo">234</span><a id="line.234">    File directory = new File(System.getProperty("user.dir"));</a>
-<span class="sourceLineNo">235</span><a id="line.235">    File file = new File(directory, student.getId() + ".xml");</a>
-<span class="sourceLineNo">236</span><a id="line.236">    try (FileOutputStream fos = new FileOutputStream(file)) {</a>
-<span class="sourceLineNo">237</span><a id="line.237">      fos.write(xmlBytes);</a>
-<span class="sourceLineNo">238</span><a id="line.238">      fos.flush();</a>
-<span class="sourceLineNo">239</span><a id="line.239"></a>
-<span class="sourceLineNo">240</span><a id="line.240">    } catch (IOException e) {</a>
-<span class="sourceLineNo">241</span><a id="line.241">      printErrorMessageAndExit("Could not write student XML file: " + file, e);</a>
-<span class="sourceLineNo">242</span><a id="line.242">    }</a>
-<span class="sourceLineNo">243</span><a id="line.243"></a>
-<span class="sourceLineNo">244</span><a id="line.244">    out.println("\nSaved student XML file to " + file + "\n");</a>
-<span class="sourceLineNo">245</span><a id="line.245">  }</a>
-<span class="sourceLineNo">246</span><a id="line.246"></a>
-<span class="sourceLineNo">247</span><a id="line.247">  private static MimeBodyPart createEmailText(String learn, String comments, String summary) {</a>
-<span class="sourceLineNo">248</span><a id="line.248">    // Create the text portion of the message</a>
-<span class="sourceLineNo">249</span><a id="line.249">    StringBuilder text = new StringBuilder();</a>
-<span class="sourceLineNo">250</span><a id="line.250">    text.append("Results of CS410J Survey:\n\n");</a>
-<span class="sourceLineNo">251</span><a id="line.251">    text.append(summary);</a>
-<span class="sourceLineNo">252</span><a id="line.252">    text.append("\n\nWhat do you hope to learn in CS410J?\n\n");</a>
-<span class="sourceLineNo">253</span><a id="line.253">    text.append(learn);</a>
-<span class="sourceLineNo">254</span><a id="line.254">    text.append("\n\nIs there anything else you'd like to tell me?\n\n");</a>
-<span class="sourceLineNo">255</span><a id="line.255">    text.append(comments);</a>
-<span class="sourceLineNo">256</span><a id="line.256">    text.append("\n\nThanks for filling out this survey!\n\nDave");</a>
-<span class="sourceLineNo">257</span><a id="line.257"></a>
-<span class="sourceLineNo">258</span><a id="line.258">    MimeBodyPart textPart = new MimeBodyPart();</a>
-<span class="sourceLineNo">259</span><a id="line.259">    try {</a>
-<span class="sourceLineNo">260</span><a id="line.260">      textPart.setContent(text.toString(), "text/plain");</a>
-<span class="sourceLineNo">261</span><a id="line.261"></a>
-<span class="sourceLineNo">262</span><a id="line.262">      // Try not to display text as separate attachment</a>
-<span class="sourceLineNo">263</span><a id="line.263">      textPart.setDisposition("inline");</a>
-<span class="sourceLineNo">264</span><a id="line.264"></a>
-<span class="sourceLineNo">265</span><a id="line.265">    } catch (MessagingException ex) {</a>
-<span class="sourceLineNo">266</span><a id="line.266">      printErrorMessageAndExit("** Exception with text part", ex);</a>
-<span class="sourceLineNo">267</span><a id="line.267">    }</a>
-<span class="sourceLineNo">268</span><a id="line.268">    return textPart;</a>
-<span class="sourceLineNo">269</span><a id="line.269">  }</a>
-<span class="sourceLineNo">270</span><a id="line.270"></a>
-<span class="sourceLineNo">271</span><a id="line.271">  private static MimeMessage createEmailMessage(Student student) {</a>
-<span class="sourceLineNo">272</span><a id="line.272">    MimeMessage message = null;</a>
-<span class="sourceLineNo">273</span><a id="line.273">    try {</a>
-<span class="sourceLineNo">274</span><a id="line.274">      message = newEmailTo(newEmailSession(false), TA_EMAIL, "CS410J Survey for " + student.getFullName());</a>
-<span class="sourceLineNo">275</span><a id="line.275"></a>
-<span class="sourceLineNo">276</span><a id="line.276">      String studentEmail = student.getEmail();</a>
-<span class="sourceLineNo">277</span><a id="line.277">      if (studentEmail != null) {</a>
-<span class="sourceLineNo">278</span><a id="line.278">        InternetAddress[] cc = {new InternetAddress(studentEmail)};</a>
-<span class="sourceLineNo">279</span><a id="line.279">        message.setRecipients(Message.RecipientType.CC, cc);</a>
-<span class="sourceLineNo">280</span><a id="line.280">      }</a>
-<span class="sourceLineNo">281</span><a id="line.281"></a>
-<span class="sourceLineNo">282</span><a id="line.282">    } catch (AddressException ex) {</a>
-<span class="sourceLineNo">283</span><a id="line.283">      printErrorMessageAndExit("** Exception with email address", ex);</a>
-<span class="sourceLineNo">284</span><a id="line.284"></a>
-<span class="sourceLineNo">285</span><a id="line.285">    } catch (MessagingException ex) {</a>
-<span class="sourceLineNo">286</span><a id="line.286">      printErrorMessageAndExit("** Exception while setting recipients email", ex);</a>
-<span class="sourceLineNo">287</span><a id="line.287">    }</a>
-<span class="sourceLineNo">288</span><a id="line.288">    return message;</a>
-<span class="sourceLineNo">289</span><a id="line.289">  }</a>
-<span class="sourceLineNo">290</span><a id="line.290"></a>
-<span class="sourceLineNo">291</span><a id="line.291">  private static byte[] getXmlBytes(Student student) {</a>
-<span class="sourceLineNo">292</span><a id="line.292">    // Create a temporary "file" to hold the Student's XML file.  We</a>
-<span class="sourceLineNo">293</span><a id="line.293">    // use a byte array so that potentially sensitive data (SSN, etc.)</a>
-<span class="sourceLineNo">294</span><a id="line.294">    // is not written to disk</a>
-<span class="sourceLineNo">295</span><a id="line.295">    byte[] bytes = null;</a>
-<span class="sourceLineNo">296</span><a id="line.296"></a>
-<span class="sourceLineNo">297</span><a id="line.297">    Document xmlDoc = XmlDumper.toXml(student);</a>
-<span class="sourceLineNo">298</span><a id="line.298"></a>
-<span class="sourceLineNo">299</span><a id="line.299"></a>
-<span class="sourceLineNo">300</span><a id="line.300">    try {</a>
-<span class="sourceLineNo">301</span><a id="line.301">      bytes = XmlHelper.getBytesForXmlDocument(xmlDoc);</a>
-<span class="sourceLineNo">302</span><a id="line.302"></a>
-<span class="sourceLineNo">303</span><a id="line.303">    } catch (TransformerException ex) {</a>
-<span class="sourceLineNo">304</span><a id="line.304">      ex.printStackTrace(System.err);</a>
-<span class="sourceLineNo">305</span><a id="line.305">      System.exit(1);</a>
-<span class="sourceLineNo">306</span><a id="line.306">    }</a>
-<span class="sourceLineNo">307</span><a id="line.307">    return bytes;</a>
-<span class="sourceLineNo">308</span><a id="line.308">  }</a>
-<span class="sourceLineNo">309</span><a id="line.309"></a>
-<span class="sourceLineNo">310</span><a id="line.310">  private static String verifyInformation(Student student) {</a>
-<span class="sourceLineNo">311</span><a id="line.311">    String summary = getSummary(student);</a>
+<span class="sourceLineNo">233</span><a id="line.233">    DataSource ds = new ByteArrayDataSource(xmlBytes, "text/xml");</a>
+<span class="sourceLineNo">234</span><a id="line.234">    DataHandler dh = new DataHandler(ds);</a>
+<span class="sourceLineNo">235</span><a id="line.235">    MimeBodyPart filePart = new MimeBodyPart();</a>
+<span class="sourceLineNo">236</span><a id="line.236">    try {</a>
+<span class="sourceLineNo">237</span><a id="line.237">      String xmlFileTitle = student.getId() + ".xml";</a>
+<span class="sourceLineNo">238</span><a id="line.238"></a>
+<span class="sourceLineNo">239</span><a id="line.239">      filePart.setDataHandler(dh);</a>
+<span class="sourceLineNo">240</span><a id="line.240">      filePart.setFileName(xmlFileTitle);</a>
+<span class="sourceLineNo">241</span><a id="line.241">      filePart.setDescription("XML file for " + student.getFullName());</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">    } catch (MessagingException ex) {</a>
+<span class="sourceLineNo">244</span><a id="line.244">      printErrorMessageAndExit("** Exception with file part", ex);</a>
+<span class="sourceLineNo">245</span><a id="line.245">    }</a>
+<span class="sourceLineNo">246</span><a id="line.246">    return filePart;</a>
+<span class="sourceLineNo">247</span><a id="line.247">  }</a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">  private static void writeStudentXmlToFile(byte[] xmlBytes, Student student) {</a>
+<span class="sourceLineNo">250</span><a id="line.250">    File directory = new File(System.getProperty("user.dir"));</a>
+<span class="sourceLineNo">251</span><a id="line.251">    File file = new File(directory, student.getId() + ".xml");</a>
+<span class="sourceLineNo">252</span><a id="line.252">    try (FileOutputStream fos = new FileOutputStream(file)) {</a>
+<span class="sourceLineNo">253</span><a id="line.253">      fos.write(xmlBytes);</a>
+<span class="sourceLineNo">254</span><a id="line.254">      fos.flush();</a>
+<span class="sourceLineNo">255</span><a id="line.255"></a>
+<span class="sourceLineNo">256</span><a id="line.256">    } catch (IOException e) {</a>
+<span class="sourceLineNo">257</span><a id="line.257">      printErrorMessageAndExit("Could not write student XML file: " + file, e);</a>
+<span class="sourceLineNo">258</span><a id="line.258">    }</a>
+<span class="sourceLineNo">259</span><a id="line.259"></a>
+<span class="sourceLineNo">260</span><a id="line.260">    out.println("\nSaved student XML file to " + file + "\n");</a>
+<span class="sourceLineNo">261</span><a id="line.261">  }</a>
+<span class="sourceLineNo">262</span><a id="line.262"></a>
+<span class="sourceLineNo">263</span><a id="line.263">  private static MimeBodyPart createEmailText(String learn, String comments, String summary) {</a>
+<span class="sourceLineNo">264</span><a id="line.264">    // Create the text portion of the message</a>
+<span class="sourceLineNo">265</span><a id="line.265">    StringBuilder text = new StringBuilder();</a>
+<span class="sourceLineNo">266</span><a id="line.266">    text.append("Results of CS410J Survey:\n\n");</a>
+<span class="sourceLineNo">267</span><a id="line.267">    text.append(summary);</a>
+<span class="sourceLineNo">268</span><a id="line.268">    text.append("\n\nWhat do you hope to learn in CS410J?\n\n");</a>
+<span class="sourceLineNo">269</span><a id="line.269">    text.append(learn);</a>
+<span class="sourceLineNo">270</span><a id="line.270">    text.append("\n\nIs there anything else you'd like to tell me?\n\n");</a>
+<span class="sourceLineNo">271</span><a id="line.271">    text.append(comments);</a>
+<span class="sourceLineNo">272</span><a id="line.272">    text.append("\n\nThanks for filling out this survey!\n\nDave");</a>
+<span class="sourceLineNo">273</span><a id="line.273"></a>
+<span class="sourceLineNo">274</span><a id="line.274">    MimeBodyPart textPart = new MimeBodyPart();</a>
+<span class="sourceLineNo">275</span><a id="line.275">    try {</a>
+<span class="sourceLineNo">276</span><a id="line.276">      textPart.setContent(text.toString(), "text/plain");</a>
+<span class="sourceLineNo">277</span><a id="line.277"></a>
+<span class="sourceLineNo">278</span><a id="line.278">      // Try not to display text as separate attachment</a>
+<span class="sourceLineNo">279</span><a id="line.279">      textPart.setDisposition("inline");</a>
+<span class="sourceLineNo">280</span><a id="line.280"></a>
+<span class="sourceLineNo">281</span><a id="line.281">    } catch (MessagingException ex) {</a>
+<span class="sourceLineNo">282</span><a id="line.282">      printErrorMessageAndExit("** Exception with text part", ex);</a>
+<span class="sourceLineNo">283</span><a id="line.283">    }</a>
+<span class="sourceLineNo">284</span><a id="line.284">    return textPart;</a>
+<span class="sourceLineNo">285</span><a id="line.285">  }</a>
+<span class="sourceLineNo">286</span><a id="line.286"></a>
+<span class="sourceLineNo">287</span><a id="line.287">  private static MimeMessage createEmailMessage(Student student) {</a>
+<span class="sourceLineNo">288</span><a id="line.288">    MimeMessage message = null;</a>
+<span class="sourceLineNo">289</span><a id="line.289">    try {</a>
+<span class="sourceLineNo">290</span><a id="line.290">      String studentEmail = student.getEmail();</a>
+<span class="sourceLineNo">291</span><a id="line.291">      message = newEmailTo(newEmailSession(false), studentEmail, TA_EMAIL, "CS410J Survey for " + student.getFullName());</a>
+<span class="sourceLineNo">292</span><a id="line.292"></a>
+<span class="sourceLineNo">293</span><a id="line.293">      if (studentEmail != null) {</a>
+<span class="sourceLineNo">294</span><a id="line.294">        InternetAddress[] cc = {new InternetAddress(studentEmail)};</a>
+<span class="sourceLineNo">295</span><a id="line.295">        message.setRecipients(Message.RecipientType.CC, cc);</a>
+<span class="sourceLineNo">296</span><a id="line.296">      }</a>
+<span class="sourceLineNo">297</span><a id="line.297"></a>
+<span class="sourceLineNo">298</span><a id="line.298">    } catch (AddressException ex) {</a>
+<span class="sourceLineNo">299</span><a id="line.299">      printErrorMessageAndExit("** Exception with email address", ex);</a>
+<span class="sourceLineNo">300</span><a id="line.300"></a>
+<span class="sourceLineNo">301</span><a id="line.301">    } catch (MessagingException ex) {</a>
+<span class="sourceLineNo">302</span><a id="line.302">      printErrorMessageAndExit("** Exception while setting recipients email", ex);</a>
+<span class="sourceLineNo">303</span><a id="line.303">    }</a>
+<span class="sourceLineNo">304</span><a id="line.304">    return message;</a>
+<span class="sourceLineNo">305</span><a id="line.305">  }</a>
+<span class="sourceLineNo">306</span><a id="line.306"></a>
+<span class="sourceLineNo">307</span><a id="line.307">  private static byte[] getXmlBytes(Student student) {</a>
+<span class="sourceLineNo">308</span><a id="line.308">    // Create a temporary "file" to hold the Student's XML file.  We</a>
+<span class="sourceLineNo">309</span><a id="line.309">    // use a byte array so that potentially sensitive data (SSN, etc.)</a>
+<span class="sourceLineNo">310</span><a id="line.310">    // is not written to disk</a>
+<span class="sourceLineNo">311</span><a id="line.311">    byte[] bytes = null;</a>
 <span class="sourceLineNo">312</span><a id="line.312"></a>
-<span class="sourceLineNo">313</span><a id="line.313">    out.println("\nYou entered the following information about " +</a>
-<span class="sourceLineNo">314</span><a id="line.314">                "yourself:\n");</a>
-<span class="sourceLineNo">315</span><a id="line.315">    out.println(summary);</a>
-<span class="sourceLineNo">316</span><a id="line.316"></a>
-<span class="sourceLineNo">317</span><a id="line.317">    String verify = ask("\nIs this information correct (y/n)?");</a>
-<span class="sourceLineNo">318</span><a id="line.318">    if (!verify.equals("y")) {</a>
-<span class="sourceLineNo">319</span><a id="line.319">      printErrorMessageAndExit("** Not sending information.  Exiting.");</a>
-<span class="sourceLineNo">320</span><a id="line.320">    }</a>
-<span class="sourceLineNo">321</span><a id="line.321">    return summary;</a>
-<span class="sourceLineNo">322</span><a id="line.322">  }</a>
-<span class="sourceLineNo">323</span><a id="line.323"></a>
-<span class="sourceLineNo">324</span><a id="line.324">  private static void printErrorMessageAndExit(String message) {</a>
-<span class="sourceLineNo">325</span><a id="line.325">    printErrorMessageAndExit(message, null);</a>
-<span class="sourceLineNo">326</span><a id="line.326">  }</a>
-<span class="sourceLineNo">327</span><a id="line.327"></a>
-<span class="sourceLineNo">328</span><a id="line.328">  private static void printErrorMessageAndExit(String message, Throwable ex) {</a>
-<span class="sourceLineNo">329</span><a id="line.329">    err.println(message);</a>
-<span class="sourceLineNo">330</span><a id="line.330">    if (ex != null) {</a>
-<span class="sourceLineNo">331</span><a id="line.331">      ex.printStackTrace(err);</a>
-<span class="sourceLineNo">332</span><a id="line.332">    }</a>
-<span class="sourceLineNo">333</span><a id="line.333">    System.exit(1);</a>
-<span class="sourceLineNo">334</span><a id="line.334">  }</a>
-<span class="sourceLineNo">335</span><a id="line.335"></a>
-<span class="sourceLineNo">336</span><a id="line.336">  private static boolean isNotEmpty(String string) {</a>
-<span class="sourceLineNo">337</span><a id="line.337">    return string != null &amp;&amp; !string.equals("");</a>
+<span class="sourceLineNo">313</span><a id="line.313">    Document xmlDoc = XmlDumper.toXml(student);</a>
+<span class="sourceLineNo">314</span><a id="line.314"></a>
+<span class="sourceLineNo">315</span><a id="line.315"></a>
+<span class="sourceLineNo">316</span><a id="line.316">    try {</a>
+<span class="sourceLineNo">317</span><a id="line.317">      bytes = XmlHelper.getBytesForXmlDocument(xmlDoc);</a>
+<span class="sourceLineNo">318</span><a id="line.318"></a>
+<span class="sourceLineNo">319</span><a id="line.319">    } catch (TransformerException ex) {</a>
+<span class="sourceLineNo">320</span><a id="line.320">      ex.printStackTrace(System.err);</a>
+<span class="sourceLineNo">321</span><a id="line.321">      System.exit(1);</a>
+<span class="sourceLineNo">322</span><a id="line.322">    }</a>
+<span class="sourceLineNo">323</span><a id="line.323">    return bytes;</a>
+<span class="sourceLineNo">324</span><a id="line.324">  }</a>
+<span class="sourceLineNo">325</span><a id="line.325"></a>
+<span class="sourceLineNo">326</span><a id="line.326">  private static String verifyInformation(Student student) {</a>
+<span class="sourceLineNo">327</span><a id="line.327">    String summary = getSummary(student);</a>
+<span class="sourceLineNo">328</span><a id="line.328"></a>
+<span class="sourceLineNo">329</span><a id="line.329">    out.println("\nYou entered the following information about " +</a>
+<span class="sourceLineNo">330</span><a id="line.330">                "yourself:\n");</a>
+<span class="sourceLineNo">331</span><a id="line.331">    out.println(summary);</a>
+<span class="sourceLineNo">332</span><a id="line.332"></a>
+<span class="sourceLineNo">333</span><a id="line.333">    String verify = ask("\nIs this information correct (y/n)?");</a>
+<span class="sourceLineNo">334</span><a id="line.334">    if (!verify.equals("y")) {</a>
+<span class="sourceLineNo">335</span><a id="line.335">      printErrorMessageAndExit("** Not sending information.  Exiting.");</a>
+<span class="sourceLineNo">336</span><a id="line.336">    }</a>
+<span class="sourceLineNo">337</span><a id="line.337">    return summary;</a>
 <span class="sourceLineNo">338</span><a id="line.338">  }</a>
 <span class="sourceLineNo">339</span><a id="line.339"></a>
-<span class="sourceLineNo">340</span><a id="line.340">  private static boolean isEmpty(String string) {</a>
-<span class="sourceLineNo">341</span><a id="line.341">    return string == null || string.equals("");</a>
+<span class="sourceLineNo">340</span><a id="line.340">  private static void printErrorMessageAndExit(String message) {</a>
+<span class="sourceLineNo">341</span><a id="line.341">    printErrorMessageAndExit(message, null);</a>
 <span class="sourceLineNo">342</span><a id="line.342">  }</a>
 <span class="sourceLineNo">343</span><a id="line.343"></a>
-<span class="sourceLineNo">344</span><a id="line.344">  private static void printIntroduction() {</a>
-<span class="sourceLineNo">345</span><a id="line.345">    // Ask the student a bunch of questions</a>
-<span class="sourceLineNo">346</span><a id="line.346">    String welcome =</a>
-<span class="sourceLineNo">347</span><a id="line.347">      "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +</a>
-<span class="sourceLineNo">348</span><a id="line.348">      "questions about yourself.  Except for your UNIX login id and the section " +</a>
-<span class="sourceLineNo">349</span><a id="line.349">      "that you are enrolled in, no question" +</a>
-<span class="sourceLineNo">350</span><a id="line.350">      "is mandatory.  Your answers will be emailed to the TA and a receipt " +</a>
-<span class="sourceLineNo">351</span><a id="line.351">      "will be emailed to you.";</a>
-<span class="sourceLineNo">352</span><a id="line.352"></a>
-<span class="sourceLineNo">353</span><a id="line.353">    out.println("");</a>
-<span class="sourceLineNo">354</span><a id="line.354">    out.println(breakUpInto80CharacterLines(welcome));</a>
-<span class="sourceLineNo">355</span><a id="line.355">    out.println("");</a>
-<span class="sourceLineNo">356</span><a id="line.356">  }</a>
-<span class="sourceLineNo">357</span><a id="line.357"></a>
-<span class="sourceLineNo">358</span><a id="line.358">  @VisibleForTesting</a>
-<span class="sourceLineNo">359</span><a id="line.359">  static String breakUpInto80CharacterLines(String message) {</a>
-<span class="sourceLineNo">360</span><a id="line.360">    StringBuilder sb = new StringBuilder();</a>
-<span class="sourceLineNo">361</span><a id="line.361">    int currentLineLength = 0;</a>
-<span class="sourceLineNo">362</span><a id="line.362">    String[] words = message.split(" ");</a>
-<span class="sourceLineNo">363</span><a id="line.363">    for (String word : words) {</a>
-<span class="sourceLineNo">364</span><a id="line.364">      if (currentLineLength + word.length() &gt; 80) {</a>
-<span class="sourceLineNo">365</span><a id="line.365">        sb.append('\n');</a>
-<span class="sourceLineNo">366</span><a id="line.366">        sb.append(word);</a>
-<span class="sourceLineNo">367</span><a id="line.367">        currentLineLength = word.length();</a>
+<span class="sourceLineNo">344</span><a id="line.344">  private static void printErrorMessageAndExit(String message, Throwable ex) {</a>
+<span class="sourceLineNo">345</span><a id="line.345">    err.println(message);</a>
+<span class="sourceLineNo">346</span><a id="line.346">    if (ex != null) {</a>
+<span class="sourceLineNo">347</span><a id="line.347">      ex.printStackTrace(err);</a>
+<span class="sourceLineNo">348</span><a id="line.348">    }</a>
+<span class="sourceLineNo">349</span><a id="line.349">    System.exit(1);</a>
+<span class="sourceLineNo">350</span><a id="line.350">  }</a>
+<span class="sourceLineNo">351</span><a id="line.351"></a>
+<span class="sourceLineNo">352</span><a id="line.352">  private static boolean isNotEmpty(String string) {</a>
+<span class="sourceLineNo">353</span><a id="line.353">    return string != null &amp;&amp; !string.equals("");</a>
+<span class="sourceLineNo">354</span><a id="line.354">  }</a>
+<span class="sourceLineNo">355</span><a id="line.355"></a>
+<span class="sourceLineNo">356</span><a id="line.356">  private static boolean isEmpty(String string) {</a>
+<span class="sourceLineNo">357</span><a id="line.357">    return string == null || string.equals("");</a>
+<span class="sourceLineNo">358</span><a id="line.358">  }</a>
+<span class="sourceLineNo">359</span><a id="line.359"></a>
+<span class="sourceLineNo">360</span><a id="line.360">  private static void printIntroduction() {</a>
+<span class="sourceLineNo">361</span><a id="line.361">    // Ask the student a bunch of questions</a>
+<span class="sourceLineNo">362</span><a id="line.362">    String welcome =</a>
+<span class="sourceLineNo">363</span><a id="line.363">      "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +</a>
+<span class="sourceLineNo">364</span><a id="line.364">      "questions about yourself.  Except for your UNIX login id and the section " +</a>
+<span class="sourceLineNo">365</span><a id="line.365">      "that you are enrolled in, no question" +</a>
+<span class="sourceLineNo">366</span><a id="line.366">      "is mandatory.  Your answers will be emailed to the TA and a receipt " +</a>
+<span class="sourceLineNo">367</span><a id="line.367">      "will be emailed to you.";</a>
 <span class="sourceLineNo">368</span><a id="line.368"></a>
-<span class="sourceLineNo">369</span><a id="line.369">      } else {</a>
-<span class="sourceLineNo">370</span><a id="line.370">        if (currentLineLength &gt; 0) {</a>
-<span class="sourceLineNo">371</span><a id="line.371">          sb.append(' ');</a>
-<span class="sourceLineNo">372</span><a id="line.372">        }</a>
-<span class="sourceLineNo">373</span><a id="line.373">        sb.append(word);</a>
-<span class="sourceLineNo">374</span><a id="line.374">        currentLineLength += word.length() + 1;</a>
-<span class="sourceLineNo">375</span><a id="line.375">      }</a>
-<span class="sourceLineNo">376</span><a id="line.376"></a>
-<span class="sourceLineNo">377</span><a id="line.377">    }</a>
-<span class="sourceLineNo">378</span><a id="line.378">    return sb.toString();</a>
-<span class="sourceLineNo">379</span><a id="line.379">  }</a>
-<span class="sourceLineNo">380</span><a id="line.380"></a>
-<span class="sourceLineNo">381</span><a id="line.381">  private static void parseCommandLine(String[] args) {</a>
-<span class="sourceLineNo">382</span><a id="line.382">    // Parse the command line</a>
-<span class="sourceLineNo">383</span><a id="line.383">    for (int i = 0; i &lt; args.length; i++) {</a>
-<span class="sourceLineNo">384</span><a id="line.384">      String arg = args[i];</a>
-<span class="sourceLineNo">385</span><a id="line.385">      if (arg.equals("-mailServer")) {</a>
-<span class="sourceLineNo">386</span><a id="line.386">        if (++i &gt;= args.length) {</a>
-<span class="sourceLineNo">387</span><a id="line.387">          err.println("** Missing mail server name");</a>
-<span class="sourceLineNo">388</span><a id="line.388">          usage();</a>
-<span class="sourceLineNo">389</span><a id="line.389">        }</a>
-<span class="sourceLineNo">390</span><a id="line.390"></a>
-<span class="sourceLineNo">391</span><a id="line.391">        serverName = arg;</a>
+<span class="sourceLineNo">369</span><a id="line.369">    out.println("");</a>
+<span class="sourceLineNo">370</span><a id="line.370">    out.println(breakUpInto80CharacterLines(welcome));</a>
+<span class="sourceLineNo">371</span><a id="line.371">    out.println("");</a>
+<span class="sourceLineNo">372</span><a id="line.372">  }</a>
+<span class="sourceLineNo">373</span><a id="line.373"></a>
+<span class="sourceLineNo">374</span><a id="line.374">  @VisibleForTesting</a>
+<span class="sourceLineNo">375</span><a id="line.375">  static String breakUpInto80CharacterLines(String message) {</a>
+<span class="sourceLineNo">376</span><a id="line.376">    StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">377</span><a id="line.377">    int currentLineLength = 0;</a>
+<span class="sourceLineNo">378</span><a id="line.378">    String[] words = message.split(" ");</a>
+<span class="sourceLineNo">379</span><a id="line.379">    for (String word : words) {</a>
+<span class="sourceLineNo">380</span><a id="line.380">      if (currentLineLength + word.length() &gt; 80) {</a>
+<span class="sourceLineNo">381</span><a id="line.381">        sb.append('\n');</a>
+<span class="sourceLineNo">382</span><a id="line.382">        sb.append(word);</a>
+<span class="sourceLineNo">383</span><a id="line.383">        currentLineLength = word.length();</a>
+<span class="sourceLineNo">384</span><a id="line.384"></a>
+<span class="sourceLineNo">385</span><a id="line.385">      } else {</a>
+<span class="sourceLineNo">386</span><a id="line.386">        if (currentLineLength &gt; 0) {</a>
+<span class="sourceLineNo">387</span><a id="line.387">          sb.append(' ');</a>
+<span class="sourceLineNo">388</span><a id="line.388">        }</a>
+<span class="sourceLineNo">389</span><a id="line.389">        sb.append(word);</a>
+<span class="sourceLineNo">390</span><a id="line.390">        currentLineLength += word.length() + 1;</a>
+<span class="sourceLineNo">391</span><a id="line.391">      }</a>
 <span class="sourceLineNo">392</span><a id="line.392"></a>
-<span class="sourceLineNo">393</span><a id="line.393">      } else if (arg.equals("-saveStudentXmlFile")) {</a>
-<span class="sourceLineNo">394</span><a id="line.394">        saveStudentXmlFile = true;</a>
-<span class="sourceLineNo">395</span><a id="line.395"></a>
-<span class="sourceLineNo">396</span><a id="line.396">      } else if (arg.startsWith("-")) {</a>
-<span class="sourceLineNo">397</span><a id="line.397">        err.println("** Unknown command line option: " + arg);</a>
-<span class="sourceLineNo">398</span><a id="line.398">        usage();</a>
-<span class="sourceLineNo">399</span><a id="line.399"></a>
-<span class="sourceLineNo">400</span><a id="line.400">      } else {</a>
-<span class="sourceLineNo">401</span><a id="line.401">        err.println("** Spurious command line: " + arg);</a>
-<span class="sourceLineNo">402</span><a id="line.402">        usage();</a>
-<span class="sourceLineNo">403</span><a id="line.403">      }</a>
-<span class="sourceLineNo">404</span><a id="line.404">    }</a>
-<span class="sourceLineNo">405</span><a id="line.405">  }</a>
+<span class="sourceLineNo">393</span><a id="line.393">    }</a>
+<span class="sourceLineNo">394</span><a id="line.394">    return sb.toString();</a>
+<span class="sourceLineNo">395</span><a id="line.395">  }</a>
+<span class="sourceLineNo">396</span><a id="line.396"></a>
+<span class="sourceLineNo">397</span><a id="line.397">  private static void parseCommandLine(String[] args) {</a>
+<span class="sourceLineNo">398</span><a id="line.398">    // Parse the command line</a>
+<span class="sourceLineNo">399</span><a id="line.399">    for (int i = 0; i &lt; args.length; i++) {</a>
+<span class="sourceLineNo">400</span><a id="line.400">      String arg = args[i];</a>
+<span class="sourceLineNo">401</span><a id="line.401">      if (arg.equals("-mailServer")) {</a>
+<span class="sourceLineNo">402</span><a id="line.402">        if (++i &gt;= args.length) {</a>
+<span class="sourceLineNo">403</span><a id="line.403">          err.println("** Missing mail server name");</a>
+<span class="sourceLineNo">404</span><a id="line.404">          usage();</a>
+<span class="sourceLineNo">405</span><a id="line.405">        }</a>
 <span class="sourceLineNo">406</span><a id="line.406"></a>
-<span class="sourceLineNo">407</span><a id="line.407">}</a>
+<span class="sourceLineNo">407</span><a id="line.407">        serverName = arg;</a>
+<span class="sourceLineNo">408</span><a id="line.408"></a>
+<span class="sourceLineNo">409</span><a id="line.409">      } else if (arg.equals("-saveStudentXmlFile")) {</a>
+<span class="sourceLineNo">410</span><a id="line.410">        saveStudentXmlFile = true;</a>
+<span class="sourceLineNo">411</span><a id="line.411"></a>
+<span class="sourceLineNo">412</span><a id="line.412">      } else if (arg.startsWith("-")) {</a>
+<span class="sourceLineNo">413</span><a id="line.413">        err.println("** Unknown command line option: " + arg);</a>
+<span class="sourceLineNo">414</span><a id="line.414">        usage();</a>
+<span class="sourceLineNo">415</span><a id="line.415"></a>
+<span class="sourceLineNo">416</span><a id="line.416">      } else {</a>
+<span class="sourceLineNo">417</span><a id="line.417">        err.println("** Spurious command line: " + arg);</a>
+<span class="sourceLineNo">418</span><a id="line.418">        usage();</a>
+<span class="sourceLineNo">419</span><a id="line.419">      }</a>
+<span class="sourceLineNo">420</span><a id="line.420">    }</a>
+<span class="sourceLineNo">421</span><a id="line.421">  }</a>
+<span class="sourceLineNo">422</span><a id="line.422"></a>
+<span class="sourceLineNo">423</span><a id="line.423">}</a>
 
 
 

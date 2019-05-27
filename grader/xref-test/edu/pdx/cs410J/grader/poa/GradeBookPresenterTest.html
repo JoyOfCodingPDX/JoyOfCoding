@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.mock;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.verify;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html">GradeBookPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/EventBusTestCase.html">EventBusTestCase</a> {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradeBookPresenterTest" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html#GradeBookPresenterTest">GradeBookPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a name="EventBusTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/EventBusTestCase.html#EventBusTestCase">EventBusTestCase</a> {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> GradeBookView view;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
@@ -48,7 +48,7 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    @Test
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> loadGradeBookEventPublishedWhenFileProvidedByView() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html">LoadGradeBookHandler</a> handler = mock(LoadGradeBookHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      LoadGradeBookHandler handler = mock(LoadGradeBookHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      bus.register(handler);
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      ArgumentCaptor&lt;GradeBookView.FileSelectedListener&gt; listener = ArgumentCaptor.forClass(GradeBookView.FileSelectedListener.<strong class="jxr_keyword">class</strong>);
@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      assertThat(event.getValue().getFile(), equalTo(file));
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>    }
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html">LoadGradeBookHandler</a> {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> LoadGradeBookHandler {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      @Subscribe
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> handle(LoadGradeBook loadGradeBook);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>    }
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     student.setGrade(poa, 0.9);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> 
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html">SaveGradeBookEventHandler</a> eventHandler = mock(SaveGradeBookEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     SaveGradeBookEventHandler eventHandler = mock(SaveGradeBookEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     bus.register(eventHandler);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>     listener.getValue().saveGradeBook();
@@ -171,13 +171,13 @@
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>     assertThat(event.getValue().getGradeBook(), equalTo(book));
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>   }
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> 
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookPresenterTest.html">SaveGradeBookEventHandler</a> {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> SaveGradeBookEventHandler {
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     @Subscribe
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> saveGradeBook(SaveGradeBook event);
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>   }
 <a class="jxr_linenumber" name="L170" href="#L170">170</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

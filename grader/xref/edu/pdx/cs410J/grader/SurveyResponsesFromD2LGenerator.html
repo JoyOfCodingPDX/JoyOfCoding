@@ -15,7 +15,7 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.io.*;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2LGenerator.html">SurveyResponsesFromD2LGenerator</a> {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SurveyResponsesFromD2LGenerator" href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2LGenerator.html#SurveyResponsesFromD2LGenerator">SurveyResponsesFromD2LGenerator</a> {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger logger = LoggerFactory.getLogger(<span class="jxr_string">"edu.pdx.cs410J.grader"</span>);
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
@@ -43,13 +43,13 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>        usage(<span class="jxr_string">"Missing html file name"</span>);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      }
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <a href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html">SurveyResponsesFromD2L</a> d2lSurveyResponses = parseD2lCsvFile(d2lCsvFileName);
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> htmlGenerator = getHtmlGenerator(htmlFileName);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <a name="SurveyResponsesFromD2L" href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html#SurveyResponsesFromD2L">SurveyResponsesFromD2L</a> d2lSurveyResponses = parseD2lCsvFile(d2lCsvFileName);
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> htmlGenerator = getHtmlGenerator(htmlFileName);
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      generateHtmlForSurveyResponses(d2lSurveyResponses, htmlGenerator);
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    }
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>    @VisibleForTesting
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> generateHtmlForSurveyResponses(<a href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html">SurveyResponsesFromD2L</a> d2lSurveyResponses, <a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> html) {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> generateHtmlForSurveyResponses(<a name="SurveyResponsesFromD2L" href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html#SurveyResponsesFromD2L">SurveyResponsesFromD2L</a> d2lSurveyResponses, <a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> html) {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      String title = <span class="jxr_string">"Previously on CS410J..."</span>;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      html.beginTag(<span class="jxr_string">"html"</span>);
@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      html.endTag();
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>    }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlForEachSurveyResponse(<a href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html">SurveyResponsesFromD2L</a> allResponses, <a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> html) {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlForEachSurveyResponse(<a name="SurveyResponsesFromD2L" href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html#SurveyResponsesFromD2L">SurveyResponsesFromD2L</a> allResponses, <a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> html) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      html.beginTag(<span class="jxr_string">"ol"</span>);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      allResponses.getQuestions().forEach((question) -&gt; {
@@ -87,7 +87,7 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      html.endTag();
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>    }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlBodyHeader(<a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> html, String title) {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlBodyHeader(<a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> html, String title) {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      html.beginTag(<span class="jxr_string">"h1"</span>);
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      html.text(title);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      html.endTag();
@@ -96,7 +96,7 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      html.endTag();
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>    }
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlHead(<a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> html, String title) {
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> outputHtmlHead(<a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> html, String title) {
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      html.beginTag(<span class="jxr_string">"head"</span>);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      html.beginTag(<span class="jxr_string">"title"</span>);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      html.text(title);
@@ -104,7 +104,7 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      html.endTag();
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>    }
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a> getHtmlGenerator(String htmlFileName) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a> getHtmlGenerator(String htmlFileName) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     File htmlFile = <strong class="jxr_keyword">new</strong> File(htmlFileName).getAbsoluteFile();
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     File parent = htmlFile.getParentFile();
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">if</strong> (!parent.exists()) {
@@ -112,17 +112,17 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     Writer writer = <strong class="jxr_keyword">new</strong> FileWriter(htmlFile);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html">HtmlGenerator</a>(writer);
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="HtmlGenerator" href="../../../../edu/pdx/cs410J/grader/HtmlGenerator.html#HtmlGenerator">HtmlGenerator</a>(writer);
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>   }
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> 
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html">SurveyResponsesFromD2L</a> parseD2lCsvFile(String d2lCsvFileName) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="SurveyResponsesFromD2L" href="../../../../edu/pdx/cs410J/grader/SurveyResponsesFromD2L.html#SurveyResponsesFromD2L">SurveyResponsesFromD2L</a> parseD2lCsvFile(String d2lCsvFileName) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     File d2lCsvFile = <strong class="jxr_keyword">new</strong> File(d2lCsvFileName);
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">if</strong> (!d2lCsvFile.exists()) {
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>       usage(<span class="jxr_string">"D2L CSV file \&quot;"</span> + d2lCsvFile + <span class="jxr_string">"\&quot; does not exist"</span>);
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>     }
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <a href="../../../../edu/pdx/cs410J/grader/D2LSurveyResponsesCSVParser.html">D2LSurveyResponsesCSVParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/D2LSurveyResponsesCSVParser.html">D2LSurveyResponsesCSVParser</a>(<strong class="jxr_keyword">new</strong> FileReader(d2lCsvFile));
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <a name="D2LSurveyResponsesCSVParser" href="../../../../edu/pdx/cs410J/grader/<a name="D2LSurveyResponsesCSVParser" href="../../../../edu/pdx/cs410J/grader/D2LSurveyResponsesCSVParser.html#D2LSurveyResponsesCSVParser">D2LSurveyResponsesCSVParser</a>.html#D2LSurveyResponsesCSVParser">D2LSurveyResponsesCSVParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="D2LSurveyResponsesCSVParser" href="../../../../edu/pdx/cs410J/grader/D2LSurveyResponsesCSVParser.html#D2LSurveyResponsesCSVParser">D2LSurveyResponsesCSVParser</a>(<strong class="jxr_keyword">new</strong> FileReader(d2lCsvFile));
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">return</strong> parser.getSurveyResponses();
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>   }
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> 
@@ -143,6 +143,6 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

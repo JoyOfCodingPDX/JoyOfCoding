@@ -30,7 +30,7 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * This class parses XML data that describes a &lt;code&gt;Student&lt;/code&gt;.</em>
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlHelper.html">XmlHelper</a> {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">class</strong> <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a> <strong class="jxr_keyword">extends</strong> <a name="XmlHelper" href="../../../../edu/pdx/cs410J/grader/XmlHelper.html#XmlHelper">XmlHelper</a> {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>    <em class="jxr_javadoccomment">/** The Reader from which the XML Data is read */</em> 
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">private</strong> Reader reader;
@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;XmlStudentParser&lt;/code&gt; that reads XML data</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">   * from a given &lt;code&gt;Reader&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a>(Reader reader) {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>(Reader reader) {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">this</strong>.reader = reader;
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>    }
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
@@ -49,7 +49,7 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;XmlStudentParser&lt;/code&gt; that reads XML data</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">   * from a given &lt;code&gt;File&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a>(File file) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">public</strong> <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>(File file) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> FileReader(file));
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>    }
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">   * Extracts a &lt;code&gt;Grade&lt;/code&gt; from a chuck of a DOM tree</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">   */</em> 
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a> extractGradeFrom(Element root) <strong class="jxr_keyword">throws</strong> ParserException {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">private</strong> <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> extractGradeFrom(Element root) <strong class="jxr_keyword">throws</strong> ParserException {
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      String name = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      String score = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      List&lt;String&gt; notes = <strong class="jxr_keyword">null</strong>;
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>        <strong class="jxr_keyword">double</strong> s = Double.parseDouble(score);
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>        <a href="../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a> grade = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a>(name, s);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>        <a name="Grade" href="../../../../edu/pdx/cs410J/grader<a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>e.html#Grade">Grade</a> grade = <strong class="jxr_keyword">new</strong> <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>(name, s);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>        <strong class="jxr_keyword">if</strong> (notes != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          notes.forEach(grade::addNote);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>        }
@@ -130,11 +130,11 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;Student&lt;/code&gt; from the contents of a file.</em>
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> parseStudent() <strong class="jxr_keyword">throws</strong> ParserException {
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>   <strong class="jxr_keyword">public</strong> <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> parseStudent() <strong class="jxr_keyword">throws</strong> ParserException {
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     Document doc = parseXml();
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     Element root = getRootElement(doc);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     NodeList children = root.getChildNodes();
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; children.getLength(); i++) {
@@ -146,7 +146,7 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>       Element child = (Element) node;
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>       <strong class="jxr_keyword">if</strong> (child.getTagName().equals(<span class="jxr_string">"id"</span>)) {
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         String idFromFile = extractTextFrom(child);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         student = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a>(idFromFile);
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         student = <strong class="jxr_keyword">new</strong> <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>(idFromFile);
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>       } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (child.getTagName().equals(<span class="jxr_string">"firstName"</span>)) {
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         String firstName = extractTextFrom(child);
@@ -190,7 +190,7 @@
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> 
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>           Element kid = (Element) kidNode;
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>           <strong class="jxr_keyword">if</strong> (kid.getTagName().equals(<span class="jxr_string">"grade"</span>)) {
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <a href="../../../../edu/pdx/cs410J/grader/Grade.html">Grade</a> grade = extractGradeFrom(kid);
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> grade = extractGradeFrom(kid);
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>             student.setGrade(grade.getAssignmentName(), grade);
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>           }
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         }
@@ -281,6 +281,6 @@
 <a class="jxr_linenumber" name="L273" href="#L273">273</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

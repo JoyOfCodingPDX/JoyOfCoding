@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>ZipFileMaker xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../apidocs/edu/pdx/cs410J/grader/ZipFileMaker.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> edu.pdx.cs410J.grader;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.google.common.io.ByteStreams;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.slf4j.Logger;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.slf4j.LoggerFactory;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.io.*;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.Date;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.util.jar.Attributes;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.util.jar.JarFile;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.jar.Manifest;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.zip.ZipEntry;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> java.util.zip.ZipOutputStream;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a> {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger logger = LoggerFactory.getLogger(<span class="jxr_string">"edu.pdx.cs410J.grader"</span>);
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> Map&lt;Attributes.Name, String&gt; manifestEntries;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> OutputStream zipStream;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a>(File zipFile, Map&lt;Attributes.Name, String&gt; manifestEntries) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> FileOutputStream(zipFile), manifestEntries);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>    }
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">public</strong> <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a>(OutputStream zipStream, Map&lt;Attributes.Name, String&gt; manifestEntries) {
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">this</strong>.manifestEntries = manifestEntries;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">this</strong>.zipStream = zipStream;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>    }
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> makeZipFile(Map&lt;ZipEntry, InputStream&gt; zipFileEntries) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      ZipOutputStream zos = <strong class="jxr_keyword">new</strong> ZipOutputStream(zipStream);
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      zos.setMethod(ZipOutputStream.DEFLATED);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <em class="jxr_comment">// Create a Manifest for the Zip file containing the name of the</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <em class="jxr_comment">// author (userName) and a version that is based on the current</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <em class="jxr_comment">// date/time.</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      writeManifestAsEntryInZipFile(zos);
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <em class="jxr_comment">// Add the source files to the Zip</em>
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">for</strong> (Map.Entry&lt;ZipEntry, InputStream&gt; entry : zipFileEntries.entrySet()) {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>        <em class="jxr_comment">// Add the entry to the ZIP file</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>        zos.putNextEntry(entry.getKey());
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>        ByteStreams.copy(entry.getValue(), zos);
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>        zos.closeEntry();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      zos.close();
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>    }
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> writeManifestAsEntryInZipFile(ZipOutputStream zos) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      addEntriesToMainManifest(manifest);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      String entryName = JarFile.MANIFEST_NAME;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      logger.debug(<span class="jxr_string">"Adding "</span> + entryName + <span class="jxr_string">" to zip"</span>);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      ZipEntry entry = <strong class="jxr_keyword">new</strong> ZipEntry(entryName);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      entry.setTime(System.currentTimeMillis());
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      entry.setMethod(ZipEntry.DEFLATED);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      zos.putNextEntry(entry);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      manifest.write(<strong class="jxr_keyword">new</strong> BufferedOutputStream(zos));
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      zos.closeEntry();
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>    }
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addEntriesToMainManifest(Manifest manifest) {
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      Attributes attrs = manifest.getMainAttributes();
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <em class="jxr_comment">// If a manifest doesn't have a version, the other attributes won't get written out.  Lame.</em>
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      attrs.put(Attributes.Name.MANIFEST_VERSION, <strong class="jxr_keyword">new</strong> Date().toString());
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">for</strong> (Map.Entry&lt;Attributes.Name, String&gt; entry : <strong class="jxr_keyword">this</strong>.manifestEntries.entrySet()) {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>        attrs.put(entry.getKey(), entry.getValue());
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>    }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+</body>
+</html>

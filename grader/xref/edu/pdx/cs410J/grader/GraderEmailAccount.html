@@ -20,7 +20,7 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html">GraderEmailAccount</a> {
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a> {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Logger logger = LoggerFactory.getLogger(<strong class="jxr_keyword">this</strong>.getClass().getPackage().getName());
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String password;
@@ -29,16 +29,16 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> emailServerPort;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> trustLocalhostSSL;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html">GraderEmailAccount</a>(String password) {
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>    <strong class="jxr_keyword">public</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(String password) {
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">this</strong>(<span class="jxr_string">"sjavata"</span>, password);
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    }
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html">GraderEmailAccount</a>(String userName, String password) {
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">public</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(String userName, String password) {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">this</strong>(<span class="jxr_string">"imap.gmail.com"</span>, 993, userName, password, false);
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>    }
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>    @VisibleForTesting
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>    <a href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html">GraderEmailAccount</a>(String emailServerHostName, <strong class="jxr_keyword">int</strong> emailServerPort, String userName, String password, <strong class="jxr_keyword">boolean</strong> trustLocalhostSSL) {
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>    <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(String emailServerHostName, <strong class="jxr_keyword">int</strong> emailServerPort, String userName, String password, <strong class="jxr_keyword">boolean</strong> trustLocalhostSSL) {
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">this</strong>.userName = userName;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">this</strong>.password = password;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">this</strong>.emailServerHostName = emailServerHostName;
@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">this</strong>.trustLocalhostSSL = trustLocalhostSSL;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>    }
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, <a href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html">EmailAttachmentProcessor</a> processor) {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> processor) {
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>        Message[] messages = folder.getMessages();
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>    }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> processAttachments(Message message, <a href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html">EmailAttachmentProcessor</a> processor) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> processAttachments(Message message, <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> processor) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      Multipart parts;
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>        parts = (Multipart) message.getContent();
@@ -97,7 +97,7 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      warnOfUnexpectedMessage(message, <span class="jxr_string">"Could not process of any attachments"</span>);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    }
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> attemptToProcessPart(Message message, BodyPart part, <a href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html">EmailAttachmentProcessor</a> processor, String supportedContentType) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> attemptToProcessPart(Message message, BodyPart part, <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> processor, String supportedContentType) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">if</strong> (partHasContentType(part, supportedContentType)) {
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>        debug(<span class="jxr_string">"    Processing attachment of type "</span> + part.getContentType());
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        processAttachmentFromPart(message, part, processor);
@@ -135,7 +135,7 @@
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">return</strong> part.getContentType().toUpperCase().contains(contentType.toUpperCase());
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>   }
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> processAttachmentFromPart(Message message, BodyPart part, <a href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html">EmailAttachmentProcessor</a> processor) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> processAttachmentFromPart(Message message, BodyPart part, <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> processor) <strong class="jxr_keyword">throws</strong> MessagingException, IOException {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     String fileName = part.getFileName();
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     processor.processAttachment(message, fileName, part.getInputStream());
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>   }
@@ -281,7 +281,7 @@
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>     }
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>   }
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> 
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> fetchAttachmentsFromUnreadMessagesInFolder(String folderName, <a href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html">EmailAttachmentProcessor</a> processor) {
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> fetchAttachmentsFromUnreadMessagesInFolder(String folderName, <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> processor) {
 <a class="jxr_linenumber" name="L277" href="#L277">277</a>     Store store = connectToIMAPServer();
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>     Folder folder = openFolder(store, folderName);
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>     printFolderInformation(folder);
@@ -300,6 +300,6 @@
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

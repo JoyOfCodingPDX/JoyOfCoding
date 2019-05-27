@@ -12,66 +12,83 @@
 <span class="sourceLineNo">003</span><a id="line.3">import org.junit.Test;</a>
 <span class="sourceLineNo">004</span><a id="line.4"></a>
 <span class="sourceLineNo">005</span><a id="line.5">import java.io.File;</a>
-<span class="sourceLineNo">006</span><a id="line.6"></a>
-<span class="sourceLineNo">007</span><a id="line.7">import static org.hamcrest.MatcherAssert.assertThat;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import static org.hamcrest.core.IsEqual.equalTo;</a>
-<span class="sourceLineNo">009</span><a id="line.9"></a>
-<span class="sourceLineNo">010</span><a id="line.10">public class SubmitTest {</a>
-<span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">  @Test</a>
-<span class="sourceLineNo">013</span><a id="line.13">  public void nineDigitStringIsInvalidLoginId() {</a>
-<span class="sourceLineNo">014</span><a id="line.14">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">015</span><a id="line.15">    assertThat(submit.isNineDigitStudentId("123456789"), equalTo(true));</a>
-<span class="sourceLineNo">016</span><a id="line.16">  }</a>
-<span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">  @Test</a>
-<span class="sourceLineNo">019</span><a id="line.19">  public void eightDigitStringIsValidLoginId() {</a>
-<span class="sourceLineNo">020</span><a id="line.20">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">021</span><a id="line.21">    assertThat(submit.isNineDigitStudentId("12345678"), equalTo(false));</a>
-<span class="sourceLineNo">022</span><a id="line.22">  }</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">  @Test</a>
-<span class="sourceLineNo">025</span><a id="line.25">  public void userNameIsValidLoginId() {</a>
-<span class="sourceLineNo">026</span><a id="line.26">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">027</span><a id="line.27">    assertThat(submit.isNineDigitStudentId("whitlock"), equalTo(false));</a>
-<span class="sourceLineNo">028</span><a id="line.28">  }</a>
-<span class="sourceLineNo">029</span><a id="line.29"></a>
-<span class="sourceLineNo">030</span><a id="line.30">  @Test</a>
-<span class="sourceLineNo">031</span><a id="line.31">  public void emailAddressIsInvalidLoginId() {</a>
-<span class="sourceLineNo">032</span><a id="line.32">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">033</span><a id="line.33">    assertThat(submit.looksLikeAnEmailAddress("me@email.com"), equalTo(true));</a>
-<span class="sourceLineNo">034</span><a id="line.34">  }</a>
-<span class="sourceLineNo">035</span><a id="line.35"></a>
-<span class="sourceLineNo">036</span><a id="line.36">  @Test</a>
-<span class="sourceLineNo">037</span><a id="line.37">  public void canSubmitClassesInStudentPackage() {</a>
-<span class="sourceLineNo">038</span><a id="line.38">    String userId = "student";</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "ProjectClass.java");</a>
-<span class="sourceLineNo">041</span><a id="line.41">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">042</span><a id="line.42">    submit.setUserId(userId);</a>
-<span class="sourceLineNo">043</span><a id="line.43">    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));</a>
-<span class="sourceLineNo">044</span><a id="line.44">  }</a>
-<span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46">  private File makeFileWithPath(String... path) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">    File dir = new File(System.getProperty("user.dir"));</a>
-<span class="sourceLineNo">048</span><a id="line.48"></a>
-<span class="sourceLineNo">049</span><a id="line.49">    for (String part : path) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">      dir = new File(dir, part);</a>
-<span class="sourceLineNo">051</span><a id="line.51">    }</a>
-<span class="sourceLineNo">052</span><a id="line.52"></a>
-<span class="sourceLineNo">053</span><a id="line.53">    return dir;</a>
-<span class="sourceLineNo">054</span><a id="line.54">  }</a>
-<span class="sourceLineNo">055</span><a id="line.55"></a>
-<span class="sourceLineNo">056</span><a id="line.56">  @Test</a>
-<span class="sourceLineNo">057</span><a id="line.57">  public void canSubmitClassesInSubPackage() {</a>
-<span class="sourceLineNo">058</span><a id="line.58">    String userId = "student";</a>
-<span class="sourceLineNo">059</span><a id="line.59"></a>
-<span class="sourceLineNo">060</span><a id="line.60">    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");</a>
-<span class="sourceLineNo">061</span><a id="line.61">    Submit submit = new Submit();</a>
-<span class="sourceLineNo">062</span><a id="line.62">    submit.setUserId(userId);</a>
-<span class="sourceLineNo">063</span><a id="line.63">    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));</a>
-<span class="sourceLineNo">064</span><a id="line.64">  }</a>
-<span class="sourceLineNo">065</span><a id="line.65">}</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.time.LocalDateTime;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">import static org.hamcrest.MatcherAssert.assertThat;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import static org.hamcrest.core.IsEqual.equalTo;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">public class SubmitTest {</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">  @Test</a>
+<span class="sourceLineNo">014</span><a id="line.14">  public void nineDigitStringIsInvalidLoginId() {</a>
+<span class="sourceLineNo">015</span><a id="line.15">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">016</span><a id="line.16">    assertThat(submit.isNineDigitStudentId("123456789"), equalTo(true));</a>
+<span class="sourceLineNo">017</span><a id="line.17">  }</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">  @Test</a>
+<span class="sourceLineNo">020</span><a id="line.20">  public void eightDigitStringIsValidLoginId() {</a>
+<span class="sourceLineNo">021</span><a id="line.21">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">022</span><a id="line.22">    assertThat(submit.isNineDigitStudentId("12345678"), equalTo(false));</a>
+<span class="sourceLineNo">023</span><a id="line.23">  }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  @Test</a>
+<span class="sourceLineNo">026</span><a id="line.26">  public void userNameIsValidLoginId() {</a>
+<span class="sourceLineNo">027</span><a id="line.27">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">028</span><a id="line.28">    assertThat(submit.isNineDigitStudentId("whitlock"), equalTo(false));</a>
+<span class="sourceLineNo">029</span><a id="line.29">  }</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">  @Test</a>
+<span class="sourceLineNo">032</span><a id="line.32">  public void emailAddressIsInvalidLoginId() {</a>
+<span class="sourceLineNo">033</span><a id="line.33">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">034</span><a id="line.34">    assertThat(submit.looksLikeAnEmailAddress("me@email.com"), equalTo(true));</a>
+<span class="sourceLineNo">035</span><a id="line.35">  }</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">  @Test</a>
+<span class="sourceLineNo">038</span><a id="line.38">  public void canSubmitClassesInStudentPackage() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">    String userId = "student";</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "ProjectClass.java");</a>
+<span class="sourceLineNo">042</span><a id="line.42">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">043</span><a id="line.43">    submit.setUserId(userId);</a>
+<span class="sourceLineNo">044</span><a id="line.44">    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));</a>
+<span class="sourceLineNo">045</span><a id="line.45">  }</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">  private File makeFileWithPath(String... path) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">    File dir = new File(System.getProperty("user.dir"));</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">    for (String part : path) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">      dir = new File(dir, part);</a>
+<span class="sourceLineNo">052</span><a id="line.52">    }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">    return dir;</a>
+<span class="sourceLineNo">055</span><a id="line.55">  }</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">  @Test</a>
+<span class="sourceLineNo">058</span><a id="line.58">  public void canSubmitClassesInSubPackage() {</a>
+<span class="sourceLineNo">059</span><a id="line.59">    String userId = "student";</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");</a>
+<span class="sourceLineNo">062</span><a id="line.62">    Submit submit = new Submit();</a>
+<span class="sourceLineNo">063</span><a id="line.63">    submit.setUserId(userId);</a>
+<span class="sourceLineNo">064</span><a id="line.64">    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));</a>
+<span class="sourceLineNo">065</span><a id="line.65">  }</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">  @Test</a>
+<span class="sourceLineNo">068</span><a id="line.68">  public void submissionTimeIsInIsoDateTime() {</a>
+<span class="sourceLineNo">069</span><a id="line.69">    LocalDateTime time = LocalDateTime.of(2018, 7, 8, 5, 59, 32);</a>
+<span class="sourceLineNo">070</span><a id="line.70">    String formattedTime = Submit.ManifestAttributes.formatSubmissionTime(time);</a>
+<span class="sourceLineNo">071</span><a id="line.71">    assertThat(formattedTime, equalTo("2018-07-08T05:59:32"));</a>
+<span class="sourceLineNo">072</span><a id="line.72">  }</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">  @Test</a>
+<span class="sourceLineNo">075</span><a id="line.75">  public void legacySubmissionTimeCanBeParsed() {</a>
+<span class="sourceLineNo">076</span><a id="line.76">    String legacySubmissionTime = "2018-Jul-08 05:59:32";</a>
+<span class="sourceLineNo">077</span><a id="line.77">    LocalDateTime expected = LocalDateTime.of(2018, 7, 8, 5, 59, 32);</a>
+<span class="sourceLineNo">078</span><a id="line.78"></a>
+<span class="sourceLineNo">079</span><a id="line.79">    LocalDateTime actual = Submit.ManifestAttributes.parseSubmissionTime(legacySubmissionTime);</a>
+<span class="sourceLineNo">080</span><a id="line.80">    assertThat(actual, equalTo(expected));</a>
+<span class="sourceLineNo">081</span><a id="line.81">  }</a>
+<span class="sourceLineNo">082</span><a id="line.82">}</a>
 
 
 

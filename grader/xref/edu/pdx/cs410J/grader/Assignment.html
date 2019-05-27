@@ -21,9 +21,9 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * @author David Whitlock</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/grader/NotableImpl.html">NotableImpl</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> <strong class="jxr_keyword">extends</strong> <a name="NotableImpl" href="../../../../edu/pdx/cs410J/grader/NotableImpl.html#NotableImpl">NotableImpl</a> {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> enum <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">AssignmentType</a> {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> enum AssignmentType {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      PROJECT,
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      QUIZ,
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      OTHER,
@@ -34,14 +34,14 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    <strong class="jxr_keyword">private</strong> String name;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>    <strong class="jxr_keyword">private</strong> String description;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">double</strong> points;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">AssignmentType</a> type;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>    <strong class="jxr_keyword">private</strong> AssignmentType type;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>    <strong class="jxr_keyword">private</strong> LocalDateTime dueDate;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">   * Creates a new &lt;code&gt;Assignment&lt;/code&gt; with the given name and</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">   * point value.</em>
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a>(String name, <strong class="jxr_keyword">double</strong> points) {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>(String name, <strong class="jxr_keyword">double</strong> points) {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">this</strong>.name = name;
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">this</strong>.points = points;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">this</strong>.type = AssignmentType.PROJECT;
@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">   * Sets the number of points that this &lt;code&gt;Assignment&lt;/code&gt; is</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment">   * worth.</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> setPoints(<strong class="jxr_keyword">double</strong> points) {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>    <strong class="jxr_keyword">public</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> setPoints(<strong class="jxr_keyword">double</strong> points) {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">this</strong>.setDirty(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">this</strong>.points = points;
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
@@ -91,14 +91,14 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">   * Returns the type of this &lt;code&gt;Assignment&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">AssignmentType</a> getType() {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>    <strong class="jxr_keyword">public</strong> AssignmentType getType() {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.type;
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>    }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">   * Sets the type of this &lt;code&gt;Assignment&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> setType(<a href="../../../../edu/pdx/cs410J/grader/Assignment.html">AssignmentType</a> type) {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>    <strong class="jxr_keyword">public</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> setType(AssignmentType type) {
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">this</strong>.setDirty(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">this</strong>.type = type;
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     String name = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     String points = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     String desc = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">AssignmentType</a> type = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     AssignmentType type = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>     String note = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> 
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     <em class="jxr_comment">// Parse the command line</em>
@@ -243,9 +243,9 @@
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>       usage();
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     }
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> 
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>     <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>       <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html">XmlGradeBookParser</a>(file);
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>       book = parser.parse();
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> 
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -262,7 +262,7 @@
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>     }
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> 
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>     <em class="jxr_comment">// Get the assignment</em>
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assign = book.getAssignment(name);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assign = book.getAssignment(name);
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>     <strong class="jxr_keyword">if</strong> (assign == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>       <em class="jxr_comment">// Did we specify a points value?</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>       <strong class="jxr_keyword">if</strong> (points == <strong class="jxr_keyword">null</strong>) {
@@ -285,7 +285,7 @@
 <a class="jxr_linenumber" name="L277" href="#L277">277</a>       }
 <a class="jxr_linenumber" name="L278" href="#L278">278</a> 
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>       <em class="jxr_comment">// Create a new Assignment</em>
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>       assign = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a>(name, value);
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>       assign = <strong class="jxr_keyword">new</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>(name, value);
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>       book.addAssignment(assign);
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>     }
 <a class="jxr_linenumber" name="L283" href="#L283">283</a> 
@@ -304,7 +304,7 @@
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> 
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>     <em class="jxr_comment">// Write the grade book back out to the XML file</em>
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>       <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlDumper.html">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>       dumper.dump(book);
 <a class="jxr_linenumber" name="L301" href="#L301">301</a> 
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>     } <strong class="jxr_keyword">catch</strong> (IOException ex) {
@@ -332,6 +332,6 @@
 <a class="jxr_linenumber" name="L324" href="#L324">324</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

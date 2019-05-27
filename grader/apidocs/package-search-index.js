@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"edu.pdx.cs410J.grader"},{"l":"edu.pdx.cs410J.grader.poa"},{"l":"edu.pdx.cs410J.grader.poa.ui"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"edu.pdx.cs410J.grader"},{"l":"edu.pdx.cs410J.grader.poa"},{"l":"edu.pdx.cs410J.grader.poa.ui"}]

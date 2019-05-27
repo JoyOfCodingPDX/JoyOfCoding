@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Matchers.anyInt;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">POAAssignmentsPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html">POASubmissionTestCase</a> {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="POAAssignmentsPresenterTest" href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html#POAAssignmentsPresenterTest">POAAssignmentsPresenterTest</a> <strong class="jxr_keyword">extends</strong> <a name="POASubmissionTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html#POASubmissionTestCase">POASubmissionTestCase</a> {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> POAAssignmentsView view;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> GradeBook book;
@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      ArgumentCaptor&lt;AssignmentSelectedHandler&gt; viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      verify(<strong class="jxr_keyword">this</strong>.view).addAssignmentSelectedHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">AssignmentSelectedEventHandler</a> eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -76,7 +76,7 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      assertThat(event.getValue().getAssignment(), equalTo(assignment1));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>    }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">AssignmentSelectedEventHandler</a> {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> AssignmentSelectedEventHandler {
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      @Subscribe
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> handle(AssignmentSelectedEvent event);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>    }
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>    @Test
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> selectAssignmentWhenPOASubmittedWithAssignmentNumberInSubject() {
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">AssignmentSelectedEventHandler</a> eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     ArgumentCaptor&lt;AssignmentSelectedHandler&gt; viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     verify(<strong class="jxr_keyword">this</strong>.view).addAssignmentSelectedHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> 
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">AssignmentSelectedEventHandler</a> eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -157,7 +157,7 @@
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     ArgumentCaptor&lt;AssignmentSelectedHandler&gt; viewHandler = ArgumentCaptor.forClass(AssignmentSelectedHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>     verify(<strong class="jxr_keyword">this</strong>.view).addAssignmentSelectedHandler(viewHandler.capture());
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> 
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>     <a href="../../../../../edu/pdx/cs410J/grader/poa/POAAssignmentsPresenterTest.html">AssignmentSelectedEventHandler</a> eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>     AssignmentSelectedEventHandler eventHandler = mock(AssignmentSelectedEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     <strong class="jxr_keyword">this</strong>.bus.register(eventHandler);
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> 
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> GradeBookLoaded(book));
@@ -180,6 +180,6 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

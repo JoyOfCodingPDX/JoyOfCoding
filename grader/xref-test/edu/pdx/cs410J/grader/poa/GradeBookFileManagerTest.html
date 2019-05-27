@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.mock;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.verify;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManagerTest.html">GradeBookFileManagerTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/EventBusTestCase.html">EventBusTestCase</a> {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradeBookFileManagerTest" href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManagerTest.html#GradeBookFileManagerTest">GradeBookFileManagerTest</a> <strong class="jxr_keyword">extends</strong> <a name="EventBusTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/EventBusTestCase.html#EventBusTestCase">EventBusTestCase</a> {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    @Override
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setUp() {
@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      String gradeBookName = <span class="jxr_string">"Test Grade Book"</span>;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      File file = writeGradeBookToFile(gradeBookName);
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManagerTest.html">GradeBookLoadedHandler</a> handler = mock(GradeBookLoadedHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">this</strong>.bus.register(handler);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> LoadGradeBook(file));
@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">return</strong> file;
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>    }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManagerTest.html">GradeBookLoadedHandler</a> {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> GradeBookLoadedHandler {
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      @Subscribe
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">void</strong> handle(GradeBookLoaded event);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>    }
@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> unhandledExceptionEventPublishedWhenLoadingBadGradeBook() <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      File badFile = File.createTempFile(<span class="jxr_string">"badGradeBook"</span>, <span class="jxr_string">"xml"</span>);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/UnhandledExceptionEventTest.html">UnhandledExceptionEventHandler</a> handler = mock(UnhandledExceptionEventHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">this</strong>.bus.register(handler);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">this</strong>.unhandledExceptionHandler = <strong class="jxr_keyword">this</strong>::doNotFailTestWhenUnhandledExceptionEncountered;
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      assertThat(event.getValue().getUnhandledException(), any(Throwable.<strong class="jxr_keyword">class</strong>));
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>    }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../edu/pdx/cs410J/grader/poa/UnhandledExceptionEventTest.html">UnhandledExceptionEventHandler</a> {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> UnhandledExceptionEventHandler {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      @Subscribe
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">void</strong> handle(UnhandledExceptionEvent event);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>    }
@@ -90,7 +90,7 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      String gradeBookName = <span class="jxr_string">"Test Grade Book"</span>;
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      File file = writeGradeBookToFile(gradeBookName);
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <a href="../../../../../edu/pdx/cs410J/grader/poa/GradeBookFileManagerTest.html">GradeBookLoadedHandler</a> handler = mock(GradeBookLoadedHandler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">this</strong>.bus.register(handler);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      <strong class="jxr_keyword">this</strong>.bus.post(<strong class="jxr_keyword">new</strong> LoadGradeBook(file));
@@ -116,6 +116,6 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

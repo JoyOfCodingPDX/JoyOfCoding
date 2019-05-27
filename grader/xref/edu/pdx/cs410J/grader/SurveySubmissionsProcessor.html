@@ -18,8 +18,8 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/SurveySubmissionsProcessor.html">SurveySubmissionsProcessor</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../edu/pdx/cs410J/grader/StudentEmailAttachmentProcessor.html">StudentEmailAttachmentProcessor</a> {
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/SurveySubmissionsProcessor.html">SurveySubmissionsProcessor</a>(File directory, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradeBook) {
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SurveySubmissionsProcessor" href="../../../../edu/pdx/cs410J/grader/SurveySubmissionsProcessor.html#SurveySubmissionsProcessor">SurveySubmissionsProcessor</a> <strong class="jxr_keyword">extends</strong> <a name="StudentEmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/StudentEmailAttachmentProcessor.html#StudentEmailAttachmentProcessor">StudentEmailAttachmentProcessor</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">public</strong> <a name="SurveySubmissionsProcessor" href="../../../../edu/pdx/cs410J/grader/SurveySubmissionsProcessor.html#SurveySubmissionsProcessor">SurveySubmissionsProcessor</a>(File directory, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradeBook) {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">super</strong>(directory, gradeBook);
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    }
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
@@ -54,11 +54,11 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      addStudentFromFileToGradeBook(file, gradeBook);
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>    }
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addStudentFromFileToGradeBook(File file, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradeBook) {
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addStudentFromFileToGradeBook(File file, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradeBook) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student;
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>        <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a> parser = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html">XmlStudentParser</a>(file);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>        <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>.html#XmlStudentParser">XmlStudentParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlStudentParser" href="../../../../edu/pdx/cs410J/grader/XmlStudentParser.html#XmlStudentParser">XmlStudentParser</a>(file);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>        student = parser.parseStudent();
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      } <strong class="jxr_keyword">catch</strong> (IOException | ParserException ex) {
@@ -78,7 +78,7 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      logNotesAboutStudent(student);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>    }
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> logNotesAboutStudent(<a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> logNotesAboutStudent(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      student.getNotes().forEach((note) -&gt; info(<span class="jxr_string">"  "</span> + note));
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>    }
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
@@ -89,6 +89,6 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

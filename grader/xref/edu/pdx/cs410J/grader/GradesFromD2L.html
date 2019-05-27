@@ -10,19 +10,19 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.util.*;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">GradesFromD2L</a> {
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GradesFromD2L" href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html#GradesFromD2L">GradesFromD2L</a> {
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>     <strong class="jxr_keyword">private</strong> List&lt;D2LStudent&gt; students = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a> newStudent() {
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a>();
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> D2LStudentBuilder newStudent() {
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> D2LStudentBuilder();
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>    }
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addStudent(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> student) {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addStudent(D2LStudent student) {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">this</strong>.students.add(student);
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>    }
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">public</strong> Optional&lt;Student&gt; findStudentInGradebookForD2LStudent(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> d2lStudent, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> book) {
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">return</strong> book.studentsStream().filter((Student student) -&gt; {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">public</strong> Optional&lt;Student&gt; findStudentInGradebookForD2LStudent(D2LStudent d2lStudent, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book) {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">return</strong> book.studentsStream().filter((<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) -&gt; {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>        <strong class="jxr_keyword">if</strong> (haveSameD2LId(d2lStudent, student)) {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
@@ -40,16 +40,16 @@
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      }).findAny();
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    }
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> studentIdIsSameAsD2LId(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> d2lStudent, <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> studentIdIsSameAsD2LId(D2LStudent d2lStudent, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">return</strong> d2lStudent.getD2lId().equals(student.getId());
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>    }
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> haveSameFirstAndLastNameIgnoringCase(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> d2lStudent, <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> haveSameFirstAndLastNameIgnoringCase(D2LStudent d2lStudent, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">return</strong> d2lStudent.getFirstName().equalsIgnoreCase(student.getFirstName()) &amp;&amp;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>        d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>    }
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> haveSameD2LId(<a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> d2lStudent, <a href="../../../../edu/pdx/cs410J/grader/Student.html">Student</a> student) {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> haveSameD2LId(D2LStudent d2lStudent, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">return</strong> d2lStudent.getD2lId().equals(student.getD2LId());
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>    }
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
@@ -57,8 +57,8 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.students;
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    }
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">public</strong> Optional&lt;Assignment&gt; findAssignmentInGradebookForD2lQuiz(String quizName, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradebook) {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assignment = gradebook.getAssignment(quizName);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">public</strong> Optional&lt;Assignment&gt; findAssignmentInGradebookForD2lQuiz(String quizName, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradebook) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment = gradebook.getAssignment(quizName);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">if</strong> (assignment != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>        <strong class="jxr_keyword">return</strong> Optional.ofNullable(assignment);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
@@ -66,9 +66,9 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">return</strong> findAssignmentInGradebookLike(quizName, gradebook);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>    }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>    <strong class="jxr_keyword">private</strong> Optional&lt;Assignment&gt; findAssignmentInGradebookLike(String quizName, <a href="../../../../edu/pdx/cs410J/grader/GradeBook.html">GradeBook</a> gradebook) {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>    <strong class="jxr_keyword">private</strong> Optional&lt;Assignment&gt; findAssignmentInGradebookLike(String quizName, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradebook) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">for</strong> (String assignmentName : gradebook.getAssignmentNames()) {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>        <a href="../../../../edu/pdx/cs410J/grader/Assignment.html">Assignment</a> assignment = gradebook.getAssignment(assignmentName);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>        <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment = gradebook.getAssignment(assignmentName);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>        <strong class="jxr_keyword">if</strong> (quizName.startsWith(assignmentName)) {
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">return</strong> Optional.ofNullable(assignment);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>        }
@@ -80,13 +80,13 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">return</strong> Optional.empty();
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>    }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> D2LStudent {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String firstName;
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String lastName;
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String d2lId;
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">private</strong> Map&lt;String, Double&gt; scores = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a>(String firstName, String lastName, String d2lId) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> D2LStudent(String firstName, String lastName, String d2lId) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>        <strong class="jxr_keyword">this</strong>.firstName = firstName;
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>        <strong class="jxr_keyword">this</strong>.lastName = lastName;
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>        <strong class="jxr_keyword">this</strong>.d2lId = d2lId;
@@ -122,31 +122,31 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>   }
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>   <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a> {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>   <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> D2LStudentBuilder {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">private</strong> String firstName;
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">private</strong> String lastName;
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">private</strong> String d2lId;
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> 
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a>() {
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">private</strong> D2LStudentBuilder() {
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> 
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     }
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> 
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a> setFirstName(String firstName) {
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> D2LStudentBuilder setFirstName(String firstName) {
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>       <strong class="jxr_keyword">this</strong>.firstName = firstName;
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>     }
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a> setLastName(String lastName) {
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">public</strong> D2LStudentBuilder setLastName(String lastName) {
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>       <strong class="jxr_keyword">this</strong>.lastName = lastName;
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     }
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudentBuilder</a> setD2LId(String d2lId) {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">public</strong> D2LStudentBuilder setD2LId(String d2lId) {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>       <strong class="jxr_keyword">this</strong>.d2lId = d2lId;
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     }
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a> create() {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> D2LStudent create() {
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>       <strong class="jxr_keyword">if</strong> (firstName == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"Missing first name"</span>);
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>       }
@@ -159,12 +159,12 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"Missing d2l Id"</span>);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>       }
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/GradesFromD2L.html">D2LStudent</a>(firstName, lastName, d2lId);
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> D2LStudent(firstName, lastName, d2lId);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     }
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>   }
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

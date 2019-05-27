@@ -21,7 +21,7 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * @author My good buddy, Nate Nystrom</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html">TesterSecurityManager</a> <strong class="jxr_keyword">extends</strong> SecurityManager {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html#TesterSecurityManager">TesterSecurityManager</a> <strong class="jxr_keyword">extends</strong> SecurityManager {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   * Controls whether or not we allow the JVM to exit.</em>
@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkExit(<strong class="jxr_keyword">int</strong> status) {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_comment">//      System.err.println("exit " + status);</em>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">if</strong> (! allowExit) {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>        <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/grader/TesterExitException.html">TesterExitException</a>(<span class="jxr_string">"Tried to exit (status="</span> +
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>        <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="TesterExitException" href="../../../../edu/pdx/cs410J/grader/TesterExitException.html#TesterExitException">TesterExitException</a>(<span class="jxr_string">"Tried to exit (status="</span> +
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>                                      status + <span class="jxr_string">")"</span>);
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      }
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>    }
@@ -82,6 +82,6 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

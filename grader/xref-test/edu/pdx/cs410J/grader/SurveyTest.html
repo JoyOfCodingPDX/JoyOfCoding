@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.MatcherAssert.assertThat;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.Matchers.*;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/grader/SurveyTest.html">SurveyTest</a> {
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SurveyTest" href="../../../../edu/pdx/cs410J/grader/SurveyTest.html#SurveyTest">SurveyTest</a> {
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>     @Test
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setNonEmptyValue() {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      Student student = <strong class="jxr_keyword">new</strong> Student(<span class="jxr_string">"test"</span>);
@@ -56,9 +56,22 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      assertThat(lines, not(startsWith(<span class="jxr_string">" "</span>)));
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      assertThat(lines, containsString(<span class="jxr_string">"here\nit"</span>));
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    }
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  }
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    @Test
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> validEmailAddressIsValid() {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      String address = <span class="jxr_string">"whitlock@cs.pdx.edu"</span>;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      assertThat(Survey.isEmailAddress(address), equalTo(<strong class="jxr_keyword">true</strong>));
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>    }
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>    @Test
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invalidEmailAddressIsInvalid() {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      String address = <span class="jxr_string">"whitlock"</span>;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      assertThat(Survey.isEmailAddress(address), equalTo(false));
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>    }
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
