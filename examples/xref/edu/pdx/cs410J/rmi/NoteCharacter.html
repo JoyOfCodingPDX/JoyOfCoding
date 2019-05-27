@@ -20,7 +20,7 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * character is noted, the &lt;code&gt;Movie&lt;/code&gt; is fetched from the</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * database and is printed out.</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/rmi/NoteCharacter.html">NoteCharacter</a> {
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NoteCharacter" href="../../../../edu/pdx/cs410J/rmi/NoteCharacter.html#NoteCharacter">NoteCharacter</a> {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> PrintStream out = System.out;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
@@ -31,10 +31,10 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">long</strong> actorId = Long.parseLong(args[4]);
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>        <a href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html">MovieDatabase</a> db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>        <a name="MovieDataba<a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a>../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a> db = (<a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a>) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>        db.noteCharacter(movieId, character, actorId);
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>        <a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> movie = db.getMovie(movieId);
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>        <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie = db.getMovie(movieId);
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>        out.println(movie.getTitle());
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>        <strong class="jxr_keyword">for</strong> (Map.Entry entry : movie.getCharacters().entrySet()) {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          out.println(<span class="jxr_string">"  "</span> + entry.getKey() + <span class="jxr_string">"\t"</span> + entry.getValue());
@@ -51,6 +51,6 @@
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

@@ -16,7 +16,7 @@
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.stream.IntStream;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.util.stream.Stream;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/java8/StreamOperations.html">StreamOperations</a> {
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="StreamOperations" href="../../../../edu/pdx/cs410J/java8/StreamOperations.html#StreamOperations">StreamOperations</a> {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> printElementsInStream() {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      Stream&lt;String&gt; stream = Arrays.asList(<span class="jxr_string">"A"</span>, <span class="jxr_string">"B"</span>, <span class="jxr_string">"C"</span>).stream();
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">return</strong> longest.orElse(<span class="jxr_string">""</span>);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>    }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../edu/pdx/cs410J/rmi/Movie.html">Movie</a> findMovieWithId(<strong class="jxr_keyword">long</strong> id, Stream&lt;Movie&gt; movies) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>    <strong class="jxr_keyword">public</strong> <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> findMovieWithId(<strong class="jxr_keyword">long</strong> id, Stream&lt;Movie&gt; movies) {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      Optional&lt;Movie&gt; movie = movies.filter(m -&gt; m.getId() == id).findAny();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">return</strong> movie.orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Can't find movie"</span>));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>    }
@@ -137,6 +137,6 @@
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

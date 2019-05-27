@@ -15,9 +15,9 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * @version $Revision: 1.2 $</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * @since Summer 2004</em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/j2se15/NumericOperators.html">NumericOperators</a> {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NumericOperators" href="../../../../edu/pdx/cs410J/j2se15/NumericOperators.html#NumericOperators">NumericOperators</a> {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">private</strong> enum <a href="../../../../edu/pdx/cs410J/j2se15/NumericOperators.html">Operation</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">private</strong> enum Operation {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      PLUS {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>        <strong class="jxr_keyword">double</strong> eval(<strong class="jxr_keyword">double</strong> x, <strong class="jxr_keyword">double</strong> y) {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">return</strong> x + y;
@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">   * enumerated type.</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <a href="../../../../edu/pdx/cs410J/j2se15/NumericOperators.html">Operation</a>[] ops = { Operation.PLUS, Operation.MINUS,
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      Operation[] ops = { Operation.PLUS, Operation.MINUS,
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                          Operation.TIMES, Operation.DIVIDE };
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">for</strong> (Operation op : ops) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>        System.out.println(<span class="jxr_string">"5 "</span> + op.getSymbol() + <span class="jxr_string">" 2 = "</span> +
@@ -81,6 +81,6 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

@@ -17,7 +17,7 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * A helper class that provides methods for requesting resources via HTTP</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">HttpRequestHelper</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="HttpRequestHelper" href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html#HttpRequestHelper">HttpRequestHelper</a> {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment">   * Performs an HTTP GET on the given URL</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">   *</em>
@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment">   * @param parameters The key/value query parameters</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment">   * @return A &lt;code&gt;Response&lt;/code&gt; summarizing the result of the GET</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">protected</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> get(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">protected</strong> Response get(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      checkParameters(parameters);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      StringBuilder query = encodeParameters(parameters);
@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      conn.setDoOutput(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      conn.setDoInput(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a>(conn);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Response(conn);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>    }
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
@@ -49,7 +49,7 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">   * @param parameters The key/value parameters</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">   * @return A &lt;code&gt;Response&lt;/code&gt; summarizing the result of the POST</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">protected</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> post(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">protected</strong> Response post(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">return</strong> sendEncodedRequest(urlString, <span class="jxr_string">"POST"</span>, parameters);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>    }
@@ -60,12 +60,12 @@
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">   * @param parameters The key/value parameters</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">   * @return A &lt;code&gt;Response&lt;/code&gt; summarizing the result of the POST</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>    <strong class="jxr_keyword">protected</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> delete(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>    <strong class="jxr_keyword">protected</strong> Response delete(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">return</strong> sendEncodedRequest(urlString, <span class="jxr_string">"DELETE"</span>, parameters);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>    }
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> sendEncodedRequest(String urlString, String requestMethod, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>    <strong class="jxr_keyword">private</strong> Response sendEncodedRequest(String urlString, String requestMethod, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      checkParameters(parameters);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      StringBuilder data = encodeParameters(parameters);
@@ -79,7 +79,7 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      wr.write(data.toString());
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      wr.flush();
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> response = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a>(conn);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      Response response = <strong class="jxr_keyword">new</strong> Response(conn);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      wr.close();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">return</strong> response;
@@ -120,7 +120,7 @@
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment">   * @param parameters key/value parameters to the put</em>
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment">   * @return A &lt;code&gt;Reponse&lt;/code&gt; summarizing the result of the PUT</em>
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>   <strong class="jxr_keyword">protected</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> put(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>   <strong class="jxr_keyword">protected</strong> Response put(String urlString, String... parameters) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     checkParameters(parameters);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> 
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     StringBuilder data = <strong class="jxr_keyword">new</strong> StringBuilder();
@@ -145,7 +145,7 @@
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>     wr.write(data.toString());
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     wr.flush();
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> 
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> response = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a>(conn);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     Response response = <strong class="jxr_keyword">new</strong> Response(conn);
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     wr.close();
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">return</strong> response;
@@ -154,7 +154,7 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">   * Encapsulates a response to an HTTP request</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> {
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Response {
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> code;
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> 
@@ -162,7 +162,7 @@
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> 
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> contentLines = 0;
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> 
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a>(HttpURLConnection conn) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>     <strong class="jxr_keyword">private</strong> Response(HttpURLConnection conn) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>       <strong class="jxr_keyword">this</strong>.code = conn.getResponseCode();
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>       <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.code != java.net.HttpURLConnection.HTTP_OK) {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">this</strong>.content = conn.getResponseMessage();
@@ -215,9 +215,9 @@
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>     String[] parameters = <strong class="jxr_keyword">new</strong> String[args.length - 2];
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>     System.arraycopy(args, 2, parameters, 0, parameters.length);
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> 
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">HttpRequestHelper</a> helper = <strong class="jxr_keyword">new</strong> <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">HttpRequestHelper</a>();
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <a name="HttpRequestHelper" href="../../../../edu/pdx/cs410J/web/Htt<a name="HttpRequestHelper" href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html#HttpRequestHelper">HttpRequestHelper</a>ml#HttpRequestHelper">HttpRequestHelper</a> helper = <strong class="jxr_keyword">new</strong> <a name="HttpRequestHelper" href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html#HttpRequestHelper">HttpRequestHelper</a>();
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> 
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     <a href="../../../../edu/pdx/cs410J/web/HttpRequestHelper.html">Response</a> response;
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>     Response response;
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">if</strong> (method.equalsIgnoreCase(<span class="jxr_string">"PUT"</span>)) {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>       response = helper.put(url, parameters);
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
@@ -240,6 +240,6 @@
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2018 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
