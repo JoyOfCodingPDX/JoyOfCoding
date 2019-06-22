@@ -1,3 +1,6 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 /*
  * Copyright 2007-present the original author or authors.
  *
@@ -13,6 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.net.*;
+import java.io.*;
+import java.nio.channels.*;
 import java.util.Properties;
 
 public class MavenWrapperDownloader {
