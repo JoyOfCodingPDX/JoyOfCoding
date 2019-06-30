@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.grader;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.icegreen.greenmail.imap.AuthorizationException;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.icegreen.greenmail.store.FolderException;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.icegreen.greenmail.user.GreenMailUser;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.icegreen.greenmail.util.GreenMail;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.icegreen.greenmail.util.ServerSetup;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import com.sun.mail.util.MailSSLSocketFactory;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.junit.After;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import org.junit.Before;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">import javax.mail.*;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import javax.mail.internet.InternetAddress;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import javax.mail.internet.MimeMessage;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.security.GeneralSecurityException;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.Properties;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">public class GreenmailIntegrationTestCase {</a>
+<span class="sourceLineNo">019</span><a id="line.19">  protected final String emailAddress = "test@email.com";</a>
+<span class="sourceLineNo">020</span><a id="line.20">  protected final String emailServerHost = "127.0.0.1";</a>
+<span class="sourceLineNo">021</span><a id="line.21">  protected final int smtpPort = 2525;</a>
+<span class="sourceLineNo">022</span><a id="line.22">  protected final String imapUserName = "emailUser";</a>
+<span class="sourceLineNo">023</span><a id="line.23">  protected final String imapPassword = "emailPassword";</a>
+<span class="sourceLineNo">024</span><a id="line.24">  protected final int imapsPort = 9933;</a>
+<span class="sourceLineNo">025</span><a id="line.25">  protected GreenMail emailServer;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">  @Before</a>
+<span class="sourceLineNo">028</span><a id="line.28">  public void startEmailServer() throws FolderException, AuthorizationException {</a>
+<span class="sourceLineNo">029</span><a id="line.29">    ServerSetup smtp = new ServerSetup(smtpPort, emailServerHost, ServerSetup.PROTOCOL_SMTP);</a>
+<span class="sourceLineNo">030</span><a id="line.30">    ServerSetup imaps = new ServerSetup(imapsPort, emailServerHost, ServerSetup.PROTOCOL_IMAPS);</a>
+<span class="sourceLineNo">031</span><a id="line.31">    emailServer = new GreenMail(new ServerSetup[]{ smtp, imaps });</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">    GreenMailUser user = emailServer.setUser(emailAddress, imapUserName, imapPassword);</a>
+<span class="sourceLineNo">034</span><a id="line.34">    doSomethingWithUser(user);</a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
+<span class="sourceLineNo">036</span><a id="line.36">    emailServer.start();</a>
+<span class="sourceLineNo">037</span><a id="line.37">  }</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">  protected void doSomethingWithUser(GreenMailUser user) throws FolderException, AuthorizationException {</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">  }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">  @Before</a>
+<span class="sourceLineNo">044</span><a id="line.44">  public void enableDebugLogging() {</a>
+<span class="sourceLineNo">045</span><a id="line.45">    System.setProperty("mail.imap.parse.debug", Boolean.TRUE.toString());</a>
+<span class="sourceLineNo">046</span><a id="line.46">  }</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">  @After</a>
+<span class="sourceLineNo">049</span><a id="line.49">  public void stopEmailServer() {</a>
+<span class="sourceLineNo">050</span><a id="line.50">    emailServer.stop();</a>
+<span class="sourceLineNo">051</span><a id="line.51">  }</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">  protected MimeMessage newEmailTo(Session session, String recipient, String subject) throws MessagingException {</a>
+<span class="sourceLineNo">054</span><a id="line.54">    MimeMessage message = new MimeMessage(session);</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">    InternetAddress[] to = {new InternetAddress(recipient)};</a>
+<span class="sourceLineNo">057</span><a id="line.57">    message.setRecipients(Message.RecipientType.TO, to);</a>
+<span class="sourceLineNo">058</span><a id="line.58">    message.setSubject(subject);</a>
+<span class="sourceLineNo">059</span><a id="line.59">    return message;</a>
+<span class="sourceLineNo">060</span><a id="line.60">  }</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">  protected Session newEmailSession(boolean debug) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">    Properties props = new Properties();</a>
+<span class="sourceLineNo">064</span><a id="line.64">    props.put("mail.smtp.host", emailServerHost);</a>
+<span class="sourceLineNo">065</span><a id="line.65">    props.put("mail.smtp.port", smtpPort);</a>
+<span class="sourceLineNo">066</span><a id="line.66">    Session session = Session.getDefaultInstance(props, null);</a>
+<span class="sourceLineNo">067</span><a id="line.67">    session.setDebug(debug);</a>
+<span class="sourceLineNo">068</span><a id="line.68">    return session;</a>
+<span class="sourceLineNo">069</span><a id="line.69">  }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  protected Folder openFolder(Store store, String folderName) throws MessagingException {</a>
+<span class="sourceLineNo">072</span><a id="line.72">    Folder folder = store.getDefaultFolder();</a>
+<span class="sourceLineNo">073</span><a id="line.73">    folder = folder.getFolder(folderName);</a>
+<span class="sourceLineNo">074</span><a id="line.74">    folder.open(Folder.READ_WRITE);</a>
+<span class="sourceLineNo">075</span><a id="line.75">    return folder;</a>
+<span class="sourceLineNo">076</span><a id="line.76">  }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">  protected Store connectToIMAPServer() throws GeneralSecurityException, MessagingException {</a>
+<span class="sourceLineNo">079</span><a id="line.79">    Properties props = new Properties();</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">    MailSSLSocketFactory socketFactory = new MailSSLSocketFactory();</a>
+<span class="sourceLineNo">082</span><a id="line.82">    socketFactory.setTrustedHosts(new String[]{"127.0.0.1", "localhost"});</a>
+<span class="sourceLineNo">083</span><a id="line.83">    props.put("mail.imaps.ssl.socketFactory", socketFactory);</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">    Session session = Session.getInstance(props, null);</a>
+<span class="sourceLineNo">086</span><a id="line.86">    Store store = session.getStore("imaps");</a>
+<span class="sourceLineNo">087</span><a id="line.87">    store.connect(emailServerHost, imapsPort, imapUserName, imapPassword);</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">    return store;</a>
+<span class="sourceLineNo">090</span><a id="line.90">  }</a>
+<span class="sourceLineNo">091</span><a id="line.91">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
