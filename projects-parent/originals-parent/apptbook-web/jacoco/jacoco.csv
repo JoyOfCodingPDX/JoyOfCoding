@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,Messages.new Map.Entry() {...},5,24,0,2,1,6,1,4,1,3
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,AppointmentBookServlet,61,92,4,6,21,28,7,7,3,6
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,AppointmentBookRestClient.AppointmentBookRestException,8,0,0,0,3,0,1,0,1,0
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,Project4,177,0,18,0,62,0,13,0,4,0
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,AppointmentBookRestClient,122,0,2,0,20,0,8,0,7,0
+Appointment Book Web/REST Project,edu.pdx.cs410J.apptbookweb,Messages,14,114,0,6,3,20,3,9,3,6
