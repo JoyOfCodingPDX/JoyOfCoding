@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AirlineServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Airline Web/REST Project</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs410J.airlineweb</a> &gt; <span class="el_source">AirlineServlet.java</span></div><h1>AirlineServlet.java</h1><pre class="source lang-java linenums">package edu.pdx.cs410J.airlineweb;
+
+import com.google.common.annotations.VisibleForTesting;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * This servlet ultimately provides a REST API for working with an
+ * &lt;code&gt;Airline&lt;/code&gt;.  However, in its current state, it is an example
+ * of how to use HTTP and Java servlets to store simple key/value pairs.
+ */
+<span class="fc" id="L19">public class AirlineServlet extends HttpServlet {</span>
+  static final String WORD_PARAMETER = &quot;word&quot;;
+  static final String DEFINITION_PARAMETER = &quot;definition&quot;;
+
+<span class="fc" id="L23">  private final Map&lt;String, String&gt; dictionary = new HashMap&lt;&gt;();</span>
+
+  /**
+   * Handles an HTTP GET request from a client by writing the definition of the
+   * word specified in the &quot;word&quot; HTTP parameter to the HTTP response.  If the
+   * &quot;word&quot; parameter is not specified, all of the entries in the dictionary
+   * are written to the HTTP response.
+   */
+  @Override
+  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  {
+<span class="fc" id="L34">      response.setContentType( &quot;text/plain&quot; );</span>
+
+<span class="fc" id="L36">      String word = getParameter( WORD_PARAMETER, request );</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">      if (word != null) {</span>
+<span class="nc" id="L38">          writeDefinition(word, response);</span>
+
+      } else {
+<span class="fc" id="L41">          writeAllDictionaryEntries(response);</span>
+      }
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Handles an HTTP POST request by storing the dictionary entry for the
+   * &quot;word&quot; and &quot;definition&quot; request parameters.  It writes the dictionary
+   * entry to the HTTP response.
+   */
+  @Override
+  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  {
+<span class="fc" id="L53">      response.setContentType( &quot;text/plain&quot; );</span>
+
+<span class="fc" id="L55">      String word = getParameter(WORD_PARAMETER, request );</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">      if (word == null) {</span>
+<span class="nc" id="L57">          missingRequiredParameter(response, WORD_PARAMETER);</span>
+<span class="nc" id="L58">          return;</span>
+      }
+
+<span class="fc" id="L61">      String definition = getParameter(DEFINITION_PARAMETER, request );</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">      if ( definition == null) {</span>
+<span class="nc" id="L63">          missingRequiredParameter( response, DEFINITION_PARAMETER );</span>
+<span class="nc" id="L64">          return;</span>
+      }
+
+<span class="fc" id="L67">      this.dictionary.put(word, definition);</span>
+
+<span class="fc" id="L69">      PrintWriter pw = response.getWriter();</span>
+<span class="fc" id="L70">      pw.println(Messages.definedWordAs(word, definition));</span>
+<span class="fc" id="L71">      pw.flush();</span>
+
+<span class="fc" id="L73">      response.setStatus( HttpServletResponse.SC_OK);</span>
+<span class="fc" id="L74">  }</span>
+
+  /**
+   * Handles an HTTP DELETE request by removing all dictionary entries.  This
+   * behavior is exposed for testing purposes only.  It's probably not
+   * something that you'd want a real application to expose.
+   */
+  @Override
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="nc" id="L83">      response.setContentType(&quot;text/plain&quot;);</span>
+
+<span class="nc" id="L85">      this.dictionary.clear();</span>
+
+<span class="nc" id="L87">      PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L88">      pw.println(Messages.allDictionaryEntriesDeleted());</span>
+<span class="nc" id="L89">      pw.flush();</span>
+
+<span class="nc" id="L91">      response.setStatus(HttpServletResponse.SC_OK);</span>
+
+<span class="nc" id="L93">  }</span>
+
+  /**
+   * Writes an error message about a missing parameter to the HTTP response.
+   *
+   * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+   */
+  private void missingRequiredParameter( HttpServletResponse response, String parameterName )
+      throws IOException
+  {
+<span class="nc" id="L103">      String message = Messages.missingRequiredParameter(parameterName);</span>
+<span class="nc" id="L104">      response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);</span>
+<span class="nc" id="L105">  }</span>
+
+  /**
+   * Writes the definition of the given word to the HTTP response.
+   *
+   * The text of the message is formatted with
+   * {@link Messages#formatDictionaryEntry(String, String)}
+   */
+  private void writeDefinition(String word, HttpServletResponse response ) throws IOException
+  {
+<span class="nc" id="L115">      String definition = this.dictionary.get(word);</span>
+
+<span class="nc" id="L117">      PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L118">      pw.println(Messages.formatDictionaryEntry(word, definition));</span>
+
+<span class="nc" id="L120">      pw.flush();</span>
+
+<span class="nc" id="L122">      response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="nc" id="L123">  }</span>
+
+  /**
+   * Writes all of the dictionary entries to the HTTP response.
+   *
+   * The text of the message is formatted with
+   * {@link Messages#formatDictionaryEntry(String, String)}
+   */
+  private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
+  {
+<span class="fc" id="L133">      PrintWriter pw = response.getWriter();</span>
+<span class="fc" id="L134">      Messages.formatDictionaryEntries(pw, dictionary);</span>
+
+<span class="fc" id="L136">      pw.flush();</span>
+
+<span class="fc" id="L138">      response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="fc" id="L139">  }</span>
+
+  /**
+   * Returns the value of the HTTP request parameter with the given name.
+   *
+   * @return &lt;code&gt;null&lt;/code&gt; if the value of the parameter is
+   *         &lt;code&gt;null&lt;/code&gt; or is the empty string
+   */
+  private String getParameter(String name, HttpServletRequest request) {
+<span class="fc" id="L148">    String value = request.getParameter(name);</span>
+<span class="pc bpc" id="L149" title="1 of 4 branches missed.">    if (value == null || &quot;&quot;.equals(value)) {</span>
+<span class="fc" id="L150">      return null;</span>
+
+    } else {
+<span class="fc" id="L153">      return value;</span>
+    }
+  }
+
+  @VisibleForTesting
+  String getDefinition(String word) {
+<span class="fc" id="L159">      return this.dictionary.get(word);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
