@@ -155,16 +155,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-idea-plugin</artifactId>
-        <version>3.6.1</version>
-        <configuration>
-          <downloadJavadocs>true</downloadJavadocs>
-          <downloadSources>true</downloadSources>
-          <overwrite>true</overwrite>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>3.0.0-M1</version>
       </plugin>
@@ -204,12 +194,11 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M3</version>
         <configuration>
-          <!-- Let reflection code run in Java 10 -->
-          <argLine>
-            --add-opens java.base/java.lang=ALL-UNNAMED
-            --add-opens java.base/java.util=ALL-UNNAMED
-            --illegal-access=deny
-          </argLine>
+          <!--
+            Don't add argLine configuration because it will mess up JaCoCo
+
+            https://github.com/jacoco/jacoco/issues/592
+          -->
         </configuration>
       </plugin>
       <plugin>
