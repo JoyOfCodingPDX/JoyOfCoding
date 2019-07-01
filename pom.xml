@@ -199,7 +199,15 @@
 
             https://github.com/jacoco/jacoco/issues/592
           -->
+          <failIfNoTests>true</failIfNoTests>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit47</artifactId>
+            <version>3.0.0-M3</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -274,6 +282,7 @@
             <additionalClasspathElements>
               <additionalClasspathElement>${project.build.directory}/test-classes</additionalClasspathElement>
             </additionalClasspathElements>
+            <failIfNoTests>true</failIfNoTests>
           </configuration>
           <executions>
             <execution>
@@ -288,6 +297,13 @@
               </configuration>
             </execution>
           </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>3.0.0-M3</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
