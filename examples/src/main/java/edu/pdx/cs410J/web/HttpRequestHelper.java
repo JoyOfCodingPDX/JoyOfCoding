@@ -1,15 +1,19 @@
 package edu.pdx.cs410J.web;
 
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.io.*;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A helper class that provides methods for requesting resources via HTTP
  */
 public class HttpRequestHelper {
+
   /**
    * Performs an HTTP GET on the given URL
    *
@@ -20,6 +24,28 @@ public class HttpRequestHelper {
   protected Response get(String urlString, String... parameters) throws IOException {
     checkParameters(parameters);
 
+    return get(urlString, arrayToMap(parameters));
+  }
+
+  private Map<String, String> arrayToMap(String[] parameters) {
+    Map<String, String> params = new HashMap<>();
+    for (int i = 0; i < parameters.length; i++) {
+      String key = parameters[i];
+      i++;
+      String value = parameters[i];
+      params.put(key, value);
+    }
+    return params;
+  }
+
+  /**
+   * Performs an HTTP GET on the given URL
+   *
+   * @param urlString  The URL to get
+   * @param parameters The key/value query parameters
+   * @return A <code>Response</code> summarizing the result of the GET
+   */
+  protected Response get(String urlString, Map<String, String> parameters) throws IOException {
     StringBuilder query = encodeParameters(parameters);
     if (query.length() > 0) {
       query.insert(0, '?');
@@ -42,7 +68,7 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the POST
    */
   protected Response post(String urlString, String... parameters) throws IOException {
-    return sendEncodedRequest(urlString, "POST", parameters);
+    return sendEncodedRequest(urlString, "POST", arrayToMap(parameters));
 
   }
 
@@ -53,13 +79,11 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the POST
    */
   protected Response delete(String urlString, String... parameters) throws IOException {
-    return sendEncodedRequest(urlString, "DELETE", parameters);
+    return sendEncodedRequest(urlString, "DELETE", arrayToMap(parameters));
 
   }
 
-  private Response sendEncodedRequest(String urlString, String requestMethod, String... parameters) throws IOException {
-    checkParameters(parameters);
-
+  private Response sendEncodedRequest(String urlString, String requestMethod, Map<String, String> parameters) throws IOException {
     StringBuilder data = encodeParameters(parameters);
 
     URL url = new URL(urlString);
@@ -83,15 +107,16 @@ public class HttpRequestHelper {
    * @return The encoded parameters
    * @throws java.io.UnsupportedEncodingException If we can't encode UTF-8
    */
-  private StringBuilder encodeParameters(String... parameters) throws UnsupportedEncodingException {
+  private StringBuilder encodeParameters(Map<String, String> parameters) throws UnsupportedEncodingException {
     StringBuilder query = new StringBuilder();
-    for (int i = 0; i < parameters.length; i += 2) {
-      String key = parameters[i];
-      String value = parameters[i + 1];
+    for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+      Map.Entry<String, String> pair = iter.next();
+      String key = pair.getKey();
+      String value = pair.getValue();
       query.append(URLEncoder.encode(key, "UTF-8"));
       query.append("=");
       query.append(URLEncoder.encode(value, "UTF-8"));
-      if (i < parameters.length - 2) {
+      if (iter.hasNext()) {
         query.append("&");
       }
     }
@@ -184,7 +209,6 @@ public class HttpRequestHelper {
 
     /**
      * Returns the (presumably textual) response from the URL
-     * @return
      */
     public String getContent() {
       return content;
