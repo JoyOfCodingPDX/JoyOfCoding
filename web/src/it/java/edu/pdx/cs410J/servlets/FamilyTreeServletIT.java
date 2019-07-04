@@ -60,7 +60,7 @@ public class FamilyTreeServletIT extends HttpRequestHelper {
    * Returns the person with the given id
    */
   private Person getPerson(int id) throws IOException {
-    Response response = get(PERSON_URL + "/" + id);
+    Response response = get(PERSON_URL + "/" + id, Map.of());
 
     if (response.getCode() == HTTP_NOT_FOUND) {
       return null;

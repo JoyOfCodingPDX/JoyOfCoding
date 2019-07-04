@@ -18,30 +18,6 @@ public class HttpRequestHelper {
   /**
    * Performs an HTTP GET on the given URL
    *
-   * @param urlString The URL to get
-   * @param parameters The key/value query parameters
-   * @return A <code>Response</code> summarizing the result of the GET
-   */
-  protected Response get(String urlString, String... parameters) throws IOException {
-    checkParameters(parameters);
-
-    return get(urlString, arrayToMap(parameters));
-  }
-
-  public static Map<String, String> arrayToMap(String[] parameters) {
-    Map<String, String> params = new HashMap<>();
-    for (int i = 0; i < parameters.length; i++) {
-      String key = parameters[i];
-      i++;
-      String value = parameters[i];
-      params.put(key, value);
-    }
-    return params;
-  }
-
-  /**
-   * Performs an HTTP GET on the given URL
-   *
    * @param urlString  The URL to get
    * @param parameters The key/value query parameters
    * @return A <code>Response</code> summarizing the result of the GET
@@ -221,6 +197,18 @@ public class HttpRequestHelper {
     }
   }
 
+
+  private static Map<String, String> arrayToMap(String[] parameters) {
+    Map<String, String> params = new HashMap<>();
+    for (int i = 0; i < parameters.length; i++) {
+      String key = parameters[i];
+      i++;
+      String value = parameters[i];
+      params.put(key, value);
+    }
+    return params;
+  }
+
   /**
    * A main method that requests a resource from a URL using a given HTTP method
    */
@@ -238,7 +226,7 @@ public class HttpRequestHelper {
       response = helper.put(url, parameters);
 
     } else if (method.equalsIgnoreCase("GET")) {
-      response = helper.get(url, parameters);
+      response = helper.get(url, map);
 
     } else if (method.equalsIgnoreCase("POST")) {
       response = helper.post(url, map);

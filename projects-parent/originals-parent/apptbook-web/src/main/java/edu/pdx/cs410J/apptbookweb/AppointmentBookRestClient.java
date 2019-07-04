@@ -32,7 +32,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * Returns all dictionary entries from the server
    */
   public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url);
+    Response response = get(this.url, Map.of());
     return Messages.parseDictionary(response.getContent());
   }
 
@@ -40,7 +40,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException {
-    Response response = get(this.url, "word", word);
+    Response response = get(this.url, Map.of("word", word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
     return Messages.parseDictionaryEntry(content).getValue();
