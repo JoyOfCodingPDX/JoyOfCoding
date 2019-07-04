@@ -98,13 +98,6 @@ public class HttpRequestHelper {
     return query;
   }
 
-  private void checkParameters(String... parameters) {
-    if (parameters.length % 2 != 0) {
-      String s = "You must specify an even number of parameters (key/value pairs)";
-      throw new IllegalArgumentException(s);
-    }
-  }
-
   /**
    * Performs an HTTP PUT on the given URL
    *
@@ -113,7 +106,13 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the PUT
    */
   protected Response put(String urlString, Map<String, String> parameters) throws IOException {
-    StringBuilder data = encodeParameters(parameters);
+    StringBuilder data = new StringBuilder();
+        parameters.forEach((key, value) -> {
+          data.append(key);
+          data.append("=");
+          data.append(value);
+          data.append("\n");
+        });
 
     URL url = new URL(urlString);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
