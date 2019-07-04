@@ -1,8 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-package ${package};
-
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -15,6 +10,11 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+
+#set($symbol_pound='#')
+  #set($symbol_dollar='$')
+  #set($symbol_escape='\' )
+  package ${package};
 
 /**
  * Integration test that tests the REST calls made by {@link AppointmentBookRestClient}
