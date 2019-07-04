@@ -147,7 +147,8 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
     String newTitle = "New Title";
     String newYear = "2008";
-    Response response = put(getResourceURL(MOVIES), "id", String.valueOf(id), "title", newTitle, "year", newYear);
+    Response response =
+      put(getResourceURL(MOVIES), Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
     assertEquals(response.getContent(), HTTP_OK, response.getCode());
     assertEquals(1, response.getContentLines());
     assertEquals(String.valueOf(id), response.getContent());

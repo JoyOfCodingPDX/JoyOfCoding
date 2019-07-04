@@ -110,20 +110,10 @@ public class HttpRequestHelper {
    *
    * @param urlString The URL to put to
    * @param parameters key/value parameters to the put
-   * @return A <code>Reponse</code> summarizing the result of the PUT
+   * @return A <code>Response</code> summarizing the result of the PUT
    */
-  protected Response put(String urlString, String... parameters) throws IOException {
-    checkParameters(parameters);
-
-    StringBuilder data = new StringBuilder();
-    for (int i = 0; i < parameters.length; i += 2) {
-      String key = parameters[i];
-      String value = parameters[i + 1];
-      data.append(key);
-      data.append("=");
-      data.append(value);
-      data.append("\n");
-    }
+  protected Response put(String urlString, Map<String, String> parameters) throws IOException {
+    StringBuilder data = encodeParameters(parameters);
 
     URL url = new URL(urlString);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -223,7 +213,7 @@ public class HttpRequestHelper {
 
     Response response;
     if (method.equalsIgnoreCase("PUT")) {
-      response = helper.put(url, parameters);
+      response = helper.put(url, map);
 
     } else if (method.equalsIgnoreCase("GET")) {
       response = helper.get(url, map);
