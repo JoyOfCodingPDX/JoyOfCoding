@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -81,15 +80,6 @@ public class HttpRequestHelper {
    */
   protected Response delete(String urlString, Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "DELETE", parameters);
-  }
-
-  /**
-   * Performs an HTTP DELETE to the given URL
-   * @param urlString The URL to post to
-   * @return A <code>Response</code> summarizing the result of the POST
-   */
-  protected Response delete(String urlString) throws IOException {
-    return sendEncodedRequest(urlString, "DELETE", Collections.emptyMap());
   }
 
   private Response sendEncodedRequest(String urlString, String requestMethod, Map<String, String> parameters) throws IOException {

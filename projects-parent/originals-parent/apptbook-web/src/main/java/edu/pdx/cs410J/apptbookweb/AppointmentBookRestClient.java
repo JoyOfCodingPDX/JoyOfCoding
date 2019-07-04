@@ -57,7 +57,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   public void removeAllDictionaryEntries() throws IOException {
-    Response response = delete(this.url);
+    Response response = delete(this.url, Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
