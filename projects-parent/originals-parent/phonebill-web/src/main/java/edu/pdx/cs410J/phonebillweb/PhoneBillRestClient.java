@@ -50,12 +50,12 @@ public class PhoneBillRestClient extends HttpRequestHelper
     }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-      Response response = postToMyURL("word", word, "definition", definition);
+      Response response = postToMyURL(Map.of("word", word, "definition", definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
     @VisibleForTesting
-    Response postToMyURL(String... dictionaryEntries) throws IOException {
+    Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
       return post(this.url, dictionaryEntries);
     }
 

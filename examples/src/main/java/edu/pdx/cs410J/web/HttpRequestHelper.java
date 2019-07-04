@@ -5,6 +5,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,7 +29,7 @@ public class HttpRequestHelper {
     return get(urlString, arrayToMap(parameters));
   }
 
-  private Map<String, String> arrayToMap(String[] parameters) {
+  public static Map<String, String> arrayToMap(String[] parameters) {
     Map<String, String> params = new HashMap<>();
     for (int i = 0; i < parameters.length; i++) {
       String key = parameters[i];
@@ -67,9 +69,8 @@ public class HttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response post(String urlString, String... parameters) throws IOException {
-    return sendEncodedRequest(urlString, "POST", arrayToMap(parameters));
-
+  protected Response post(String urlString, Map<String, String> parameters) throws IOException {
+    return sendEncodedRequest(urlString, "POST", parameters);
   }
 
   /**
@@ -78,9 +79,17 @@ public class HttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response delete(String urlString, String... parameters) throws IOException {
-    return sendEncodedRequest(urlString, "DELETE", arrayToMap(parameters));
+  protected Response delete(String urlString, Map<String, String> parameters) throws IOException {
+    return sendEncodedRequest(urlString, "DELETE", parameters);
+  }
 
+  /**
+   * Performs an HTTP DELETE to the given URL
+   * @param urlString The URL to post to
+   * @return A <code>Response</code> summarizing the result of the POST
+   */
+  protected Response delete(String urlString) throws IOException {
+    return sendEncodedRequest(urlString, "DELETE", Collections.emptyMap());
   }
 
   private Response sendEncodedRequest(String urlString, String requestMethod, Map<String, String> parameters) throws IOException {
@@ -113,9 +122,9 @@ public class HttpRequestHelper {
       Map.Entry<String, String> pair = iter.next();
       String key = pair.getKey();
       String value = pair.getValue();
-      query.append(URLEncoder.encode(key, "UTF-8"));
+      query.append(URLEncoder.encode(key, StandardCharsets.UTF_8));
       query.append("=");
-      query.append(URLEncoder.encode(value, "UTF-8"));
+      query.append(URLEncoder.encode(value, StandardCharsets.UTF_8));
       if (iter.hasNext()) {
         query.append("&");
       }
@@ -230,6 +239,7 @@ public class HttpRequestHelper {
     String url = args[1];
     String[] parameters = new String[args.length - 2];
     System.arraycopy(args, 2, parameters, 0, parameters.length);
+    Map<String, String> map = HttpRequestHelper.arrayToMap(parameters);
 
     HttpRequestHelper helper = new HttpRequestHelper();
 
@@ -241,7 +251,7 @@ public class HttpRequestHelper {
       response = helper.get(url, parameters);
 
     } else if (method.equalsIgnoreCase("POST")) {
-      response = helper.post(url, parameters);
+      response = helper.post(url, map);
 
     } else {
       System.err.println("** Unknown method: " + method);

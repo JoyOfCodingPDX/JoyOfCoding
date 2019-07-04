@@ -4,6 +4,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -25,17 +26,17 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
   @Test
   public void testMissingTitle() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES)).getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of()).getCode());
   }
 
   @Test
   public void testMissingYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), "title", "Title").getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title")).getCode());
   }
 
   @Test
   public void testMalformedYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), "title", "Title", "year", "asdfa").getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title", "year", "asdfa")).getCode());
   }
 
   @Test
@@ -44,7 +45,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
   }
 
   private long createMovie(String title, String year) throws IOException {
-    Response response = post(getResourceURL(MOVIES), "title", title, "year", year);
+    Response response = post(getResourceURL(MOVIES), Map.of("title", title, "year", year));
     assertEquals(response.getContent(), HTTP_OK, response.getCode());
     assertNotNull(response.getContent());
     return Long.parseLong(response.getContent().trim());
@@ -162,7 +163,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
   public void canDeleteMovieFromServer() throws IOException {
     long id = createMovie("Movie to be deleted", "2015");
 
-    Response response = delete(getResourceURL(MOVIES), "id", String.valueOf(id));
+    Response response = delete(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
     assertThat(response.getContent(), response.getCode(), equalTo(HTTP_OK));
 
     response = get(getResourceURL(MOVIES), "id", String.valueOf(id));

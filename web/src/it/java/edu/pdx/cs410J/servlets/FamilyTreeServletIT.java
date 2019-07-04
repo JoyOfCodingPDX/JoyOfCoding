@@ -8,10 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -36,24 +33,18 @@ public class FamilyTreeServletIT extends HttpRequestHelper {
       throw new IllegalArgumentException(s);
     }
 
-    List<String> params = new ArrayList<String>();
+    Map<String, String> params = new HashMap<>();
 
-    params.add("Gender");
-    params.add(person.getGender() == Person.MALE ? "Male" : "Female");
+    params.put("Gender", person.getGender() == Person.MALE ? "Male" : "Female");
 
-    params.add("FirstName");
-    params.add(person.getFirstName());
-    params.add("MiddleName");
-    params.add(person.getMiddleName());
-    params.add("LastName");
-    params.add(person.getLastName());
+    params.put("FirstName", person.getFirstName());
+    params.put("MiddleName", person.getMiddleName());
+    params.put("LastName", person.getLastName());
 
-    params.add("DateOfBirth");
-    params.add(String.valueOf(person.getDateOfBirth().getTime()));
-    params.add("DateOfDeath");
-    params.add(String.valueOf(person.getDateOfBirth().getTime()));
+    params.put("DateOfBirth", String.valueOf(person.getDateOfBirth().getTime()));
+    params.put("DateOfDeath", String.valueOf(person.getDateOfBirth().getTime()));
 
-    Response response = post(PERSON_URL, params.toArray(new String[params.size()]));
+    Response response = post(PERSON_URL, params);
     if (response.getCode() != HTTP_OK) {
       String s = "Could not create Person (error code " + response.getCode() + "): " + response.getContent();
       throw new IllegalArgumentException(s);
