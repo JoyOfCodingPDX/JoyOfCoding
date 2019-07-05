@@ -41,7 +41,7 @@
 <span class="sourceLineNo">032</span><a id="line.32">   * Returns all dictionary entries from the server</a>
 <span class="sourceLineNo">033</span><a id="line.33">   */</a>
 <span class="sourceLineNo">034</span><a id="line.34">  public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {</a>
-<span class="sourceLineNo">035</span><a id="line.35">    Response response = get(this.url);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    Response response = get(this.url, Map.of());</a>
 <span class="sourceLineNo">036</span><a id="line.36">    return Messages.parseDictionary(response.getContent());</a>
 <span class="sourceLineNo">037</span><a id="line.37">  }</a>
 <span class="sourceLineNo">038</span><a id="line.38"></a>
@@ -49,24 +49,24 @@
 <span class="sourceLineNo">040</span><a id="line.40">   * Returns the definition for the given word</a>
 <span class="sourceLineNo">041</span><a id="line.41">   */</a>
 <span class="sourceLineNo">042</span><a id="line.42">  public String getDefinition(String word) throws IOException {</a>
-<span class="sourceLineNo">043</span><a id="line.43">    Response response = get(this.url, "word", word);</a>
+<span class="sourceLineNo">043</span><a id="line.43">    Response response = get(this.url, Map.of("word", word));</a>
 <span class="sourceLineNo">044</span><a id="line.44">    throwExceptionIfNotOkayHttpStatus(response);</a>
 <span class="sourceLineNo">045</span><a id="line.45">    String content = response.getContent();</a>
 <span class="sourceLineNo">046</span><a id="line.46">    return Messages.parseDictionaryEntry(content).getValue();</a>
 <span class="sourceLineNo">047</span><a id="line.47">  }</a>
 <span class="sourceLineNo">048</span><a id="line.48"></a>
 <span class="sourceLineNo">049</span><a id="line.49">  public void addDictionaryEntry(String word, String definition) throws IOException {</a>
-<span class="sourceLineNo">050</span><a id="line.50">    Response response = postToMyURL("word", word, "definition", definition);</a>
+<span class="sourceLineNo">050</span><a id="line.50">    Response response = postToMyURL(Map.of("word", word, "definition", definition));</a>
 <span class="sourceLineNo">051</span><a id="line.51">    throwExceptionIfNotOkayHttpStatus(response);</a>
 <span class="sourceLineNo">052</span><a id="line.52">  }</a>
 <span class="sourceLineNo">053</span><a id="line.53"></a>
 <span class="sourceLineNo">054</span><a id="line.54">  @VisibleForTesting</a>
-<span class="sourceLineNo">055</span><a id="line.55">  Response postToMyURL(String... dictionaryEntries) throws IOException {</a>
+<span class="sourceLineNo">055</span><a id="line.55">  Response postToMyURL(Map&lt;String, String&gt; dictionaryEntries) throws IOException {</a>
 <span class="sourceLineNo">056</span><a id="line.56">    return post(this.url, dictionaryEntries);</a>
 <span class="sourceLineNo">057</span><a id="line.57">  }</a>
 <span class="sourceLineNo">058</span><a id="line.58"></a>
 <span class="sourceLineNo">059</span><a id="line.59">  public void removeAllDictionaryEntries() throws IOException {</a>
-<span class="sourceLineNo">060</span><a id="line.60">    Response response = delete(this.url);</a>
+<span class="sourceLineNo">060</span><a id="line.60">    Response response = delete(this.url, Map.of());</a>
 <span class="sourceLineNo">061</span><a id="line.61">    throwExceptionIfNotOkayHttpStatus(response);</a>
 <span class="sourceLineNo">062</span><a id="line.62">  }</a>
 <span class="sourceLineNo">063</span><a id="line.63"></a>
