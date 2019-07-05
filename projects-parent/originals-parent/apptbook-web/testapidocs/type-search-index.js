@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookRestClientIT"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookServletTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"IndexDotHtmlIT"},{"p":"edu.pdx.cs410J.apptbookweb","l":"MessagesTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"Project4IT"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookServletTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"MessagesTest"}]
