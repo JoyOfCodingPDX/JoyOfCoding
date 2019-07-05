@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.phonebillweb","l":"IndexDotHtmlIT"},{"p":"edu.pdx.cs410J.phonebillweb","l":"MessagesTest"},{"p":"edu.pdx.cs410J.phonebillweb","l":"PhoneBillRestClientIT"},{"p":"edu.pdx.cs410J.phonebillweb","l":"PhoneBillServletTest"},{"p":"edu.pdx.cs410J.phonebillweb","l":"Project4IT"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.phonebillweb","l":"MessagesTest"},{"p":"edu.pdx.cs410J.phonebillweb","l":"PhoneBillServletTest"}]
