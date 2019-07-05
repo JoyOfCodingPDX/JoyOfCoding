@@ -56,7 +56,7 @@ public class PhoneBillRestClientIT {
   @Test
   public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL();
+    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }

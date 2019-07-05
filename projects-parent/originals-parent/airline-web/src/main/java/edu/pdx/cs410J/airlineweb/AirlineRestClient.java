@@ -35,7 +35,7 @@ public class AirlineRestClient extends HttpRequestHelper
    * Returns all dictionary entries from the server
    */
   public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url);
+    Response response = get(this.url, Map.of());
     return Messages.parseDictionary(response.getContent());
   }
 
@@ -43,24 +43,24 @@ public class AirlineRestClient extends HttpRequestHelper
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException {
-    Response response = get(this.url, "word", word);
+    Response response = get(this.url, Map.of("word", word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
     return Messages.parseDictionaryEntry(content).getValue();
   }
 
   public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = postToMyURL("word", word, "definition", definition);
+    Response response = postToMyURL(Map.of("word", word, "definition", definition));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
   @VisibleForTesting
-  Response postToMyURL(String... dictionaryEntries) throws IOException {
+  Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
     return post(this.url, dictionaryEntries);
   }
 
   public void removeAllDictionaryEntries() throws IOException {
-    Response response = delete(this.url);
+    Response response = delete(this.url, Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

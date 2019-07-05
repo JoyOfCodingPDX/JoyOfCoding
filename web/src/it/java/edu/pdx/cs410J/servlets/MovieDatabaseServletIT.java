@@ -4,6 +4,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -25,17 +26,17 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
   @Test
   public void testMissingTitle() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES)).getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of()).getCode());
   }
 
   @Test
   public void testMissingYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), "title", "Title").getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title")).getCode());
   }
 
   @Test
   public void testMalformedYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), "title", "Title", "year", "asdfa").getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title", "year", "asdfa")).getCode());
   }
 
   @Test
@@ -44,7 +45,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
   }
 
   private long createMovie(String title, String year) throws IOException {
-    Response response = post(getResourceURL(MOVIES), "title", title, "year", year);
+    Response response = post(getResourceURL(MOVIES), Map.of("title", title, "year", year));
     assertEquals(response.getContent(), HTTP_OK, response.getCode());
     assertNotNull(response.getContent());
     return Long.parseLong(response.getContent().trim());
@@ -56,7 +57,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     createMovie(title1, "2007");
     String title2 = "testGetAllMovies2";
     createMovie(title2, "2013");
-    Response response = get(getResourceURL(MOVIES));
+    Response response = get(getResourceURL(MOVIES), Map.of());
     assertNotNull(response);
     String content = response.getContent();
     assertTrue(content, content.contains(title1));
@@ -71,7 +72,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     String title = "testGetOneMovie" + "-title";
     String year = "1997";
     long id = createMovie(title, year);
-    Response response = get(getResourceURL(MOVIES), "id", String.valueOf(id));
+    Response response = get(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
     assertNotNull(response);
     assertTrue(response.getContent(), response.getContent().contains(title));
     assertTrue(response.getContent(), response.getContent().contains(year));
@@ -92,7 +93,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(getResourceURL(MOVIES), "title", query);
+    Response response = get(getResourceURL(MOVIES), Map.of("title", query));
     assertTrue(response.getContent(), response.getContent().contains(title1));
     assertFalse(response.getContent(), response.getContent().contains(title2));
     assertTrue(response.getContent(), response.getContent().contains(title3));
@@ -112,7 +113,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(getResourceURL(MOVIES), "year", query);
+    Response response = get(getResourceURL(MOVIES), Map.of("year", query));
     assertFalse(response.getContent(), response.getContent().contains(title1));
     assertTrue(response.getContent(), response.getContent().contains(title2));
     assertTrue(response.getContent(), response.getContent().contains(title3));
@@ -134,7 +135,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(getResourceURL(MOVIES), "title", titleQuery);
+    Response response = get(getResourceURL(MOVIES), Map.of("title", titleQuery));
     assertTrue(response.getContent(), response.getContent().contains(title1));
     assertFalse(response.getContent(), response.getContent().contains(title2));
     assertTrue(response.getContent(), response.getContent().contains(title3));
@@ -146,12 +147,13 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
     String newTitle = "New Title";
     String newYear = "2008";
-    Response response = put(getResourceURL(MOVIES), "id", String.valueOf(id), "title", newTitle, "year", newYear);
+    Response response =
+      put(getResourceURL(MOVIES), Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
     assertEquals(response.getContent(), HTTP_OK, response.getCode());
     assertEquals(1, response.getContentLines());
     assertEquals(String.valueOf(id), response.getContent());
 
-    response = get(getResourceURL(MOVIES), "id", String.valueOf(id));
+    response = get(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
     assertEquals(HTTP_OK, response.getCode());
     assertEquals(1, response.getContentLines());
     assertTrue(response.getContent().contains(newTitle));
@@ -162,10 +164,10 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
   public void canDeleteMovieFromServer() throws IOException {
     long id = createMovie("Movie to be deleted", "2015");
 
-    Response response = delete(getResourceURL(MOVIES), "id", String.valueOf(id));
+    Response response = delete(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
     assertThat(response.getContent(), response.getCode(), equalTo(HTTP_OK));
 
-    response = get(getResourceURL(MOVIES), "id", String.valueOf(id));
+    response = get(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
     assertThat(response.getContent(), response.getCode(), equalTo(HTTP_NOT_FOUND));
   }
 
