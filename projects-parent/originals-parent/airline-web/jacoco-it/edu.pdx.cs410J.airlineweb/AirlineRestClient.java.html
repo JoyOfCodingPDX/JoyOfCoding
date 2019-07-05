@@ -35,7 +35,7 @@ public class AirlineRestClient extends HttpRequestHelper
    * Returns all dictionary entries from the server
    */
   public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
-<span class="fc" id="L38">    Response response = get(this.url);</span>
+<span class="fc" id="L38">    Response response = get(this.url, Map.of());</span>
 <span class="fc" id="L39">    return Messages.parseDictionary(response.getContent());</span>
   }
 
@@ -43,24 +43,24 @@ public class AirlineRestClient extends HttpRequestHelper
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException {
-<span class="fc" id="L46">    Response response = get(this.url, &quot;word&quot;, word);</span>
+<span class="fc" id="L46">    Response response = get(this.url, Map.of(&quot;word&quot;, word));</span>
 <span class="fc" id="L47">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L48">    String content = response.getContent();</span>
 <span class="fc" id="L49">    return Messages.parseDictionaryEntry(content).getValue();</span>
   }
 
   public void addDictionaryEntry(String word, String definition) throws IOException {
-<span class="fc" id="L53">    Response response = postToMyURL(&quot;word&quot;, word, &quot;definition&quot;, definition);</span>
+<span class="fc" id="L53">    Response response = postToMyURL(Map.of(&quot;word&quot;, word, &quot;definition&quot;, definition));</span>
 <span class="fc" id="L54">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L55">  }</span>
 
   @VisibleForTesting
-  Response postToMyURL(String... dictionaryEntries) throws IOException {
+  Response postToMyURL(Map&lt;String, String&gt; dictionaryEntries) throws IOException {
 <span class="fc" id="L59">    return post(this.url, dictionaryEntries);</span>
   }
 
   public void removeAllDictionaryEntries() throws IOException {
-<span class="fc" id="L63">    Response response = delete(this.url);</span>
+<span class="fc" id="L63">    Response response = delete(this.url, Map.of());</span>
 <span class="fc" id="L64">    throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="fc" id="L65">  }</span>
 
