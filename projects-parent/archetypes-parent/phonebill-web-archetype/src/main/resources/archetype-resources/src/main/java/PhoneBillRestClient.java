@@ -1,3 +1,8 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+package ${package};
+
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
@@ -5,11 +10,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
-
-#set($symbol_pound='#')
-  #set($symbol_dollar='$')
-  #set($symbol_escape='\' )
-  package ${package};
 
 /**
  * A helper class for accessing the rest client.  Note that this class provides
