@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J","l":"InvokeMainIT"},{"p":"edu.pdx.cs410J","l":"InvokeMainTestCase"},{"p":"edu.pdx.cs410J","l":"LRUMapTestCase"},{"p":"edu.pdx.cs410J","l":"InvokeMainTestCase.MainMethodResult"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J","l":"InvokeMainTest"},{"p":"edu.pdx.cs410J","l":"InvokeMainTestCase"},{"p":"edu.pdx.cs410J","l":"LRUMapTestCase"},{"p":"edu.pdx.cs410J","l":"InvokeMainTestCase.MainMethodResult"}]
