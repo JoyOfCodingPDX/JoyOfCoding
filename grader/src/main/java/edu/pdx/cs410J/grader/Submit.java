@@ -223,7 +223,7 @@ public class Submit extends EmailSender {
   }
 
   private String loginIdShouldNotBeEmailAddress(String userId) {
-    return "You login id (" + userId + ") should not be an email address";
+    return "Your login id (" + userId + ") should not be an email address";
   }
 
   @VisibleForTesting
