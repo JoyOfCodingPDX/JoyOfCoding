@@ -1,10 +1,17 @@
 package edu.pdx.cs410J.grader;
 
+import com.icegreen.greenmail.imap.AuthorizationException;
+import com.icegreen.greenmail.imap.ImapHostManager;
+import com.icegreen.greenmail.store.FolderException;
+import com.icegreen.greenmail.store.FolderListener;
+import com.icegreen.greenmail.store.MailFolder;
+import com.icegreen.greenmail.user.GreenMailUser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.mail.Address;
+import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -15,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static edu.pdx.cs410J.grader.EmailSender.TA_EMAIL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -35,7 +43,6 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     }
   }
 
-  @Override
   protected String getEmailFolderName() {
     return ProjectSubmissionsProcessor.EMAIL_FOLDER_NAME;
   }
@@ -120,11 +127,58 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     assertThat(from.getPersonal(), equalTo(studentName));
 
     InternetAddress to = ((InternetAddress[]) message.getRecipients(Message.RecipientType.TO))[0];
-    assertThat(to.getAddress(), equalTo(EmailSender.TA_EMAIL.getAddress()));
-    assertThat(to.getPersonal(), equalTo(EmailSender.TA_EMAIL.getPersonal()));
+    assertThat(to.getAddress(), equalTo(TA_EMAIL.getAddress()));
+    assertThat(to.getPersonal(), equalTo(TA_EMAIL.getPersonal()));
 
     InternetAddress replyTo = ((InternetAddress[]) message.getReplyTo())[0];
     assertThat(replyTo.getAddress(), equalTo(studentEmail));
     assertThat(replyTo.getPersonal(), equalTo(studentName));
+  }
+
+  @Test
+  public void receiptEmailRepliesToDave() throws IOException, MessagingException {
+    submitFiles(true);
+  }
+
+  @Override
+  protected void initializeSmtpUser(GreenMailUser user) throws AuthorizationException, FolderException {
+    moveEmailsFromInboxToProjectSubmissions(user);
+  }
+
+  @Override
+  protected List<String> getEmailAddressesForSmtpServer() {
+    return List.of(TA_EMAIL.getAddress());
+  }
+
+  protected void moveEmailsFromInboxToProjectSubmissions(GreenMailUser user) throws AuthorizationException, FolderException {
+    ImapHostManager manager = emailServer.getManagers().getImapHostManager();
+    MailFolder submissions = manager.createMailbox(user, getEmailFolderName());
+    MailFolder inbox = manager.getInbox(user);
+    inbox.addListener(new FolderListener() {
+      @Override
+      public void expunged(int msn) {
+
+      }
+
+      @Override
+      public void added(int msn) {
+        try {
+          inbox.copyMessage(msn, submissions);
+
+        } catch (FolderException ex) {
+          throw new IllegalStateException("Can't copy message to submissions folder", ex);
+        }
+      }
+
+      @Override
+      public void flagsUpdated(int msn, Flags flags, Long uid) {
+
+      }
+
+      @Override
+      public void mailboxDeleted() {
+
+      }
+    });
   }
 }
