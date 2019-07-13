@@ -50,17 +50,22 @@ public class GraderEmailAccount {
 
       for (Message message : messages) {
         if (isUnread(message)) {
-          printMessageInformation(message);
-          if (isMultipartMessage(message)) {
-            processAttachments(message, processor);
-          } else {
-            warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
-          }
+          fetchAttachmentsFromUnreadMessage(message, processor);
         }
       }
 
     } catch (MessagingException | IOException ex ) {
       throw new IllegalStateException("While printing unread messages", ex);
+    }
+  }
+
+  @VisibleForTesting
+  protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+    printMessageInformation(message);
+    if (isMultipartMessage(message)) {
+      processAttachments(message, processor);
+    } else {
+      warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
     }
   }
 

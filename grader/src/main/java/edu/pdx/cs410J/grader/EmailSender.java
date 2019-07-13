@@ -27,13 +27,27 @@ public class EmailSender {
   }
 
   protected static MimeMessage newEmailTo(Session session, String sender, String recipient, String subject) throws MessagingException {
+    return newEmailTo(session, sender, recipient, subject, null);
+  }
+
+  protected static MimeMessage newEmailTo(Session session, String sender, String recipient, String subject, InternetAddress replyTo) throws MessagingException {
+    return newEmailTo(session, sender, new InternetAddress(recipient), subject, replyTo);
+  }
+
+  protected static MimeMessage newEmailTo(Session session, String sender, InternetAddress recipient, String subject, InternetAddress replyTo) throws MessagingException {
+    return newEmailTo(session, recipient, subject, replyTo, new InternetAddress(sender));
+  }
+
+  protected static MimeMessage newEmailTo(Session session, InternetAddress recipient, String subject, InternetAddress replyTo, InternetAddress sender) throws MessagingException {
     // Make a new email message
     MimeMessage message = new MimeMessage(session);
 
-    InternetAddress[] to = {new InternetAddress(recipient)};
-    message.setRecipients(Message.RecipientType.TO, to);
+    message.setRecipients(Message.RecipientType.TO, new InternetAddress[] { recipient });
     message.setFrom(sender);
     message.setSubject(subject);
+    if (replyTo != null) {
+      message.setReplyTo(new InternetAddress[] { replyTo });
+    }
     return message;
   }
 
