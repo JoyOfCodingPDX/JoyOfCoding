@@ -640,8 +640,13 @@ public class Submit extends EmailSender {
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
     String subject = "CS410J " + projName + " submission";
-    InternetAddress email = new InternetAddress(this.userEmail);
-    MimeMessage message = newEmailTo(newEmailSession(debug), email).from(TA_EMAIL).withSubject(subject).createMessage();
+    InternetAddress email = newInternetAddress(this.userEmail, this.userName);
+    MimeMessage message =
+      newEmailTo(newEmailSession(debug), email)
+        .from(TA_EMAIL)
+        .replyTo(DAVE_EMAIL)
+        .withSubject(subject)
+        .createMessage();
 
     // Create the contents of the message
     StringBuilder text = new StringBuilder();

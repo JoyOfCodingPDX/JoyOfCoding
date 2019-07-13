@@ -17,11 +17,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.io.InputStream;
+import java.util.*;
 
+import static edu.pdx.cs410J.grader.EmailSender.DAVE_EMAIL;
 import static edu.pdx.cs410J.grader.EmailSender.TA_EMAIL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -33,6 +32,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   private final Collection<File> filesToSubmit = new ArrayList<>();
   private final String studentLoginId = "student";
   private final String projectName = "Project";
+  private String graderEmail = TA_EMAIL.getAddress();
 
   @Before
   public void createFilesToSubmit() throws IOException {
@@ -41,10 +41,6 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     for (String fileName : fileNames) {
       this.filesToSubmit.add(createEmptyFile(dir, fileName));
     }
-  }
-
-  protected String getEmailFolderName() {
-    return ProjectSubmissionsProcessor.EMAIL_FOLDER_NAME;
   }
 
   @Before
@@ -65,7 +61,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     gradeBook.addStudent(new Student(studentLoginId));
     gradeBook.addAssignment(new Assignment(projectName, 3.5));
 
-    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, imapUserName, imapPassword, true);
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true);
     FetchAndProcessGraderEmail.fetchAndProcessGraderEmails("projects", account, this.tempDirectory, gradeBook);
 
     Grade grade = gradeBook.getStudent(studentLoginId).get().getGrade(projectName);
@@ -84,6 +80,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     submit.setUserEmail(studentEmail);
     submit.setUserId(studentLoginId);
     submit.setUserName(studentName);
+    submit.setFailIfDisallowedFiles(false);
 
     for (File file : filesToSubmit) {
       submit.addFile(file.getAbsolutePath());
@@ -96,13 +93,57 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     submit.submit(false);
   }
 
+  @Override
+  protected void initializeSmtpUser(GreenMailUser user) throws AuthorizationException, FolderException {
+    if (user.getEmail().equals(graderEmail)) {
+      moveEmailsFromInboxToProjectSubmissions(user);
+    }
+  }
+
+  @Override
+  protected List<String> getEmailAddressesForSmtpServer() {
+    return List.of(graderEmail, studentEmail);
+  }
+
+  private void moveEmailsFromInboxToProjectSubmissions(GreenMailUser user) throws AuthorizationException, FolderException {
+    ImapHostManager manager = emailServer.getManagers().getImapHostManager();
+    MailFolder submissions = manager.createMailbox(user, ProjectSubmissionsProcessor.EMAIL_FOLDER_NAME);
+    MailFolder inbox = manager.getInbox(user);
+    inbox.addListener(new FolderListener() {
+      @Override
+      public void expunged(int msn) {
+
+      }
+
+      @Override
+      public void added(int msn) {
+        try {
+          inbox.copyMessage(msn, submissions);
+
+        } catch (FolderException ex) {
+          throw new IllegalStateException("Can't copy message to submissions folder", ex);
+        }
+      }
+
+      @Override
+      public void flagsUpdated(int msn, Flags flags, Long uid) {
+
+      }
+
+      @Override
+      public void mailboxDeleted() {
+
+      }
+    });
+  }
+
   @Test
   public void submissionEmailIsSentByToGraderAndReplyToStudent() throws IOException, MessagingException {
     submitFiles();
 
     List<Message> messages = new ArrayList<>();
 
-    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, imapUserName, imapPassword, true) {
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true) {
       @Override
       protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
         messages.add(message);
@@ -138,47 +179,44 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   @Test
   public void receiptEmailRepliesToDave() throws IOException, MessagingException {
     submitFiles(true);
-  }
 
-  @Override
-  protected void initializeSmtpUser(GreenMailUser user) throws AuthorizationException, FolderException {
-    moveEmailsFromInboxToProjectSubmissions(user);
-  }
+    List<Message> messages = new ArrayList<>();
 
-  @Override
-  protected List<String> getEmailAddressesForSmtpServer() {
-    return List.of(TA_EMAIL.getAddress());
-  }
-
-  protected void moveEmailsFromInboxToProjectSubmissions(GreenMailUser user) throws AuthorizationException, FolderException {
-    ImapHostManager manager = emailServer.getManagers().getImapHostManager();
-    MailFolder submissions = manager.createMailbox(user, getEmailFolderName());
-    MailFolder inbox = manager.getInbox(user);
-    inbox.addListener(new FolderListener() {
+    GraderEmailAccount studentAccount = new GraderEmailAccount(emailServerHost, imapsPort, studentEmail, imapPassword, true) {
       @Override
-      public void expunged(int msn) {
+      protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+        messages.add(message);
+        super.fetchAttachmentsFromUnreadMessage(message, processor);
+      }
+    };
+
+    studentAccount.fetchAttachmentsFromUnreadMessagesInFolder("inbox", new EmailAttachmentProcessor() {
+      @Override
+      public void processAttachment(Message message, String fileName, InputStream inputStream) {
 
       }
 
       @Override
-      public void added(int msn) {
-        try {
-          inbox.copyMessage(msn, submissions);
-
-        } catch (FolderException ex) {
-          throw new IllegalStateException("Can't copy message to submissions folder", ex);
-        }
-      }
-
-      @Override
-      public void flagsUpdated(int msn, Flags flags, Long uid) {
-
-      }
-
-      @Override
-      public void mailboxDeleted() {
-
+      public Iterable<? extends String> getSupportedContentTypes() {
+        return List.of();
       }
     });
+
+    assertThat(messages.size(), equalTo(1));
+
+    Message message = messages.get(0);
+
+    InternetAddress from = (InternetAddress) message.getFrom()[0];
+    assertThat(from.getAddress(), equalTo(TA_EMAIL.getAddress()));
+    assertThat(from.getPersonal(), equalTo(TA_EMAIL.getPersonal()));
+
+    InternetAddress to = ((InternetAddress[]) message.getRecipients(Message.RecipientType.TO))[0];
+    assertThat(to.getAddress(), equalTo(studentEmail));
+    assertThat(to.getPersonal(), equalTo(studentName));
+
+    InternetAddress replyTo = ((InternetAddress[]) message.getReplyTo())[0];
+    assertThat(replyTo.getAddress(), equalTo(DAVE_EMAIL.getAddress()));
+    assertThat(replyTo.getPersonal(), equalTo(DAVE_EMAIL.getPersonal()));
   }
+
 }

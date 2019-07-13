@@ -30,7 +30,7 @@ public abstract class EmailSenderIntegrationTestCase {
 
     List<String> addresses = getEmailAddressesForSmtpServer();
     for (String address : addresses) {
-      GreenMailUser user = emailServer.setUser(address, imapUserName, imapPassword);
+      GreenMailUser user = emailServer.setUser(address, address, imapPassword);
       initializeSmtpUser(user);
     }
 

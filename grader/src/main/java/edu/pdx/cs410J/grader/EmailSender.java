@@ -17,6 +17,8 @@ public class EmailSender {
   @VisibleForTesting
   static final InternetAddress TA_EMAIL = newInternetAddress("sjavata@gmail.com", "Java Course Grader");
 
+  static final InternetAddress DAVE_EMAIL = newInternetAddress("whitlock@cs.pdx.edu", "David Whitlock");
+
   protected static InternetAddress newInternetAddress(String address, String personal) {
     try {
       return new InternetAddress(address, personal);
