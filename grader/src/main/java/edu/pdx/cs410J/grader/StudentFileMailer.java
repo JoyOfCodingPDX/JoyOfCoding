@@ -8,13 +8,11 @@ import org.slf4j.LoggerFactory;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -69,7 +67,12 @@ public class StudentFileMailer extends EmailSender {
 
     logger.info("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
 
-    MimeMessage message = newEmailTo(this.session, studentEmail).from(TA_EMAIL).withSubject(this.subject).createMessage();
+    MimeMessage message =
+      newEmailTo(this.session, studentEmail)
+        .from(TA_EMAIL)
+        .replyTo(DAVE_EMAIL)
+        .withSubject(this.subject)
+        .createMessage();
     message.setText(readTextFromFile(file));
 
     sendEmailMessage(message);
@@ -85,9 +88,7 @@ public class StudentFileMailer extends EmailSender {
     Transport.send(message);
   }
 
-  private InternetAddress getEmailAddress(Student student) throws AddressException {
-    InternetAddress address = new InternetAddress(student.getEmail());
-
+  private InternetAddress getEmailAddress(Student student) {
     StringBuilder name = new StringBuilder();
     name.append(student.getFirstName());
     name.append(" ");
@@ -98,14 +99,7 @@ public class StudentFileMailer extends EmailSender {
     }
     name.append(student.getLastName());
 
-    try {
-      address.setPersonal(name.toString());
-
-    } catch (UnsupportedEncodingException e) {
-      throw new AddressException("Unsupported character encoding??");
-    }
-
-    return address;
+    return newInternetAddress(student.getEmail(), name.toString());
   }
 
   private static Map<Student, File> getFilesToSendToStudents(List<File> files, GradeBook gradeBook) {
