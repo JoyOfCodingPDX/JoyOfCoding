@@ -100,6 +100,7 @@ public class Submit extends EmailSender {
 
   private boolean isSubmittingKoans = false;
   private boolean sendReceipt = true;
+  private boolean failIfDisallowedFiles = true;
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -167,6 +168,10 @@ public class Submit extends EmailSender {
    */
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
+  }
+
+  void setFailIfDisallowedFiles(boolean failIfDisallowedFiles) {
+    this.failIfDisallowedFiles = failIfDisallowedFiles;
   }
 
   /**
@@ -420,14 +425,18 @@ public class Submit extends EmailSender {
   }
 
   private List<String> fetchListOfStringsFromUrl(String listUrl) {
-    List<String> noSubmit = new ArrayList<>();
+    if (!failIfDisallowedFiles) {
+      return Collections.emptyList();
+    }
+
+    List<String> strings = new ArrayList<>();
 
     try {
       URL url = new URL(listUrl);
       InputStreamReader isr = new InputStreamReader(url.openStream());
       BufferedReader br = new BufferedReader(isr);
       while (br.ready()) {
-        noSubmit.add(br.readLine().trim());
+        strings.add(br.readLine().trim());
       }
 
     } catch (MalformedURLException ex) {
@@ -437,7 +446,7 @@ public class Submit extends EmailSender {
     } catch (IOException ex) {
       err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
     }
-    return noSubmit;
+    return strings;
   }
 
   /**
