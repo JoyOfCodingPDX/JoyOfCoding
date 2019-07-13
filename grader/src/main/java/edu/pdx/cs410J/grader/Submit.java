@@ -558,9 +558,11 @@ public class Submit extends EmailSender {
    * a textual summary of the contents of the Zip file.
    */
   private void mailTA(File zipFile, Set<File> sourceFiles) throws MessagingException {
-    String subject = "CS410J-SUBMIT " + userName + "'s " + projName;
-    InternetAddress student = new InternetAddress(this.userEmail);
-    MimeMessage message = newEmailTo(newEmailSession(debug), TA_EMAIL).from(student).withSubject(subject).createMessage();
+    MimeMessage message =
+      newEmailTo(newEmailSession(debug), TA_EMAIL)
+        .from(userEmail, userName)
+        .withSubject("CS410J-SUBMIT " + userName + "'s " + projName)
+        .createMessage();
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
     MimeBodyPart filePart = createZipAttachment(zipFile);

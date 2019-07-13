@@ -5,9 +5,9 @@ import com.google.common.annotations.VisibleForTesting;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class EmailSender {
@@ -15,14 +15,15 @@ public class EmailSender {
    * The grader's email address
    */
   @VisibleForTesting
-  static final InternetAddress TA_EMAIL = getGraderEmailAddress();
+  static final InternetAddress TA_EMAIL = newInternetAddress("sjavata@gmail.com", "Java Course Grader");
 
-  private static InternetAddress getGraderEmailAddress() {
+  protected static InternetAddress newInternetAddress(String address, String personal) {
     try {
-      return new InternetAddress("sjavata@gmail.com");
+      return new InternetAddress(address, personal);
 
-    } catch (AddressException ex) {
-      throw new IllegalStateException("Could not create Grader's email address", ex);
+    } catch (UnsupportedEncodingException ex) {
+      String message = "Could not create InternetAddress for " + address + " " + personal;
+      throw new IllegalStateException(message, ex);
     }
   }
 
@@ -80,6 +81,10 @@ public class EmailSender {
     public NewEmail replyTo(InternetAddress replyTo) {
       this.replyTo = replyTo;
       return this;
+    }
+
+    public NewEmail from(String address, String personal) {
+      return from(newInternetAddress(address, personal));
     }
   }
 

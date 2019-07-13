@@ -68,6 +68,10 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   }
 
   private void submitFiles() throws IOException, MessagingException {
+    submitFiles(false);
+  }
+
+  private void submitFiles(boolean sendReceipt) throws IOException, MessagingException {
     Submit submit = new Submit();
     submit.setProjectName(projectName);
     submit.setUserEmail(studentEmail);
@@ -81,7 +85,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     submit.setEmailServerHostName(emailServerHost);
     submit.setEmailServerPort(smtpPort);
     submit.setDebug(true);
-    submit.setSendReceipt(false);
+    submit.setSendReceipt(sendReceipt);
     submit.submit(false);
   }
 
@@ -113,12 +117,14 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     InternetAddress from = (InternetAddress) fromArray[0];
     assertThat(from.getAddress(), equalTo(studentEmail));
-//    assertThat(from.getPersonal(), equalTo(studentName));
+    assertThat(from.getPersonal(), equalTo(studentName));
 
     InternetAddress to = ((InternetAddress[]) message.getRecipients(Message.RecipientType.TO))[0];
     assertThat(to.getAddress(), equalTo(EmailSender.TA_EMAIL.getAddress()));
+    assertThat(to.getPersonal(), equalTo(EmailSender.TA_EMAIL.getPersonal()));
 
     InternetAddress replyTo = ((InternetAddress[]) message.getReplyTo())[0];
     assertThat(replyTo.getAddress(), equalTo(studentEmail));
+    assertThat(replyTo.getPersonal(), equalTo(studentName));
   }
 }
