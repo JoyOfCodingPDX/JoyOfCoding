@@ -24,7 +24,7 @@ public abstract class EmailSenderIntegrationTestCase {
   protected final int imapsPort = 9933;
   protected final File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
   protected GreenMail emailServer;
-  private String graderEmail = EmailSender.TA_EMAIL;
+  private String graderEmail = EmailSender.TA_EMAIL.getAddress();
 
   @Before
   public void startEmailServer() throws FolderException, AuthorizationException {

@@ -116,7 +116,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 //    assertThat(from.getPersonal(), equalTo(studentName));
 
     InternetAddress to = ((InternetAddress[]) message.getRecipients(Message.RecipientType.TO))[0];
-    assertThat(to.getAddress(), equalTo(EmailSender.TA_EMAIL));
+    assertThat(to.getAddress(), equalTo(EmailSender.TA_EMAIL.getAddress()));
 
     InternetAddress replyTo = ((InternetAddress[]) message.getReplyTo())[0];
     assertThat(replyTo.getAddress(), equalTo(studentEmail));

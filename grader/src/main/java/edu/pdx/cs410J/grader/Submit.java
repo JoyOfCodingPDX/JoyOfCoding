@@ -558,7 +558,9 @@ public class Submit extends EmailSender {
    * a textual summary of the contents of the Zip file.
    */
   private void mailTA(File zipFile, Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
+    String subject = "CS410J-SUBMIT " + userName + "'s " + projName;
+    InternetAddress student = new InternetAddress(this.userEmail);
+    MimeMessage message = newEmailTo(newEmailSession(debug), TA_EMAIL).from(student).withSubject(subject).createMessage();
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
     MimeBodyPart filePart = createZipAttachment(zipFile);
@@ -626,7 +628,9 @@ public class Submit extends EmailSender {
    * Sends a email to the user as a receipt of the submission.
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, "CS410J " + projName + " submission");
+    String subject = "CS410J " + projName + " submission";
+    InternetAddress email = new InternetAddress(this.userEmail);
+    MimeMessage message = newEmailTo(newEmailSession(debug), email).from(TA_EMAIL).withSubject(subject).createMessage();
 
     // Create the contents of the message
     StringBuilder text = new StringBuilder();

@@ -5,6 +5,7 @@ import com.google.common.annotations.VisibleForTesting;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -14,7 +15,17 @@ public class EmailSender {
    * The grader's email address
    */
   @VisibleForTesting
-  static final String TA_EMAIL = "sjavata@gmail.com";
+  static final InternetAddress TA_EMAIL = getGraderEmailAddress();
+
+  private static InternetAddress getGraderEmailAddress() {
+    try {
+      return new InternetAddress("sjavata@gmail.com");
+
+    } catch (AddressException ex) {
+      throw new IllegalStateException("Could not create Grader's email address", ex);
+    }
+  }
+
   /**
    * The name of the SMTP server that is used to send email
    */
@@ -22,23 +33,23 @@ public class EmailSender {
 
   private static int emailServerPort = 25;
 
-  protected static MimeMessage newEmailTo(Session session, String recipient, String subject) throws MessagingException {
-    return newEmailTo(session, TA_EMAIL, recipient, subject);
+  protected static NewEmail newEmailTo(Session session, InternetAddress recipient) {
+    return new NewEmail(session).to(recipient);
   }
 
-  protected static MimeMessage newEmailTo(Session session, String sender, String recipient, String subject) throws MessagingException {
-    return newEmailTo(session, sender, recipient, subject, null);
-  }
+  protected static class NewEmail {
+    private final Session session;
+    private InternetAddress recipient;
+    private InternetAddress sender;
+    private InternetAddress replyTo;
+    private String subject;
 
-  protected static MimeMessage newEmailTo(Session session, String sender, String recipient, String subject, InternetAddress replyTo) throws MessagingException {
-    return newEmailTo(session, sender, new InternetAddress(recipient), subject, replyTo);
-  }
+    private NewEmail(Session session) {
+      this.session = session;
+    }
 
-  protected static MimeMessage newEmailTo(Session session, String sender, InternetAddress recipient, String subject, InternetAddress replyTo) throws MessagingException {
-    return newEmailTo(session, recipient, subject, replyTo, new InternetAddress(sender));
-  }
+    MimeMessage createMessage() throws MessagingException {
 
-  protected static MimeMessage newEmailTo(Session session, InternetAddress recipient, String subject, InternetAddress replyTo, InternetAddress sender) throws MessagingException {
     // Make a new email message
     MimeMessage message = new MimeMessage(session);
 
@@ -49,6 +60,27 @@ public class EmailSender {
       message.setReplyTo(new InternetAddress[] { replyTo });
     }
     return message;
+    }
+
+    private NewEmail to(InternetAddress recipient) {
+      this.recipient = recipient;
+      return this;
+    }
+
+    public NewEmail from(InternetAddress sender) {
+      this.sender = sender;
+      return this;
+    }
+
+    public NewEmail withSubject(String subject) {
+      this.subject = subject;
+      return this;
+    }
+
+    public NewEmail replyTo(InternetAddress replyTo) {
+      this.replyTo = replyTo;
+      return this;
+    }
   }
 
   protected static Session newEmailSession(boolean debug) {
