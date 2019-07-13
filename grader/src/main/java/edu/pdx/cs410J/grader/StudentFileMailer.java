@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
@@ -62,11 +63,16 @@ public class StudentFileMailer extends EmailSender {
   }
 
   private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {
-    String studentEmail = getEmailAddress(student);
+    InternetAddress studentEmail = getEmailAddress(student);
 
     logger.info("Mailing \"" + file + "\" to \"" + studentEmail + "\"");
 
-    MimeMessage message = newEmailTo(this.session, studentEmail, this.subject);
+    MimeMessage message =
+      newEmailTo(this.session, studentEmail)
+        .from(TA_EMAIL)
+        .replyTo(DAVE_EMAIL)
+        .withSubject(this.subject)
+        .createMessage();
     message.setText(readTextFromFile(file));
 
     sendEmailMessage(message);
@@ -82,21 +88,18 @@ public class StudentFileMailer extends EmailSender {
     Transport.send(message);
   }
 
-  private String getEmailAddress(Student student) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(student.getFirstName());
-    sb.append(" ");
+  private InternetAddress getEmailAddress(Student student) {
+    StringBuilder name = new StringBuilder();
+    name.append(student.getFirstName());
+    name.append(" ");
     if (student.getNickName() != null) {
-      sb.append("\"");
-      sb.append(student.getNickName());
-      sb.append("\" ");
+      name.append("\"");
+      name.append(student.getNickName());
+      name.append("\" ");
     }
-    sb.append(student.getLastName());
-    sb.append(" <");
-    sb.append(student.getEmail());
-    sb.append(">");
+    name.append(student.getLastName());
 
-    return sb.toString();
+    return newInternetAddress(student.getEmail(), name.toString());
   }
 
   private static Map<Student, File> getFilesToSendToStudents(List<File> files, GradeBook gradeBook) {

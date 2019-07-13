@@ -100,6 +100,7 @@ public class Submit extends EmailSender {
 
   private boolean isSubmittingKoans = false;
   private boolean sendReceipt = true;
+  private boolean failIfDisallowedFiles = true;
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -167,6 +168,10 @@ public class Submit extends EmailSender {
    */
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
+  }
+
+  void setFailIfDisallowedFiles(boolean failIfDisallowedFiles) {
+    this.failIfDisallowedFiles = failIfDisallowedFiles;
   }
 
   /**
@@ -420,14 +425,18 @@ public class Submit extends EmailSender {
   }
 
   private List<String> fetchListOfStringsFromUrl(String listUrl) {
-    List<String> noSubmit = new ArrayList<>();
+    if (!failIfDisallowedFiles) {
+      return Collections.emptyList();
+    }
+
+    List<String> strings = new ArrayList<>();
 
     try {
       URL url = new URL(listUrl);
       InputStreamReader isr = new InputStreamReader(url.openStream());
       BufferedReader br = new BufferedReader(isr);
       while (br.ready()) {
-        noSubmit.add(br.readLine().trim());
+        strings.add(br.readLine().trim());
       }
 
     } catch (MalformedURLException ex) {
@@ -437,7 +446,7 @@ public class Submit extends EmailSender {
     } catch (IOException ex) {
       err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
     }
-    return noSubmit;
+    return strings;
   }
 
   /**
@@ -558,7 +567,11 @@ public class Submit extends EmailSender {
    * a textual summary of the contents of the Zip file.
    */
   private void mailTA(File zipFile, Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, TA_EMAIL, "CS410J-SUBMIT " + userName + "'s " + projName);
+    MimeMessage message =
+      newEmailTo(newEmailSession(debug), TA_EMAIL)
+        .from(userEmail, userName)
+        .withSubject("CS410J-SUBMIT " + userName + "'s " + projName)
+        .createMessage();
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
     MimeBodyPart filePart = createZipAttachment(zipFile);
@@ -626,7 +639,14 @@ public class Submit extends EmailSender {
    * Sends a email to the user as a receipt of the submission.
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
-    MimeMessage message = newEmailTo(newEmailSession(debug), this.userEmail, "CS410J " + projName + " submission");
+    String subject = "CS410J " + projName + " submission";
+    InternetAddress email = newInternetAddress(this.userEmail, this.userName);
+    MimeMessage message =
+      newEmailTo(newEmailSession(debug), email)
+        .from(TA_EMAIL)
+        .replyTo(DAVE_EMAIL)
+        .withSubject(subject)
+        .createMessage();
 
     // Create the contents of the message
     StringBuilder text = new StringBuilder();
