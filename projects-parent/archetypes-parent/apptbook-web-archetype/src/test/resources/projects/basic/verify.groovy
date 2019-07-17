@@ -9,3 +9,9 @@ if (!mvnwCmdFile.isFile()) {
   throw new FileNotFoundException("Couldn't find mvn wrapper: " + mvnwCmdFile)
 }
 
+File targetDir = new File(projectDir, "target");
+
+File jarFile = new File(targetDir, "apptbook.jar");
+if (!jarFile.isFile()) {
+  throw new FileNotFoundException("Couldn't find jar file: " + jarFile)
+}
