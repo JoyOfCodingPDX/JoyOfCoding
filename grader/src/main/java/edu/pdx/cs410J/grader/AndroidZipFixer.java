@@ -87,6 +87,8 @@ public class AndroidZipFixer {
     System.err.println("+++ " + message);
     System.err.println(ex.getMessage());
 
+    logger.debug(message, ex);
+
     System.exit(1);
   }
 
@@ -161,61 +163,46 @@ public class AndroidZipFixer {
   }
 
   private LocalDateTime getSubmissionTime(Student student) {
-    Grade gwtProject = student.getGrade("Project5");
-    if (gwtProject == null) {
+    Grade project = student.getGrade("Project5");
+    if (project == null) {
       logger.warn("No Project5 submission for " + student.getId());
       return null;
     }
 
-    List<String> notes = gwtProject.getNotes();
-    if (notes == null) {
-      logger.warn("No notes for Project5 submission for " + student.getId());
-      return null;
-    }
-
-    Stream<String> submissionTimes = getSubmissionTimes(notes);
-    return submissionTimes
-      .map(Submit.ManifestAttributes::parseSubmissionTime)
-      .max(Comparator.naturalOrder())
-      .orElse(null);
-  }
-
-  @VisibleForTesting
-  static Stream<String> getSubmissionTimes(List<String> notes) {
-    Pattern pattern = Pattern.compile("Submitted by (.*) on (.*)");
-    return notes.stream().map(note -> {
-      Matcher matcher = pattern.matcher(note);
-      return matcher.find() ? matcher.group(2) : null;
-    });
+    return project.getSubmissionTimes().stream().max(Comparator.naturalOrder()).orElse(null);
   }
 
   @VisibleForTesting
   static String getFixedEntryName(String entryName) {
-    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/it", "/target/", ".DS_Store");
+    Stream<String> ignore = Stream.of("__MACOSX", "/test", "/androidTest", "/build/", ".DS_Store", "gradlew.bat");
     if (ignore.anyMatch(entryName::contains)) {
       return null;
     }
 
-    if (entryName.contains("pom.xml")) {
-      return "pom.xml";
+    List<String> moveToTopLevel =
+      List.of("app/build.gradle", "build.gradle", "gradle.properties", "gradlew", "settings.gradle" );
+    for (String special : moveToTopLevel) {
+      if (entryName.contains(special)) {
+        return special;
+      }
     }
 
-    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "src/main/");
+    if (entryName.endsWith("gradle")) {
+      return "gradle";
+    }
+
+    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "app/src/main/");
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "src/main/java/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "app/src/main/java/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*/resources/(.*)", "src/main/resources/");
+      fixedName = replaceRegexWithPrefix(entryName, "^edu/(.*)", "app/src/main/java/edu/");
     }
 
     if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, ".*/webapp/(.*)", "src/main/webapp/");
-    }
-
-    if (fixedName == null) {
-      fixedName = replaceRegexWithPrefix(entryName, "^edu/(.*)", "src/main/java/edu/");
+      fixedName = replaceRegexWithPrefix(entryName, ".*/gradle/(.*)", "gradle/");
     }
 
     return fixedName;

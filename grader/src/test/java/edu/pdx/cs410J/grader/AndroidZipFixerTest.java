@@ -8,8 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -24,29 +22,96 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class AndroidZipFixerTest {
 
   @Test
-  public void testEntriesAreIgnored() {
+  public void unitTestEntriesAreIgnored() {
     assertThat(AndroidZipFixer.getFixedEntryName("src/test/java"), equalTo(null));
   }
 
   @Test
-  public void pomXmlRemainsAtTopLevel() {
-    assertThat(AndroidZipFixer.getFixedEntryName("pom.xml"), equalTo("pom.xml"));
+  public void androidTestEntriesAreIgnored() {
+    assertThat(AndroidZipFixer.getFixedEntryName("src/androidTest/java"), equalTo(null));
   }
 
   @Test
-  public void pomXmlIsMovedToTopLevel() {
-    assertThat(AndroidZipFixer.getFixedEntryName("dir/pom.xml"), equalTo("pom.xml"));
+  public void androidTestInDirectoryIsIgnored() {
+    String entry = "student/app/src/androidTest/java/edu/pdx/cs410J/";
+    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(null));
+  }
+
+  @Test
+  public void buildDirectoriesAreIgnored() {
+    assertThat(AndroidZipFixer.getFixedEntryName("build"), equalTo(null));
+  }
+
+  @Test
+  public void buildGradleRemainsAtTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("build.gradle"), equalTo("build.gradle"));
+  }
+
+  @Test
+  public void buildGradleInAppDirectoryRemainsInItsDirectory() {
+    assertThat(AndroidZipFixer.getFixedEntryName("app/build.gradle"), equalTo("app/build.gradle"));
+  }
+
+  @Test
+  public void buildGradleInNonAppDirectoryIsMoveToTop() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/build.gradle"), equalTo("build.gradle"));
+  }
+
+  @Test
+  public void buildGradleInAppDirectoryInOtherDirectoryIsMovedToTopAppDirectory() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/app/build.gradle"), equalTo("app/build.gradle"));
+  }
+
+  @Test
+  public void gradlePropertiesRemainsAtTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("gradle.properties"), equalTo("gradle.properties"));
+  }
+
+  @Test
+  public void gradlePropertiesMovedToTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/gradle.properties"), equalTo("gradle.properties"));
+  }
+
+  @Test
+  public void gradleDirectoryMovedToTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/gradle"), equalTo("gradle"));
+  }
+
+  @Test
+  public void gradlewScriptMovedToTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/gradlew"), equalTo("gradlew"));
+  }
+
+  @Test
+  public void settingsDotGradleScriptMovedToTopLevel() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/settings.gradle"), equalTo("settings.gradle"));
+  }
+
+  @Test
+  public void localDotPropertiesIsIgnored() {
+    assertThat(AndroidZipFixer.getFixedEntryName("fred/local.properties"), equalTo(null));
+  }
+
+  @Test
+  public void gradleWrapperJarFileMovedToTopLevel() {
+    String entry = "gradle/wrapper/gradle-wrapper.jar";
+    assertThat(AndroidZipFixer.getFixedEntryName("student/" + entry), equalTo(entry));
+  }
+
+  @Test
+  public void gradlewDotBatIsIgnored() {
+    assertThat(AndroidZipFixer.getFixedEntryName("student/gradlew.bat"), equalTo(null));
   }
 
   @Test
   public void javaSourceRemainsAtTopLevel() {
-    String entry = "src/main/java/edu/pdx/cs410J/student/client/AppointmentBookServiceAsync.java";
+    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/MainActivity.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(entry));
   }
 
   @Test
   public void javaSourceIsMovedToTopLevel() {
-    String entry = "src/main/java/edu/pdx/cs410J/student/client/AppointmentBookServiceAsync.java";
+    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/MainActivity.java";
     assertThat(AndroidZipFixer.getFixedEntryName("directory/" + entry), equalTo(entry));
   }
 
@@ -57,15 +122,21 @@ public class AndroidZipFixerTest {
   }
 
   @Test
+  public void imlFilesAreIgnored() {
+    assertThat(AndroidZipFixer.getFixedEntryName("project.iml"), equalTo(null));
+  }
+
+  @Test
   public void resourcesDirectoryIsMovedToTopLevel() {
-    String entry = "5Proj/apptbook-gwt/src/main/resources/AppointmentBookGwt.gwt.xml";
-    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo("src/main/resources/AppointmentBookGwt.gwt.xml"));
+    String resource = "app/src/main/res/mipmap-mdpi/ic_launcher.png";
+    String entry = "5Proj/apptbook-gwt" + resource;
+    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(resource));
   }
 
   @Test
   public void srcIsAddedToMainDirectory() {
     String entry = "main/java/edu/pdx/cs410J/student/client/PrettyPrinter.java";
-    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo("src/" + entry));
+    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo("app/src/" + entry));
   }
 
   @Test
@@ -82,7 +153,7 @@ public class AndroidZipFixerTest {
   @Test
   public void directoryWithJavaIsMovedToSrcMain() {
     String entry = "student/java/edu/pdx/cs410J/student/client/Appointment.java";
-    String fixed = "src/main/java/edu/pdx/cs410J/student/client/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
@@ -93,42 +164,28 @@ public class AndroidZipFixerTest {
   }
 
   @Test
-  public void srcItIsIgnored() {
-    String entry = "apptbook-gwt-submission/src/it/java/edu/";
+  public void srcAndroidTestIsIgnored() {
+    String entry = "apptbook-gwt-submission/src/androidTest/java/edu/";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(null));
-  }
-
-  @Test
-  public void directoryWithResourcesIsMovedToSrcMain() {
-    String entry = "student/resources/edu/pdx/cs410J/student/AppointmentBookGwt.gwt.xml";
-    String fixed = "src/main/resources/edu/pdx/cs410J/student/AppointmentBookGwt.gwt.xml";
-    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
-  }
-
-  @Test
-  public void directoryWithWebappIsMovedToSrcMain() {
-    String entry = "student/webapp/WEB-INF/web.xml";
-    String fixed = "src/main/webapp/WEB-INF/web.xml";
-    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
   @Test
   public void directoryWithJavaSubPackageNamedDomainIsMovedToSrcMain() {
     String entry = "student/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
-    String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
   @Test
   public void directoryWithJavaSubPackageNamedDomainRemainsInSrcMain() {
-    String entry = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(entry));
   }
 
   @Test
   public void fileSubmittedWithSubmitProgramIsMovedToSrcMainJava() {
     String entry = "edu/pdx/cs410J/student/client/domain/Appointment.java";
-    String fixed = "src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
@@ -181,20 +238,12 @@ public class AndroidZipFixerTest {
 
     Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
     LocalDateTime submissionTime = LocalDateTime.now();
-    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, submissionTime));
+    grade.addSubmissionTime(submissionTime);
 
     student.setGrade(gwtProject, grade);
 
     AndroidZipFixer fixer = new AndroidZipFixer(book);
     assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(submissionTime)));
-  }
-
-  @Test
-  public void canIdentifySubmissionTimesInGradeNotes() {
-    LocalDateTime submissionTime = LocalDateTime.now();
-    String note = ZipFileSubmissionsProcessor.getSubmissionNote("student", submissionTime);
-    Stream<String> times = AndroidZipFixer.getSubmissionTimes(List.of(note));
-    assertThat(times.anyMatch(s -> s.equals(ManifestAttributes.formatSubmissionTime(submissionTime))), equalTo(true));
   }
 
   @Test
@@ -210,32 +259,9 @@ public class AndroidZipFixerTest {
     Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime firstSubmissionTime = now.minusDays(1);
-    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, firstSubmissionTime));
+    grade.addSubmissionTime(firstSubmissionTime);
     LocalDateTime secondSubmissionTime = now.minusHours(6);
-    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, secondSubmissionTime));
-
-    student.setGrade(gwtProject, grade);
-
-    AndroidZipFixer fixer = new AndroidZipFixer(book);
-    assertThat(fixer.getManifestEntriesForStudent(studentId).get(SUBMISSION_TIME), equalTo(ManifestAttributes.formatSubmissionTime(secondSubmissionTime)));
-  }
-
-  @Test
-  public void legacyDateFormatDoesNotMessUpSubmissionOrder() {
-    GradeBook book = new GradeBook("test");
-    String studentId = "studentId";
-    Student student = new Student(studentId);
-    book.addStudent(student);
-
-    Assignment gwtProject = new Assignment("Project5", 12.0);
-    book.addAssignment(gwtProject);
-
-    Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime firstSubmissionTime = now.minusHours(7);
-    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNoteUsingLegacyDateFormat(studentId, firstSubmissionTime));
-    LocalDateTime secondSubmissionTime = now.minusHours(6);
-    grade.addNote(ZipFileSubmissionsProcessor.getSubmissionNote(studentId, secondSubmissionTime));
+    grade.addSubmissionTime(secondSubmissionTime);
 
     student.setGrade(gwtProject, grade);
 
@@ -263,7 +289,7 @@ public class AndroidZipFixerTest {
 
   @Test
   public void contentsOfZipEntriesAreNotModified() throws IOException {
-    String entryName = "pom.xml";
+    String entryName = "build.gradle";
     String entryContent = "This is a test entry";
 
     ByteArrayOutputStream zippedBytes = new ByteArrayOutputStream();
