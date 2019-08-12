@@ -364,7 +364,7 @@ public class Submit extends EmailSender {
     if (!name.endsWith(".java")) {
       err.println("** Not submitting file " + file +
         " because does end in \".java\"");
-      return true;
+      return false;
     }
 
     // Verify that file is in the correct directory.
@@ -373,9 +373,9 @@ public class Submit extends EmailSender {
         ": it does not reside in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
         "cs410J" + File.separator + userId + " (or in one of the koans directories)");
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   private boolean isFileOnNoSubmitList(File file) {
