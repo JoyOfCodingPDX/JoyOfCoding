@@ -12,8 +12,8 @@ public class SubmitAndroidProject extends Submit {
   }
 
   @Override
-  protected boolean isFileSubmittable(File file) {
-    return getZipEntryNameFor(file) != null;
+  protected boolean canBeSubmitted(File file) {
+    return fileExists(file) && getZipEntryNameFor(file) != null;
   }
 
   @Override

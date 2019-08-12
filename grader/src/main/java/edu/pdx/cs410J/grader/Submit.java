@@ -341,24 +341,19 @@ public class Submit extends EmailSender {
 
   }
 
-  private boolean canBeSubmitted(File file) {
+  protected boolean canBeSubmitted(File file) {
     if (!fileExists(file)) {
       return false;
     }
 
-    if (isFileOnNoSubmitList(file)) {
-      return true;
-    }
-
-    if (!isFileSubmittable(file)) {
+    // Is the file on the "no submit" list?
+    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
+    String name = file.getName();
+    if (noSubmit.contains(name)) {
+      err.println("** Not submitting file " + file +
+        " because it is on the \"no submit\" list");
       return false;
     }
-
-    return true;
-  }
-
-  protected boolean isFileSubmittable(File file) {
-    String name = file.getName();
 
     // Does the file name end in .java?
     if (!name.endsWith(".java")) {
@@ -375,21 +370,11 @@ public class Submit extends EmailSender {
         "cs410J" + File.separator + userId + " (or in one of the koans directories)");
       return false;
     }
+
     return true;
   }
 
-  private boolean isFileOnNoSubmitList(File file) {
-    String name = file.getName();
-    List<String> noSubmit = fetchListOfFilesThatCanNotBeSubmitted();
-    if (noSubmit.contains(name)) {
-      err.println("** Not submitting file " + file +
-        " because it is on the \"no submit\" list");
-      return true;
-    }
-    return false;
-  }
-
-  private boolean fileExists(File file) {
+  protected boolean fileExists(File file) {
     if (!file.exists()) {
       err.println("** Not submitting file " + file +
         " because it does not exist");
