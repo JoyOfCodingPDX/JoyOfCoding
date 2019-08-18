@@ -191,7 +191,11 @@ public class AndroidZipFixer {
       return "gradle";
     }
 
-    String fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "app/src/main/");
+    String fixedName = replaceRegexWithPrefix(entryName, ".*/src/main/(.*)", "app/src/main/");
+
+    if (fixedName == null) {
+      fixedName = replaceRegexWithPrefix(entryName, ".*/main/(.*)", "app/src/main/");
+    }
 
     if (fixedName == null) {
       fixedName = replaceRegexWithPrefix(entryName, ".*/java/(.*)", "app/src/main/java/");

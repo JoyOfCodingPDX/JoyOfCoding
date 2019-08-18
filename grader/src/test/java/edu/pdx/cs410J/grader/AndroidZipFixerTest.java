@@ -190,6 +190,13 @@ public class AndroidZipFixerTest {
   }
 
   @Test
+  public void packageWithMainIsMovedToAppropriateLocation() {
+    String entry = "AndroidAppointmentBook/app/src/main/java/edu/pdx/cs410j/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
+    String fixed = "app/src/main/java/edu/pdx/cs410j/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
+    assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
+  }
+
+  @Test
   public void pomFileInTargetIsIgnored() {
     String entry = "airline-gwt/target/airline/META-INF/maven/edu.pdx.cs410J.student/airline-gwt/pom.xml";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), nullValue());
