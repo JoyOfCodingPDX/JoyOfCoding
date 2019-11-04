@@ -166,12 +166,12 @@
                         <limit>
                           <counter>INSTRUCTION</counter>
                           <value>COVEREDRATIO</value>
-                          <minimum>0.60</minimum>
+                          <minimum>${jacoco.min.instruction.covered.ratio}</minimum>
                         </limit>
                         <limit>
                           <counter>CLASS</counter>
                           <value>MISSEDCOUNT</value>
-                          <maximum>0</maximum>
+                          <maximum>${jacoco.max.missed.classes}</maximum>
                         </limit>
                       </limits>
                     </rule>
