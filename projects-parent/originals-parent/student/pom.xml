@@ -158,6 +158,7 @@
                   <goal>check</goal>
                 </goals>
                 <configuration>
+                  <haltOnFailure>${haltOnFailingCoverage}</haltOnFailure>
                   <rules>
                     <rule>
                       <element>BUNDLE</element>
