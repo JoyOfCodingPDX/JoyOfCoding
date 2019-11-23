@@ -154,7 +154,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.airlineweb.Project4</mainClass>
+              <mainClass>edu.pdx.cs410J.airlineweb.Project5</mainClass>
             </manifest>
           </archive>
         </configuration>

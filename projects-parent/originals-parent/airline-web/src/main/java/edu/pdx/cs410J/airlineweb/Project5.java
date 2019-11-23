@@ -10,7 +10,7 @@ import java.util.Map;
  * The main class that parses the command line and communicates with the
  * Airline server using REST.
  */
-public class Project4 {
+public class Project5 {
 
     public static final String MISSING_ARGS = "Missing command line arguments";
 
@@ -102,7 +102,7 @@ public class Project4 {
         PrintStream err = System.err;
         err.println("** " + message);
         err.println();
-        err.println("usage: java Project4 host port [word] [definition]");
+        err.println("usage: java Project5 host port [word] [definition]");
         err.println("  host         Host of web server");
         err.println("  port         Port of web server");
         err.println("  word         Word in dictionary");

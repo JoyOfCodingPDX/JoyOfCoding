@@ -152,7 +152,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>${package}.Project4</mainClass>
+              <mainClass>${package}.Project5</mainClass>
             </manifest>
           </archive>
         </configuration>
