@@ -4,7 +4,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2019</version>
+    <version>Winter2020</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -102,12 +102,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>Summer2019</version>
+      <version>Winter2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Summer2019</version>
+      <version>Winter2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -142,7 +142,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2019</version>
+                <version>Winter2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
