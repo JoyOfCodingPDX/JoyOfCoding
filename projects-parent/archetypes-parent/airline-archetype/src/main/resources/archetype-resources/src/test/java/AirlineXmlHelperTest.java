@@ -28,7 +28,7 @@ public class AirlineXmlHelperTest {
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
 
-    builder.parse(this.getClass().getResourceAsStream("valid-${artifactId}.xml"));
+    builder.parse(this.getClass().getResourceAsStream("valid-airline.xml"));
   }
 
   @Test(expected = SAXParseException.class)
@@ -45,7 +45,7 @@ public class AirlineXmlHelperTest {
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
 
-    builder.parse(this.getClass().getResourceAsStream("invalid-${artifactId}.xml"));
+    builder.parse(this.getClass().getResourceAsStream("invalid-airline.xml"));
   }
 
 }
