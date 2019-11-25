@@ -4,10 +4,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2019</version>
+    <version>Winter2020</version>
   </parent>
   <artifactId>airline-archetype</artifactId>
-  <version>Summer2019</version>
+  <version>Winter2020</version>
   <packaging>maven-archetype</packaging>
 
   <name>airline-archetype</name>
