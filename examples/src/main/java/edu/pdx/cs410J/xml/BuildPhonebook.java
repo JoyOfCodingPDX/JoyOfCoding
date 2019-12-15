@@ -1,12 +1,16 @@
 package edu.pdx.cs410J.xml;
 
-import java.io.*;
-import java.net.*;
-import javax.xml.parsers.*;
+import org.w3c.dom.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.*;
+import java.io.File;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
 
 /**
  * This program builds a DOM tree that represents a phone book and
@@ -62,7 +66,7 @@ public class BuildPhonebook {
 
       Element name = doc.createElement("name");
       biz.appendChild(name);
-      String br = "CollegeNET, Inc.";
+      String br = "Tripwire, Inc.";
       name.appendChild(doc.createTextNode(br));
       
       Element address = doc.createElement("address");
@@ -70,12 +74,12 @@ public class BuildPhonebook {
 
       Element street1 = doc.createElement("street");
       address.appendChild(street1);
-      String st1 = "805 SW Broadway";
+      String st1 = "308 SW 2nd Ave";
       street1.appendChild(doc.createTextNode(st1));
       
       Element street2 = doc.createElement("street");
       address.appendChild(street2);
-      String st2 = "Suite 1600";
+      String st2 = "Suite 400";
       street2.appendChild(doc.createTextNode(st2));
 
       Element city = doc.createElement("city");
@@ -93,7 +97,7 @@ public class BuildPhonebook {
       Element phone = doc.createElement("phone");
       biz.appendChild(phone);
       phone.setAttribute("areacode", "503");
-      phone.setAttribute("number", "973-5200");
+      phone.setAttribute("number", "276-7500");
 
     } catch (DOMException ex) {
       ex.printStackTrace(err);

@@ -1,15 +1,19 @@
 package edu.pdx.cs410J.xml;
 
-import java.util.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import org.w3c.dom.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents an entry in a phone book.  It is used to
  * demonstrate how XML DOM trees can be turned into Java objects.
  */
 public abstract class PhoneBookEntry {
-  protected List streetLines = new ArrayList();
+  protected List<String> streetLines = new ArrayList<>();
   protected String apt;
   protected String city;
   protected String state;
@@ -29,25 +33,36 @@ public abstract class PhoneBookEntry {
       }
 
       Element element = (Element) node;
-      if (element.getNodeName().equals("street")) {
-	Node text = element.getFirstChild();
-	this.streetLines.add(text.getNodeValue());
+      switch (element.getNodeName()) {
+        case "street": {
+          Node text = element.getFirstChild();
+          this.streetLines.add(text.getNodeValue());
+          break;
+        }
 
-      } else if (element.getNodeName().equals("apt")) {
-	Node text = element.getFirstChild();
-	this.apt = text.getNodeValue();
+        case "apt": {
+          Node text = element.getFirstChild();
+          this.apt = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("city")) {
-	Node text = element.getFirstChild();
-	this.city = text.getNodeValue();
+        case "city": {
+          Node text = element.getFirstChild();
+          this.city = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("state")) {
-	Node text = element.getFirstChild();
-	this.state = text.getNodeValue();
+        case "state": {
+          Node text = element.getFirstChild();
+          this.state = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("zip")) {
-	Node text = element.getFirstChild();
-	this.zip = text.getNodeValue();
+        case "zip": {
+          Node text = element.getFirstChild();
+          this.zip = text.getNodeValue();
+          break;
+        }
       }
     }
   }
@@ -64,11 +79,15 @@ public abstract class PhoneBookEntry {
     NamedNodeMap attrs = phone.getAttributes();
     for (int i = 0; i < attrs.getLength(); i++) {
       Node attr = attrs.item(i);
-      if (attr.getNodeName().equals("areacode")) {
-	areacode = attr.getNodeValue();
+      String nodeName = attr.getNodeName();
+      switch (nodeName) {
+        case "areacode":
+          areacode = attr.getNodeValue();
+          continue;
 
-      } else if (attr.getNodeName().equals("number")) {
-	number = attr.getNodeValue();
+        case "number":
+          number = attr.getNodeValue();
+          continue;
       }
     }
 
@@ -77,21 +96,19 @@ public abstract class PhoneBookEntry {
 
   public String toString() {
     // Just make a string for the address and phone number
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
 
-    Iterator iter = this.streetLines.iterator();
-    while (iter.hasNext()) {
-      String line = (String) iter.next();
+    for (String line : this.streetLines) {
       sb.append(line);
       sb.append("\n");
     }
 
     if (apt != null) {
-      sb.append("Apt " + this.apt + "\n");
+      sb.append("Apt ").append(this.apt).append("\n");
     }
 
-    sb.append(this.city + ", " + this.state + " " + this.zip + "\n");
-    sb.append(this.phone + "\n");
+    sb.append(this.city).append(", ").append(this.state).append(" ").append(this.zip).append("\n");
+    sb.append(this.phone).append("\n");
 
     return sb.toString();
   }
