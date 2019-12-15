@@ -4,10 +4,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2016</version>
+    <version>Winter2020</version>
   </parent>
   <artifactId>apptbook-web-archetype</artifactId>
-  <version>Summer2016</version>
+  <version>Winter2020</version>
   <packaging>maven-archetype</packaging>
 
   <name>apptbook-web-archetype</name>
@@ -17,7 +17,7 @@
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
         <artifactId>archetype-packaging</artifactId>
-        <version>2.4</version>
+        <version>3.0.1</version>
       </extension>
     </extensions>
 
@@ -25,7 +25,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
-          <version>2.4</version>
+          <version>3.0.1</version>
         </plugin>
       </plugins>
     </pluginManagement>

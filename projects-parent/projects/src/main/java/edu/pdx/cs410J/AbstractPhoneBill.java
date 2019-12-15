@@ -30,7 +30,7 @@ public abstract class AbstractPhoneBill<T extends AbstractPhoneCall> implements 
   /**
    * Returns a brief textual description of this phone bill
    */
-  public String toString() {
+  public final String toString() {
     return this.getCustomer() + "'s phone bill with " +
       this.getPhoneCalls().size() + " phone calls";
   }

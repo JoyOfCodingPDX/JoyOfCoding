@@ -1,24 +1,34 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static edu.pdx.cs410J.grader.Student.Section.*;
 
 /**
  * Class that creates a pretty report that summarizes a student's
  * grades.
  */
 public class SummaryReport {
+  static final String UNDERGRADUATE_DIRECTORY_NAME = "undergraduates";
+  static final String GRADUATE_DIRECTORY_NAME = "graduates";
   private static HashMap<Student, Double> allTotals = new HashMap<>();
 
   /**
    * Computes the student's final average and makes a pretty report.
    */
-  private static void dumpReportTo(GradeBook book, Student student,
+  @VisibleForTesting
+  static void dumpReportTo(GradeBook book, Student student,
                                    PrintWriter pw, boolean assignLetterGrades) {
     NumberFormat format = NumberFormat.getNumberInstance();
     format.setMinimumFractionDigits(1);
@@ -80,13 +90,18 @@ public class SummaryReport {
 
       // Skip incompletes and no grades
       if (grade == null) {
-        line.append(" (MISSING GRADE)");
+        if (dueDateHasPassed(assignment)) {
+          line.append(" (MISSING GRADE)");
+
+        } else {
+          line.append(String.format(" (due %s)", formatDueDate(assignment)));
+        }
 
       } else if (grade.isIncomplete()) {
         line.append(" (INCOMPLETE)");
 
       } else if (grade.isNotGraded()) {
-        line.append( "(NOT GRADED)");
+        line.append( " (NOT GRADED)");
       }
 
       pw.println(line);
@@ -131,7 +146,7 @@ public class SummaryReport {
     double overallScore = total / best;
 
     if (assignLetterGrades) {
-      LetterGrade letterGrade = book.getLetterGradeForScore(overallScore * 100.0);
+      LetterGrade letterGrade = book.getLetterGradeForScore(student.getEnrolledSection(), overallScore * 100.0);
       student.setLetterGrade(letterGrade);
     }
 
@@ -140,6 +155,18 @@ public class SummaryReport {
     }
 
     allTotals.put(student, overallScore);
+  }
+
+  private static String formatDueDate(Assignment assignment) {
+    LocalDateTime dueDate = assignment.getDueDate();
+    return dueDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+  }
+
+  @VisibleForTesting
+  static boolean dueDateHasPassed(Assignment assignment) {
+    LocalDateTime dueDate = assignment.getDueDate();
+    LocalDateTime now = LocalDateTime.now();
+    return now.isAfter(dueDate);
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
@@ -232,25 +259,7 @@ public class SummaryReport {
       usage("Grade book file " + xmlFile + " does not exist");
     }
 
-    // Parse XML file
-    GradeBook book = null;
-    try {
-      err.println("Parsing " + file);
-      XmlGradeBookParser parser = new XmlGradeBookParser(file);
-      book = parser.parse();
-
-    } catch (FileNotFoundException ex) {
-      err.println("** Could not find file: " + ex.getMessage());
-      System.exit(1);
-
-    } catch (IOException ex) {
-      err.println("** IOException during parsing: " + ex.getMessage());
-      System.exit(1);
-
-    } catch (ParserException ex) {
-      err.println("** Exception while parsing " + file + ": " + ex);
-      System.exit(1);
-    }
+    GradeBook book = parseGradeBook(file);
 
     // Create a SummaryReport for every student
     Iterable<String> studentIds;
@@ -262,26 +271,59 @@ public class SummaryReport {
       studentIds = book.getStudentIds();
     }
 
-    for (String id : studentIds) {
-      err.println(id);
-
-      Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
-      
-      File outFile = new File(outDir, id + ".report");
-      try {
-        PrintWriter pw = 
-          new PrintWriter(new FileWriter(outFile), true);
-        dumpReportTo(book, student, pw, assignLetterGrades);
-
-//         dumpReportTo(book, student, out);
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        System.exit(1);
-      }
-    }
+    dumpReports(studentIds, book, outDir, assignLetterGrades);
 
     // Sort students by totals and print out results:
-    TreeSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
+    Set<Student> students1 = allTotals.keySet();
+    printOutStudentTotals(students1, out);
+
+    saveGradeBookIfDirty(xmlFileName, book);
+
+  }
+
+  @VisibleForTesting
+  static void printOutStudentTotals(Set<Student> allStudents, PrintWriter out) {
+    SortedSet<Student> sorted = getStudentSortedByTotalPoints(allStudents);
+
+    out.println("Undergraduates:");
+    Stream<Student> undergrads = sorted.stream().filter(student -> student.getEnrolledSection() == UNDERGRADUATE);
+    printOutStudentTotals(out, undergrads);
+
+    out.println("Graduate Students:");
+    Stream<Student> grads = sorted.stream().filter(student -> student.getEnrolledSection() == GRADUATE);
+    printOutStudentTotals(out, grads);
+
+  }
+
+  private static void printOutStudentTotals(PrintWriter out, Stream<Student> students) {
+    NumberFormat format = NumberFormat.getPercentInstance();
+
+    students.forEach(student -> {
+      Double d = allTotals.get(student);
+      out.print("  " + student + ": " + format.format(d.doubleValue()));
+
+      if (student.getLetterGrade() != null) {
+        out.print(" " + student.getLetterGrade());
+      }
+
+      out.println();
+    });
+  }
+
+  private static void saveGradeBookIfDirty(String xmlFileName, GradeBook book) {
+    if (book.isDirty()) {
+      try {
+        XmlDumper dumper = new XmlDumper(xmlFileName);
+        dumper.dump(book);
+
+      } catch (IOException ex) {
+        printErrorMessageAndExit("While saving gradebook to " + xmlFileName, ex);
+      }
+    }
+  }
+
+  private static SortedSet<Student> getStudentSortedByTotalPoints(Set<Student> students) {
+    SortedSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
         @Override
         public int compare(Student s1, Student s2) {
           Double d1 = allTotals.get(s1);
@@ -299,32 +341,72 @@ public class SummaryReport {
         }
       });
 
-    sorted.addAll(allTotals.keySet());
+    sorted.addAll(students);
+    return sorted;
+  }
 
-    NumberFormat format = NumberFormat.getPercentInstance();
+  @VisibleForTesting
+  static void dumpReports(Iterable<String> studentIds, GradeBook book, File outDir, boolean assignLetterGrades) {
+    for (String id : studentIds) {
+      err.println(id);
 
-    for (Student student : sorted) {
-      Double d = allTotals.get(student);
-      out.print(student + ": " + format.format(d.doubleValue()));
+      Student student = book.getStudent(id).orElseThrow(noStudentWithId(id));
 
-      if (student.getLetterGrade() != null) {
-        out.print(" " + student.getLetterGrade());
-      }
-
-      out.println();
-    }
-
-    if (book.isDirty()) {
+      File outFile = new File(getDirectoryForReportFileForStudent(outDir, student), getReportFileName(id));
       try {
-        XmlDumper dumper = new XmlDumper(xmlFileName);
-        dumper.dump(book);
+        PrintWriter pw =
+          new PrintWriter(new FileWriter(outFile), true);
+        dumpReportTo(book, student, pw, assignLetterGrades);
 
+//         dumpReportTo(book, student, out);
       } catch (IOException ex) {
-        ex.printStackTrace();
-        System.exit(1);
+        printErrorMessageAndExit("While writing report to " + outFile, ex);
       }
     }
+  }
 
+  private static File getDirectoryForReportFileForStudent(File parentDirectory, Student student) {
+    String directoryName;
+    Student.Section enrolledSection = student.getEnrolledSection();
+    switch (enrolledSection) {
+      case UNDERGRADUATE:
+        directoryName = UNDERGRADUATE_DIRECTORY_NAME;
+        break;
+      case GRADUATE:
+        directoryName = GRADUATE_DIRECTORY_NAME;
+        break;
+      default:
+        throw new IllegalStateException("Don't know directory name for " + enrolledSection);
+    }
+    File directory = new File(parentDirectory, directoryName);
+    directory.mkdirs();
+    return directory;
+  }
+
+  @VisibleForTesting
+  static String getReportFileName(String studentId) {
+    return studentId + ".report";
+  }
+
+  private static GradeBook parseGradeBook(File gradeBookFile) {
+    GradeBook book = null;
+    try {
+      err.println("Parsing " + gradeBookFile);
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFile);
+      book = parser.parse();
+
+    } catch (FileNotFoundException ex) {
+      printErrorMessageAndExit("** Could not find grade book file: " + gradeBookFile, ex);
+
+    } catch (ParserException | IOException ex) {
+      printErrorMessageAndExit("** Exception while parsing " + gradeBookFile, ex);
+    }
+    return book;
+  }
+
+  private static void printErrorMessageAndExit(String message, Throwable ex) {
+    err.println(message);
+    System.exit(1);
   }
 
   @SuppressWarnings("ThrowableInstanceNeverThrown")

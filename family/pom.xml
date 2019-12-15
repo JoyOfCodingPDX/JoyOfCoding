@@ -3,13 +3,13 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2016</version>
+    <version>Winter2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
-  <version>Summer2016</version>
+  <version>Winter2020</version>
   <name>CS410J Family Tree Application</name>
   <description>An example Java application for CS410J: Advanced Java Programming</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
@@ -17,13 +17,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
     </dependency>
   </dependencies>
   <build>
@@ -31,16 +31,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>http://www.cs.pdx.edu/~whitlock/jars/</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.family.FamilyTreeGUI</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <version>2.6</version>
         <executions>
           <execution>
             <goals>
@@ -52,7 +43,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>2.4</version>
         <configuration>
           <attach>true</attach>
         </configuration>

@@ -4,11 +4,14 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
  * A helper class for accessing the rest client.  Note that this class provides
  * an example of how to make gets and posts to a URL.  You'll need to change it
- * to do something other than just send key/value pairs.
+ * to do something other than just send dictionary entries.
  */
 public class PhoneBillRestClient extends HttpRequestHelper
 {
@@ -29,33 +32,50 @@ public class PhoneBillRestClient extends HttpRequestHelper
     }
 
     /**
-     * Returns all keys and values from the server
+     * Returns all dictionary entries from the server
      */
-    public Response getAllKeysAndValues() throws IOException
-    {
-        return get(this.url );
+    public Map<String, String> getAllDictionaryEntries() throws IOException {
+      Response response = get(this.url, Map.of());
+      return Messages.parseDictionary(response.getContent());
     }
 
     /**
-     * Returns all values for the given key
+     * Returns the definition for the given word
      */
-    public Response getValues( String key ) throws IOException
-    {
-        return get(this.url, "key", key);
+    public String getDefinition(String word) throws IOException {
+      Response response = get(this.url, Map.of("word", word));
+      throwExceptionIfNotOkayHttpStatus(response);
+      String content = response.getContent();
+      return Messages.parseDictionaryEntry(content).getValue();
     }
 
-    public Response addKeyValuePair( String key, String value ) throws IOException
-    {
-        return postToMyURL("key", key, "value", value);
+    public void addDictionaryEntry(String word, String definition) throws IOException {
+      Response response = postToMyURL(Map.of("word", word, "definition", definition));
+      throwExceptionIfNotOkayHttpStatus(response);
     }
 
     @VisibleForTesting
-    Response postToMyURL(String... keysAndValues) throws IOException {
-        return post(this.url, keysAndValues);
+    Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
+      return post(this.url, dictionaryEntries);
     }
 
-    public Response removeAllMappings() throws IOException {
-        return delete(this.url);
+    public void removeAllDictionaryEntries() throws IOException {
+      Response response = delete(this.url, Map.of());
+      throwExceptionIfNotOkayHttpStatus(response);
+    }
+
+    private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+      int code = response.getCode();
+      if (code != HTTP_OK) {
+        throw new PhoneBillRestException(code);
+      }
+      return response;
+    }
+
+    private class PhoneBillRestException extends RuntimeException {
+      public PhoneBillRestException(int httpStatusCode) {
+        super("Got an HTTP Status Code of " + httpStatusCode);
+      }
     }
 
 }

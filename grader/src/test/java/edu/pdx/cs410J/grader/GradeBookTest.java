@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange.InvalidLetterGradeRange;
+import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;
+import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -12,7 +14,14 @@ public class GradeBookTest {
   @Test
   public void defaultLetterGradeRanges() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges undergrad = book.getLetterGradeRanges(UNDERGRADUATE);
+    assertDefaultLetterGradeRanges(undergrad);
+
+    GradeBook.LetterGradeRanges grad = book.getLetterGradeRanges(GRADUATE);
+    assertDefaultLetterGradeRanges(grad);
+  }
+
+  private void assertDefaultLetterGradeRanges(GradeBook.LetterGradeRanges ranges) {
     assertLetterGradeRange(ranges, LetterGrade.A, 94, 100);
     assertLetterGradeRange(ranges, LetterGrade.A_MINUS, 90, 93);
     assertLetterGradeRange(ranges, LetterGrade.B_PLUS, 87, 89);
@@ -37,7 +46,7 @@ public class GradeBookTest {
   @Test(expected = InvalidLetterGradeRange.class)
   public void minimumValueGreaterThanMaximumValue() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(100, 99);
   }
@@ -45,7 +54,7 @@ public class GradeBookTest {
   @Test(expected = InvalidLetterGradeRange.class)
   public void minimumValueEqualsMaximumValue() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(99, 99);
   }
@@ -53,14 +62,14 @@ public class GradeBookTest {
   @Test
   public void defaultLetterGradeRangesAreValid() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     ranges.validate();
   }
 
   @Test(expected = InvalidLetterGradeRange.class)
   public void rangesDoNotStartAtZero() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.F);
     range.setRange(2, range.maximum());
     ranges.validate();
@@ -69,7 +78,7 @@ public class GradeBookTest {
   @Test(expected = InvalidLetterGradeRange.class)
   public void rangesDoNotContain100() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(range.minimum(), 99);
     ranges.validate();
@@ -78,7 +87,7 @@ public class GradeBookTest {
   @Test(expected = InvalidLetterGradeRange.class)
   public void rangesAreContiguous() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(range.minimum() + 1, range.maximum());
     ranges.validate();
@@ -87,7 +96,7 @@ public class GradeBookTest {
   @Test(expected = InvalidLetterGradeRange.class)
   public void rangesAreContiguousNotARange() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.C);
     range.setRange(range.minimum(), range.maximum() - 1);
     ranges.validate();
@@ -96,7 +105,7 @@ public class GradeBookTest {
   @Test
   public void scoreIsInRange() {
     GradeBook book = new GradeBook("test");
-    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges();
+    GradeBook.LetterGradeRanges ranges = book.getLetterGradeRanges(UNDERGRADUATE);
     LetterGradeRange range = ranges.getRange(LetterGrade.A);
     range.setRange(90, 100);
 
@@ -113,8 +122,8 @@ public class GradeBookTest {
   @Test
   public void scoresAreCorrectlyMappedToLetterGrades() {
     GradeBook book = new GradeBook("test");
-    assertThat(book.getLetterGradeForScore(99.0), equalTo(LetterGrade.A));
-    assertThat(book.getLetterGradeForScore(93.0), equalTo(LetterGrade.A_MINUS));
+    assertThat(book.getLetterGradeForScore(UNDERGRADUATE, 99.0), equalTo(LetterGrade.A));
+    assertThat(book.getLetterGradeForScore(UNDERGRADUATE, 93.0), equalTo(LetterGrade.A_MINUS));
   }
 
   @Test

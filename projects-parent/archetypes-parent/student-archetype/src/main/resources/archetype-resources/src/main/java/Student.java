@@ -23,9 +23,9 @@ public class Student extends Human {
    * @param gpa                                                                     
    *        The ${artifactId}'s grade point average                                       
    * @param gender                                                                  
-   *        The ${artifactId}'s gender ("male" or "female", case insensitive)             
+   *        The ${artifactId}'s gender ("male" or "female", or "other", case insensitive)
    */                                                                               
-  public Student(String name, ArrayList classes, double gpa, String gender) {
+  public Student(String name, ArrayList<String> classes, double gpa, String gender) {
     super(name);
   }
 

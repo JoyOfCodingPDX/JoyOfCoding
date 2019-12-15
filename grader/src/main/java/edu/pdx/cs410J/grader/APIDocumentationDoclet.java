@@ -1,70 +1,103 @@
 package edu.pdx.cs410J.grader;
 
-import com.sun.javadoc.*;
-import java.io.*;
+import com.google.common.annotations.VisibleForTesting;
+import com.sun.source.doctree.DocCommentTree;
+import com.sun.source.doctree.DocTree;
+import com.sun.source.doctree.ParamTree;
+import com.sun.source.doctree.ThrowsTree;
+import com.sun.source.util.DocTrees;
+import jdk.javadoc.doclet.Doclet;
+import jdk.javadoc.doclet.DocletEnvironment;
+import jdk.javadoc.doclet.Reporter;
+
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import java.io.PrintWriter;
 import java.text.BreakIterator;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This <A
- * href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/javadoc/overview.html">doclet</A>
+ * href="https://docs.oracle.com/javase/9/docs/api/jdk/javadoc/doclet/package-summary.html">doclet</A>
  * extracts the API documentation (Javadocs)
  * from a student's project submission and produces a text summary of
  * them.  It is used for grading a student's Javadocs.
  *
  * @author David Whitlock
- * @since Summer 2004
+ * @since Summer 2004 (rewritten for Java 9 API in Summer 2018)
  */
-@SuppressWarnings("UnusedDeclaration")
-public class APIDocumentationDoclet {
 
-  /**
-   * NOTE: Without this method present and returning LanguageVersion.JAVA_1_5,
-   * Javadoc will not process generics because it assumes LanguageVersion.JAVA_1_1.
-   *
-   * Note that 1.5 is as high as the <code>LanguageVersion</code> goes.
-   *
-   * @return language version (hard coded to LanguageVersion.JAVA_1_5)
-   */
-  public static LanguageVersion languageVersion() {
-    return LanguageVersion.JAVA_1_5;
+public class APIDocumentationDoclet implements Doclet {
+
+  private Reporter reporter;
+
+  @VisibleForTesting
+  static String removePackageNames(String name) {
+    return name.replaceAll("(\\w+\\.)*(\\w+)", "$2");
   }
 
-  /**
-   * This doclet has no valid options
-   */
-  public static boolean validOptions(String[][] options,
-                                     DocErrorReporter reporter) {
-    return true;
+  @Override
+  public void init(Locale locale, Reporter reporter) {
+    this.reporter = reporter;
   }
 
-
-  /**
-   * Since there are no options, we always return zero.
-   */
-  public static int optionLength(String option) {
-    return 0;
+  @Override
+  public String getName() {
+    return "API Documentation Doclet";
   }
 
-  /**
-   * Print out a summary of each class, field, and method to standard
-   * out.
-   */
-  public static boolean start(RootDoc root) {
-    PrintWriter pw = new PrintWriter(System.out, true);
+  @Override
+  public Set<? extends Option> getSupportedOptions() {
+    HashSet<Option> options = new HashSet<>();
+    options.add(new Option() {
+      @Override
+      public int getArgumentCount() {
+        return 0;
+      }
 
-    ClassDoc[] classes = root.classes();
-    for (ClassDoc aClass : classes) {
-      generate(aClass, pw);
-      pw.println("");
-    }
+      @Override
+      public String getDescription() {
+        return "Ignored option until HTML 5 is the default";
+      }
 
-    return true;
+      @Override
+      public Kind getKind() {
+        return Kind.OTHER;
+      }
+
+      @Override
+      public List<String> getNames() {
+        return List.of("-html5");
+      }
+
+      @Override
+      public String getParameters() {
+        return "";
+      }
+
+      @Override
+      public boolean process(String option, List<String> arguments) {
+        // Nothing to do
+        return true;
+      }
+    });
+    return options;
+  }
+
+  @Override
+  public SourceVersion getSupportedSourceVersion() {
+    return SourceVersion.RELEASE_9;
   }
 
   /**
    * Indents a block of text a given amount.
    */
-  private static void indent(String text, final int indent,
+  @VisibleForTesting
+  static void indent(String text, final int indent,
                              PrintWriter pw) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < indent; i++) {
@@ -74,8 +107,7 @@ public class APIDocumentationDoclet {
 
     pw.print(spaces);
 
-    int printed = indent;
-    boolean firstWord = true;
+    int currentLineLength = indent;
 
     BreakIterator boundary = BreakIterator.getWordInstance();
     boundary.setText(text);
@@ -84,145 +116,144 @@ public class APIDocumentationDoclet {
          start = end, end = boundary.next()) {
 
       String word = text.substring(start, end);
-
-      if (printed + word.length() > 72) {
-        pw.println("");
-        pw.print(spaces);
-        printed = indent;
-        firstWord = true;
+      if (word.length() > 1) {
+        word = word.trim();
+        if (start > 0 && text.charAt(start - 1) == '.') {
+          pw.print(" ");
+          currentLineLength++;
+        }
       }
 
-      if (word.charAt(word.length() - 1) == '\n') {
-        pw.write(word, 0, word.length() - 1);
+      if (currentLineLength + word.length() > 72) {
+        pw.println("");
+        pw.print(spaces);
+        currentLineLength = indent;
+      }
 
-      } else if (firstWord &&
-                 Character.isWhitespace(word.charAt(0))) {
-        pw.write(word, 1, word.length() - 1);
+      if (word.length() > 0 && word.charAt(word.length() - 1) == '\n') {
+        pw.write(word, 0, word.length() - 1);
+        currentLineLength += word.length() - 1;
 
       } else {
         pw.print(word);
+        currentLineLength += word.length();
       }
-      printed += (end - start);
-      firstWord = false;
     }
 
     pw.println("");
   }
 
-  /**
-   * Generates a summary of the API documentation for a given class
-   */
-  private static void generate(ClassDoc c, PrintWriter pw) {
-    pw.println("Class " + c.qualifiedTypeName());
-    indent(c.commentText(), 2, pw);
-    pw.println("");
+  @Override
+  public boolean run(DocletEnvironment environment) {
+    PrintWriter pw = new PrintWriter(System.out, true);
 
-    ConstructorDoc[] constructors = c.constructors();
-    for (ConstructorDoc constructor : constructors) {
-      generate(constructor, pw);
+    DocTrees docTrees = environment.getDocTrees();
+    for (TypeElement aClass : ElementFilter.typesIn(environment.getIncludedElements())) {
+      generateClassDocumentation(docTrees, aClass, pw);
     }
-
-    MethodDoc[] methods = c.methods();
-    for (MethodDoc method : methods) {
-      generate(method, pw);
-    }
+    return true;
   }
 
-  /**
-   * Generates a summary of the API documentation for a method or
-   * constructor
-   */
-  private static void generate(ExecutableMemberDoc m, PrintWriter pw) {
+  private void generateClassDocumentation(DocTrees docTrees, TypeElement aClass, PrintWriter pw) {
+    pw.println("Class " + aClass.getQualifiedName());
+
+    indent(getFullBodyComment(docTrees, aClass), 2, pw);
+    pw.println("");
+
+    Stream<? extends Element> constructors = aClass.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.CONSTRUCTOR);
+    constructors.forEach(constructor -> {
+      generateMethodDocumentation(docTrees, (ExecutableElement) constructor, pw);
+    });
+
+    Stream<? extends Element> methods = aClass.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD);
+    methods.forEach(method -> {
+      generateMethodDocumentation(docTrees, (ExecutableElement) method, pw);
+    });
+
+  }
+
+  private void generateMethodDocumentation(DocTrees docTrees, ExecutableElement method, PrintWriter pw) {
     StringBuilder sb = new StringBuilder();
-    sb.append(m.modifiers()).append(" ");
-    appendTypeVariables(m.typeParameters(), sb);
-    appendReturnType(m, sb);
-    sb.append(m.name());
+    sb.append(joinObjectsToStrings(method.getModifiers(), " ")).append(" ");
+    appendTypeVariables(method, sb);
+    appendReturnType(method, sb);
+    sb.append(getMethodOrConstructorName(method));
     sb.append("(");
-    Parameter[] params = m.parameters();
-    for (int i = 0; i < params.length; i++) {
-      Parameter param = params[i];
-      sb.append(param.typeName());
-      sb.append(" ");
-      sb.append(param.name());
-
-      if (i < params.length - 1) {
-        sb.append(", ");
-      }
-    }
+    sb.append(method.getParameters().stream().map(this::getParameterTypeAndName).collect(Collectors.joining(", ")));
     sb.append(")");
 
     indent(sb.toString(), 2, pw);
 
-    String comment = m.commentText();
+    String comment = getFullBodyComment(docTrees, method);
     if (comment != null && !comment.equals("")) {
       indent(comment, 4, pw);
     }
     pw.println("");
 
-    ParamTag[] tags = m.paramTags();
-    for (ParamTag tag : tags) {
-      indent(tag.parameterName() + " - " + tag.parameterComment(), 4, pw);
-      pw.println("");
-    }
+    DocCommentTree methodDocs = docTrees.getDocCommentTree(method);
+    if (methodDocs != null) {
+      List<? extends DocTree> blockTags = methodDocs.getBlockTags();
+      blockTags.stream().filter(d -> d.getKind() == DocTree.Kind.PARAM).forEach(parameter -> {
+        ParamTree paramTag = (ParamTree) parameter;
+        String paramDoc = paramTag.getName() + " - " + paramTag.getDescription();
+        indent(paramDoc, 4, pw);
+        pw.println("");
+      });
 
-    ThrowsTag[] throwsTags = m.throwsTags();
-    for (ThrowsTag tag : throwsTags) {
-      indent("throws " + tag.exceptionName() + " - " +
-        tag.exceptionComment(), 4, pw);
-      pw.println("");
+      blockTags.stream().filter(d -> d.getKind() == DocTree.Kind.THROWS).forEach(exception -> {
+        ThrowsTree throwsTag = (ThrowsTree) exception;
+        String paramDoc = "throws " + throwsTag.getExceptionName() + " - " + throwsTag.getDescription();
+        indent(paramDoc, 4, pw);
+        pw.println("");
+      });
     }
 
   }
 
-  private static void appendTypeVariables(TypeVariable[] variables, StringBuilder sb) {
-    if (variables.length > 0) {
-      sb.append("<");
+  private String getParameterTypeAndName(VariableElement parameter) {
+    return removePackageNames(parameter.asType()) + " " + parameter.getSimpleName();
+  }
 
-      for (int i = 0; i < variables.length; i++) {
-        TypeVariable variable = variables[i];
-        appendType(variable, sb);
+  private String removePackageNames(TypeMirror type) {
+    return removePackageNames(type.toString());
+  }
 
-        if (i < variables.length - 1) {
-          sb.append(", ");
-        }
-      }
+  private Name getMethodOrConstructorName(ExecutableElement method) {
+    if (method.getKind() == ElementKind.CONSTRUCTOR) {
+      return method.getEnclosingElement().getSimpleName();
 
-      sb.append("> ");
+    } else {
+      return method.getSimpleName();
     }
   }
 
-  private static void appendReturnType(ExecutableMemberDoc m, StringBuilder sb) {
-    if (m instanceof MethodDoc) {
-      MethodDoc method = (MethodDoc) m;
-      appendType(method.returnType(), sb).append(" ");
+  private void appendReturnType(Element element, StringBuilder sb) {
+    if (element instanceof ExecutableElement) {
+      ExecutableElement method = (ExecutableElement) element;
+      appendType(method.getReturnType(), sb).append(" ");
     }
   }
 
-  private static StringBuilder appendType(Type type, StringBuilder sb) {
-    sb.append(type.qualifiedTypeName());
-
-    ParameterizedType parameterizedType = type.asParameterizedType();
-    if (parameterizedType != null) {
-      appendTypeArguments(parameterizedType.typeArguments(), sb);
-    }
-
+  private StringBuilder appendType(TypeMirror type, StringBuilder sb) {
+    sb.append(removePackageNames(type));
     return sb;
   }
 
-  private static void appendTypeArguments(Type[] typeArguments, StringBuilder sb) {
-    if (typeArguments.length >0) {
-      sb.append("<");
-      for (int i = 0; i < typeArguments.length; i++) {
-        Type typeArgument = typeArguments[i];
-        sb.append(typeArgument.qualifiedTypeName());
+  private void appendTypeVariables(Element constructor, StringBuilder sb) {
+    // Not sure how to do this yet
+  }
 
-        if (i < typeArguments.length - 1) {
-          sb.append(", ");
-        }
-      }
-      sb.append(">");
+  private String getFullBodyComment(DocTrees docTrees, Element element) {
+    DocCommentTree commentTree = docTrees.getDocCommentTree(element);
+    if (commentTree == null) {
+      return "";
+
+    } else {
+      return joinObjectsToStrings(commentTree.getFullBody(), "");
     }
   }
 
+  private String joinObjectsToStrings(Collection<?> objects, String delimiter) {
+    return objects.stream().map(Object::toString).collect(Collectors.joining(delimiter));
+  }
 }

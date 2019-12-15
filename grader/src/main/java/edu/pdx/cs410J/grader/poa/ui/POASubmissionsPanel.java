@@ -49,6 +49,11 @@ public class POASubmissionsPanel extends JPanel implements POASubmissionsView {
     this.downloadSubmissions.addActionListener(e -> listener.downloadSubmissions());
   }
 
+  @Override
+  public void selectPOASubmission(int index) {
+    this.submissions.setSelectedIndex(index);
+  }
+
   private boolean isFinalEventInUserSelection(ListSelectionEvent e) {
     return !e.getValueIsAdjusting();
   }

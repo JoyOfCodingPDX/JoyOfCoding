@@ -4,7 +4,7 @@ import java.io.*;
 import java.text.*;
 
 /**
- * Represents a matrix of <tt>double</tt>s.  Contains methods to
+ * Represents a matrix of <code>double</code>s.  Contains methods to
  * create special matrices for this assignment.  It also contains
  * general methods to multiply matrices.
  *

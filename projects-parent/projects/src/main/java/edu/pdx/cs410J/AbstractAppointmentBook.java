@@ -30,7 +30,7 @@ public abstract class AbstractAppointmentBook<T extends AbstractAppointment> imp
   /**
    * Returns a brief textual description of this appointment book
    */
-  public String toString() {
+  public final String toString() {
     return this.getOwnerName() + "'s appointment book with " +
       this.getAppointments().size() + " appointments";
   }

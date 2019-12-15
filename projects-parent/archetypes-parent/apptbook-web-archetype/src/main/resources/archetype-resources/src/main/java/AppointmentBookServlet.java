@@ -21,61 +21,64 @@ import java.util.Map;
  */
 public class AppointmentBookServlet extends HttpServlet
 {
-    private final Map<String, String> data = new HashMap<>();
+    static final String WORD_PARAMETER = "word";
+    static final String DEFINITION_PARAMETER = "definition";
+
+    private final Map<String, String> dictionary = new HashMap<>();
 
     /**
-     * Handles an HTTP GET request from a client by writing the value of the key
-     * specified in the "key" HTTP parameter to the HTTP response.  If the "key"
-     * parameter is not specified, all of the key/value pairs are written to the
-     * HTTP response.
+     * Handles an HTTP GET request from a client by writing the definition of the
+     * word specified in the "word" HTTP parameter to the HTTP response.  If the
+     * "word" parameter is not specified, all of the entries in the dictionary
+     * are written to the HTTP response.
      */
     @Override
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
 
-        String key = getParameter( "key", request );
-        if (key != null) {
-            writeValue(key, response);
+        String word = getParameter( WORD_PARAMETER, request );
+        if (word != null) {
+            writeDefinition(word, response);
 
         } else {
-            writeAllMappings(response);
+            writeAllDictionaryEntries(response);
         }
     }
 
     /**
-     * Handles an HTTP POST request by storing the key/value pair specified by the
-     * "key" and "value" request parameters.  It writes the key/value pair to the
-     * HTTP response.
+     * Handles an HTTP POST request by storing the dictionary entry for the
+     * "word" and "definition" request parameters.  It writes the dictionary
+     * entry to the HTTP response.
      */
     @Override
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
 
-        String key = getParameter( "key", request );
-        if (key == null) {
-            missingRequiredParameter(response, "key");
+        String word = getParameter(WORD_PARAMETER, request );
+        if (word == null) {
+            missingRequiredParameter(response, WORD_PARAMETER);
             return;
         }
 
-        String value = getParameter( "value", request );
-        if ( value == null) {
-            missingRequiredParameter( response, "value" );
+        String definition = getParameter(DEFINITION_PARAMETER, request );
+        if ( definition == null) {
+            missingRequiredParameter( response, DEFINITION_PARAMETER );
             return;
         }
 
-        this.data.put(key, value);
+        this.dictionary.put(word, definition);
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.mappedKeyValue(key, value));
+        pw.println(Messages.definedWordAs(word, definition));
         pw.flush();
 
         response.setStatus( HttpServletResponse.SC_OK);
     }
 
     /**
-     * Handles an HTTP DELETE request by removing all key/value pairs.  This
+     * Handles an HTTP DELETE request by removing all dictionary entries.  This
      * behavior is exposed for testing purposes only.  It's probably not
      * something that you'd want a real application to expose.
      */
@@ -83,10 +86,10 @@ public class AppointmentBookServlet extends HttpServlet
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
 
-        this.data.clear();
+        this.dictionary.clear();
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.allMappingsDeleted());
+        pw.println(Messages.allDictionaryEntriesDeleted());
         pw.flush();
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -106,18 +109,17 @@ public class AppointmentBookServlet extends HttpServlet
     }
 
     /**
-     * Writes the value of the given key to the HTTP response.
+     * Writes the definition of the given word to the HTTP response.
      *
-     * The text of the message is formatted with {@link Messages${symbol_pound}getMappingCount(int)}
-     * and {@link Messages${symbol_pound}formatKeyValuePair(String, String)}
+     * The text of the message is formatted with
+     * {@link Messages${symbol_pound}formatDictionaryEntry(String, String)}
      */
-    private void writeValue( String key, HttpServletResponse response ) throws IOException
+    private void writeDefinition(String word, HttpServletResponse response ) throws IOException
     {
-        String value = this.data.get(key);
+        String definition = this.dictionary.get(word);
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.getMappingCount( value != null ? 1 : 0 ));
-        pw.println(Messages.formatKeyValuePair(key, value));
+        pw.println(Messages.formatDictionaryEntry(word, definition));
 
         pw.flush();
 
@@ -125,19 +127,15 @@ public class AppointmentBookServlet extends HttpServlet
     }
 
     /**
-     * Writes all of the key/value pairs to the HTTP response.
+     * Writes all of the dictionary entries to the HTTP response.
      *
      * The text of the message is formatted with
-     * {@link Messages${symbol_pound}formatKeyValuePair(String, String)}
+     * {@link Messages${symbol_pound}formatDictionaryEntry(String, String)}
      */
-    private void writeAllMappings( HttpServletResponse response ) throws IOException
+    private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
     {
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.getMappingCount(data.size()));
-
-        for (Map.Entry<String, String> entry : this.data.entrySet()) {
-            pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
-        }
+        Messages.formatDictionaryEntries(pw, dictionary);
 
         pw.flush();
 
@@ -161,12 +159,7 @@ public class AppointmentBookServlet extends HttpServlet
     }
 
     @VisibleForTesting
-    void setValueForKey(String key, String value) {
-        this.data.put(key, value);
-    }
-
-    @VisibleForTesting
-    String getValueForKey(String key) {
-        return this.data.get(key);
+    String getDefinition(String word) {
+        return this.dictionary.get(word);
     }
 }

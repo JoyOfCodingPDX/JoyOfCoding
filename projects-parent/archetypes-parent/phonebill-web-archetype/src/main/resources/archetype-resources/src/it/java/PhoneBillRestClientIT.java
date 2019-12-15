@@ -10,6 +10,7 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -29,37 +30,34 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllMappings() throws IOException {
+  public void test0RemoveAllDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.removeAllMappings();
-    assertThat(response.getContent(), response.getCode(), equalTo(200));
+    client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoMappings() throws IOException {
+  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.getAllKeysAndValues();
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.getMappingCount(0)));
+    Map<String, String> dictionary = client.getAllDictionaryEntries();
+    assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2AddOneKeyValuePair() throws IOException {
+  public void test2DefineOneWord() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    String testKey = "TEST KEY";
-    String testValue = "TEST VALUE";
-    HttpRequestHelper.Response response = client.addKeyValuePair(testKey, testValue);
-    String content = response.getContent();
-    assertThat(content, response.getCode(), equalTo(200));
-    assertThat(content, containsString(Messages.mappedKeyValue(testKey, testValue)));
+    String testWord = "TEST WORD";
+    String testDefinition = "TEST DEFINITION";
+    client.addDictionaryEntry(testWord, testDefinition);
+
+    String definition = client.getDefinition(testWord);
+    assertThat(definition, equalTo(testDefinition));
   }
 
   @Test
-  public void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL();
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("key")));
+    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 

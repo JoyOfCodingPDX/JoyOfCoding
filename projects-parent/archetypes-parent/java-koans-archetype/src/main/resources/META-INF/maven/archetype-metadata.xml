@@ -10,9 +10,10 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>app/data</directory>
+      <directory>.mvn/wrapper</directory>
       <includes>
         <include>**/*.java</include>
+        <include>**/*.properties</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
@@ -23,19 +24,25 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
+      <directory>gradle/wrapper</directory>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/advanced</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>src/beginner</directory>
+      <directory>src/java7</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>src/java7</directory>
+      <directory>src/beginner</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
@@ -53,13 +60,7 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>app/bin</directory>
-      <includes>
-        <include>**/*.class</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory>app/data</directory>
+      <directory>.mvn/wrapper</directory>
       <includes>
         <include>**/*.jar</include>
       </includes>
@@ -73,8 +74,13 @@
     <fileSet encoding="UTF-8">
       <directory>app/config</directory>
       <includes>
-        <include>**/*.dat</include>
         <include>**/*.gitignore</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>gradle/wrapper</directory>
+      <includes>
+        <include>**/*.jar</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
@@ -84,9 +90,14 @@
         <include>gradlew</include>
         <include>gradlew.bat</include>
         <include>LICENSE</include>
-        <include>README.md</include>
+        <include>mvnw.cmd</include>
         <include>run.bat</include>
         <include>run.sh</include>
+        <include>README.md</include>
+        <include>gradlew</include>
+        <include>build.gradle</include>
+        <include>mvnw</include>
+        <include>gradlew.bat</include>
       </includes>
     </fileSet>
   </fileSets>

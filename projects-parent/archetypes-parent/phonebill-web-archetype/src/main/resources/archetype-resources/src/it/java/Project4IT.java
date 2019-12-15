@@ -4,7 +4,6 @@
 package ${package};
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -26,53 +25,49 @@ public class Project4IT extends InvokeMainTestCase {
     @Test
     public void test0RemoveAllMappings() throws IOException {
       PhoneBillRestClient client = new PhoneBillRestClient(HOSTNAME, Integer.parseInt(PORT));
-      HttpRequestHelper.Response response = client.removeAllMappings();
-      assertThat(response.getContent(), response.getCode(), equalTo(200));
+      client.removeAllDictionaryEntries();
     }
 
     @Test
     public void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getErr(), containsString(Project4.MISSING_ARGS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
 
     @Test
     public void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(0)));
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
+        assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
     @Test
-    public void test3NoValues() {
-        String key = "KEY";
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(0)));
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, null)));
+    public void test3NoDefinitions() {
+        String word = "WORD";
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word );
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, null)));
     }
 
     @Test
-    public void test4AddValue() {
-        String key = "KEY";
-        String value = "VALUE";
+    public void test4AddDefinition() {
+        String word = "WORD";
+        String definition = "DEFINITION";
 
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key, value );
-        assertThat(result.getErr(), result.getExitCode(), equalTo(0));
-        String out = result.getOut();
-        assertThat(out, out, containsString(Messages.mappedKeyValue(key, value)));
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+        String out = result.getTextWrittenToStandardOut();
+        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
-        result = invokeMain( Project4.class, HOSTNAME, PORT, key );
-        out = result.getOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(1)));
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
+        out = result.getTextWrittenToStandardOut();
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT );
-        out = result.getOut();
-        assertThat(out, out, containsString(Messages.getMappingCount(1)));
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        out = result.getTextWrittenToStandardOut();
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
     }
 }

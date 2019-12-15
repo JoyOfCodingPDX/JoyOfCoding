@@ -30,6 +30,6 @@ public class POASubmissionPresenter {
   }
 
   static String formatSubmissionTime(LocalDateTime submitTime) {
-    return submitTime.format(DateTimeFormatter.ofPattern("M/d/yyyy h:mm a"));
+    return submitTime.format(DateTimeFormatter.ofPattern("E M/d/yyyy h:mm a"));
   }
 }

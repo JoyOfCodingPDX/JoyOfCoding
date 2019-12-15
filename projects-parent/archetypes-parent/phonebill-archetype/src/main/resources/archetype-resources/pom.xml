@@ -3,7 +3,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2016</version>
+    <version>Winter2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
   <version>${version}</version>
   <name>CS410J Phone Bill Project</name>
-  <description>An Phone Bill application for CS410J at Portland State University</description>
+  <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <developers>
@@ -39,18 +39,18 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -60,7 +60,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>2.4</version>
         <configuration>
           <attach>true</attach>
         </configuration>
@@ -68,7 +68,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.6</version>
         <configuration>
           <archive>
             <manifest>
@@ -98,6 +98,10 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
   <reporting>
@@ -105,38 +109,78 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.7.2</version>
+        <version>2.21.0</version>
       </plugin>
        <plugin>
          <groupId>org.codehaus.mojo</groupId>
          <artifactId>jdepend-maven-plugin</artifactId>
-         <version>2.0-beta-2</version>
+         <version>2.0</version>
        </plugin>
        <plugin>
          <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-checkstyle-plugin</artifactId>
-         <version>2.9</version>
+         <version>3.0.0</version>
        </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </reporting>
   <profiles>
     <profile>
       <id>grader</id>
+      <activation>
+        <activeByDefault>${grader}</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9</version>
+            <version>3.0.1</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2016</version>
+                <version>Winter2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
             </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <haltOnFailure>${haltOnFailingCoverage}</haltOnFailure>
+                  <rules>
+                    <rule>
+                      <element>BUNDLE</element>
+                      <limits>
+                        <limit>
+                          <counter>INSTRUCTION</counter>
+                          <value>COVEREDRATIO</value>
+                          <minimum>${jacoco.min.instruction.covered.ratio}</minimum>
+                        </limit>
+                        <limit>
+                          <counter>CLASS</counter>
+                          <value>MISSEDCOUNT</value>
+                          <maximum>${jacoco.max.missed.classes}</maximum>
+                        </limit>
+                      </limits>
+                    </rule>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

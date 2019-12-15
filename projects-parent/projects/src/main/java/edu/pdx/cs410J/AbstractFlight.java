@@ -57,7 +57,7 @@ public abstract class AbstractFlight implements Serializable {
   /**
    * Returns a brief textual description of this flight.
    */
-  public String toString() {
+  public final String toString() {
     return "Flight " + this.getNumber() + " departs " + this.getSource()
            + " at " + this.getDepartureString() + " arrives " +
            this.getDestination() + " at " + this.getArrivalString();

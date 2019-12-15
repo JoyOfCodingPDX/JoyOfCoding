@@ -9,6 +9,8 @@ import java.util.*;
  */
 public interface MovieDatabase extends Remote {
 
+  String RMI_OBJECT_NAME = "/MovieDatabase";
+
   /**
    * Creates a new <code>Movie</code> object on the server.  It
    * returns the id of the movie that was created.

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,14 +18,14 @@ public class HttpRequestHelperTest {
 
   @Test
   public void testGet() throws IOException {
-    HttpRequestHelper.Response response = helper.get("http://www.google.com");
+    HttpRequestHelper.Response response = helper.get("http://www.google.com", Map.of());
     assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
     assertTrue(response.getContent().contains("Google"));
   }
 
   @Test
   public void testGetWithParameters() throws IOException {
-    HttpRequestHelper.Response response = helper.get("http://search.yahoo.com/search", "p", "Java");
+    HttpRequestHelper.Response response = helper.get("https://www.google.com/search", Map.of("p", "Java"));
     assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
     assertTrue(response.getContent().contains("Java"));
 

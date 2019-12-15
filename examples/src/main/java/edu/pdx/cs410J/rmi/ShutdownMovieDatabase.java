@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.rmi;
 
-import java.net.*;
-import java.rmi.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 /**
  * This program shutdowns the remote movie database.
@@ -12,27 +13,14 @@ public class ShutdownMovieDatabase {
     String host = args[0];
     int port = Integer.parseInt(args[1]);
 
-    // Install an RMISecurityManager, if there is not a
-    // SecurityManager already installed
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new RMISecurityManager());
-    }
-
-    String name = "rmi://" + host + ":" + port + "/MovieDatabase";
-
     try {
-      MovieDatabase db = 
-        (MovieDatabase) Naming.lookup(name);
+      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
       db.shutdown();
+      System.exit(0);
 
-    } catch (RemoteException ex) {
+    } catch (RemoteException | NotBoundException ex) {
       ex.printStackTrace(System.err);
-
-    } catch (NotBoundException ex) {
-      ex.printStackTrace(System.err);
-
-    } catch (MalformedURLException ex) {
-      ex.printStackTrace(System.err);
+      System.exit(1);
     }
 
   }

@@ -10,11 +10,11 @@ import java.io.IOException;
  * @version $Revision: 1.3 $
  * @since Spring 2001
  */
-public interface PhoneBillDumper {
+public interface PhoneBillDumper<T extends AbstractPhoneBill> {
 
   /**
    * Dumps a phone bill to some destination.
    */
-  public void dump(AbstractPhoneBill bill) throws IOException;
+  public void dump(T bill) throws IOException;
 
 }

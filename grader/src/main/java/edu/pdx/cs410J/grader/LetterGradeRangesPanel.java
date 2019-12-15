@@ -12,7 +12,7 @@ public class LetterGradeRangesPanel extends JPanel {
   private final Map<LetterGrade, MinMaxValueFields> minMaxValueFields = new HashMap<>();
   private GradeBook.LetterGradeRanges letterGradeRanges;
 
-  LetterGradeRangesPanel() {
+  LetterGradeRangesPanel(Student.Section undergraduate) {
     addLetterGradeRanges();
   }
 

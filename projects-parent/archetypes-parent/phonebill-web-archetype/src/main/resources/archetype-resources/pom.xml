@@ -3,7 +3,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2016</version>
+    <version>Winter2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -28,55 +28,48 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
-      <version>1.3</version>
+      <version>${hamcrest.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-library</artifactId>
-      <version>1.3</version>
+      <version>${hamcrest.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.0.7-beta</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2016</version>
+      <version>Winter2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>3.0-alpha-1</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.cobertura</groupId>
-      <artifactId>cobertura-runtime</artifactId>
-      <version>2.1.1</version>
-      <scope>runtime</scope>
-      <type>pom</type>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
     </dependency>
   </dependencies>
   <build>
@@ -86,7 +79,7 @@
         <!-- Need version 2.1.1 for Java 7 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.1.1</version>
+        <version>2.6</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -99,7 +92,6 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.2.10.v20150310</version>
         <configuration>
           <httpConnector>
             <port>${jetty.http.port}</port>
@@ -114,7 +106,7 @@
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.13</version>
+        <version>1.6.7</version>
         <executions>
           <execution>
             <id>start-container</id>
@@ -147,7 +139,7 @@
           <deployables>
             <deployable>
               <location>${project.build.directory}/${project.build.finalName}.${project.packaging}</location>
-              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/calls</pingURL>
+              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/index.html</pingURL>
               <pingTimeout>20000</pingTimeout>
             </deployable>
           </deployables>
@@ -156,7 +148,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.6</version>
         <configuration>
           <archive>
             <manifest>
@@ -184,26 +176,66 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
   <profiles>
     <profile>
       <id>grader</id>
+      <activation>
+        <activeByDefault>${grader}</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9</version>
+            <version>3.0.1</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2016</version>
+                <version>Winter2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
             </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <haltOnFailure>${haltOnFailingCoverage}</haltOnFailure>
+                  <rules>
+                    <rule>
+                      <element>BUNDLE</element>
+                      <limits>
+                        <limit>
+                          <counter>INSTRUCTION</counter>
+                          <value>COVEREDRATIO</value>
+                          <minimum>${jacoco.min.instruction.covered.ratio}</minimum>
+                        </limit>
+                        <limit>
+                          <counter>CLASS</counter>
+                          <value>MISSEDCOUNT</value>
+                          <maximum>${jacoco.max.missed.classes}</maximum>
+                        </limit>
+                      </limits>
+                    </rule>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

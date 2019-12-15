@@ -12,27 +12,31 @@ import java.time.LocalDateTime;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
 
 public class GradeBookXmlTest {
 
   @Test
   public void letterGradeRangesArePersistedToXml() throws IOException, TransformerException, ParserException {
     GradeBook book = new GradeBook("test");
-    LetterGradeRanges ranges = book.getLetterGradeRanges();
-    for (LetterGrade letterGrade : LetterGrade.values()) {
-      LetterGradeRange range = ranges.getRange(letterGrade);
-      if (range == null) {
-        continue;
-      }
-      range.setRange(range.minimum() + 1, range.maximum() + 1);
-    }
-    LetterGradeRange fRange = ranges.getRange(LetterGrade.F);
-    fRange.setRange(0, fRange.maximum());
+
+    LetterGradeRanges undergradRanges = book.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
+    morphLetterGradeRanges(undergradRanges, 1);
+
+    LetterGradeRanges gradRanges = book.getLetterGradeRanges(Student.Section.GRADUATE);
+    morphLetterGradeRanges(gradRanges, 2);
 
     GradeBook book2 = writeAndReadGradeBookAsXml(book);
 
-    LetterGradeRanges ranges2 = book2.getLetterGradeRanges();
+    LetterGradeRanges undergradRanges2 = book2.getLetterGradeRanges(Student.Section.UNDERGRADUATE);
+    assertRangesAreEqual(undergradRanges, undergradRanges2);
+
+    LetterGradeRanges gradRanges2 = book2.getLetterGradeRanges(Student.Section.GRADUATE);
+    assertRangesAreEqual(gradRanges, gradRanges2);
+  }
+
+  private void assertRangesAreEqual(LetterGradeRanges ranges, LetterGradeRanges ranges2) {
     for (LetterGrade letterGrade : LetterGrade.values()) {
       LetterGradeRange range = ranges.getRange(letterGrade);
       if (range == null) {
@@ -41,6 +45,18 @@ public class GradeBookXmlTest {
       LetterGradeRange range2 = ranges2.getRange(letterGrade);
       assertThat("Range for " + letterGrade, range2.minimum(), equalTo(range.minimum()));
     }
+  }
+
+  private void morphLetterGradeRanges(LetterGradeRanges ranges, int morphValue) {
+    for (LetterGrade letterGrade : LetterGrade.values()) {
+      LetterGradeRange range = ranges.getRange(letterGrade);
+      if (range == null) {
+        continue;
+      }
+      range.setRange(range.minimum() + morphValue, range.maximum() + morphValue);
+    }
+    LetterGradeRange fRange = ranges.getRange(LetterGrade.F);
+    fRange.setRange(0, fRange.maximum());
   }
 
   private GradeBook writeAndReadGradeBookAsXml(GradeBook book) throws IOException, TransformerException, ParserException {
@@ -78,4 +94,16 @@ public class GradeBookXmlTest {
 
     assertThat(book2.getAssignment(assignmentName).getType(), equalTo(Assignment.AssignmentType.POA));
   }
+
+  @Test
+  public void xmlHasNewlinesButNotIndentation() throws TransformerException, IOException {
+    GradeBook book = new GradeBook("test");
+    Document doc = XmlDumper.dumpGradeBook(book, new XmlHelper());;
+    byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
+    String string = new String(bytes);
+    assertThat(string, containsString("\n"));
+    assertThat(string.chars().filter(c -> '\n' == c).count(), greaterThan(4L));
+    assertThat(string, not(containsString(" <")));
+  }
+
 }

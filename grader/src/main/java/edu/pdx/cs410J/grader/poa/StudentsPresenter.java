@@ -62,14 +62,14 @@ public class StudentsPresenter {
 
   private Comparator<Student> sortStudentsByLastNameFirstNameEmail() {
     return (student1, student2) -> {
-      String lastName1 = student1.getLastName();
-      String lastName2 = student2.getLastName();
+      String lastName1 = getLastNameOfStudent(student1);
+      String lastName2 = getLastNameOfStudent(student2);
       if (!lastName1.equals(lastName2)) {
         return lastName1.compareTo(lastName2);
 
       } else {
-        String firstName1 = student1.getFirstName();
-        String firstName2 = student2.getFirstName();
+        String firstName1 = getFirstNameOfStudent(student1);
+        String firstName2 = getFirstNameOfStudent(student2);
         if (!firstName1.equals(firstName2)) {
           return firstName1.compareTo(firstName2);
 
@@ -80,8 +80,16 @@ public class StudentsPresenter {
     };
   }
 
+  private String getLastNameOfStudent(Student student) {
+    String lastName = student.getLastName();
+    if (lastName == null) {
+      throw new IllegalStateException("Student " + student.getId() + " doesn't have a last name");
+    }
+    return lastName;
+  }
+
   private String getStudentDisplayText(Student student) {
-    return student.getFirstName() + " " + student.getLastName() + " <" + student.getEmail() + ">";
+    return getFirstNameOfStudent(student) + " " + getLastNameOfStudent(student) + " <" + student.getEmail() + ">";
   }
 
   @Subscribe
@@ -109,7 +117,15 @@ public class StudentsPresenter {
   }
 
   private boolean submitterContainsStudentName(Student student, String submitter) {
-    return submitter.contains(student.getFirstName()) && submitter.contains(student.getLastName());
+    return submitter.contains(getFirstNameOfStudent(student)) && submitter.contains(getLastNameOfStudent(student));
+  }
+
+  private String getFirstNameOfStudent(Student student) {
+    String firstName = student.getFirstName();
+    if (firstName == null) {
+      throw new IllegalStateException("Student " + student.getId() + " doesn't have a first name");
+    }
+    return firstName;
   }
 
 }

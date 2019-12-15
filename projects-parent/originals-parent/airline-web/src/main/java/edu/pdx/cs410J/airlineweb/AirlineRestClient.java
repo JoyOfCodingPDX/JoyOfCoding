@@ -4,6 +4,9 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
  * A helper class for accessing the rest client.  Note that this class provides
@@ -28,33 +31,50 @@ public class AirlineRestClient extends HttpRequestHelper
         this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
     }
 
-    /**
-     * Returns all keys and values from the server
-     */
-    public Response getAllKeysAndValues() throws IOException
-    {
-        return get(this.url );
-    }
+  /**
+   * Returns all dictionary entries from the server
+   */
+  public Map<String, String> getAllDictionaryEntries() throws IOException {
+    Response response = get(this.url, Map.of());
+    return Messages.parseDictionary(response.getContent());
+  }
 
-    /**
-     * Returns all values for the given key
-     */
-    public Response getValues( String key ) throws IOException
-    {
-        return get(this.url, "key", key);
-    }
+  /**
+   * Returns the definition for the given word
+   */
+  public String getDefinition(String word) throws IOException {
+    Response response = get(this.url, Map.of("word", word));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String content = response.getContent();
+    return Messages.parseDictionaryEntry(content).getValue();
+  }
 
-    public Response addKeyValuePair( String key, String value ) throws IOException
-    {
-        return postToMyURL("key", key, "value", value);
-    }
+  public void addDictionaryEntry(String word, String definition) throws IOException {
+    Response response = postToMyURL(Map.of("word", word, "definition", definition));
+    throwExceptionIfNotOkayHttpStatus(response);
+  }
 
-    @VisibleForTesting
-    Response postToMyURL(String... keysAndValues) throws IOException {
-        return post(this.url, keysAndValues);
-    }
+  @VisibleForTesting
+  Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
+    return post(this.url, dictionaryEntries);
+  }
 
-    public Response removeAllMappings() throws IOException {
-        return delete(this.url);
+  public void removeAllDictionaryEntries() throws IOException {
+    Response response = delete(this.url, Map.of());
+    throwExceptionIfNotOkayHttpStatus(response);
+  }
+
+  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+    int code = response.getCode();
+    if (code != HTTP_OK) {
+      throw new AirlineRestException(code);
     }
+    return response;
+  }
+
+  private class AirlineRestException extends RuntimeException {
+    public AirlineRestException(int httpStatusCode) {
+      super("Got an HTTP Status Code of " + httpStatusCode);
+    }
+  }
 }

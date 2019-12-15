@@ -3,7 +3,7 @@ package edu.pdx.cs410J.grader;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class SurveyTest {
   @Test
@@ -37,4 +37,28 @@ public class SurveyTest {
 
     assertThat(student.getFirstName(), equalTo(nonEmptyValue));
   }
+
+  @Test
+  public void longMessageIsBrokenInto80CharacterLines() {
+    String message = "This is a long sentence that contains more than 80 characters. " +
+      "Somewhere in here it should be broken into multiple lines of 80 characters each.";
+
+    String lines = Survey.breakUpInto80CharacterLines(message);
+
+    assertThat(lines, not(startsWith(" ")));
+    assertThat(lines, containsString("here\nit"));
+  }
+
+  @Test
+  public void validEmailAddressIsValid() {
+    String address = "whitlock@cs.pdx.edu";
+    assertThat(Survey.isEmailAddress(address), equalTo(true));
+  }
+
+  @Test
+  public void invalidEmailAddressIsInvalid() {
+    String address = "whitlock";
+    assertThat(Survey.isEmailAddress(address), equalTo(false));
+  }
+
 }

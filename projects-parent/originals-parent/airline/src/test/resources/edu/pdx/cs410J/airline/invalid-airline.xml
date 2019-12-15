@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- A sample airline XML file -->
+<!DOCTYPE airline
+          SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
+
+<airline>
+  <name>Example Airlines</name>
+  <flight>
+    <number>1437</number>
+    <src>BJX</src>
+    <depart>
+      <date day="25" month="9" year="2020"/>
+      <!-- Missing time -->
+    </depart>
+    <dest>CMN</dest> <!-- They're taking me to Marrakesh! -->
+    <arrive>
+      <date day="26" month="9" year="2020"/>
+      <time hour="3" minute="56"/>
+    </arrive>
+  </flight>
+  <flight>
+    <number>7865</number>
+    <src>JNB</src>
+    <depart>
+      <date day="15" month="5" year="2020"/>
+      <time hour="7" minute="24"/>
+    </depart>
+    <dest>XIY</dest>
+    <arrive>
+      <date day="16" month="5" year="2020"/>
+      <time hour="9" minute="7"/>
+    </arrive>
+  </flight>
+</airline>
+

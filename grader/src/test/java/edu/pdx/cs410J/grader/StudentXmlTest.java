@@ -10,8 +10,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class StudentXmlTest {
 
@@ -64,6 +63,39 @@ public class StudentXmlTest {
     Student student2 = writeAndReadStudentAsXml(student);
 
     assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime1, submissionTime2));
+  }
+
+  @Test
+  public void enrolledUndergraduateSectionIsPersistedInXml() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    Student.Section section = Student.Section.UNDERGRADUATE;
+    student.setEnrolledSection(section);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getEnrolledSection(), equalTo(section));
+  }
+
+  @Test
+  public void enrolledGraduateSectionIsPersistedInXml() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    Student.Section section = Student.Section.GRADUATE;
+    student.setEnrolledSection(section);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getEnrolledSection(), equalTo(section));
+  }
+
+  @Test
+  public void xmlHasNewlinesButNotIndentation() throws TransformerException {
+    Student student = new Student("test");
+    Document doc = XmlDumper.toXml(student);
+    byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
+    String string = new String(bytes);
+    assertThat(string, containsString("\n"));
+    assertThat(string.chars().filter(c -> '\n' == c).count(), greaterThan(4L));
+    assertThat(string, not(containsString(" <")));
   }
 
 }

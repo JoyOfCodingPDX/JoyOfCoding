@@ -379,6 +379,28 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
     verify(this.view).setScoreHasBeenRecorded(true);
   }
 
+  @Test
+  public void recordingGradeInViewPublishesDisplayNextPOAMessage() {
+    ArgumentCaptor<ScoreValueHandler> scoreHandler = ArgumentCaptor.forClass(ScoreValueHandler.class);
+    verify(this.view).addScoreValueHandler(scoreHandler.capture());
+
+    ArgumentCaptor<RecordGradeHandler> recordGrade = ArgumentCaptor.forClass(RecordGradeHandler.class);
+    verify(this.view).addRecordGradeHandler(recordGrade.capture());
+
+    DisplayNextPOAEventHandler eventHandler = mock(DisplayNextPOAEventHandler.class);
+    this.bus.register(eventHandler);
+
+    this.assignment.setDueDate(LocalDateTime.now().minusDays(5));
+    postEventsToBus();
+
+    double score = 0.75;
+    scoreHandler.getValue().scoreValue(formatTotalPoints(score));
+    recordGrade.getValue().recordGrade();
+
+    ArgumentCaptor<SelectNextPOAEvent> eventCaptor = ArgumentCaptor.forClass(SelectNextPOAEvent.class);
+    verify(eventHandler).handleDisplayNextPOAEvent(eventCaptor.capture());
+  }
+
   private interface RecordGradeEventHandler {
     @Subscribe
     void handleRecordGradeEvent(RecordGradeEvent event);
@@ -427,5 +449,10 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
     verify(this.view, times(5)).setScore("");
     verifyIsLate(4, false);
+  }
+
+  private interface DisplayNextPOAEventHandler {
+    @Subscribe
+    public void handleDisplayNextPOAEvent(SelectNextPOAEvent event);
   }
 }
