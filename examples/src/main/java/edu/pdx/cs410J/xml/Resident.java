@@ -10,10 +10,10 @@ import org.w3c.dom.*;
  * <code>Resident</code> and filling in its fields.
  */
 public class Resident extends PhoneBookEntry {
-  protected String firstName;
-  protected String middleInitial;
-  protected String lastName;
-  protected boolean unlisted = false;
+  private String firstName;
+  private String middleInitial;
+  private String lastName;
+  private boolean unlisted = false;
 
   /**
    * Create a new <code>Resident</code> from a <code>Element</code> in
@@ -25,30 +25,39 @@ public class Resident extends PhoneBookEntry {
       Node node = elements.item(i);
 
       if (!(node instanceof Element)) {
-	continue;
+        continue;
       }
 
       Element element = (Element) node;
 
-      if (element.getNodeName().equals("first-name")) {
-	Node name = element.getFirstChild();
-	Node text = name.getFirstChild();
-	this.firstName = text.getNodeValue();
+      switch (element.getNodeName()) {
+        case "first-name": {
+          Node name = element.getFirstChild();
+          Node text = name.getFirstChild();
+          this.firstName = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("initial")) {
-	Node text = element.getFirstChild();
-	this.middleInitial = text.getNodeValue();
+        case "initial": {
+          Node text = element.getFirstChild();
+          this.middleInitial = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("last-name")) {
-	Node name = element.getFirstChild();
-	Node text = name.getFirstChild();
-	this.lastName = text.getNodeValue();
+        case "last-name": {
+          Node name = element.getFirstChild();
+          Node text = name.getFirstChild();
+          this.lastName = text.getNodeValue();
+          break;
+        }
 
-      } else if (element.getNodeName().equals("address")) {
-	fillInAddress(element);
+        case "address":
+          fillInAddress(element);
+          break;
 
-      } else if (element.getNodeName().equals("phone")) {
-	fillInPhone(element);
+        case "phone":
+          fillInPhone(element);
+          break;
       }
     }
 
@@ -59,11 +68,8 @@ public class Resident extends PhoneBookEntry {
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(this.firstName + " " + this.middleInitial + " " +
-	      this.lastName + "\n");
-    sb.append(super.toString());
-
-    return sb.toString();
+    return this.firstName + " " + this.middleInitial + " " +
+      this.lastName + "\n" +
+      super.toString();
   }
 }

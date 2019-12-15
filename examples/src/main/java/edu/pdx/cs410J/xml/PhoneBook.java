@@ -1,11 +1,19 @@
 package edu.pdx.cs410J.xml;
 
-import java.io.*;
-import java.util.*;
-import javax.xml.parsers.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This class represents a phone book that contains entries for
@@ -17,7 +25,7 @@ import org.xml.sax.*;
 public class PhoneBook {
   private static PrintStream err = System.err;
 
-  private Collection entries;
+  private Collection<PhoneBookEntry> entries = new ArrayList<>();
 
   /**
    * Creates a <code>PhoneBook</code> from an XML DOM tree.
@@ -29,30 +37,27 @@ public class PhoneBook {
       throw new IllegalArgumentException(s);
     }
 
-    this.entries = new ArrayList();
     NodeList entries = root.getChildNodes();
     for (int i = 0; i < entries.getLength(); i++) {
       Node node = entries.item(i);
-      
+
       if (!(node instanceof Element)) {
-	// Ignore other stuff
-	continue;
+        // Ignore other stuff
+        continue;
       }
 
       Element entry = (Element) node;
-
-      if (entry.getNodeName().equals("resident")) {
-	Resident resident = new Resident(entry);
-	this.entries.add(resident);
-
-      } else if (entry.getNodeName().equals("business")) {
-	Business business = new Business(entry);
-	this.entries.add(business);
-
-      } else {
-	String s = "Unknown entry: " + entry.getNodeName() + " (" +
-	  entry.getNodeValue() + ")";
-	throw new IllegalArgumentException(s);
+      switch (entry.getNodeName()) {
+        case "resident":
+          this.entries.add(new Resident(entry));
+          break;
+        case "business":
+          this.entries.add(new Business(entry));
+          break;
+        default:
+          String s = "Unknown entry: " + entry.getNodeName() + " (" +
+            entry.getNodeValue() + ")";
+          throw new IllegalArgumentException(s);
       }
     }
   }
@@ -65,12 +70,10 @@ public class PhoneBook {
     // Parse the XML file to create a DOM tree
     Document doc = null;
     try {
-      DocumentBuilderFactory factory =
-	DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(true);
 
-      DocumentBuilder builder = 
-	factory.newDocumentBuilder();
+      DocumentBuilder builder =  factory.newDocumentBuilder();
       doc = builder.parse(new File(args[0]));
 
     } catch (ParserConfigurationException ex) {
@@ -92,12 +95,11 @@ public class PhoneBook {
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("Phone Book\n\n");
 
-    Iterator iter = this.entries.iterator();
-    while (iter.hasNext()) {
-      sb.append(iter.next());
+    for (PhoneBookEntry entry : this.entries) {
+      sb.append(entry);
       sb.append("\n");
     }
     
