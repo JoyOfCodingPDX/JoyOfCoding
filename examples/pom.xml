@@ -18,6 +18,11 @@
       <version>Winter2020</version>
     </dependency>
     <dependency>
+      <groupId>edu.pdx.cs410J</groupId>
+      <artifactId>projects</artifactId>
+      <version>Winter2020</version>
+    </dependency>
+    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
       <version>${hamcrest.version}</version>
