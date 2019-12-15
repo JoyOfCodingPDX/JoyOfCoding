@@ -86,9 +86,6 @@
     <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
-        <include>build.gradle</include>
-        <include>gradlew</include>
-        <include>gradlew.bat</include>
         <include>LICENSE</include>
         <include>mvnw.cmd</include>
         <include>run.bat</include>
