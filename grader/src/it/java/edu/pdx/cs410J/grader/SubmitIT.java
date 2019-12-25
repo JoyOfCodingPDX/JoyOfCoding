@@ -53,7 +53,9 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     this.filesToSubmit.add(createEmptyFile(testJavaDocDir, "package.html"));
 
     File testResourcesDir = createDirectories("src", "test", "resources", "edu", "pdx", "cs410J", studentLoginId);
-    this.filesToSubmit.add(createEmptyFile(testResourcesDir, "testData.xml"));
+    for (String fileName : Arrays.asList("testData.xml", "testData.txt")) {
+      this.filesToSubmit.add(createEmptyFile(testResourcesDir, fileName));
+    }
 
     File itDir = createDirectories("src", "it", "java", "edu", "pdx", "cs410J", studentLoginId);
     for (String fileName : Arrays.asList(projectName + "IT.java", "File1IT.java", "File2IT.java")) {
@@ -61,7 +63,9 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     }
 
     File itResourcesDir = createDirectories("src", "it", "resources", "edu", "pdx", "cs410J", studentLoginId);
-    this.filesToSubmit.add(createEmptyFile(itResourcesDir, "testData.xml"));
+    for (String fileName : Arrays.asList("testData.xml", "testData.txt")) {
+      this.filesToSubmit.add(createEmptyFile(itResourcesDir, fileName));
+    }
 
   }
 

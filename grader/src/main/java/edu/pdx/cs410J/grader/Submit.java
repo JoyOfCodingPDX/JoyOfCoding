@@ -388,6 +388,9 @@ public class Submit extends EmailSender {
     } else if (name.endsWith(".xml")) {
       return true;
 
+    } else if (name.endsWith(".txt")) {
+      return true;
+
     } else {
       return false;
     }

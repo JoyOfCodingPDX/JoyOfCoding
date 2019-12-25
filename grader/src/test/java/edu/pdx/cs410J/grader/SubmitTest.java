@@ -200,4 +200,10 @@ public class SubmitTest {
     assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
   }
 
+  @Test
+  public void canSubmitTxtFilesFromTestResourcesDirectory() {
+    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
 }
