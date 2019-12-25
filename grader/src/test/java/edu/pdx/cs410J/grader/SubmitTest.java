@@ -157,4 +157,47 @@ public class SubmitTest {
     assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
   }
 
+  @Test
+  public void canSubmitXmlFilesFromTestResourcesDirectory() {
+    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+  }
+
+  @Test
+  public void mainResourcesDirectoryIsNotAnAllowedMavenDirectory() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
+
+  @Test
+  public void canSubmitTestResourcesXmlFile() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "test", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitIntegrationTestResourcesXmlFile() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "it", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void zipFileEntryNameForTestResourcesFile() {
+    String entryName = "src/test/resources/edu/pdx/cs410J/student/testData.xml";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
 }

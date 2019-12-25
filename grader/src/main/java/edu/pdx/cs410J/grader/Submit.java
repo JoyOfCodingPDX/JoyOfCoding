@@ -385,6 +385,9 @@ public class Submit extends EmailSender {
     } else if (name.endsWith(".html")) {
       return true;
 
+    } else if (name.endsWith(".xml")) {
+      return true;
+
     } else {
       return false;
     }
@@ -414,7 +417,10 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   boolean isInMavenProjectDirectory(File file) {
-    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java|javadoc", "main|test|it", "src");
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java|javadoc|resources", "main|test|it", "src");
+    if (file.getPath().contains("main/resources")) {
+      return false;
+    }
     if (isInMavenProjectDirectory) {
       db(file + " is in the edu/pdx/cs410J directory");
     }
@@ -561,7 +567,7 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   static String getZipEntryNameFor(String filePath) {
-    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc)/edu/pdx/cs410J/(.*)");
+    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc|resources)/edu/pdx/cs410J/(.*)");
     Matcher matcher = pattern.matcher(filePath);
 
     if (matcher.matches()) {
