@@ -91,6 +91,8 @@ public class Submit extends EmailSender {
    */
   private boolean saveZip = false;
 
+  private boolean sendEmails = true;
+
   /**
    * The time at which the project was submitted
    */
@@ -136,6 +138,10 @@ public class Submit extends EmailSender {
    */
   private void setSaveZip(boolean saveZip) {
     this.saveZip = saveZip;
+  }
+
+  private void setSendEmails(boolean sendEmails) {
+    this.sendEmails = sendEmails;
   }
 
   /**
@@ -292,11 +298,13 @@ public class Submit extends EmailSender {
     // Create a temporary zip file to hold the source files
     File zipFile = makeZipFileWith(sourceFiles);
 
-    // Send the zip file as an email attachment to the TA
-    mailTA(zipFile, sourceFiles);
+    if (this.sendEmails) {
+      // Send the zip file as an email attachment to the TA
+      mailTA(zipFile, sourceFiles);
 
-    if (sendReceipt) {
-      mailReceipt(sourceFiles);
+      if (sendReceipt) {
+        mailReceipt(sourceFiles);
+      }
     }
 
     return true;
@@ -744,6 +752,7 @@ public class Submit extends EmailSender {
     err.println("    srcDirectory Directory containing source code to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savezip           Saves temporary Zip file");
+    err.println("    -nosend            Generates zip file, but does not send emails");
     err.println("    -smtp serverName   Name of SMTP server");
     err.println("    -verbose           Log debugging output");
     err.println("    -comment comment   Info for the Grader");
@@ -778,6 +787,9 @@ public class Submit extends EmailSender {
 
       } else if (args[i].equals("-savezip")) {
         this.setSaveZip(true);
+
+      } else if (args[i].equals("-nosend")) {
+        this.setSendEmails(false);
 
       } else if (args[i].equals("-comment")) {
         if (++i >= args.length) {
