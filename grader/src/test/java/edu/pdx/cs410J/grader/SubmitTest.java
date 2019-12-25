@@ -79,4 +79,44 @@ public class SubmitTest {
     LocalDateTime actual = Submit.ManifestAttributes.parseSubmissionTime(legacySubmissionTime);
     assertThat(actual, equalTo(expected));
   }
+
+  @Test
+  public void canSubmitTestClasses() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitIntegrationTestClasses() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "it", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void cantSubmitPomXml() {
+    String userId = "student";
+
+    File file = makeFileWithPath("proj", "pom.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
+
+  @Test
+  public void cantSubmitJavaFileInGroovyDirectory() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "groovy", "edu", "pdx", "cs410J", userId, "Project.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
 }

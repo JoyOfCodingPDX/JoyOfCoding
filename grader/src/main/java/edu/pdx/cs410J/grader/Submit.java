@@ -398,7 +398,7 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   boolean isInMavenProjectDirectory(File file) {
-    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java", "main", "src");
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java", "main|test|it", "src");
     if (isInMavenProjectDirectory) {
       db(file + " is in the edu/pdx/cs410J directory");
     }
@@ -414,7 +414,7 @@ public class Submit extends EmailSender {
     }
 
     for (String parentDirectoryName : parentDirectoryNames) {
-      if (parent == null || !parent.getName().equals(parentDirectoryName)) {
+      if (parent == null || !parent.getName().matches(parentDirectoryName)) {
         return false;
 
       } else {
