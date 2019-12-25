@@ -547,12 +547,11 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   static String getZipEntryNameFor(String filePath) {
-    String prefix = "src/main/java/edu/pdx/cs410J/";
-    Pattern pattern = Pattern.compile(".*/" + prefix + "(.*)");
+    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/java/edu/pdx/cs410J/(.*)");
     Matcher matcher = pattern.matcher(filePath);
 
     if (matcher.matches()) {
-      return prefix + matcher.group(1);
+      return "src/" + matcher.group(1) + "/java/edu/pdx/cs410J/" + matcher.group(2);
     } else {
       throw new IllegalStateException("Can't extract zip entry name for " + filePath);
     }
