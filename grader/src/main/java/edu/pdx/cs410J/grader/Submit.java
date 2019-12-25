@@ -363,9 +363,9 @@ public class Submit extends EmailSender {
     }
 
     // Verify that file is in the correct directory.
-    if (!isInAKoansDirectory(file) && !isInEduPdxCs410JDirectory(file)) {
+    if (!isInAKoansDirectory(file) && !isInMavenProjectDirectory(file)) {
       err.println("** Not submitting file " + file +
-        ": it does not reside in a directory named " +
+        ": it does not reside in a Maven project in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
         "cs410J" + File.separator + userId + " (or in one of the koans directories)");
       return false;
@@ -397,12 +397,12 @@ public class Submit extends EmailSender {
   }
 
   @VisibleForTesting
-  boolean isInEduPdxCs410JDirectory(File file) {
-    boolean isInEduPdxCs410JDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
-    if (isInEduPdxCs410JDirectory) {
+  boolean isInMavenProjectDirectory(File file) {
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java", "main", "src");
+    if (isInMavenProjectDirectory) {
       db(file + " is in the edu/pdx/cs410J directory");
     }
-    return isInEduPdxCs410JDirectory;
+    return isInMavenProjectDirectory;
   }
 
   private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
@@ -478,6 +478,8 @@ public class Submit extends EmailSender {
 
     warnIfMainProjectClassIsNotSubmitted(sourceFiles);
 
+    warnIfTestClassesAreNotSubmitted(sourceFiles);
+
     return doesUserWantToSubmit();
   }
 
@@ -488,6 +490,14 @@ public class Submit extends EmailSender {
       out.println("*** WARNING: You are submitting " + this.projName +
         ", but did not include " + mainProjectClassName + ".\n" +
         "    You might want to check the name of the project or the files you are submitting.\n");
+    }
+  }
+
+  protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
+    boolean wereTestClassessSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains("test"));
+    if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
+      out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +
+        "    Your unit tests are executed as part of the grading of your project.\n");
     }
   }
 
@@ -694,7 +704,7 @@ public class Submit extends EmailSender {
     err.println("    student      Who is submitting the project?");
     err.println("    loginId      UNIX login id");
     err.println("    email        Student's email address");
-    err.println("    file         Java source file (or all files in a directory) to submit");
+    err.println("    srcDirectory Directory containing source code to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savezip           Saves temporary Zip file");
     err.println("    -smtp serverName   Name of SMTP server");

@@ -36,7 +36,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @Before
   public void createFilesToSubmit() throws IOException {
-    File dir = createDirectories("edu", "pdx", "cs410J", studentLoginId);
+    File dir = createDirectories("src", "main", "java", "edu", "pdx", "cs410J", studentLoginId);
     List<String> fileNames = Arrays.asList(projectName + ".java", "File1.java", "File2.java");
     for (String fileName : fileNames) {
       this.filesToSubmit.add(createEmptyFile(dir, fileName));

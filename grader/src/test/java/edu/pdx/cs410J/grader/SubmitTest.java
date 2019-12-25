@@ -38,10 +38,10 @@ public class SubmitTest {
   public void canSubmitClassesInStudentPackage() {
     String userId = "student";
 
-    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "ProjectClass.java");
+    File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "ProjectClass.java");
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
   private File makeFileWithPath(String... path) {
@@ -58,10 +58,10 @@ public class SubmitTest {
   public void canSubmitClassesInSubPackage() {
     String userId = "student";
 
-    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");
+    File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
   @Test
