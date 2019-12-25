@@ -101,6 +101,16 @@ public class SubmitTest {
   }
 
   @Test
+  public void canSubmitMainJavaDocPackageHtml() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "javadoc", "edu", "pdx", "cs410J", userId, "package.html");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
   public void cantSubmitPomXml() {
     String userId = "student";
 
@@ -132,4 +142,19 @@ public class SubmitTest {
     String badFileName = "dir/src/bad/java/edu/pdx/cs410J/student/File.java";
     Submit.getZipEntryNameFor(badFileName);
   }
+
+  @Test
+  public void canSubmitPackageHtmlForMainTestAndIT() {
+    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+  }
+
+  @Test
+  public void zipFileEntryNameForSourceJavadocFile() {
+    String entryName = "src/main/javadoc/edu/pdx/cs410J/student/package.html";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
 }

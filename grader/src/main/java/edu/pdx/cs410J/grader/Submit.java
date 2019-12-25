@@ -27,7 +27,8 @@ import java.util.stream.Stream;
  * This class is used to submit assignments in CS410J.  The user
  * specified his or her email address as well as the base directory
  * for his/her source files on the command line.  The directory is
- * searched recursively for files ending in .java.  Those files are
+ * searched recursively for files that are allowed to be submitted.
+ * Those files are
  * placed in a zip file and emailed to the grader.  A confirmation
  * email is sent to the submitter.
  *
@@ -357,13 +358,6 @@ public class Submit extends EmailSender {
       return false;
     }
 
-    // Does the file name end in .java?
-    if (!name.endsWith(".java")) {
-      err.println("** Not submitting file " + file +
-        " because does end in \".java\"");
-      return false;
-    }
-
     // Verify that file is in the correct directory.
     if (!isInAKoansDirectory(file) && !isInMavenProjectDirectory(file)) {
       err.println("** Not submitting file " + file +
@@ -373,7 +367,27 @@ public class Submit extends EmailSender {
       return false;
     }
 
+    // Does the file name end in .java?
+    if (!canFileBeSubmitted(name)) {
+      err.println("** Not submitting file " + file +
+        " because does end in \".java\"");
+      return false;
+    }
+
     return true;
+  }
+
+  @VisibleForTesting
+  static boolean canFileBeSubmitted(String name) {
+    if (name.endsWith(".java")) {
+        return true;
+
+    } else if (name.endsWith(".html")) {
+      return true;
+
+    } else {
+      return false;
+    }
   }
 
   protected boolean fileExists(File file) {
@@ -400,7 +414,7 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   boolean isInMavenProjectDirectory(File file) {
-    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java", "main|test|it", "src");
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java|javadoc", "main|test|it", "src");
     if (isInMavenProjectDirectory) {
       db(file + " is in the edu/pdx/cs410J directory");
     }
@@ -547,11 +561,11 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   static String getZipEntryNameFor(String filePath) {
-    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/java/edu/pdx/cs410J/(.*)");
+    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc)/edu/pdx/cs410J/(.*)");
     Matcher matcher = pattern.matcher(filePath);
 
     if (matcher.matches()) {
-      return "src/" + matcher.group(1) + "/java/edu/pdx/cs410J/" + matcher.group(2);
+      return "src/" + matcher.group(1) + "/" + matcher.group(2) + "/edu/pdx/cs410J/" + matcher.group(3);
     } else {
       throw new IllegalStateException("Can't extract zip entry name for " + filePath);
     }
