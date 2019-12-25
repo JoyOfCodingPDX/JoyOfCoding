@@ -15,10 +15,10 @@ import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static edu.pdx.cs410J.grader.EmailSender.DAVE_EMAIL;
 import static edu.pdx.cs410J.grader.EmailSender.TA_EMAIL;
@@ -68,6 +68,45 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     assertThat(grade, is(notNullValue()));
     assertThat(grade.getScore(), equalTo(Grade.NO_GRADE));
     assertThat(grade.getSubmissionTimes().size(), equalTo(1));
+
+    assertZipFileContainsFilesInMavenProjectDirectories();
+  }
+
+  private void assertZipFileContainsFilesInMavenProjectDirectories() throws IOException {
+    File zipFile = findNewestZipFileInTempDirectory();
+    assertThat(zipFile, is(notNullValue()));
+    List<String> entryNames = getZipFileEntryNames(zipFile);
+    assertThat(entryNames, not(empty()));
+
+    filesToSubmit.forEach(file -> {
+      String filePath = file.getPath().substring(this.tempDirectory.getPath().length() + 1);
+      assertThat(entryNames, hasItem(filePath));
+    });
+  }
+
+  private List<String> getZipFileEntryNames(File zipFile) throws IOException {
+    List<String> entryNames = new ArrayList<>();
+    FileInputStream stream = new FileInputStream(zipFile);
+    try (
+      ZipInputStream zipStream = new ZipInputStream(stream);
+    ) {
+      for (ZipEntry entry = zipStream.getNextEntry(); entry != null; entry = zipStream.getNextEntry()) {
+        String entryName = entry.getName();
+        entryNames.add(entryName);
+      }
+    }
+
+    return entryNames;
+  }
+
+  private File findNewestZipFileInTempDirectory() throws IOException {
+    File[] zipFiles = this.tempDirectory.listFiles((dir, name) -> name.endsWith(".zip"));
+    if (zipFiles == null) {
+      return null;
+
+    } else {
+      return Collections.max(List.of(zipFiles), Comparator.comparingDouble(File::lastModified));
+    }
   }
 
   private void submitFiles() throws IOException, MessagingException {

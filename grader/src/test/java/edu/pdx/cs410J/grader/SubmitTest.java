@@ -119,4 +119,17 @@ public class SubmitTest {
     submit.setUserId(userId);
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
   }
+
+  @Test
+  public void zipFileEntryNameForSourceFile() {
+    String entryName = "src/main/java/edu/pdx/cs410J/student/Project.java";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void zipFileEntryNameForBadSourceFileThrowsException() {
+    String badFileName = "dir/src/bad/java/edu/pdx/cs410J/student/File.java";
+    Submit.getZipEntryNameFor(badFileName);
+  }
 }

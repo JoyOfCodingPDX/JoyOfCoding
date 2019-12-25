@@ -18,6 +18,8 @@ import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.jar.Attributes;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -539,7 +541,20 @@ public class Submit extends EmailSender {
 
     } else {
       // We already know that the file is in the correct directory
-      return "edu/pdx/cs410J/" + userId + "/" + file.getName();
+      return getZipEntryNameFor(file.getPath());
+    }
+  }
+
+  @VisibleForTesting
+  static String getZipEntryNameFor(String filePath) {
+    String prefix = "src/main/java/edu/pdx/cs410J/";
+    Pattern pattern = Pattern.compile(".*/" + prefix + "(.*)");
+    Matcher matcher = pattern.matcher(filePath);
+
+    if (matcher.matches()) {
+      return prefix + matcher.group(1);
+    } else {
+      throw new IllegalStateException("Can't extract zip entry name for " + filePath);
     }
   }
 
