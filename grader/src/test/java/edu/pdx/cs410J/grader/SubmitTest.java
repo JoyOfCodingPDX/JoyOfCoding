@@ -38,10 +38,10 @@ public class SubmitTest {
   public void canSubmitClassesInStudentPackage() {
     String userId = "student";
 
-    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "ProjectClass.java");
+    File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "ProjectClass.java");
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
   private File makeFileWithPath(String... path) {
@@ -58,10 +58,10 @@ public class SubmitTest {
   public void canSubmitClassesInSubPackage() {
     String userId = "student";
 
-    File file = makeFileWithPath("edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");
+    File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.isInEduPdxCs410JDirectory(file), equalTo(true));
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
   @Test
@@ -79,4 +79,131 @@ public class SubmitTest {
     LocalDateTime actual = Submit.ManifestAttributes.parseSubmissionTime(legacySubmissionTime);
     assertThat(actual, equalTo(expected));
   }
+
+  @Test
+  public void canSubmitTestClasses() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitIntegrationTestClasses() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "it", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitMainJavaDocPackageHtml() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "javadoc", "edu", "pdx", "cs410J", userId, "package.html");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void cantSubmitPomXml() {
+    String userId = "student";
+
+    File file = makeFileWithPath("proj", "pom.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
+
+  @Test
+  public void cantSubmitJavaFileInGroovyDirectory() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "groovy", "edu", "pdx", "cs410J", userId, "Project.java");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
+
+  @Test
+  public void zipFileEntryNameForSourceFile() {
+    String entryName = "src/main/java/edu/pdx/cs410J/student/Project.java";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void zipFileEntryNameForBadSourceFileThrowsException() {
+    String badFileName = "dir/src/bad/java/edu/pdx/cs410J/student/File.java";
+    Submit.getZipEntryNameFor(badFileName);
+  }
+
+  @Test
+  public void canSubmitPackageHtmlForMainTestAndIT() {
+    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+  }
+
+  @Test
+  public void zipFileEntryNameForSourceJavadocFile() {
+    String entryName = "src/main/javadoc/edu/pdx/cs410J/student/package.html";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
+  @Test
+  public void canSubmitXmlFilesFromTestResourcesDirectory() {
+    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+  }
+
+  @Test
+  public void mainResourcesDirectoryIsNotAnAllowedMavenDirectory() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "main", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+  }
+
+  @Test
+  public void canSubmitTestResourcesXmlFile() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "test", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitIntegrationTestResourcesXmlFile() {
+    String userId = "student";
+
+    File file = makeFileWithPath("src", "it", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
+  }
+
+  @Test
+  public void zipFileEntryNameForTestResourcesFile() {
+    String entryName = "src/test/resources/edu/pdx/cs410J/student/testData.xml";
+    String fileName = "directory" + "/" + entryName;
+    assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
+  }
+
+  @Test
+  public void canSubmitTxtFilesFromTestResourcesDirectory() {
+    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
 }
