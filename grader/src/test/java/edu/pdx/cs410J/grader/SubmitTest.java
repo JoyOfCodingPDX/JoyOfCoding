@@ -164,13 +164,13 @@ public class SubmitTest {
   }
 
   @Test
-  public void mainResourcesDirectoryIsNotAnAllowedMavenDirectory() {
+  public void mainResourcesDirectoryIsAnAllowedMavenDirectory() {
     String userId = "student";
 
     File file = makeFileWithPath("src", "main", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
+    assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
   @Test
