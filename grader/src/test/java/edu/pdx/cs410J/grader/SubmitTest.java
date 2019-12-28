@@ -201,7 +201,8 @@ public class SubmitTest {
   }
 
   @Test
-  public void canSubmitTxtFilesFromTestResourcesDirectory() {
+  public void canSubmitTxtFilesFromesourcesDirectory() {
+    assertThat(Submit.canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
     assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
     assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
   }

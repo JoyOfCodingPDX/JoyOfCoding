@@ -44,6 +44,11 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     File mainJavaDocDir = createDirectories("src", "main", "javadoc", "edu", "pdx", "cs410J", studentLoginId);
     this.filesToSubmit.add(createEmptyFile(mainJavaDocDir, "package.html"));
 
+    File mainResourcesDir = createDirectories("src", "main", "resources", "edu", "pdx", "cs410J", studentLoginId);
+    for (String fileName : Arrays.asList("text.txt", "xml.xml")) {
+      this.filesToSubmit.add(createEmptyFile(mainResourcesDir, fileName));
+    }
+
     File testDir = createDirectories("src", "test", "java", "edu", "pdx", "cs410J", studentLoginId);
     for (String fileName : Arrays.asList(projectName + "Test.java", "File1Test.java", "File2Test.java")) {
       this.filesToSubmit.add(createEmptyFile(testDir, fileName));
