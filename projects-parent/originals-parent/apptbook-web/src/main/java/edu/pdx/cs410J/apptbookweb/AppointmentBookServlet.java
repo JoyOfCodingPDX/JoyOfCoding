@@ -14,7 +14,8 @@ import java.util.Map;
 /**
  * This servlet ultimately provides a REST API for working with an
  * <code>AppointmentBook</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple key/value pairs.
+ * of how to use HTTP and Java servlets to store simple dictionary of words
+ * and their definitions.
  */
 public class AppointmentBookServlet extends HttpServlet
 {
