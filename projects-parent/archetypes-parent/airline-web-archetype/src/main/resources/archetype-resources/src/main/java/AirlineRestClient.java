@@ -75,8 +75,9 @@ public class AirlineRestClient extends HttpRequestHelper
     return response;
   }
 
-  private class AirlineRestException extends RuntimeException {
-    public AirlineRestException(int httpStatusCode) {
+  @VisibleForTesting
+  class AirlineRestException extends RuntimeException {
+    AirlineRestException(int httpStatusCode) {
       super("Got an HTTP Status Code of " + httpStatusCode);
     }
   }

@@ -1,9 +1,10 @@
-#set($symbol_pound='#')
-#set($symbol_dollar='$')
-#set($symbol_escape='\' )
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 package ${package};
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import ${package}.AirlineRestClient.AirlineRestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -44,13 +45,15 @@ public class Project5IT extends InvokeMainTestCase {
         assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
-    @Test
-    public void test3NoDefinitions() {
+    @Test(expected = AirlineRestException.class)
+    public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
         String word = "WORD";
-        MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT, word );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-        String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, null)));
+        try {
+            invokeMain(Project5.class, HOSTNAME, PORT, word);
+
+        } catch (IllegalArgumentException ex) {
+            throw ex.getCause().getCause();
+        }
     }
 
     @Test

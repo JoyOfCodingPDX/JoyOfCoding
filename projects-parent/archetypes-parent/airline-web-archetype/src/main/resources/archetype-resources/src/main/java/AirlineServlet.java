@@ -113,16 +113,20 @@ public class AirlineServlet extends HttpServlet {
    * The text of the message is formatted with
    * {@link Messages${symbol_pound}formatDictionaryEntry(String, String)}
    */
-  private void writeDefinition(String word, HttpServletResponse response ) throws IOException
-  {
-      String definition = this.dictionary.get(word);
+  private void writeDefinition(String word, HttpServletResponse response) throws IOException {
+    String definition = this.dictionary.get(word);
 
+    if (definition == null) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+    } else {
       PrintWriter pw = response.getWriter();
       pw.println(Messages.formatDictionaryEntry(word, definition));
 
       pw.flush();
 
-      response.setStatus( HttpServletResponse.SC_OK );
+      response.setStatus(HttpServletResponse.SC_OK);
+    }
   }
 
   /**
