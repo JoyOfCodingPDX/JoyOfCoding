@@ -14,7 +14,8 @@ import java.util.Map;
 /**
  * This servlet ultimately provides a REST API for working with an
  * <code>Airline</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple key/value pairs.
+ * of how to use HTTP and Java servlets to store simple dictionary of words
+ * and their definitions.
  */
 public class AirlineServlet extends HttpServlet {
   static final String WORD_PARAMETER = "word";
@@ -110,16 +111,20 @@ public class AirlineServlet extends HttpServlet {
    * The text of the message is formatted with
    * {@link Messages#formatDictionaryEntry(String, String)}
    */
-  private void writeDefinition(String word, HttpServletResponse response ) throws IOException
-  {
-      String definition = this.dictionary.get(word);
+  private void writeDefinition(String word, HttpServletResponse response) throws IOException {
+    String definition = this.dictionary.get(word);
 
+    if (definition == null) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+    } else {
       PrintWriter pw = response.getWriter();
       pw.println(Messages.formatDictionaryEntry(word, definition));
 
       pw.flush();
 
-      response.setStatus( HttpServletResponse.SC_OK );
+      response.setStatus(HttpServletResponse.SC_OK);
+    }
   }
 
   /**

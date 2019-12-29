@@ -14,7 +14,8 @@ import java.util.Map;
 /**
  * This servlet ultimately provides a REST API for working with an
  * <code>AppointmentBook</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple key/value pairs.
+ * of how to use HTTP and Java servlets to store simple dictionary of words
+ * and their definitions.
  */
 public class AppointmentBookServlet extends HttpServlet
 {
@@ -111,16 +112,20 @@ public class AppointmentBookServlet extends HttpServlet
      * The text of the message is formatted with
      * {@link Messages#formatDictionaryEntry(String, String)}
      */
-    private void writeDefinition(String word, HttpServletResponse response ) throws IOException
-    {
+    private void writeDefinition(String word, HttpServletResponse response) throws IOException {
         String definition = this.dictionary.get(word);
 
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.formatDictionaryEntry(word, definition));
+        if (definition == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-        pw.flush();
+        } else {
+            PrintWriter pw = response.getWriter();
+            pw.println(Messages.formatDictionaryEntry(word, definition));
 
-        response.setStatus( HttpServletResponse.SC_OK );
+            pw.flush();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
     /**

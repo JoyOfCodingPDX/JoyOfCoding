@@ -9,7 +9,9 @@ import java.util.Map;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
- * A helper class for accessing the rest client
+ * A helper class for accessing the rest client.  Note that this class provides
+ * an example of how to make gets and posts to a URL.  You'll need to change it
+ * to do something other than just send dictionary entries.
  */
 public class AppointmentBookRestClient extends HttpRequestHelper {
   private static final String WEB_APP = "apptbook";
@@ -69,7 +71,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return response;
   }
 
-  private class AppointmentBookRestException extends RuntimeException {
+  @VisibleForTesting
+  class AppointmentBookRestException extends RuntimeException {
     public AppointmentBookRestException(int httpStatusCode) {
       super("Got an HTTP Status Code of " + httpStatusCode);
     }
