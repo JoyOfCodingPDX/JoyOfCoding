@@ -111,16 +111,20 @@ public class AppointmentBookServlet extends HttpServlet
      * The text of the message is formatted with
      * {@link Messages#formatDictionaryEntry(String, String)}
      */
-    private void writeDefinition(String word, HttpServletResponse response ) throws IOException
-    {
+    private void writeDefinition(String word, HttpServletResponse response) throws IOException {
         String definition = this.dictionary.get(word);
 
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.formatDictionaryEntry(word, definition));
+        if (definition == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-        pw.flush();
+        } else {
+            PrintWriter pw = response.getWriter();
+            pw.println(Messages.formatDictionaryEntry(word, definition));
 
-        response.setStatus( HttpServletResponse.SC_OK );
+            pw.flush();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
     /**
