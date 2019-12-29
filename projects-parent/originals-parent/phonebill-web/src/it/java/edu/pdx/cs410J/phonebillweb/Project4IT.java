@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.phonebillweb;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.phonebillweb.PhoneBillRestClient.PhoneBillRestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -40,13 +41,15 @@ public class Project4IT extends InvokeMainTestCase {
         assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
-    @Test
-    public void test3NoDefinitions() {
+    @Test(expected = PhoneBillRestException.class)
+    public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
         String word = "WORD";
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-        String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, null)));
+        try {
+            invokeMain(Project4.class, HOSTNAME, PORT, word);
+
+        } catch (IllegalArgumentException ex) {
+            throw ex.getCause().getCause();
+        }
     }
 
     @Test
