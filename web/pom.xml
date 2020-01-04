@@ -13,7 +13,7 @@
   <version>Winter2020</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>3.0.12.Final</resteasy.version>
+    <resteasy.version>4.4.2.Final</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>
@@ -144,16 +144,6 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
-      <version>${resteasy.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>jaxrs-api</artifactId>
-      <version>${resteasy.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxb-provider</artifactId>
       <version>${resteasy.version}</version>
     </dependency>
@@ -175,7 +165,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>27.1-jre</version>
+      <version>28.2-jre</version>
     </dependency>
   </dependencies>
 </project>
