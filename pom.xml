@@ -49,7 +49,7 @@
     <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
   </scm>
     <prerequisites>
-        <maven>3.6.1</maven>
+        <maven>3.6.3</maven>
     </prerequisites>
     <properties>
         <maven.compiler.source>10</maven.compiler.source>
@@ -95,7 +95,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.6.1</version>
+              <version>3.6.3</version>
             </requireMavenVersion>
             <requireJavaVersion>
               <version>${maven.compiler.target}</version>
