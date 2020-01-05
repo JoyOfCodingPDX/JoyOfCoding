@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BugCollection version='3.1.11' threshold='medium' effort='default'><Error></Error><Project><SrcDir>/Users/david/PSU/git/PortlandStateJava/projects-parent/archetypes-parent/java-koans-archetype/src/main/java</SrcDir><SrcDir>/Users/david/PSU/git/PortlandStateJava/projects-parent/archetypes-parent/java-koans-archetype/src/test/java</SrcDir></Project></BugCollection>
