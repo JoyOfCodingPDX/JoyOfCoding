@@ -1,7 +1,10 @@
 package edu.pdx.cs410J.grader;
 
 import com.icegreen.greenmail.imap.AuthorizationException;
+import com.icegreen.greenmail.imap.ImapHostManager;
 import com.icegreen.greenmail.store.FolderException;
+import com.icegreen.greenmail.store.FolderListener;
+import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -87,5 +90,37 @@ public class GreenmailIntegrationTestCase {
     store.connect(emailServerHost, imapsPort, imapUserName, imapPassword);
 
     return store;
+  }
+
+  protected void moveEmailsFromInboxToFolder(GreenMailUser user, String folderName) throws AuthorizationException, FolderException {
+    ImapHostManager manager = emailServer.getManagers().getImapHostManager();
+    MailFolder submissions = manager.createMailbox(user, folderName);
+    MailFolder inbox = manager.getInbox(user);
+    inbox.addListener(new FolderListener() {
+      @Override
+      public void expunged(int msn) {
+
+      }
+
+      @Override
+      public void added(int msn) {
+        try {
+          inbox.copyMessage(msn, submissions);
+
+        } catch (FolderException ex) {
+          throw new IllegalStateException("Can't copy message to submissions folder", ex);
+        }
+      }
+
+      @Override
+      public void flagsUpdated(int msn, Flags flags, Long uid) {
+
+      }
+
+      @Override
+      public void mailboxDeleted() {
+
+      }
+    });
   }
 }
