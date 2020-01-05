@@ -78,42 +78,46 @@
 <span class="sourceLineNo">069</span><a id="line.69">      case "htmlForSurveyResults":</a>
 <span class="sourceLineNo">070</span><a id="line.70">        return SurveyResponsesFromD2LGenerator.class;</a>
 <span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">      default:</a>
-<span class="sourceLineNo">073</span><a id="line.73">        usage("Unknown tool: " + tool);</a>
-<span class="sourceLineNo">074</span><a id="line.74">        return null;</a>
-<span class="sourceLineNo">075</span><a id="line.75">    }</a>
-<span class="sourceLineNo">076</span><a id="line.76">  }</a>
-<span class="sourceLineNo">077</span><a id="line.77"></a>
-<span class="sourceLineNo">078</span><a id="line.78">  @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">079</span><a id="line.79">  private static void invokeMainMethod(Class aClass, String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {</a>
-<span class="sourceLineNo">080</span><a id="line.80">    Method main = aClass.getMethod("main", args.getClass());</a>
-<span class="sourceLineNo">081</span><a id="line.81">    main.invoke(aClass, new Object[] { args });</a>
-<span class="sourceLineNo">082</span><a id="line.82"></a>
-<span class="sourceLineNo">083</span><a id="line.83">  }</a>
-<span class="sourceLineNo">084</span><a id="line.84"></a>
-<span class="sourceLineNo">085</span><a id="line.85">  private static void usage(String message) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">    PrintStream err = System.err;</a>
-<span class="sourceLineNo">087</span><a id="line.87">    err.println("** " + message);</a>
-<span class="sourceLineNo">088</span><a id="line.88">    err.println();</a>
-<span class="sourceLineNo">089</span><a id="line.89">    err.println("Executes one of the Grader tools");</a>
-<span class="sourceLineNo">090</span><a id="line.90">    err.println();</a>
-<span class="sourceLineNo">091</span><a id="line.91">    err.println("usage: GraderTools tool toolArg*");</a>
-<span class="sourceLineNo">092</span><a id="line.92">    err.println("  tool                        The tool to execute");</a>
-<span class="sourceLineNo">093</span><a id="line.93">    err.println("    gradebook                 The Grade Book GUI");</a>
-<span class="sourceLineNo">094</span><a id="line.94">    err.println("    fetch                     Fetch student surveys or projects from the Grader's");</a>
-<span class="sourceLineNo">095</span><a id="line.95">    err.println("                              emails account");</a>
-<span class="sourceLineNo">096</span><a id="line.96">    err.println("    importFromD2L             Import grades from a D2L CSV");</a>
-<span class="sourceLineNo">097</span><a id="line.97">    err.println("    importFromProjectReports  Import grades from graded project reports");</a>
-<span class="sourceLineNo">098</span><a id="line.98">    err.println("    mailFileToStudent         Email text files to students");</a>
-<span class="sourceLineNo">099</span><a id="line.99">    err.println("    gradePOAs                 Tool for downloading and grading POAs");</a>
-<span class="sourceLineNo">100</span><a id="line.100">    err.println("    generateGradeSummary      Generate grade summary report for one or more students");</a>
-<span class="sourceLineNo">101</span><a id="line.101">    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");</a>
-<span class="sourceLineNo">102</span><a id="line.102">    err.println("  toolArg                     A command line argument to send to the tool");</a>
-<span class="sourceLineNo">103</span><a id="line.103">    err.println();</a>
-<span class="sourceLineNo">104</span><a id="line.104"></a>
-<span class="sourceLineNo">105</span><a id="line.105">    System.exit(1);</a>
-<span class="sourceLineNo">106</span><a id="line.106">  }</a>
-<span class="sourceLineNo">107</span><a id="line.107">}</a>
+<span class="sourceLineNo">072</span><a id="line.72">      case "fixAndroidZips":</a>
+<span class="sourceLineNo">073</span><a id="line.73">              return AndroidZipFixer.class;</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">      default:</a>
+<span class="sourceLineNo">076</span><a id="line.76">        usage("Unknown tool: " + tool);</a>
+<span class="sourceLineNo">077</span><a id="line.77">        return null;</a>
+<span class="sourceLineNo">078</span><a id="line.78">    }</a>
+<span class="sourceLineNo">079</span><a id="line.79">  }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">  @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">082</span><a id="line.82">  private static void invokeMainMethod(Class aClass, String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {</a>
+<span class="sourceLineNo">083</span><a id="line.83">    Method main = aClass.getMethod("main", args.getClass());</a>
+<span class="sourceLineNo">084</span><a id="line.84">    main.invoke(aClass, new Object[] { args });</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">  }</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">  private static void usage(String message) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">    PrintStream err = System.err;</a>
+<span class="sourceLineNo">090</span><a id="line.90">    err.println("** " + message);</a>
+<span class="sourceLineNo">091</span><a id="line.91">    err.println();</a>
+<span class="sourceLineNo">092</span><a id="line.92">    err.println("Executes one of the Grader tools");</a>
+<span class="sourceLineNo">093</span><a id="line.93">    err.println();</a>
+<span class="sourceLineNo">094</span><a id="line.94">    err.println("usage: GraderTools tool toolArg*");</a>
+<span class="sourceLineNo">095</span><a id="line.95">    err.println("  tool                        The tool to execute");</a>
+<span class="sourceLineNo">096</span><a id="line.96">    err.println("    gradebook                 The Grade Book GUI");</a>
+<span class="sourceLineNo">097</span><a id="line.97">    err.println("    fetch                     Fetch student surveys or projects from the Grader's");</a>
+<span class="sourceLineNo">098</span><a id="line.98">    err.println("                              emails account");</a>
+<span class="sourceLineNo">099</span><a id="line.99">    err.println("    importFromD2L             Import grades from a D2L CSV");</a>
+<span class="sourceLineNo">100</span><a id="line.100">    err.println("    importFromProjectReports  Import grades from graded project reports");</a>
+<span class="sourceLineNo">101</span><a id="line.101">    err.println("    mailFileToStudent         Email text files to students");</a>
+<span class="sourceLineNo">102</span><a id="line.102">    err.println("    gradePOAs                 Tool for downloading and grading POAs");</a>
+<span class="sourceLineNo">103</span><a id="line.103">    err.println("    generateGradeSummary      Generate grade summary report for one or more students");</a>
+<span class="sourceLineNo">104</span><a id="line.104">    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");</a>
+<span class="sourceLineNo">105</span><a id="line.105">    err.println("    fixAndroidZips            Fix zip files for the Android project to work with grading script");</a>
+<span class="sourceLineNo">106</span><a id="line.106">    err.println("  toolArg                     A command line argument to send to the tool");</a>
+<span class="sourceLineNo">107</span><a id="line.107">    err.println();</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">    System.exit(1);</a>
+<span class="sourceLineNo">110</span><a id="line.110">  }</a>
+<span class="sourceLineNo">111</span><a id="line.111">}</a>
 
 
 
