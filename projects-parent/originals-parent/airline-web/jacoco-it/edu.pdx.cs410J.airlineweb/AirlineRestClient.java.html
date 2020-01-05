@@ -11,7 +11,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 /**
  * A helper class for accessing the rest client.  Note that this class provides
  * an example of how to make gets and posts to a URL.  You'll need to change it
- * to do something other than just send key/value pairs.
+ * to do something other than just send dictionary entries.
  */
 public class AirlineRestClient extends HttpRequestHelper
 {
@@ -66,16 +66,17 @@ public class AirlineRestClient extends HttpRequestHelper
 
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {
 <span class="fc" id="L68">    int code = response.getCode();</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">    if (code != HTTP_OK) {</span>
-<span class="nc" id="L70">      throw new AirlineRestException(code);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">    if (code != HTTP_OK) {</span>
+<span class="fc" id="L70">      throw new AirlineRestException(code);</span>
     }
 <span class="fc" id="L72">    return response;</span>
   }
 
-  private class AirlineRestException extends RuntimeException {
-<span class="nc" id="L76">    public AirlineRestException(int httpStatusCode) {</span>
-<span class="nc" id="L77">      super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
-<span class="nc" id="L78">    }</span>
+  @VisibleForTesting
+  class AirlineRestException extends RuntimeException {
+<span class="fc" id="L77">    AirlineRestException(int httpStatusCode) {</span>
+<span class="fc" id="L78">      super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
+<span class="fc" id="L79">    }</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
