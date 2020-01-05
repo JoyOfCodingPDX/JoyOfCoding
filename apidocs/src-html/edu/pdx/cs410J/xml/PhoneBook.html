@@ -9,110 +9,112 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span><a id="line.1">package edu.pdx.cs410J.xml;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
-<span class="sourceLineNo">003</span><a id="line.3">import java.io.*;</a>
-<span class="sourceLineNo">004</span><a id="line.4">import java.util.*;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import javax.xml.parsers.*;</a>
-<span class="sourceLineNo">006</span><a id="line.6"></a>
-<span class="sourceLineNo">007</span><a id="line.7">import org.w3c.dom.*;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import org.xml.sax.*;</a>
-<span class="sourceLineNo">009</span><a id="line.9"></a>
-<span class="sourceLineNo">010</span><a id="line.10">/**</a>
-<span class="sourceLineNo">011</span><a id="line.11"> * This class represents a phone book that contains entries for</a>
-<span class="sourceLineNo">012</span><a id="line.12"> * businesses and residents.  It is constructed from an XML DOM tree.</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * If we doing this for real, we'd want to be able to construct an</a>
-<span class="sourceLineNo">014</span><a id="line.14"> * empty &lt;code&gt;PhoneBook&lt;/code&gt; and add entries.  But, come on, this</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * is just an example.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> */</a>
-<span class="sourceLineNo">017</span><a id="line.17">public class PhoneBook {</a>
-<span class="sourceLineNo">018</span><a id="line.18">  private static PrintStream err = System.err;</a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">  private Collection entries;</a>
-<span class="sourceLineNo">021</span><a id="line.21"></a>
-<span class="sourceLineNo">022</span><a id="line.22">  /**</a>
-<span class="sourceLineNo">023</span><a id="line.23">   * Creates a &lt;code&gt;PhoneBook&lt;/code&gt; from an XML DOM tree.</a>
-<span class="sourceLineNo">024</span><a id="line.24">   */</a>
-<span class="sourceLineNo">025</span><a id="line.25">  public PhoneBook(Element root) {</a>
-<span class="sourceLineNo">026</span><a id="line.26">    // Verify that this is a phonebook XML doc</a>
-<span class="sourceLineNo">027</span><a id="line.27">    if (!root.getNodeName().equals("phonebook")) {</a>
-<span class="sourceLineNo">028</span><a id="line.28">      String s = "Not a phonebook: " + root.getNodeName();</a>
-<span class="sourceLineNo">029</span><a id="line.29">      throw new IllegalArgumentException(s);</a>
-<span class="sourceLineNo">030</span><a id="line.30">    }</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">    this.entries = new ArrayList();</a>
-<span class="sourceLineNo">033</span><a id="line.33">    NodeList entries = root.getChildNodes();</a>
-<span class="sourceLineNo">034</span><a id="line.34">    for (int i = 0; i &lt; entries.getLength(); i++) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">      Node node = entries.item(i);</a>
-<span class="sourceLineNo">036</span><a id="line.36">      </a>
-<span class="sourceLineNo">037</span><a id="line.37">      if (!(node instanceof Element)) {</a>
-<span class="sourceLineNo">038</span><a id="line.38">        // Ignore other stuff</a>
-<span class="sourceLineNo">039</span><a id="line.39">        continue;</a>
-<span class="sourceLineNo">040</span><a id="line.40">      }</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">      Element entry = (Element) node;</a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.w3c.dom.Document;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import org.w3c.dom.Element;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import org.w3c.dom.Node;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import org.w3c.dom.NodeList;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import org.xml.sax.SAXException;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import javax.xml.parsers.DocumentBuilder;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import javax.xml.parsers.DocumentBuilderFactory;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import javax.xml.parsers.ParserConfigurationException;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.io.File;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.io.IOException;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.io.PrintStream;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.ArrayList;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.Collection;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">/**</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * This class represents a phone book that contains entries for</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * businesses and residents.  It is constructed from an XML DOM tree.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * If we doing this for real, we'd want to be able to construct an</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * empty &lt;code&gt;PhoneBook&lt;/code&gt; and add entries.  But, come on, this</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * is just an example.</a>
+<span class="sourceLineNo">024</span><a id="line.24"> */</a>
+<span class="sourceLineNo">025</span><a id="line.25">public class PhoneBook {</a>
+<span class="sourceLineNo">026</span><a id="line.26">  private static PrintStream err = System.err;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">  private Collection&lt;PhoneBookEntry&gt; entries = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">  /**</a>
+<span class="sourceLineNo">031</span><a id="line.31">   * Creates a &lt;code&gt;PhoneBook&lt;/code&gt; from an XML DOM tree.</a>
+<span class="sourceLineNo">032</span><a id="line.32">   */</a>
+<span class="sourceLineNo">033</span><a id="line.33">  public PhoneBook(Element root) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">    // Verify that this is a phonebook XML doc</a>
+<span class="sourceLineNo">035</span><a id="line.35">    if (!root.getNodeName().equals("phonebook")) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">      String s = "Not a phonebook: " + root.getNodeName();</a>
+<span class="sourceLineNo">037</span><a id="line.37">      throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">038</span><a id="line.38">    }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    NodeList entries = root.getChildNodes();</a>
+<span class="sourceLineNo">041</span><a id="line.41">    for (int i = 0; i &lt; entries.getLength(); i++) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">      Node node = entries.item(i);</a>
 <span class="sourceLineNo">043</span><a id="line.43"></a>
-<span class="sourceLineNo">044</span><a id="line.44">      if (entry.getNodeName().equals("resident")) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">        Resident resident = new Resident(entry);</a>
-<span class="sourceLineNo">046</span><a id="line.46">        this.entries.add(resident);</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">      } else if (entry.getNodeName().equals("business")) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">        Business business = new Business(entry);</a>
-<span class="sourceLineNo">050</span><a id="line.50">        this.entries.add(business);</a>
-<span class="sourceLineNo">051</span><a id="line.51"></a>
-<span class="sourceLineNo">052</span><a id="line.52">      } else {</a>
-<span class="sourceLineNo">053</span><a id="line.53">        String s = "Unknown entry: " + entry.getNodeName() + " (" +</a>
-<span class="sourceLineNo">054</span><a id="line.54">          entry.getNodeValue() + ")";</a>
-<span class="sourceLineNo">055</span><a id="line.55">        throw new IllegalArgumentException(s);</a>
-<span class="sourceLineNo">056</span><a id="line.56">      }</a>
-<span class="sourceLineNo">057</span><a id="line.57">    }</a>
-<span class="sourceLineNo">058</span><a id="line.58">  }</a>
-<span class="sourceLineNo">059</span><a id="line.59"></a>
-<span class="sourceLineNo">060</span><a id="line.60">  /**</a>
-<span class="sourceLineNo">061</span><a id="line.61">   * Test program that takes the name of a XML file from the command</a>
-<span class="sourceLineNo">062</span><a id="line.62">   * line and attempts to make a &lt;code&gt;PhoneBook&lt;/code&gt; out of it.</a>
-<span class="sourceLineNo">063</span><a id="line.63">   */</a>
-<span class="sourceLineNo">064</span><a id="line.64">  public static void main(String[] args) {</a>
-<span class="sourceLineNo">065</span><a id="line.65">    // Parse the XML file to create a DOM tree</a>
-<span class="sourceLineNo">066</span><a id="line.66">    Document doc = null;</a>
-<span class="sourceLineNo">067</span><a id="line.67">    try {</a>
-<span class="sourceLineNo">068</span><a id="line.68">      DocumentBuilderFactory factory =</a>
-<span class="sourceLineNo">069</span><a id="line.69">        DocumentBuilderFactory.newInstance();</a>
-<span class="sourceLineNo">070</span><a id="line.70">      factory.setValidating(true);</a>
-<span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">      DocumentBuilder builder = </a>
-<span class="sourceLineNo">073</span><a id="line.73">        factory.newDocumentBuilder();</a>
-<span class="sourceLineNo">074</span><a id="line.74">      doc = builder.parse(new File(args[0]));</a>
+<span class="sourceLineNo">044</span><a id="line.44">      if (!(node instanceof Element)) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">        // Ignore other stuff</a>
+<span class="sourceLineNo">046</span><a id="line.46">        continue;</a>
+<span class="sourceLineNo">047</span><a id="line.47">      }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">      Element entry = (Element) node;</a>
+<span class="sourceLineNo">050</span><a id="line.50">      switch (entry.getNodeName()) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">        case "resident":</a>
+<span class="sourceLineNo">052</span><a id="line.52">          this.entries.add(new Resident(entry));</a>
+<span class="sourceLineNo">053</span><a id="line.53">          break;</a>
+<span class="sourceLineNo">054</span><a id="line.54">        case "business":</a>
+<span class="sourceLineNo">055</span><a id="line.55">          this.entries.add(new Business(entry));</a>
+<span class="sourceLineNo">056</span><a id="line.56">          break;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        default:</a>
+<span class="sourceLineNo">058</span><a id="line.58">          String s = "Unknown entry: " + entry.getNodeName() + " (" +</a>
+<span class="sourceLineNo">059</span><a id="line.59">            entry.getNodeValue() + ")";</a>
+<span class="sourceLineNo">060</span><a id="line.60">          throw new IllegalArgumentException(s);</a>
+<span class="sourceLineNo">061</span><a id="line.61">      }</a>
+<span class="sourceLineNo">062</span><a id="line.62">    }</a>
+<span class="sourceLineNo">063</span><a id="line.63">  }</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">  /**</a>
+<span class="sourceLineNo">066</span><a id="line.66">   * Test program that takes the name of a XML file from the command</a>
+<span class="sourceLineNo">067</span><a id="line.67">   * line and attempts to make a &lt;code&gt;PhoneBook&lt;/code&gt; out of it.</a>
+<span class="sourceLineNo">068</span><a id="line.68">   */</a>
+<span class="sourceLineNo">069</span><a id="line.69">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">    // Parse the XML file to create a DOM tree</a>
+<span class="sourceLineNo">071</span><a id="line.71">    Document doc = null;</a>
+<span class="sourceLineNo">072</span><a id="line.72">    try {</a>
+<span class="sourceLineNo">073</span><a id="line.73">      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</a>
+<span class="sourceLineNo">074</span><a id="line.74">      factory.setValidating(true);</a>
 <span class="sourceLineNo">075</span><a id="line.75"></a>
-<span class="sourceLineNo">076</span><a id="line.76">    } catch (ParserConfigurationException ex) {</a>
-<span class="sourceLineNo">077</span><a id="line.77">      err.println("** " + ex);</a>
-<span class="sourceLineNo">078</span><a id="line.78">      System.exit(1);</a>
-<span class="sourceLineNo">079</span><a id="line.79"></a>
-<span class="sourceLineNo">080</span><a id="line.80">    } catch (SAXException ex) {</a>
-<span class="sourceLineNo">081</span><a id="line.81">      err.println("** SAXException: " + ex);</a>
-<span class="sourceLineNo">082</span><a id="line.82">      System.exit(1);</a>
-<span class="sourceLineNo">083</span><a id="line.83"></a>
-<span class="sourceLineNo">084</span><a id="line.84">    } catch (IOException ex) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">      err.println("** IOException: " + ex);</a>
-<span class="sourceLineNo">086</span><a id="line.86">      System.exit(1);</a>
-<span class="sourceLineNo">087</span><a id="line.87">    }</a>
-<span class="sourceLineNo">088</span><a id="line.88"></a>
-<span class="sourceLineNo">089</span><a id="line.89">    Element root = (Element) doc.getChildNodes().item(1);</a>
-<span class="sourceLineNo">090</span><a id="line.90">    PhoneBook phonebook = new PhoneBook(root);</a>
-<span class="sourceLineNo">091</span><a id="line.91">    System.out.println(phonebook);</a>
-<span class="sourceLineNo">092</span><a id="line.92">  }</a>
-<span class="sourceLineNo">093</span><a id="line.93"></a>
-<span class="sourceLineNo">094</span><a id="line.94">  public String toString() {</a>
-<span class="sourceLineNo">095</span><a id="line.95">    StringBuffer sb = new StringBuffer();</a>
-<span class="sourceLineNo">096</span><a id="line.96">    sb.append("Phone Book\n\n");</a>
-<span class="sourceLineNo">097</span><a id="line.97"></a>
-<span class="sourceLineNo">098</span><a id="line.98">    Iterator iter = this.entries.iterator();</a>
-<span class="sourceLineNo">099</span><a id="line.99">    while (iter.hasNext()) {</a>
-<span class="sourceLineNo">100</span><a id="line.100">      sb.append(iter.next());</a>
-<span class="sourceLineNo">101</span><a id="line.101">      sb.append("\n");</a>
-<span class="sourceLineNo">102</span><a id="line.102">    }</a>
-<span class="sourceLineNo">103</span><a id="line.103">    </a>
-<span class="sourceLineNo">104</span><a id="line.104">    return sb.toString();</a>
-<span class="sourceLineNo">105</span><a id="line.105">  }</a>
-<span class="sourceLineNo">106</span><a id="line.106">}</a>
+<span class="sourceLineNo">076</span><a id="line.76">      DocumentBuilder builder =  factory.newDocumentBuilder();</a>
+<span class="sourceLineNo">077</span><a id="line.77">      doc = builder.parse(new File(args[0]));</a>
+<span class="sourceLineNo">078</span><a id="line.78"></a>
+<span class="sourceLineNo">079</span><a id="line.79">    } catch (ParserConfigurationException ex) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">      err.println("** " + ex);</a>
+<span class="sourceLineNo">081</span><a id="line.81">      System.exit(1);</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
+<span class="sourceLineNo">083</span><a id="line.83">    } catch (SAXException ex) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">      err.println("** SAXException: " + ex);</a>
+<span class="sourceLineNo">085</span><a id="line.85">      System.exit(1);</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">    } catch (IOException ex) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">      err.println("** IOException: " + ex);</a>
+<span class="sourceLineNo">089</span><a id="line.89">      System.exit(1);</a>
+<span class="sourceLineNo">090</span><a id="line.90">    }</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">    Element root = (Element) doc.getChildNodes().item(1);</a>
+<span class="sourceLineNo">093</span><a id="line.93">    PhoneBook phonebook = new PhoneBook(root);</a>
+<span class="sourceLineNo">094</span><a id="line.94">    System.out.println(phonebook);</a>
+<span class="sourceLineNo">095</span><a id="line.95">  }</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">  public String toString() {</a>
+<span class="sourceLineNo">098</span><a id="line.98">    StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">099</span><a id="line.99">    sb.append("Phone Book\n\n");</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">    for (PhoneBookEntry entry : this.entries) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">      sb.append(entry);</a>
+<span class="sourceLineNo">103</span><a id="line.103">      sb.append("\n");</a>
+<span class="sourceLineNo">104</span><a id="line.104">    }</a>
+<span class="sourceLineNo">105</span><a id="line.105">    </a>
+<span class="sourceLineNo">106</span><a id="line.106">    return sb.toString();</a>
+<span class="sourceLineNo">107</span><a id="line.107">  }</a>
+<span class="sourceLineNo">108</span><a id="line.108">}</a>
 
 
 

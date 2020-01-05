@@ -17,195 +17,198 @@
 <span class="sourceLineNo">008</span><a id="line.8">import javax.mail.MessagingException;</a>
 <span class="sourceLineNo">009</span><a id="line.9">import javax.mail.Session;</a>
 <span class="sourceLineNo">010</span><a id="line.10">import javax.mail.Transport;</a>
-<span class="sourceLineNo">011</span><a id="line.11">import javax.mail.internet.MimeMessage;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import java.io.File;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.io.IOException;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.io.PrintStream;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import java.nio.charset.Charset;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import java.util.*;</a>
-<span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">public class StudentFileMailer extends EmailSender {</a>
-<span class="sourceLineNo">019</span><a id="line.19">  private static Logger logger = LoggerFactory.getLogger(StudentFileMailer.class.getPackage().getName());</a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">  private final String subject;</a>
-<span class="sourceLineNo">022</span><a id="line.22">  private final Session session;</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">  public StudentFileMailer(String subject, Session session) {</a>
-<span class="sourceLineNo">025</span><a id="line.25">    this.subject = subject;</a>
-<span class="sourceLineNo">026</span><a id="line.26">    this.session = session;</a>
-<span class="sourceLineNo">027</span><a id="line.27">  }</a>
-<span class="sourceLineNo">028</span><a id="line.28"></a>
-<span class="sourceLineNo">029</span><a id="line.29">  public static void main(String[] args) {</a>
-<span class="sourceLineNo">030</span><a id="line.30">    String gradeBookFileName = null;</a>
-<span class="sourceLineNo">031</span><a id="line.31">    String subject = null;</a>
-<span class="sourceLineNo">032</span><a id="line.32">    List&lt;String&gt; fileNames = new ArrayList&lt;&gt;();</a>
-<span class="sourceLineNo">033</span><a id="line.33"></a>
-<span class="sourceLineNo">034</span><a id="line.34">    for (String arg : args) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">      if (gradeBookFileName == null) {</a>
-<span class="sourceLineNo">036</span><a id="line.36">        gradeBookFileName = arg;</a>
-<span class="sourceLineNo">037</span><a id="line.37"></a>
-<span class="sourceLineNo">038</span><a id="line.38">      } else if (subject == null) {</a>
-<span class="sourceLineNo">039</span><a id="line.39">        subject = arg;</a>
-<span class="sourceLineNo">040</span><a id="line.40"></a>
-<span class="sourceLineNo">041</span><a id="line.41">      } else {</a>
-<span class="sourceLineNo">042</span><a id="line.42">        fileNames.add(arg);</a>
-<span class="sourceLineNo">043</span><a id="line.43">      }</a>
-<span class="sourceLineNo">044</span><a id="line.44">    }</a>
-<span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46">    usageIfNull(gradeBookFileName, "Missing grade book file name");</a>
-<span class="sourceLineNo">047</span><a id="line.47">    usageIfNull(subject, "Missing email subject");</a>
-<span class="sourceLineNo">048</span><a id="line.48">    usageIfEmpty(fileNames, "Missing file names");</a>
-<span class="sourceLineNo">049</span><a id="line.49">    List&lt;File&gt; files = getFiles(fileNames);</a>
-<span class="sourceLineNo">050</span><a id="line.50">    GradeBook gradeBook = getGradeBook(gradeBookFileName);</a>
-<span class="sourceLineNo">051</span><a id="line.51">    Map&lt;Student, File&gt; filesToSendToStudents = getFilesToSendToStudents(files, gradeBook);</a>
-<span class="sourceLineNo">052</span><a id="line.52"></a>
-<span class="sourceLineNo">053</span><a id="line.53">    StudentFileMailer mailer = new StudentFileMailer(subject, newEmailSession(false));</a>
-<span class="sourceLineNo">054</span><a id="line.54">    filesToSendToStudents.forEach((student, file) -&gt; {</a>
-<span class="sourceLineNo">055</span><a id="line.55">      try {</a>
-<span class="sourceLineNo">056</span><a id="line.56">        mailer.mailFileToStudent(file, student);</a>
-<span class="sourceLineNo">057</span><a id="line.57"></a>
-<span class="sourceLineNo">058</span><a id="line.58">      } catch (MessagingException | IOException ex) {</a>
-<span class="sourceLineNo">059</span><a id="line.59">        logger.error("While mailing \"" + file + "\" to " + student, ex);</a>
-<span class="sourceLineNo">060</span><a id="line.60">      }</a>
-<span class="sourceLineNo">061</span><a id="line.61">    });</a>
-<span class="sourceLineNo">062</span><a id="line.62">  }</a>
-<span class="sourceLineNo">063</span><a id="line.63"></a>
-<span class="sourceLineNo">064</span><a id="line.64">  private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {</a>
-<span class="sourceLineNo">065</span><a id="line.65">    String studentEmail = getEmailAddress(student);</a>
-<span class="sourceLineNo">066</span><a id="line.66"></a>
-<span class="sourceLineNo">067</span><a id="line.67">    logger.info("Mailing \"" + file + "\" to \"" + studentEmail + "\"");</a>
-<span class="sourceLineNo">068</span><a id="line.68"></a>
-<span class="sourceLineNo">069</span><a id="line.69">    MimeMessage message = newEmailTo(this.session, studentEmail, this.subject);</a>
-<span class="sourceLineNo">070</span><a id="line.70">    message.setText(readTextFromFile(file));</a>
-<span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">    sendEmailMessage(message);</a>
-<span class="sourceLineNo">073</span><a id="line.73">  }</a>
-<span class="sourceLineNo">074</span><a id="line.74"></a>
-<span class="sourceLineNo">075</span><a id="line.75">  private String readTextFromFile(File file) throws IOException {</a>
-<span class="sourceLineNo">076</span><a id="line.76">    StringBuilder sb = new StringBuilder();</a>
-<span class="sourceLineNo">077</span><a id="line.77">    Files.copy(file, Charset.defaultCharset(), sb);</a>
-<span class="sourceLineNo">078</span><a id="line.78">    return sb.toString();</a>
+<span class="sourceLineNo">011</span><a id="line.11">import javax.mail.internet.InternetAddress;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import javax.mail.internet.MimeMessage;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.io.File;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.io.IOException;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.io.PrintStream;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.nio.charset.Charset;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.util.*;</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">public class StudentFileMailer extends EmailSender {</a>
+<span class="sourceLineNo">020</span><a id="line.20">  private static Logger logger = LoggerFactory.getLogger(StudentFileMailer.class.getPackage().getName());</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">  private final String subject;</a>
+<span class="sourceLineNo">023</span><a id="line.23">  private final Session session;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  public StudentFileMailer(String subject, Session session) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">    this.subject = subject;</a>
+<span class="sourceLineNo">027</span><a id="line.27">    this.session = session;</a>
+<span class="sourceLineNo">028</span><a id="line.28">  }</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">  public static void main(String[] args) {</a>
+<span class="sourceLineNo">031</span><a id="line.31">    String gradeBookFileName = null;</a>
+<span class="sourceLineNo">032</span><a id="line.32">    String subject = null;</a>
+<span class="sourceLineNo">033</span><a id="line.33">    List&lt;String&gt; fileNames = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">    for (String arg : args) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">      if (gradeBookFileName == null) {</a>
+<span class="sourceLineNo">037</span><a id="line.37">        gradeBookFileName = arg;</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">      } else if (subject == null) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">        subject = arg;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">      } else {</a>
+<span class="sourceLineNo">043</span><a id="line.43">        fileNames.add(arg);</a>
+<span class="sourceLineNo">044</span><a id="line.44">      }</a>
+<span class="sourceLineNo">045</span><a id="line.45">    }</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    usageIfNull(gradeBookFileName, "Missing grade book file name");</a>
+<span class="sourceLineNo">048</span><a id="line.48">    usageIfNull(subject, "Missing email subject");</a>
+<span class="sourceLineNo">049</span><a id="line.49">    usageIfEmpty(fileNames, "Missing file names");</a>
+<span class="sourceLineNo">050</span><a id="line.50">    List&lt;File&gt; files = getFiles(fileNames);</a>
+<span class="sourceLineNo">051</span><a id="line.51">    GradeBook gradeBook = getGradeBook(gradeBookFileName);</a>
+<span class="sourceLineNo">052</span><a id="line.52">    Map&lt;Student, File&gt; filesToSendToStudents = getFilesToSendToStudents(files, gradeBook);</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">    StudentFileMailer mailer = new StudentFileMailer(subject, newEmailSession(false));</a>
+<span class="sourceLineNo">055</span><a id="line.55">    filesToSendToStudents.forEach((student, file) -&gt; {</a>
+<span class="sourceLineNo">056</span><a id="line.56">      try {</a>
+<span class="sourceLineNo">057</span><a id="line.57">        mailer.mailFileToStudent(file, student);</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">      } catch (MessagingException | IOException ex) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">        logger.error("While mailing \"" + file + "\" to " + student, ex);</a>
+<span class="sourceLineNo">061</span><a id="line.61">      }</a>
+<span class="sourceLineNo">062</span><a id="line.62">    });</a>
+<span class="sourceLineNo">063</span><a id="line.63">  }</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">  private void mailFileToStudent(File file, Student student) throws MessagingException, IOException {</a>
+<span class="sourceLineNo">066</span><a id="line.66">    InternetAddress studentEmail = getEmailAddress(student);</a>
+<span class="sourceLineNo">067</span><a id="line.67"></a>
+<span class="sourceLineNo">068</span><a id="line.68">    logger.info("Mailing \"" + file + "\" to \"" + studentEmail + "\"");</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">    MimeMessage message =</a>
+<span class="sourceLineNo">071</span><a id="line.71">      newEmailTo(this.session, studentEmail)</a>
+<span class="sourceLineNo">072</span><a id="line.72">        .from(TA_EMAIL)</a>
+<span class="sourceLineNo">073</span><a id="line.73">        .replyTo(DAVE_EMAIL)</a>
+<span class="sourceLineNo">074</span><a id="line.74">        .withSubject(this.subject)</a>
+<span class="sourceLineNo">075</span><a id="line.75">        .createMessage();</a>
+<span class="sourceLineNo">076</span><a id="line.76">    message.setText(readTextFromFile(file));</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">    sendEmailMessage(message);</a>
 <span class="sourceLineNo">079</span><a id="line.79">  }</a>
 <span class="sourceLineNo">080</span><a id="line.80"></a>
-<span class="sourceLineNo">081</span><a id="line.81">  private void sendEmailMessage(MimeMessage message) throws MessagingException {</a>
-<span class="sourceLineNo">082</span><a id="line.82">    Transport.send(message);</a>
-<span class="sourceLineNo">083</span><a id="line.83">  }</a>
-<span class="sourceLineNo">084</span><a id="line.84"></a>
-<span class="sourceLineNo">085</span><a id="line.85">  private String getEmailAddress(Student student) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">    StringBuilder sb = new StringBuilder();</a>
-<span class="sourceLineNo">087</span><a id="line.87">    sb.append(student.getFirstName());</a>
-<span class="sourceLineNo">088</span><a id="line.88">    sb.append(" ");</a>
-<span class="sourceLineNo">089</span><a id="line.89">    if (student.getNickName() != null) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">      sb.append("\"");</a>
-<span class="sourceLineNo">091</span><a id="line.91">      sb.append(student.getNickName());</a>
-<span class="sourceLineNo">092</span><a id="line.92">      sb.append("\" ");</a>
-<span class="sourceLineNo">093</span><a id="line.93">    }</a>
-<span class="sourceLineNo">094</span><a id="line.94">    sb.append(student.getLastName());</a>
-<span class="sourceLineNo">095</span><a id="line.95">    sb.append(" &lt;");</a>
-<span class="sourceLineNo">096</span><a id="line.96">    sb.append(student.getEmail());</a>
-<span class="sourceLineNo">097</span><a id="line.97">    sb.append("&gt;");</a>
-<span class="sourceLineNo">098</span><a id="line.98"></a>
-<span class="sourceLineNo">099</span><a id="line.99">    return sb.toString();</a>
-<span class="sourceLineNo">100</span><a id="line.100">  }</a>
+<span class="sourceLineNo">081</span><a id="line.81">  private String readTextFromFile(File file) throws IOException {</a>
+<span class="sourceLineNo">082</span><a id="line.82">    StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">083</span><a id="line.83">    Files.copy(file, Charset.defaultCharset(), sb);</a>
+<span class="sourceLineNo">084</span><a id="line.84">    return sb.toString();</a>
+<span class="sourceLineNo">085</span><a id="line.85">  }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">  private void sendEmailMessage(MimeMessage message) throws MessagingException {</a>
+<span class="sourceLineNo">088</span><a id="line.88">    Transport.send(message);</a>
+<span class="sourceLineNo">089</span><a id="line.89">  }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">  private InternetAddress getEmailAddress(Student student) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">    StringBuilder name = new StringBuilder();</a>
+<span class="sourceLineNo">093</span><a id="line.93">    name.append(student.getFirstName());</a>
+<span class="sourceLineNo">094</span><a id="line.94">    name.append(" ");</a>
+<span class="sourceLineNo">095</span><a id="line.95">    if (student.getNickName() != null) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">      name.append("\"");</a>
+<span class="sourceLineNo">097</span><a id="line.97">      name.append(student.getNickName());</a>
+<span class="sourceLineNo">098</span><a id="line.98">      name.append("\" ");</a>
+<span class="sourceLineNo">099</span><a id="line.99">    }</a>
+<span class="sourceLineNo">100</span><a id="line.100">    name.append(student.getLastName());</a>
 <span class="sourceLineNo">101</span><a id="line.101"></a>
-<span class="sourceLineNo">102</span><a id="line.102">  private static Map&lt;Student, File&gt; getFilesToSendToStudents(List&lt;File&gt; files, GradeBook gradeBook) {</a>
-<span class="sourceLineNo">103</span><a id="line.103">    Map&lt;Student, File&gt; filesToSendToStudents = new HashMap&lt;&gt;();</a>
-<span class="sourceLineNo">104</span><a id="line.104">    for (File file : files) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">      String studentId = getStudentIdFromFileName(file);</a>
-<span class="sourceLineNo">106</span><a id="line.106">      Optional&lt;Student&gt; maybeStudent = gradeBook.getStudent(studentId);</a>
-<span class="sourceLineNo">107</span><a id="line.107">      if (!maybeStudent.isPresent()) {</a>
-<span class="sourceLineNo">108</span><a id="line.108">        maybeStudent = gradeBook.getStudentWithSsn(studentId);</a>
-<span class="sourceLineNo">109</span><a id="line.109">      }</a>
+<span class="sourceLineNo">102</span><a id="line.102">    return newInternetAddress(student.getEmail(), name.toString());</a>
+<span class="sourceLineNo">103</span><a id="line.103">  }</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">  private static Map&lt;Student, File&gt; getFilesToSendToStudents(List&lt;File&gt; files, GradeBook gradeBook) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">    Map&lt;Student, File&gt; filesToSendToStudents = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">107</span><a id="line.107">    for (File file : files) {</a>
+<span class="sourceLineNo">108</span><a id="line.108">      String studentId = getStudentIdFromFileName(file);</a>
+<span class="sourceLineNo">109</span><a id="line.109">      Optional&lt;Student&gt; maybeStudent = gradeBook.getStudent(studentId);</a>
 <span class="sourceLineNo">110</span><a id="line.110">      if (!maybeStudent.isPresent()) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">        cannotFindStudent(studentId);</a>
-<span class="sourceLineNo">112</span><a id="line.112">      } else {</a>
-<span class="sourceLineNo">113</span><a id="line.113">        filesToSendToStudents.put(maybeStudent.get(), file);</a>
-<span class="sourceLineNo">114</span><a id="line.114">      }</a>
-<span class="sourceLineNo">115</span><a id="line.115">    }</a>
-<span class="sourceLineNo">116</span><a id="line.116"></a>
-<span class="sourceLineNo">117</span><a id="line.117">    return filesToSendToStudents;</a>
-<span class="sourceLineNo">118</span><a id="line.118">  }</a>
+<span class="sourceLineNo">111</span><a id="line.111">        maybeStudent = gradeBook.getStudentWithSsn(studentId);</a>
+<span class="sourceLineNo">112</span><a id="line.112">      }</a>
+<span class="sourceLineNo">113</span><a id="line.113">      if (!maybeStudent.isPresent()) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">        cannotFindStudent(studentId);</a>
+<span class="sourceLineNo">115</span><a id="line.115">      } else {</a>
+<span class="sourceLineNo">116</span><a id="line.116">        filesToSendToStudents.put(maybeStudent.get(), file);</a>
+<span class="sourceLineNo">117</span><a id="line.117">      }</a>
+<span class="sourceLineNo">118</span><a id="line.118">    }</a>
 <span class="sourceLineNo">119</span><a id="line.119"></a>
-<span class="sourceLineNo">120</span><a id="line.120">  private static void cannotFindStudent(String studentId) {</a>
-<span class="sourceLineNo">121</span><a id="line.121">    logger.warn("Cannot find student with id \"" + studentId + "\" in grade book");</a>
-<span class="sourceLineNo">122</span><a id="line.122">  }</a>
-<span class="sourceLineNo">123</span><a id="line.123"></a>
-<span class="sourceLineNo">124</span><a id="line.124">  private static String getStudentIdFromFileName(File file) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">    String studentId;</a>
-<span class="sourceLineNo">126</span><a id="line.126">    String fileName = file.getName();</a>
-<span class="sourceLineNo">127</span><a id="line.127">    int index = fileName.lastIndexOf('.');</a>
-<span class="sourceLineNo">128</span><a id="line.128">    if (index &lt; 0) {</a>
-<span class="sourceLineNo">129</span><a id="line.129">      studentId = fileName;</a>
-<span class="sourceLineNo">130</span><a id="line.130"></a>
-<span class="sourceLineNo">131</span><a id="line.131">    } else {</a>
-<span class="sourceLineNo">132</span><a id="line.132">      studentId = fileName.substring(0, index);</a>
-<span class="sourceLineNo">133</span><a id="line.133">    }</a>
-<span class="sourceLineNo">134</span><a id="line.134">    return studentId;</a>
-<span class="sourceLineNo">135</span><a id="line.135">  }</a>
-<span class="sourceLineNo">136</span><a id="line.136"></a>
-<span class="sourceLineNo">137</span><a id="line.137">  private static List&lt;File&gt; getFiles(List&lt;String&gt; fileNames) {</a>
-<span class="sourceLineNo">138</span><a id="line.138">    List&lt;File&gt; files = new ArrayList&lt;&gt;(fileNames.size());</a>
-<span class="sourceLineNo">139</span><a id="line.139">    for (String fileName : fileNames) {</a>
-<span class="sourceLineNo">140</span><a id="line.140">      File file = new File(fileName);</a>
-<span class="sourceLineNo">141</span><a id="line.141">      if (!file.exists()) {</a>
-<span class="sourceLineNo">142</span><a id="line.142">        throw new IllegalStateException("File \"" + fileName + "\" does not exist");</a>
-<span class="sourceLineNo">143</span><a id="line.143"></a>
-<span class="sourceLineNo">144</span><a id="line.144">      } else if (!file.isFile()) {</a>
-<span class="sourceLineNo">145</span><a id="line.145">        throw new IllegalStateException("File \"" + fileName + "\" is not a file");</a>
-<span class="sourceLineNo">146</span><a id="line.146">      }</a>
-<span class="sourceLineNo">147</span><a id="line.147"></a>
-<span class="sourceLineNo">148</span><a id="line.148">      files.add(file);</a>
-<span class="sourceLineNo">149</span><a id="line.149">    }</a>
+<span class="sourceLineNo">120</span><a id="line.120">    return filesToSendToStudents;</a>
+<span class="sourceLineNo">121</span><a id="line.121">  }</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">  private static void cannotFindStudent(String studentId) {</a>
+<span class="sourceLineNo">124</span><a id="line.124">    logger.warn("Cannot find student with id \"" + studentId + "\" in grade book");</a>
+<span class="sourceLineNo">125</span><a id="line.125">  }</a>
+<span class="sourceLineNo">126</span><a id="line.126"></a>
+<span class="sourceLineNo">127</span><a id="line.127">  private static String getStudentIdFromFileName(File file) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">    String studentId;</a>
+<span class="sourceLineNo">129</span><a id="line.129">    String fileName = file.getName();</a>
+<span class="sourceLineNo">130</span><a id="line.130">    int index = fileName.lastIndexOf('.');</a>
+<span class="sourceLineNo">131</span><a id="line.131">    if (index &lt; 0) {</a>
+<span class="sourceLineNo">132</span><a id="line.132">      studentId = fileName;</a>
+<span class="sourceLineNo">133</span><a id="line.133"></a>
+<span class="sourceLineNo">134</span><a id="line.134">    } else {</a>
+<span class="sourceLineNo">135</span><a id="line.135">      studentId = fileName.substring(0, index);</a>
+<span class="sourceLineNo">136</span><a id="line.136">    }</a>
+<span class="sourceLineNo">137</span><a id="line.137">    return studentId;</a>
+<span class="sourceLineNo">138</span><a id="line.138">  }</a>
+<span class="sourceLineNo">139</span><a id="line.139"></a>
+<span class="sourceLineNo">140</span><a id="line.140">  private static List&lt;File&gt; getFiles(List&lt;String&gt; fileNames) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">    List&lt;File&gt; files = new ArrayList&lt;&gt;(fileNames.size());</a>
+<span class="sourceLineNo">142</span><a id="line.142">    for (String fileName : fileNames) {</a>
+<span class="sourceLineNo">143</span><a id="line.143">      File file = new File(fileName);</a>
+<span class="sourceLineNo">144</span><a id="line.144">      if (!file.exists()) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">        throw new IllegalStateException("File \"" + fileName + "\" does not exist");</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">      } else if (!file.isFile()) {</a>
+<span class="sourceLineNo">148</span><a id="line.148">        throw new IllegalStateException("File \"" + fileName + "\" is not a file");</a>
+<span class="sourceLineNo">149</span><a id="line.149">      }</a>
 <span class="sourceLineNo">150</span><a id="line.150"></a>
-<span class="sourceLineNo">151</span><a id="line.151">    return files;</a>
-<span class="sourceLineNo">152</span><a id="line.152">  }</a>
+<span class="sourceLineNo">151</span><a id="line.151">      files.add(file);</a>
+<span class="sourceLineNo">152</span><a id="line.152">    }</a>
 <span class="sourceLineNo">153</span><a id="line.153"></a>
-<span class="sourceLineNo">154</span><a id="line.154">  private static GradeBook getGradeBook(String gradeBookFileName) {</a>
-<span class="sourceLineNo">155</span><a id="line.155">    try {</a>
-<span class="sourceLineNo">156</span><a id="line.156">      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFileName);</a>
-<span class="sourceLineNo">157</span><a id="line.157">      return parser.parse();</a>
-<span class="sourceLineNo">158</span><a id="line.158"></a>
-<span class="sourceLineNo">159</span><a id="line.159">    } catch (IOException ex) {</a>
-<span class="sourceLineNo">160</span><a id="line.160">      return usage("Couldn't read grade book file \"" + gradeBookFileName + "\"");</a>
+<span class="sourceLineNo">154</span><a id="line.154">    return files;</a>
+<span class="sourceLineNo">155</span><a id="line.155">  }</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">  private static GradeBook getGradeBook(String gradeBookFileName) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">    try {</a>
+<span class="sourceLineNo">159</span><a id="line.159">      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookFileName);</a>
+<span class="sourceLineNo">160</span><a id="line.160">      return parser.parse();</a>
 <span class="sourceLineNo">161</span><a id="line.161"></a>
-<span class="sourceLineNo">162</span><a id="line.162">    } catch (ParserException ex) {</a>
-<span class="sourceLineNo">163</span><a id="line.163">      return usage("Couldn't parse grade book file \"" + gradeBookFileName + "\"");</a>
-<span class="sourceLineNo">164</span><a id="line.164">    }</a>
-<span class="sourceLineNo">165</span><a id="line.165">  }</a>
-<span class="sourceLineNo">166</span><a id="line.166"></a>
-<span class="sourceLineNo">167</span><a id="line.167"></a>
-<span class="sourceLineNo">168</span><a id="line.168">  private static void usageIfEmpty(List&lt;String&gt; list, String message) {</a>
-<span class="sourceLineNo">169</span><a id="line.169">    if (list.isEmpty()) {</a>
-<span class="sourceLineNo">170</span><a id="line.170">      usage(message);</a>
-<span class="sourceLineNo">171</span><a id="line.171">    }</a>
-<span class="sourceLineNo">172</span><a id="line.172">  }</a>
-<span class="sourceLineNo">173</span><a id="line.173"></a>
-<span class="sourceLineNo">174</span><a id="line.174">  private static void usageIfNull(String arg, String message) {</a>
-<span class="sourceLineNo">175</span><a id="line.175">    if (arg == null) {</a>
-<span class="sourceLineNo">176</span><a id="line.176">      usage(message);</a>
-<span class="sourceLineNo">177</span><a id="line.177">    }</a>
-<span class="sourceLineNo">178</span><a id="line.178">  }</a>
-<span class="sourceLineNo">179</span><a id="line.179"></a>
-<span class="sourceLineNo">180</span><a id="line.180">  private static &lt;T&gt; T usage(String message) {</a>
-<span class="sourceLineNo">181</span><a id="line.181">    PrintStream err = System.err;</a>
+<span class="sourceLineNo">162</span><a id="line.162">    } catch (IOException ex) {</a>
+<span class="sourceLineNo">163</span><a id="line.163">      return usage("Couldn't read grade book file \"" + gradeBookFileName + "\"");</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">    } catch (ParserException ex) {</a>
+<span class="sourceLineNo">166</span><a id="line.166">      return usage("Couldn't parse grade book file \"" + gradeBookFileName + "\"");</a>
+<span class="sourceLineNo">167</span><a id="line.167">    }</a>
+<span class="sourceLineNo">168</span><a id="line.168">  }</a>
+<span class="sourceLineNo">169</span><a id="line.169"></a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">  private static void usageIfEmpty(List&lt;String&gt; list, String message) {</a>
+<span class="sourceLineNo">172</span><a id="line.172">    if (list.isEmpty()) {</a>
+<span class="sourceLineNo">173</span><a id="line.173">      usage(message);</a>
+<span class="sourceLineNo">174</span><a id="line.174">    }</a>
+<span class="sourceLineNo">175</span><a id="line.175">  }</a>
+<span class="sourceLineNo">176</span><a id="line.176"></a>
+<span class="sourceLineNo">177</span><a id="line.177">  private static void usageIfNull(String arg, String message) {</a>
+<span class="sourceLineNo">178</span><a id="line.178">    if (arg == null) {</a>
+<span class="sourceLineNo">179</span><a id="line.179">      usage(message);</a>
+<span class="sourceLineNo">180</span><a id="line.180">    }</a>
+<span class="sourceLineNo">181</span><a id="line.181">  }</a>
 <span class="sourceLineNo">182</span><a id="line.182"></a>
-<span class="sourceLineNo">183</span><a id="line.183">    err.println("** " + message);</a>
-<span class="sourceLineNo">184</span><a id="line.184">    err.println();</a>
-<span class="sourceLineNo">185</span><a id="line.185">    err.println("usage: java StudentFileMailer gradeBookFileName subject fileName+");</a>
-<span class="sourceLineNo">186</span><a id="line.186">    err.println();</a>
-<span class="sourceLineNo">187</span><a id="line.187">    err.println("Emails a file to a student in a grade book.  The name of the file must");</a>
-<span class="sourceLineNo">188</span><a id="line.188">    err.println("begin with the student's id.");</a>
+<span class="sourceLineNo">183</span><a id="line.183">  private static &lt;T&gt; T usage(String message) {</a>
+<span class="sourceLineNo">184</span><a id="line.184">    PrintStream err = System.err;</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">    err.println("** " + message);</a>
+<span class="sourceLineNo">187</span><a id="line.187">    err.println();</a>
+<span class="sourceLineNo">188</span><a id="line.188">    err.println("usage: java StudentFileMailer gradeBookFileName subject fileName+");</a>
 <span class="sourceLineNo">189</span><a id="line.189">    err.println();</a>
-<span class="sourceLineNo">190</span><a id="line.190">    err.println("  gradeBookFileName    Name of the grade book file");</a>
-<span class="sourceLineNo">191</span><a id="line.191">    err.println("  subject              The subject of the email");</a>
-<span class="sourceLineNo">192</span><a id="line.192">    err.println("  fileName             A file to send to the student");</a>
-<span class="sourceLineNo">193</span><a id="line.193">    err.println();</a>
-<span class="sourceLineNo">194</span><a id="line.194"></a>
-<span class="sourceLineNo">195</span><a id="line.195">    System.exit(1);</a>
-<span class="sourceLineNo">196</span><a id="line.196"></a>
-<span class="sourceLineNo">197</span><a id="line.197">    throw new UnsupportedOperationException("Should never get here");</a>
-<span class="sourceLineNo">198</span><a id="line.198">  }</a>
-<span class="sourceLineNo">199</span><a id="line.199">}</a>
+<span class="sourceLineNo">190</span><a id="line.190">    err.println("Emails a file to a student in a grade book.  The name of the file must");</a>
+<span class="sourceLineNo">191</span><a id="line.191">    err.println("begin with the student's id.");</a>
+<span class="sourceLineNo">192</span><a id="line.192">    err.println();</a>
+<span class="sourceLineNo">193</span><a id="line.193">    err.println("  gradeBookFileName    Name of the grade book file");</a>
+<span class="sourceLineNo">194</span><a id="line.194">    err.println("  subject              The subject of the email");</a>
+<span class="sourceLineNo">195</span><a id="line.195">    err.println("  fileName             A file to send to the student");</a>
+<span class="sourceLineNo">196</span><a id="line.196">    err.println();</a>
+<span class="sourceLineNo">197</span><a id="line.197"></a>
+<span class="sourceLineNo">198</span><a id="line.198">    System.exit(1);</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">    throw new UnsupportedOperationException("Should never get here");</a>
+<span class="sourceLineNo">201</span><a id="line.201">  }</a>
+<span class="sourceLineNo">202</span><a id="line.202">}</a>
 
 
 
