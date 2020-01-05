@@ -18,10 +18,10 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * &lt;code&gt;Resident&lt;/code&gt; and filling in its fields.</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Resident" href="../../../../edu/pdx/cs410J/xml/Resident.html#Resident">Resident</a> <strong class="jxr_keyword">extends</strong> <a name="PhoneBookEntry" href="../../../../edu/pdx/cs410J/xml/PhoneBookEntry.html#PhoneBookEntry">PhoneBookEntry</a> {
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">protected</strong> String firstName;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">protected</strong> String middleInitial;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">protected</strong> String lastName;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> unlisted = false;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>    <strong class="jxr_keyword">private</strong> String firstName;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>    <strong class="jxr_keyword">private</strong> String middleInitial;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">private</strong> String lastName;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> unlisted = false;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment">   * Create a new &lt;code&gt;Resident&lt;/code&gt; from a &lt;code&gt;Element&lt;/code&gt; in</em>
@@ -33,50 +33,56 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>        Node node = elements.item(i);
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>        <strong class="jxr_keyword">if</strong> (!(node instanceof Element)) {
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  	<strong class="jxr_keyword">continue</strong>;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">continue</strong>;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>        }
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>        Element element = (Element) node;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>        <strong class="jxr_keyword">if</strong> (element.getNodeName().equals(<span class="jxr_string">"first-name"</span>)) {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  	Node name = element.getFirstChild();
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  	Node text = name.getFirstChild();
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  	<strong class="jxr_keyword">this</strong>.firstName = text.getNodeValue();
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>        } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (element.getNodeName().equals(<span class="jxr_string">"initial"</span>)) {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  	Node text = element.getFirstChild();
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  	<strong class="jxr_keyword">this</strong>.middleInitial = text.getNodeValue();
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>        } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (element.getNodeName().equals(<span class="jxr_string">"last-name"</span>)) {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  	Node name = element.getFirstChild();
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  	Node text = name.getFirstChild();
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  	<strong class="jxr_keyword">this</strong>.lastName = text.getNodeValue();
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>        <strong class="jxr_keyword">switch</strong> (element.getNodeName()) {
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">case</strong> <span class="jxr_string">"first-name"</span>: {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>            Node name = element.getFirstChild();
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>            Node text = name.getFirstChild();
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>            <strong class="jxr_keyword">this</strong>.firstName = text.getNodeValue();
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>            <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          }
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">case</strong> <span class="jxr_string">"initial"</span>: {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>            Node text = element.getFirstChild();
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>            <strong class="jxr_keyword">this</strong>.middleInitial = text.getNodeValue();
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>            <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          }
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>        } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (element.getNodeName().equals(<span class="jxr_string">"address"</span>)) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  	fillInAddress(element);
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>        } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (element.getNodeName().equals(<span class="jxr_string">"phone"</span>)) {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  	fillInPhone(element);
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>        }
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <em class="jxr_comment">// Check for the "unlisted" attribute</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">if</strong> (root.getAttribute(<span class="jxr_string">"unlisted"</span>).equals(<span class="jxr_string">"true"</span>)) {
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>        <strong class="jxr_keyword">this</strong>.unlisted = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      }
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>    }
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>    <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      StringBuffer sb = <strong class="jxr_keyword">new</strong> StringBuffer();
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      sb.append(<strong class="jxr_keyword">this</strong>.firstName + <span class="jxr_string">" "</span> + <strong class="jxr_keyword">this</strong>.middleInitial + <span class="jxr_string">" "</span> +
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  	      <strong class="jxr_keyword">this</strong>.lastName + <span class="jxr_string">"\n"</span>);
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      sb.append(<strong class="jxr_keyword">super</strong>.toString());
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">return</strong> sb.toString();
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">case</strong> <span class="jxr_string">"last-name"</span>: {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>            Node name = element.getFirstChild();
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>            Node text = name.getFirstChild();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>            <strong class="jxr_keyword">this</strong>.lastName = text.getNodeValue();
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>            <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          }
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">case</strong> <span class="jxr_string">"address"</span>:
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>            fillInAddress(element);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>            <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">case</strong> <span class="jxr_string">"phone"</span>:
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>            fillInPhone(element);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>            <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>        }
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <em class="jxr_comment">// Check for the "unlisted" attribute</em>
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">if</strong> (root.getAttribute(<span class="jxr_string">"unlisted"</span>).equals(<span class="jxr_string">"true"</span>)) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>        <strong class="jxr_keyword">this</strong>.unlisted = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>    }
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>    <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.firstName + <span class="jxr_string">" "</span> + <strong class="jxr_keyword">this</strong>.middleInitial + <span class="jxr_string">" "</span> +
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>        <strong class="jxr_keyword">this</strong>.lastName + <span class="jxr_string">"\n"</span> +
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>        <strong class="jxr_keyword">super</strong>.toString();
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>    }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2019 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2020 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
