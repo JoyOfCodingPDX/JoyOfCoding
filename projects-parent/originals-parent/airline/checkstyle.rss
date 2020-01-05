@@ -23,10 +23,10 @@ under the License.
     <link>http://www.cs.pdx.edu/~whitlock</link>
     <description>CS410J Airline Project - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2000 - 2019 Portland State University</copyright>
+    <copyright>&#169;2000 - 2020 Portland State University</copyright>
     <item>
-      <title>File: 2,
-             Errors: 18,
+      <title>File: 3,
+             Errors: 21,
              Warnings: 0,
              Infos: 0
       </title>
@@ -55,7 +55,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  7
+                  6
                 </td>
               </tr>
                           <tr>
@@ -70,6 +70,20 @@ under the License.
                 </td>
                 <td>
                   11
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.airline.AirlineXmlHelper.java">edu/pdx/cs410J/airline/AirlineXmlHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
                 </td>
               </tr>
                       </tbody>
