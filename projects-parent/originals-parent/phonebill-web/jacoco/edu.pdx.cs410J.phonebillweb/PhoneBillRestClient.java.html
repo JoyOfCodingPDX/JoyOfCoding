@@ -35,7 +35,7 @@ public class PhoneBillRestClient extends HttpRequestHelper
      * Returns all dictionary entries from the server
      */
     public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
-<span class="nc" id="L38">      Response response = get(this.url);</span>
+<span class="nc" id="L38">      Response response = get(this.url, Map.of());</span>
 <span class="nc" id="L39">      return Messages.parseDictionary(response.getContent());</span>
     }
 
@@ -43,24 +43,24 @@ public class PhoneBillRestClient extends HttpRequestHelper
      * Returns the definition for the given word
      */
     public String getDefinition(String word) throws IOException {
-<span class="nc" id="L46">      Response response = get(this.url, &quot;word&quot;, word);</span>
+<span class="nc" id="L46">      Response response = get(this.url, Map.of(&quot;word&quot;, word));</span>
 <span class="nc" id="L47">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="nc" id="L48">      String content = response.getContent();</span>
 <span class="nc" id="L49">      return Messages.parseDictionaryEntry(content).getValue();</span>
     }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-<span class="nc" id="L53">      Response response = postToMyURL(&quot;word&quot;, word, &quot;definition&quot;, definition);</span>
+<span class="nc" id="L53">      Response response = postToMyURL(Map.of(&quot;word&quot;, word, &quot;definition&quot;, definition));</span>
 <span class="nc" id="L54">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="nc" id="L55">    }</span>
 
     @VisibleForTesting
-    Response postToMyURL(String... dictionaryEntries) throws IOException {
+    Response postToMyURL(Map&lt;String, String&gt; dictionaryEntries) throws IOException {
 <span class="nc" id="L59">      return post(this.url, dictionaryEntries);</span>
     }
 
     public void removeAllDictionaryEntries() throws IOException {
-<span class="nc" id="L63">      Response response = delete(this.url);</span>
+<span class="nc" id="L63">      Response response = delete(this.url, Map.of());</span>
 <span class="nc" id="L64">      throwExceptionIfNotOkayHttpStatus(response);</span>
 <span class="nc" id="L65">    }</span>
 
@@ -72,10 +72,11 @@ public class PhoneBillRestClient extends HttpRequestHelper
 <span class="nc" id="L72">      return response;</span>
     }
 
-    private class PhoneBillRestException extends RuntimeException {
-<span class="nc" id="L76">      public PhoneBillRestException(int httpStatusCode) {</span>
-<span class="nc" id="L77">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
-<span class="nc" id="L78">      }</span>
+    @VisibleForTesting
+    class PhoneBillRestException extends RuntimeException {
+<span class="nc" id="L77">      PhoneBillRestException(int httpStatusCode) {</span>
+<span class="nc" id="L78">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
+<span class="nc" id="L79">      }</span>
     }
 
 }

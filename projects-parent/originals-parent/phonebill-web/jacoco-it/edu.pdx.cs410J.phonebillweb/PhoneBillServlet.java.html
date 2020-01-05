@@ -112,17 +112,21 @@ import java.util.Map;
      * The text of the message is formatted with
      * {@link Messages#formatDictionaryEntry(String, String)}
      */
-    private void writeDefinition(String word, HttpServletResponse response ) throws IOException
-    {
-<span class="nc" id="L117">        String definition = this.dictionary.get(word);</span>
+    private void writeDefinition(String word, HttpServletResponse response) throws IOException {
+<span class="nc" id="L116">        String definition = this.dictionary.get(word);</span>
 
-<span class="nc" id="L119">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L120">        pw.println(Messages.formatDictionaryEntry(word, definition));</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (definition == null) {</span>
+<span class="nc" id="L119">            response.setStatus(HttpServletResponse.SC_NOT_FOUND);</span>
 
-<span class="nc" id="L122">        pw.flush();</span>
+        } else {
+<span class="nc" id="L122">            PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L123">            pw.println(Messages.formatDictionaryEntry(word, definition));</span>
 
-<span class="nc" id="L124">        response.setStatus( HttpServletResponse.SC_OK );</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L125">            pw.flush();</span>
+
+<span class="nc" id="L127">            response.setStatus(HttpServletResponse.SC_OK);</span>
+        }
+<span class="nc" id="L129">    }</span>
 
     /**
      * Writes all of the dictionary entries to the HTTP response.
@@ -132,13 +136,13 @@ import java.util.Map;
      */
     private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
     {
-<span class="nc" id="L135">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L136">        Messages.formatDictionaryEntries(pw, dictionary);</span>
+<span class="nc" id="L139">        PrintWriter pw = response.getWriter();</span>
+<span class="nc" id="L140">        Messages.formatDictionaryEntries(pw, dictionary);</span>
 
-<span class="nc" id="L138">        pw.flush();</span>
+<span class="nc" id="L142">        pw.flush();</span>
 
-<span class="nc" id="L140">        response.setStatus( HttpServletResponse.SC_OK );</span>
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L144">        response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="nc" id="L145">    }</span>
 
     /**
      * Returns the value of the HTTP request parameter with the given name.
@@ -147,18 +151,18 @@ import java.util.Map;
      *         &lt;code&gt;null&lt;/code&gt; or is the empty string
      */
     private String getParameter(String name, HttpServletRequest request) {
-<span class="nc" id="L150">      String value = request.getParameter(name);</span>
-<span class="nc bnc" id="L151" title="All 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
-<span class="nc" id="L152">        return null;</span>
+<span class="nc" id="L154">      String value = request.getParameter(name);</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L156">        return null;</span>
 
       } else {
-<span class="nc" id="L155">        return value;</span>
+<span class="nc" id="L159">        return value;</span>
       }
     }
 
     @VisibleForTesting
     String getDefinition(String word) {
-<span class="nc" id="L161">        return this.dictionary.get(word);</span>
+<span class="nc" id="L165">        return this.dictionary.get(word);</span>
     }
 
 }

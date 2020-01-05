@@ -66,16 +66,17 @@ public class PhoneBillRestClient extends HttpRequestHelper
 
     private Response throwExceptionIfNotOkayHttpStatus(Response response) {
 <span class="fc" id="L68">      int code = response.getCode();</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">      if (code != HTTP_OK) {</span>
-<span class="nc" id="L70">        throw new PhoneBillRestException(code);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">      if (code != HTTP_OK) {</span>
+<span class="fc" id="L70">        throw new PhoneBillRestException(code);</span>
       }
 <span class="fc" id="L72">      return response;</span>
     }
 
-    private class PhoneBillRestException extends RuntimeException {
-<span class="nc" id="L76">      public PhoneBillRestException(int httpStatusCode) {</span>
-<span class="nc" id="L77">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
-<span class="nc" id="L78">      }</span>
+    @VisibleForTesting
+    class PhoneBillRestException extends RuntimeException {
+<span class="fc" id="L77">      PhoneBillRestException(int httpStatusCode) {</span>
+<span class="fc" id="L78">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
+<span class="fc" id="L79">      }</span>
     }
 
 }
