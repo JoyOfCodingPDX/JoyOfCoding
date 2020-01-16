@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AirlineXmlHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CS410J Airline Project</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs410J.whitlock</a> &gt; <span class="el_source">AirlineXmlHelper.java</span></div><h1>AirlineXmlHelper.java</h1><pre class="source lang-java linenums">package edu.pdx.cs410J.whitlock;
+
+import edu.pdx.cs410J.ProjectXmlHelper;
+
+/**
+ * This class provides easy access to the SYSTEM and PUBLIC ids for the
+ * Airline XML DTD and implements some convenient error handling methods.
+ */
+public class AirlineXmlHelper extends ProjectXmlHelper {
+
+  /** The System ID for the Family Tree DTD */
+  protected static final String SYSTEM_ID =
+    &quot;http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd&quot;;
+
+  /** The Public ID for the Family Tree DTD */
+  protected static final String PUBLIC_ID =
+    &quot;-//Portland State University//DTD CS410J Airline//EN&quot;;
+
+
+  public AirlineXmlHelper() {
+<span class="fc" id="L21">    super(PUBLIC_ID, SYSTEM_ID, &quot;airline.dtd&quot;);</span>
+<span class="fc" id="L22">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
