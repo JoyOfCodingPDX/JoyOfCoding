@@ -163,37 +163,46 @@
 <span class="sourceLineNo">154</span><a id="line.154"></a>
 <span class="sourceLineNo">155</span><a id="line.155">    } else {</a>
 <span class="sourceLineNo">156</span><a id="line.156">      String gpaString = args[2];</a>
-<span class="sourceLineNo">157</span><a id="line.157">      try {</a>
-<span class="sourceLineNo">158</span><a id="line.158">        double gpa = Double.parseDouble(gpaString);</a>
-<span class="sourceLineNo">159</span><a id="line.159">        HashSet&lt;String&gt; classes = new LinkedHashSet&lt;&gt;();</a>
-<span class="sourceLineNo">160</span><a id="line.160">        for (int i = 3; i &lt; args.length; i++) {</a>
-<span class="sourceLineNo">161</span><a id="line.161">          classes.add(args[i]);</a>
-<span class="sourceLineNo">162</span><a id="line.162">        }</a>
-<span class="sourceLineNo">163</span><a id="line.163"></a>
-<span class="sourceLineNo">164</span><a id="line.164">        Student student = new Student(args[0], classes, gpa, args[1]);</a>
-<span class="sourceLineNo">165</span><a id="line.165">        System.out.println(student.toString());</a>
-<span class="sourceLineNo">166</span><a id="line.166">        System.exit(0);</a>
-<span class="sourceLineNo">167</span><a id="line.167"></a>
-<span class="sourceLineNo">168</span><a id="line.168">      } catch (NumberFormatException ex) {</a>
-<span class="sourceLineNo">169</span><a id="line.169">        printErrorMessageAndExit("Invalid GPA: " + gpaString);</a>
+<span class="sourceLineNo">157</span><a id="line.157">      double gpa;</a>
+<span class="sourceLineNo">158</span><a id="line.158">      try {</a>
+<span class="sourceLineNo">159</span><a id="line.159">        gpa = Double.parseDouble(gpaString);</a>
+<span class="sourceLineNo">160</span><a id="line.160"></a>
+<span class="sourceLineNo">161</span><a id="line.161">      } catch (NumberFormatException ex) {</a>
+<span class="sourceLineNo">162</span><a id="line.162">        printErrorMessageAndExit("Invalid GPA: " + gpaString);</a>
+<span class="sourceLineNo">163</span><a id="line.163">        return;</a>
+<span class="sourceLineNo">164</span><a id="line.164">      }</a>
+<span class="sourceLineNo">165</span><a id="line.165"></a>
+<span class="sourceLineNo">166</span><a id="line.166">      HashSet&lt;String&gt; classes = new LinkedHashSet&lt;&gt;();</a>
+<span class="sourceLineNo">167</span><a id="line.167">      for (int i = 3; i &lt; args.length; i++) {</a>
+<span class="sourceLineNo">168</span><a id="line.168">        classes.add(args[i]);</a>
+<span class="sourceLineNo">169</span><a id="line.169">      }</a>
 <span class="sourceLineNo">170</span><a id="line.170"></a>
-<span class="sourceLineNo">171</span><a id="line.171">      } catch (IllegalArgumentException ex) {</a>
-<span class="sourceLineNo">172</span><a id="line.172">        printErrorMessageAndExit(ex.getMessage());</a>
-<span class="sourceLineNo">173</span><a id="line.173">      }</a>
-<span class="sourceLineNo">174</span><a id="line.174">    }</a>
-<span class="sourceLineNo">175</span><a id="line.175"></a>
-<span class="sourceLineNo">176</span><a id="line.176"></a>
-<span class="sourceLineNo">177</span><a id="line.177">  }</a>
-<span class="sourceLineNo">178</span><a id="line.178"></a>
-<span class="sourceLineNo">179</span><a id="line.179">  private static void printErrorMessageAndExit(String message) {</a>
-<span class="sourceLineNo">180</span><a id="line.180">    System.err.println(message);</a>
-<span class="sourceLineNo">181</span><a id="line.181">    System.exit(1);</a>
-<span class="sourceLineNo">182</span><a id="line.182">  }</a>
-<span class="sourceLineNo">183</span><a id="line.183"></a>
-<span class="sourceLineNo">184</span><a id="line.184">  String getGenderPronoun() {</a>
-<span class="sourceLineNo">185</span><a id="line.185">    return genderPronoun;</a>
+<span class="sourceLineNo">171</span><a id="line.171">      Student student;</a>
+<span class="sourceLineNo">172</span><a id="line.172">      try {</a>
+<span class="sourceLineNo">173</span><a id="line.173">        student = new Student(args[0], classes, gpa, args[1]);</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">      } catch (IllegalArgumentException ex) {</a>
+<span class="sourceLineNo">176</span><a id="line.176">        printErrorMessageAndExit(ex.getMessage());</a>
+<span class="sourceLineNo">177</span><a id="line.177">        return;</a>
+<span class="sourceLineNo">178</span><a id="line.178">      }</a>
+<span class="sourceLineNo">179</span><a id="line.179"></a>
+<span class="sourceLineNo">180</span><a id="line.180">      System.out.println(student.toString());</a>
+<span class="sourceLineNo">181</span><a id="line.181">      System.exit(0);</a>
+<span class="sourceLineNo">182</span><a id="line.182"></a>
+<span class="sourceLineNo">183</span><a id="line.183">    }</a>
+<span class="sourceLineNo">184</span><a id="line.184"></a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
 <span class="sourceLineNo">186</span><a id="line.186">  }</a>
-<span class="sourceLineNo">187</span><a id="line.187">}</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">  private static void printErrorMessageAndExit(String message) {</a>
+<span class="sourceLineNo">189</span><a id="line.189">    System.err.println(message);</a>
+<span class="sourceLineNo">190</span><a id="line.190">    System.exit(1);</a>
+<span class="sourceLineNo">191</span><a id="line.191">  }</a>
+<span class="sourceLineNo">192</span><a id="line.192"></a>
+<span class="sourceLineNo">193</span><a id="line.193">  String getGenderPronoun() {</a>
+<span class="sourceLineNo">194</span><a id="line.194">    return genderPronoun;</a>
+<span class="sourceLineNo">195</span><a id="line.195">  }</a>
+<span class="sourceLineNo">196</span><a id="line.196">}</a>
 
 
 

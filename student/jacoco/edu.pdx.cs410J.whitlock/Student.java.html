@@ -154,35 +154,44 @@ public class Student extends Human {
 
     } else {
 <span class="nc" id="L156">      String gpaString = args[2];</span>
+      double gpa;
       try {
-<span class="nc" id="L158">        double gpa = Double.parseDouble(gpaString);</span>
-<span class="nc" id="L159">        HashSet&lt;String&gt; classes = new LinkedHashSet&lt;&gt;();</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        for (int i = 3; i &lt; args.length; i++) {</span>
-<span class="nc" id="L161">          classes.add(args[i]);</span>
-        }
+<span class="nc" id="L159">        gpa = Double.parseDouble(gpaString);</span>
 
-<span class="nc" id="L164">        Student student = new Student(args[0], classes, gpa, args[1]);</span>
-<span class="nc" id="L165">        System.out.println(student.toString());</span>
-<span class="nc" id="L166">        System.exit(0);</span>
+<span class="nc" id="L161">      } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L162">        printErrorMessageAndExit(&quot;Invalid GPA: &quot; + gpaString);</span>
+<span class="nc" id="L163">        return;</span>
+<span class="nc" id="L164">      }</span>
 
-<span class="nc" id="L168">      } catch (NumberFormatException ex) {</span>
-<span class="nc" id="L169">        printErrorMessageAndExit(&quot;Invalid GPA: &quot; + gpaString);</span>
+<span class="nc" id="L166">      HashSet&lt;String&gt; classes = new LinkedHashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">      for (int i = 3; i &lt; args.length; i++) {</span>
+<span class="nc" id="L168">        classes.add(args[i]);</span>
+      }
 
-<span class="nc" id="L171">      } catch (IllegalArgumentException ex) {</span>
-<span class="nc" id="L172">        printErrorMessageAndExit(ex.getMessage());</span>
-<span class="nc" id="L173">      }</span>
+      Student student;
+      try {
+<span class="nc" id="L173">        student = new Student(args[0], classes, gpa, args[1]);</span>
+
+<span class="nc" id="L175">      } catch (IllegalArgumentException ex) {</span>
+<span class="nc" id="L176">        printErrorMessageAndExit(ex.getMessage());</span>
+<span class="nc" id="L177">        return;</span>
+<span class="nc" id="L178">      }</span>
+
+<span class="nc" id="L180">      System.out.println(student.toString());</span>
+<span class="nc" id="L181">      System.exit(0);</span>
+
     }
 
 
-<span class="nc" id="L177">  }</span>
+<span class="nc" id="L186">  }</span>
 
   private static void printErrorMessageAndExit(String message) {
-<span class="nc" id="L180">    System.err.println(message);</span>
-<span class="nc" id="L181">    System.exit(1);</span>
-<span class="nc" id="L182">  }</span>
+<span class="nc" id="L189">    System.err.println(message);</span>
+<span class="nc" id="L190">    System.exit(1);</span>
+<span class="nc" id="L191">  }</span>
 
   String getGenderPronoun() {
-<span class="fc" id="L185">    return genderPronoun;</span>
+<span class="fc" id="L194">    return genderPronoun;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
