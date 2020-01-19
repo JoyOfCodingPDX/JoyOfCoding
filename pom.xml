@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
-  <version>Summer2019</version>
+  <version>Winter2020</version>
   <artifactId>CS410J</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -67,6 +67,9 @@
         <junit.version>4.13-beta-3</junit.version>
         <hamcrest.version>2.1</hamcrest.version>
         <mockito.version>2.27.0</mockito.version>
+
+      <jacoco.min.instruction.covered.ratio>0.60</jacoco.min.instruction.covered.ratio>
+      <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
       <repository>
@@ -117,13 +120,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <archive>
             <manifest>
@@ -375,6 +371,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.2.1</version>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>

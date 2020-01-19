@@ -2,13 +2,13 @@
   <parent>
     <artifactId>projects-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2019</version>
+    <version>Winter2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>projects</artifactId>
   <name>CS410J Project APIs</name>
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
-  <version>Summer2019</version>
+  <version>Winter2020</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
       <maven.compiler.source>9</maven.compiler.source>
@@ -49,6 +49,18 @@
         <configuration>
           <attach>true</attach>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.CharStreams;
@@ -22,6 +23,7 @@ import java.util.Date;
 @Singleton
 public class POASubmissionsDownloader {
 
+  static final String POA_FOLDER_NAME = "poa";
   private final EventBus bus;
 
   @Inject
@@ -33,9 +35,18 @@ public class POASubmissionsDownloader {
   @Subscribe
   public void downloadSubmissions(EmailCredentials credentials) throws MessagingException {
     GraderEmailAccount account = new GraderEmailAccount(credentials.getEmailAddress(), credentials.getPassword());
-    account.fetchAttachmentsFromUnreadMessagesInFolder("poa", new POAAttachmentProcessor());
+    downloadSubmissions(account);
   }
 
+  @VisibleForTesting
+  void downloadSubmissions(String emailServerHostName, int emailServerHostPort, EmailCredentials credentials) {
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHostName, emailServerHostPort, credentials.getEmailAddress(), credentials.getPassword(), true);
+    downloadSubmissions(account);
+  }
+
+  private void downloadSubmissions(GraderEmailAccount account) {
+    account.fetchAttachmentsFromUnreadMessagesInFolder(POA_FOLDER_NAME, new POAAttachmentProcessor());
+  }
   private void extractPOASubmissionFromAttachment(Message message, String fileName, InputStream inputStream) {
     try {
       String submitter = getSender(message);

@@ -22,34 +22,34 @@ public class Business extends PhoneBookEntry {
       Node node = elements.item(i);
 
       if (!(node instanceof Element)) {
-	continue;
+        continue;
       }
 
       Element element = (Element) node;
-      
-      if (element.getNodeName().equals("name")) {
-	Node text = element.getFirstChild();
-	this.name = text.getNodeValue();
 
-      } else if (element.getNodeName().equals("address")) {
-	fillInAddress(element);
+      switch (element.getNodeName()) {
+        case "name":
+          Node text = element.getFirstChild();
+          this.name = text.getNodeValue();
+          break;
 
-      } else if (element.getNodeName().equals("phone")) {
-	fillInPhone(element);
+        case "address":
+          fillInAddress(element);
+          break;
 
-      } else {
-	String s = "Unknown element: " + element.getNodeName() + " (" +
-          element.getNodeValue() + ")";
-        throw new IllegalArgumentException(s);
+        case "phone":
+          fillInPhone(element);
+          break;
+
+        default:
+          String s = "Unknown element: " + element.getNodeName() + " (" +
+            element.getNodeValue() + ")";
+          throw new IllegalArgumentException(s);
       }
     }
   }
 
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(this.name + "\n");
-    sb.append(super.toString());
-
-    return sb.toString();
+    return this.name + "\n" + super.toString();
   }
 }

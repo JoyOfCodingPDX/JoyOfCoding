@@ -72,8 +72,9 @@ public class PhoneBillRestClient extends HttpRequestHelper
       return response;
     }
 
-    private class PhoneBillRestException extends RuntimeException {
-      public PhoneBillRestException(int httpStatusCode) {
+    @VisibleForTesting
+    class PhoneBillRestException extends RuntimeException {
+      PhoneBillRestException(int httpStatusCode) {
         super("Got an HTTP Status Code of " + httpStatusCode);
       }
     }

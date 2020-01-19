@@ -18,6 +18,8 @@ import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.jar.Attributes;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +27,8 @@ import java.util.stream.Stream;
  * This class is used to submit assignments in CS410J.  The user
  * specified his or her email address as well as the base directory
  * for his/her source files on the command line.  The directory is
- * searched recursively for files ending in .java.  Those files are
+ * searched recursively for files that are allowed to be submitted.
+ * Those files are
  * placed in a zip file and emailed to the grader.  A confirmation
  * email is sent to the submitter.
  *
@@ -88,6 +91,8 @@ public class Submit extends EmailSender {
    */
   private boolean saveZip = false;
 
+  private boolean sendEmails = true;
+
   /**
    * The time at which the project was submitted
    */
@@ -133,6 +138,10 @@ public class Submit extends EmailSender {
    */
   private void setSaveZip(boolean saveZip) {
     this.saveZip = saveZip;
+  }
+
+  private void setSendEmails(boolean sendEmails) {
+    this.sendEmails = sendEmails;
   }
 
   /**
@@ -289,11 +298,13 @@ public class Submit extends EmailSender {
     // Create a temporary zip file to hold the source files
     File zipFile = makeZipFileWith(sourceFiles);
 
-    // Send the zip file as an email attachment to the TA
-    mailTA(zipFile, sourceFiles);
+    if (this.sendEmails) {
+      // Send the zip file as an email attachment to the TA
+      mailTA(zipFile, sourceFiles);
 
-    if (sendReceipt) {
-      mailReceipt(sourceFiles);
+      if (sendReceipt) {
+        mailReceipt(sourceFiles);
+      }
     }
 
     return true;
@@ -355,23 +366,42 @@ public class Submit extends EmailSender {
       return false;
     }
 
-    // Does the file name end in .java?
-    if (!name.endsWith(".java")) {
-      err.println("** Not submitting file " + file +
-        " because does end in \".java\"");
-      return false;
-    }
-
     // Verify that file is in the correct directory.
-    if (!isInAKoansDirectory(file) && !isInEduPdxCs410JDirectory(file)) {
+    if (!isInAKoansDirectory(file) && !isInMavenProjectDirectory(file)) {
       err.println("** Not submitting file " + file +
-        ": it does not reside in a directory named " +
+        ": it does not reside in a Maven project in a directory named " +
         "edu" + File.separator + "pdx" + File.separator +
         "cs410J" + File.separator + userId + " (or in one of the koans directories)");
       return false;
     }
 
+    // Does the file name end in .java?
+    if (!canFileBeSubmitted(name)) {
+      err.println("** Not submitting file " + file +
+        " because does end in \".java\"");
+      return false;
+    }
+
     return true;
+  }
+
+  @VisibleForTesting
+  static boolean canFileBeSubmitted(String name) {
+    if (name.endsWith(".java")) {
+        return true;
+
+    } else if (name.endsWith(".html")) {
+      return true;
+
+    } else if (name.endsWith(".xml")) {
+      return true;
+
+    } else if (name.endsWith(".txt")) {
+      return true;
+
+    } else {
+      return false;
+    }
   }
 
   protected boolean fileExists(File file) {
@@ -397,12 +427,12 @@ public class Submit extends EmailSender {
   }
 
   @VisibleForTesting
-  boolean isInEduPdxCs410JDirectory(File file) {
-    boolean isInEduPdxCs410JDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu");
-    if (isInEduPdxCs410JDirectory) {
+  boolean isInMavenProjectDirectory(File file) {
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java|javadoc|resources", "main|test|it", "src");
+    if (isInMavenProjectDirectory) {
       db(file + " is in the edu/pdx/cs410J directory");
     }
-    return isInEduPdxCs410JDirectory;
+    return isInMavenProjectDirectory;
   }
 
   private boolean hasParentDirectories(File file, String... parentDirectoryNames) {
@@ -414,7 +444,7 @@ public class Submit extends EmailSender {
     }
 
     for (String parentDirectoryName : parentDirectoryNames) {
-      if (parent == null || !parent.getName().equals(parentDirectoryName)) {
+      if (parent == null || !parent.getName().matches(parentDirectoryName)) {
         return false;
 
       } else {
@@ -478,6 +508,8 @@ public class Submit extends EmailSender {
 
     warnIfMainProjectClassIsNotSubmitted(sourceFiles);
 
+    warnIfTestClassesAreNotSubmitted(sourceFiles);
+
     return doesUserWantToSubmit();
   }
 
@@ -488,6 +520,14 @@ public class Submit extends EmailSender {
       out.println("*** WARNING: You are submitting " + this.projName +
         ", but did not include " + mainProjectClassName + ".\n" +
         "    You might want to check the name of the project or the files you are submitting.\n");
+    }
+  }
+
+  protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
+    boolean wereTestClassessSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains("test"));
+    if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
+      out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +
+        "    Your unit tests are executed as part of the grading of your project.\n");
     }
   }
 
@@ -529,7 +569,19 @@ public class Submit extends EmailSender {
 
     } else {
       // We already know that the file is in the correct directory
-      return "edu/pdx/cs410J/" + userId + "/" + file.getName();
+      return getZipEntryNameFor(file.getPath());
+    }
+  }
+
+  @VisibleForTesting
+  static String getZipEntryNameFor(String filePath) {
+    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc|resources)/edu/pdx/cs410J/(.*)");
+    Matcher matcher = pattern.matcher(filePath);
+
+    if (matcher.matches()) {
+      return "src/" + matcher.group(1) + "/" + matcher.group(2) + "/edu/pdx/cs410J/" + matcher.group(3);
+    } else {
+      throw new IllegalStateException("Can't extract zip entry name for " + filePath);
     }
   }
 
@@ -694,9 +746,10 @@ public class Submit extends EmailSender {
     err.println("    student      Who is submitting the project?");
     err.println("    loginId      UNIX login id");
     err.println("    email        Student's email address");
-    err.println("    file         Java source file (or all files in a directory) to submit");
+    err.println("    srcDirectory Directory containing source code to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savezip           Saves temporary Zip file");
+    err.println("    -nosend            Generates zip file, but does not send emails");
     err.println("    -smtp serverName   Name of SMTP server");
     err.println("    -verbose           Log debugging output");
     err.println("    -comment comment   Info for the Grader");
@@ -731,6 +784,9 @@ public class Submit extends EmailSender {
 
       } else if (args[i].equals("-savezip")) {
         this.setSaveZip(true);
+
+      } else if (args[i].equals("-nosend")) {
+        this.setSendEmails(false);
 
       } else if (args[i].equals("-comment")) {
         if (++i >= args.length) {
