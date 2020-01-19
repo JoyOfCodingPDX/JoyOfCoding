@@ -5,7 +5,12 @@ if (!buildLog.isFile()) {
 
 String logText = buildLog.text
 
-def expectedJavaDoc = "Coverage checks have not been met"
-if (!logText.contains(expectedJavaDoc)) {
-  throw new IllegalStateException("Didn't find expected build output: " + expectedJavaDoc)
+def expectedCoverageMessage = "Coverage checks have not been met"
+if (!logText.contains(expectedCoverageMessage)) {
+  throw new IllegalStateException("Expected to find: " + expectedCoverageMessage)
+}
+
+def unexpectedCoverageMessage = "classes missed count is"
+if (logText.contains(unexpectedCoverageMessage)) {
+  throw new IllegalStateException("Didn't find expected build output: " + unexpectedCoverageMessage)
 }
