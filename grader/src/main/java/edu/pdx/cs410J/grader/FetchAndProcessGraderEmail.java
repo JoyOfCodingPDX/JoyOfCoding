@@ -83,6 +83,9 @@ public class FetchAndProcessGraderEmail {
     } else if (whatToFetch.equalsIgnoreCase("surveys")) {
       return new SurveySubmissionsProcessor(directory, gradeBook);
 
+    } else if (whatToFetch.equalsIgnoreCase("androidProjects")) {
+          return new AndroidProjectSubmissionsProcessor(directory, gradeBook);
+
     } else {
       return usage("Cannot fetch \"" + whatToFetch + "\"");
     }

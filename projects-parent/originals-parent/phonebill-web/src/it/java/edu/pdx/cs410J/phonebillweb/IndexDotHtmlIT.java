@@ -5,6 +5,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper.Response;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,7 +41,7 @@ public class IndexDotHtmlIT {
     }
 
     public Response getIndexDotHtml() throws IOException {
-      return get(this.url);
+      return get(this.url, Map.of());
     }
   }
 }

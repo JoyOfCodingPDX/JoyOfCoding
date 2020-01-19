@@ -10,6 +10,10 @@
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
   <version>Summer2019</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
+  <properties>
+      <maven.compiler.source>9</maven.compiler.source>
+      <maven.compiler.target>9</maven.compiler.target>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

@@ -3,8 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AbstractAppointmentBook;
-
 /**
  * The main class for the CS410J appointment book Project
  */
