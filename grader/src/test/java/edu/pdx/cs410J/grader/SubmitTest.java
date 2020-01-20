@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -205,6 +206,24 @@ public class SubmitTest {
     assertThat(Submit.canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
     assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
     assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
+  @Test
+  public void testClassesWereSubmitted() {
+    Set files = Set.of(
+      makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", "student", "StudentTest.java")
+    );
+
+    assertThat(Submit.submittedTestClasses(files), equalTo(true));
+  }
+
+  @Test
+  public void notestClassesWereSubmitted() {
+    Set files = Set.of(
+      makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", "student", "Student.java")
+    );
+
+    assertThat(Submit.submittedTestClasses(files), equalTo(false));
   }
 
 }

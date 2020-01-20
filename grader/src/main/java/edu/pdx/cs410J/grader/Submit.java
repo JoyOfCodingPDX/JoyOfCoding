@@ -524,11 +524,16 @@ public class Submit extends EmailSender {
   }
 
   protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
-    boolean wereTestClassessSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains("test"));
+    boolean wereTestClassessSubmitted = submittedTestClasses(sourceFiles);
     if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
       out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +
         "    Your unit tests are executed as part of the grading of your project.\n");
     }
+  }
+
+  @VisibleForTesting
+  static boolean submittedTestClasses(Set<File> sourceFiles) {
+    return sourceFiles.stream().anyMatch((f) -> f.getPath().contains("test"));
   }
 
   private boolean doesUserWantToSubmit() {
