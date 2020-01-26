@@ -8,20 +8,20 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
 
 /**
- * Integration tests for the <code>Kata</code> class's main method.
+ * Integration tests for the <code>Student</code> class's main method.
  * These tests extend <code>InvokeMainTestCase</code> which allows them
- * to easily invoke the <code>main</code> method of <code>Kata</code>.
+ * to easily invoke the <code>main</code> method of <code>Student</code>.
  */
-public class KataIT extends InvokeMainTestCase {
+public class StudentIT extends InvokeMainTestCase {
   @Test
   public void invokingMainWithNoArgumentsHasExitCodeOf1() {
-    InvokeMainTestCase.MainMethodResult result = invokeMain(Kata.class);
+    InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class);
     assertThat(result.getExitCode(), equalTo(1));
   }
 
   @Test
   public void invokingMainWithNoArgumentsPrintsMissingArgumentsToStandardError() {
-    InvokeMainTestCase.MainMethodResult result = invokeMain(Kata.class);
+    InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class);
     assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
   }
 
