@@ -19,6 +19,7 @@
 
     <modules>
         <module>student-archetype</module>
+        <module>kata-archetype</module>
         <module>java-koans-archetype</module>
         <module>apptbook-archetype</module>
         <module>apptbook-web-archetype</module>
