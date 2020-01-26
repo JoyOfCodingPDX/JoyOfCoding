@@ -6,7 +6,7 @@
     <groupId>edu.pdx.cs410J</groupId>
     <version>Winter2020</version>
   </parent>
-  <groupId>edu.pdx.cs410J.kata</groupId>
+  <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>kata</artifactId>
   <version>Winter2020</version>
   <packaging>jar</packaging>
