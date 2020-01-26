@@ -11,8 +11,8 @@
   <version>Winter2020</version>
   <packaging>jar</packaging>
 
-  <name>Student Project</name>
-  <description>A simple Student program to get you started with Java</description>
+  <name>Kata Project</name>
+  <description>A simple project for getting started with code katas</description>
   <url>http://www.cs.pdx.edu</url>
 
   <properties>
@@ -36,7 +36,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.kata.Student</mainClass>
+              <mainClass>edu.pdx.cs410J.kata.Kata</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -99,11 +99,6 @@
     </reporting>
 
   <dependencies>
-    <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
-      <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>Winter2020</version>
-    </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
