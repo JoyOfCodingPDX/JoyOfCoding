@@ -9,8 +9,8 @@ public class KataTest
 {
 
   @Test
-  public void firstUnitTestForTheKataClass() {
-
+  public void canInstantiateKataClass() {
+    new Kata();
   }
 
 }
