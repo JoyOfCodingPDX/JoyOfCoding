@@ -22,6 +22,12 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
+      <directory></directory>
+      <includes>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
       <directory>.mvn/wrapper</directory>
       <includes>
         <include>**/*.java</include>
@@ -31,9 +37,8 @@
     <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
-        <include>**/*.</include>
-        <include>**/*.iml</include>
-        <include>**/*.cmd</include>
+        <include>mvnw.cmd</include>
+        <include>mvnw</include>
       </includes>
     </fileSet>
   </fileSets>
