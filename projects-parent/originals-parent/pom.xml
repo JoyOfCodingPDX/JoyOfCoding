@@ -24,6 +24,7 @@
     <module>apptbook-web</module>
     <module>phonebill</module>
     <module>phonebill-web</module>
+    <module>kata</module>
   </modules>
 
 </project>
