@@ -146,9 +146,13 @@ public class SubmitTest {
 
   @Test
   public void canSubmitPackageHtmlForMainTestAndIT() {
-    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+  }
+
+  private boolean canFileBeSubmitted(String fileName) {
+    return Submit.canFileBeSubmitted(new File(fileName));
   }
 
   @Test
@@ -160,8 +164,8 @@ public class SubmitTest {
 
   @Test
   public void canSubmitXmlFilesFromTestResourcesDirectory() {
-    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
   }
 
   @Test
@@ -202,10 +206,17 @@ public class SubmitTest {
   }
 
   @Test
-  public void canSubmitTxtFilesFromesourcesDirectory() {
-    assertThat(Submit.canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  public void canSubmitTxtFilesFromResourcesDirectory() {
+    assertThat(canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
+  @Test
+  public void cannotSubmitTxtFilesFromJavaDirectory() {
+    assertThat(canFileBeSubmitted("src/main/java/edu/pdx/cs410J/student/text.txt"), equalTo(false));
+    assertThat(canFileBeSubmitted("src/test/java/edu/pdx/cs410J/student/testData.txt"), equalTo(false));
+    assertThat(canFileBeSubmitted("src/it/java/edu/pdx/cs410J/student/testData.txt"), equalTo(false));
   }
 
   @Test

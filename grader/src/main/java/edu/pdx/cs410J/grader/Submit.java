@@ -376,7 +376,7 @@ public class Submit extends EmailSender {
     }
 
     // Does the file name end in .java?
-    if (!canFileBeSubmitted(name)) {
+    if (!canFileBeSubmitted(file)) {
       err.println("** Not submitting file " + file +
         " because does end in \".java\"");
       return false;
@@ -386,18 +386,17 @@ public class Submit extends EmailSender {
   }
 
   @VisibleForTesting
-  static boolean canFileBeSubmitted(String name) {
-    if (name.endsWith(".java")) {
-        return true;
+  static boolean canFileBeSubmitted(File file) {
+    String path = file.getPath();
 
-    } else if (name.endsWith(".html")) {
-      return true;
+    if (path.contains("/java/")) {
+      return path.endsWith(".java");
 
-    } else if (name.endsWith(".xml")) {
-      return true;
+    } else if (path.contains("/javadoc/")) {
+      return path.endsWith(".html");
 
-    } else if (name.endsWith(".txt")) {
-      return true;
+    } else if (path.contains("/resources")) {
+      return path.endsWith(".xml") || path.endsWith(".txt");
 
     } else {
       return false;
