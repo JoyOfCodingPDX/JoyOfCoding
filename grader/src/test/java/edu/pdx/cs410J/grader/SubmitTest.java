@@ -220,6 +220,13 @@ public class SubmitTest {
   }
 
   @Test
+  public void canSubmitTxtFilesFromResourcesDirectoryInCodeDirectoryWithJavaInTheName() {
+    assertThat(canFileBeSubmitted("code/java/checkout/src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("code/java/checkout/src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("code/java/checkout/src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
+  @Test
   public void testClassesWereSubmitted() {
     Set files = Set.of(
       makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", "student", "StudentTest.java")

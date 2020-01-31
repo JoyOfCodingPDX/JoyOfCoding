@@ -389,13 +389,13 @@ public class Submit extends EmailSender {
   static boolean canFileBeSubmitted(File file) {
     String path = file.getPath();
 
-    if (path.contains("/java/")) {
+    if (path.matches(".*src/.*/java/.*")) {
       return path.endsWith(".java");
 
-    } else if (path.contains("/javadoc/")) {
+    } else if (path.matches(".*src/.*/javadoc/.*")) {
       return path.endsWith(".html");
 
-    } else if (path.contains("/resources")) {
+    } else if (path.matches(".*src/.*/resources/.*")) {
       return path.endsWith(".xml") || path.endsWith(".txt");
 
     } else {
