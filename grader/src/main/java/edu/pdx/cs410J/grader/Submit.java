@@ -367,21 +367,33 @@ public class Submit extends EmailSender {
     }
 
     // Verify that file is in the correct directory.
-    if (!isInAKoansDirectory(file) && !isInMavenProjectDirectory(file)) {
-      err.println("** Not submitting file " + file +
-        ": it does not reside in a Maven project in a directory named " +
-        "edu" + File.separator + "pdx" + File.separator +
-        "cs410J" + File.separator + userId + " (or in one of the koans directories)");
-      return false;
-    }
+    if (isInAKoansDirectory(file)) {
+      if (!file.getName().endsWith(".java")) {
+        err.println("** Not submitting file " + file +
+          " because does end in \".java\"");
+        return false;
+      }
 
-    // Does the file name end in .java?
-    if (!canFileBeSubmitted(file)) {
-      err.println("** Not submitting file " + file +
-        " because does end in \".java\"");
-      return false;
-    }
+    } else {
+      if (!isInMavenProjectDirectory(file)) {
+        err.println("** Not submitting file " + file +
+          ": it does not reside in a Maven project in a directory named " +
+          "edu" + File.separator + "pdx" + File.separator +
+          "cs410J" + File.separator + userId + " (or in one of the koans directories)");
+        return false;
+      }
 
+      // Does the file name end in .java?
+      if (!canFileBeSubmitted(file)) {
+        String fileName = file.getName();
+        int index = fileName.lastIndexOf('.');
+        String fileExtension = fileName.substring(index);
+        err.println("** Not submitting file " + file +
+          " because files ending in " + fileExtension +
+          " are not supposed to be in that directory");
+        return false;
+      }
+    }
     return true;
   }
 

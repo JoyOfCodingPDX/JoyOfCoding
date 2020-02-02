@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -244,4 +245,35 @@ public class SubmitTest {
     assertThat(Submit.submittedTestClasses(files), equalTo(false));
   }
 
+  @Test
+  public void canSubmitKoansFile() throws IOException {
+    File dir = new File(System.getProperty("user.dir"));
+    for (String dirName : new String[] { "src", "beginner"}) {
+      dir = new File(dir, dirName);
+      dir.mkdirs();
+    }
+
+    File koanFile = new File(dir, "AboutKoans.java");
+    koanFile.createNewFile();
+
+    Submit submit = new Submit();
+    assertThat(submit.canBeSubmitted(koanFile), equalTo(true));
+  }
+
+  @Test
+  public void canSubmitProjectFile() throws IOException {
+    File dir = new File(System.getProperty("user.dir"));
+    String userId = "whitlock";
+    for (String dirName : new String[] { "src", "main", "java", "edu", "pdx", "cs410J", userId}) {
+      dir = new File(dir, dirName);
+      dir.mkdirs();
+    }
+
+    File projectFile = new File(dir, "AboutKoans.java");
+    projectFile.createNewFile();
+
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.canBeSubmitted(projectFile), equalTo(true));
+  }
 }
