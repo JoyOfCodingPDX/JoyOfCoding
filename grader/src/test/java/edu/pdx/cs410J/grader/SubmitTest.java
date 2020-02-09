@@ -250,7 +250,7 @@ public class SubmitTest {
     String[] dirs = {"src", "beginner"};
     String fileName = "AboutKoans.java";
 
-    assertFileCanBeSubmitted("whitlock", fileName, dirs);
+    assertFileCanBeSubmitted("whitlock", fileName, dirs, true);
   }
 
   @Test
@@ -260,10 +260,10 @@ public class SubmitTest {
     String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
 
 
-    assertFileCanBeSubmitted(userId, fileName, dirs);
+    assertFileCanBeSubmitted(userId, fileName, dirs, true);
   }
 
-  private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs) throws IOException {
+  private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs, boolean canSubmit) throws IOException {
     File dir = new File(System.getProperty("user.dir"));
     for (String dirName : dirs) {
       dir = new File(dir, dirName);
@@ -275,6 +275,16 @@ public class SubmitTest {
 
     Submit submit = new Submit();
     submit.setUserId(userId);
-    assertThat(submit.canBeSubmitted(projectFile), equalTo(true));
+    assertThat(submit.canBeSubmitted(projectFile), equalTo(canSubmit));
   }
+
+  @Test
+  public void cannotSubmitFilesWithoutFileExtension() throws IOException {
+    String userId = "whitlock";
+    String fileName = "noExtension";
+    String[] dirs = {"src", "main", "resources", "edu", "pdx", "cs410J", userId};
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, false);
+  }
+
 }

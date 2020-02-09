@@ -387,10 +387,16 @@ public class Submit extends EmailSender {
       if (!canFileBeSubmitted(file)) {
         String fileName = file.getName();
         int index = fileName.lastIndexOf('.');
-        String fileExtension = fileName.substring(index);
-        err.println("** Not submitting file " + file +
-          " because files ending in " + fileExtension +
-          " are not supposed to be in that directory");
+        if (index < 0) {
+          err.println("** Not submitting file " + file +
+            " because it does not have an extension.");
+
+        } else {
+          String fileExtension = fileName.substring(index);
+          err.println("** Not submitting file " + file +
+            " because files ending in " + fileExtension +
+            " are not supposed to be in that directory");
+        }
         return false;
       }
     }
