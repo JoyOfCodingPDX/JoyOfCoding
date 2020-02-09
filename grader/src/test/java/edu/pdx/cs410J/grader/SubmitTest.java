@@ -247,29 +247,30 @@ public class SubmitTest {
 
   @Test
   public void canSubmitKoansFile() throws IOException {
-    File dir = new File(System.getProperty("user.dir"));
-    for (String dirName : new String[] { "src", "beginner"}) {
-      dir = new File(dir, dirName);
-      dir.mkdirs();
-    }
+    String[] dirs = {"src", "beginner"};
+    String fileName = "AboutKoans.java";
 
-    File koanFile = new File(dir, "AboutKoans.java");
-    koanFile.createNewFile();
-
-    Submit submit = new Submit();
-    assertThat(submit.canBeSubmitted(koanFile), equalTo(true));
+    assertFileCanBeSubmitted("whitlock", fileName, dirs);
   }
 
   @Test
   public void canSubmitProjectFile() throws IOException {
-    File dir = new File(System.getProperty("user.dir"));
     String userId = "whitlock";
-    for (String dirName : new String[] { "src", "main", "java", "edu", "pdx", "cs410J", userId}) {
+    String fileName = "Project1.java";
+    String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
+
+
+    assertFileCanBeSubmitted(userId, fileName, dirs);
+  }
+
+  private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs) throws IOException {
+    File dir = new File(System.getProperty("user.dir"));
+    for (String dirName : dirs) {
       dir = new File(dir, dirName);
       dir.mkdirs();
     }
 
-    File projectFile = new File(dir, "AboutKoans.java");
+    File projectFile = new File(dir, fileName);
     projectFile.createNewFile();
 
     Submit submit = new Submit();
