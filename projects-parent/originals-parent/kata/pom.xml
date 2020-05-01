@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>CS410J</artifactId>
+    <artifactId>originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Winter2020</version>
+    <version>Summer2020</version>
   </parent>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>kata</artifactId>
-  <version>Winter2020</version>
+  <version>Summer2020</version>
   <packaging>jar</packaging>
 
   <name>Kata Project</name>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Winter2020</version>
+      <version>Summer2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -137,7 +137,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Winter2020</version>
+                <version>Summer2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

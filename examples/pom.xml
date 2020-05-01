@@ -3,24 +3,24 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Winter2020</version>
+    <version>Summer2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>Winter2020</version>
+  <version>Summer2020</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
