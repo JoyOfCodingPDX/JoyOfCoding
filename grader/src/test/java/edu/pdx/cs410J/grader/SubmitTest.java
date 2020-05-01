@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -242,6 +243,48 @@ public class SubmitTest {
     );
 
     assertThat(Submit.submittedTestClasses(files), equalTo(false));
+  }
+
+  @Test
+  public void canSubmitKoansFile() throws IOException {
+    String[] dirs = {"src", "beginner"};
+    String fileName = "AboutKoans.java";
+
+    assertFileCanBeSubmitted("whitlock", fileName, dirs, true);
+  }
+
+  @Test
+  public void canSubmitProjectFile() throws IOException {
+    String userId = "whitlock";
+    String fileName = "Project1.java";
+    String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
+
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, true);
+  }
+
+  private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs, boolean canSubmit) throws IOException {
+    File dir = new File(System.getProperty("user.dir"));
+    for (String dirName : dirs) {
+      dir = new File(dir, dirName);
+      dir.mkdirs();
+    }
+
+    File projectFile = new File(dir, fileName);
+    projectFile.createNewFile();
+
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.canBeSubmitted(projectFile), equalTo(canSubmit));
+  }
+
+  @Test
+  public void cannotSubmitFilesWithoutFileExtension() throws IOException {
+    String userId = "whitlock";
+    String fileName = "noExtension";
+    String[] dirs = {"src", "main", "resources", "edu", "pdx", "cs410J", userId};
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, false);
   }
 
 }

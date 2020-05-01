@@ -246,10 +246,10 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <fork>true</fork>
-          <compilerArgs>
-            <arg>--add-opens=java.base/java.lang=ALL-UNNAMED</arg>
-            <arg>--add-opens=java.base/java.util=ALL-UNNAMED</arg>
-          </compilerArgs>
+<!--          <compilerArgs>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.lang=ALL-UNNAMED</arg>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.util=ALL-UNNAMED</arg>-->
+<!--          </compilerArgs>-->
         </configuration>
         <executions>
           <execution>
