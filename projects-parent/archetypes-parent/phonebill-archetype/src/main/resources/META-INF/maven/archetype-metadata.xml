@@ -49,15 +49,8 @@
     <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
-        <include>**/*.</include>
-        <include>**/*.iml</include>
-        <include>**/*.cmd</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
-      <directory>.mvn/wrapper</directory>
-      <includes>
-        <include>**/*.jar</include>
+        <include>mvnw.cmd</include>
+        <include>mvnw</include>
       </includes>
     </fileSet>
   </fileSets>
