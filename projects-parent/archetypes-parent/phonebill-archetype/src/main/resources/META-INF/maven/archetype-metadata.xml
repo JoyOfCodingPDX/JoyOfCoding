@@ -40,9 +40,24 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
+      <directory>.mvn/wrapper</directory>
+      <includes>
+        <include>**/*.java</include>
+        <include>**/*.properties</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
-        <include>**/*.xml</include>
+        <include>**/*.</include>
+        <include>**/*.iml</include>
+        <include>**/*.cmd</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>.mvn/wrapper</directory>
+      <includes>
+        <include>**/*.jar</include>
       </includes>
     </fileSet>
   </fileSets>
