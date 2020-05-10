@@ -7,6 +7,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit tests for the {@link Appointment} class.
+ *
+ * You'll need to update these unit tests as you build out your program.
  */
 public class AppointmentTest {
 
