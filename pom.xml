@@ -325,15 +325,13 @@
             </execution>
             <execution>
               <id>default-report</id>
+              <phase>verify</phase>
               <goals>
                 <goal>report</goal>
               </goals>
-            </execution>
-            <execution>
-              <id>default-report-integration</id>
-              <goals>
-                <goal>report-integration</goal>
-              </goals>
+              <configuration>
+                <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+              </configuration>
             </execution>
             <execution>
               <id>default-check</id>
@@ -343,6 +341,24 @@
               <configuration>
                 <rules>
                 </rules>
+              </configuration>
+            </execution>
+            <execution>
+              <id>merge-coverage-data</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>merge</goal>
+              </goals>
+              <configuration>
+                <fileSets>
+                  <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                    <directory>${project.build.directory}</directory>
+                    <includes>
+                      <include>jacoco*.exec</include>
+                    </includes>
+                  </fileSet>
+                </fileSets>
+                <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
               </configuration>
             </execution>
           </executions>
@@ -553,6 +569,9 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
