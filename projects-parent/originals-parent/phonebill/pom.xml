@@ -3,13 +3,13 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Winter2020</version>
+    <version>Summer2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
-  <version>Winter2020</version>
+  <version>Summer2020</version>
   <name>CS410J Phone Bill Project</name>
   <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
@@ -45,12 +45,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -143,7 +143,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Winter2020</version>
+                <version>Summer2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
@@ -177,6 +177,7 @@
                       </limits>
                     </rule>
                   </rules>
+                  <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
                 </configuration>
               </execution>
             </executions>

@@ -3,7 +3,9 @@ package edu.pdx.cs410J.grader;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -145,9 +147,13 @@ public class SubmitTest {
 
   @Test
   public void canSubmitPackageHtmlForMainTestAndIT() {
-    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/main/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/javadoc/edu/pdx/cs410J/student/package.html"), equalTo(true));
+  }
+
+  private boolean canFileBeSubmitted(String fileName) {
+    return Submit.canFileBeSubmitted(new File(fileName));
   }
 
   @Test
@@ -159,8 +165,8 @@ public class SubmitTest {
 
   @Test
   public void canSubmitXmlFilesFromTestResourcesDirectory() {
-    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.xml"), equalTo(true));
   }
 
   @Test
@@ -201,10 +207,84 @@ public class SubmitTest {
   }
 
   @Test
-  public void canSubmitTxtFilesFromesourcesDirectory() {
-    assertThat(Submit.canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
-    assertThat(Submit.canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  public void canSubmitTxtFilesFromResourcesDirectory() {
+    assertThat(canFileBeSubmitted("src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
+  @Test
+  public void cannotSubmitTxtFilesFromJavaDirectory() {
+    assertThat(canFileBeSubmitted("src/main/java/edu/pdx/cs410J/student/text.txt"), equalTo(false));
+    assertThat(canFileBeSubmitted("src/test/java/edu/pdx/cs410J/student/testData.txt"), equalTo(false));
+    assertThat(canFileBeSubmitted("src/it/java/edu/pdx/cs410J/student/testData.txt"), equalTo(false));
+  }
+
+  @Test
+  public void canSubmitTxtFilesFromResourcesDirectoryInCodeDirectoryWithJavaInTheName() {
+    assertThat(canFileBeSubmitted("code/java/checkout/src/main/resources/edu/pdx/cs410J/student/text.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("code/java/checkout/src/test/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+    assertThat(canFileBeSubmitted("code/java/checkout/src/it/resources/edu/pdx/cs410J/student/testData.txt"), equalTo(true));
+  }
+
+  @Test
+  public void testClassesWereSubmitted() {
+    Set files = Set.of(
+      makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", "student", "StudentTest.java")
+    );
+
+    assertThat(Submit.submittedTestClasses(files), equalTo(true));
+  }
+
+  @Test
+  public void notestClassesWereSubmitted() {
+    Set files = Set.of(
+      makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", "student", "Student.java")
+    );
+
+    assertThat(Submit.submittedTestClasses(files), equalTo(false));
+  }
+
+  @Test
+  public void canSubmitKoansFile() throws IOException {
+    String[] dirs = {"src", "beginner"};
+    String fileName = "AboutKoans.java";
+
+    assertFileCanBeSubmitted("whitlock", fileName, dirs, true);
+  }
+
+  @Test
+  public void canSubmitProjectFile() throws IOException {
+    String userId = "whitlock";
+    String fileName = "Project1.java";
+    String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
+
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, true);
+  }
+
+  private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs, boolean canSubmit) throws IOException {
+    File dir = new File(System.getProperty("user.dir"));
+    for (String dirName : dirs) {
+      dir = new File(dir, dirName);
+      dir.mkdirs();
+    }
+
+    File projectFile = new File(dir, fileName);
+    projectFile.createNewFile();
+
+    Submit submit = new Submit();
+    submit.setUserId(userId);
+    assertThat(submit.canBeSubmitted(projectFile), equalTo(canSubmit));
+  }
+
+  @Test
+  public void cannotSubmitFilesWithoutFileExtension() throws IOException {
+    String userId = "whitlock";
+    String fileName = "noExtension";
+    String[] dirs = {"src", "main", "resources", "edu", "pdx", "cs410J", userId};
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, false);
   }
 
 }

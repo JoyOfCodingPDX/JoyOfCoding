@@ -30,7 +30,7 @@ public class GraderEmailAccount {
   }
 
   @VisibleForTesting
-  GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
+  public GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
     this.userName = userName;
     this.password = password;
     this.emailServerHostName = emailServerHostName;
@@ -64,9 +64,22 @@ public class GraderEmailAccount {
     printMessageInformation(message);
     if (isMultipartMessage(message)) {
       processAttachments(message, processor);
+
+    } else if (isTextPlainMessage(message)) {
+       processPlainTextBody(message, processor);
+
     } else {
       warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
     }
+  }
+
+  private void processPlainTextBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
+    processor.processAttachment(message, "TextPlainBody", message.getInputStream());
+
+  }
+
+  private boolean isTextPlainMessage(Message message) throws MessagingException {
+    return message.isMimeType("text/plain");
   }
 
   private void processAttachments(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {

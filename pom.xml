@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
-  <version>Winter2020</version>
+  <version>Summer2020</version>
   <artifactId>CS410J</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -247,10 +247,10 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <fork>true</fork>
-          <compilerArgs>
-            <arg>--add-opens=java.base/java.lang=ALL-UNNAMED</arg>
-            <arg>--add-opens=java.base/java.util=ALL-UNNAMED</arg>
-          </compilerArgs>
+<!--          <compilerArgs>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.lang=ALL-UNNAMED</arg>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.util=ALL-UNNAMED</arg>-->
+<!--          </compilerArgs>-->
         </configuration>
         <executions>
           <execution>
@@ -326,15 +326,13 @@
             </execution>
             <execution>
               <id>default-report</id>
+              <phase>verify</phase>
               <goals>
                 <goal>report</goal>
               </goals>
-            </execution>
-            <execution>
-              <id>default-report-integration</id>
-              <goals>
-                <goal>report-integration</goal>
-              </goals>
+              <configuration>
+                <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+              </configuration>
             </execution>
             <execution>
               <id>default-check</id>
@@ -344,6 +342,24 @@
               <configuration>
                 <rules>
                 </rules>
+              </configuration>
+            </execution>
+            <execution>
+              <id>merge-coverage-data</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>merge</goal>
+              </goals>
+              <configuration>
+                <fileSets>
+                  <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                    <directory>${project.build.directory}</directory>
+                    <includes>
+                      <include>jacoco*.exec</include>
+                    </includes>
+                  </fileSet>
+                </fileSets>
+                <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
               </configuration>
             </execution>
           </executions>
@@ -554,6 +570,9 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
