@@ -68,7 +68,7 @@
         <hamcrest.version>2.1</hamcrest.version>
         <mockito.version>2.27.0</mockito.version>
 
-      <jacoco.min.instruction.covered.ratio>0.60</jacoco.min.instruction.covered.ratio>
+      <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
