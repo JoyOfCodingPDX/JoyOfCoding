@@ -56,7 +56,6 @@ public class Project4IT extends InvokeMainTestCase {
         }
     }
 
-
     @Test
     public void test4AddDefinition() {
         String word = "WORD";

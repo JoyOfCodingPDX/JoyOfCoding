@@ -176,6 +176,7 @@
                       </limits>
                     </rule>
                   </rules>
+                  <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
                 </configuration>
               </execution>
             </executions>
