@@ -5,7 +5,7 @@ if (!buildLog.isFile()) {
 
 String logText = buildLog.text
 
-def expectedJavaDoc = "Coverage checks have not been met"
-if (!logText.contains(expectedJavaDoc)) {
-  throw new IllegalStateException("Didn't find expected build output: " + expectedJavaDoc)
+def expectedCoverage = "Coverage checks have not been met"
+if (!logText.contains(expectedCoverage)) {
+  throw new IllegalStateException("Didn't find expected build output: " + expectedCoverage)
 }

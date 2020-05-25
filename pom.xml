@@ -69,7 +69,7 @@
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
 
-      <jacoco.min.instruction.covered.ratio>0.60</jacoco.min.instruction.covered.ratio>
+      <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
