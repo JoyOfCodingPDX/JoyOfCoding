@@ -59,14 +59,15 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.15.0</pmd.version>
+        <pmd.version>6.20.0</pmd.version>
 
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
-        <wagon-ssh.version>3.0.0</wagon-ssh.version>
+        <wagon-ssh.version>3.3.4</wagon-ssh.version>
 
-        <junit.version>4.13-beta-3</junit.version>
-        <hamcrest.version>2.1</hamcrest.version>
-        <mockito.version>2.27.0</mockito.version>
+        <junit.version>4.13</junit.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <mockito.version>3.2.4</mockito.version>
+        <surefire.version>3.0.0-M4</surefire.version>
 
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
@@ -188,7 +189,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>${surefire.version}</version>
         <configuration>
           <!--
             Don't add argLine configuration because it will mess up JaCoCo
@@ -201,7 +202,7 @@
           <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-junit47</artifactId>
-            <version>3.0.0-M3</version>
+            <version>${surefire.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -271,7 +272,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.0.0-M3</version>
+          <version>${surefire.version}</version>
           <configuration>
             <testSourceDirectory>src/it/java</testSourceDirectory>
             <testClassesDirectory>${project.build.directory}/it-classes</testClassesDirectory>
@@ -297,7 +298,7 @@
             <dependency>
               <groupId>org.apache.maven.surefire</groupId>
               <artifactId>surefire-junit47</artifactId>
-              <version>3.0.0-M3</version>
+              <version>${surefire.version}</version>
             </dependency>
           </dependencies>
         </plugin>
