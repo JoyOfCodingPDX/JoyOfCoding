@@ -3,7 +3,7 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Winter2020</version>
+    <version>Summer2020</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -45,12 +45,12 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Winter2020</version>
+      <version>Summer2020</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -72,7 +72,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>${package}.Project1</mainClass>
+              <mainClass>edu.pdx.cs410J.apptbook.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -149,7 +149,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Winter2020</version>
+                <version>Summer2020</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
@@ -183,6 +183,7 @@
                       </limits>
                     </rule>
                   </rules>
+                  <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
                 </configuration>
               </execution>
             </executions>

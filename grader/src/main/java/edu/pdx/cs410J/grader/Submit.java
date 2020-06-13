@@ -367,37 +367,54 @@ public class Submit extends EmailSender {
     }
 
     // Verify that file is in the correct directory.
-    if (!isInAKoansDirectory(file) && !isInMavenProjectDirectory(file)) {
-      err.println("** Not submitting file " + file +
-        ": it does not reside in a Maven project in a directory named " +
-        "edu" + File.separator + "pdx" + File.separator +
-        "cs410J" + File.separator + userId + " (or in one of the koans directories)");
-      return false;
-    }
+    if (isInAKoansDirectory(file)) {
+      if (!file.getName().endsWith(".java")) {
+        err.println("** Not submitting file " + file +
+          " because does end in \".java\"");
+        return false;
+      }
 
-    // Does the file name end in .java?
-    if (!canFileBeSubmitted(name)) {
-      err.println("** Not submitting file " + file +
-        " because does end in \".java\"");
-      return false;
-    }
+    } else {
+      if (!isInMavenProjectDirectory(file)) {
+        err.println("** Not submitting file " + file +
+          ": it does not reside in a Maven project in a directory named " +
+          "edu" + File.separator + "pdx" + File.separator +
+          "cs410J" + File.separator + userId + " (or in one of the koans directories)");
+        return false;
+      }
 
+      // Does the file name end in .java?
+      if (!canFileBeSubmitted(file)) {
+        String fileName = file.getName();
+        int index = fileName.lastIndexOf('.');
+        if (index < 0) {
+          err.println("** Not submitting file " + file +
+            " because it does not have an extension.");
+
+        } else {
+          String fileExtension = fileName.substring(index);
+          err.println("** Not submitting file " + file +
+            " because files ending in " + fileExtension +
+            " are not supposed to be in that directory");
+        }
+        return false;
+      }
+    }
     return true;
   }
 
   @VisibleForTesting
-  static boolean canFileBeSubmitted(String name) {
-    if (name.endsWith(".java")) {
-        return true;
+  static boolean canFileBeSubmitted(File file) {
+    String path = file.getPath();
 
-    } else if (name.endsWith(".html")) {
-      return true;
+    if (path.matches(".*src/.*/java/.*")) {
+      return path.endsWith(".java");
 
-    } else if (name.endsWith(".xml")) {
-      return true;
+    } else if (path.matches(".*src/.*/javadoc/.*")) {
+      return path.endsWith(".html");
 
-    } else if (name.endsWith(".txt")) {
-      return true;
+    } else if (path.matches(".*src/.*/resources/.*")) {
+      return path.endsWith(".xml") || path.endsWith(".txt");
 
     } else {
       return false;
@@ -524,11 +541,16 @@ public class Submit extends EmailSender {
   }
 
   protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
-    boolean wereTestClassessSubmitted = sourceFiles.stream().anyMatch((f) -> f.getName().contains("test"));
+    boolean wereTestClassessSubmitted = submittedTestClasses(sourceFiles);
     if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
       out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +
         "    Your unit tests are executed as part of the grading of your project.\n");
     }
+  }
+
+  @VisibleForTesting
+  static boolean submittedTestClasses(Set<File> sourceFiles) {
+    return sourceFiles.stream().anyMatch((f) -> f.getPath().contains("test"));
   }
 
   private boolean doesUserWantToSubmit() {

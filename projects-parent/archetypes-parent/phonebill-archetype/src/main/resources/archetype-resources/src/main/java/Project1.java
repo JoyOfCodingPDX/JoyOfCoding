@@ -3,8 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AbstractPhoneBill;
-
 /**
  * The main class for the CS410J Phone Bill Project
  */
