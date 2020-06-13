@@ -252,7 +252,8 @@ public class Submit extends EmailSender {
     return "Your login id (" + userId + ") should not be your 9-digit student id";
   }
 
-  private void validateProjectName() {
+  @VisibleForTesting
+  void validateProjectName() {
     List<String> validProjectNames = fetchListOfValidProjectNames();
     if (!validProjectNames.contains(projName)) {
       String message = "\"" + projName + "\" is not in the list of valid project names: " + validProjectNames;
