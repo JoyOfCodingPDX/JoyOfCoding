@@ -288,6 +288,15 @@ public class SubmitTest {
     assertFileCanBeSubmitted(userId, fileName, dirs, false);
   }
 
+  @Test
+  public void cannotSubmitFilesOnNoSubmitList() throws IOException {
+    String userId = "whitlock";
+    String fileName = "AbstractAirline.java";
+    String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, false);
+  }
+
   @Test(expected = IllegalStateException.class)
   public void invalidProjectNameThrowsIllegalStateException() {
     Submit submit = new Submit();
