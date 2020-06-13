@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * A unit test for code in the <code>Project1</code> class.  This is different
- * from {@link Project1IT} which is an integration test (and can handle the calls
+ * from <code>Project1IT</code> which is an integration test (and can handle the calls
  * to {@link System#exit(int)} and the like.
  */
 public class Project1Test {
