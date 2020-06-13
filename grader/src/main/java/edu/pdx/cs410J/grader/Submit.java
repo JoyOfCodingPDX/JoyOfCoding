@@ -51,9 +51,6 @@ public class Submit extends EmailSender {
   private static final String NO_SUBMIT_LIST_URL =
     "http://www.cs.pdx.edu/~whitlock/no-submit";
 
-  private static final String PROJECT_NAMES_LIST_URL =
-    "http://www.cs.pdx.edu/~whitlock/project-names";
-
   /////////////////////  Instance Fields  //////////////////////////
 
   /**
@@ -262,7 +259,18 @@ public class Submit extends EmailSender {
   }
 
   private List<String> fetchListOfValidProjectNames() {
-    return fetchListOfStringsFromUrl(PROJECT_NAMES_LIST_URL);
+    return fetchListOfStringsFromResource("project-names");
+  }
+
+  private List<String> fetchListOfStringsFromResource(String resourceName) {
+    InputStream stream = this.getClass().getResourceAsStream(resourceName);
+    try {
+      return fetchStringsFromInputStream(stream);
+
+    } catch (IOException ex) {
+      err.println("** WARNING: Problems while reading " + resourceName + ": " + ex.getMessage());
+      return Collections.emptyList();
+    }
   }
 
   /**
@@ -482,22 +490,28 @@ public class Submit extends EmailSender {
       return Collections.emptyList();
     }
 
-    List<String> strings = new ArrayList<>();
-
     try {
       URL url = new URL(listUrl);
-      InputStreamReader isr = new InputStreamReader(url.openStream());
-      BufferedReader br = new BufferedReader(isr);
-      while (br.ready()) {
-        strings.add(br.readLine().trim());
-      }
+      return fetchStringsFromInputStream(url.openStream());
 
     } catch (MalformedURLException ex) {
       err.println("** WARNING: Cannot access " + listUrl + ": " +
         ex.getMessage());
+      return Collections.emptyList();
 
     } catch (IOException ex) {
       err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
+      return Collections.emptyList();
+    }
+  }
+
+  private List<String> fetchStringsFromInputStream(InputStream stream) throws IOException {
+    List<String> strings = new ArrayList<>();
+
+    InputStreamReader isr = new InputStreamReader(stream);
+    BufferedReader br = new BufferedReader(isr);
+    while (br.ready()) {
+      strings.add(br.readLine().trim());
     }
     return strings;
   }
