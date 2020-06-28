@@ -55,7 +55,7 @@
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
 
-        <groovy.version>3.0.0-beta-1</groovy.version>
+        <groovy.version>3.0.4</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -77,6 +77,11 @@
         <id>CS410J</id>
         <name>CS410J Maven Repository</name>
         <url>https://dl.bintray.com/davidwhitlock/maven</url>
+      </repository>
+      <repository>
+        <id>jcenter</id>
+        <name>bintray</name>
+        <url>https://jcenter.bintray.com</url>
       </repository>
     </repositories>
   <build>
@@ -310,7 +315,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.4</version>
+          <version>0.8.5</version>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
