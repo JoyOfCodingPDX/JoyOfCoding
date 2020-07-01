@@ -11,7 +11,7 @@ if (!mvnwCmdFile.isFile()) {
 
 File targetDir = new File(projectDir, "target");
 
-File jarFile = new File(targetDir, "airline.jar");
+File jarFile = new File(targetDir, "airline-client.jar");
 if (!jarFile.isFile()) {
   throw new FileNotFoundException("Couldn't find jar file: " + jarFile)
 }
