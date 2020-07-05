@@ -3,16 +3,18 @@ package edu.pdx.cs410J;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Tests the {@link #invokeMain(Class, String[])} method of {@link InvokeMainTestCase}
  */
 public class InvokeMainIT extends InvokeMainTestCase {
 
-    @Test
+  private static final String UNCAUGHT_EXCEPTION_MESSAGE = "Uncaught exception in main";
+
+  @Test
     public void testNoExitCode() {
         MainMethodResult result = invokeMain( NoExitCode.class );
         assertNull( result.getExitCode() );
@@ -54,6 +56,19 @@ public class InvokeMainIT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain(CodeAfterSystemExit.class);
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
+  }
+
+  @Test
+  public void uncaughtExceptionInMainThrowsUncaughtExceptionInMain() {
+      try {
+        invokeMain(MainThrowsIllegalStateException.class);
+        fail("Should have thrown an UncaughtExceptionInMain");
+
+      } catch (UncaughtExceptionInMain ex) {
+        Throwable cause = ex.getCause();
+        assertThat(cause, instanceOf(IllegalStateException.class));
+        assertThat(cause.getMessage(), equalTo(UNCAUGHT_EXCEPTION_MESSAGE));
+      }
   }
 
     private static class NoExitCode
@@ -115,5 +130,13 @@ public class InvokeMainIT extends InvokeMainTestCase {
     private static void callSystemExit1() {
       System.exit(1);
     }
+  }
+
+  private static class MainThrowsIllegalStateException {
+
+    public static void main(String[] args) {
+      throw new IllegalStateException(UNCAUGHT_EXCEPTION_MESSAGE);
+    }
+
   }
 }
