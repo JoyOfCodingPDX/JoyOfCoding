@@ -70,7 +70,7 @@ public abstract class InvokeMainTestCase
             }
             catch ( InvocationTargetException e )
             {
-                throw new IllegalArgumentException( "Error while invoking main method of " + mainClass.getName(), e);
+                throw new UncaughtExceptionInMain(e.getCause());
             }
             return this;
         }

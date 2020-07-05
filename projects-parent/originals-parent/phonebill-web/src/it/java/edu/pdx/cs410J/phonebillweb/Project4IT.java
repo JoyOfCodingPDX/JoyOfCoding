@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.phonebillweb;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.phonebillweb.PhoneBillRestClient.PhoneBillRestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -47,8 +48,8 @@ public class Project4IT extends InvokeMainTestCase {
         try {
             invokeMain(Project4.class, HOSTNAME, PORT, word);
 
-        } catch (IllegalArgumentException ex) {
-            throw ex.getCause().getCause();
+        } catch (UncaughtExceptionInMain ex) {
+            throw ex.getCause();
         }
     }
 

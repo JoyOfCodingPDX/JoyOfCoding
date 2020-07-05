@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.airlineweb;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.airlineweb.AirlineRestClient.AirlineRestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -48,8 +49,8 @@ public class Project5IT extends InvokeMainTestCase {
         try {
             invokeMain(Project5.class, HOSTNAME, PORT, word);
 
-        } catch (IllegalArgumentException ex) {
-            throw ex.getCause().getCause();
+        } catch (UncaughtExceptionInMain ex) {
+            throw ex.getCause();
         }
     }
 
