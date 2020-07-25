@@ -165,18 +165,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <!-- In order for the project info plugin report to work with Java 8,
              you need to declare it in the <build> section, apparently. -->
         <groupId>org.apache.maven.plugins</groupId>
