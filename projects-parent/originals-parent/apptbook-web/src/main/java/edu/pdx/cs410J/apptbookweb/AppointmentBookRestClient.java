@@ -72,10 +72,4 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return response;
   }
 
-  @VisibleForTesting
-  class AppointmentBookRestException extends RuntimeException {
-    public AppointmentBookRestException(int httpStatusCode) {
-      super("Got an HTTP Status Code of " + httpStatusCode);
-    }
-  }
 }
