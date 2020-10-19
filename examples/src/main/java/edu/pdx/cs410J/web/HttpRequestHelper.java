@@ -230,4 +230,19 @@ public class HttpRequestHelper {
     System.out.println(response.getContent());
 
   }
+
+  public class RestException extends RuntimeException {
+
+    private final int httpStatusCode;
+
+    public RestException(int httpStatusCode, String message) {
+      super("Got an HTTP Status Code of " + httpStatusCode + ": " + message);
+
+      this.httpStatusCode = httpStatusCode;
+    }
+
+    public int getHttpStatusCode() {
+      return this.httpStatusCode;
+    }
+  }
 }

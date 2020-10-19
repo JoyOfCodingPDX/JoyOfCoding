@@ -67,15 +67,10 @@ public class AirlineRestClient extends HttpRequestHelper
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {
     int code = response.getCode();
     if (code != HTTP_OK) {
-      throw new AirlineRestException(code);
+      String message = response.getContent();
+      throw new RestException(code, message);
     }
     return response;
   }
 
-  @VisibleForTesting
-  class AirlineRestException extends RuntimeException {
-    AirlineRestException(int httpStatusCode) {
-      super("Got an HTTP Status Code of " + httpStatusCode);
-    }
-  }
 }
