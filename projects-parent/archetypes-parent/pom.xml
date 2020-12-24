@@ -7,11 +7,11 @@
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
         <artifactId>projects-parent</artifactId>
-        <version>Summer2018</version>
+        <version>Summer2020</version>
     </parent>
 
     <artifactId>archetypes-parent</artifactId>
-    <version>Summer2018</version>
+    <version>Summer2020</version>
 
     <packaging>pom</packaging>
 
@@ -19,16 +19,14 @@
 
     <modules>
         <module>student-archetype</module>
+        <module>kata-archetype</module>
         <module>java-koans-archetype</module>
         <module>apptbook-archetype</module>
         <module>apptbook-web-archetype</module>
-        <module>apptbook-gwt-archetype</module>
         <module>airline-archetype</module>
         <module>airline-web-archetype</module>
-        <module>airline-gwt-archetype</module>
         <module>phonebill-archetype</module>
         <module>phonebill-web-archetype</module>
-        <module>phonebill-gwt-archetype</module>
     </modules>
 
 </project>

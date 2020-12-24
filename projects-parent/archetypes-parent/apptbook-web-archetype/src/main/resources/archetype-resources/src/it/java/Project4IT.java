@@ -4,11 +4,14 @@
 package ${package};
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.UncaughtExceptionInMain;
+import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -26,7 +29,7 @@ public class Project4IT extends InvokeMainTestCase {
     @Test
     public void test0RemoveAllMappings() throws IOException {
       AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
-      client.removeAllMappings();
+      client.removeAllDictionaryEntries();
     }
 
     @Test
@@ -41,35 +44,38 @@ public class Project4IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatMappingCount(0)));
+        assertThat(out, out, containsString(Messages.formatWordCount(0)));
+    }
+
+    @Test(expected = RestException.class)
+    public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
+        String word = "WORD";
+        try {
+            invokeMain(Project4.class, HOSTNAME, PORT, word);
+
+        } catch (UncaughtExceptionInMain ex) {
+            RestException cause = (RestException) ex.getCause();
+            assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
+            throw cause;
+        }
     }
 
     @Test
-    public void test3NoValues() {
-        String key = "KEY";
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key );
+    public void test4AddDefinition() {
+        String word = "WORD";
+        String definition = "DEFINITION";
+
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, null)));
-    }
+        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
-    @Test
-    public void test4AddValue() {
-        String key = "KEY";
-        String value = "VALUE";
-
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, key, value );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-        String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.mappedKeyValue(key, value)));
-
-        result = invokeMain( Project4.class, HOSTNAME, PORT, key );
+        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
 
         result = invokeMain( Project4.class, HOSTNAME, PORT );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatMappingCount(1)));
-        assertThat(out, out, containsString(Messages.formatKeyValuePair(key, value)));
+        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
     }
 }

@@ -14,58 +14,58 @@ import static org.hamcrest.Matchers.nullValue;
 public class MessagesTest {
 
   @Test
-  public void malformedKeyAndPairReturnsNull() {
-    assertThat(Messages.parseKeyValuePair("blah"), nullValue());
+  public void malformedWordAndDefinitionReturnsNull() {
+    assertThat(Messages.parseDictionaryEntry("blah"), nullValue());
   }
 
   @Test
-  public void canParseFormattedKeyAndValuePair() {
-    String key = "testKey";
-    String value = "testValue";
-    String formatted = Messages.formatKeyValuePair(key, value);
-    Map.Entry<String, String> parsed = Messages.parseKeyValuePair(formatted);
-    assertThat(parsed.getKey(), equalTo(key));
-    assertThat(parsed.getValue(), equalTo(value));
+  public void canParseFormattedDictionaryEntryPair() {
+    String word = "testWord";
+    String definition = "testDefinition";
+    String formatted = Messages.formatDictionaryEntry(word, definition);
+    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
+    assertThat(parsed.getKey(), equalTo(word));
+    assertThat(parsed.getValue(), equalTo(definition));
   }
 
   @Test
-  public void canParseFormattedKeyValueWithoutLeadingSpaces() {
-    String key = "testKey";
-    String value = "testValue";
-    String formatted = Messages.formatKeyValuePair(key, value);
+  public void canParseFormattedDictionaryEntryWithoutLeadingSpaces() {
+    String word = "testWord";
+    String definition = "testDefinition";
+    String formatted = Messages.formatDictionaryEntry(word, definition);
     String trimmed = formatted.trim();
-    Map.Entry<String, String> parsed = Messages.parseKeyValuePair(trimmed);
-    assertThat(parsed.getKey(), equalTo(key));
-    assertThat(parsed.getValue(), equalTo(value));
+    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(trimmed);
+    assertThat(parsed.getKey(), equalTo(word));
+    assertThat(parsed.getValue(), equalTo(definition));
 
   }
 
   @Test
-  public void nullValueIsParsedAsNull() {
-    String key = "testKey";
-    String value = null;
-    String formatted = Messages.formatKeyValuePair(key, value);
-    Map.Entry<String, String> parsed = Messages.parseKeyValuePair(formatted);
-    assertThat(parsed.getKey(), equalTo(key));
-    assertThat(parsed.getValue(), equalTo(value));
+  public void nullDefinitionIsParsedAsNull() {
+    String word = "testWord";
+    String definition = null;
+    String formatted = Messages.formatDictionaryEntry(word, definition);
+    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
+    assertThat(parsed.getKey(), equalTo(word));
+    assertThat(parsed.getValue(), equalTo(definition));
   }
 
   @Test
-  public void canParseFormattedKeyValueMap() {
-    Map<String, String> map = new HashMap<>();
+  public void canParseFormattedDictionary() {
+    Map<String, String> dictionary = new HashMap<>();
 
     for (int i = 0; i < 5; i++) {
-      String key = String.valueOf(i);
-      String value = "QQ" + key;
-      map.put(key, value);
+      String word = String.valueOf(i);
+      String definition = "QQ" + word;
+      dictionary.put(word, definition);
     }
 
     StringWriter sw = new StringWriter();
-    Messages.formatKeyValueMap(new PrintWriter(sw, true), map);
+    Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
 
     String formatted = sw.toString();
 
-    Map<String, String> actual = Messages.parseKeyValueMap(formatted);
-    assertThat(actual, equalTo(map));
+    Map<String, String> actual = Messages.parseDictionary(formatted);
+    assertThat(actual, equalTo(dictionary));
   }
 }

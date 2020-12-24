@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
  */
 public class Messages
 {
-    public static String formatMappingCount(int count )
+    public static String formatWordCount(int count )
     {
-        return String.format( "Server contains %d key/value pairs", count );
+        return String.format( "Dictionary on server contains %d words", count );
     }
 
-    public static String formatKeyValuePair( String key, String value )
+    public static String formatDictionaryEntry(String word, String definition )
     {
-        return String.format("  %s -> %s", key, value);
+        return String.format("  %s : %s", word, definition);
     }
 
     public static String missingRequiredParameter( String parameterName )
@@ -27,24 +27,24 @@ public class Messages
         return String.format("The required parameter \"%s\" is missing", parameterName);
     }
 
-    public static String mappedKeyValue( String key, String value )
+    public static String definedWordAs(String word, String definition )
     {
-        return String.format( "Mapped %s to %s", key, value );
+        return String.format( "Defined %s as %s", word, definition );
     }
 
-    public static String allMappingsDeleted() {
-        return "All mappings have been deleted";
+    public static String allDictionaryEntriesDeleted() {
+        return "All dictionary entries have been deleted";
     }
 
-    public static Map.Entry<String, String> parseKeyValuePair(String content) {
-        Pattern pattern = Pattern.compile("\\s*(.*) -> (.*)");
+    public static Map.Entry<String, String> parseDictionaryEntry(String content) {
+        Pattern pattern = Pattern.compile("\\s*(.*) : (.*)");
         Matcher matcher = pattern.matcher(content);
 
         if (!matcher.find()) {
             return null;
         }
 
-        return new Map.Entry<String, String>() {
+        return new Map.Entry<>() {
             @Override
             public String getKey() {
                 return matcher.group(1);
@@ -66,21 +66,21 @@ public class Messages
         };
     }
 
-    public static void formatKeyValueMap(PrintWriter pw, Map<String, String> map) {
-        pw.println(Messages.formatMappingCount(map.size()));
+    public static void formatDictionaryEntries(PrintWriter pw, Map<String, String> dictionary) {
+        pw.println(Messages.formatWordCount(dictionary.size()));
 
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, String> entry : dictionary.entrySet()) {
+            pw.println(Messages.formatDictionaryEntry(entry.getKey(), entry.getValue()));
         }
     }
 
-    public static Map<String, String> parseKeyValueMap(String content) {
+    public static Map<String, String> parseDictionary(String content) {
         Map<String, String> map = new HashMap<>();
 
         String[] lines = content.split("\n");
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
-            Map.Entry<String, String> entry = parseKeyValuePair(line);
+            Map.Entry<String, String> entry = parseDictionaryEntry(line);
             map.put(entry.getKey(), entry.getValue());
         }
 

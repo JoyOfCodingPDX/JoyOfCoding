@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 
 import javax.mail.Address;
@@ -10,9 +11,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -24,7 +26,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
 
   @Override
   public Iterable<? extends String> getSupportedContentTypes() {
-    return Collections.singleton("application/zip");
+    return List.of("application/zip", "application/x-zip-compressed", "application/x-gzip");
   }
 
   @Override
@@ -71,19 +73,34 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
       student.setGrade(project.getName(), grade);
     }
     grade.addNote(note);
+    grade.addSubmissionTime(getSentDate(message));
   }
 
   private String getSubmissionNote(Message message) throws SubmissionException {
-    return "Submitted by " + getSenderName(message) + " on " + getSentDate(message);
+    String senderName = getSenderName(message);
+    LocalDateTime sentDate = getSentDate(message);
+
+    return getSubmissionNote(senderName, sentDate);
   }
 
-  private String getSentDate(Message message) throws SubmissionException {
-    DateFormat format = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+  private LocalDateTime getSentDate(Message message) throws SubmissionException {
+    Date sentDate;
     try {
-      return format.format(message.getSentDate());
+      sentDate = message.getSentDate();
     } catch (MessagingException e) {
       throw new SubmissionException("While getting the sent date", e);
     }
+    return LocalDateTime.ofInstant(sentDate.toInstant(), ZoneId.systemDefault());
+  }
+
+  @VisibleForTesting
+  static String getSubmissionNote(String senderName, LocalDateTime submissionTime) {
+    return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTime(submissionTime);
+  }
+
+  @VisibleForTesting
+  static String getSubmissionNoteUsingLegacyDateFormat(String senderName, LocalDateTime submissionTime) {
+    return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTimeUsingLegacyFormat(submissionTime);
   }
 
   private Assignment getKoansProjectFromGradeBook() throws SubmissionException {

@@ -23,8 +23,6 @@ public class Survey extends EmailSender {
   private static final BufferedReader in =
     new BufferedReader(new InputStreamReader(System.in));
 
-  private static final String TA_EMAIL = "sjavata@gmail.com";
-
   private static boolean saveStudentXmlFile = false;
 
   /**
@@ -287,13 +285,12 @@ public class Survey extends EmailSender {
   private static MimeMessage createEmailMessage(Student student) {
     MimeMessage message = null;
     try {
-      message = newEmailTo(newEmailSession(false), TA_EMAIL, "CS410J Survey for " + student.getFullName());
+      InternetAddress studentEmail = newInternetAddress(student.getEmail(), student.getFullName());
+      String subject = "CS410J Survey for " + student.getFullName();
+      message = newEmailTo(newEmailSession(false), TA_EMAIL).from(studentEmail).withSubject(subject).createMessage();
 
-      String studentEmail = student.getEmail();
-      if (studentEmail != null) {
-        InternetAddress[] cc = {new InternetAddress(studentEmail)};
-        message.setRecipients(Message.RecipientType.CC, cc);
-      }
+      InternetAddress[] cc = { studentEmail };
+      message.setRecipients(Message.RecipientType.CC, cc);
 
     } catch (AddressException ex) {
       printErrorMessageAndExit("** Exception with email address", ex);

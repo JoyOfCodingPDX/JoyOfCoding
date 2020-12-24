@@ -1,8 +1,0 @@
-<module>
-  <source>
-    <include name="Person.*"/>
-    <include name="Marriage.*"/>
-    <include name="FamilyTree.*"/>
-    <include name="FamilyTreeException.*"/>
-  </source>
-</module>

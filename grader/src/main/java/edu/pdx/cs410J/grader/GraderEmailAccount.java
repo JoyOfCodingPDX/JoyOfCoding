@@ -55,22 +55,39 @@ public class GraderEmailAccount {
 
       folder.fetch(messages, profile);
 
-      for (int i = 0; i < messages.length; i++) {
-        Message message = messages[i];
+      for (Message message : messages) {
         logStatus("Processing message %d of %d from %s", i+1, messages.length, message.getFrom()[0]);
         if (isUnread(message)) {
-          printMessageInformation(message);
-          if (isMultipartMessage(message)) {
-            processAttachments(message, processor);
-          } else {
-            warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
-          }
+          fetchAttachmentsFromUnreadMessage(message, processor);
         }
       }
 
     } catch (MessagingException | IOException ex ) {
       throw new IllegalStateException("While printing unread messages", ex);
     }
+  }
+
+  @VisibleForTesting
+  protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+    printMessageInformation(message);
+    if (isMultipartMessage(message)) {
+      processAttachments(message, processor);
+
+    } else if (isTextPlainMessage(message)) {
+       processPlainTextBody(message, processor);
+
+    } else {
+      warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
+    }
+  }
+
+  private void processPlainTextBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
+    processor.processAttachment(message, "TextPlainBody", message.getInputStream());
+
+  }
+
+  private boolean isTextPlainMessage(Message message) throws MessagingException {
+    return message.isMimeType("text/plain");
   }
 
   private void logStatus(String format, Object... args) {

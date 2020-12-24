@@ -1,25 +1,28 @@
 package edu.pdx.cs410J.web;
 
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A helper class that provides methods for requesting resources via HTTP
  */
 public class HttpRequestHelper {
+
   /**
    * Performs an HTTP GET on the given URL
    *
-   * @param urlString The URL to get
+   * @param urlString  The URL to get
    * @param parameters The key/value query parameters
    * @return A <code>Response</code> summarizing the result of the GET
    */
-  protected Response get(String urlString, String... parameters) throws IOException {
-    checkParameters(parameters);
-
+  protected Response get(String urlString, Map<String, String> parameters) throws IOException {
     StringBuilder query = encodeParameters(parameters);
     if (query.length() > 0) {
       query.insert(0, '?');
@@ -41,9 +44,8 @@ public class HttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response post(String urlString, String... parameters) throws IOException {
+  protected Response post(String urlString, Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "POST", parameters);
-
   }
 
   /**
@@ -52,14 +54,11 @@ public class HttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response delete(String urlString, String... parameters) throws IOException {
+  protected Response delete(String urlString, Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "DELETE", parameters);
-
   }
 
-  private Response sendEncodedRequest(String urlString, String requestMethod, String... parameters) throws IOException {
-    checkParameters(parameters);
-
+  private Response sendEncodedRequest(String urlString, String requestMethod, Map<String, String> parameters) throws IOException {
     StringBuilder data = encodeParameters(parameters);
 
     URL url = new URL(urlString);
@@ -83,26 +82,20 @@ public class HttpRequestHelper {
    * @return The encoded parameters
    * @throws java.io.UnsupportedEncodingException If we can't encode UTF-8
    */
-  private StringBuilder encodeParameters(String... parameters) throws UnsupportedEncodingException {
+  private StringBuilder encodeParameters(Map<String, String> parameters) throws UnsupportedEncodingException {
     StringBuilder query = new StringBuilder();
-    for (int i = 0; i < parameters.length; i += 2) {
-      String key = parameters[i];
-      String value = parameters[i + 1];
-      query.append(URLEncoder.encode(key, "UTF-8"));
+    for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+      Map.Entry<String, String> pair = iter.next();
+      String key = pair.getKey();
+      String value = pair.getValue();
+      query.append(URLEncoder.encode(key, StandardCharsets.UTF_8));
       query.append("=");
-      query.append(URLEncoder.encode(value, "UTF-8"));
-      if (i < parameters.length - 2) {
+      query.append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+      if (iter.hasNext()) {
         query.append("&");
       }
     }
     return query;
-  }
-
-  private void checkParameters(String... parameters) {
-    if (parameters.length % 2 != 0) {
-      String s = "You must specify an even number of parameters (key/value pairs)";
-      throw new IllegalArgumentException(s);
-    }
   }
 
   /**
@@ -110,20 +103,16 @@ public class HttpRequestHelper {
    *
    * @param urlString The URL to put to
    * @param parameters key/value parameters to the put
-   * @return A <code>Reponse</code> summarizing the result of the PUT
+   * @return A <code>Response</code> summarizing the result of the PUT
    */
-  protected Response put(String urlString, String... parameters) throws IOException {
-    checkParameters(parameters);
-
+  protected Response put(String urlString, Map<String, String> parameters) throws IOException {
     StringBuilder data = new StringBuilder();
-    for (int i = 0; i < parameters.length; i += 2) {
-      String key = parameters[i];
-      String value = parameters[i + 1];
-      data.append(key);
-      data.append("=");
-      data.append(value);
-      data.append("\n");
-    }
+        parameters.forEach((key, value) -> {
+          data.append(key);
+          data.append("=");
+          data.append(value);
+          data.append("\n");
+        });
 
     URL url = new URL(urlString);
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -184,7 +173,6 @@ public class HttpRequestHelper {
 
     /**
      * Returns the (presumably textual) response from the URL
-     * @return
      */
     public String getContent() {
       return content;
@@ -198,6 +186,18 @@ public class HttpRequestHelper {
     }
   }
 
+
+  private static Map<String, String> arrayToMap(String[] parameters) {
+    Map<String, String> params = new HashMap<>();
+    for (int i = 0; i < parameters.length; i++) {
+      String key = parameters[i];
+      i++;
+      String value = parameters[i];
+      params.put(key, value);
+    }
+    return params;
+  }
+
   /**
    * A main method that requests a resource from a URL using a given HTTP method
    */
@@ -206,18 +206,19 @@ public class HttpRequestHelper {
     String url = args[1];
     String[] parameters = new String[args.length - 2];
     System.arraycopy(args, 2, parameters, 0, parameters.length);
+    Map<String, String> map = HttpRequestHelper.arrayToMap(parameters);
 
     HttpRequestHelper helper = new HttpRequestHelper();
 
     Response response;
     if (method.equalsIgnoreCase("PUT")) {
-      response = helper.put(url, parameters);
+      response = helper.put(url, map);
 
     } else if (method.equalsIgnoreCase("GET")) {
-      response = helper.get(url, parameters);
+      response = helper.get(url, map);
 
     } else if (method.equalsIgnoreCase("POST")) {
-      response = helper.post(url, parameters);
+      response = helper.post(url, map);
 
     } else {
       System.err.println("** Unknown method: " + method);
@@ -228,5 +229,20 @@ public class HttpRequestHelper {
       response.getContentLines() + " lines of content\n");
     System.out.println(response.getContent());
 
+  }
+
+  public class RestException extends RuntimeException {
+
+    private final int httpStatusCode;
+
+    public RestException(int httpStatusCode, String message) {
+      super("Got an HTTP Status Code of " + httpStatusCode + ": " + message);
+
+      this.httpStatusCode = httpStatusCode;
+    }
+
+    public int getHttpStatusCode() {
+      return this.httpStatusCode;
+    }
   }
 }

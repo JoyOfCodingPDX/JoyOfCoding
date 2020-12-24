@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -209,6 +210,24 @@ public class SummaryReportTest {
     assertThat(betterUndergrad.getLetterGrade(), equalTo(LetterGrade.A));
     assertThat(worseUndergrad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));
     assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A));
+  }
+
+  @Test
+  public void assignmentDueInThePastIsLate() {
+    Assignment assignment = new Assignment("Test", 4.0);
+    LocalDateTime dueDate = LocalDateTime.now().minusDays(3);
+    assignment.setDueDate(dueDate);
+
+    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(true));
+  }
+
+  @Test
+  public void assignmentDueInTheFutureIsNotLate() {
+    Assignment assignment = new Assignment("Test", 4.0);
+    LocalDateTime dueDate = LocalDateTime.now().plusDays(3);
+    assignment.setDueDate(dueDate);
+
+    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(false));
   }
 
 }

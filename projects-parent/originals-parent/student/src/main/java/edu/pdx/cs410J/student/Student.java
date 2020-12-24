@@ -20,7 +20,7 @@ public class Student extends Human {
    * @param gpa                                                                     
    *        The student's grade point average                                       
    * @param gender                                                                  
-   *        The student's gender ("male" or "female", case insensitive)             
+   *        The student's gender ("male", "female", or "other", case insensitive)
    */                                                                               
   public Student(String name, ArrayList<String> classes, double gpa, String gender) {
     super(name);

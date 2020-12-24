@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
-  <version>Summer2018</version>
+  <version>Summer2020</version>
   <artifactId>CS410J</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -13,7 +13,6 @@
     <module>web</module>
     <module>family</module>
     <module>grader</module>
-    <module>gwt-parent</module>
     <module>projects-parent</module>
   </modules>
   <inceptionYear>2000</inceptionYear>
@@ -50,20 +49,28 @@
     <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
   </scm>
     <prerequisites>
-        <maven>3.5.2</maven>
+        <maven>3.6.1</maven>
     </prerequisites>
     <properties>
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
 
-        <groovy.version>2.4.10</groovy.version>
+        <groovy.version>3.0.4</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.4.0</pmd.version>
+        <pmd.version>6.20.0</pmd.version>
 
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
-        <wagon-ssh.version>3.0.0</wagon-ssh.version>
+        <wagon-ssh.version>3.3.4</wagon-ssh.version>
+
+        <junit.version>4.13.1</junit.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <mockito.version>3.2.4</mockito.version>
+        <surefire.version>3.0.0-M4</surefire.version>
+
+      <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
+      <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
       <repository>
@@ -71,13 +78,18 @@
         <name>CS410J Maven Repository</name>
         <url>https://dl.bintray.com/davidwhitlock/maven</url>
       </repository>
+      <repository>
+        <id>jcenter</id>
+        <name>bintray</name>
+        <url>https://jcenter.bintray.com</url>
+      </repository>
     </repositories>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>3.0.0-M2</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -89,7 +101,7 @@
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.5.2</version>
+              <version>3.6.1</version>
             </requireMavenVersion>
             <requireJavaVersion>
               <version>${maven.compiler.target}</version>
@@ -100,7 +112,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
         <executions>
           <execution>
             <goals>
@@ -113,15 +124,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>jar</goal>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <archive>
             <manifest>
@@ -138,7 +140,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.2.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -153,23 +155,13 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-idea-plugin</artifactId>
-        <version>2.2.1</version>
-        <configuration>
-          <downloadJavadocs>true</downloadJavadocs>
-          <downloadSources>true</downloadSources>
-          <overwrite>true</overwrite>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>3.0.0-M1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.1.0</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -197,24 +189,40 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.21.0</version>
+        <version>${surefire.version}</version>
         <configuration>
-          <!-- Let reflection code run in Java 10 -->
-          <argLine>
-            --add-modules java.xml.bind
-            --add-opens java.base/java.lang=ALL-UNNAMED
-            --add-opens java.base/java.util=ALL-UNNAMED
-            --illegal-access=deny
-          </argLine>
+          <!--
+            Don't add argLine configuration because it will mess up JaCoCo
+
+            https://github.com/jacoco/jacoco/issues/592
+          -->
+          <failIfNoTests>true</failIfNoTests>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit47</artifactId>
+            <version>${surefire.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>add-it-source</id>
@@ -247,16 +255,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <fork>true</fork>
-          <compilerArgs>
-            <arg>--add-modules=java.xml.bind</arg>
-            <arg>--add-opens=java.base/java.lang=ALL-UNNAMED</arg>
-            <arg>--add-opens=java.base/java.util=ALL-UNNAMED</arg>
-          </compilerArgs>
+<!--          <compilerArgs>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.lang=ALL-UNNAMED</arg>-->
+<!--            <arg>&#45;&#45;add-opens=java.base/java.util=ALL-UNNAMED</arg>-->
+<!--          </compilerArgs>-->
         </configuration>
         <executions>
           <execution>
@@ -278,16 +285,14 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.21.0</version>
+          <version>${surefire.version}</version>
           <configuration>
             <testSourceDirectory>src/it/java</testSourceDirectory>
             <testClassesDirectory>${project.build.directory}/it-classes</testClassesDirectory>
             <additionalClasspathElements>
               <additionalClasspathElement>${project.build.directory}/test-classes</additionalClasspathElement>
             </additionalClasspathElements>
-            <excludes>
-              <exclude>**/*GwtIT.*</exclude>
-            </excludes>
+            <failIfNoTests>true</failIfNoTests>
           </configuration>
           <executions>
             <execution>
@@ -302,16 +307,23 @@
               </configuration>
             </execution>
           </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>${surefire.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>2.9</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.1</version>
+          <version>0.8.5</version>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
@@ -327,15 +339,13 @@
             </execution>
             <execution>
               <id>default-report</id>
+              <phase>verify</phase>
               <goals>
                 <goal>report</goal>
               </goals>
-            </execution>
-            <execution>
-              <id>default-report-integration</id>
-              <goals>
-                <goal>report-integration</goal>
-              </goals>
+              <configuration>
+                <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+              </configuration>
             </execution>
             <execution>
               <id>default-check</id>
@@ -345,6 +355,24 @@
               <configuration>
                 <rules>
                 </rules>
+              </configuration>
+            </execution>
+            <execution>
+              <id>merge-coverage-data</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>merge</goal>
+              </goals>
+              <configuration>
+                <fileSets>
+                  <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                    <directory>${project.build.directory}</directory>
+                    <includes>
+                      <include>jacoco*.exec</include>
+                    </includes>
+                  </fileSet>
+                </fileSets>
+                <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
               </configuration>
             </execution>
           </executions>
@@ -357,12 +385,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.10</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -372,17 +400,20 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>3.2.1</version>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.11.v20180605</version>
+          <version>9.4.18.v20190429</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.12.0</version>
           <dependencies>
             <dependency>
               <groupId>net.sourceforge.pmd</groupId>
@@ -409,22 +440,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>3.1.3</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs</artifactId>
-              <!-- Explicitly use version 3.1.3 of spotbugs because the 3.1.3 plugin uses spotbugs 3.1.2 which doesn't
-                   support Java 10 (https://github.com/spotbugs/spotbugs/issues/593) -->
-              <version>3.1.3</version>
-              <exclusions>
-                <exclusion>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-          </dependencies>
+          <version>4.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -435,15 +451,14 @@
             <linksource>true</linksource>
             <overview>overview.html</overview>
             <links>
-              <link>http://download.oracle.com/javase/10/docs/api</link>
-              <link>http://download.oracle.com/javaee/7/api</link>
+              <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
+              <link>https://docs.oracle.com/javaee/7/api/</link>
               <link>http://junit.org/junit4/javadoc/latest</link>
-              <link>http://www.gwtproject.org/javadoc/latest</link>
               <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
             </links>
             <detectJavaApiLink/>
             <detectLinks/>
-            <additionalOptions>-html5 --add-modules java.xml.bind</additionalOptions>
+            <additionalOptions>-html5</additionalOptions>
           </configuration>
         </plugin>
         <plugin>
@@ -480,12 +495,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>3.12.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.5</version>
+        <version>3.0.0</version>
         <configuration>
           <linkJavadoc>true</linkJavadoc>
         </configuration>
@@ -493,7 +508,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.5</version>
+        <version>2.7</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -568,6 +583,9 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

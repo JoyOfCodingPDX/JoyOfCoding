@@ -19,34 +19,36 @@
 <h1>
 
     This page contains a couple of HTML forms that GET and POST to the
-    REST API provided by your project.
+    REST API provided by your project.  These forms are <b>not</b>
+    submitted as part of the project.  You do <b>not</b> have to update
+    them.
 
 </h1>
 
 <h2>
-    These forms let you interact with the simple key/value REST API that
+    These forms let you interact with the simple dictionary REST API that
     is created by the project archetype.
 </h2>
 
 
 <div>
     <form method="get" action="calls">
-        List all key/value pairs <input type="submit" value="Submit"/>
+        List all dictionary entries <input type="submit" definition="Submit"/>
     </form>
 </div>
 
 <div>
     <form method="get" action="calls">
-        List value for key <input name="key" type="text" size="10" title="key"/>
-        <input type="submit" value="Submit"/>
+        List definition for word <input name="word" type="text" size="10" title="word"/>
+        <input type="submit" definition="Submit"/>
     </form>
 </div>
 
 <div>
     <form method="post" action="calls">
-        Create a new key/value pair <input name="key" type="text" size="10" title="key"/> /
-        <input name="value" type="text" size="10" title="value"/>
-        <input type="submit" value="Submit"/>
+        Create a dictionary entry <input name="word" type="text" size="10" title="word"/> :
+        <input name="definition" type="text" size="100" title="definition"/>
+        <input type="submit" definition="Submit"/>
     </form>
 </div>
 

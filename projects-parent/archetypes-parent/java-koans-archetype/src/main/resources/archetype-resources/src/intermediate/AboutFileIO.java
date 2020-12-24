@@ -15,7 +15,7 @@ public class AboutFileIO {
 
     @Koan
     public void fileObjectDoesntCreateFile() {
-        File f = new File("foo.txt");
+        File f = new File("i-never.exist");
         assertEquals(f.exists(), __);
     }
 
@@ -32,11 +32,12 @@ public class AboutFileIO {
     public void basicFileWritingAndReading() throws IOException {
         File file = new File("file.txt");
         FileWriter fw = new FileWriter(file);
-        fw.write("First line${symbol_escape}nSecond line");
+        String data = "First line${symbol_escape}nSecond line";
+        fw.write(data);
         fw.flush();
         fw.close();
 
-        char[] in = new char[50];
+        char[] in = new char[data.length()];
         int size = 0;
         FileReader fr = new FileReader(file);
         size = fr.read(in);
