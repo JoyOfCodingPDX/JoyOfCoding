@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import edu.pdx.cs410J.grader.EmailAttachmentProcessor;
 import edu.pdx.cs410J.grader.GraderEmailAccount;
 
@@ -19,16 +20,21 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 @Singleton
 public class POASubmissionsDownloader {
 
   static final String POA_FOLDER_NAME = "poa";
   private final EventBus bus;
+  private final Executor executor;
 
   @Inject
-  public POASubmissionsDownloader(EventBus bus) {
+  public POASubmissionsDownloader(EventBus bus, @Named("POADownloaderExecutor") Executor executor) {
     this.bus = bus;
+    this.executor = executor;
     this.bus.register(this);
   }
 
@@ -39,13 +45,15 @@ public class POASubmissionsDownloader {
   }
 
   @VisibleForTesting
-    void downloadSubmissions(String emailServerHostName, int emailServerHostPort, EmailCredentials credentials) {
+  Future<?> downloadSubmissions(String emailServerHostName, int emailServerHostPort, EmailCredentials credentials) {
       GraderEmailAccount account = new GraderEmailAccount(emailServerHostName, emailServerHostPort, credentials.getEmailAddress(), credentials.getPassword(), true, this::fireStatusMessage);
-      downloadSubmissions(account);
+      return downloadSubmissions(account);
     }
 
-  private void downloadSubmissions(GraderEmailAccount account) {
-    account.fetchAttachmentsFromUnreadMessagesInFolder(POA_FOLDER_NAME, new POAAttachmentProcessor());
+  private Future<?> downloadSubmissions(GraderEmailAccount account) {
+    FutureTask<Void> future = new FutureTask<>(() -> account.fetchAttachmentsFromUnreadMessagesInFolder(POA_FOLDER_NAME, new POAAttachmentProcessor()), null);
+    this.executor.execute(future);
+    return future;
   }
 
   private void fireStatusMessage(String statusMessage) {
