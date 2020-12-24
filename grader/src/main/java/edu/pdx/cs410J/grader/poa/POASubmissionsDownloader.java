@@ -38,6 +38,12 @@ public class POASubmissionsDownloader {
     downloadSubmissions(account);
   }
 
+  @VisibleForTesting
+    void downloadSubmissions(String emailServerHostName, int emailServerHostPort, EmailCredentials credentials) {
+      GraderEmailAccount account = new GraderEmailAccount(emailServerHostName, emailServerHostPort, credentials.getEmailAddress(), credentials.getPassword(), true, this::fireStatusMessage);
+      downloadSubmissions(account);
+    }
+
   private void downloadSubmissions(GraderEmailAccount account) {
     account.fetchAttachmentsFromUnreadMessagesInFolder(POA_FOLDER_NAME, new POAAttachmentProcessor());
   }

@@ -31,11 +31,7 @@ public class GraderEmailAccount {
   }
 
   @VisibleForTesting
-  GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
-    this(emailServerHostName, emailServerPort, userName, password, trustLocalhostSSL, m -> { });
-  }
-
-  private GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL, StatusLogger statusLogger) {
+  public GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL, StatusLogger statusLogger) {
     this.userName = userName;
     this.password = password;
     this.emailServerHostName = emailServerHostName;
@@ -55,8 +51,9 @@ public class GraderEmailAccount {
 
       folder.fetch(messages, profile);
 
-      for (Message message : messages) {
-        logStatus("Processing message %d of %d from %s", i+1, messages.length, message.getFrom()[0]);
+      for (int i = 0, messagesLength = messages.length; i < messagesLength; i++) {
+        Message message = messages[i];
+        logStatus("Processing message %d of %d from %s", i + 1, messages.length, message.getFrom()[0]);
         if (isUnread(message)) {
           fetchAttachmentsFromUnreadMessage(message, processor);
         }
