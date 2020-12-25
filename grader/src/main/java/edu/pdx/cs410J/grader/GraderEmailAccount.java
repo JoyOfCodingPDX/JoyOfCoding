@@ -66,21 +66,17 @@ public class GraderEmailAccount {
     if (isMultipartMessage(message)) {
       processAttachments(message, processor);
 
-    } else if (isTextPlainMessage(message)) {
-       processPlainTextBody(message, processor);
+    } else if (processor.hasSupportedContentType(message)) {
+       processSinglePartBody(message, processor);
 
     } else {
       warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
     }
   }
 
-  private void processPlainTextBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
-    processor.processAttachment(message, "TextPlainBody", message.getInputStream());
+  private void processSinglePartBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
+    processor.processAttachment(message, "SinglePartBody", message.getInputStream());
 
-  }
-
-  private boolean isTextPlainMessage(Message message) throws MessagingException {
-    return message.isMimeType("text/plain");
   }
 
   private void logStatus(String format, Object... args) {

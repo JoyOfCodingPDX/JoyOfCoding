@@ -42,18 +42,28 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
-    mailTextPlainPOA(sender, subject, poa);
+    mailSinglePartPOA(sender, subject, poa, "text/plain");
 
     assertEmailIsProperlyProcessed(subject, poa, sender);
   }
 
-  private void mailTextPlainPOA(String sender, String subject, String poa) throws MessagingException {
+  private void mailSinglePartPOA(String sender, String subject, String poa, String mimeType) throws MessagingException {
     MimeMessage message = newEmailTo(newEmailSession(true), emailAddress, subject);
     message.setFrom(sender);
 
-    message.setContent(poa, "text/plain");
+    message.setContent(poa, mimeType);
 
     Transport.send(message);
+  }
+
+  @Test
+  public void textHTMLMessage() throws MessagingException, ExecutionException, InterruptedException {
+    String subject = "Email subject";
+    String poa = "<html><div>This is my HTML POA</div></html>";
+    String sender = "sender@email.com";
+    mailSinglePartPOA(sender, subject, poa, "text/html");
+
+    assertEmailIsProperlyProcessed(subject, poa, sender);
   }
 
   private void assertEmailIsProperlyProcessed(String subject, String poa, String sender) throws ExecutionException, InterruptedException {
