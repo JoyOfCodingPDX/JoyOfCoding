@@ -22,10 +22,6 @@ public class GraderEmailAccount {
   private final boolean trustLocalhostSSL;
   private final StatusLogger statusLogger;
 
-  public GraderEmailAccount(String password) {
-    this("sjavata", password, m -> { });
-  }
-
   public GraderEmailAccount(String userName, String password, StatusLogger statusLogger) {
     this("imap.gmail.com", 993, userName, password, false, statusLogger);
   }
