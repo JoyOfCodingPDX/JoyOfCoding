@@ -6,7 +6,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import edu.pdx.cs410J.grader.poa.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.*;
 
@@ -50,7 +49,7 @@ public class POAGraderUIModule extends AbstractModule {
   public Executor provideDownloaderExecutor(EventBus bus) {
     return new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
       @Override
-      public Thread newThread(@NotNull Runnable runnable) {
+      public Thread newThread(Runnable runnable) {
         return new Thread(runnable, "POA Downloader");
       }
     }) {
