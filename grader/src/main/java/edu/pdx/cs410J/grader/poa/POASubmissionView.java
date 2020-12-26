@@ -1,5 +1,8 @@
 package edu.pdx.cs410J.grader.poa;
 
+import javax.swing.text.BadLocationException;
+import java.io.IOException;
+
 public interface POASubmissionView {
 
   enum POAContentType {
@@ -23,5 +26,5 @@ public interface POASubmissionView {
 
   void setSubmissionTime(String time);
 
-  void setContent(String content, POAContentType contentType);
+  void setContent(String content, POAContentType contentType) throws IOException, BadLocationException;
 }

@@ -5,6 +5,11 @@ import com.google.inject.Singleton;
 import edu.pdx.cs410J.grader.poa.POASubmissionView;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import java.io.IOException;
+import java.io.StringReader;
 
 @Singleton
 public class POASubmissionInformationWidgets implements POASubmissionView {
@@ -66,10 +71,22 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   }
 
   @Override
-  public void setContent(String content, POAContentType contentType) {
+  public void setContent(String content, POAContentType contentType) throws IOException, BadLocationException {
     this.submissionContent.setContentType(contentType.getContentType());
-    this.submissionContent.setText(content);
+    if (contentType == POAContentType.HTML) {
+      displayHtmlContent(content);
+    } else {
+      this.submissionContent.setText(content);
+    }
     scrollPaneToTop();
+  }
+
+  private void displayHtmlContent(String html) throws IOException, BadLocationException {
+    HTMLEditorKit kit = (HTMLEditorKit) this.submissionContent.getEditorKit();
+    HTMLDocument document = (HTMLDocument) this.submissionContent.getDocument();
+    document.getDocumentProperties().put("IgnoreCharsetDirective", true);
+    StringReader reader = new StringReader(html);
+    kit.read(reader, document, 0);
   }
 
   private void scrollPaneToTop() {
