@@ -103,7 +103,9 @@ public class StudentsPresenter {
       }
     }
 
-    this.view.setSelectedStudentIndex(0);
+    if (this.students.size() > 0) {
+      this.view.setSelectedStudentIndex(0);
+    }
     fireStudentSelectedEvent(null);
   }
 
