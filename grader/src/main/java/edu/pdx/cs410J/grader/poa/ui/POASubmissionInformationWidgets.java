@@ -66,8 +66,8 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   }
 
   @Override
-  public void setContent(String content) {
-    this.submissionContent.setContentType("text/plain");
+  public void setContent(String content, POAContentType contentType) {
+    this.submissionContent.setContentType(contentType.getContentType());
     this.submissionContent.setText(content);
     scrollPaneToTop();
   }

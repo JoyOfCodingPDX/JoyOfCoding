@@ -27,14 +27,15 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
     String submitter = "Submitter";
     LocalDateTime submitTime = LocalDateTime.now();
     String content = "Test Content";
-    POASubmission submission = createPOASubmission(subject, submitter, submitTime, content);
+    String contentType = "text/plain";
+    POASubmission submission = createPOASubmission(subject, submitter, submitTime, content, contentType);
 
     this.bus.post(new POASubmissionSelected(submission));
 
     verify(view).setSubmissionSubject(subject);
     verify(view).setSubmissionSubmitter(submitter);
     verify(view).setSubmissionTime(POASubmissionPresenter.formatSubmissionTime(submitTime));
-    verify(view).setContent(content);
+    verify(view).setContent(content, POASubmissionView.POAContentType.TEXT);
   }
 
 }

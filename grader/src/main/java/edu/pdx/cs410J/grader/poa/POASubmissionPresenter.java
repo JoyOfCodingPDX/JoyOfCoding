@@ -8,6 +8,8 @@ import com.google.inject.Singleton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static edu.pdx.cs410J.grader.poa.POASubmissionView.*;
+
 @Singleton
 public class POASubmissionPresenter {
   private final POASubmissionView view;
@@ -26,7 +28,9 @@ public class POASubmissionPresenter {
     this.view.setSubmissionSubject(submission.getSubject());
     this.view.setSubmissionSubmitter(submission.getSubmitter());
     this.view.setSubmissionTime(formatSubmissionTime(submission.getSubmitTime()));
-    this.view.setContent(submission.getContent());
+    String contentType = submission.getContentType();
+    boolean isHtml = contentType.toLowerCase().contains("text/html");
+    this.view.setContent(submission.getContent(), isHtml ? POAContentType.HTML : POAContentType.TEXT);
   }
 
   static String formatSubmissionTime(LocalDateTime submitTime) {

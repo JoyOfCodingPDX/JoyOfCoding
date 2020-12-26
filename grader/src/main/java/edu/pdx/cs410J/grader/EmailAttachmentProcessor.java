@@ -5,7 +5,7 @@ import javax.mail.MessagingException;
 import java.io.InputStream;
 
 public interface EmailAttachmentProcessor {
-  void processAttachment(Message message, String fileName, InputStream inputStream);
+  void processAttachment(Message message, String fileName, InputStream inputStream, String contentType);
 
   Iterable<? extends String> getSupportedContentTypes();
 

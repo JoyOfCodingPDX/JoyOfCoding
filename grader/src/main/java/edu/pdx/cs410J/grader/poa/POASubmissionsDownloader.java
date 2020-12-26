@@ -60,7 +60,7 @@ public class POASubmissionsDownloader {
     this.bus.post(new StatusMessage(statusMessage));
   }
 
-  private void extractPOASubmissionFromAttachment(Message message, String fileName, InputStream inputStream) {
+  private void extractPOASubmissionFromAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
     try {
       String submitter = getSender(message);
       LocalDateTime submitTime = getTimeMessageWasSent(message);
@@ -70,6 +70,7 @@ public class POASubmissionsDownloader {
         .setSubmitter(submitter)
         .setSubmitTime(submitTime)
         .setContent(content)
+        .setContentType(contentType)
         .create();
 
       this.bus.post(submission);
@@ -97,8 +98,8 @@ public class POASubmissionsDownloader {
 
   private class POAAttachmentProcessor implements EmailAttachmentProcessor {
     @Override
-    public void processAttachment(Message message, String fileName, InputStream inputStream) {
-      extractPOASubmissionFromAttachment(message, fileName, inputStream);
+    public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
+      extractPOASubmissionFromAttachment(message, fileName, inputStream, contentType);
     }
 
     @Override

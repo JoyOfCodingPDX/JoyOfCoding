@@ -30,7 +30,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
   }
 
   @Override
-  public void processAttachment(Message message, String fileName, InputStream inputStream) {
+  public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
     String studentId;
     try {
       studentId = getIdOfStudentInGradeBookWhoSent(message);

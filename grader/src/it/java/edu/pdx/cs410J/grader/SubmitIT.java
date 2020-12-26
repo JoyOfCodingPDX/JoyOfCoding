@@ -262,7 +262,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     studentAccount.fetchAttachmentsFromUnreadMessagesInFolder("inbox", new EmailAttachmentProcessor() {
       @Override
-      public void processAttachment(Message message, String fileName, InputStream inputStream) {
+      public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
 
       }
 
