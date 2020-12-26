@@ -12,7 +12,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   private final JLabel subjectLabel;
   private final JLabel submitterLabel;
   private final JLabel submissionTimeLabel;
-  private final JTextArea submissionContent;
+  private final JEditorPane submissionContent;
   private final POAGradeWidgets gradesWidgets;
 
   @Inject
@@ -22,7 +22,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
     this.subjectLabel = new JLabel();
     this.submitterLabel = new JLabel();
     this.submissionTimeLabel = new JLabel();
-    this.submissionContent = new JTextArea(20, 80);
+    this.submissionContent = new JEditorPane();
     this.submissionContent.setEditable(false);
   }
 
@@ -67,6 +67,7 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
 
   @Override
   public void setContent(String content) {
+    this.submissionContent.setContentType("text/plain");
     this.submissionContent.setText(content);
     scrollPaneToTop();
   }
