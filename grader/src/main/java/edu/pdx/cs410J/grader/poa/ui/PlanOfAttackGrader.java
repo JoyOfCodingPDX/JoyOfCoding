@@ -63,6 +63,12 @@ public class PlanOfAttackGrader {
   }
 
   private void display() {
+    Dimension fullScreen = Toolkit.getDefaultToolkit().getScreenSize();
+    parent.setPreferredSize(fullScreen);
+    int width = (int) (fullScreen.getWidth());
+    int height = (int) (fullScreen.getHeight());
+    parent.setPreferredSize(new Dimension(width, height));
+
     parent.pack();
     parent.setVisible(true);
   }
