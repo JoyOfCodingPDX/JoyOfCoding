@@ -34,6 +34,20 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
   }
 
   @Test
+  public void downloadingSubmissionsDisplaysStatusMessage() {
+    StatusMessageListener listener = mock(StatusMessageListener.class);
+    this.bus.register(listener);
+
+    this.bus.post(new DownloadPOASubmissionsRequest());
+
+    ArgumentCaptor<StatusMessage> captor = ArgumentCaptor.forClass(StatusMessage.class);
+    verify(listener).handleStatusMessage(captor.capture());
+
+    StatusMessage status = captor.getValue();
+    assertThat(status.getStatusMessage(), equalTo(EmailCredentialsPresenter.ENTER_CREDENTIALS_MESSAGE));
+  }
+
+  @Test
   public void emailAddressInViewIsSavedToPresenter() {
     ArgumentCaptor<EmailAddressValueListener> emailAddress = ArgumentCaptor.forClass(EmailAddressValueListener.class);
     verify(this.view).addEmailAddressValueListener(emailAddress.capture());
@@ -82,4 +96,8 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
     void emailCredentials(EmailCredentials event);
   }
 
+  private interface StatusMessageListener {
+    @Subscribe
+    void handleStatusMessage(StatusMessage status);
+  }
 }

@@ -15,16 +15,20 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
 
   @Test
-  public void multipartMessageWithTextPart() throws MessagingException {
+  public void multipartMessageWithTextPart() throws MessagingException, ExecutionException, InterruptedException {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
@@ -34,7 +38,7 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
   }
 
   @Test
-  public void textPlainMessage() throws MessagingException {
+  public void textPlainMessage() throws MessagingException, ExecutionException, InterruptedException {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
@@ -52,14 +56,18 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     Transport.send(message);
   }
 
-  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender) {
+  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender) throws ExecutionException, InterruptedException {
     EventBus bus = new EventBusThatPublishesUnhandledExceptionEvents();
     POASubmissionHandler handler = mock(POASubmissionHandler.class);
     bus.register(handler);
 
-    POASubmissionsDownloader downloader = new POASubmissionsDownloader(bus);
+    StatusMessageHandler statusHandler = mock(StatusMessageHandler.class);
+    bus.register(statusHandler);
+
+    POASubmissionsDownloader downloader = new POASubmissionsDownloader(bus, Executors.newSingleThreadExecutor());
     EmailCredentials credentials = new EmailCredentials(this.imapUserName, this.imapPassword);
-    downloader.downloadSubmissions(this.emailServerHost, this.imapsPort, credentials);
+    Future<?> future = downloader.downloadSubmissions(this.emailServerHost, this.imapsPort, credentials);
+    assertThat(future.get(), nullValue());
 
     ArgumentCaptor<POASubmission> captor = ArgumentCaptor.forClass(POASubmission.class);
     verify(handler).handlePOASubmission(captor.capture());
@@ -68,6 +76,12 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     assertThat(submission.getSubject(), equalTo(subject));
     assertThat(submission.getContent(), equalTo(poa));
     assertThat(submission.getSubmitter(), equalTo(sender));
+
+    ArgumentCaptor<StatusMessage> statusCaptor = ArgumentCaptor.forClass(StatusMessage.class);
+    verify(statusHandler, atLeastOnce()).handleStatusMessage(statusCaptor.capture());
+
+    List<StatusMessage> statuses = statusCaptor.getAllValues();
+    assertThat(statuses.get(0).getStatusMessage(), equalTo("Getting messages from \"poa\" folder"));
   }
 
   private void mailMultiPartPOA(String sender, String emailSubject, String poa) throws MessagingException {
@@ -96,5 +110,10 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
   private interface POASubmissionHandler {
     @Subscribe
     void handlePOASubmission(POASubmission submission);
+  }
+
+  private interface StatusMessageHandler {
+    @Subscribe
+    void handleStatusMessage(StatusMessage message);
   }
 }
