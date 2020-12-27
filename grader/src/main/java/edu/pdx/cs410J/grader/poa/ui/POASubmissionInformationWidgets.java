@@ -71,10 +71,15 @@ public class POASubmissionInformationWidgets implements POASubmissionView {
   }
 
   @Override
-  public void setContent(String content, POAContentType contentType) throws IOException, BadLocationException {
+  public void setContent(String content, POAContentType contentType) throws CouldNotParseContent {
     this.submissionContent.setContentType(contentType.getContentType());
     if (contentType == POAContentType.HTML) {
-      displayHtmlContent(content);
+      try {
+        displayHtmlContent(content);
+
+      } catch (IOException | BadLocationException ex) {
+        throw new CouldNotParseContent(ex);
+      }
     } else {
       this.submissionContent.setText(content);
     }

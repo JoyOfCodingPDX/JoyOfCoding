@@ -5,12 +5,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import javax.swing.text.BadLocationException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static edu.pdx.cs410J.grader.poa.POASubmissionView.*;
+import static edu.pdx.cs410J.grader.poa.POASubmissionView.CouldNotParseContent;
+import static edu.pdx.cs410J.grader.poa.POASubmissionView.POAContentType;
 
 @Singleton
 public class POASubmissionPresenter {
@@ -38,7 +37,7 @@ public class POASubmissionPresenter {
     try {
       this.view.setContent(submission.getContent(), isHtml ? POAContentType.HTML : POAContentType.TEXT);
 
-    } catch (IOException | BadLocationException ex) {
+    } catch (CouldNotParseContent ex) {
       this.bus.post(new UnhandledExceptionEvent(ex));
     }
   }

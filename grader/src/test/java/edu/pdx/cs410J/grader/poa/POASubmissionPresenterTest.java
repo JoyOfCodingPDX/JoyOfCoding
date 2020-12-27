@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import javax.swing.text.BadLocationException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -27,7 +26,7 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
   }
 
   @Test
-  public void submissionInformationDisplayedOnSubmissionSelectionEvent() throws IOException, BadLocationException {
+  public void submissionInformationDisplayedOnSubmissionSelectionEvent() throws POASubmissionView.CouldNotParseContent {
     String subject = "Subject";
     String submitter = "Submitter";
     LocalDateTime submitTime = LocalDateTime.now();
@@ -44,11 +43,12 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
   }
 
   @Test
-  public void whenContentContentThrowsExceptionAnUnhandledExceptionEventIsPosted() throws IOException, BadLocationException {
+  public void whenContentContentThrowsExceptionAnUnhandledExceptionEventIsPosted() throws POASubmissionView.CouldNotParseContent {
     this.unhandledExceptionHandler = this::doNotFailTestWhenUnhandledExceptionEncountered;
 
     IOException exception = new IOException();
-    doThrow(exception).when(this.view).setContent(anyString(), eq(POASubmissionView.POAContentType.HTML));
+    POASubmissionView.CouldNotParseContent couldNotParse = new POASubmissionView.CouldNotParseContent(exception);
+    doThrow(couldNotParse).when(this.view).setContent(anyString(), eq(POASubmissionView.POAContentType.HTML));
 
     UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.class);
     this.bus.register(handler);
@@ -67,12 +67,13 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
     ArgumentCaptor<UnhandledExceptionEvent> captor = ArgumentCaptor.forClass(UnhandledExceptionEvent.class);
     verify(handler).handleUnhandledExceptionEvent(captor.capture());
 
-    assertThat(captor.getValue().getUnhandledException(), equalTo(exception));
+    assertThat(captor.getValue().getUnhandledException(), equalTo(couldNotParse));
+    assertThat(captor.getValue().getUnhandledException().getCause(), equalTo(exception));
   }
 
-  static interface UnhandledExceptionEventHandler {
+  interface UnhandledExceptionEventHandler {
     @Subscribe
-    public void handleUnhandledExceptionEvent(UnhandledExceptionEvent event);
+    void handleUnhandledExceptionEvent(UnhandledExceptionEvent event);
   }
 
 }
