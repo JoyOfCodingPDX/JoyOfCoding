@@ -32,9 +32,10 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
+    String contentType = "TEXT/PLAIN; charset=us-ascii";
     mailMultiPartPOA(sender, subject, poa);
 
-    assertEmailIsProperlyProcessed(subject, poa, sender);
+    assertEmailIsProperlyProcessed(subject, poa, sender, contentType);
   }
 
   @Test
@@ -42,21 +43,33 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
-    mailTextPlainPOA(sender, subject, poa);
+    String contentType = "TEXT/PLAIN; charset=us-ascii";
+    mailSinglePartPOA(sender, subject, poa, contentType);
 
-    assertEmailIsProperlyProcessed(subject, poa, sender);
+    assertEmailIsProperlyProcessed(subject, poa, sender, contentType);
   }
 
-  private void mailTextPlainPOA(String sender, String subject, String poa) throws MessagingException {
+  private void mailSinglePartPOA(String sender, String subject, String poa, String mimeType) throws MessagingException {
     MimeMessage message = newEmailTo(newEmailSession(true), emailAddress, subject);
     message.setFrom(sender);
 
-    message.setContent(poa, "text/plain");
+    message.setContent(poa, mimeType);
 
     Transport.send(message);
   }
 
-  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender) throws ExecutionException, InterruptedException {
+  @Test
+  public void textHTMLMessage() throws MessagingException, ExecutionException, InterruptedException {
+    String subject = "Email subject";
+    String poa = "<html><div>This is my HTML POA</div></html>";
+    String sender = "sender@email.com";
+    String contenType = "TEXT/HTML; charset=us-ascii";
+    mailSinglePartPOA(sender, subject, poa, contenType);
+
+    assertEmailIsProperlyProcessed(subject, poa, sender, contenType);
+  }
+
+  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender, String contentType) throws ExecutionException, InterruptedException {
     EventBus bus = new EventBusThatPublishesUnhandledExceptionEvents();
     POASubmissionHandler handler = mock(POASubmissionHandler.class);
     bus.register(handler);
@@ -75,6 +88,7 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     POASubmission submission = captor.getValue();
     assertThat(submission.getSubject(), equalTo(subject));
     assertThat(submission.getContent(), equalTo(poa));
+    assertThat(submission.getContentType(), equalTo(contentType));
     assertThat(submission.getSubmitter(), equalTo(sender));
 
     ArgumentCaptor<StatusMessage> statusCaptor = ArgumentCaptor.forClass(StatusMessage.class);

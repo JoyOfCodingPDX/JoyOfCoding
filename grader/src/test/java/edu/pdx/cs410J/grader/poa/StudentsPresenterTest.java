@@ -189,4 +189,21 @@ public class StudentsPresenterTest extends POASubmissionTestCase {
     assertThat(event.getValue().getSelectedStudent(), equalTo(null));
   }
 
+  @Test
+  public void submissionWhenNoGradeBookHasBeenLoadedFiresUnknownStudentSelectedEvent() {
+    StudentSelectedEventHandler eventHandler = mock(StudentSelectedEventHandler.class);
+    this.bus.register(eventHandler);
+
+    POASubmission submission =
+      createPOASubmission("Subject", "Unknown Student <unknown@mail.com>", LocalDateTime.now());
+    this.bus.post(new POASubmissionSelected(submission));
+
+    verify(this.view, never()).setSelectedStudentIndex(any(int.class));
+
+    ArgumentCaptor<StudentSelectedEvent> event = ArgumentCaptor.forClass(StudentSelectedEvent.class);
+    verify(eventHandler).handle(event.capture());
+
+    assertThat(event.getValue().getSelectedStudent(), equalTo(null));
+  }
+
 }

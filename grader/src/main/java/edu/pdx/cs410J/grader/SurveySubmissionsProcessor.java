@@ -26,7 +26,7 @@ public class SurveySubmissionsProcessor extends StudentEmailAttachmentProcessor 
   }
 
   @Override
-  public void processAttachment(Message message, String fileName, InputStream inputStream) {
+  public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
     debug("    File name: " + fileName);
     debug("    InputStream: " + inputStream);
 

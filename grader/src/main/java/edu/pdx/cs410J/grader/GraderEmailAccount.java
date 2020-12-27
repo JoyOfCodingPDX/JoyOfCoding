@@ -66,21 +66,16 @@ public class GraderEmailAccount {
     if (isMultipartMessage(message)) {
       processAttachments(message, processor);
 
-    } else if (isTextPlainMessage(message)) {
-       processPlainTextBody(message, processor);
+    } else if (processor.hasSupportedContentType(message)) {
+       processSinglePartBody(message, processor, message.getContentType());
 
     } else {
       warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
     }
   }
 
-  private void processPlainTextBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
-    processor.processAttachment(message, "TextPlainBody", message.getInputStream());
-
-  }
-
-  private boolean isTextPlainMessage(Message message) throws MessagingException {
-    return message.isMimeType("text/plain");
+  private void processSinglePartBody(Message message, EmailAttachmentProcessor processor, String contentType) throws IOException, MessagingException {
+    processor.processAttachment(message, "SinglePartBody", message.getInputStream(), contentType);
   }
 
   private void logStatus(String format, Object... args) {
@@ -119,7 +114,7 @@ public class GraderEmailAccount {
   private boolean attemptToProcessPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String supportedContentType) throws MessagingException, IOException {
     if (partHasContentType(part, supportedContentType)) {
       debug("    Processing attachment of type " + part.getContentType());
-      processAttachmentFromPart(message, part, processor);
+      processAttachmentFromPart(message, part, processor, part.getContentType());
       return true;
 
     } else if (partIsMultiPart(part)) {
@@ -154,9 +149,9 @@ public class GraderEmailAccount {
     return part.getContentType().toUpperCase().contains(contentType.toUpperCase());
   }
 
-  private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+  private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String contentType) throws MessagingException, IOException {
     String fileName = part.getFileName();
-    processor.processAttachment(message, fileName, part.getInputStream());
+    processor.processAttachment(message, fileName, part.getInputStream(), contentType);
   }
 
   private void warnOfUnexpectedMessage(Message message, String description) throws MessagingException {

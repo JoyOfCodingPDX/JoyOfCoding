@@ -8,15 +8,20 @@ import com.google.inject.Singleton;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static edu.pdx.cs410J.grader.poa.POASubmissionView.CouldNotParseContent;
+import static edu.pdx.cs410J.grader.poa.POASubmissionView.POAContentType;
+
 @Singleton
 public class POASubmissionPresenter {
   private final POASubmissionView view;
+  private final EventBus bus;
 
   @Inject
   public POASubmissionPresenter(EventBus bus, POASubmissionView view) {
     this.view = view;
 
     bus.register(this);
+    this.bus = bus;
   }
 
   @Subscribe
@@ -26,7 +31,15 @@ public class POASubmissionPresenter {
     this.view.setSubmissionSubject(submission.getSubject());
     this.view.setSubmissionSubmitter(submission.getSubmitter());
     this.view.setSubmissionTime(formatSubmissionTime(submission.getSubmitTime()));
-    this.view.setContent(submission.getContent());
+    String contentType = submission.getContentType();
+    boolean isHtml = contentType.toLowerCase().contains("text/html");
+
+    try {
+      this.view.setContent(submission.getContent(), isHtml ? POAContentType.HTML : POAContentType.TEXT);
+
+    } catch (CouldNotParseContent ex) {
+      this.bus.post(new UnhandledExceptionEvent(ex));
+    }
   }
 
   static String formatSubmissionTime(LocalDateTime submitTime) {
