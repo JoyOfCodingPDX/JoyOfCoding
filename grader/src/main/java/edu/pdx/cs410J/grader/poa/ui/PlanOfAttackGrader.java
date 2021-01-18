@@ -22,7 +22,10 @@ public class PlanOfAttackGrader {
   private final TopLevelJFrame parent;
 
   @Inject
-  public PlanOfAttackGrader(TopLevelJFrame parent, POASubmissionsPanel submissions, POASubmissionInformationPanel submissionInfo) {
+  public PlanOfAttackGrader(TopLevelJFrame parent,
+                            POASubmissionsPanel submissions,
+                            POASubmissionInformationPanel submissionInfo,
+                            StatusMessageWidget statusMessage) {
     this.parent = parent;
 
     parent.setTitle("Plan Of Attack Grader");
@@ -31,6 +34,7 @@ public class PlanOfAttackGrader {
     content.setLayout(new BorderLayout());
     content.add(submissions, BorderLayout.WEST);
     content.add(submissionInfo, BorderLayout.CENTER);
+    content.add(statusMessage, BorderLayout.SOUTH);
   }
 
   public static void main(String[] args) {
@@ -59,6 +63,12 @@ public class PlanOfAttackGrader {
   }
 
   private void display() {
+    Dimension fullScreen = Toolkit.getDefaultToolkit().getScreenSize();
+    parent.setPreferredSize(fullScreen);
+    int width = (int) (fullScreen.getWidth());
+    int height = (int) (fullScreen.getHeight());
+    parent.setPreferredSize(new Dimension(width, height));
+
     parent.pack();
     parent.setVisible(true);
   }

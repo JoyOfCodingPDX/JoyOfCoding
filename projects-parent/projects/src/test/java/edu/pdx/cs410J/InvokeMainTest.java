@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
-public class InvokeMainTest extends InvokeMainTestCase {
+public final class InvokeMainTest extends InvokeMainTestCase {
 
   @Test
   public void commandLineArgsWrittenToStandardOutAreCaptured() {

@@ -32,6 +32,14 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
 
     this.cancelButton.addActionListener(e -> hideDialog());
     this.okButton.addActionListener(e -> submitCredentials());
+
+    this.pack();
+
+    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
+    int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
+    this.setLocation(x, y);
+
   }
 
   private JPanel createOkCancelPanel() {

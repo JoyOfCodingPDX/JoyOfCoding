@@ -7,13 +7,15 @@ public class POASubmission {
   private final String subject;
   private final String submitter;
   private final LocalDateTime submitTime;
-  private String content;
+  private final String content;
+  private final String contentType;
 
-  private POASubmission(String subject, String submitter, LocalDateTime submitTime, String content) {
+  private POASubmission(String subject, String submitter, LocalDateTime submitTime, String content, String contentType) {
     this.subject = subject;
     this.submitter = submitter;
     this.submitTime = submitTime;
     this.content = content;
+    this.contentType = contentType;
   }
 
   public static Builder builder() {
@@ -52,19 +54,25 @@ public class POASubmission {
     return content;
   }
 
+  public String getContentType() {
+    return contentType;
+  }
+
   public static class Builder {
     private String subject;
     private String submitter;
     private LocalDateTime submitTime;
     private String content;
+    private String contentType;
 
     public POASubmission create() {
       assertNotNull("subject", subject);
       assertNotNull("submitter", submitter);
       assertNotNull("submitTime", submitTime);
       assertNotNull("content", content);
+      assertNotNull("contentType", contentType);
 
-      return new POASubmission(subject, submitter, submitTime, content);
+      return new POASubmission(subject, submitter, submitTime, content, contentType);
     }
 
     private void assertNotNull(String description, Object object) {
@@ -90,6 +98,11 @@ public class POASubmission {
 
     public Builder setContent(String content) {
       this.content = content;
+      return this;
+    }
+
+    public Builder setContentType(String contentType) {
+      this.contentType = contentType;
       return this;
     }
   }

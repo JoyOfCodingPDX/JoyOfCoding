@@ -10,8 +10,6 @@ import javax.mail.Multipart;
 import javax.mail.Transport;
 import javax.mail.internet.*;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -44,15 +42,6 @@ public class Submit extends EmailSender {
 
   private static final PrintWriter out = new PrintWriter(System.out, true);
   private static final PrintWriter err = new PrintWriter(System.err, true);
-
-  /**
-   * A URL containing a list of files that should not be submitted
-   */
-  private static final String NO_SUBMIT_LIST_URL =
-    "http://www.cs.pdx.edu/~whitlock/no-submit";
-
-  private static final String PROJECT_NAMES_LIST_URL =
-    "http://www.cs.pdx.edu/~whitlock/project-names";
 
   /////////////////////  Instance Fields  //////////////////////////
 
@@ -252,7 +241,8 @@ public class Submit extends EmailSender {
     return "Your login id (" + userId + ") should not be your 9-digit student id";
   }
 
-  private void validateProjectName() {
+  @VisibleForTesting
+  void validateProjectName() {
     List<String> validProjectNames = fetchListOfValidProjectNames();
     if (!validProjectNames.contains(projName)) {
       String message = "\"" + projName + "\" is not in the list of valid project names: " + validProjectNames;
@@ -261,7 +251,25 @@ public class Submit extends EmailSender {
   }
 
   private List<String> fetchListOfValidProjectNames() {
-    return fetchListOfStringsFromUrl(PROJECT_NAMES_LIST_URL);
+    return fetchListOfStringsFromResource("project-names");
+  }
+
+  private List<String> fetchListOfStringsFromResource(String resourceName) {
+    InputStream stream = this.getClass().getResourceAsStream(resourceName);
+    List<String> strings = new ArrayList<>();
+    try {
+
+      InputStreamReader isr = new InputStreamReader(stream);
+      BufferedReader br = new BufferedReader(isr);
+      while (br.ready()) {
+        strings.add(br.readLine().trim());
+      }
+
+    } catch (IOException ex) {
+      err.println("** WARNING: Problems while reading " + resourceName + ": " + ex.getMessage());
+    }
+
+    return strings;
   }
 
   /**
@@ -421,7 +429,7 @@ public class Submit extends EmailSender {
     }
   }
 
-  protected boolean fileExists(File file) {
+  boolean fileExists(File file) {
     if (!file.exists()) {
       err.println("** Not submitting file " + file +
         " because it does not exist");
@@ -473,32 +481,7 @@ public class Submit extends EmailSender {
   }
 
   private List<String> fetchListOfFilesThatCanNotBeSubmitted() {
-    return fetchListOfStringsFromUrl(NO_SUBMIT_LIST_URL);
-  }
-
-  private List<String> fetchListOfStringsFromUrl(String listUrl) {
-    if (!failIfDisallowedFiles) {
-      return Collections.emptyList();
-    }
-
-    List<String> strings = new ArrayList<>();
-
-    try {
-      URL url = new URL(listUrl);
-      InputStreamReader isr = new InputStreamReader(url.openStream());
-      BufferedReader br = new BufferedReader(isr);
-      while (br.ready()) {
-        strings.add(br.readLine().trim());
-      }
-
-    } catch (MalformedURLException ex) {
-      err.println("** WARNING: Cannot access " + listUrl + ": " +
-        ex.getMessage());
-
-    } catch (IOException ex) {
-      err.println("** WARNING: Problems while reading " + listUrl + ": " + ex.getMessage());
-    }
-    return strings;
+    return fetchListOfStringsFromResource("no-submit");
   }
 
   /**
@@ -540,7 +523,7 @@ public class Submit extends EmailSender {
     }
   }
 
-  protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
+  private void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
     boolean wereTestClassessSubmitted = submittedTestClasses(sourceFiles);
     if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
       out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +

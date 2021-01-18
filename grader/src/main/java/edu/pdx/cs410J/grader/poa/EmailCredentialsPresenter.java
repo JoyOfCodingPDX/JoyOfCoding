@@ -8,6 +8,9 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class EmailCredentialsPresenter {
+  @VisibleForTesting
+  static final String ENTER_CREDENTIALS_MESSAGE = "Enter email address and password";
+
   private final EventBus bus;
   private final EmailCredentialsView view;
   private String emailAddress;
@@ -31,7 +34,12 @@ public class EmailCredentialsPresenter {
 
   @Subscribe
   public void displayEmailCredentialsView(DownloadPOASubmissionsRequest event) {
+    fireStatusMessageEvent(ENTER_CREDENTIALS_MESSAGE);
     this.view.setIsVisible(true);
+  }
+
+  private void fireStatusMessageEvent(String message) {
+    this.bus.post(new StatusMessage(message));
   }
 
   public String getEmailAddress() {

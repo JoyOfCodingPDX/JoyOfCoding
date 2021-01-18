@@ -20,26 +20,25 @@ public class GraderEmailAccount {
   private final String emailServerHostName;
   private final int emailServerPort;
   private final boolean trustLocalhostSSL;
+  private final StatusLogger statusLogger;
 
-  public GraderEmailAccount(String password) {
-    this("sjavata", password);
-  }
-
-  public GraderEmailAccount(String userName, String password) {
-    this("imap.gmail.com", 993, userName, password, false);
+  public GraderEmailAccount(String userName, String password, StatusLogger statusLogger) {
+    this("imap.gmail.com", 993, userName, password, false, statusLogger);
   }
 
   @VisibleForTesting
-  public GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL) {
+  public GraderEmailAccount(String emailServerHostName, int emailServerPort, String userName, String password, boolean trustLocalhostSSL, StatusLogger statusLogger) {
     this.userName = userName;
     this.password = password;
     this.emailServerHostName = emailServerHostName;
     this.emailServerPort = emailServerPort;
     this.trustLocalhostSSL = trustLocalhostSSL;
+    this.statusLogger = statusLogger;
   }
 
   private void fetchAttachmentsFromUnreadMessagesInFolder(Folder folder, EmailAttachmentProcessor processor) {
     try {
+      logStatus("Getting messages from \"%s\" folder", folder.getFullName());
       Message[] messages = folder.getMessages();
 
       FetchProfile profile = new FetchProfile();
@@ -48,7 +47,9 @@ public class GraderEmailAccount {
 
       folder.fetch(messages, profile);
 
-      for (Message message : messages) {
+      for (int i = 0, messagesLength = messages.length; i < messagesLength; i++) {
+        Message message = messages[i];
+        logStatus("Processing message %d of %d from %s", i + 1, messages.length, message.getFrom()[0]);
         if (isUnread(message)) {
           fetchAttachmentsFromUnreadMessage(message, processor);
         }
@@ -65,21 +66,24 @@ public class GraderEmailAccount {
     if (isMultipartMessage(message)) {
       processAttachments(message, processor);
 
-    } else if (isTextPlainMessage(message)) {
-       processPlainTextBody(message, processor);
+    } else if (processor.hasSupportedContentType(message)) {
+       processSinglePartBody(message, processor, message.getContentType());
 
     } else {
       warnOfUnexpectedMessage(message, "Fetched a message that wasn't multipart: " + message.getContentType());
     }
   }
 
-  private void processPlainTextBody(Message message, EmailAttachmentProcessor processor) throws IOException, MessagingException {
-    processor.processAttachment(message, "TextPlainBody", message.getInputStream());
-
+  private void processSinglePartBody(Message message, EmailAttachmentProcessor processor, String contentType) throws IOException, MessagingException {
+    processor.processAttachment(message, "SinglePartBody", message.getInputStream(), contentType);
   }
 
-  private boolean isTextPlainMessage(Message message) throws MessagingException {
-    return message.isMimeType("text/plain");
+  private void logStatus(String format, Object... args) {
+    this.logStatus(String.format(format, args));
+  }
+
+  private void logStatus(String statusMessage) {
+    this.statusLogger.logStatus(statusMessage);
   }
 
   private void processAttachments(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
@@ -110,7 +114,7 @@ public class GraderEmailAccount {
   private boolean attemptToProcessPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String supportedContentType) throws MessagingException, IOException {
     if (partHasContentType(part, supportedContentType)) {
       debug("    Processing attachment of type " + part.getContentType());
-      processAttachmentFromPart(message, part, processor);
+      processAttachmentFromPart(message, part, processor, part.getContentType());
       return true;
 
     } else if (partIsMultiPart(part)) {
@@ -145,9 +149,9 @@ public class GraderEmailAccount {
     return part.getContentType().toUpperCase().contains(contentType.toUpperCase());
   }
 
-  private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor) throws MessagingException, IOException {
+  private void processAttachmentFromPart(Message message, BodyPart part, EmailAttachmentProcessor processor, String contentType) throws MessagingException, IOException {
     String fileName = part.getFileName();
-    processor.processAttachment(message, fileName, part.getInputStream());
+    processor.processAttachment(message, fileName, part.getInputStream(), contentType);
   }
 
   private void warnOfUnexpectedMessage(Message message, String description) throws MessagingException {
@@ -305,6 +309,9 @@ public class GraderEmailAccount {
     } catch (MessagingException ex) {
       throw new IllegalStateException("While closing folder and store", ex);
     }
+  }
 
+  public interface StatusLogger {
+    public void logStatus(String statusMessage);
   }
 }

@@ -51,7 +51,7 @@ public class FetchAndProcessGraderEmail {
     File directory = getDirectory(directoryName);
     GradeBook gradeBook = getGradeBook(gradeBookFile);
 
-    GraderEmailAccount account = new GraderEmailAccount(password);
+    GraderEmailAccount account = new GraderEmailAccount("sjavata", password, m -> { });
     fetchAndProcessGraderEmails(whatToFetch, account, directory, gradeBook);
 
     saveGradeBookIfModified(gradeBook, gradeBookFile);

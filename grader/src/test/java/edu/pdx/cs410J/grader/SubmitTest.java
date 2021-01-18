@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -285,6 +286,33 @@ public class SubmitTest {
     String[] dirs = {"src", "main", "resources", "edu", "pdx", "cs410J", userId};
 
     assertFileCanBeSubmitted(userId, fileName, dirs, false);
+  }
+
+  @Test
+  public void cannotSubmitFilesOnNoSubmitList() throws IOException {
+    String userId = "whitlock";
+    String fileName = "AbstractAirline.java";
+    String[] dirs = {"src", "main", "java", "edu", "pdx", "cs410J", userId};
+
+    assertFileCanBeSubmitted(userId, fileName, dirs, false);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void invalidProjectNameThrowsIllegalStateException() {
+    Submit submit = new Submit();
+    submit.setProjectName("invalid");
+    submit.validateProjectName();
+  }
+
+  @Test
+  public void validateProjectName() {
+    List.of("koans", "Project0", "Project4").forEach(
+      projectName -> {
+        Submit submit = new Submit();
+        submit.setProjectName("koans");
+        submit.validateProjectName();
+      }
+    );
   }
 
 }

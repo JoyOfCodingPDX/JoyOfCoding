@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
@@ -58,7 +59,7 @@ public class PhoneBillServletTest {
 
     servlet.doPost(request, response);
 
-    assertThat(stringWriter.toString(), equalTo(Messages.definedWordAs(word, definition) + "\n"));
+    assertThat(stringWriter.toString(), containsString(Messages.definedWordAs(word, definition)));
 
     // Use an ArgumentCaptor when you want to make multiple assertions against the value passed to the mock
     ArgumentCaptor<Integer> statusCode = ArgumentCaptor.forClass(Integer.class);

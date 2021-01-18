@@ -1,12 +1,14 @@
 package edu.pdx.cs410J.airlineweb;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.airlineweb.AirlineRestClient.AirlineRestException;
+import edu.pdx.cs410J.UncaughtExceptionInMain;
+import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -42,14 +44,16 @@ public class Project5IT extends InvokeMainTestCase {
         assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
-    @Test(expected = AirlineRestException.class)
+    @Test(expected = RestException.class)
     public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
         String word = "WORD";
         try {
             invokeMain(Project5.class, HOSTNAME, PORT, word);
 
-        } catch (IllegalArgumentException ex) {
-            throw ex.getCause().getCause();
+        } catch (UncaughtExceptionInMain ex) {
+            RestException cause = (RestException) ex.getCause();
+            assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
+            throw cause;
         }
     }
 

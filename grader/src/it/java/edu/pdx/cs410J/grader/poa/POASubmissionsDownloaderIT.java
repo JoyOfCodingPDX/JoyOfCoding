@@ -15,51 +15,72 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
 
   @Test
-  public void multipartMessageWithTextPart() throws MessagingException {
+  public void multipartMessageWithTextPart() throws MessagingException, ExecutionException, InterruptedException {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
+    String contentType = "TEXT/PLAIN; charset=us-ascii";
     mailMultiPartPOA(sender, subject, poa);
 
-    assertEmailIsProperlyProcessed(subject, poa, sender);
+    assertEmailIsProperlyProcessed(subject, poa, sender, contentType);
   }
 
   @Test
-  public void textPlainMessage() throws MessagingException {
+  public void textPlainMessage() throws MessagingException, ExecutionException, InterruptedException {
     String subject = "Email subject";
     String poa = "This is my POA";
     String sender = "sender@email.com";
-    mailTextPlainPOA(sender, subject, poa);
+    String contentType = "TEXT/PLAIN; charset=us-ascii";
+    mailSinglePartPOA(sender, subject, poa, contentType);
 
-    assertEmailIsProperlyProcessed(subject, poa, sender);
+    assertEmailIsProperlyProcessed(subject, poa, sender, contentType);
   }
 
-  private void mailTextPlainPOA(String sender, String subject, String poa) throws MessagingException {
+  private void mailSinglePartPOA(String sender, String subject, String poa, String mimeType) throws MessagingException {
     MimeMessage message = newEmailTo(newEmailSession(true), emailAddress, subject);
     message.setFrom(sender);
 
-    message.setContent(poa, "text/plain");
+    message.setContent(poa, mimeType);
 
     Transport.send(message);
   }
 
-  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender) {
+  @Test
+  public void textHTMLMessage() throws MessagingException, ExecutionException, InterruptedException {
+    String subject = "Email subject";
+    String poa = "<html><div>This is my HTML POA</div></html>";
+    String sender = "sender@email.com";
+    String contenType = "TEXT/HTML; charset=us-ascii";
+    mailSinglePartPOA(sender, subject, poa, contenType);
+
+    assertEmailIsProperlyProcessed(subject, poa, sender, contenType);
+  }
+
+  private void assertEmailIsProperlyProcessed(String subject, String poa, String sender, String contentType) throws ExecutionException, InterruptedException {
     EventBus bus = new EventBusThatPublishesUnhandledExceptionEvents();
     POASubmissionHandler handler = mock(POASubmissionHandler.class);
     bus.register(handler);
 
-    POASubmissionsDownloader downloader = new POASubmissionsDownloader(bus);
+    StatusMessageHandler statusHandler = mock(StatusMessageHandler.class);
+    bus.register(statusHandler);
+
+    POASubmissionsDownloader downloader = new POASubmissionsDownloader(bus, Executors.newSingleThreadExecutor());
     EmailCredentials credentials = new EmailCredentials(this.imapUserName, this.imapPassword);
-    downloader.downloadSubmissions(this.emailServerHost, this.imapsPort, credentials);
+    Future<?> future = downloader.downloadSubmissions(this.emailServerHost, this.imapsPort, credentials);
+    assertThat(future.get(), nullValue());
 
     ArgumentCaptor<POASubmission> captor = ArgumentCaptor.forClass(POASubmission.class);
     verify(handler).handlePOASubmission(captor.capture());
@@ -67,7 +88,14 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     POASubmission submission = captor.getValue();
     assertThat(submission.getSubject(), equalTo(subject));
     assertThat(submission.getContent(), equalTo(poa));
+    assertThat(submission.getContentType(), equalTo(contentType));
     assertThat(submission.getSubmitter(), equalTo(sender));
+
+    ArgumentCaptor<StatusMessage> statusCaptor = ArgumentCaptor.forClass(StatusMessage.class);
+    verify(statusHandler, atLeastOnce()).handleStatusMessage(statusCaptor.capture());
+
+    List<StatusMessage> statuses = statusCaptor.getAllValues();
+    assertThat(statuses.get(0).getStatusMessage(), equalTo("Getting messages from \"poa\" folder"));
   }
 
   private void mailMultiPartPOA(String sender, String emailSubject, String poa) throws MessagingException {
@@ -96,5 +124,10 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
   private interface POASubmissionHandler {
     @Subscribe
     void handlePOASubmission(POASubmission submission);
+  }
+
+  private interface StatusMessageHandler {
+    @Subscribe
+    void handleStatusMessage(StatusMessage message);
   }
 }

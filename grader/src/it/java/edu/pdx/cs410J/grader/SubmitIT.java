@@ -92,7 +92,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     gradeBook.addStudent(new Student(studentLoginId));
     gradeBook.addAssignment(new Assignment(projectName, 3.5));
 
-    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true);
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true, m -> { });
     FetchAndProcessGraderEmail.fetchAndProcessGraderEmails("projects", account, this.tempDirectory, gradeBook);
 
     Grade grade = gradeBook.getStudent(studentLoginId).get().getGrade(projectName);
@@ -213,7 +213,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     List<Message> messages = new ArrayList<>();
 
-    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true) {
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true, m -> { }) {
       @Override
       protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
         messages.add(message);
@@ -252,7 +252,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     List<Message> messages = new ArrayList<>();
 
-    GraderEmailAccount studentAccount = new GraderEmailAccount(emailServerHost, imapsPort, studentEmail, imapPassword, true) {
+    GraderEmailAccount studentAccount = new GraderEmailAccount(emailServerHost, imapsPort, studentEmail, imapPassword, true, m -> { }) {
       @Override
       protected void fetchAttachmentsFromUnreadMessage(Message message, EmailAttachmentProcessor processor) throws MessagingException, IOException {
         messages.add(message);
@@ -262,7 +262,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     studentAccount.fetchAttachmentsFromUnreadMessagesInFolder("inbox", new EmailAttachmentProcessor() {
       @Override
-      public void processAttachment(Message message, String fileName, InputStream inputStream) {
+      public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
 
       }
 

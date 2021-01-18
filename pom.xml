@@ -55,7 +55,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <groovy.version>3.0.0-beta-1</groovy.version>
+        <groovy.version>3.0.4</groovy.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -64,7 +64,7 @@
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.3.4</wagon-ssh.version>
 
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
@@ -77,6 +77,11 @@
         <id>CS410J</id>
         <name>CS410J Maven Repository</name>
         <url>https://dl.bintray.com/davidwhitlock/maven</url>
+      </repository>
+      <repository>
+        <id>jcenter</id>
+        <name>bintray</name>
+        <url>https://jcenter.bintray.com</url>
       </repository>
     </repositories>
   <build>
@@ -107,7 +112,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.1.0</version>
         <executions>
           <execution>
             <goals>
@@ -120,7 +124,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -186,6 +189,16 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -310,7 +323,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.4</version>
+          <version>0.8.5</version>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
@@ -427,7 +440,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>3.1.11</version>
+          <version>4.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
