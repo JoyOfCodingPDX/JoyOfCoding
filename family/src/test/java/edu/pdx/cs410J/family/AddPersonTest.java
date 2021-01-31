@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Test;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +9,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class tests the behavior of the {@link AddPerson} program to

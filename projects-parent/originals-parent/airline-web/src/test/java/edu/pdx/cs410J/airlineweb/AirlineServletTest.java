@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.airlineweb;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import javax.servlet.ServletException;

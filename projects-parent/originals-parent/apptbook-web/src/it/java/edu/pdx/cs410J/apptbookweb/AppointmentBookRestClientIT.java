@@ -2,7 +2,7 @@ package edu.pdx.cs410J.apptbookweb;
 
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;

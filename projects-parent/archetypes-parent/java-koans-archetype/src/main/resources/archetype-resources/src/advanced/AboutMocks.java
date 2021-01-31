@@ -5,7 +5,7 @@ package advanced;
 
 import com.sandwich.koan.Koan;
 
-import static com.sandwich.util.Assert.fail;
+import static com.sandwich.util.Assertions.fail;
 
 public class AboutMocks {
 

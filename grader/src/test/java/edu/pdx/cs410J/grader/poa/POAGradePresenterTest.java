@@ -6,7 +6,7 @@ import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 

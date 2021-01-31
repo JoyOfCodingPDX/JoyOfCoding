@@ -2,7 +2,7 @@ package edu.pdx.cs410J.rmi;
 
 import com.google.common.collect.Iterables;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 
 import java.rmi.NotBoundException;

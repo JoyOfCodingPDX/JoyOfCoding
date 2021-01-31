@@ -3,7 +3,7 @@ package edu.pdx.cs410J.grader;
 import com.icegreen.greenmail.imap.AuthorizationException;
 import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.user.GreenMailUser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;

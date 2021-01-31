@@ -2,7 +2,7 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDateTime;

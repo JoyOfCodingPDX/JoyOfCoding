@@ -5,7 +5,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;

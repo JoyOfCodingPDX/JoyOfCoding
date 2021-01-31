@@ -1,11 +1,12 @@
 package edu.pdx.cs410J;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is a set of JUnit unit tests that test the functionality of an
