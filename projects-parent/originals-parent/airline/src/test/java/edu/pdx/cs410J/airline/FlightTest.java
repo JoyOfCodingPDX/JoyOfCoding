@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the {@link Flight} class.
@@ -12,10 +13,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class FlightTest {
   
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void getArrivalStringNeedsToBeImplemented() {
     Flight flight = new Flight();
-    flight.getArrivalString();
+    assertThrows(UnsupportedOperationException.class, flight::getArrivalString);
   }
 
   @Test
