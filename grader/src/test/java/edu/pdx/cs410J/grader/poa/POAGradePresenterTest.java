@@ -5,7 +5,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
@@ -33,7 +33,7 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
   private POASubmission submissionForPOAWithGrade;
   private Assignment assignmentWithPOAGrade;
 
-  @Before
+  @BeforeEach
   @Override
   public void setUp() {
     super.setUp();

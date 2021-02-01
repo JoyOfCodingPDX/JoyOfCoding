@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -22,6 +23,7 @@ public class GradeBookPresenterTest extends EventBusTestCase {
   private GradeBookView view;
 
   @Override
+  @BeforeEach
   public void setUp() {
     super.setUp();
 

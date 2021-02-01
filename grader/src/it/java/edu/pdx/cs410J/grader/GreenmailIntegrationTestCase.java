@@ -9,8 +9,8 @@ import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.sun.mail.util.MailSSLSocketFactory;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -27,7 +27,7 @@ public class GreenmailIntegrationTestCase {
   protected final int imapsPort = 9933;
   protected GreenMail emailServer;
 
-  @Before
+  @BeforeEach
   public void startEmailServer() throws FolderException, AuthorizationException {
     ServerSetup smtp = new ServerSetup(smtpPort, emailServerHost, ServerSetup.PROTOCOL_SMTP);
     ServerSetup imaps = new ServerSetup(imapsPort, emailServerHost, ServerSetup.PROTOCOL_IMAPS);
@@ -43,12 +43,12 @@ public class GreenmailIntegrationTestCase {
 
   }
 
-  @Before
+  @BeforeEach
   public void enableDebugLogging() {
     System.setProperty("mail.imap.parse.debug", Boolean.TRUE.toString());
   }
 
-  @After
+  @AfterEach
   public void stopEmailServer() {
     emailServer.stop();
   }

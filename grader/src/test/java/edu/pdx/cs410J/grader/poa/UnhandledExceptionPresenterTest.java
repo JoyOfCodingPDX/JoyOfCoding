@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class UnhandledExceptionPresenterTest extends EventBusTestCase {
   private UnhandledExceptionView view;
 
   @Override
+  @BeforeEach
   public void setUp() {
     super.setUp();
     this.unhandledExceptionHandler = this::doNotFailTestWhenUnhandledExceptionEncountered;

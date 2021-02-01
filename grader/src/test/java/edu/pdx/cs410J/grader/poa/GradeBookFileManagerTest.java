@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.grader.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.verify;
 public class GradeBookFileManagerTest extends EventBusTestCase {
 
   @Override
+  @BeforeEach
   public void setUp() {
     super.setUp();
     new GradeBookFileManager(this.bus);

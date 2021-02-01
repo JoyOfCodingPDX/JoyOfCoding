@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -16,7 +16,7 @@ public class POASubmissionPresenterTest extends POASubmissionTestCase {
 
   private POASubmissionView view;
 
-  @Before
+  @BeforeEach
   @Override
   public void setUp() {
     super.setUp();

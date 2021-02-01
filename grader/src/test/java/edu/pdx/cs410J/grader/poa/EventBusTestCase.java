@@ -2,8 +2,8 @@ package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.function.Consumer;
 
@@ -11,14 +11,14 @@ public class EventBusTestCase {
   protected EventBus bus;
   protected Consumer<UnhandledExceptionEvent> unhandledExceptionHandler;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     unhandledExceptionHandler = this::failTestWhenUnhandledExceptionEncountered;
     bus = new EventBusThatPublishesUnhandledExceptionEvents();
     bus.register(this);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     if (bus != null) {
       bus.unregister(this);
