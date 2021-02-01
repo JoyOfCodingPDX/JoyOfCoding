@@ -4,11 +4,11 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2020</version>
+    <version>Summer2021</version>
   </parent>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>kata</artifactId>
-  <version>Summer2020</version>
+  <version>Summer2021</version>
   <packaging>jar</packaging>
 
   <name>Kata Project</name>
@@ -101,7 +101,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Summer2020</version>
+      <version>Summer2021</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -136,7 +136,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2020</version>
+                <version>Summer2021</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
