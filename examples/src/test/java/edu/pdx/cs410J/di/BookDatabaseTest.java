@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.di;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;
@@ -25,13 +25,13 @@ public class BookDatabaseTest
     private String fileName;
 
 
-    @Before
+    @BeforeAll
     public void setUp() {
 
       this.fileName = generateFileName();
     }
 
-    @After
+    @AfterAll
     public void tearDown() {
       File dataFile = new File(directory, fileName);
       dataFile.delete();

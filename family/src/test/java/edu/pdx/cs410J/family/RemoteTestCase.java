@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -37,7 +37,7 @@ public abstract class RemoteTestCase {
    * Creates an empty <code>RemoteFamilyTree</code> and binds it into
    * the RMI namespace.
    */
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     try {
       File file = File.createTempFile("familyTree", "xml");
@@ -54,7 +54,7 @@ public abstract class RemoteTestCase {
   /**
    * Unbinds the remote family tree from the RMI namespace
    */
-  @AfterEach
+  @AfterAll
   public void tearDown() {
     this.unbind();
   }

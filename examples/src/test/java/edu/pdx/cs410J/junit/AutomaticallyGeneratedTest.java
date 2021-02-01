@@ -1,19 +1,20 @@
 package edu.pdx.cs410J.junit;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -23,12 +24,12 @@ import java.util.List;
 @RunWith(AutomaticallyGeneratedTest.TestGenerator.class)
 public class AutomaticallyGeneratedTest
 {
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         System.out.println("BeforeClass");
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         System.out.println("AfterClass");
     }
