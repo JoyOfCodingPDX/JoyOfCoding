@@ -6,9 +6,9 @@ package ${package};
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
-import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -16,12 +16,13 @@ import java.net.HttpURLConnection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * An integration test for {@link Project4} that invokes its main method with
  * various arguments
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class Project4IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
     private static final String PORT = System.getProperty("http.port", "8080");
@@ -47,16 +48,16 @@ public class Project4IT extends InvokeMainTestCase {
         assertThat(out, out, containsString(Messages.formatWordCount(0)));
     }
 
-    @Test(expected = RestException.class)
+    @Test
     public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
         String word = "WORD";
         try {
             invokeMain(Project4.class, HOSTNAME, PORT, word);
+            fail("Expected a RestException to be thrown");
 
         } catch (UncaughtExceptionInMain ex) {
             RestException cause = (RestException) ex.getCause();
             assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
-            throw cause;
         }
     }
 
