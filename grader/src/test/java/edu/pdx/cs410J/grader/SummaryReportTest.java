@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.io.CharStreams;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -26,7 +26,7 @@ public class SummaryReportTest {
 
   private File tempDirectory;
 
-  @Before
+  @BeforeEach
   public void createTempDirectoryForTest() {
     String tempDirName = "SummaryReportTestTempDirectory-" + System.currentTimeMillis();
     tempDirectory = new File(System.getProperty("java.io.tmpdir"), tempDirName);
@@ -36,7 +36,7 @@ public class SummaryReportTest {
     assertThat(dirWasCreated, equalTo(true));
   }
 
-  @After
+  @AfterEach
   public void deleteTempDirectoryForTest() throws IOException {
     Files.walkFileTree(tempDirectory.toPath(), new SimpleFileVisitor<Path>() {
       @Override
