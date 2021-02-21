@@ -4,9 +4,9 @@
 package ${package};
 
 import edu.pdx.cs410J.web.HttpRequestHelper;
-import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * Integration test that tests the REST calls made by {@link AirlineRestClient}
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class AirlineRestClientIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");

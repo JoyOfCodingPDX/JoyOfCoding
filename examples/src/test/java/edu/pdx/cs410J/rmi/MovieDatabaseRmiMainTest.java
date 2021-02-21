@@ -1,9 +1,9 @@
 package edu.pdx.cs410J.rmi;
 
 import com.google.common.collect.Iterables;
-import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class MovieDatabaseRmiMainTest extends MovieDatabaseRmiTestCase {
 
   @Test
