@@ -7,6 +7,7 @@ import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
@@ -41,15 +42,14 @@ public class GradeBookPresenterTest extends EventBusTestCase {
   }
 
   @Test
-  public void loadGradeBookEventPublishedWhenFileProvidedByView() throws IOException {
+  public void loadGradeBookEventPublishedWhenFileProvidedByView(@TempDir File tempDir) throws IOException {
     LoadGradeBookHandler handler = mock(LoadGradeBookHandler.class);
     bus.register(handler);
 
     ArgumentCaptor<GradeBookView.FileSelectedListener> listener = ArgumentCaptor.forClass(GradeBookView.FileSelectedListener.class);
     verify(view).addGradeBookFileListener(listener.capture());
 
-    File file = File.createTempFile("testGradeBook", "xml");
-    file.deleteOnExit();
+    File file = new File(tempDir, "testGradeBook.xml");
     listener.getValue().fileSelected(file);
 
     ArgumentCaptor<LoadGradeBook> event = ArgumentCaptor.forClass(LoadGradeBook.class);

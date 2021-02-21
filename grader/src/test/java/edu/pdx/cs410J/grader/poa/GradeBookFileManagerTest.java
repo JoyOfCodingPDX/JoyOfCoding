@@ -5,6 +5,7 @@ import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.grader.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
@@ -27,9 +28,9 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
   }
 
   @Test
-  public void gradeBookLoadedOnLoadGradeBookEvent() throws IOException {
+  public void gradeBookLoadedOnLoadGradeBookEvent(@TempDir File tempDir) throws IOException {
     String gradeBookName = "Test Grade Book";
-    File file = writeGradeBookToFile(gradeBookName);
+    File file = writeGradeBookToFile(tempDir, gradeBookName);
 
     GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.class);
     this.bus.register(handler);
@@ -42,8 +43,8 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
     assertThat(event.getValue().getGradeBook().getClassName(), equalTo(gradeBookName));
   }
 
-  protected File writeGradeBookToFile(String gradeBookName) throws IOException {
-    File file = File.createTempFile("testGradeBook", "xml");
+  protected File writeGradeBookToFile(File tempDir, String gradeBookName) throws IOException {
+    File file = new File(tempDir, "testGradeBook.xml");
 
     GradeBook book = new GradeBook(gradeBookName);
     XmlDumper dumper = new XmlDumper(file);
@@ -58,8 +59,8 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
   }
 
   @Test
-  public void unhandledExceptionEventPublishedWhenLoadingBadGradeBook() throws IOException {
-    File badFile = File.createTempFile("badGradeBook", "xml");
+  public void unhandledExceptionEventPublishedWhenLoadingBadGradeBook(@TempDir File tempDir) throws IOException {
+    File badFile = new File(tempDir, "badGradeBook.xml");
 
     UnhandledExceptionEventHandler handler = mock(UnhandledExceptionEventHandler.class);
     this.bus.register(handler);
@@ -80,9 +81,9 @@ public class GradeBookFileManagerTest extends EventBusTestCase {
   }
 
   @Test
-  public void gradeBookSavedToFileOnSaveGradeBookEvent() throws IOException, ParserException {
+  public void gradeBookSavedToFileOnSaveGradeBookEvent(@TempDir File tempDir) throws IOException, ParserException {
     String gradeBookName = "Test Grade Book";
-    File file = writeGradeBookToFile(gradeBookName);
+    File file = writeGradeBookToFile(tempDir, gradeBookName);
 
     GradeBookLoadedHandler handler = mock(GradeBookLoadedHandler.class);
     this.bus.register(handler);
