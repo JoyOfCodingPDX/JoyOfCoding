@@ -13,7 +13,12 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
-  static final int RMI_PORT = 7777;
+  static final int RMI_PORT = getRandomPort();
+
+  private static int getRandomPort() {
+    return (int) (1_000 + Math.random() * (9_000 - 1));
+  }
+
   static final String RMI_HOST = "localhost";
   private static MovieDatabaseImpl movieDatabaseImpl;
   private static Registry rmiRegistry;
