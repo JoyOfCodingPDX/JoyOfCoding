@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;

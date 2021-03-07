@@ -6,7 +6,7 @@ package beginner;
 import com.sandwich.koan.Koan;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assert.assertEquals;
+import static com.sandwich.util.Assertions.assertEquals;
 
 public class AboutVarArgs {
 

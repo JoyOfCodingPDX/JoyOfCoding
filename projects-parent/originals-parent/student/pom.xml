@@ -4,11 +4,11 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2020</version>
+    <version>Summer2021</version>
   </parent>
   <groupId>edu.pdx.cs410J.original</groupId>
   <artifactId>student</artifactId>
-  <version>Summer2020</version>
+  <version>Summer2021</version>
   <packaging>jar</packaging>
 
   <name>Student Project</name>
@@ -95,25 +95,13 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>Summer2020</version>
+      <version>Summer2021</version>
     </dependency>
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>Summer2020</version>
+      <version>Summer2021</version>
       <classifier>tests</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>${hamcrest.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -135,7 +123,7 @@
               <docletArtifact>
                 <groupId>edu.pdx.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>Summer2020</version>
+                <version>Summer2021</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

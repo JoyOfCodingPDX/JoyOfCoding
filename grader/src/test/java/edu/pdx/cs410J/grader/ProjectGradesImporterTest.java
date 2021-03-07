@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.grader.ProjectGradesImporter.ProjectScore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +13,22 @@ import java.util.regex.Matcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class ProjectGradesImporterTest {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
-  @Test(expected = ProjectGradesImporter.ScoreNotFoundException.class)
+  @Test
   public void gradedProjectWithNoGradeThrowsScoreNotFoundException() throws ProjectGradesImporter.ScoreNotFoundException {
     GradedProject project = new GradedProject();
     project.addLine("asdfhjkl");
     project.addLine("iadguow");
 
-    ProjectGradesImporter.getScoreFrom(project.getReader());
+    assertThrows(ProjectGradesImporter.ScoreNotFoundException.class, () ->
+      ProjectGradesImporter.getScoreFrom(project.getReader())
+    );
   }
 
   @Test
@@ -138,7 +141,7 @@ public class ProjectGradesImporterTest {
     assertThat(message.getValue(), containsString("Recorded grade of " + score + " for " + studentId));
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() throws ProjectGradesImporter.ScoreNotFoundException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 8.0);
@@ -153,7 +156,9 @@ public class ProjectGradesImporterTest {
     project.addLine("asdfasd");
 
     ProjectGradesImporter importer = new ProjectGradesImporter(gradeBook, assignment, logger);
-    importer.recordScoreFromProjectReport(studentId, project.getReader());
+    assertThrows(IllegalStateException.class, () ->
+      importer.recordScoreFromProjectReport(studentId, project.getReader())
+    );
   }
 
   @Test

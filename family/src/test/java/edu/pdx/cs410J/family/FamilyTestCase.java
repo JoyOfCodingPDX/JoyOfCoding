@@ -1,11 +1,12 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Assert;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is the abstract superclass of classes that test family tree
@@ -30,17 +31,17 @@ public abstract class FamilyTestCase {
     assertNotNull(p1);
     assertNotNull(p2);
 
-    Assert.assertEquals(p1.getId(), p2.getId());
-    Assert.assertEquals(p1.getGender(), p2.getGender());
-    Assert.assertEquals(p1.getFirstName(), p2.getFirstName());
-    Assert.assertEquals(p1.getMiddleName(), p2.getMiddleName());
-    Assert.assertEquals(p1.getLastName(), p2.getLastName());
+    Assertions.assertEquals(p1.getId(), p2.getId());
+    Assertions.assertEquals(p1.getGender(), p2.getGender());
+    Assertions.assertEquals(p1.getFirstName(), p2.getFirstName());
+    Assertions.assertEquals(p1.getMiddleName(), p2.getMiddleName());
+    Assertions.assertEquals(p1.getLastName(), p2.getLastName());
     assertEquals(p1.getMother(), p2.getMother());
     assertEquals(p1.getFather(), p2.getFather());
     assertEquals(p1.getDateOfBirth(), p2.getDateOfBirth());
     assertEquals(p1.getDateOfDeath(), p2.getDateOfDeath());
 
-    Assert.assertEquals(p1.getMarriages().size(), p2.getMarriages().size());
+    Assertions.assertEquals(p1.getMarriages().size(), p2.getMarriages().size());
 
     Iterator<Marriage> iter1 = p1.getMarriages().iterator();
     Iterator<Marriage> iter2 = p2.getMarriages().iterator();
@@ -69,9 +70,9 @@ public abstract class FamilyTestCase {
     Calendar c2 = Calendar.getInstance();
     c2.setTime(d2);
 
-    Assert.assertEquals(c1.get(Calendar.DAY_OF_YEAR),
+    Assertions.assertEquals(c1.get(Calendar.DAY_OF_YEAR),
                  c2.get(Calendar.DAY_OF_YEAR));
-    Assert.assertEquals(c1.get(Calendar.YEAR), c2.get(Calendar.YEAR));
+    Assertions.assertEquals(c1.get(Calendar.YEAR), c2.get(Calendar.YEAR));
   }
 
   /**
@@ -88,17 +89,17 @@ public abstract class FamilyTestCase {
     }
 
     // To avoid infinite recursion, we compare people using their ids
-    Assert.assertEquals(m1.getHusband().getId(), m2.getHusband().getId());
-    Assert.assertEquals(m1.getWife().getId(), m2.getWife().getId());
+    Assertions.assertEquals(m1.getHusband().getId(), m2.getHusband().getId());
+    Assertions.assertEquals(m1.getWife().getId(), m2.getWife().getId());
     assertEquals(m1.getDate(), m2.getDate());
-    Assert.assertEquals(m1.getLocation(), m2.getLocation());
+    Assertions.assertEquals(m1.getLocation(), m2.getLocation());
   }
 
   /**
    * Asserts that two <code>FamilyTree</code>s has the same contents
    */
   void assertEquals(FamilyTree tree1, FamilyTree tree2) {
-    Assert.assertEquals(tree1.getPeople().size(), tree2.getPeople().size());
+    Assertions.assertEquals(tree1.getPeople().size(), tree2.getPeople().size());
 
       for ( Person person : tree1.getPeople() )
       {
@@ -120,7 +121,7 @@ public abstract class FamilyTestCase {
    */
   void assertContains(String message, String container,
                       String containee) {
-    assertTrue(message, container.indexOf(containee) != -1);
+    assertTrue(container.indexOf(containee) != -1, message);
   }
 
 }

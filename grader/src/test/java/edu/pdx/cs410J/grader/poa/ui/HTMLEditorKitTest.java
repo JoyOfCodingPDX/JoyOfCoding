@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.poa.ui;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;

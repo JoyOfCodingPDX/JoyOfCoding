@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assert.assertEquals;
+import static com.sandwich.util.Assertions.assertEquals;
 
 public class AboutLocalTime {
 

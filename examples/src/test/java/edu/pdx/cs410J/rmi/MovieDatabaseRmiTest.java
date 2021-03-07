@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.rmi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

@@ -1,12 +1,13 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound='#')
+#set($symbol_dollar='$')
+#set($symbol_escape='\' )
 package ${package};
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the {@link Appointment} class.
@@ -15,10 +16,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class AppointmentTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
-    appointment.getBeginTimeString();
+    assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
   @Test

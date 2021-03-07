@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.airline;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -8,6 +8,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AirlineXmlHelperTest {
 
@@ -28,7 +30,7 @@ public class AirlineXmlHelperTest {
     builder.parse(this.getClass().getResourceAsStream("valid-airline.xml"));
   }
 
-  @Test(expected = SAXParseException.class)
+  @Test
   public void cantParseInvalidXmlFile() throws ParserConfigurationException, IOException, SAXException {
     AirlineXmlHelper helper = new AirlineXmlHelper();
 
@@ -42,7 +44,9 @@ public class AirlineXmlHelperTest {
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
 
-    builder.parse(this.getClass().getResourceAsStream("invalid-airline.xml"));
+    assertThrows(SAXParseException.class, () ->
+      builder.parse(this.getClass().getResourceAsStream("invalid-airline.xml"))
+    );
   }
 
 }

@@ -1,11 +1,12 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Assert;
-import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * This class tests the functionality of the various implementation of
@@ -24,7 +25,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     try {
       RemoteFamilyTree tree = getTree();
       tree.createPerson(Person.Gender.UNKNOWN);
-      Assert.fail("Should have thrown a FamilyTreeException");
+      Assertions.fail("Should have thrown a FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
@@ -38,7 +39,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     int id = person.getId();
     RemotePerson person2 = tree.getPerson(id);
     assertNotNull(person2);
-    Assert.assertEquals(person, person2);
+    Assertions.assertEquals(person, person2);
   }
 
   @Test
@@ -57,7 +58,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
 
     RemotePerson person2 = tree.getPerson(firstName, lastName);
     assertNotNull(person2);
-    Assert.assertEquals(person, person2);
+    Assertions.assertEquals(person, person2);
   }
 
   @Test
@@ -75,7 +76,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
 
     try {
       tree.getPerson(firstName, lastName);
-      Assert.fail("Should have thrown an IllegalArgumentException");
+      Assertions.fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -107,7 +108,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     RemotePerson wife = tree.createPerson(Person.FEMALE);
     try {
       tree.createMarriage(4444, wife.getId());
-      Assert.fail("Should have thrown an IllegalArgumentException");
+      Assertions.fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -120,7 +121,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     RemotePerson husband = tree.createPerson(Person.MALE);
     try {
       tree.createMarriage(husband.getId(), 4444);
-      Assert.fail("Should have thrown an IllegalArgumentException");
+      Assertions.fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -135,7 +136,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
 
     try {
       tree.createMarriage(husband.getId(), wife.getId());
-      Assert.fail("Should have thrown an IllegalArgumentException");
+      Assertions.fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -150,7 +151,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
 
     try {
       tree.createMarriage(husband.getId(), wife.getId());
-      Assert.fail("Should have thrown an IllegalArgumentException");
+      Assertions.fail("Should have thrown an IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -171,7 +172,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     RemoteMarriage marriage2 = 
       tree.getMarriage(husband.getId(), wife.getId());
     assertNotNull(marriage2);
-    Assert.assertEquals(marriage, marriage2);
+    Assertions.assertEquals(marriage, marriage2);
   }
 
   public void testGetMarriageNoSuchHusband() throws RemoteException {
@@ -179,7 +180,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     RemotePerson wife = tree.createPerson(Person.FEMALE);
     try {
       tree.getMarriage(4444, wife.getId());
-      Assert.fail("Should have thrown IllegalArgumentException");
+      Assertions.fail("Should have thrown IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...
@@ -192,7 +193,7 @@ public class RemoteFamilyTreeTest extends RemoteTestCase {
     RemotePerson husband = tree.createPerson(Person.MALE);
     try {
       tree.getMarriage(husband.getId(), 4444);
-      Assert.fail("Should have thrown IllegalArgumentException");
+      Assertions.fail("Should have thrown IllegalArgumentException");
 
     } catch (IllegalArgumentException ex) {
       // pass...

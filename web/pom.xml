@@ -3,14 +3,14 @@
   <parent>
     <artifactId>CS410J</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2020</version>
+    <version>Summer2021</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>Summer2020</version>
+  <version>Summer2021</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
     <resteasy.version>4.4.2.Final</resteasy.version>
@@ -115,8 +115,8 @@
       <version>4.0.1</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>Summer2020</version>
+      <version>Summer2021</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>

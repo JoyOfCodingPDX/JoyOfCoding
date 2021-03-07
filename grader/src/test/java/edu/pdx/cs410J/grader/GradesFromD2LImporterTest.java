@@ -1,14 +1,15 @@
 package edu.pdx.cs410J.grader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GradesFromD2LImporterTest {
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void errorWhenD2LQuizDoesNotExistInGradebook() {
     String studentId = "studentId";
 
@@ -21,7 +22,9 @@ public class GradesFromD2LImporterTest {
     d2LStudent.setScore("quiz", 3.4);
     d2l.addStudent(d2LStudent);
 
-    GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook);
+    assertThrows(IllegalStateException.class, () ->
+      GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook)
+    );
   }
 
   @Test

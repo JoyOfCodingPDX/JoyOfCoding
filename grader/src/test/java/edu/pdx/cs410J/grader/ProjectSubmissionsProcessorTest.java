@@ -3,7 +3,7 @@ package edu.pdx.cs410J.grader;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -14,6 +14,7 @@ import java.util.jar.Manifest;
 import static edu.pdx.cs410J.grader.Submit.ManifestAttributes.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProjectSubmissionsProcessorTest {
 
@@ -91,7 +92,7 @@ public class ProjectSubmissionsProcessorTest {
     assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
   }
 
-  @Test(expected = StudentEmailAttachmentProcessor.SubmissionException.class)
+  @Test
   public void submissionDoesNotMatchAnyStudentInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
     String projectName = "Project";
 
@@ -105,11 +106,9 @@ public class ProjectSubmissionsProcessorTest {
 
     Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
 
-    noteProjectSubmissionInGradeBook(gradebook, manifest);
-
-    assertThat(gradebook.getStudent(wrongStudentId), isNotPresent());
-
-    assertThatProjectSubmissionWasRecordedForStudent(projectName, student);
+    assertThrows(StudentEmailAttachmentProcessor.SubmissionException.class, () ->
+      noteProjectSubmissionInGradeBook(gradebook, manifest)
+    );
   }
 
   @Test
