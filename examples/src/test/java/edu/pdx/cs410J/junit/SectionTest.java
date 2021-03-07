@@ -8,24 +8,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * This class tests the functionality of the <code>Section</code> class
  */
-public class SectionTest {
+class SectionTest {
 
   @Test
-  public void testAddStudent() {
+  void testAddStudent() {
     Student student = new Student("123-45-6789");
     Course course = new Course("CS", 410, 4);
     Section section = 
-      new Section(course, Section.SPRING, 2001);
+      new Section(course, Section.SUMMER, 2021);
     section.addStudent(student);
     assertEquals(1, section.getClassSize());
   }
 
   @Test
-  public void testDropStudentNotEnrolled() {
+  void testDropStudentNotEnrolled() {
     Student student = new Student("123-45-6789");
     Course course = new Course("CS", 410, 4);
     Section section = 
-      new Section(course, Section.SPRING, 2001);
+      new Section(course, Section.SUMMER, 2021);
     assertThrows(IllegalArgumentException.class, () -> section.dropStudent(student));
   }
 
