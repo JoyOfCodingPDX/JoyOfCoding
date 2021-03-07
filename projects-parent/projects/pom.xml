@@ -2,28 +2,14 @@
   <parent>
     <artifactId>projects-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2020</version>
+    <version>Summer2021</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>projects</artifactId>
   <name>CS410J Project APIs</name>
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
-  <version>Summer2020</version>
+  <version>Summer2021</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <plugin>

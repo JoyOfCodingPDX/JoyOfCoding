@@ -6,16 +6,19 @@ import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.store.FolderListener;
 import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.mail.Address;
 import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -34,7 +37,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   private final String projectName = "Project";
   private String graderEmail = TA_EMAIL.getAddress();
 
-  @Before
+  @BeforeEach
   public void createFilesToSubmit() throws IOException {
     File mainDir = createDirectories("src", "main", "java", "edu", "pdx", "cs410J", studentLoginId);
     for (String fileName : Arrays.asList(projectName + ".java", "File1.java", "File2.java")) {
@@ -74,12 +77,12 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   }
 
-  @Before
+  @BeforeEach
   public void enableDebugLogging() {
     GraderTools.setLoggingLevelToDebug();
   }
 
-  @After
+  @AfterEach
   public void deleteFilesToSubmit() {
     filesToSubmit.forEach(File::delete);
   }

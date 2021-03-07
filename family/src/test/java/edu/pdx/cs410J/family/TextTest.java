@@ -1,13 +1,14 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class tests the functionality of the <code>TextDumper</code>
@@ -165,7 +166,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     FamilyTree tree = getFamilyTreeFor(sw.toString());
     Person p = tree.getPerson(id);
     assertNotNull(p);
-    Assert.assertEquals(gender, p.getGender());
+    Assertions.assertEquals(gender, p.getGender());
   }
 
     @Test
@@ -182,7 +183,7 @@ public class TextTest extends FamilyTreeConversionTestCase {
     FamilyTree tree = getFamilyTreeFor(sw.toString());
     Person p = tree.getPerson(id);
     assertNotNull(p);
-    Assert.assertEquals(gender, p.getGender());
+    Assertions.assertEquals(gender, p.getGender());
   }
 
     @Test

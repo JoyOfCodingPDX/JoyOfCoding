@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.rmi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
@@ -8,8 +8,7 @@ import java.util.SortedSet;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the behavior of the {@link MovieDatabase} class.
@@ -69,10 +68,10 @@ public class MovieDatabaseTest {
     assertEquals(year2, billMovie.getYear());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void deletingAnNonExistentMovieThrowsIllegalArgumentException() throws RemoteException {
     MovieDatabase db = getMovieDatabase();
-    db.deleteMovie(-1);
+    assertThrows(IllegalArgumentException.class, () -> db.deleteMovie(-1));
   }
 
   @Test

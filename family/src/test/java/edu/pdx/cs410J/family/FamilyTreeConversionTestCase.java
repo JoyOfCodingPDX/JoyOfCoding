@@ -1,11 +1,12 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Test;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This is the abstract superclass that tests the conversion of a

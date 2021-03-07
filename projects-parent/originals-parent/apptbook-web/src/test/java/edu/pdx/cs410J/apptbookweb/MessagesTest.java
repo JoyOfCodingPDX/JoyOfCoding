@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.apptbookweb;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

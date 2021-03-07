@@ -6,7 +6,7 @@ import com.icegreen.greenmail.imap.AuthorizationException;
 import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.user.GreenMailUser;
 import edu.pdx.cs410J.grader.GreenmailIntegrationTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import javax.mail.MessagingException;

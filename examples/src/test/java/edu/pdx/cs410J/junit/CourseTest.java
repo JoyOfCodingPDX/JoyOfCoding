@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.junit;
 
-import org.junit.Test;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class tests the functionality of the <code>Course</code> class.

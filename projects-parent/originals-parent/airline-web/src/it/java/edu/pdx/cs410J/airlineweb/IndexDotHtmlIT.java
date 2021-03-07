@@ -2,14 +2,14 @@ package edu.pdx.cs410J.airlineweb;
 
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import edu.pdx.cs410J.web.HttpRequestHelper.Response;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 public class IndexDotHtmlIT {
   private static final String HOSTNAME = "localhost";

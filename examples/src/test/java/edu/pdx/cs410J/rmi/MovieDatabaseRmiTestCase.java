@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.rmi;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
@@ -23,7 +23,7 @@ public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
   private static MovieDatabaseImpl movieDatabaseImpl;
   private static Registry rmiRegistry;
 
-  @BeforeClass
+  @BeforeAll
   public static void bindMovieDatabaseIntoRmiRegistry() throws RemoteException, AlreadyBoundException, MalformedURLException {
     movieDatabaseImpl = new MovieDatabaseImpl();
     MovieDatabase database = (MovieDatabase) UnicastRemoteObject.exportObject(movieDatabaseImpl, RMI_PORT);
@@ -31,7 +31,7 @@ public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
     rmiRegistry.bind(MovieDatabase.RMI_OBJECT_NAME, database);
   }
 
-  @AfterClass
+  @AfterAll
   public static void unbindMovieDatabaseFromRmiRegistry() throws RemoteException, MalformedURLException, AlreadyBoundException, NotBoundException {
     Registry registry = rmiRegistry;
     UnicastRemoteObject.unexportObject(movieDatabaseImpl, true);

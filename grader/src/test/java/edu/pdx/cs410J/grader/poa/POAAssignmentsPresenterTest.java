@@ -3,7 +3,8 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.eventbus.Subscribe;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
   private Assignment assignment2;
 
   @Override
+  @BeforeEach
   public void setUp() {
     super.setUp();
 

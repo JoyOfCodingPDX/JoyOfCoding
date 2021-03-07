@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.mail.*;
 import javax.mail.internet.MimeBodyPart;

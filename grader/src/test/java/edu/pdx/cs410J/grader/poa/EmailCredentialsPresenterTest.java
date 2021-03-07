@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.grader.poa;
 
 import com.google.common.eventbus.Subscribe;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static edu.pdx.cs410J.grader.poa.EmailCredentialsView.EmailAddressValueListener;
@@ -18,6 +19,7 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
   private EmailCredentialsPresenter presenter;
 
   @Override
+  @BeforeEach
   public void setUp() {
     super.setUp();
 

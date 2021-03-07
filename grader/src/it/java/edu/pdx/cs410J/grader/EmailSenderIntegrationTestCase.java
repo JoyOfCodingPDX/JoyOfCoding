@@ -5,8 +5,8 @@ import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,7 +22,7 @@ public abstract class EmailSenderIntegrationTestCase {
   protected final File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
   protected GreenMail emailServer;
 
-  @Before
+  @BeforeEach
   public void startEmailServer() throws FolderException, AuthorizationException {
     ServerSetup smtp = new ServerSetup(smtpPort, emailServerHost, ServerSetup.PROTOCOL_SMTP);
     ServerSetup imaps = new ServerSetup(imapsPort, emailServerHost, ServerSetup.PROTOCOL_IMAPS);
@@ -41,7 +41,7 @@ public abstract class EmailSenderIntegrationTestCase {
 
   protected abstract List<String> getEmailAddressesForSmtpServer();
 
-  @After
+  @AfterEach
   public void stopEmailServer() {
     emailServer.stop();
   }

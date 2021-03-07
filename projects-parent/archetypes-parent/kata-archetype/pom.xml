@@ -5,10 +5,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2020</version>
+    <version>Summer2021</version>
   </parent>
   <artifactId>kata-archetype</artifactId>
-  <version>Summer2020</version>
+  <version>Summer2021</version>
   <packaging>maven-archetype</packaging>
 
   <name>kata-archetype</name>

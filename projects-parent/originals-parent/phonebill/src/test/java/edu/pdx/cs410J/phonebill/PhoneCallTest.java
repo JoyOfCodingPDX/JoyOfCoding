@@ -1,9 +1,10 @@
 package edu.pdx.cs410J.phonebill;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the {@link PhoneCall} class.
@@ -12,10 +13,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class PhoneCallTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void getStartTimeStringNeedsToBeImplemented() {
     PhoneCall call = new PhoneCall();
-    call.getStartTimeString();
+    assertThrows(UnsupportedOperationException.class, call::getStartTimeString);
   }
 
   @Test
