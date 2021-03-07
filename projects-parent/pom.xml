@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>edu.pdx.cs410J</groupId>
-        <artifactId>CS410J</artifactId>
+        <artifactId>cs410j</artifactId>
         <version>2021.0.0</version>
     </parent>
 

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <version>2021.0.0</version>
-  <artifactId>CS410J</artifactId>
+  <artifactId>cs410j</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
   <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
