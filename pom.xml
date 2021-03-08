@@ -637,9 +637,9 @@
   </reporting>
   <distributionManagement>
     <repository>
-      <id>bintray-davidwhitlock-maven</id>
-      <name>DavidWhitlock-maven</name>
-      <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/DavidWhitlock/PortlandStateJava</url>
     </repository>
     <site>
       <id>gh-pages</id>
