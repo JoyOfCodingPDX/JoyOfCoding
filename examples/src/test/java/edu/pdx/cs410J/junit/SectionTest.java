@@ -1,31 +1,32 @@
 package edu.pdx.cs410J.junit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * This class tests the functionality of the <code>Section</code> class
  */
-public class SectionTest {
+class SectionTest {
 
   @Test
-  public void testAddStudent() {
+  void testAddStudent() {
     Student student = new Student("123-45-6789");
     Course course = new Course("CS", 410, 4);
     Section section = 
-      new Section(course, Section.SPRING, 2001);
+      new Section(course, Section.SUMMER, 2021);
     section.addStudent(student);
     assertEquals(1, section.getClassSize());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testDropStudentNotEnrolled() {
+  @Test
+  void testDropStudentNotEnrolled() {
     Student student = new Student("123-45-6789");
     Course course = new Course("CS", 410, 4);
     Section section = 
-      new Section(course, Section.SPRING, 2001);
-    section.dropStudent(student);
+      new Section(course, Section.SUMMER, 2021);
+    assertThrows(IllegalArgumentException.class, () -> section.dropStudent(student));
   }
 
 }

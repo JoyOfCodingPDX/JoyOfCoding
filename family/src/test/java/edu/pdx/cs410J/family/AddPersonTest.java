@@ -1,15 +1,16 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Test;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class tests the behavior of the {@link AddPerson} program to
@@ -128,20 +129,13 @@ public class AddPersonTest {
    * @param fileOption
    *        The kind of file to use
    */
-  private void createDavesFamily(String fileOption) {
+  private void createDavesFamily(File tempDir, String fileOption) {
     // Create a temp file to write the family tree to
-    File file;
-    try {
-      file = File.createTempFile("DavesFamily", fileOption);
- 
-      // XML parser complains about empty file, so delete it before we
-      // start
-      file.delete();
+    File file = new File(tempDir, "DavesFamily" + fileOption);
 
-    } catch (IOException ex) {
-      fail("Couldn't create temp file");
-      return;
-    }
+    // XML parser complains about empty file, so delete it before we
+    // start
+    file.delete();
 
     String fileName = file.getAbsolutePath();
 
@@ -165,12 +159,12 @@ public class AddPersonTest {
   ////////  Test cases
 
   @Test
-  public void testText() {
-    createDavesFamily("");
+  public void testText(@TempDir File tempDir) {
+    createDavesFamily(tempDir, "");
   }
 
   @Test
-  public void testXml() {
-    createDavesFamily("-xml ");
+  public void testXml(@TempDir File tempDir) {
+    createDavesFamily(tempDir, "-xml ");
   }
 }

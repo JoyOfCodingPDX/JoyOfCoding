@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.junit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,28 +16,28 @@ import static org.hamcrest.MatcherAssert.assertThat;
  *
  * @since Summer 2013
  */
-public class HamcrestMatchersTest {
+class HamcrestMatchersTest {
 
   @Test
-  public void isEqualTo() {
-    Integer int1 = new Integer("123");
-    Integer int2 = new Integer("123");
+  void isEqualTo() {
+    Integer int1 = Integer.valueOf("123");
+    Integer int2 = Integer.valueOf("123");
     assertThat(int1, is(equalTo(int2)));
   }
 
   @Test
-  public void isNullValue() {
+  void isNullValue() {
     assertThat(null, is(nullValue()));
   }
 
   @Test
-  public void isSameInstance() {
+  void isSameInstance() {
     Object o = new Object();
     assertThat(o, is(sameInstance(o)));
   }
 
   @Test
-  public void strings() {
+  void strings() {
     String s = "Hamcrest is awesome";
     assertThat(s, startsWith("Hamcrest"));
     assertThat(s, endsWith("awesome"));
@@ -47,13 +47,13 @@ public class HamcrestMatchersTest {
   }
 
   @Test
-  public void everyItemIsNotNull() {
+  void everyItemIsNotNull() {
     List<String> list = Arrays.asList("a", "b", "c");
     assertThat(list, everyItem(is(notNullValue(String.class))));
   }
 
   @Test
-  public void numbers() {
+  void numbers() {
     double pi = 3.1415;
     assertThat(pi, is(greaterThan(2.0)));
     assertThat(pi, is(both(greaterThan(1.0)).and(lessThan(4.0))));
@@ -61,7 +61,7 @@ public class HamcrestMatchersTest {
   }
 
   @Test
-  public void arrays() {
+  void arrays() {
     Integer[] array = { 1, 2, 3, 4, 5};
     assertThat(array, hasItemInArray(4));
     assertThat(array, is(arrayWithSize(5)));

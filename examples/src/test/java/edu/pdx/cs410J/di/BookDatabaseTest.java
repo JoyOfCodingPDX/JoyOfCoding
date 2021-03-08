@@ -1,14 +1,14 @@
 package edu.pdx.cs410J.di;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the {@link BookDatabase} cass
@@ -25,13 +25,13 @@ public class BookDatabaseTest
     private String fileName;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
       this.fileName = generateFileName();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
       File dataFile = new File(directory, fileName);
       dataFile.delete();

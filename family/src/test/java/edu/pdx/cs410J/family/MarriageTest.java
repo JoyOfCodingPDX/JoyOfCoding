@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Test;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class tests the functionality of the <code>Marriage</code>

@@ -1,9 +1,9 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.After;
-import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -13,6 +13,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Calendar;
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -36,10 +38,10 @@ public abstract class RemoteTestCase {
    * Creates an empty <code>RemoteFamilyTree</code> and binds it into
    * the RMI namespace.
    */
-  @Before
-  public void setUp() {
+  @BeforeEach
+  public void setUp(@TempDir File tempDir) {
     try {
-      File file = File.createTempFile("familyTree", "xml");
+      File file = new File(tempDir, "familyTree.xml");
       file.delete();
       file.deleteOnExit();
       RemoteFamilyTree tree = new XmlRemoteFamilyTree(file);
@@ -53,7 +55,7 @@ public abstract class RemoteTestCase {
   /**
    * Unbinds the remote family tree from the RMI namespace
    */
-  @After
+  @AfterEach
   public void tearDown() {
     this.unbind();
   }
@@ -172,9 +174,9 @@ public abstract class RemoteTestCase {
     Calendar cal2 = Calendar.getInstance();
     cal1.setTime(d2);
 
-    Assert.assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
+    Assertions.assertEquals(cal1.get(Calendar.DAY_OF_YEAR),
                  cal2.get(Calendar.DAY_OF_YEAR));
-    Assert.assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
+    Assertions.assertEquals(cal1.get(Calendar.YEAR), cal2.get(Calendar.YEAR));
   }
 
   /**
@@ -190,7 +192,7 @@ public abstract class RemoteTestCase {
 
     PrintWriter pw = new PrintWriter(sw, true);
     cause.printStackTrace(pw);
-    Assert.fail(sw.toString());
+    Assertions.fail(sw.toString());
   }
 
 }

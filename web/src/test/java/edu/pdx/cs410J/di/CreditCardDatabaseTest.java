@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.di;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;

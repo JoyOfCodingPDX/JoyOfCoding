@@ -3,7 +3,8 @@ package edu.pdx.cs410J.grader;
 import com.icegreen.greenmail.imap.AuthorizationException;
 import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.user.GreenMailUser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -34,8 +35,8 @@ public class SendAndReceiveMultipartWithGreenmailIT extends GreenmailIntegration
 
 
   @Test
-  public void sendAndFetchMailMessageWithMultipleAttachments() throws IOException, MessagingException, GeneralSecurityException {
-    sendMailWithAttachedZipFile();
+  public void sendAndFetchMailMessageWithMultipleAttachments(@TempDir File tempDir) throws IOException, MessagingException, GeneralSecurityException {
+    sendMailWithAttachedZipFile(tempDir);
     fetchAttachmentsFromUnreadMessagesInFolder();
   }
 
@@ -74,12 +75,11 @@ public class SendAndReceiveMultipartWithGreenmailIT extends GreenmailIntegration
     return message.isMimeType("multipart/*");
   }
 
-  private void sendMailWithAttachedZipFile() throws IOException, MessagingException {
-    File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
-    File tempFile = File.createTempFile("TempFile", ".java", tempDirectory);
+  private void sendMailWithAttachedZipFile(File tempDir) throws IOException, MessagingException {
+    File tempFile = new File(tempDir, "TempFile.java");
     tempFile.createNewFile();
     File[] filesToSubmit = new File[]{tempFile};
-    File zipFile = File.createTempFile("TempFile", ".zip", tempDirectory);
+    File zipFile = new File(tempDir, "TempFile.zip");
     mailTA(makeZipFile(zipFile, filesToSubmit));
   }
 

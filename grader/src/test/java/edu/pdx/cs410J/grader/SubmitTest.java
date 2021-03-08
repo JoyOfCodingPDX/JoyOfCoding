@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SubmitTest {
 
@@ -140,10 +141,10 @@ public class SubmitTest {
     assertThat(Submit.getZipEntryNameFor(fileName), equalTo(entryName));
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void zipFileEntryNameForBadSourceFileThrowsException() {
     String badFileName = "dir/src/bad/java/edu/pdx/cs410J/student/File.java";
-    Submit.getZipEntryNameFor(badFileName);
+    assertThrows(IllegalStateException.class, () -> Submit.getZipEntryNameFor(badFileName));
   }
 
   @Test
@@ -297,11 +298,11 @@ public class SubmitTest {
     assertFileCanBeSubmitted(userId, fileName, dirs, false);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void invalidProjectNameThrowsIllegalStateException() {
     Submit submit = new Submit();
     submit.setProjectName("invalid");
-    submit.validateProjectName();
+    assertThrows(IllegalStateException.class, submit::validateProjectName);
   }
 
   @Test

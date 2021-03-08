@@ -1,9 +1,9 @@
 package edu.pdx.cs410J.family;
 
-import org.junit.Assert;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -26,13 +26,13 @@ public class RemotePersonTest extends RemoteTestCase {
   @Test
   public void testGetGenderMale() throws RemoteException {
     RemotePerson male = getTree().createPerson(Person.MALE);
-    Assert.assertEquals(Person.MALE, male.getGender());
+    Assertions.assertEquals(Person.MALE, male.getGender());
   }
 
   @Test
   public void testGetGenderFemale() throws RemoteException {
     RemotePerson female = getTree().createPerson(Person.FEMALE);
-    Assert.assertEquals(Person.FEMALE, female.getGender());
+    Assertions.assertEquals(Person.FEMALE, female.getGender());
   }
 
   @Test
@@ -40,7 +40,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String firstName = "firstName";
     person.setFirstName(firstName);
-    Assert.assertEquals(firstName, person.getFirstName());
+    Assertions.assertEquals(firstName, person.getFirstName());
   }
 
   @Test
@@ -54,7 +54,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String middleName = "middleName";
     person.setMiddleName(middleName);
-    Assert.assertEquals(middleName, person.getMiddleName());
+    Assertions.assertEquals(middleName, person.getMiddleName());
   }
 
   @Test
@@ -68,7 +68,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = getTree().createPerson(Person.FEMALE);
     String lastName = "lastName";
     person.setLastName(lastName);
-    Assert.assertEquals(lastName, person.getLastName());
+    Assertions.assertEquals(lastName, person.getLastName());
   }
 
   @Test
@@ -84,7 +84,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson father = tree.createPerson(Person.MALE);
     person.setFatherId(father.getId());
 
-    Assert.assertEquals(father.getId(), person.getFatherId());
+    Assertions.assertEquals(father.getId(), person.getFatherId());
   }
 
   @Test
@@ -93,7 +93,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setFatherId(40000);
-      Assert.fail("Should have thrown FamilyTreeException");
+      Assertions.fail("Should have thrown FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
@@ -108,7 +108,7 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setFatherId(father.getId());
-      Assert.fail("Should have thrown an FamilyTreeException");
+      Assertions.fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
@@ -122,7 +122,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson mother = tree.createPerson(Person.FEMALE);
     person.setMotherId(mother.getId());
 
-    Assert.assertEquals(mother.getId(), person.getMotherId());
+    Assertions.assertEquals(mother.getId(), person.getMotherId());
   }
 
   @Test
@@ -131,7 +131,7 @@ public class RemotePersonTest extends RemoteTestCase {
     RemotePerson person = tree.createPerson(Person.MALE);
     try {
       person.setMotherId(40000);
-      Assert.fail("Should have thrown FamilyTreeException");
+      Assertions.fail("Should have thrown FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...
@@ -146,7 +146,7 @@ public class RemotePersonTest extends RemoteTestCase {
 
     try {
       person.setMotherId(mother.getId());
-      Assert.fail("Should have thrown an FamilyTreeException");
+      Assertions.fail("Should have thrown an FamilyTreeException");
 
     } catch (FamilyTreeException ex) {
       // pass...

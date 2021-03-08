@@ -4,7 +4,7 @@ import edu.pdx.cs410J.family.FamilyTree;
 import edu.pdx.cs410J.family.Person;
 import edu.pdx.cs410J.family.XmlParser;
 import edu.pdx.cs410J.web.HttpRequestHelper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -12,7 +12,7 @@ import java.util.*;
 
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

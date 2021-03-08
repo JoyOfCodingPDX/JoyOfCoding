@@ -2,7 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.collect.Lists;
 import org.hamcrest.Matcher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Reader;
