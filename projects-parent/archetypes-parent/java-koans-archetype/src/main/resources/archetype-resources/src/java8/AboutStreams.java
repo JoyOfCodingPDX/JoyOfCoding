@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutStreams {
 

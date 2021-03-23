@@ -6,13 +6,12 @@ package intermediate;
 import com.sandwich.koan.Koan;
 
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutLocale {
 

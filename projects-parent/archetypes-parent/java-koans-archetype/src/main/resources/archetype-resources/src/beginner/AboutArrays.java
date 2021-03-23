@@ -8,7 +8,7 @@ import com.sandwich.koan.Koan;
 import java.util.Arrays;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutArrays {
 

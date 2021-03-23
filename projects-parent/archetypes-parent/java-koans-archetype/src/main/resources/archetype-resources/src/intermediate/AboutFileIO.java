@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.logging.Logger;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutFileIO {
 

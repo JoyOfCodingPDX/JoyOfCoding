@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 
 public class AboutDates {
