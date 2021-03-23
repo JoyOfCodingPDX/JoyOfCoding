@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.io.UnsupportedEncodingException;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
-import static com.sandwich.util.Assertions.assertEquals;
+import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutBase64 {
 
