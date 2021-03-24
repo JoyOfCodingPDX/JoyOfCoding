@@ -19,10 +19,10 @@ import static org.mockito.Mockito.*;
  * A unit test for the {@link AirlineServlet}.  It uses mockito to
  * provide mock http requests and responses.
  */
-public class AirlineServletTest {
+class AirlineServletTest {
 
   @Test
-  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
+  void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
     AirlineServlet servlet = new AirlineServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -39,7 +39,7 @@ public class AirlineServletTest {
   }
 
   @Test
-  public void addOneWordToDictionary() throws ServletException, IOException {
+  void addOneWordToDictionary() throws ServletException, IOException {
     AirlineServlet servlet = new AirlineServlet();
 
     String word = "TEST WORD";

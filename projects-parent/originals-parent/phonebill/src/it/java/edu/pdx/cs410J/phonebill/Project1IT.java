@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Tests the functionality in the {@link Project1} main class.
  */
-public class Project1IT extends InvokeMainTestCase {
+class Project1IT extends InvokeMainTestCase {
 
     /**
      * Invokes the main method of {@link Project1} with the given arguments.
@@ -23,7 +23,7 @@ public class Project1IT extends InvokeMainTestCase {
    * Tests that invoking the main method with no arguments issues an error
    */
   @Test
-  public void testNoCommandLineArguments() {
+  void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain();
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));

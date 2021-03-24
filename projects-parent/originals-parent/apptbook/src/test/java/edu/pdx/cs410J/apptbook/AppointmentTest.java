@@ -11,22 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * You'll need to update these unit tests as you build out your program.
  */
-public class AppointmentTest {
+class AppointmentTest {
 
   @Test
-  public void getBeginTimeStringNeedsToBeImplemented() {
+  void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
     assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
   @Test
-  public void initiallyAllAppointmentsHaveTheSameDescription() {
+  void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();
     assertThat(appointment.getDescription(), containsString("not implemented"));
   }
 
   @Test
-  public void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     Appointment appointment = new Appointment();
     assertThat(appointment.getBeginTime(), is(nullValue()));
   }

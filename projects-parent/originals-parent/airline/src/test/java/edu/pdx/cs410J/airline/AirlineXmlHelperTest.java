@@ -11,10 +11,10 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AirlineXmlHelperTest {
+class AirlineXmlHelperTest {
 
   @Test
-  public void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
+  void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
     AirlineXmlHelper helper = new AirlineXmlHelper();
 
 
@@ -31,7 +31,7 @@ public class AirlineXmlHelperTest {
   }
 
   @Test
-  public void cantParseInvalidXmlFile() throws ParserConfigurationException, IOException, SAXException {
+  void cantParseInvalidXmlFile() throws ParserConfigurationException {
     AirlineXmlHelper helper = new AirlineXmlHelper();
 
 
