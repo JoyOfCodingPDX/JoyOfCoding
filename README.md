@@ -5,4 +5,4 @@ Source code for the [Advanced Programming with Java](http://web.cecs.pdx.edu/~wh
 
 If you're taking this course, check out the [Getting Started](https://github.com/DavidWhitlock/PortlandStateJavaGettingStarted) repository! 
 
-[![Build Status](https://travis-ci.org/DavidWhitlock/PortlandStateJava.svg)](https://travis-ci.org/DavidWhitlock/PortlandStateJava)
+![PortlandStateJava](https://github.com/DavidWhitlock/PortlandStateJava/actions/workflows/maven.yml/badge.svg)

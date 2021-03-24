@@ -1,5 +1,0 @@
-language: java
-jdk:
-  - openjdk15
-sudo: false
-script: "./mvnw install"
