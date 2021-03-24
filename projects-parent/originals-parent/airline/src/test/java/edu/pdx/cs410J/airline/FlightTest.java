@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * You'll need to update these unit tests as you build out you program.
  */
-class FlightTest {
+public class FlightTest {
   
   @Test
   void getArrivalStringNeedsToBeImplemented() {

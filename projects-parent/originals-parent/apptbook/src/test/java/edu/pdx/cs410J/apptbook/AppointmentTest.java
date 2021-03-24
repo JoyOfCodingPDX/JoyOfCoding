@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * You'll need to update these unit tests as you build out your program.
  */
-class AppointmentTest {
+public class AppointmentTest {
 
   @Test
   void getBeginTimeStringNeedsToBeImplemented() {
