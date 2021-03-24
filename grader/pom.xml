@@ -1,14 +1,14 @@
 <?xml version="1.0"?><project>
   <parent>
-    <artifactId>CS410J</artifactId>
+    <artifactId>cs410j</artifactId>
     <groupId>edu.pdx.cs410J</groupId>
-    <version>Summer2021</version>
+    <version>2021.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.pdx.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>Summer2021</version>
+  <version>2021.0.0</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>edu.pdx.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>Summer2021</version>
+      <version>2021.0.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.opencsv</groupId>
