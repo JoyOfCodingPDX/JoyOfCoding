@@ -1,6 +1,6 @@
-#set($symbol_pound='#')
-#set($symbol_dollar='$')
-#set($symbol_escape='\' )
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 package ${package};
 
 import org.junit.jupiter.api.Test;
@@ -17,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AppointmentTest {
 
   @Test
-  public void getBeginTimeStringNeedsToBeImplemented() {
+  void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
     assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
   @Test
-  public void initiallyAllAppointmentsHaveTheSameDescription() {
+  void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();
     assertThat(appointment.getDescription(), containsString("not implemented"));
   }
 
   @Test
-  public void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     Appointment appointment = new Appointment();
     assertThat(appointment.getBeginTime(), is(nullValue()));
   }

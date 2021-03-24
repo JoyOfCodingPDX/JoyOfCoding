@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
  * Integration test that tests the REST calls made by {@link AppointmentBookRestClient}
  */
 @TestMethodOrder(MethodName.class)
-public class AppointmentBookRestClientIT {
+class AppointmentBookRestClientIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
@@ -30,20 +30,20 @@ public class AppointmentBookRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllDictionaryEntries() throws IOException {
+  void test0RemoveAllDictionaryEntries() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     Map<String, String> dictionary = client.getAllDictionaryEntries();
     assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2DefineOneWord() throws IOException {
+  void test2DefineOneWord() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     String testWord = "TEST WORD";
     String testDefinition = "TEST DEFINITION";
@@ -54,7 +54,7 @@ public class AppointmentBookRestClientIT {
   }
 
   @Test
-  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));

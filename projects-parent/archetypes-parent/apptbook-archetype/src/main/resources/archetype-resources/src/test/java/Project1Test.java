@@ -18,12 +18,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * from <code>Project1IT</code> which is an integration test (and can handle the calls
  * to {@link System${symbol_pound}exit(int)} and the like.
  */
-public class Project1Test {
+class Project1Test {
 
   @Test
-  public void readmeCanBeReadAsResource() throws IOException {
+  void readmeCanBeReadAsResource() throws IOException {
     try (
-      InputStream readme = Project1.class.getResourceAsStream("README.txt");
+      InputStream readme = Project1.class.getResourceAsStream("README.txt")
     ) {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));

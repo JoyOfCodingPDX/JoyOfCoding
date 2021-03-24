@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
  * A unit test for the {@link AppointmentBookServlet}.  It uses mockito to
  * provide mock http requests and responses.
  */
-class AppointmentBookServletTest {
+public class AppointmentBookServletTest {
 
   @Test
   void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {

@@ -11,50 +11,51 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
-public class MessagesTest {
+class MessagesTest {
 
   @Test
-  public void malformedWordAndDefinitionReturnsNull() {
+  void malformedWordAndDefinitionReturnsNull() {
     assertThat(Messages.parseDictionaryEntry("blah"), nullValue());
   }
 
   @Test
-  public void canParseFormattedDictionaryEntryPair() {
+  void canParseFormattedDictionaryEntryPair() {
     String word = "testWord";
     String definition = "testDefinition";
     String formatted = Messages.formatDictionaryEntry(word, definition);
     Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
+    assertThat(parsed, notNullValue());
     assertThat(parsed.getKey(), equalTo(word));
     assertThat(parsed.getValue(), equalTo(definition));
   }
 
   @Test
-  public void canParseFormattedDictionaryEntryWithoutLeadingSpaces() {
+  void canParseFormattedDictionaryEntryWithoutLeadingSpaces() {
     String word = "testWord";
     String definition = "testDefinition";
     String formatted = Messages.formatDictionaryEntry(word, definition);
     String trimmed = formatted.trim();
     Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(trimmed);
+    assertThat(parsed, notNullValue());
     assertThat(parsed.getKey(), equalTo(word));
     assertThat(parsed.getValue(), equalTo(definition));
 
   }
 
   @Test
-  public void nullDefinitionIsParsedAsNull() {
+  void nullDefinitionIsParsedAsNull() {
     String word = "testWord";
-    String definition = null;
-    String formatted = Messages.formatDictionaryEntry(word, definition);
+    String formatted = Messages.formatDictionaryEntry(word, null);
     Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
+    assertThat(parsed, notNullValue());
     assertThat(parsed.getKey(), equalTo(word));
-    assertThat(parsed.getValue(), equalTo(definition));
+    assertThat(parsed.getValue(), equalTo(null));
   }
 
   @Test
-  public void canParseFormattedDictionary() {
+  void canParseFormattedDictionary() {
     Map<String, String> dictionary = new HashMap<>();
 
     for (int i = 0; i < 5; i++) {
