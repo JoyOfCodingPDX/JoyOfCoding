@@ -12,7 +12,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * they also make use of the <a href="http://hamcrest.org/JavaHamcrest/">hamcrest</a>
  * matchers for more readable assertion statements.
  */
-class StudentTest
+public class StudentTest
 {
 
   @Test
