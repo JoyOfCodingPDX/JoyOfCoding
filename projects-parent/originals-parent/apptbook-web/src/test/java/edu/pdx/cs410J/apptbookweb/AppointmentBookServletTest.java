@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class AppointmentBookServletTest {
 
   @Test
-  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
+  void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
     AppointmentBookServlet servlet = new AppointmentBookServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -39,7 +39,7 @@ public class AppointmentBookServletTest {
   }
 
   @Test
-  public void addOneWordToDictionary() throws ServletException, IOException {
+  void addOneWordToDictionary() throws ServletException, IOException {
     AppointmentBookServlet servlet = new AppointmentBookServlet();
 
     String word = "TEST WORD";

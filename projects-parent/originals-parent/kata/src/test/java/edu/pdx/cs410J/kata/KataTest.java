@@ -6,7 +6,7 @@ public class KataTest
 {
 
   @Test
-  public void canInstantiateKataClass() {
+  void canInstantiateKataClass() {
     new Kata();
   }
 

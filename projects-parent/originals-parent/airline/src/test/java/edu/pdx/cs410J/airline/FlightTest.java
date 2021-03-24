@@ -14,19 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FlightTest {
   
   @Test
-  public void getArrivalStringNeedsToBeImplemented() {
+  void getArrivalStringNeedsToBeImplemented() {
     Flight flight = new Flight();
     assertThrows(UnsupportedOperationException.class, flight::getArrivalString);
   }
 
   @Test
-  public void initiallyAllFlightsHaveTheSameNumber() {
+  void initiallyAllFlightsHaveTheSameNumber() {
     Flight flight = new Flight();
     assertThat(flight.getNumber(), equalTo(42));
   }
 
   @Test
-  public void forProject1ItIsOkayIfGetDepartureTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetDepartureTimeReturnsNull() {
     Flight flight = new Flight();
     assertThat(flight.getDeparture(), is(nullValue()));
   }

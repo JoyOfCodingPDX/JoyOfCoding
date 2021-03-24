@@ -20,25 +20,25 @@ import static org.junit.jupiter.api.MethodOrderer.MethodName;
  * various arguments
  */
 @TestMethodOrder(MethodName.class)
-public class Project5IT extends InvokeMainTestCase {
+class Project5IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
     private static final String PORT = System.getProperty("http.port", "8080");
 
     @Test
-    public void test0RemoveAllMappings() throws IOException {
+    void test0RemoveAllMappings() throws IOException {
       AirlineRestClient client = new AirlineRestClient(HOSTNAME, Integer.parseInt(PORT));
       client.removeAllDictionaryEntries();
     }
 
     @Test
-    public void test1NoCommandLineArguments() {
+    void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project5.class );
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project5.MISSING_ARGS));
     }
 
     @Test
-    public void test2EmptyServer() {
+    void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
@@ -46,7 +46,7 @@ public class Project5IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
+    void test3NoDefinitionsThrowsAppointmentBookRestException() {
         String word = "WORD";
         try {
             invokeMain(Project5.class, HOSTNAME, PORT, word);
@@ -59,7 +59,7 @@ public class Project5IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void test4AddDefinition() {
+    void test4AddDefinition() {
         String word = "WORD";
         String definition = "DEFINITION";
 
