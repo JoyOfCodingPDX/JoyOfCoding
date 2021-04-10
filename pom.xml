@@ -69,6 +69,8 @@
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
 
+      <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
@@ -471,7 +473,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${maven.javadoc.plugin.version}</version>
           <configuration>
             <aggregate>true</aggregate>
             <linksource>true</linksource>
@@ -482,6 +484,7 @@
               <link>http://junit.org/junit4/javadoc/latest</link>
               <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
             </links>
+            <show>package</show>
             <detectJavaApiLink/>
             <detectLinks/>
             <additionalOptions>-html5</additionalOptions>
@@ -566,6 +569,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -616,6 +620,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
