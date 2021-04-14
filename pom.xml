@@ -56,6 +56,7 @@
         <maven.compiler.target>10</maven.compiler.target>
 
         <groovy.version>3.0.4</groovy.version>
+        <guava.version>29.0-jre</guava.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
