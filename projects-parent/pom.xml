@@ -19,7 +19,7 @@
 
     <modules>
         <module>projects</module>
-        <module>archetypes-parent</module>
+<!--        <module>archetypes-parent</module>-->
         <module>originals-parent</module>
     </modules>
 
