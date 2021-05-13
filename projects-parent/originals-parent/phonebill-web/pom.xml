@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>originals-parent</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
     <version>2021.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>phonebill-web</artifactId>
 
   <properties>
@@ -26,17 +26,17 @@
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>2021.0.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
       <version>2021.0.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>2021.0.0</version>
       <classifier>tests</classifier>
@@ -135,7 +135,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${user.home}/.m2/repository</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.phonebillweb.Project4</mainClass>
+              <mainClass>io.github.davidwhitlock.cs410J.phonebillweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -159,9 +159,9 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
             <configuration>
-              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>io.github.davidwhitlock.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
                 <version>2021.0.0</version>
               </docletArtifact>
