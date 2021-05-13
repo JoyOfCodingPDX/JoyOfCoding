@@ -4,7 +4,7 @@
 
   <parent>
     <artifactId>archetypes-parent</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
     <version>2021.0.0</version>
   </parent>
 

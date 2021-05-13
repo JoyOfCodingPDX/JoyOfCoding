@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
     <version>2021.0.0</version>
   </parent>
   <groupId>${groupId}</groupId>
@@ -18,14 +18,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>CS410J</id>
-      <name>CS410J Maven Repository</name>
-      <url>https://dl.bintray.com/davidwhitlock/maven</url>
-    </repository>
-  </repositories>
 
   <build>
     <plugins>
@@ -93,12 +85,12 @@
 
   <dependencies>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
       <version>2021.0.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
       <version>2021.0.0</version>
       <classifier>tests</classifier>
@@ -119,9 +111,9 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
             <configuration>
-              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>io.github.davidwhitlock.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
                 <version>2021.0.0</version>
               </docletArtifact>
