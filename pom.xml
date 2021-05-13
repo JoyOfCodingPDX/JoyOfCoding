@@ -75,12 +75,7 @@
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
-      <repository>
-        <id>CS410J</id>
-        <name>CS410J Maven Repository</name>
-        <url>https://dl.bintray.com/davidwhitlock/maven</url>
-      </repository>
-      <repository>
+      <repository>  <!-- Needed for Groovy dependencies -->
         <id>jcenter</id>
         <name>bintray</name>
         <url>https://jcenter.bintray.com</url>
@@ -641,11 +636,6 @@
     </plugins>
   </reporting>
   <distributionManagement>
-    <repository>
-      <id>bintray-davidwhitlock-maven</id>
-      <name>DavidWhitlock-maven</name>
-      <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
-    </repository>
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
