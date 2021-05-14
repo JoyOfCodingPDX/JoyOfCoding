@@ -47,6 +47,9 @@
   </developers>
   <scm>
     <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
+    <developerConnection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</developerConnection>
+    <url>https://github.com/DavidWhitlock/PortlandStateJava/tree/main</url>
+    <tag>HEAD</tag>
   </scm>
     <prerequisites>
         <maven>3.6.1</maven>
