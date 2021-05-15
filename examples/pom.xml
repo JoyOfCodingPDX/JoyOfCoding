@@ -9,7 +9,7 @@
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>2021.0.0</version>
+  <version>2021.0.1</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
