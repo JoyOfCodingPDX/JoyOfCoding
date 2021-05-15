@@ -2,13 +2,13 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.0.0</version>
+    <version>2021.0.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>2021.0.2</version>
+  <version>2021.0.3</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
