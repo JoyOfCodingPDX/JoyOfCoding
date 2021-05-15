@@ -3,7 +3,7 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.0</version>
+    <version>2021.1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
@@ -14,7 +14,7 @@
   </properties>
 
   <packaging>war</packaging>
-  <version>2021.1.0</version>
+  <version>2021.1.1</version>
   <name>Airline Web/REST Project</name>
   <url>http://maven.apache.org</url>
   <dependencies>
