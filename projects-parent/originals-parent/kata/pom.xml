@@ -106,7 +106,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
             <configuration>
-              <doclet>io.github.davidwhitlock.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
