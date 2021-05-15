@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
     <version>2021.0.0</version>
   </parent>
   <groupId>${groupId}</groupId>
@@ -46,16 +46,9 @@
   <prerequisites>
     <maven>3.5.2</maven>
   </prerequisites>
-  <repositories>
-    <repository>
-      <id>CS410J</id>
-      <name>CS410J Maven Repository</name>
-      <url>https://dl.bintray.com/davidwhitlock/maven</url>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
-      <groupId>com.sandwich</groupId>
+      <groupId>io.github.davidwhitlock.com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
       <version>2021.0.0</version>
     </dependency>

@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>originals-parent</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
     <version>2021.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
   <version>2021.0.0</version>
@@ -28,13 +28,6 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
-  <repositories>
-    <repository>
-      <id>CS410J</id>
-      <name>CS410J Maven Repository</name>
-      <url>https://dl.bintray.com/davidwhitlock/maven</url>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -54,12 +47,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>2021.0.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
       <version>2021.0.0</version>
       <classifier>tests</classifier>
@@ -81,7 +74,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.phonebill.Project1</mainClass>
+              <mainClass>io.github.davidwhitlock.cs410J.phonebill.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -150,7 +143,7 @@
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
                 <version>2021.0.0</version>
               </docletArtifact>
