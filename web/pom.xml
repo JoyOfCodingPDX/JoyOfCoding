@@ -3,14 +3,14 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.0.0</version>
+    <version>2021.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>2021.0.0</version>
+  <version>2021.1.0</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
     <resteasy.version>4.4.2.Final</resteasy.version>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
@@ -158,7 +158,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>29.0-jre</version>
+      <version>${guava.version}</version>
     </dependency>
   </dependencies>
 </project>
