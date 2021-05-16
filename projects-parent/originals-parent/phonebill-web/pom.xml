@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>originals-parent</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
-    <version>2021.0.0</version>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
+    <version>2021.1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>phonebill-web</artifactId>
 
   <properties>
@@ -14,31 +14,25 @@
   </properties>
 
   <packaging>war</packaging>
-  <version>2021.0.0</version>
+  <version>2021.1.1</version>
   <name>Phone Bill Web/REST Project</name>
   <url>http://maven.apache.org</url>
-  <repositories>
-    <repository>
-      <id>CS410J</id>
-      <name>CS410J Maven Repository</name>
-      <url>https://dl.bintray.com/davidwhitlock/maven</url>
-    </repository>
-  </repositories>
+
   <dependencies>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -135,7 +129,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${user.home}/.m2/repository</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.phonebillweb.Project4</mainClass>
+              <mainClass>io.github.davidwhitlock.cs410J.phonebillweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -157,13 +151,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>${maven.javadoc.plugin.version}</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2021.0.0</version>
+                <version>2021.1.0</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

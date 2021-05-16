@@ -4,11 +4,11 @@
 
   <parent>
     <artifactId>archetypes-parent</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
-    <version>2021.0.0</version>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
+    <version>2021.1.0</version>
   </parent>
   <artifactId>kata-archetype</artifactId>
-  <version>2021.0.0</version>
+  <version>2021.1.0</version>
   <packaging>maven-archetype</packaging>
 
   <name>kata-archetype</name>
@@ -64,11 +64,6 @@
   </scm>
 
   <distributionManagement>
-    <repository>
-      <id>bintray-davidwhitlock-maven</id>
-      <name>DavidWhitlock-maven</name>
-      <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
-    </repository>
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>

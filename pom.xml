@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J</groupId>
-  <version>2021.0.0</version>
+  <groupId>io.github.davidwhitlock.cs410J</groupId>
+  <version>2021.1.0</version>
   <artifactId>cs410j</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -47,6 +47,9 @@
   </developers>
   <scm>
     <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
+    <developerConnection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</developerConnection>
+    <url>https://github.com/DavidWhitlock/PortlandStateJava/tree/main</url>
+    <tag>HEAD</tag>
   </scm>
     <prerequisites>
         <maven>3.6.1</maven>
@@ -56,6 +59,7 @@
         <maven.compiler.target>10</maven.compiler.target>
 
         <groovy.version>3.0.4</groovy.version>
+        <guava.version>30.1.1-jre</guava.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -75,12 +79,7 @@
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
     </properties>
     <repositories>
-      <repository>
-        <id>CS410J</id>
-        <name>CS410J Maven Repository</name>
-        <url>https://dl.bintray.com/davidwhitlock/maven</url>
-      </repository>
-      <repository>
+      <repository>  <!-- Needed for Groovy dependencies -->
         <id>jcenter</id>
         <name>bintray</name>
         <url>https://jcenter.bintray.com</url>
@@ -213,6 +212,44 @@
           <revisionOnScmFailure>noScmFound</revisionOnScmFailure>
           <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
@@ -641,10 +678,13 @@
     </plugins>
   </reporting>
   <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>bintray-davidwhitlock-maven</id>
-      <name>DavidWhitlock-maven</name>
-      <url>https://api.bintray.com/maven/davidwhitlock/maven/PortlandStateJava/;publish=1;override=1</url>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
     <site>
       <id>gh-pages</id>

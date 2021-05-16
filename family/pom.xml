@@ -2,14 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
-    <version>2021.0.0</version>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
+    <version>2021.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J</groupId>
+  <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>family</artifactId>
   <packaging>jar</packaging>
-  <version>2021.0.0</version>
+  <version>2021.1.0</version>
   <name>CS410J Family Tree Application</name>
   <description>An example Java application for CS410J: Advanced Java Programming</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
@@ -21,9 +21,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
     </dependency>
   </dependencies>
   <build>

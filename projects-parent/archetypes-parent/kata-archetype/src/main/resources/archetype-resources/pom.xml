@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
-    <version>2021.0.0</version>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
+    <version>2021.1.0</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -19,14 +19,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>CS410J</id>
-      <name>CS410J Maven Repository</name>
-      <url>https://dl.bintray.com/davidwhitlock/maven</url>
-    </repository>
-  </repositories>
-
   <build>
     <plugins>
       <plugin>
@@ -35,7 +27,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.kata.Kata</mainClass>
+              <mainClass>io.github.davidwhitlock.cs410J.kata.Kata</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -93,9 +85,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -112,13 +104,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>${maven.javadoc.plugin.version}</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>edu.pdx.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2021.0.0</version>
+                <version>2021.1.0</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

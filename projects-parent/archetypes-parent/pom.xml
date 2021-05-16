@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>edu.pdx.cs410J</groupId>
+        <groupId>io.github.davidwhitlock.cs410J</groupId>
         <artifactId>projects-parent</artifactId>
-        <version>2021.0.0</version>
+        <version>2021.1.1</version>
     </parent>
 
     <artifactId>archetypes-parent</artifactId>
-    <version>2021.0.0</version>
+    <version>2021.1.0</version>
 
     <packaging>pom</packaging>
 

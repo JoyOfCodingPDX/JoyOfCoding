@@ -2,15 +2,15 @@
 <project>
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>edu.pdx.cs410J</groupId>
-    <version>2021.0.0</version>
+    <groupId>io.github.davidwhitlock.cs410J</groupId>
+    <version>2021.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.pdx.cs410J</groupId>
+  <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>2021.0.0</version>
+  <version>2021.1.0</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
     <resteasy.version>4.4.2.Final</resteasy.version>
@@ -78,7 +78,7 @@
             </execution>
           </executions>
           <configuration>
-              <mainClass>edu.pdx.cs410J.web.HttpRequestHelper</mainClass>
+              <mainClass>io.github.davidwhitlock.cs410J.web.HttpRequestHelper</mainClass>
           </configuration>
         </plugin>
         <plugin>
@@ -90,7 +90,7 @@
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
                 <classpathLayoutType>repository</classpathLayoutType>
-                <mainClass>edu.pdx.cs410J.di.RestfulCreditCardService</mainClass>
+                <mainClass>io.github.davidwhitlock.cs410J.di.RestfulCreditCardService</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -131,9 +131,9 @@
       <version>2.7</version>
     </dependency>
     <dependency>
-      <groupId>edu.pdx.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2021.0.0</version>
+      <version>2021.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
@@ -158,7 +158,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>29.0-jre</version>
+      <version>${guava.version}</version>
     </dependency>
   </dependencies>
 </project>
