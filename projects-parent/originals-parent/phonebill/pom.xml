@@ -9,7 +9,7 @@
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
-  <version>2021.1.1</version>
+  <version>2021.1.2</version>
   <name>CS410J Phone Bill Project</name>
   <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>

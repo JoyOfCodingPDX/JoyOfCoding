@@ -8,7 +8,7 @@
   </parent>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>student</artifactId>
-  <version>2021.1.1</version>
+  <version>2021.1.2</version>
   <packaging>jar</packaging>
 
   <name>Student Project</name>
