@@ -8,10 +8,10 @@
 <div id="overview"><a href="../../../../../testapidocs/edu/pdx/cs410J/family/RemotePersonTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> edu.pdx.cs410J.family;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.junit.Assert;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertNull;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Assertions;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertTrue;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertNull;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.rmi.RemoteException;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.util.Date;
@@ -34,13 +34,13 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>    @Test
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGenderMale() <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      RemotePerson male = getTree().createPerson(Person.MALE);
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      Assert.assertEquals(Person.MALE, male.getGender());
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      Assertions.assertEquals(Person.MALE, male.getGender());
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>    }
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>    @Test
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGenderFemale() <strong class="jxr_keyword">throws</strong> RemoteException {
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      RemotePerson female = getTree().createPerson(Person.FEMALE);
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      Assert.assertEquals(Person.FEMALE, female.getGender());
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      Assertions.assertEquals(Person.FEMALE, female.getGender());
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>    }
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>    @Test
@@ -48,7 +48,7 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      RemotePerson person = getTree().createPerson(Person.FEMALE);
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      String firstName = <span class="jxr_string">"firstName"</span>;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      person.setFirstName(firstName);
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      Assert.assertEquals(firstName, person.getFirstName());
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      Assertions.assertEquals(firstName, person.getFirstName());
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>    }
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>    @Test
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      RemotePerson person = getTree().createPerson(Person.FEMALE);
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      String middleName = <span class="jxr_string">"middleName"</span>;
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      person.setMiddleName(middleName);
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      Assert.assertEquals(middleName, person.getMiddleName());
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      Assertions.assertEquals(middleName, person.getMiddleName());
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>    }
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>    @Test
@@ -76,7 +76,7 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      RemotePerson person = getTree().createPerson(Person.FEMALE);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      String lastName = <span class="jxr_string">"lastName"</span>;
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      person.setLastName(lastName);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      Assert.assertEquals(lastName, person.getLastName());
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      Assertions.assertEquals(lastName, person.getLastName());
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>    }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>    @Test
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      RemotePerson father = tree.createPerson(Person.MALE);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      person.setFatherId(father.getId());
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      Assert.assertEquals(father.getId(), person.getFatherId());
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      Assertions.assertEquals(father.getId(), person.getFatherId());
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>    }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>    @Test
@@ -101,7 +101,7 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      RemotePerson person = tree.createPerson(Person.MALE);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        person.setFatherId(40000);
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>        Assert.fail(<span class="jxr_string">"Should have thrown FamilyTreeException"</span>);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>        Assertions.fail(<span class="jxr_string">"Should have thrown FamilyTreeException"</span>);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>        <em class="jxr_comment">// pass...</em>
@@ -116,7 +116,7 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>       person.setFatherId(father.getId());
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>       Assert.fail(<span class="jxr_string">"Should have thrown an FamilyTreeException"</span>);
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>       Assertions.fail(<span class="jxr_string">"Should have thrown an FamilyTreeException"</span>);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> 
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>       <em class="jxr_comment">// pass...</em>
@@ -130,7 +130,7 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     RemotePerson mother = tree.createPerson(Person.FEMALE);
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     person.setMotherId(mother.getId());
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> 
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>     Assert.assertEquals(mother.getId(), person.getMotherId());
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>     Assertions.assertEquals(mother.getId(), person.getMotherId());
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>   }
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>   @Test
@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     RemotePerson person = tree.createPerson(Person.MALE);
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>       person.setMotherId(40000);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>       Assert.fail(<span class="jxr_string">"Should have thrown FamilyTreeException"</span>);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>       Assertions.fail(<span class="jxr_string">"Should have thrown FamilyTreeException"</span>);
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>       <em class="jxr_comment">// pass...</em>
@@ -154,7 +154,7 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>       person.setMotherId(mother.getId());
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>       Assert.fail(<span class="jxr_string">"Should have thrown an FamilyTreeException"</span>);
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>       Assertions.fail(<span class="jxr_string">"Should have thrown an FamilyTreeException"</span>);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     } <strong class="jxr_keyword">catch</strong> (FamilyTreeException ex) {
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>       <em class="jxr_comment">// pass...</em>
@@ -180,6 +180,6 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2020 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
