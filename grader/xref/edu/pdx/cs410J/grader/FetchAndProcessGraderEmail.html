@@ -59,7 +59,7 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      File directory = getDirectory(directoryName);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradeBook = getGradeBook(gradeBookFile);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/G<a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>html#GraderEmailAccount">GraderEmailAccount</a> account = <strong class="jxr_keyword">new</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(password);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/G<a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>html#GraderEmailAccount">GraderEmailAccount</a> account = <strong class="jxr_keyword">new</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(<span class="jxr_string">"sjavata"</span>, password, m -&gt; { });
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      fetchAndProcessGraderEmails(whatToFetch, account, directory, gradeBook);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      saveGradeBookIfModified(gradeBook, gradeBookFile);
@@ -159,6 +159,6 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2020 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
