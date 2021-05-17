@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.student","l":"Student"}]
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"edu.pdx.cs410J.student","l":"Student"}];updateSearchResults();
