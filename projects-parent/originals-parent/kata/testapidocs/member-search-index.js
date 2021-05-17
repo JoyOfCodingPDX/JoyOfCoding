@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"edu.pdx.cs410J.kata","c":"KataTest","l":"canInstantiateKataClass()"},{"p":"edu.pdx.cs410J.kata","c":"KataTest","l":"KataTest()","u":"%3Cinit%3E()"}];updateSearchResults();
