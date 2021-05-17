@@ -10,7 +10,7 @@
 
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>java-koans-archetype</artifactId>
-  <version>2021.1.0</version>
+  <version>2021.1.2</version>
   <packaging>maven-archetype</packaging>
 
   <name>java-koans-archetype</name>
