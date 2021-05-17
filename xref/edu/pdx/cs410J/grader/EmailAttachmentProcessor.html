@@ -9,16 +9,26 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> edu.pdx.cs410J.grader;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> javax.mail.Message;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> java.io.InputStream;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> {
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>     <strong class="jxr_keyword">void</strong> processAttachment(Message message, String fileName, InputStream inputStream);
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>     Iterable&lt;? <strong class="jxr_keyword">extends</strong> String&gt; getSupportedContentTypes();
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  }
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> javax.mail.MessagingException;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> java.io.InputStream;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="EmailAttachmentProcessor" href="../../../../edu/pdx/cs410J/grader/EmailAttachmentProcessor.html#EmailAttachmentProcessor">EmailAttachmentProcessor</a> {
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>     <strong class="jxr_keyword">void</strong> processAttachment(Message message, String fileName, InputStream inputStream, String contentType);
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>    Iterable&lt;? <strong class="jxr_keyword">extends</strong> String&gt; getSupportedContentTypes();
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">default</strong> <strong class="jxr_keyword">boolean</strong> hasSupportedContentType(Message message) <strong class="jxr_keyword">throws</strong> MessagingException {
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">for</strong> (String supported : getSupportedContentTypes()) {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>        <strong class="jxr_keyword">if</strong> (message.isMimeType(supported)) {
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>        }
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      }
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    }
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2020 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

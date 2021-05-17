@@ -13,6 +13,7 @@ edu.pdx.cs410J.grader.poa.ui
 edu.pdx.cs410J.j2se15
 edu.pdx.cs410J.java8
 edu.pdx.cs410J.junit
+edu.pdx.cs410J.kata
 edu.pdx.cs410J.lang
 edu.pdx.cs410J.net
 edu.pdx.cs410J.phonebill
@@ -24,4 +25,5 @@ edu.pdx.cs410J.servlets
 edu.pdx.cs410J.student
 edu.pdx.cs410J.tips
 edu.pdx.cs410J.web
+edu.pdx.cs410J.whitlock
 edu.pdx.cs410J.xml

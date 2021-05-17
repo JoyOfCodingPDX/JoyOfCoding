@@ -10,8 +10,8 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.google.common.eventbus.EventBus;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.google.common.eventbus.Subscribe;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.junit.After;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.junit.Before;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.AfterEach;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.BeforeEach;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.function.Consumer;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
@@ -19,14 +19,14 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>    <strong class="jxr_keyword">protected</strong> EventBus bus;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>    <strong class="jxr_keyword">protected</strong> Consumer&lt;UnhandledExceptionEvent&gt; unhandledExceptionHandler;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>    @Before
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>    @BeforeEach
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setUp() {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      unhandledExceptionHandler = <strong class="jxr_keyword">this</strong>::failTestWhenUnhandledExceptionEncountered;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      bus = <strong class="jxr_keyword">new</strong> EventBusThatPublishesUnhandledExceptionEvents();
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      bus.register(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>    }
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>    @After
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    @AfterEach
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> tearDown() {
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">if</strong> (bus != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>        bus.unregister(<strong class="jxr_keyword">this</strong>);
@@ -49,6 +49,6 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2020 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>

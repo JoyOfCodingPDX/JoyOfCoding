@@ -7,7 +7,9 @@ edu.pdx.cs410J.di
 edu.pdx.cs410J.family
 edu.pdx.cs410J.grader
 edu.pdx.cs410J.grader.poa
+edu.pdx.cs410J.grader.poa.ui
 edu.pdx.cs410J.junit
+edu.pdx.cs410J.kata
 edu.pdx.cs410J.phonebill
 edu.pdx.cs410J.phonebillweb
 edu.pdx.cs410J.rmi
