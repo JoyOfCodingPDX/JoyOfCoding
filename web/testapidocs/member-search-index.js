@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"edu.pdx.cs410J.di","c":"CreditCardDatabaseTest","l":"CreditCardDatabaseTest()","url":"%3Cinit%3E()"},{"p":"edu.pdx.cs410J.di","c":"CreditCardDatabaseTest","l":"setBalanceWritesToFile()"}]
+memberSearchIndex = [{"p":"edu.pdx.cs410J.di","c":"CreditCardDatabaseTest","l":"CreditCardDatabaseTest()","u":"%3Cinit%3E()"},{"p":"edu.pdx.cs410J.di","c":"CreditCardDatabaseTest","l":"setBalanceWritesToFile()"},{"p":"edu.pdx.cs410J.di","c":"CreditCardDatabaseTest","l":"testDirectory"}];updateSearchResults();
