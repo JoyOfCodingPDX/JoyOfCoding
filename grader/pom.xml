@@ -8,7 +8,7 @@
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>2021.1.0</version>
+  <version>2021.1.1</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
@@ -82,7 +82,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.grader.GraderTools</mainClass>
+              <mainClass>edu.pdx.cs410J.grader.GraderTools</mainClass>
             </manifest>
           </archive>
         </configuration>
