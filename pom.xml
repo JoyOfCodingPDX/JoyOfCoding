@@ -72,6 +72,15 @@
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
+      <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+      <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+      <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+      <jetty-maven-plugin.version>9.4.18.v20190429</jetty-maven-plugin.version>
+      <spotbugs-maven-plugin.version>4.0.0</spotbugs-maven-plugin.version>
+      <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+      <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+      <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
+      <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
 
       <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
 
@@ -139,6 +148,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -151,6 +161,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -182,6 +193,7 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>3.0.0-M1</version>
       </plugin>
@@ -257,12 +269,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven-jar-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven-source-plugin.version}</version>
         </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -287,7 +299,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${build-helper-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>add-it-source</id>
@@ -320,7 +332,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -383,12 +395,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>${maven-project-info-reports-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.6</version>
+          <version>${jacoco-maven-plugin.version}</version>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
@@ -465,7 +477,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>${maven-shade-plugin.version}</version>
           <configuration>
             <createDependencyReducedPom>false</createDependencyReducedPom>
           </configuration>
@@ -473,7 +485,7 @@
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.18.v20190429</version>
+          <version>${jetty-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -505,7 +517,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.0.0</version>
+          <version>${spotbugs-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -552,6 +564,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-maven-plugin.version}</version>
         <configuration>
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put spotbugs xdoc xml report -->
@@ -642,6 +655,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>
