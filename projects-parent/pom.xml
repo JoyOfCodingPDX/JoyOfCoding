@@ -17,12 +17,6 @@
 
     <name>Parent Project for CS410J Projects</name>
 
-    <properties>
-        <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
-        <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-    </properties>
-
     <modules>
         <module>projects</module>
         <module>originals-parent</module>
