@@ -11,6 +11,9 @@
   <name>examples</name>
   <version>2021.2.0-SNAPSHOT</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
+  <properties>
+    <groovy.version>3.0.4</groovy.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
