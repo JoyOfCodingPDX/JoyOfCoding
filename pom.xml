@@ -62,7 +62,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.20.0</pmd.version>
+        <pmd.version>6.34.0</pmd.version>
 
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.3.4</wagon-ssh.version>
@@ -72,17 +72,17 @@
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
       <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-      <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+      <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
       <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
       <jetty-maven-plugin.version>9.4.18.v20190429</jetty-maven-plugin.version>
-      <spotbugs-maven-plugin.version>4.0.0</spotbugs-maven-plugin.version>
-      <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-      <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
-      <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
-      <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
+      <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
+      <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+      <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+      <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+      <maven-project-info-reports-plugin.version>3.1.2</maven-project-info-reports-plugin.version>
       <maven-surefire-report-plugin.version>2.21.0</maven-surefire-report-plugin.version>
       <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
-      <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+      <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
       <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
 
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
@@ -104,13 +104,7 @@
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
+      <artifactId>hamcrest</artifactId>
       <version>${hamcrest.version}</version>
       <scope>test</scope>
     </dependency>
