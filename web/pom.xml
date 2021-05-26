@@ -153,12 +153,12 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
