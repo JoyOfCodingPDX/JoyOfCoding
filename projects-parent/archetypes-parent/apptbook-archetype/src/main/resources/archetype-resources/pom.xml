@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.apptbook.Project1</mainClass>
+              <mainClass>${package}.apptbook.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>

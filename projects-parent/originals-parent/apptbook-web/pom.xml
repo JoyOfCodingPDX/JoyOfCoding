@@ -132,7 +132,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${user.home}/.m2/repository</classpathPrefix>
-              <mainClass>io.github.davidwhitlock.cs410J.apptbookweb.Project4</mainClass>
+              <mainClass>edu.pdx.cs410J.apptbookweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>

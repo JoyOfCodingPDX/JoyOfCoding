@@ -76,7 +76,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.phonebill.Project1</mainClass>
+              <mainClass>edu.pdx.cs410J.phonebill.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>

@@ -28,7 +28,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.kata.Kata</mainClass>
+              <mainClass>${package}.Kata</mainClass>
             </manifest>
           </archive>
         </configuration>

@@ -28,7 +28,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.student.Student</mainClass>
+              <mainClass>edu.pdx.cs410J.student.Student</mainClass>
             </manifest>
           </archive>
         </configuration>
