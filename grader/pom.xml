@@ -14,13 +14,6 @@
   <properties>
     <com.sun.mail.version>1.6.4</com.sun.mail.version>
   </properties>
-  <repositories>
-    <repository>
-      <id>sonatype-snapshot</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots/>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
       <groupId>javax.mail</groupId>
@@ -70,7 +63,7 @@
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail</artifactId>
-      <version>1.5.11</version>
+      <version>1.6.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
