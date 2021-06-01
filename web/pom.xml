@@ -10,10 +10,10 @@
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>2021.2.0</version>
+  <version>2021.2.1</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>4.4.2.Final</resteasy.version>
+    <resteasy.version>4.6.0.Final</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>
