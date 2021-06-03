@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>archetypes-parent</artifactId>
-    <version>2021.2.0</version>
+    <version>2021.2.1</version>
 
     <packaging>pom</packaging>
 
