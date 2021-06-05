@@ -2,25 +2,18 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.0</version>
+    <version>2021.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>2021.1.1</version>
+  <version>2021.2.0</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
     <com.sun.mail.version>1.6.4</com.sun.mail.version>
   </properties>
-  <repositories>
-    <repository>
-      <id>sonatype-snapshot</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots/>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
       <groupId>javax.mail</groupId>
@@ -45,7 +38,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.1.0</version>
+      <version>2021.2.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.opencsv</groupId>
@@ -65,12 +58,12 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail</artifactId>
-      <version>1.5.11</version>
+      <version>1.6.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -79,6 +72,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -90,6 +84,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -102,10 +97,12 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${surefire.version}</version>
         </plugin>
     </plugins>
   </build>

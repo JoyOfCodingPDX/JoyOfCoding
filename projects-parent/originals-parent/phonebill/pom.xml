@@ -3,13 +3,13 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.1</version>
+    <version>2021.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
-  <version>2021.1.2</version>
+  <version>2021.2.0</version>
   <name>CS410J Phone Bill Project</name>
   <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
@@ -49,12 +49,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.1.0</version>
+      <version>2021.2.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.1.0</version>
+      <version>2021.2.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -64,6 +64,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <configuration>
           <attach>true</attach>
         </configuration>
@@ -71,10 +72,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.github.davidwhitlock.cs410J.phonebill.Project1</mainClass>
+              <mainClass>edu.pdx.cs410J.phonebill.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -82,6 +84,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -94,14 +97,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${surefire.version}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-maven-plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -110,21 +116,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.21.0</version>
+        <version>${maven-surefire-report-plugin.version}</version>
       </plugin>
        <plugin>
          <groupId>org.codehaus.mojo</groupId>
          <artifactId>jdepend-maven-plugin</artifactId>
-         <version>2.0</version>
+         <version>${jdepend-maven-plugin.version}</version>
        </plugin>
        <plugin>
          <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-checkstyle-plugin</artifactId>
-         <version>3.0.0</version>
+         <version>${maven-checkstyle-plugin.version}</version>
        </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
       </plugin>
     </plugins>
   </reporting>
@@ -145,7 +152,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2021.1.0</version>
+                <version>2021.2.0</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
@@ -154,6 +161,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco-maven-plugin.version}</version>
             <executions>
               <execution>
                 <id>default-check</id>

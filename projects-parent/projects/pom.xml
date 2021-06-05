@@ -2,23 +2,25 @@
   <parent>
     <artifactId>projects-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.1</version>
+    <version>2021.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>projects</artifactId>
   <name>CS410J Project APIs</name>
   <description>Classes needed for the Projects in CS410J: Advanced Java Programming</description>
-  <version>2021.1.1</version>
+  <version>2021.2.0</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-maven-plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <!-- Compile the project source using Java 8 so that it's compatible with Android projects -->
           <source>1.8</source>
@@ -29,10 +31,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${surefire.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <configuration>
           <attach>true</attach>
         </configuration>
@@ -40,6 +44,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
         <executions>
           <execution>
             <goals>

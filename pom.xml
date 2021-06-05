@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
-  <version>2021.1.0</version>
+  <version>2021.2.0</version>
   <artifactId>cs410j</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -58,22 +58,34 @@
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
 
-        <groovy.version>3.0.4</groovy.version>
         <guava.version>30.1.1-jre</guava.version>
+        <guice.version>5.0.1</guice.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.20.0</pmd.version>
+        <pmd.version>6.34.0</pmd.version>
 
         <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.3.4</wagon-ssh.version>
 
-        <junit.version>5.7.0</junit.version>
+        <junit.version>5.7.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>3.2.4</mockito.version>
         <surefire.version>3.0.0-M4</surefire.version>
-
-      <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+      <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+      <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+      <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+      <jetty-maven-plugin.version>9.4.41.v20210516</jetty-maven-plugin.version>
+      <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
+      <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+      <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+      <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+      <maven-project-info-reports-plugin.version>3.1.2</maven-project-info-reports-plugin.version>
+      <maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
+      <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
+      <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+      <maven-archetype-plugin.version>3.2.0</maven-archetype-plugin.version>
+      <maven.javadoc.plugin.version>3.3.0</maven.javadoc.plugin.version>
 
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
@@ -94,13 +106,7 @@
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
+      <artifactId>hamcrest</artifactId>
       <version>${hamcrest.version}</version>
       <scope>test</scope>
     </dependency>
@@ -139,6 +145,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -151,6 +158,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -182,6 +190,7 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>3.0.0-M1</version>
       </plugin>
@@ -257,12 +266,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven-jar-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven-source-plugin.version}</version>
         </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -287,7 +296,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${build-helper-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>add-it-source</id>
@@ -320,7 +329,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -383,12 +392,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>${maven-project-info-reports-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.6</version>
+          <version>${jacoco-maven-plugin.version}</version>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
@@ -465,7 +474,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>${maven-shade-plugin.version}</version>
           <configuration>
             <createDependencyReducedPom>false</createDependencyReducedPom>
           </configuration>
@@ -473,7 +482,7 @@
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.18.v20190429</version>
+          <version>${jetty-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -505,7 +514,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.0.0</version>
+          <version>${spotbugs-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -552,6 +561,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-maven-plugin.version}</version>
         <configuration>
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put spotbugs xdoc xml report -->
@@ -642,6 +652,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>

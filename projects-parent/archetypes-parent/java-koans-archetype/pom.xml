@@ -3,14 +3,14 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.0</version>
+    <version>2021.2.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>java-koans-archetype</artifactId>
-  <version>2021.1.2</version>
+  <version>2021.2.0</version>
   <packaging>maven-archetype</packaging>
 
   <name>java-koans-archetype</name>
@@ -20,7 +20,7 @@
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
         <artifactId>archetype-packaging</artifactId>
-        <version>3.0.1</version>
+        <version>${maven-archetype-plugin.version}</version>
       </extension>
     </extensions>
 
@@ -28,7 +28,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${maven-archetype-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

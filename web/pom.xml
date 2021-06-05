@@ -3,17 +3,17 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.1.0</version>
+    <version>2021.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>2021.1.1</version>
+  <version>2021.2.2</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>4.4.2.Final</resteasy.version>
+    <resteasy.version>4.6.0.Final</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>
@@ -22,18 +22,22 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-maven-plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${surefire.version}</version>
       </plugin>
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty-maven-plugin.version}</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopPort>9999</stopPort>
@@ -78,19 +82,20 @@
             </execution>
           </executions>
           <configuration>
-              <mainClass>io.github.davidwhitlock.cs410J.web.HttpRequestHelper</mainClass>
+              <mainClass>edu.pdx.cs410J.web.HttpRequestHelper</mainClass>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
           <configuration>
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
                 <classpathLayoutType>repository</classpathLayoutType>
-                <mainClass>io.github.davidwhitlock.cs410J.di.RestfulCreditCardService</mainClass>
+                <mainClass>edu.pdx.cs410J.di.RestfulCreditCardService</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -133,7 +138,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2021.1.0</version>
+      <version>2021.2.0</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
@@ -148,12 +153,12 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
