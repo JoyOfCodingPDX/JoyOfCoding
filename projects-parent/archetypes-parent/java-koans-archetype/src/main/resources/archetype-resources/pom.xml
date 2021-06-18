@@ -43,9 +43,6 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
-  <prerequisites>
-    <maven>3.5.2</maven>
-  </prerequisites>
   <dependencies>
     <dependency>
       <groupId>io.github.davidwhitlock.com.sandwich</groupId>

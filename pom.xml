@@ -51,9 +51,6 @@
     <url>https://github.com/DavidWhitlock/PortlandStateJava/tree/main</url>
     <tag>HEAD</tag>
   </scm>
-    <prerequisites>
-        <maven>3.6.1</maven>
-    </prerequisites>
     <properties>
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
