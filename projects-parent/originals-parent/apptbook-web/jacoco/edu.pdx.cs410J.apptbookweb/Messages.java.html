@@ -14,22 +14,22 @@ import java.util.regex.Pattern;
 {
     public static String formatWordCount(int count )
     {
-<span class="nc" id="L17">        return String.format( &quot;Dictionary on server contains %d words&quot;, count );</span>
+<span class="fc" id="L17">        return String.format( &quot;Dictionary on server contains %d words&quot;, count );</span>
     }
 
     public static String formatDictionaryEntry(String word, String definition )
     {
-<span class="nc" id="L22">        return String.format(&quot;  %s : %s&quot;, word, definition);</span>
+<span class="fc" id="L22">        return String.format(&quot;  %s : %s&quot;, word, definition);</span>
     }
 
     public static String missingRequiredParameter( String parameterName )
     {
-<span class="nc" id="L27">        return String.format(&quot;The required parameter \&quot;%s\&quot; is missing&quot;, parameterName);</span>
+<span class="fc" id="L27">        return String.format(&quot;The required parameter \&quot;%s\&quot; is missing&quot;, parameterName);</span>
     }
 
     public static String definedWordAs(String word, String definition )
     {
-<span class="nc" id="L32">        return String.format( &quot;Defined %s as %s&quot;, word, definition );</span>
+<span class="fc" id="L32">        return String.format( &quot;Defined %s as %s&quot;, word, definition );</span>
     }
 
     public static String allDictionaryEntriesDeleted() {
@@ -37,26 +37,26 @@ import java.util.regex.Pattern;
     }
 
     public static Map.Entry&lt;String, String&gt; parseDictionaryEntry(String content) {
-<span class="nc" id="L40">        Pattern pattern = Pattern.compile(&quot;\\s*(.*) : (.*)&quot;);</span>
-<span class="nc" id="L41">        Matcher matcher = pattern.matcher(content);</span>
+<span class="fc" id="L40">        Pattern pattern = Pattern.compile(&quot;\\s*(.*) : (.*)&quot;);</span>
+<span class="fc" id="L41">        Matcher matcher = pattern.matcher(content);</span>
 
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (!matcher.find()) {</span>
-<span class="nc" id="L44">            return null;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (!matcher.find()) {</span>
+<span class="fc" id="L44">            return null;</span>
         }
 
-<span class="nc" id="L47">        return new Map.Entry&lt;&gt;() {</span>
+<span class="fc" id="L47">        return new Map.Entry&lt;&gt;() {</span>
             @Override
             public String getKey() {
-<span class="nc" id="L50">                return matcher.group(1);</span>
+<span class="fc" id="L50">                return matcher.group(1);</span>
             }
 
             @Override
             public String getValue() {
-<span class="nc" id="L55">                String value = matcher.group(2);</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">                if (&quot;null&quot;.equals(value)) {</span>
-<span class="nc" id="L57">                    value = null;</span>
+<span class="fc" id="L55">                String value = matcher.group(2);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                if (&quot;null&quot;.equals(value)) {</span>
+<span class="fc" id="L57">                    value = null;</span>
                 }
-<span class="nc" id="L59">                return value;</span>
+<span class="fc" id="L59">                return value;</span>
             }
 
             @Override
@@ -67,24 +67,24 @@ import java.util.regex.Pattern;
     }
 
     public static void formatDictionaryEntries(PrintWriter pw, Map&lt;String, String&gt; dictionary) {
-<span class="nc" id="L70">        pw.println(Messages.formatWordCount(dictionary.size()));</span>
+<span class="fc" id="L70">        pw.println(Messages.formatWordCount(dictionary.size()));</span>
 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry : dictionary.entrySet()) {</span>
-<span class="nc" id="L73">            pw.println(Messages.formatDictionaryEntry(entry.getKey(), entry.getValue()));</span>
-<span class="nc" id="L74">        }</span>
-<span class="nc" id="L75">    }</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Map.Entry&lt;String, String&gt; entry : dictionary.entrySet()) {</span>
+<span class="fc" id="L73">            pw.println(Messages.formatDictionaryEntry(entry.getKey(), entry.getValue()));</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">    }</span>
 
     public static Map&lt;String, String&gt; parseDictionary(String content) {
-<span class="nc" id="L78">        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L78">        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L80">        String[] lines = content.split(&quot;\n&quot;);</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (int i = 1; i &lt; lines.length; i++) {</span>
-<span class="nc" id="L82">            String line = lines[i];</span>
-<span class="nc" id="L83">            Map.Entry&lt;String, String&gt; entry = parseDictionaryEntry(line);</span>
-<span class="nc" id="L84">            map.put(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L80">        String[] lines = content.split(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (int i = 1; i &lt; lines.length; i++) {</span>
+<span class="fc" id="L82">            String line = lines[i];</span>
+<span class="fc" id="L83">            Map.Entry&lt;String, String&gt; entry = parseDictionaryEntry(line);</span>
+<span class="fc" id="L84">            map.put(entry.getKey(), entry.getValue());</span>
         }
 
-<span class="nc" id="L87">        return map;</span>
+<span class="fc" id="L87">        return map;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

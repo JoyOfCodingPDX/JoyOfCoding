@@ -15,72 +15,72 @@ import java.util.Map;
     public static final String MISSING_ARGS = &quot;Missing command line arguments&quot;;
 
     public static void main(String... args) {
-<span class="nc" id="L18">        String hostName = null;</span>
-<span class="nc" id="L19">        String portString = null;</span>
-<span class="nc" id="L20">        String word = null;</span>
-<span class="nc" id="L21">        String definition = null;</span>
+<span class="fc" id="L18">        String hostName = null;</span>
+<span class="fc" id="L19">        String portString = null;</span>
+<span class="fc" id="L20">        String word = null;</span>
+<span class="fc" id="L21">        String definition = null;</span>
 
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        for (String arg : args) {</span>
-<span class="nc bnc" id="L24" title="All 2 branches missed.">            if (hostName == null) {</span>
-<span class="nc" id="L25">                hostName = arg;</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (String arg : args) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            if (hostName == null) {</span>
+<span class="fc" id="L25">                hostName = arg;</span>
 
-<span class="nc bnc" id="L27" title="All 2 branches missed.">            } else if ( portString == null) {</span>
-<span class="nc" id="L28">                portString = arg;</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            } else if ( portString == null) {</span>
+<span class="fc" id="L28">                portString = arg;</span>
 
-<span class="nc bnc" id="L30" title="All 2 branches missed.">            } else if (word == null) {</span>
-<span class="nc" id="L31">                word = arg;</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">            } else if (word == null) {</span>
+<span class="fc" id="L31">                word = arg;</span>
 
-<span class="nc bnc" id="L33" title="All 2 branches missed.">            } else if (definition == null) {</span>
-<span class="nc" id="L34">                definition = arg;</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            } else if (definition == null) {</span>
+<span class="fc" id="L34">                definition = arg;</span>
 
             } else {
 <span class="nc" id="L37">                usage(&quot;Extraneous command line argument: &quot; + arg);</span>
             }
         }
 
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (hostName == null) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (hostName == null) {</span>
 <span class="nc" id="L42">            usage( MISSING_ARGS );</span>
 
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if ( portString == null) {</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        } else if ( portString == null) {</span>
 <span class="nc" id="L45">            usage( &quot;Missing port&quot; );</span>
         }
 
         int port;
         try {
-<span class="nc" id="L50">            port = Integer.parseInt( portString );</span>
+<span class="fc" id="L50">            port = Integer.parseInt( portString );</span>
 
 <span class="nc" id="L52">        } catch (NumberFormatException ex) {</span>
 <span class="nc" id="L53">            usage(&quot;Port \&quot;&quot; + portString + &quot;\&quot; must be an integer&quot;);</span>
 <span class="nc" id="L54">            return;</span>
-<span class="nc" id="L55">        }</span>
+<span class="fc" id="L55">        }</span>
 
-<span class="nc" id="L57">        AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);</span>
+<span class="fc" id="L57">        AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);</span>
 
         String message;
         try {
-<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (word == null) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (word == null) {</span>
                 // Print all word/definition pairs
-<span class="nc" id="L63">                Map&lt;String, String&gt; dictionary = client.getAllDictionaryEntries();</span>
-<span class="nc" id="L64">                StringWriter sw = new StringWriter();</span>
-<span class="nc" id="L65">                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);</span>
-<span class="nc" id="L66">                message = sw.toString();</span>
+<span class="fc" id="L63">                Map&lt;String, String&gt; dictionary = client.getAllDictionaryEntries();</span>
+<span class="fc" id="L64">                StringWriter sw = new StringWriter();</span>
+<span class="fc" id="L65">                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);</span>
+<span class="fc" id="L66">                message = sw.toString();</span>
 
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            } else if (definition == null) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            } else if (definition == null) {</span>
                 // Print all dictionary entries
-<span class="nc" id="L70">                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));</span>
+<span class="fc" id="L70">                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));</span>
 
             } else {
                 // Post the word/definition pair
-<span class="nc" id="L74">                client.addDictionaryEntry(word, definition);</span>
-<span class="nc" id="L75">                message = Messages.definedWordAs(word, definition);</span>
+<span class="fc" id="L74">                client.addDictionaryEntry(word, definition);</span>
+<span class="fc" id="L75">                message = Messages.definedWordAs(word, definition);</span>
             }
 
 <span class="nc" id="L78">        } catch ( IOException ex ) {</span>
 <span class="nc" id="L79">            error(&quot;While contacting server: &quot; + ex);</span>
 <span class="nc" id="L80">            return;</span>
-<span class="nc" id="L81">        }</span>
+<span class="fc" id="L81">        }</span>
 
-<span class="nc" id="L83">        System.out.println(message);</span>
+<span class="fc" id="L83">        System.out.println(message);</span>
 
 <span class="nc" id="L85">        System.exit(0);</span>
 <span class="nc" id="L86">    }</span>
@@ -99,23 +99,23 @@ import java.util.Map;
      */
     private static void usage( String message )
     {
-<span class="nc" id="L102">        PrintStream err = System.err;</span>
-<span class="nc" id="L103">        err.println(&quot;** &quot; + message);</span>
-<span class="nc" id="L104">        err.println();</span>
-<span class="nc" id="L105">        err.println(&quot;usage: java Project4 host port [word] [definition]&quot;);</span>
-<span class="nc" id="L106">        err.println(&quot;  host         Host of web server&quot;);</span>
-<span class="nc" id="L107">        err.println(&quot;  port         Port of web server&quot;);</span>
-<span class="nc" id="L108">        err.println(&quot;  word         Word in dictionary&quot;);</span>
-<span class="nc" id="L109">        err.println(&quot;  definition   Definition of word&quot;);</span>
-<span class="nc" id="L110">        err.println();</span>
-<span class="nc" id="L111">        err.println(&quot;This simple program posts words and their definitions&quot;);</span>
-<span class="nc" id="L112">        err.println(&quot;to the server.&quot;);</span>
-<span class="nc" id="L113">        err.println(&quot;If no definition is specified, then the word's definition&quot;);</span>
-<span class="nc" id="L114">        err.println(&quot;is printed.&quot;);</span>
-<span class="nc" id="L115">        err.println(&quot;If no word is specified, all dictionary entries are printed&quot;);</span>
-<span class="nc" id="L116">        err.println();</span>
+<span class="fc" id="L102">        PrintStream err = System.err;</span>
+<span class="fc" id="L103">        err.println(&quot;** &quot; + message);</span>
+<span class="fc" id="L104">        err.println();</span>
+<span class="fc" id="L105">        err.println(&quot;usage: java Project4 host port [word] [definition]&quot;);</span>
+<span class="fc" id="L106">        err.println(&quot;  host         Host of web server&quot;);</span>
+<span class="fc" id="L107">        err.println(&quot;  port         Port of web server&quot;);</span>
+<span class="fc" id="L108">        err.println(&quot;  word         Word in dictionary&quot;);</span>
+<span class="fc" id="L109">        err.println(&quot;  definition   Definition of word&quot;);</span>
+<span class="fc" id="L110">        err.println();</span>
+<span class="fc" id="L111">        err.println(&quot;This simple program posts words and their definitions&quot;);</span>
+<span class="fc" id="L112">        err.println(&quot;to the server.&quot;);</span>
+<span class="fc" id="L113">        err.println(&quot;If no definition is specified, then the word's definition&quot;);</span>
+<span class="fc" id="L114">        err.println(&quot;is printed.&quot;);</span>
+<span class="fc" id="L115">        err.println(&quot;If no word is specified, all dictionary entries are printed&quot;);</span>
+<span class="fc" id="L116">        err.println();</span>
 
 <span class="nc" id="L118">        System.exit(1);</span>
 <span class="nc" id="L119">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -17,12 +17,12 @@ import java.util.Map;
  * of how to use HTTP and Java servlets to store simple dictionary of words
  * and their definitions.
  */
-<span class="nc" id="L20">public class AppointmentBookServlet extends HttpServlet</span>
+<span class="fc" id="L20">public class AppointmentBookServlet extends HttpServlet</span>
 {
     static final String WORD_PARAMETER = &quot;word&quot;;
     static final String DEFINITION_PARAMETER = &quot;definition&quot;;
 
-<span class="nc" id="L25">    private final Map&lt;String, String&gt; dictionary = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L25">    private final Map&lt;String, String&gt; dictionary = new HashMap&lt;&gt;();</span>
 
     /**
      * Handles an HTTP GET request from a client by writing the definition of the
@@ -33,16 +33,16 @@ import java.util.Map;
     @Override
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
-<span class="nc" id="L36">        response.setContentType( &quot;text/plain&quot; );</span>
+<span class="fc" id="L36">        response.setContentType( &quot;text/plain&quot; );</span>
 
-<span class="nc" id="L38">        String word = getParameter( WORD_PARAMETER, request );</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (word != null) {</span>
+<span class="fc" id="L38">        String word = getParameter( WORD_PARAMETER, request );</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (word != null) {</span>
 <span class="nc" id="L40">            writeDefinition(word, response);</span>
 
         } else {
-<span class="nc" id="L43">            writeAllDictionaryEntries(response);</span>
+<span class="fc" id="L43">            writeAllDictionaryEntries(response);</span>
         }
-<span class="nc" id="L45">    }</span>
+<span class="fc" id="L45">    }</span>
 
     /**
      * Handles an HTTP POST request by storing the dictionary entry for the
@@ -52,28 +52,28 @@ import java.util.Map;
     @Override
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
-<span class="nc" id="L55">        response.setContentType( &quot;text/plain&quot; );</span>
+<span class="fc" id="L55">        response.setContentType( &quot;text/plain&quot; );</span>
 
-<span class="nc" id="L57">        String word = getParameter(WORD_PARAMETER, request );</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (word == null) {</span>
+<span class="fc" id="L57">        String word = getParameter(WORD_PARAMETER, request );</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (word == null) {</span>
 <span class="nc" id="L59">            missingRequiredParameter(response, WORD_PARAMETER);</span>
 <span class="nc" id="L60">            return;</span>
         }
 
-<span class="nc" id="L63">        String definition = getParameter(DEFINITION_PARAMETER, request );</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if ( definition == null) {</span>
+<span class="fc" id="L63">        String definition = getParameter(DEFINITION_PARAMETER, request );</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if ( definition == null) {</span>
 <span class="nc" id="L65">            missingRequiredParameter( response, DEFINITION_PARAMETER );</span>
 <span class="nc" id="L66">            return;</span>
         }
 
-<span class="nc" id="L69">        this.dictionary.put(word, definition);</span>
+<span class="fc" id="L69">        this.dictionary.put(word, definition);</span>
 
-<span class="nc" id="L71">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L72">        pw.println(Messages.definedWordAs(word, definition));</span>
-<span class="nc" id="L73">        pw.flush();</span>
+<span class="fc" id="L71">        PrintWriter pw = response.getWriter();</span>
+<span class="fc" id="L72">        pw.println(Messages.definedWordAs(word, definition));</span>
+<span class="fc" id="L73">        pw.flush();</span>
 
-<span class="nc" id="L75">        response.setStatus( HttpServletResponse.SC_OK);</span>
-<span class="nc" id="L76">    }</span>
+<span class="fc" id="L75">        response.setStatus( HttpServletResponse.SC_OK);</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Handles an HTTP DELETE request by removing all dictionary entries.  This
@@ -136,13 +136,13 @@ import java.util.Map;
      */
     private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
     {
-<span class="nc" id="L139">        PrintWriter pw = response.getWriter();</span>
-<span class="nc" id="L140">        Messages.formatDictionaryEntries(pw, dictionary);</span>
+<span class="fc" id="L139">        PrintWriter pw = response.getWriter();</span>
+<span class="fc" id="L140">        Messages.formatDictionaryEntries(pw, dictionary);</span>
 
-<span class="nc" id="L142">        pw.flush();</span>
+<span class="fc" id="L142">        pw.flush();</span>
 
-<span class="nc" id="L144">        response.setStatus( HttpServletResponse.SC_OK );</span>
-<span class="nc" id="L145">    }</span>
+<span class="fc" id="L144">        response.setStatus( HttpServletResponse.SC_OK );</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Returns the value of the HTTP request parameter with the given name.
@@ -151,18 +151,18 @@ import java.util.Map;
      *         &lt;code&gt;null&lt;/code&gt; or is the empty string
      */
     private String getParameter(String name, HttpServletRequest request) {
-<span class="nc" id="L154">      String value = request.getParameter(name);</span>
-<span class="nc bnc" id="L155" title="All 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
-<span class="nc" id="L156">        return null;</span>
+<span class="fc" id="L154">      String value = request.getParameter(name);</span>
+<span class="pc bpc" id="L155" title="1 of 4 branches missed.">      if (value == null || &quot;&quot;.equals(value)) {</span>
+<span class="fc" id="L156">        return null;</span>
 
       } else {
-<span class="nc" id="L159">        return value;</span>
+<span class="fc" id="L159">        return value;</span>
       }
     }
 
     @VisibleForTesting
     String getDefinition(String word) {
-<span class="nc" id="L165">        return this.dictionary.get(word);</span>
+<span class="fc" id="L165">        return this.dictionary.get(word);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
