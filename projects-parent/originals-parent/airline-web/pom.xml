@@ -3,7 +3,7 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.2.0</version>
+    <version>2021.3.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
@@ -14,24 +14,24 @@
   </properties>
 
   <packaging>war</packaging>
-  <version>2021.2.0</version>
+  <version>2021.3.0</version>
   <name>Airline Web/REST Project</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.2.0</version>
+      <version>2021.3.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2021.2.0</version>
+      <version>2021.3.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.2.0</version>
+      <version>2021.3.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -163,7 +163,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2021.2.0</version>
+                <version>2021.3.0</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
