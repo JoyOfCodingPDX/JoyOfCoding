@@ -1,7 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,PhoneBillRestClient.PhoneBillRestException,8,0,0,0,3,0,1,0,1,0
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Messages,128,0,6,0,23,0,12,0,9,0
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Project4,203,0,20,0,66,0,15,0,5,0
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Messages.new Map.Entry() {...},29,0,2,0,7,0,5,0,4,0
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,PhoneBillRestClient,100,0,2,0,20,0,8,0,7,0
-Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,PhoneBillServlet,159,0,12,0,51,0,15,0,9,0
+Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Messages,5,123,0,6,2,21,2,10,2,7
+Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Project4,62,141,4,16,22,44,6,9,3,2
+Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,Messages.new Map.Entry() {...},5,24,0,2,1,6,1,4,1,3
+Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,PhoneBillRestClient,0,104,0,2,0,21,0,8,0,7
+Phone Bill Web/REST Project,edu.pdx.cs410J.phonebillweb,PhoneBillServlet,67,92,6,6,23,28,8,7,3,6

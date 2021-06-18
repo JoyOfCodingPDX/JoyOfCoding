@@ -27,57 +27,51 @@ public class PhoneBillRestClient extends HttpRequestHelper
      * @param port The port
      */
     public PhoneBillRestClient( String hostName, int port )
-<span class="nc" id="L30">    {</span>
-<span class="nc" id="L31">        this.url = String.format( &quot;http://%s:%d/%s/%s&quot;, hostName, port, WEB_APP, SERVLET );</span>
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L30">    {</span>
+<span class="fc" id="L31">        this.url = String.format( &quot;http://%s:%d/%s/%s&quot;, hostName, port, WEB_APP, SERVLET );</span>
+<span class="fc" id="L32">    }</span>
 
     /**
      * Returns all dictionary entries from the server
      */
     public Map&lt;String, String&gt; getAllDictionaryEntries() throws IOException {
-<span class="nc" id="L38">      Response response = get(this.url, Map.of());</span>
-<span class="nc" id="L39">      return Messages.parseDictionary(response.getContent());</span>
+<span class="fc" id="L38">      Response response = get(this.url, Map.of());</span>
+<span class="fc" id="L39">      return Messages.parseDictionary(response.getContent());</span>
     }
 
     /**
      * Returns the definition for the given word
      */
     public String getDefinition(String word) throws IOException {
-<span class="nc" id="L46">      Response response = get(this.url, Map.of(&quot;word&quot;, word));</span>
-<span class="nc" id="L47">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="nc" id="L48">      String content = response.getContent();</span>
-<span class="nc" id="L49">      return Messages.parseDictionaryEntry(content).getValue();</span>
+<span class="fc" id="L46">      Response response = get(this.url, Map.of(&quot;word&quot;, word));</span>
+<span class="fc" id="L47">      throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L48">      String content = response.getContent();</span>
+<span class="fc" id="L49">      return Messages.parseDictionaryEntry(content).getValue();</span>
     }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-<span class="nc" id="L53">      Response response = postToMyURL(Map.of(&quot;word&quot;, word, &quot;definition&quot;, definition));</span>
-<span class="nc" id="L54">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="nc" id="L55">    }</span>
+<span class="fc" id="L53">      Response response = postToMyURL(Map.of(&quot;word&quot;, word, &quot;definition&quot;, definition));</span>
+<span class="fc" id="L54">      throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L55">    }</span>
 
     @VisibleForTesting
     Response postToMyURL(Map&lt;String, String&gt; dictionaryEntries) throws IOException {
-<span class="nc" id="L59">      return post(this.url, dictionaryEntries);</span>
+<span class="fc" id="L59">      return post(this.url, dictionaryEntries);</span>
     }
 
     public void removeAllDictionaryEntries() throws IOException {
-<span class="nc" id="L63">      Response response = delete(this.url, Map.of());</span>
-<span class="nc" id="L64">      throwExceptionIfNotOkayHttpStatus(response);</span>
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L63">      Response response = delete(this.url, Map.of());</span>
+<span class="fc" id="L64">      throwExceptionIfNotOkayHttpStatus(response);</span>
+<span class="fc" id="L65">    }</span>
 
     private Response throwExceptionIfNotOkayHttpStatus(Response response) {
-<span class="nc" id="L68">      int code = response.getCode();</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">      if (code != HTTP_OK) {</span>
-<span class="nc" id="L70">        throw new PhoneBillRestException(code);</span>
+<span class="fc" id="L68">      int code = response.getCode();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">      if (code != HTTP_OK) {</span>
+<span class="fc" id="L70">        String message = response.getContent();</span>
+<span class="fc" id="L71">        throw new RestException(code, message);</span>
       }
-<span class="nc" id="L72">      return response;</span>
-    }
-
-    @VisibleForTesting
-    class PhoneBillRestException extends RuntimeException {
-<span class="nc" id="L77">      PhoneBillRestException(int httpStatusCode) {</span>
-<span class="nc" id="L78">        super(&quot;Got an HTTP Status Code of &quot; + httpStatusCode);</span>
-<span class="nc" id="L79">      }</span>
+<span class="fc" id="L73">      return response;</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
