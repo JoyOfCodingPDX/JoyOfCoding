@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>${package}.apptbook.Project1</mainClass>
+              <mainClass>${package}.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
