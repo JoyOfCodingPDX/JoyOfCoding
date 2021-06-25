@@ -15,3 +15,11 @@ File jarFile = new File(targetDir, "airline-client.jar");
 if (!jarFile.isFile()) {
   throw new FileNotFoundException("Couldn't find jar file: " + jarFile)
 }
+
+String jarCommand = "java -jar ${jarFile}"
+def execution = jarCommand.execute()
+execution.waitFor()
+String stderr = execution.err.text
+if (!stderr.contains("Missing command line arguments")) {
+  throw new IllegalStateException("Running jar returned \"" + stderr + "\"");
+}
