@@ -78,7 +78,6 @@
         <include>mvnw.cmd</include>
         <include>run.bat</include>
         <include>run.sh</include>
-        <include>README.md</include>
         <include>mvnw</include>
       </includes>
     </fileSet>
