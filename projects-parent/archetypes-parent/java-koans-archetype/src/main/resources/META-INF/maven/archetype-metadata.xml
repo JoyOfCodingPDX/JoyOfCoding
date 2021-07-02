@@ -24,12 +24,6 @@
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
-      <directory>gradle/wrapper</directory>
-      <includes>
-        <include>**/*.properties</include>
-      </includes>
-    </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
       <directory>src/advanced</directory>
       <includes>
         <include>**/*.java</include>
@@ -78,23 +72,13 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>gradle/wrapper</directory>
-      <includes>
-        <include>**/*.jar</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
       <directory></directory>
       <includes>
         <include>LICENSE</include>
         <include>mvnw.cmd</include>
         <include>run.bat</include>
         <include>run.sh</include>
-        <include>README.md</include>
-        <include>gradlew</include>
-        <include>build.gradle</include>
         <include>mvnw</include>
-        <include>gradlew.bat</include>
       </includes>
     </fileSet>
   </fileSets>
