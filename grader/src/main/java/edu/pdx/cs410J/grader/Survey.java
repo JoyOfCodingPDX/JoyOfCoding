@@ -106,10 +106,10 @@ public class Survey extends EmailSender {
     String lastName = ask("What is your last name?");
     String nickName = ask("What is your nickname? (Leave blank if " +
                           "you don't have one)");
-    String id = ask("MANDATORY: What is your UNIX login id?");
+    String id = ask("MANDATORY: What is your MCECS UNIX login id?");
 
     if (isEmpty(id)) {
-      printErrorMessageAndExit("** You must enter a valid UNIX login id");
+      printErrorMessageAndExit("** You must enter a valid MCECS UNIX login id");
 
     } else if (isEmailAddress(id)) {
       printErrorMessageAndExit("** Your student id cannot be an email address");
