@@ -523,7 +523,7 @@ public class Submit extends EmailSender {
     }
   }
 
-  private void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
+  protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
     boolean wereTestClassessSubmitted = submittedTestClasses(sourceFiles);
     if (!wereTestClassessSubmitted && !this.isSubmittingKoans) {
       out.println("*** WARNING: You are not submitting a \"test\" directory.\n" +
