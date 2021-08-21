@@ -5,9 +5,14 @@ name: CI for Maven site
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - '*-SNAPSHOT'
   pull_request:
-    branches: [ main ]
+    # The branches below must be a subset of the branches above
+    branches:
+      - main
+      - '*-SNAPSHOT'
 
 jobs:
   build:
