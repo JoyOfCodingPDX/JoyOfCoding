@@ -1,6 +1,6 @@
-#set($symbol_pound='#')
-#set($symbol_dollar='$')
-#set($symbol_escape='\' )
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 package ${package};
 
 import org.junit.jupiter.api.Test;
@@ -17,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PhoneCallTest {
 
   @Test
-  public void getStartTimeStringNeedsToBeImplemented() {
+  void getStartTimeStringNeedsToBeImplemented() {
     PhoneCall call = new PhoneCall();
     assertThrows(UnsupportedOperationException.class, call::getStartTimeString);
   }
 
   @Test
-  public void initiallyAllPhoneCallsHaveTheSameCallee() {
+  void initiallyAllPhoneCallsHaveTheSameCallee() {
     PhoneCall call = new PhoneCall();
     assertThat(call.getCallee(), containsString("not implemented"));
   }
 
   @Test
-  public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
     assertThat(call.getStartTime(), is(nullValue()));
   }
