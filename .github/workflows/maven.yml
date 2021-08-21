@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         java: [ '12', '16' ]
-
+    name: JDK ${{ matrix.Java }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.Java }}
@@ -29,5 +29,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: ${{ matrix.java }}
-    - name: Build with Maven
+    - name: Build Maven project
       run: ./mvnw --batch-mode verify --file pom.xml
+    - name: Build Maven site
+      run: ./mvnw --batch-mode site --file pom.xml
