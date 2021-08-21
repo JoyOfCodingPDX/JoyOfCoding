@@ -22,6 +22,11 @@ public class SubmitAndroidProject extends Submit {
   }
 
   @Override
+  protected void warnIfTestClassesAreNotSubmitted(Set<File> sourceFiles) {
+
+  }
+
+  @Override
   protected String getZipEntryNameFor(File file) {
     return AndroidZipFixer.getFixedEntryName(file.getAbsolutePath());
   }
