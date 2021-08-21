@@ -18,12 +18,18 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        java: [ '12', '16' ]
+    name: JDK ${{ matrix.Java }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 16
-      uses: actions/setup-java@v1
+    - name: Set up JDK ${{ matrix.Java }}
+      uses: actions/setup-java@v2
       with:
-        java-version: 16.0.1
-    - name: Build with Maven
+        distribution: 'adopt'
+        java-version: ${{ matrix.java }}
+    - name: Build Maven project
       run: ./mvnw --batch-mode verify --file pom.xml
+    - name: Build Maven site
+      run: ./mvnw --batch-mode site --file pom.xml
