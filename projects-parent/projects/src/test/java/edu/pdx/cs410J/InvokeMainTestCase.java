@@ -91,7 +91,7 @@ public abstract class InvokeMainTestCase
                 System.setErr( new PrintStream(newErr) );
 
                 try {
-                    main.invoke( null, (Object) this.args );
+                    main.invoke( null, (Object) copyOfArgs());
 
                 } catch ( InvocationTargetException ex ) {
                     if ( ex.getCause() instanceof ExitException ) {
@@ -110,6 +110,17 @@ public abstract class InvokeMainTestCase
                 System.setOut( oldOut );
                 System.setErr( oldErr );
             }
+        }
+
+        @SuppressWarnings("StringOperationCanBeSimplified")
+        private String[] copyOfArgs() {
+            String[] copy = new String[this.args.length];
+            String[] strings = this.args;
+            for (int i = 0; i < strings.length; i++) {
+                String arg = strings[i];
+                copy[i] = new String(arg);
+            }
+            return copy;
         }
 
         /**
