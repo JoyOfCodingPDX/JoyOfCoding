@@ -321,6 +321,20 @@
             </resources>
             </configuration>
           </execution>
+          <execution>
+            <id>replace-spaces-in-local-repository</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>localRepositoryWithEscapedSpaces</name>
+              <value>${settings.localRepository}</value>
+              <regex>\s</regex>
+              <replacement>%20</replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
