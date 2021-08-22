@@ -1,10 +1,14 @@
 package edu.pdx.cs410J;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Modifier;
 import java.security.Permission;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The superclass of test classes that invoke a main method to test a Java program.
@@ -23,7 +27,23 @@ public abstract class InvokeMainTestCase
      */
     protected MainMethodResult invokeMain( Class mainClass, String... args )
     {
-        return new MainMethodResult( mainClass, args ).invoke();
+        return new MainMethodResult( mainClass, args ).invoke(false);
+    }
+
+    /**
+     * Invokes the <code>main</code> method of the given class with the given arguments and returns an object
+     * that represents the result of invoking that method.
+     *
+     * This method will not throw a {@link MainClassContainsMutableStaticFields} exception
+     * if the <code>mainClass</code> has mutable <code>static</code> fields.
+     *
+     * @param mainClass The class whose main method is invoked
+     * @param args The arguments passed to the main method
+     * @return The result of the method invocation
+     */
+    protected MainMethodResult invokeMainAllowingMutableStaticFields( Class mainClass, String... args )
+    {
+        return new MainMethodResult( mainClass, args ).invoke(true);
     }
 
     /**
@@ -47,8 +67,9 @@ public abstract class InvokeMainTestCase
         /**
          * Invokes the main method
          * @return This <code>MainMethodResult</code>
+         * @param b
          */
-        public MainMethodResult invoke()
+        public MainMethodResult invoke(boolean allowMutableStaticFields)
         {
             Method main;
             try
@@ -58,6 +79,10 @@ public abstract class InvokeMainTestCase
             catch ( NoSuchMethodException e )
             {
                 throw new IllegalArgumentException( "Class " + mainClass.getName() + " does not have a main method" );
+            }
+
+            if (!allowMutableStaticFields) {
+                checkForMutableStaticFields();
             }
 
             try
@@ -73,6 +98,21 @@ public abstract class InvokeMainTestCase
                 throw new UncaughtExceptionInMain(e.getCause());
             }
             return this;
+        }
+
+        private void checkForMutableStaticFields() {
+            List<String> mutableStaticFieldNames = new ArrayList<>();
+            for (Field field : mainClass.getDeclaredFields()) {
+                int modifiers = field.getModifiers();
+                if (Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers)) {
+                    mutableStaticFieldNames.add(field.getName());
+                }
+            }
+
+            if (!mutableStaticFieldNames.isEmpty()) {
+                throw new MainClassContainsMutableStaticFields(mainClass.getName(), mutableStaticFieldNames);
+            }
+
         }
 
         private void invokeMain( Method main )
