@@ -2,73 +2,86 @@ package edu.pdx.cs410J;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the {@link #invokeMain(Class, String[])} method of {@link InvokeMainTestCase}
  */
-public class InvokeMainIT extends InvokeMainTestCase {
+class InvokeMainIT extends InvokeMainTestCase {
 
   private static final String UNCAUGHT_EXCEPTION_MESSAGE = "Uncaught exception in main";
 
   @Test
-    public void testNoExitCode() {
+  void testNoExitCode() {
         MainMethodResult result = invokeMain( NoExitCode.class );
-        assertNull( result.getExitCode() );
+        assertThat(result.getExitCode(), nullValue());
     }
 
     @Test
-    public void testZeroExitCode() {
+    void testZeroExitCode() {
         MainMethodResult result = invokeMain( ZeroExitCode.class );
-        assertEquals(new Integer(0), result.getExitCode());
+        assertThat(result.getExitCode(), equalTo(0));
     }
 
     @Test
-    public void testExitCodeOf1() {
+    void testExitCodeOf1() {
         MainMethodResult result = invokeMain( ExitCodeOf1.class );
-        assertEquals(new Integer(1), result.getExitCode());
+        assertThat(result.getExitCode(), equalTo(1));
     }
 
     @Test
-    public void testCommandLineArguments() {
+    void testCommandLineArguments() {
         Integer exitCode = 27;
         MainMethodResult result = invokeMain( ExitCodeFromCommandLine.class, String.valueOf(exitCode) );
-        assertEquals( exitCode, result.getExitCode() );
+        assertThat(result.getExitCode(), equalTo(exitCode));
     }
 
     @Test
-    public void testStandardOutput() {
+    void testStandardOutput() {
         MainMethodResult result = invokeMain( WriteArgsToStandardOut.class, "1", "2", "3", "4", "5" );
-        assertEquals( "12345", result.getTextWrittenToStandardOut() );
+        assertThat(result.getTextWrittenToStandardOut(), equalTo("12345"));
     }
 
     @Test
-    public void testStandardError() {
+    void testStandardError() {
         MainMethodResult result = invokeMain( WriteArgsToStandardErr.class, "1", "2", "3", "4", "5" );
-        assertEquals( "12345", result.getTextWrittenToStandardError() );
+        assertThat(result.getTextWrittenToStandardError(), equalTo("12345"));
     }
 
   @Test
-  public void codeAfterSystemExitIsNotExecuted() {
+  void codeAfterSystemExitIsNotExecuted() {
     MainMethodResult result = invokeMain(CodeAfterSystemExit.class);
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
   }
 
   @Test
-  public void uncaughtExceptionInMainThrowsUncaughtExceptionInMain() {
-      try {
-        invokeMain(MainThrowsIllegalStateException.class);
-        fail("Should have thrown an UncaughtExceptionInMain");
+  void uncaughtExceptionInMainThrowsUncaughtExceptionInMain() {
+    UncaughtExceptionInMain ex = assertThrows(UncaughtExceptionInMain.class, () -> invokeMain(MainThrowsIllegalStateException.class));
 
-      } catch (UncaughtExceptionInMain ex) {
-        Throwable cause = ex.getCause();
-        assertThat(cause, instanceOf(IllegalStateException.class));
-        assertThat(cause.getMessage(), equalTo(UNCAUGHT_EXCEPTION_MESSAGE));
-      }
+    Throwable cause = ex.getCause();
+    assertThat(cause, instanceOf(IllegalStateException.class));
+    assertThat(cause.getMessage(), equalTo(UNCAUGHT_EXCEPTION_MESSAGE));
+  }
+
+  @Test
+  void canNotRelyOnEqualsOperatorToCompareArgs() {
+    MainMethodResult result = invokeMain(MainComparesArgStringWithEqualsOperator.class, (String) MainComparesArgStringWithEqualsOperator.ARG_STRING);
+    assertThat(result.getExitCode(), equalTo(0));
+  }
+
+  @Test
+  void invokingMainOfClassWithMutableStaticFieldsThrowsException() {
+    MainClassContainsMutableStaticFields ex = assertThrows(MainClassContainsMutableStaticFields.class, () -> invokeMain(ClassWithMutableStaticFields.class));
+    assertThat(ex.getNamesOfMutableStaticFields(), hasItem(ClassWithMutableStaticFields.MUTUAL_FIELD_NAME));
+  }
+
+  @Test
+  void invokeMainAllowingMutableStaticFieldsIsOkay() {
+    MainMethodResult result = invokeMainAllowingMutableStaticFields(ClassWithMutableStaticFields.class);
+    assertThat(result.getTextWrittenToStandardOut(), containsString(ClassWithMutableStaticFields.getMutableField()));
   }
 
     private static class NoExitCode
@@ -136,6 +149,39 @@ public class InvokeMainIT extends InvokeMainTestCase {
 
     public static void main(String[] args) {
       throw new IllegalStateException(UNCAUGHT_EXCEPTION_MESSAGE);
+    }
+
+  }
+
+  private static class MainComparesArgStringWithEqualsOperator {
+
+    private static final Object ARG_STRING = "ARG";
+
+    public static void main(String[] args) {
+      if (ARG_STRING == args[0]) {
+        System.exit(1);
+
+      } else if (ARG_STRING.equals(args[0])) {
+        System.exit(0);
+      }
+    }
+  }
+
+  private static class ClassWithMutableStaticFields {
+
+    private static final String MUTUAL_FIELD_NAME = "mutableField";
+
+    private static final String MAIN_WAS_INVOKED_MESSAGE = "main was invoked";
+
+    private static String mutableField;
+
+    public static void main(String[] args) {
+      mutableField = MAIN_WAS_INVOKED_MESSAGE;
+      System.out.println(mutableField);
+    }
+
+    public static String getMutableField() {
+      return mutableField;
     }
 
   }

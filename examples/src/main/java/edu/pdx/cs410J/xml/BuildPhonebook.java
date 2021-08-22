@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
  * writes it to a file.
  */
 public class BuildPhonebook {
-  private static PrintStream err = System.err;
+  private static final PrintStream err = System.err;
 
   public static void main(String[] args) {
     Document doc = null;
