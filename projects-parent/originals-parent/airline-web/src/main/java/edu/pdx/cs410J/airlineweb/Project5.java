@@ -1,8 +1,9 @@
 package edu.pdx.cs410J.airlineweb;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -62,12 +63,13 @@ public class Project5 {
                 // Print all word/definition pairs
                 Map<String, String> dictionary = client.getAllDictionaryEntries();
                 StringWriter sw = new StringWriter();
-                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
+                PrettyPrinter pretty = new PrettyPrinter(sw);
+                pretty.dump(dictionary);
                 message = sw.toString();
 
             } else if (definition == null) {
                 // Print all dictionary entries
-                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
+                message = PrettyPrinter.formatDictionaryEntry(word, client.getDefinition(word));
 
             } else {
                 // Post the word/definition pair
@@ -75,7 +77,7 @@ public class Project5 {
                 message = Messages.definedWordAs(word, definition);
             }
 
-        } catch ( IOException ex ) {
+        } catch (IOException | ParserException ex ) {
             error("While contacting server: " + ex);
             return;
         }

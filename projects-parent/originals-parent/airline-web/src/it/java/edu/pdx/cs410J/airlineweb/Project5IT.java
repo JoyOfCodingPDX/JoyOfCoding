@@ -42,7 +42,7 @@ class Project5IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatWordCount(0)));
+        assertThat(out, out, containsString(PrettyPrinter.formatWordCount(0)));
     }
 
     @Test
@@ -70,10 +70,10 @@ class Project5IT extends InvokeMainTestCase {
 
         result = invokeMain( Project5.class, HOSTNAME, PORT, word );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
+        assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
 
         result = invokeMain( Project5.class, HOSTNAME, PORT );
         out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
+        assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
     }
 }
