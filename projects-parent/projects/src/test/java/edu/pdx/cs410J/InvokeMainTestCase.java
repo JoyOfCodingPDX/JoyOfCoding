@@ -67,7 +67,6 @@ public abstract class InvokeMainTestCase
         /**
          * Invokes the main method
          * @return This <code>MainMethodResult</code>
-         * @param b
          */
         public MainMethodResult invoke(boolean allowMutableStaticFields)
         {
