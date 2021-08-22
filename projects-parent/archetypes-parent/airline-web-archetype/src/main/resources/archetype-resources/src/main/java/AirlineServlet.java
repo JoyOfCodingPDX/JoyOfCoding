@@ -122,9 +122,10 @@ public class AirlineServlet extends HttpServlet {
 
     } else {
       PrintWriter pw = response.getWriter();
-      pw.println(Messages.formatDictionaryEntry(word, definition));
 
-      pw.flush();
+      Map<String, String> wordDefinition = Map.of(word, definition);
+      TextDumper dumper = new TextDumper(pw);
+      dumper.dump(wordDefinition);
 
       response.setStatus(HttpServletResponse.SC_OK);
     }
@@ -139,9 +140,8 @@ public class AirlineServlet extends HttpServlet {
   private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
   {
       PrintWriter pw = response.getWriter();
-      Messages.formatDictionaryEntries(pw, dictionary);
-
-      pw.flush();
+      TextDumper dumper = new TextDumper(pw);
+      dumper.dump(dictionary);
 
       response.setStatus( HttpServletResponse.SC_OK );
   }
