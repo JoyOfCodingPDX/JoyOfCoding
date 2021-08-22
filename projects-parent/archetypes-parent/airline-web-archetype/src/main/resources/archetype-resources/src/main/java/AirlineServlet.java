@@ -5,7 +5,6 @@ package ${package};
 
 import com.google.common.annotations.VisibleForTesting;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +32,7 @@ public class AirlineServlet extends HttpServlet {
    * are written to the HTTP response.
    */
   @Override
-  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException
   {
       response.setContentType( "text/plain" );
 
@@ -52,7 +51,7 @@ public class AirlineServlet extends HttpServlet {
    * entry to the HTTP response.
    */
   @Override
-  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws IOException
   {
       response.setContentType( "text/plain" );
 
@@ -83,7 +82,7 @@ public class AirlineServlet extends HttpServlet {
    * something that you'd want a real application to expose.
    */
   @Override
-  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
       response.setContentType("text/plain");
 
       this.dictionary.clear();
@@ -111,8 +110,7 @@ public class AirlineServlet extends HttpServlet {
   /**
    * Writes the definition of the given word to the HTTP response.
    *
-   * The text of the message is formatted with
-   * {@link Messages${symbol_pound}formatDictionaryEntry(String, String)}
+   * The text of the message is formatted with {@link TextDumper}
    */
   private void writeDefinition(String word, HttpServletResponse response) throws IOException {
     String definition = this.dictionary.get(word);
@@ -134,8 +132,7 @@ public class AirlineServlet extends HttpServlet {
   /**
    * Writes all of the dictionary entries to the HTTP response.
    *
-   * The text of the message is formatted with
-   * {@link Messages${symbol_pound}formatDictionaryEntry(String, String)}
+   * The text of the message is formatted with {@link TextDumper}
    */
   private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
   {

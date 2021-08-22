@@ -41,9 +41,11 @@ public class Project5 {
 
         if (hostName == null) {
             usage( MISSING_ARGS );
+            return;
 
         } else if ( portString == null) {
             usage( "Missing port" );
+            return;
         }
 
         int port;

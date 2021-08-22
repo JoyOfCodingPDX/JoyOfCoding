@@ -6,7 +6,6 @@ package ${package};
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.*;
 class AirlineServletTest {
 
   @Test
-  void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
+  void initiallyServletContainsNoDictionaryEntries() throws IOException {
     AirlineServlet servlet = new AirlineServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -42,7 +41,7 @@ class AirlineServletTest {
   }
 
   @Test
-  void addOneWordToDictionary() throws ServletException, IOException {
+  void addOneWordToDictionary() throws IOException {
     AirlineServlet servlet = new AirlineServlet();
 
     String word = "TEST WORD";
