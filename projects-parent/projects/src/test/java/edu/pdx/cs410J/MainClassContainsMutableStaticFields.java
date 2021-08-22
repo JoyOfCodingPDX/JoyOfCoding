@@ -1,6 +1,7 @@
 package edu.pdx.cs410J;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Throws when the <code>main</code> method of a class with mutable <code>static</code>
@@ -23,8 +24,14 @@ public class MainClassContainsMutableStaticFields extends RuntimeException {
   }
 
   private static String getMessage(String className, List<String> fieldNames) {
-    String message = "Main class %s contains %d non-final static fields.  You probably don't want to store data in mutable static fields.  It might cause confusing behavior with your integration tests.";
-    return String.format(message, className, fieldNames.size());
+    return "Main class \"" +
+      className +
+      "\" contains " +
+      fieldNames.size() +
+      " non-final static fields: " +
+      String.join(", ", fieldNames) +
+      ".  You probably don't want to store data in mutable static fields.  " +
+      "It might cause confusing behavior with your integration tests.";
   }
 
   public Iterable<String> getNamesOfMutableStaticFields() {
