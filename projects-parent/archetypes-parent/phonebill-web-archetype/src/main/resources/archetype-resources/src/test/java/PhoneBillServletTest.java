@@ -22,10 +22,10 @@ import static org.mockito.Mockito.*;
  * A unit test for the {@link PhoneBillServlet}.  It uses mockito to
  * provide mock http requests and responses.
  */
-public class PhoneBillServletTest {
+class PhoneBillServletTest {
 
   @Test
-  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
+  void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
     PhoneBillServlet servlet = new PhoneBillServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -36,13 +36,13 @@ public class PhoneBillServletTest {
 
     servlet.doGet(request, response);
 
-    int expectedWords = 0;
-    verify(pw).println(Messages.formatWordCount(expectedWords));
+    // Nothing is written to the response's PrintWriter
+    verify(pw, never()).println(anyString());
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 
   @Test
-  public void addOneWordToDictionary() throws ServletException, IOException {
+  void addOneWordToDictionary() throws ServletException, IOException {
     PhoneBillServlet servlet = new PhoneBillServlet();
 
     String word = "TEST WORD";

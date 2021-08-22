@@ -4,9 +4,11 @@
 package ${package};
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -34,23 +36,27 @@ public class PhoneBillRestClient extends HttpRequestHelper
         this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
     }
 
-    /**
-     * Returns all dictionary entries from the server
-     */
-    public Map<String, String> getAllDictionaryEntries() throws IOException {
-      Response response = get(this.url, Map.of());
-      return Messages.parseDictionary(response.getContent());
-    }
+  /**
+   * Returns all dictionary entries from the server
+   */
+  public Map<String, String> getAllDictionaryEntries() throws IOException, ParserException {
+    Response response = get(this.url, Map.of());
 
-    /**
-     * Returns the definition for the given word
-     */
-    public String getDefinition(String word) throws IOException {
-      Response response = get(this.url, Map.of("word", word));
-      throwExceptionIfNotOkayHttpStatus(response);
-      String content = response.getContent();
-      return Messages.parseDictionaryEntry(content).getValue();
-    }
+    TextParser parser = new TextParser(new StringReader(response.getContent()));
+    return parser.parse();
+  }
+
+  /**
+   * Returns the definition for the given word
+   */
+  public String getDefinition(String word) throws IOException, ParserException {
+    Response response = get(this.url, Map.of("word", word));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String content = response.getContent();
+
+    TextParser parser = new TextParser(new StringReader(content));
+    return parser.parse().get(word);
+  }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
       Response response = postToMyURL(Map.of("word", word, "definition", definition));

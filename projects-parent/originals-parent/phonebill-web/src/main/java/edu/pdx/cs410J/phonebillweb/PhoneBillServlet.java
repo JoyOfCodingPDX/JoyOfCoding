@@ -2,7 +2,6 @@ package edu.pdx.cs410J.phonebillweb;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +30,7 @@ public class PhoneBillServlet extends HttpServlet
      * are written to the HTTP response.
      */
     @Override
-    protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+    protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         response.setContentType( "text/plain" );
 
@@ -50,7 +49,7 @@ public class PhoneBillServlet extends HttpServlet
      * entry to the HTTP response.
      */
     @Override
-    protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+    protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         response.setContentType( "text/plain" );
 
@@ -81,7 +80,7 @@ public class PhoneBillServlet extends HttpServlet
      * something that you'd want a real application to expose.
      */
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
 
         this.dictionary.clear();
@@ -109,8 +108,7 @@ public class PhoneBillServlet extends HttpServlet
     /**
      * Writes the definition of the given word to the HTTP response.
      *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
+     * The text of the message is formatted with {@link TextDumper}
      */
     private void writeDefinition(String word, HttpServletResponse response) throws IOException {
         String definition = this.dictionary.get(word);
@@ -120,9 +118,10 @@ public class PhoneBillServlet extends HttpServlet
 
         } else {
             PrintWriter pw = response.getWriter();
-            pw.println(Messages.formatDictionaryEntry(word, definition));
 
-            pw.flush();
+            Map<String, String> wordDefinition = Map.of(word, definition);
+            TextDumper dumper = new TextDumper(pw);
+            dumper.dump(wordDefinition);
 
             response.setStatus(HttpServletResponse.SC_OK);
         }
@@ -131,15 +130,13 @@ public class PhoneBillServlet extends HttpServlet
     /**
      * Writes all of the dictionary entries to the HTTP response.
      *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
+     * The text of the message is formatted with {@link TextDumper}
      */
     private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
     {
         PrintWriter pw = response.getWriter();
-        Messages.formatDictionaryEntries(pw, dictionary);
-
-        pw.flush();
+        TextDumper dumper = new TextDumper(pw);
+        dumper.dump(dictionary);
 
         response.setStatus( HttpServletResponse.SC_OK );
     }

@@ -3,6 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
  * Integration test that tests the REST calls made by {@link PhoneBillRestClient}
  */
 @TestMethodOrder(MethodName.class)
-public class PhoneBillRestClientIT {
+class PhoneBillRestClientIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
@@ -30,20 +31,20 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllDictionaryEntries() throws IOException {
+  void test0RemoveAllDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoDictionaryEntries() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     Map<String, String> dictionary = client.getAllDictionaryEntries();
     assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2DefineOneWord() throws IOException {
+  void test2DefineOneWord() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String testWord = "TEST WORD";
     String testDefinition = "TEST DEFINITION";
@@ -54,7 +55,7 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));

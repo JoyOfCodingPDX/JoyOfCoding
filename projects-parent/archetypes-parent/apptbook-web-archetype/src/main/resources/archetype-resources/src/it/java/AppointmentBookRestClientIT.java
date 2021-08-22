@@ -3,6 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
@@ -36,14 +37,14 @@ class AppointmentBookRestClientIT {
   }
 
   @Test
-  void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoDictionaryEntries() throws IOException, ParserException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     Map<String, String> dictionary = client.getAllDictionaryEntries();
     assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  void test2DefineOneWord() throws IOException {
+  void test2DefineOneWord() throws IOException, ParserException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     String testWord = "TEST WORD";
     String testDefinition = "TEST DEFINITION";

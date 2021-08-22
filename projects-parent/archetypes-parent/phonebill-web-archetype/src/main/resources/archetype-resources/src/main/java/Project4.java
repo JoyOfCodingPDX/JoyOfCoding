@@ -3,6 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
@@ -67,12 +68,13 @@ public class Project4 {
                 // Print all word/definition pairs
                 Map<String, String> dictionary = client.getAllDictionaryEntries();
                 StringWriter sw = new StringWriter();
-                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
+                PrettyPrinter pretty = new PrettyPrinter(sw);
+                pretty.dump(dictionary);
                 message = sw.toString();
 
             } else if (definition == null) {
                 // Print all dictionary entries
-                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
+                message = PrettyPrinter.formatDictionaryEntry(word, client.getDefinition(word));
 
             } else {
                 // Post the word/definition pair
@@ -80,7 +82,7 @@ public class Project4 {
                 message = Messages.definedWordAs(word, definition);
             }
 
-        } catch ( IOException ex ) {
+        } catch (IOException | ParserException ex ) {
             error("While contacting server: " + ex);
             return;
         }

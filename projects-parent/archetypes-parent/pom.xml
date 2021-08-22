@@ -19,14 +19,14 @@
 
     <modules>
         <module>student-archetype</module>
-        <module>kata-archetype</module>
-        <module>java-koans-archetype</module>
-        <module>apptbook-archetype</module>
-        <module>apptbook-web-archetype</module>
         <module>airline-archetype</module>
         <module>airline-web-archetype</module>
+        <module>apptbook-archetype</module>
+        <module>apptbook-web-archetype</module>
         <module>phonebill-archetype</module>
         <module>phonebill-web-archetype</module>
+        <module>kata-archetype</module>
+        <module>java-koans-archetype</module>
     </modules>
 
 </project>
