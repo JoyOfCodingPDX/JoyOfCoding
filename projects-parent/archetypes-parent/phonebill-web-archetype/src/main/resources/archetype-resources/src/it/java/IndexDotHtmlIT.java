@@ -14,18 +14,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
-public class IndexDotHtmlIT {
+class IndexDotHtmlIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
   @Test
-  public void indexDotHtmlExists() throws IOException {
+  void indexDotHtmlExists() throws IOException {
     Response indexDotHtml = fetchIndexDotHtml();
     assertThat(indexDotHtml.getCode(), equalTo(200));
   }
 
   @Test
-  public void indexDotHtmlHasResonableContent() throws IOException {
+  void indexDotHtmlHasReasonableContent() throws IOException {
     Response indexDotHtml = fetchIndexDotHtml();
     assertThat(indexDotHtml.getContent(), containsString("<form"));
   }
@@ -43,7 +43,7 @@ public class IndexDotHtmlIT {
       this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" );
     }
 
-    public Response getIndexDotHtml() throws IOException {
+    Response getIndexDotHtml() throws IOException {
       return get(this.url, Map.of());
     }
   }
