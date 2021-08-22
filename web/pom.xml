@@ -93,7 +93,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <classpathPrefix>${user.home}/.m2/repository/</classpathPrefix>
+                <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
                 <classpathLayoutType>repository</classpathLayoutType>
                 <mainClass>edu.pdx.cs410J.di.RestfulCreditCardService</mainClass>
               </manifest>
