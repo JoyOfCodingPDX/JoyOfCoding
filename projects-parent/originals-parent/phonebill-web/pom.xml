@@ -132,7 +132,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
-              <classpathPrefix>file:///${user.home}/.m2/repository</classpathPrefix>
+              <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
               <mainClass>edu.pdx.cs410J.phonebillweb.Project4</mainClass>
             </manifest>
           </archive>
