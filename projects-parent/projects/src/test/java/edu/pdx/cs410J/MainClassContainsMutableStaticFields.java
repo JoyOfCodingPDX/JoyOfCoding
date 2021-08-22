@@ -1,7 +1,6 @@
 package edu.pdx.cs410J;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Throws when the <code>main</code> method of a class with mutable <code>static</code>
