@@ -18,17 +18,17 @@ import java.util.function.Consumer;
  * receipt back to the student.
  */
 public class Survey extends EmailSender {
-  private static final PrintWriter out = new PrintWriter(System.out, true);
-  private static final PrintWriter err = new PrintWriter(System.err, true);
-  private static final BufferedReader in =
+  private final PrintWriter out = new PrintWriter(System.out, true);
+  private final PrintWriter err = new PrintWriter(System.err, true);
+  private final BufferedReader in =
     new BufferedReader(new InputStreamReader(System.in));
 
-  private static boolean saveStudentXmlFile = false;
+  private boolean saveStudentXmlFile = false;
 
   /**
    * Returns a textual summary of a <code>Student</code>
    */
-  private static String getSummary(Student student) {
+  private String getSummary(Student student) {
     StringBuilder sb = new StringBuilder();
     sb.append("Name: ").append(student.getFullName()).append("\n");
     sb.append("UNIX login: ").append(student.getId()).append("\n");
@@ -48,7 +48,7 @@ public class Survey extends EmailSender {
   /**
    * Ask the student a question and return his response
    */
-  private static String ask(String question) {
+  private String ask(String question) {
     out.print(breakUpInto80CharacterLines(question));
     out.print(" ");
     out.flush();
@@ -67,7 +67,7 @@ public class Survey extends EmailSender {
   /**
    * Prints out usage information for this program
    */
-  private static void usage() {
+  private void usage() {
     err.println("\nusage: java Survey [options]");
     err.println("  where [options] are:");
     err.println("  -mailServer serverName    Mail server to send mail");
@@ -77,21 +77,22 @@ public class Survey extends EmailSender {
   }
 
   public static void main(String[] args) {
-    parseCommandLine(args);
+    Survey survey = new Survey();
+    survey.parseCommandLine(args);
 
-    printIntroduction();
+    survey.printIntroduction();
 
-    Student student = gatherStudentInformation();
+    Student student = survey.gatherStudentInformation();
 
-    String learn = ask("What do you hope to learn in CS410J?");
-    String comments = ask("What else would you like to tell me?");
+    String learn = survey.ask("What do you hope to learn in CS410J?");
+    String comments = survey.ask("What else would you like to tell me?");
 
-    addNotesToStudent(student, learn, comments);
+    survey.addNotesToStudent(student, learn, comments);
 
-    emailSurveyResults(student, learn, comments);
+    survey.emailSurveyResults(student, learn, comments);
   }
 
-  private static void addNotesToStudent(Student student, String learn, String comments) {
+  private void addNotesToStudent(Student student, String learn, String comments) {
     if (isNotEmpty(learn)) {
       student.addNote(student.getFullName() + " would like to learn " + learn);
     }
@@ -101,7 +102,7 @@ public class Survey extends EmailSender {
     }
   }
 
-  private static Student gatherStudentInformation() {
+  private Student gatherStudentInformation() {
     String firstName = ask("What is your first name?");
     String lastName = ask("What is your last name?");
     String nickName = ask("What is your nickname? (Leave blank if " +
@@ -132,8 +133,7 @@ public class Survey extends EmailSender {
   @VisibleForTesting
   static boolean isEmailAddress(String id) {
     try {
-      boolean strict = true;
-      new InternetAddress(id, strict);
+      new InternetAddress(id, true /* strict */);
       return true;
 
     } catch (AddressException e) {
@@ -141,7 +141,7 @@ public class Survey extends EmailSender {
     }
   }
 
-  private static void askEnrolledSectionQuestion(Student student) {
+  private void askEnrolledSectionQuestion(Student student) {
     String answer = ask("MANDATORY: Are you enrolled in the undergraduate or graduate section of this course? [u/g]");
     if (isEmpty(answer)) {
       printErrorMessageAndExit("Missing enrolled section. Please enter a \"u\" or \"g\"");
@@ -159,7 +159,7 @@ public class Survey extends EmailSender {
 
   }
 
-  private static void askQuestionAndSetValue(String question, Consumer<String> setter) {
+  private void askQuestionAndSetValue(String question, Consumer<String> setter) {
     String answer = ask(question);
     setValueIfNotEmpty(answer, setter);
   }
@@ -170,7 +170,7 @@ public class Survey extends EmailSender {
     }
   }
 
-  private static void emailSurveyResults(Student student, String learn, String comments) {
+  private void emailSurveyResults(Student student, String learn, String comments) {
     String summary = verifyInformation(student);
 
     // Email the results of the survey to the TA and CC the student
@@ -182,7 +182,7 @@ public class Survey extends EmailSender {
     addAttachmentsAndSendEmail(message, textPart, xmlFilePart);
   }
 
-  private static void addAttachmentsAndSendEmail(MimeMessage message, MimeBodyPart textPart, MimeBodyPart filePart) {
+  private void addAttachmentsAndSendEmail(MimeMessage message, MimeBodyPart textPart, MimeBodyPart filePart) {
     // Finally, add the attachments to the message and send it
     try {
       Multipart mp = new MimeMultipart();
@@ -200,7 +200,7 @@ public class Survey extends EmailSender {
     }
   }
 
-  private static void logSentEmail(MimeMessage message) throws MessagingException {
+  private void logSentEmail(MimeMessage message) throws MessagingException {
     StringBuilder sb = new StringBuilder();
     sb.append("\nAn email with with subject \"");
     sb.append(message.getSubject());
@@ -221,7 +221,7 @@ public class Survey extends EmailSender {
     out.println(breakUpInto80CharacterLines(sb.toString()));
   }
 
-  private static MimeBodyPart createXmlAttachment(Student student) {
+  private MimeBodyPart createXmlAttachment(Student student) {
     byte[] xmlBytes = getXmlBytes(student);
 
     if (saveStudentXmlFile) {
@@ -244,7 +244,7 @@ public class Survey extends EmailSender {
     return filePart;
   }
 
-  private static void writeStudentXmlToFile(byte[] xmlBytes, Student student) {
+  private void writeStudentXmlToFile(byte[] xmlBytes, Student student) {
     File directory = new File(System.getProperty("user.dir"));
     File file = new File(directory, student.getId() + ".xml");
     try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -258,7 +258,7 @@ public class Survey extends EmailSender {
     out.println("\nSaved student XML file to " + file + "\n");
   }
 
-  private static MimeBodyPart createEmailText(String learn, String comments, String summary) {
+  private MimeBodyPart createEmailText(String learn, String comments, String summary) {
     // Create the text portion of the message
     StringBuilder text = new StringBuilder();
     text.append("Results of CS410J Survey:\n\n");
@@ -282,7 +282,7 @@ public class Survey extends EmailSender {
     return textPart;
   }
 
-  private static MimeMessage createEmailMessage(Student student) {
+  private MimeMessage createEmailMessage(Student student) {
     MimeMessage message = null;
     try {
       InternetAddress studentEmail = newInternetAddress(student.getEmail(), student.getFullName());
@@ -301,7 +301,7 @@ public class Survey extends EmailSender {
     return message;
   }
 
-  private static byte[] getXmlBytes(Student student) {
+  private byte[] getXmlBytes(Student student) {
     // Create a temporary "file" to hold the Student's XML file.  We
     // use a byte array so that potentially sensitive data (SSN, etc.)
     // is not written to disk
@@ -320,7 +320,7 @@ public class Survey extends EmailSender {
     return bytes;
   }
 
-  private static String verifyInformation(Student student) {
+  private String verifyInformation(Student student) {
     String summary = getSummary(student);
 
     out.println("\nYou entered the following information about " +
@@ -334,11 +334,11 @@ public class Survey extends EmailSender {
     return summary;
   }
 
-  private static void printErrorMessageAndExit(String message) {
+  private void printErrorMessageAndExit(String message) {
     printErrorMessageAndExit(message, null);
   }
 
-  private static void printErrorMessageAndExit(String message, Throwable ex) {
+  private void printErrorMessageAndExit(String message, Throwable ex) {
     err.println(message);
     if (ex != null) {
       ex.printStackTrace(err);
@@ -350,11 +350,11 @@ public class Survey extends EmailSender {
     return string != null && !string.equals("");
   }
 
-  private static boolean isEmpty(String string) {
+  private boolean isEmpty(String string) {
     return string == null || string.equals("");
   }
 
-  private static void printIntroduction() {
+  private void printIntroduction() {
     // Ask the student a bunch of questions
     String welcome =
       "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +
@@ -391,7 +391,7 @@ public class Survey extends EmailSender {
     return sb.toString();
   }
 
-  private static void parseCommandLine(String[] args) {
+  private void parseCommandLine(String[] args) {
     // Parse the command line
     for (int i = 0; i < args.length; i++) {
       String arg = args[i];

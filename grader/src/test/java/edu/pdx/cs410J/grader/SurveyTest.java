@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 
 public class SurveyTest {
   @Test
-  public void setNonEmptyValue() {
+  void setNonEmptyValue() {
     Student student = new Student("test");
     String nonEmptyFirstName = "firstName";
 
@@ -17,7 +17,7 @@ public class SurveyTest {
   }
 
   @Test
-  public void setNullValue() {
+  void setNullValue() {
     Student student = new Student("test");
     String nonNullValue = "nonNullValue";
     student.setFirstName(nonNullValue);
@@ -28,7 +28,7 @@ public class SurveyTest {
   }
 
   @Test
-  public void setEmptyValue() {
+  void setEmptyValue() {
     Student student = new Student("test");
     String nonEmptyValue = "nonEmptyValue";
     student.setFirstName(nonEmptyValue);
@@ -39,7 +39,7 @@ public class SurveyTest {
   }
 
   @Test
-  public void longMessageIsBrokenInto80CharacterLines() {
+  void longMessageIsBrokenInto80CharacterLines() {
     String message = "This is a long sentence that contains more than 80 characters. " +
       "Somewhere in here it should be broken into multiple lines of 80 characters each.";
 
@@ -50,15 +50,19 @@ public class SurveyTest {
   }
 
   @Test
-  public void validEmailAddressIsValid() {
+  void validEmailAddressIsValid() {
     String address = "whitlock@cs.pdx.edu";
     assertThat(Survey.isEmailAddress(address), equalTo(true));
   }
 
   @Test
-  public void invalidEmailAddressIsInvalid() {
+  void invalidEmailAddressIsInvalid() {
     String address = "whitlock";
     assertThat(Survey.isEmailAddress(address), equalTo(false));
   }
 
+  @Test
+  void successfulSurveyWritesStudentXmlFile() {
+
+  }
 }

@@ -25,9 +25,9 @@ public abstract class InvokeMainTestCase
      * @param args The arguments passed to the main method
      * @return The result of the method invocation
      */
-    protected MainMethodResult invokeMain( Class mainClass, String... args )
+    protected MainMethodResult invokeMain( Class<?> mainClass, String... args )
     {
-        return new MainMethodResult( mainClass, args ).invoke(false);
+        return new MainMethodResult(mainClass, args).invoke(false);
     }
 
     /**
@@ -41,24 +41,24 @@ public abstract class InvokeMainTestCase
      * @param args The arguments passed to the main method
      * @return The result of the method invocation
      */
-    protected MainMethodResult invokeMainAllowingMutableStaticFields( Class mainClass, String... args )
+    protected MainMethodResult invokeMainAllowingMutableStaticFields( Class<?> mainClass, String... args )
     {
-        return new MainMethodResult( mainClass, args ).invoke(true);
+        return new MainMethodResult(mainClass, args).invoke(true);
     }
 
     /**
      * Invokes the <code>main</code> method of a class and captures information about the invocation such as the data
      * written to standard out and standard error and the exit code.
      */
-    protected class MainMethodResult
+    protected static class MainMethodResult
     {
-        private final Class mainClass;
+        private final Class<?> mainClass;
         private final String[] args;
         private Integer exitCode;
         private String out;
         private String err;
 
-        MainMethodResult( Class mainClass, String[] args )
+        MainMethodResult( Class<?> mainClass, String[] args )
         {
             this.mainClass = mainClass;
             this.args = args;
@@ -121,7 +121,7 @@ public abstract class InvokeMainTestCase
             PrintStream oldOut = System.out;
             PrintStream oldErr = System.err;
             try {
-                MainMethodResult.ExitStatusSecurityManager essm = new MainMethodResult.ExitStatusSecurityManager( oldSecurityManager );
+                MainMethodResult.ExitStatusSecurityManager essm = new ExitStatusSecurityManager(oldSecurityManager);
                 System.setSecurityManager( essm );
 
                 ByteArrayOutputStream newOut = new ByteArrayOutputStream();
@@ -193,7 +193,7 @@ public abstract class InvokeMainTestCase
          * A {@link SecurityManager} that delegates security checks to another {@link SecurityManager}, but captures
          * the exit code called by {@link System#exit(int)}
          */
-        private class ExitStatusSecurityManager extends SecurityManager
+        private static class ExitStatusSecurityManager extends SecurityManager
         {
             private final SecurityManager delegate;
 
@@ -225,7 +225,7 @@ public abstract class InvokeMainTestCase
                     this.delegate.checkExit( status );
                 }
 
-                throw new ExitException( status );
+                throw new ExitException(status);
             }
 
         }
@@ -234,7 +234,7 @@ public abstract class InvokeMainTestCase
          * An exception that is thrown when the the main method calls {@link System#exit(int)}.  This lets us capture
          * the exit code without the VM actually exiting.
          */
-        private class ExitException extends SecurityException
+        private static class ExitException extends SecurityException
         {
             private final int exitCode;
 
