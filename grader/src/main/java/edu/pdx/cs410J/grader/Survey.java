@@ -45,9 +45,6 @@ public class Survey extends EmailSender {
     if (student.getEmail() != null) {
       sb.append("Email: ").append(student.getEmail()).append("\n");
     }
-    if (student.getSsn() != null) {
-      sb.append("Student id: ").append(student.getSsn()).append("\n");
-    }
     if (student.getMajor() != null) {
       sb.append("Major: ").append(student.getMajor()).append("\n");
     }
@@ -140,7 +137,6 @@ public class Survey extends EmailSender {
     setValueIfNotEmpty(nickName, student::setNickName);
 
     askQuestionAndSetValue("What is your email address (doesn't have to be PSU)?", student::setEmail);
-    askQuestionAndSetValue("What is your student id (XXXXXXXXX)?", student::setSsn);
     askQuestionAndSetValue("What is your major?", student::setMajor);
 
     askEnrolledSectionQuestion(student);

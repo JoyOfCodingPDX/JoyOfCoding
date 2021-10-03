@@ -156,10 +156,6 @@ class XmlStudentParser extends XmlHelper {
         String email = extractTextFrom(child);
         student.setEmail(email);
 
-      } else if (child.getTagName().equals("ssn")) {
-        String ssn = extractTextFrom(child);
-        student.setSsn(ssn);
-
       } else if (child.getTagName().equals("major")) {
         String major = extractTextFrom(child);
         student.setMajor(major);

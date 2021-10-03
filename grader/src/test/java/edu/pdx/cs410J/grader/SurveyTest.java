@@ -73,14 +73,13 @@ public class SurveyTest {
     String nickName = "Nick name";
     String loginId = "LoginId";
     String email = "email@email.com";
-    String studentId = "123456789";
     String major = "Major";
     String section = "u";
     String learn = "A lot";
     String anythingElse = "Nope";
     String verify = "y";
 
-    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, studentId, major, section, learn, anythingElse, verify);
+    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, learn, anythingElse, verify);
 
     Survey survey = new Survey(new TextCapturingOutputStream().getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir);
     survey.takeSurvey("-noEmail");
@@ -94,7 +93,6 @@ public class SurveyTest {
     assertThat(student.getNickName(), equalTo(nickName));
     assertThat(student.getId(), equalTo(loginId));
     assertThat(student.getEmail(), equalTo(email));
-    assertThat(student.getSsn(), equalTo(studentId));
     assertThat(student.getMajor(), equalTo(major));
     assertThat(student.getEnrolledSection(), equalTo(Student.Section.UNDERGRADUATE));
   }

@@ -54,10 +54,7 @@ public class ProjectGradesImporter {
     }
 
     Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
-    if (!maybeStudent.isPresent()) {
-      maybeStudent = gradeBook.getStudentWithSsn(studentId);
-    }
-    if (!maybeStudent.isPresent()) {
+    if (maybeStudent.isEmpty()) {
       warn("Student \"" + studentId + "\" not found in gradebook");
       return;
     }
