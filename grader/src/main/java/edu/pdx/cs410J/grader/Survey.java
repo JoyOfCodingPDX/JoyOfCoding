@@ -18,12 +18,22 @@ import java.util.function.Consumer;
  * receipt back to the student.
  */
 public class Survey extends EmailSender {
-  private final PrintWriter out = new PrintWriter(System.out, true);
-  private final PrintWriter err = new PrintWriter(System.err, true);
-  private final BufferedReader in =
-    new BufferedReader(new InputStreamReader(System.in));
+  @VisibleForTesting
+  static final String STUDENT_XML_FILE_NAME = "me.xml";
 
-  private boolean saveStudentXmlFile = false;
+  private final PrintWriter out;
+  private final PrintWriter err;
+  private final BufferedReader in;
+
+  private boolean sendEmail = true;
+  private final File xmlFileDir;
+
+  public Survey(PrintStream out, PrintStream err, InputStream in, File xmlFileDir) {
+    this.out = new PrintWriter(out, true);
+    this.err = new PrintWriter(err, true);
+    this.in = new BufferedReader(new InputStreamReader(in));
+    this.xmlFileDir = xmlFileDir;
+  }
 
   /**
    * Returns a textual summary of a <code>Student</code>
@@ -77,19 +87,27 @@ public class Survey extends EmailSender {
   }
 
   public static void main(String[] args) {
-    Survey survey = new Survey();
-    survey.parseCommandLine(args);
+    Survey survey = new Survey(System.out, System.err, System.in, new File(System.getProperty("user.dir")));
+    survey.takeSurvey(args);
+  }
 
-    survey.printIntroduction();
+  @VisibleForTesting
+  void takeSurvey(String... args) {
+    parseCommandLine(args);
 
-    Student student = survey.gatherStudentInformation();
+    printIntroduction();
 
-    String learn = survey.ask("What do you hope to learn in CS410J?");
-    String comments = survey.ask("What else would you like to tell me?");
+    Student student = gatherStudentInformation();
 
-    survey.addNotesToStudent(student, learn, comments);
+    String learn = ask("What do you hope to learn in CS410J?");
+    String comments = ask("What else would you like to tell me?");
 
-    survey.emailSurveyResults(student, learn, comments);
+    addNotesToStudent(student, learn, comments);
+
+    writeStudentXmlToFile(getXmlBytes(student));
+
+    emailSurveyResults(student, learn, comments);
+
   }
 
   private void addNotesToStudent(Student student, String learn, String comments) {
@@ -173,13 +191,15 @@ public class Survey extends EmailSender {
   private void emailSurveyResults(Student student, String learn, String comments) {
     String summary = verifyInformation(student);
 
-    // Email the results of the survey to the TA and CC the student
-    out.println("Emailing your information to the Grader");
+    if (sendEmail) {
+      // Email the results of the survey to the TA and CC the student
+      out.println("Emailing your information to the Grader");
 
-    MimeMessage message = createEmailMessage(student);
-    MimeBodyPart textPart = createEmailText(learn, comments, summary);
-    MimeBodyPart xmlFilePart = createXmlAttachment(student);
-    addAttachmentsAndSendEmail(message, textPart, xmlFilePart);
+      MimeMessage message = createEmailMessage(student);
+      MimeBodyPart textPart = createEmailText(learn, comments, summary);
+      MimeBodyPart xmlFilePart = createXmlAttachment(student);
+      addAttachmentsAndSendEmail(message, textPart, xmlFilePart);
+    }
   }
 
   private void addAttachmentsAndSendEmail(MimeMessage message, MimeBodyPart textPart, MimeBodyPart filePart) {
@@ -224,10 +244,6 @@ public class Survey extends EmailSender {
   private MimeBodyPart createXmlAttachment(Student student) {
     byte[] xmlBytes = getXmlBytes(student);
 
-    if (saveStudentXmlFile) {
-      writeStudentXmlToFile(xmlBytes, student);
-    }
-
     DataSource ds = new ByteArrayDataSource(xmlBytes, "text/xml");
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
@@ -244,9 +260,8 @@ public class Survey extends EmailSender {
     return filePart;
   }
 
-  private void writeStudentXmlToFile(byte[] xmlBytes, Student student) {
-    File directory = new File(System.getProperty("user.dir"));
-    File file = new File(directory, student.getId() + ".xml");
+  private void writeStudentXmlToFile(byte[] xmlBytes) {
+    File file = new File(this.xmlFileDir, STUDENT_XML_FILE_NAME);
     try (FileOutputStream fos = new FileOutputStream(file)) {
       fos.write(xmlBytes);
       fos.flush();
@@ -403,8 +418,8 @@ public class Survey extends EmailSender {
 
         serverName = arg;
 
-      } else if (arg.equals("-saveStudentXmlFile")) {
-        saveStudentXmlFile = true;
+      } else if (arg.equals("-noEmail")) {
+        sendEmail = false;
 
       } else if (arg.startsWith("-")) {
         err.println("** Unknown command line option: " + arg);
