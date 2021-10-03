@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.ParserException;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -95,6 +96,7 @@ public class Submit extends EmailSender {
   private boolean isSubmittingKoans = false;
   private boolean sendReceipt = true;
   private boolean failIfDisallowedFiles = true;
+  private String studentXmlFileName;
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -147,27 +149,6 @@ public class Submit extends EmailSender {
     this.projName = projName;
   }
 
-  /**
-   * Sets the name of the user who is submitting the project
-   */
-  void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  /**
-   * Sets the id of the user who is submitting the project
-   */
-  void setUserId(String userId) {
-    this.userId = userId;
-  }
-
-  /**
-   * Sets the email address of the user who is submitting the project
-   */
-  void setUserEmail(String userEmail) {
-    this.userEmail = userEmail;
-  }
-
   void setFailIfDisallowedFiles(boolean failIfDisallowedFiles) {
     this.failIfDisallowedFiles = failIfDisallowedFiles;
   }
@@ -191,6 +172,8 @@ public class Submit extends EmailSender {
     if (projName == null) {
       throw new IllegalStateException("Missing project name");
     }
+
+    validateStudentXmlFile();
 
     if (userName == null) {
       throw new IllegalStateException("Missing student name");
@@ -221,6 +204,34 @@ public class Submit extends EmailSender {
         throw new IllegalStateException(m, ex);
       }
     }
+  }
+
+  private void validateStudentXmlFile() {
+    if (this.studentXmlFileName == null) {
+      throw new IllegalStateException("Missing Student XML File");
+    }
+
+    File studentXmlFile = new File(this.studentXmlFileName);
+    if (!studentXmlFile.exists()) {
+      throw new IllegalStateException("Student XML file \"" + studentXmlFile + "\" doesn't exist");
+    }
+
+    Student student;
+    try {
+      student = new XmlStudentParser(studentXmlFile).parseStudent();
+    } catch (ParserException | IOException ex) {
+      throw new IllegalStateException("Could not parse Student XML file \"" + studentXmlFile + "\"", ex);
+    }
+
+    setStudent(student);
+
+  }
+
+  @VisibleForTesting
+  void setStudent(Student student) {
+    this.userId = student.getId();
+    this.userName = student.getFullName();
+    this.userEmail = student.getEmail();
   }
 
   private String loginIdShouldNotBeEmailAddress(String userId) {
@@ -745,13 +756,9 @@ public class Submit extends EmailSender {
     err.println("\n** " + message + "\n");
     err.println("usage: java " + this.getClass().getSimpleName() + " [options] args file+");
     err.println("  args are (in this order):");
-    if (this.projName == null) {
-      err.println("    project      What project is being submitted (Project1, Project2, etc.)");
-    }
-    err.println("    student      Who is submitting the project?");
-    err.println("    loginId      UNIX login id");
-    err.println("    email        Student's email address");
-    err.println("    srcDirectory Directory containing source code to submit");
+    err.println("    project            What project is being submitted (Project1, Project2, etc.)");
+    err.println("    studentXmlFile     XML file with info about who is submitting the project");
+    err.println("    srcDirectory       Directory containing source code to submit");
     err.println("  options are (options may appear in any order):");
     err.println("    -savezip           Saves temporary Zip file");
     err.println("    -nosend            Generates zip file, but does not send emails");
@@ -774,6 +781,8 @@ public class Submit extends EmailSender {
    * an email to the Grader.
    */
   void parseCommandLineAndSubmit(String[] args) throws IOException, MessagingException {
+    String studentXmlFileName = null;
+
     // Parse the command line
     for (int i = 0; i < args.length; i++) {
       // Check for options first
@@ -803,14 +812,8 @@ public class Submit extends EmailSender {
       } else if (this.projName == null) {
         this.setProjectName(args[i]);
 
-      } else if (this.userName == null) {
-        this.setUserName(args[i]);
-
-      } else if (this.userId == null) {
-        this.setUserId(args[i]);
-
-      } else if (this.userEmail == null) {
-        this.setUserEmail(args[i]);
+      } else if (studentXmlFileName == null) {
+        this.studentXmlFileName = studentXmlFileName;
 
       } else {
         // The name of a source file
