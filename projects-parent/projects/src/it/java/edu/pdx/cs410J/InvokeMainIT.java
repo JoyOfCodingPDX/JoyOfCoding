@@ -2,6 +2,8 @@ package edu.pdx.cs410J;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.*;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,6 +84,34 @@ class InvokeMainIT extends InvokeMainTestCase {
   void invokeMainAllowingMutableStaticFieldsIsOkay() {
     MainMethodResult result = invokeMainAllowingMutableStaticFields(ClassWithMutableStaticFields.class);
     assertThat(result.getTextWrittenToStandardOut(), containsString(ClassWithMutableStaticFields.getMutableField()));
+  }
+
+  @Test
+  void textWrittenToStandardInputIsReadByMainMethod() {
+    String text = "Text read from standard input";
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos, true);
+    pw.println(text);
+    byte[] bytes = baos.toByteArray();
+    InputStream in = new ByteArrayInputStream(bytes);
+    System.setIn(in);
+
+    MainMethodResult result = invokeMain(WriteStandardInToStandardOut.class);
+    assertThat(result.getTextWrittenToStandardOut().trim(), equalTo(text));
+  }
+
+  private static class WriteStandardInToStandardOut {
+    public static void main(String[] args) throws IOException {
+      try (
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
+      ) {
+        for (String line = br.readLine(); line != null; line = br.readLine()) {
+          System.out.println(line);
+        }
+        System.out.flush();
+      }
+    }
   }
 
     private static class NoExitCode

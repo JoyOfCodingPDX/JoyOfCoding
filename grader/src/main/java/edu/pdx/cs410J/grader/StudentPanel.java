@@ -29,7 +29,6 @@ public class StudentPanel extends JPanel {
   private JTextField lastNameField;
   private JTextField nickNameField;
   private JTextField emailField;
-  private JTextField ssnField;
   private JTextField majorField;
   private JTextField d2lIdField;
   private final JComboBox<LetterGrade> letterGraderComboBox;
@@ -73,8 +72,6 @@ public class StudentPanel extends JPanel {
     fields.add(this.nickNameField);
     this.emailField = new JTextField(15);
     fields.add(this.emailField);
-    this.ssnField = new JTextField(11);
-    fields.add(this.ssnField);
     this.majorField = new JTextField(15);
     fields.add(this.majorField);
     this.d2lIdField = new JTextField(10);
@@ -133,7 +130,6 @@ public class StudentPanel extends JPanel {
     this.lastNameField.setText("");
     this.nickNameField.setText("");
     this.emailField.setText("");
-    this.ssnField.setText("");
     this.majorField.setText("");
     this.d2lIdField.setText("");
     this.letterGraderComboBox.setSelectedItem(null);
@@ -173,11 +169,6 @@ public class StudentPanel extends JPanel {
     String email = student.getEmail();
     if (email != null && !email.equals("")) {
       this.emailField.setText(email);
-    }
-
-    String ssn = student.getSsn();
-    if (ssn != null && !ssn.equals("")) {
-      this.ssnField.setText(ssn);
     }
 
     String major = student.getMajor();
@@ -237,15 +228,6 @@ public class StudentPanel extends JPanel {
         student.setEmail(null);
       } else {
         student.setEmail(email);
-      }
-    }
-
-    String ssn = this.ssnField.getText();
-    if (ssn != null) {
-      if (ssn.equals("")) {
-        student.setSsn(null);
-      } else {
-        student.setSsn(ssn);
       }
     }
 

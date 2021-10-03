@@ -406,7 +406,6 @@ public class XmlDumper extends XmlHelper {
     appendTextElementIfValueIsNotNull(root, "lastName", student.getLastName());
     appendTextElementIfValueIsNotNull(root, "nickName", student.getNickName());
     appendTextElementIfValueIsNotNull(root, "email", student.getEmail());
-    appendTextElementIfValueIsNotNull(root, "ssn", student.getSsn());
     appendTextElementIfValueIsNotNull(root, "major", student.getMajor());
     appendTextElementIfValueIsNotNull(root, "d2l-id", student.getD2LId());
     appendTextElementIfValueIsNotNull(root, "letter-grade", Objects.toString(student.getLetterGrade(), null));
