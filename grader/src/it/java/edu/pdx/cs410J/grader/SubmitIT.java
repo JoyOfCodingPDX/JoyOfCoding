@@ -31,11 +31,13 @@ import static org.hamcrest.Matchers.*;
 public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   private final String studentEmail = "student@email.com";
-  private final String studentName = "Student Name";
+  private final String studentFirstName = "First";
+  private final String studentLastName = "Last";
+  private final String studentName = studentFirstName + " " + studentLastName;
   private final Collection<File> filesToSubmit = new ArrayList<>();
   private final String studentLoginId = "student";
   private final String projectName = "Project";
-  private String graderEmail = TA_EMAIL.getAddress();
+  private final String graderEmail = TA_EMAIL.getAddress();
 
   @BeforeEach
   public void createFilesToSubmit() throws IOException {
@@ -148,11 +150,14 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   }
 
   private void submitFiles(boolean sendReceipt) throws IOException, MessagingException {
+    Student student = new Student(studentLoginId);
+    student.setEmail(studentEmail);
+    student.setFirstName(studentFirstName);
+    student.setLastName(studentLastName);
+
     Submit submit = new Submit();
     submit.setProjectName(projectName);
-    submit.setUserEmail(studentEmail);
-    submit.setUserId(studentLoginId);
-    submit.setUserName(studentName);
+    submit.setStudent(student);
     submit.setFailIfDisallowedFiles(false);
 
     for (File file : filesToSubmit) {

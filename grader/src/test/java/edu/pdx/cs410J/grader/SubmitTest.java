@@ -44,7 +44,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "ProjectClass.java");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -64,7 +64,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectClass.java");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -90,7 +90,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -100,7 +100,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "it", "java", "edu", "pdx", "cs410J", userId, "subpackage", "ProjectTest.java");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -110,7 +110,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "main", "javadoc", "edu", "pdx", "cs410J", userId, "package.html");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -120,7 +120,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("proj", "pom.xml");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
   }
 
@@ -130,7 +130,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "main", "groovy", "edu", "pdx", "cs410J", userId, "Project.java");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
   }
 
@@ -177,7 +177,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "main", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -187,7 +187,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "test", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -197,7 +197,7 @@ public class SubmitTest {
 
     File file = makeFileWithPath("src", "it", "resources", "edu", "pdx", "cs410J", userId, "testData.xml");
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.isInMavenProjectDirectory(file), equalTo(true));
   }
 
@@ -276,7 +276,7 @@ public class SubmitTest {
     projectFile.createNewFile();
 
     Submit submit = new Submit();
-    submit.setUserId(userId);
+    submit.setStudent(new Student(userId));
     assertThat(submit.canBeSubmitted(projectFile), equalTo(canSubmit));
   }
 
