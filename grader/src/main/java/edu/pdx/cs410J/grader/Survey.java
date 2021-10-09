@@ -370,8 +370,8 @@ public class Survey extends EmailSender {
     String welcome =
       "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +
       "questions about yourself.  Except for your UNIX login id and the section " +
-      "that you are enrolled in, no question" +
-      "is mandatory.  Your answers will be emailed to the TA and a receipt " +
+      "that you are enrolled in, no question " +
+      "is mandatory.  Your answers will be emailed to the Grader and a receipt " +
       "will be emailed to you.";
 
     out.println("");
