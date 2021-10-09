@@ -158,7 +158,6 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     Submit submit = new Submit();
     submit.setProjectName(projectName);
     submit.setStudent(student);
-    submit.setFailIfDisallowedFiles(false);
 
     for (File file : filesToSubmit) {
       submit.addFile(file.getAbsolutePath());
