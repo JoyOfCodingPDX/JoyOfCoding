@@ -21,9 +21,9 @@ public class PhoneCallTest {
    * your project.
    */
   @Test
-  void getStartTimeStringNeedsToBeImplemented() {
+  void getBeginTimeStringNeedsToBeImplemented() {
     PhoneCall call = new PhoneCall();
-    assertThrows(UnsupportedOperationException.class, call::getStartTimeString);
+    assertThrows(UnsupportedOperationException.class, call::getBeginTimeString);
   }
 
   /**
@@ -37,9 +37,9 @@ public class PhoneCallTest {
   }
 
   @Test
-  void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
-    assertThat(call.getStartTime(), is(nullValue()));
+    assertThat(call.getBeginTime(), is(nullValue()));
   }
   
 }
