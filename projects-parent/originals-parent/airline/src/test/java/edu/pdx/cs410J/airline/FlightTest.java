@@ -12,13 +12,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * You'll need to update these unit tests as you build out you program.
  */
 public class FlightTest {
-  
+
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
   void getArrivalStringNeedsToBeImplemented() {
     Flight flight = new Flight();
     assertThrows(UnsupportedOperationException.class, flight::getArrivalString);
   }
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
   void initiallyAllFlightsHaveTheSameNumber() {
     Flight flight = new Flight();
