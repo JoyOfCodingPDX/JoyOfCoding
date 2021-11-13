@@ -67,8 +67,8 @@
 
         <junit.version>5.8.1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mockito.version>4.0.0</mockito.version>
-        <surefire.version>3.0.0-M5</surefire.version>
+        <mockito.version>3.12.4</mockito.version>
+        <surefire.version>3.0.0-M4</surefire.version>
       <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
       <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
       <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
