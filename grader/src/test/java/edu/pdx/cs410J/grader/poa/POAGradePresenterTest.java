@@ -18,7 +18,7 @@ import static edu.pdx.cs410J.grader.poa.POAGradeView.ScoreValueHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class POAGradePresenterTest extends POASubmissionTestCase {
@@ -453,6 +453,6 @@ public class POAGradePresenterTest extends POASubmissionTestCase {
 
   private interface DisplayNextPOAEventHandler {
     @Subscribe
-    public void handleDisplayNextPOAEvent(SelectNextPOAEvent event);
+    void handleDisplayNextPOAEvent(SelectNextPOAEvent event);
   }
 }

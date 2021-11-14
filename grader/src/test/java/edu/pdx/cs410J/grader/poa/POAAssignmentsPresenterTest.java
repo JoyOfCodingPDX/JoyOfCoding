@@ -13,8 +13,6 @@ import java.util.Arrays;
 import static edu.pdx.cs410J.grader.poa.POAAssignmentsView.AssignmentSelectedHandler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
@@ -168,7 +166,7 @@ public class POAAssignmentsPresenterTest extends POASubmissionTestCase {
 
     verify(this.view, never()).setAssignments(anyList());
     verify(this.view, never()).setSelectedAssignment(anyInt());
-    verify(this.view, never()).setSelectedAssignmentDueDate(any(String.class));
+    verify(this.view, never()).setSelectedAssignmentDueDate(any());
   }
 
 }
