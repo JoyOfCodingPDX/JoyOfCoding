@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.grader;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+
 import java.io.InputStream;
 
 public interface EmailAttachmentProcessor {

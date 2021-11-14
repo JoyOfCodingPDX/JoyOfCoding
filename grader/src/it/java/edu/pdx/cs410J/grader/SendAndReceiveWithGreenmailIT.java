@@ -1,18 +1,17 @@
 package edu.pdx.cs410J.grader;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.junit.jupiter.api.Test;
 
-import javax.mail.*;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class SendAndReceiveWithGreenmailIT extends GreenmailIntegrationTestCase {
 
   @Test
-  public void sendAndFetchMailMessageWithInlineAttachment() throws IOException, MessagingException, GeneralSecurityException {
+  public void sendAndFetchMailMessageWithInlineAttachment() throws MessagingException, GeneralSecurityException {
     sendMailMessageWithInlineAttachment();
     fetchEmailWithInlineAttachment();
   }

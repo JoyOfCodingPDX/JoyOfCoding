@@ -6,15 +6,15 @@ import com.icegreen.greenmail.imap.AuthorizationException;
 import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.user.GreenMailUser;
 import edu.pdx.cs410J.grader.GreenmailIntegrationTestCase;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Transport;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -63,10 +63,10 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     String subject = "Email subject";
     String poa = "<html><div>This is my HTML POA</div></html>";
     String sender = "sender@email.com";
-    String contenType = "TEXT/HTML; charset=us-ascii";
-    mailSinglePartPOA(sender, subject, poa, contenType);
+    String contentType = "TEXT/HTML; charset=us-ascii";
+    mailSinglePartPOA(sender, subject, poa, contentType);
 
-    assertEmailIsProperlyProcessed(subject, poa, sender, contenType);
+    assertEmailIsProperlyProcessed(subject, poa, sender, contentType);
   }
 
   private void assertEmailIsProperlyProcessed(String subject, String poa, String sender, String contentType) throws ExecutionException, InterruptedException {

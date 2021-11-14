@@ -2,11 +2,11 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
+import jakarta.mail.Address;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -96,11 +96,6 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
   @VisibleForTesting
   static String getSubmissionNote(String senderName, LocalDateTime submissionTime) {
     return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTime(submissionTime);
-  }
-
-  @VisibleForTesting
-  static String getSubmissionNoteUsingLegacyDateFormat(String senderName, LocalDateTime submissionTime) {
-    return "Submitted by " + senderName + " on " + Submit.ManifestAttributes.formatSubmissionTimeUsingLegacyFormat(submissionTime);
   }
 
   private Assignment getKoansProjectFromGradeBook() throws SubmissionException {

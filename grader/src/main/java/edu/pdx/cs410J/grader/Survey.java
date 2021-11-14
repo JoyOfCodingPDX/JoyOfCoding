@@ -1,13 +1,13 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.w3c.dom.Document;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.mail.util.ByteArrayDataSource;
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.function.Consumer;

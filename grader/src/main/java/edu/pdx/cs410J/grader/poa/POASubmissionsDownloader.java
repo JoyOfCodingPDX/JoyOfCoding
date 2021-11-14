@@ -9,9 +9,9 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import edu.pdx.cs410J.grader.EmailAttachmentProcessor;
 import edu.pdx.cs410J.grader.GraderEmailAccount;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -60,7 +60,7 @@ public class POASubmissionsDownloader {
     this.bus.post(new StatusMessage(statusMessage));
   }
 
-  private void extractPOASubmissionFromAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
+  private void extractPOASubmissionFromAttachment(Message message, InputStream inputStream, String contentType) {
     try {
       String submitter = getSender(message);
       LocalDateTime submitTime = getTimeMessageWasSent(message);
@@ -99,7 +99,7 @@ public class POASubmissionsDownloader {
   private class POAAttachmentProcessor implements EmailAttachmentProcessor {
     @Override
     public void processAttachment(Message message, String fileName, InputStream inputStream, String contentType) {
-      extractPOASubmissionFromAttachment(message, fileName, inputStream, contentType);
+      extractPOASubmissionFromAttachment(message, inputStream, contentType);
     }
 
     @Override

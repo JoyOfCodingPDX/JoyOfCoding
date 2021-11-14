@@ -2,14 +2,14 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.*;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Transport;
-import javax.mail.internet.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -861,11 +861,6 @@ public class Submit extends EmailSender {
 
     static String formatSubmissionTime(LocalDateTime submitTime) {
       return submitTime.format(DATE_TIME_FORMATTER);
-    }
-
-    @VisibleForTesting
-    static String formatSubmissionTimeUsingLegacyFormat(LocalDateTime submitTime) {
-      return submitTime.format(LEGACY_DATE_TIME_FORMATTER);
     }
 
     static LocalDateTime parseSubmissionTime(String string) {
