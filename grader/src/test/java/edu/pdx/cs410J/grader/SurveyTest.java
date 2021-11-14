@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -97,7 +96,6 @@ public class SurveyTest {
     assertThat(student.getEnrolledSection(), equalTo(Student.Section.UNDERGRADUATE));
   }
 
-  @NotNull
   private InputStream getInputStreamWithLinesOfText(String... lines) {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter pw = new PrintWriter(baos, true);
