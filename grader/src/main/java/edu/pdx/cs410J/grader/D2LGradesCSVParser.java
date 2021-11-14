@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -21,18 +22,23 @@ public class D2LGradesCSVParser {
   private int lastNameColumn = -1;
   private int firstNameColumn = -1;
   private int emailColumn;
-  private Map<Integer, String> quizColumnsAndNames = new HashMap<>();
+  private final Map<Integer, String> quizColumnsAndNames = new HashMap<>();
 
   public D2LGradesCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader( reader );
-    String[] firstLine = csv.readNext();
-    extractColumnNamesFromFirstLineOfCsv(firstLine);
+    try {
+      String[] firstLine = csv.readNext();
+      extractColumnNamesFromFirstLineOfCsv(firstLine);
 
-    grades = new GradesFromD2L();
+      grades = new GradesFromD2L();
 
-    String[] studentLine;
-    while ((studentLine = csv.readNext()) != null) {
-      addStudentAndGradesFromLineOfCsv(studentLine);
+      String[] studentLine;
+      while ((studentLine = csv.readNext()) != null) {
+        addStudentAndGradesFromLineOfCsv(studentLine);
+      }
+
+    } catch (CsvValidationException ex) {
+      throw new IOException("While parsing CSV", ex);
     }
   }
 
@@ -128,11 +134,7 @@ public class D2LGradesCSVParser {
   }
 
   public boolean isColumnIgnored(String columnName) {
-    return contains(ignoredColumnNames, columnName);
-  }
-
-  private boolean contains(String[] ignoredColumnNames, String columnName) {
-    for (String ignored : ignoredColumnNames) {
+    for (String ignored : D2LGradesCSVParser.ignoredColumnNames) {
       if (ignored.equals(columnName)) {
         return true;
       }

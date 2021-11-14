@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.grader;
 
-import au.com.bytecode.opencsv.CSVReader;
 import com.google.common.annotations.VisibleForTesting;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,14 +19,19 @@ public class D2LSurveyResponsesCSVParser {
 
   public D2LSurveyResponsesCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader( reader );
-    String[] firstLine = csv.readNext();
-    extractColumnNamesFromFirstLineOfCsv(firstLine);
+    try {
+      String[] firstLine = csv.readNext();
+      extractColumnNamesFromFirstLineOfCsv(firstLine);
 
-    responses = new SurveyResponsesFromD2L();
+      responses = new SurveyResponsesFromD2L();
 
-    String[] surveyLine;
-    while ((surveyLine = csv.readNext()) != null) {
-      addQuestionAndResponseFromLineOfCsv(surveyLine);
+      String[] surveyLine;
+      while ((surveyLine = csv.readNext()) != null) {
+        addQuestionAndResponseFromLineOfCsv(surveyLine);
+      }
+
+    } catch (CsvValidationException ex) {
+      throw new IOException("While parsing CSV", ex);
     }
   }
 
