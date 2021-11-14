@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;

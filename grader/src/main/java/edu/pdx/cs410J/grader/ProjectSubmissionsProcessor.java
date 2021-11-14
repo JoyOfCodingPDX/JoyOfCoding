@@ -2,8 +2,8 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
+import jakarta.mail.Message;
 
-import javax.mail.Message;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Collections;

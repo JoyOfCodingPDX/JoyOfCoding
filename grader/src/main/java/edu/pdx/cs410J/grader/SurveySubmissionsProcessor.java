@@ -2,8 +2,8 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
 import edu.pdx.cs410J.ParserException;
+import jakarta.mail.Message;
 
-import javax.mail.Message;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

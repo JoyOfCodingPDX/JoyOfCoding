@@ -1,10 +1,14 @@
 package edu.pdx.cs410J.examples;
 
-import java.io.*;
-import java.util.*;
-import javax.activation.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Properties;
 
 /**
  * This program uses the JavaMail API to send a file to someone as a
@@ -15,7 +19,7 @@ import javax.mail.internet.*;
  */
 public class MailFile {
 
-  private static PrintWriter err = new PrintWriter(System.err, true);
+  private static final PrintWriter err = new PrintWriter(System.err, true);
 
   /**
    * Prints out information about how to use this program.
@@ -35,7 +39,7 @@ public class MailFile {
    * construct an email message.
    */
   public static void main(String[] args) {
-    StringBuffer subject = null;
+    StringBuilder subject = null;
     String fileName = null;
     String recipient = null;
     String serverName = "mailhost.pdx.edu";
@@ -63,10 +67,10 @@ public class MailFile {
       } else {
 	// Part of the subject
 	if(subject == null) {
-	  subject = new StringBuffer();
+	  subject = new StringBuilder();
 	}
 
-	subject.append(args[i] + " ");
+	subject.append(args[i]).append(" ");
       }
     }
 
@@ -83,7 +87,7 @@ public class MailFile {
 
     if (subject == null) {
       // Default subject
-      subject = new StringBuffer("A file for you");
+      subject = new StringBuilder("A file for you");
     }
 
     // Obtain a Session for sending email

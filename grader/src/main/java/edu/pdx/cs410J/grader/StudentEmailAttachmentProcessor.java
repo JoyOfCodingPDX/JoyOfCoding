@@ -1,9 +1,9 @@
 package edu.pdx.cs410J.grader;
 
+import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.MessagingException;
 import java.io.File;
 
 public abstract class StudentEmailAttachmentProcessor implements EmailAttachmentProcessor {
