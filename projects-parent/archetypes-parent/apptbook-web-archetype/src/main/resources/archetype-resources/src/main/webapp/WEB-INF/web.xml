@@ -15,4 +15,7 @@
     <servlet-name>AppointmentBookServlet</servlet-name>
     <url-pattern>/appointments</url-pattern>
   </servlet-mapping>
+  <error-page>
+    <location>/error.jsp</location>
+  </error-page>
 </web-app>

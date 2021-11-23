@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.phonebillweb;
 
-import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
@@ -56,27 +55,21 @@ public class PhoneBillRestClient extends HttpRequestHelper
   }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-      Response response = postToMyURL(Map.of("word", word, "definition", definition));
+      Response response = post(this.url, Map.of("word", word, "definition", definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
-    @VisibleForTesting
-    Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
-      return post(this.url, dictionaryEntries);
-    }
-
-    public void removeAllDictionaryEntries() throws IOException {
+  public void removeAllDictionaryEntries() throws IOException {
       Response response = delete(this.url, Map.of());
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
-    private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+    private void throwExceptionIfNotOkayHttpStatus(Response response) {
       int code = response.getCode();
       if (code != HTTP_OK) {
         String message = response.getContent();
         throw new RestException(code, message);
       }
-      return response;
     }
 
 }

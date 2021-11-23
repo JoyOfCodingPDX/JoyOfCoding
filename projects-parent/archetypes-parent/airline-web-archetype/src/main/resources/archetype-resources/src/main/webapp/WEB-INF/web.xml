@@ -15,4 +15,7 @@
     <servlet-name>AirlineServlet</servlet-name>
     <url-pattern>/flights</url-pattern>
   </servlet-mapping>
+  <error-page>
+    <location>/error.jsp</location>
+  </error-page>
 </web-app>
