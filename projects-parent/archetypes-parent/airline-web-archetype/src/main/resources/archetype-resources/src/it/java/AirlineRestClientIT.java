@@ -14,8 +14,8 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Integration test that tests the REST calls made by {@link AirlineRestClient}
@@ -55,10 +55,12 @@ class AirlineRestClientIT {
   }
 
   @Test
-  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test4EmptyWordThrowsException() {
     AirlineRestClient client = newAirlineRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-  }
-}
+    String emptyString = "";
+
+    HttpRequestHelper.RestException ex =
+      assertThrows(HttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
+    assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));
+  }}
