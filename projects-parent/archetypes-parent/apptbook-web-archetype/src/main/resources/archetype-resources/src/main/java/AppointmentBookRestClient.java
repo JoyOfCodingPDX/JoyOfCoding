@@ -72,13 +72,12 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
-  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+  private void throwExceptionIfNotOkayHttpStatus(Response response) {
     int code = response.getCode();
     if (code != HTTP_OK) {
       String message = response.getContent();
       throw new RestException(code, message);
     }
-    return response;
   }
 
 }
