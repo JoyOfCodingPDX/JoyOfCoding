@@ -1,8 +1,9 @@
 package edu.pdx.cs410J.grader;
 
-import java.io.*;
-import java.util.*;
-import javax.mail.*;
+import jakarta.mail.*;
+
+import java.io.PrintStream;
+import java.util.Properties;
 
 /**
  * This program reads your INBOX and prints out the subjects of each
@@ -18,7 +19,7 @@ public class PrintEmailSubjects {
   private static void usage(String s) {
     err.println("\n** " + s + "\n");
     err.println("usage: java PrintEmailSubjects mailbox");
-    err.println("");
+    err.println();
     System.exit(1);
   }
 
@@ -26,15 +27,15 @@ public class PrintEmailSubjects {
     String mailbox = null;
     boolean DEBUG = false;
 
-    for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-debug")) {
+    for (String arg : args) {
+      if (arg.equals("-debug")) {
         DEBUG = true;
 
       } else if (mailbox == null) {
-        mailbox = args[i];
+        mailbox = arg;
 
       } else {
-        usage("Spurious command line: " + args);
+        usage("Spurious command line: " + arg);
       }
     }
 
@@ -48,8 +49,7 @@ public class PrintEmailSubjects {
     session.setDebug(DEBUG);
 
     Provider[] providers = session.getProviders();
-    for (int i = 0; i < providers.length; i++) {
-      Provider provider = providers[i];
+    for (Provider provider : providers) {
       out.println(provider);
     }
 
@@ -63,7 +63,7 @@ public class PrintEmailSubjects {
       out.println("  " + i + ": " + message.getSubject());
     }
 
-    out.println("");
+    out.println();
 
   }
 

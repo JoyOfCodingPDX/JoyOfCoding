@@ -3,7 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -13,14 +14,14 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Integration test that tests the REST calls made by {@link PhoneBillRestClient}
  */
 @TestMethodOrder(MethodName.class)
-public class PhoneBillRestClientIT {
+class PhoneBillRestClientIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
@@ -30,20 +31,20 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllDictionaryEntries() throws IOException {
+  void test0RemoveAllDictionaryEntries() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     client.removeAllDictionaryEntries();
   }
 
   @Test
-  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoDictionaryEntries() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     Map<String, String> dictionary = client.getAllDictionaryEntries();
     assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  public void test2DefineOneWord() throws IOException {
+  void test2DefineOneWord() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String testWord = "TEST WORD";
     String testDefinition = "TEST DEFINITION";
@@ -54,11 +55,14 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test4EmptyWordThrowsException() {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    String emptyString = "";
+
+    RestException ex =
+      assertThrows(RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
+    assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));
   }
 
 }

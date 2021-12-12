@@ -4,7 +4,7 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.3.0</version>
+    <version>2022.0.0</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -43,11 +43,26 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
+
+  <repositories>
+    <repository>
+      <id>maven-snapshots</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>io.github.davidwhitlock.com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>2021.0.1</version>
+      <version>2022.0.0</version>
     </dependency>
   </dependencies>
   <properties>
@@ -67,7 +82,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <goals>

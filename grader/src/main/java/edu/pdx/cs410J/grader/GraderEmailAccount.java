@@ -2,10 +2,10 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.sun.mail.util.MailSSLSocketFactory;
+import jakarta.mail.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -281,7 +281,7 @@ public class GraderEmailAccount {
 
       if (this.trustLocalhostSSL) {
         MailSSLSocketFactory socketFactory= new MailSSLSocketFactory();
-        socketFactory.setTrustedHosts(new String[] { "127.0.0.1", "localhost" });
+        socketFactory.setTrustedHosts("127.0.0.1", "localhost");
         props.put("mail.imaps.ssl.socketFactory", socketFactory);
       }
 
@@ -312,6 +312,6 @@ public class GraderEmailAccount {
   }
 
   public interface StatusLogger {
-    public void logStatus(String statusMessage);
+    void logStatus(String statusMessage);
   }
 }

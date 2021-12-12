@@ -18,7 +18,6 @@ public class Student extends NotableImpl {
   private String lastName;
   private String nickName;
   private String email;
-  private String ssn;
   private String major;
   private LetterGrade letterGrade;
 
@@ -139,22 +138,6 @@ public class Student extends NotableImpl {
   }
 
   /**
-   * Returns the social security number of this <code>Student</code>
-   */
-  public String getSsn() {
-    return this.ssn;
-  }
-
-  /**
-   * Sets the social security number of this <code>Student</code>
-   */
-  public Student setSsn(String ssn) {
-    this.setDirty(true);
-    this.ssn = ssn;
-    return this;
-  }
-
-  /**
    * Returns the major of this <code>Student</code>
    */
   public String getMajor() {
@@ -269,11 +252,6 @@ public class Student extends NotableImpl {
     String email = student.getEmail();
     if (email != null && !email.equals("")) {
       sb.append(", ").append(email);
-    }
-
-    String ssn = student.getSsn();
-    if (ssn != null && !ssn.equals("")) {
-      sb.append(", ").append(ssn);
     }
 
     String major = student.getMajor();
@@ -486,10 +464,6 @@ public class Student extends NotableImpl {
 
     if (email != null) {
       student.setEmail(email);
-    }
-
-    if (ssn != null) {
-      student.setSsn(ssn);
     }
 
     if (major != null) {

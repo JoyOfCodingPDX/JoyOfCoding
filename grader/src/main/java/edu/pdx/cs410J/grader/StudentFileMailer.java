@@ -2,14 +2,14 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.Files;
 import edu.pdx.cs410J.ParserException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -107,10 +107,7 @@ public class StudentFileMailer extends EmailSender {
     for (File file : files) {
       String studentId = getStudentIdFromFileName(file);
       Optional<Student> maybeStudent = gradeBook.getStudent(studentId);
-      if (!maybeStudent.isPresent()) {
-        maybeStudent = gradeBook.getStudentWithSsn(studentId);
-      }
-      if (!maybeStudent.isPresent()) {
+      if (maybeStudent.isEmpty()) {
         cannotFindStudent(studentId);
       } else {
         filesToSendToStudents.put(maybeStudent.get(), file);

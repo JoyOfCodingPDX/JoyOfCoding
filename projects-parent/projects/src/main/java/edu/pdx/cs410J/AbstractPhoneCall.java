@@ -26,18 +26,17 @@ public abstract class AbstractPhoneCall implements Serializable {
   public abstract String getCallee();
 
   /**
-   * Returns the time that this phone call was originated as a
-   * {@link Date}. 
+   * Returns the time that this phone call began as a {@link Date}.
    */
-  public Date getStartTime() {
+  public Date getBeginTime() {
     return null;
   }
 
   /**
    * Returns a textual representation of the time that this phone call
-   * was originated.
+   * began.
    */
-  public abstract String getStartTimeString();
+  public abstract String getBeginTimeString();
 
   /**
    * Returns the time that this phone call was completed as a
@@ -58,7 +57,7 @@ public abstract class AbstractPhoneCall implements Serializable {
    */
   public final String toString() {
     return "Phone call from " + this.getCaller() + " to " +
-      this.getCallee() + " from " + this.getStartTimeString() + 
+      this.getCallee() + " from " + this.getBeginTimeString() + 
       " to " + this.getEndTimeString();
   }
 

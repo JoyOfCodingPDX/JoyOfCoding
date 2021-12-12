@@ -1,6 +1,6 @@
-#set($symbol_pound='#')
-#set($symbol_dollar='$')
-#set($symbol_escape='\' )
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 package ${package};
 
 import org.junit.jupiter.api.Test;
@@ -16,22 +16,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class PhoneCallTest {
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
-  public void getStartTimeStringNeedsToBeImplemented() {
+  void getBeginTimeStringNeedsToBeImplemented() {
     PhoneCall call = new PhoneCall();
-    assertThrows(UnsupportedOperationException.class, call::getStartTimeString);
+    assertThrows(UnsupportedOperationException.class, call::getBeginTimeString);
   }
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
-  public void initiallyAllPhoneCallsHaveTheSameCallee() {
+  void initiallyAllPhoneCallsHaveTheSameCallee() {
     PhoneCall call = new PhoneCall();
     assertThat(call.getCallee(), containsString("not implemented"));
   }
 
   @Test
-  public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
-    assertThat(call.getStartTime(), is(nullValue()));
+    assertThat(call.getBeginTime(), is(nullValue()));
   }
   
 }

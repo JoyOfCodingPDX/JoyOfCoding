@@ -13,12 +13,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class AppointmentTest {
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
   void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
     assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
   void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();

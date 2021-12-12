@@ -17,7 +17,7 @@ public class PhoneCall extends AbstractPhoneCall {
   }
 
   @Override
-  public String getStartTimeString() {
+  public String getBeginTimeString() {
     throw new UnsupportedOperationException("This method is not implemented yet");
   }
 

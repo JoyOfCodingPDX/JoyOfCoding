@@ -3,13 +3,13 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2021.3.0</version>
+    <version>2022.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>2021.3.0</version>
+  <version>2022.0.0</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
     <groovy.version>3.0.8</groovy.version>
@@ -18,17 +18,17 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>family</artifactId>
-      <version>2021.3.0</version>
+      <version>2022.0.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.3.0</version>
+      <version>2022.0.0</version>
     </dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <version>1.6.2</version>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>2.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
@@ -42,20 +42,20 @@
       <type>pom</type>
     </dependency>
     <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.4.0-b180830.0359</version>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>3.0.0</version>
     </dependency>
     <dependency>
-      <groupId>org.glassfish.jaxb</groupId>
-      <artifactId>jaxb-runtime</artifactId>
-      <version>2.4.0-b180830.0438</version>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>3.0.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2021.3.0</version>
+      <version>2022.0.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

@@ -1,10 +1,14 @@
 package edu.pdx.cs410J;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Modifier;
 import java.security.Permission;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The superclass of test classes that invoke a main method to test a Java program.
@@ -21,24 +25,40 @@ public abstract class InvokeMainTestCase
      * @param args The arguments passed to the main method
      * @return The result of the method invocation
      */
-    protected MainMethodResult invokeMain( Class mainClass, String... args )
+    protected MainMethodResult invokeMain( Class<?> mainClass, String... args )
     {
-        return new MainMethodResult( mainClass, args ).invoke();
+        return new MainMethodResult(mainClass, args).invoke(false);
+    }
+
+    /**
+     * Invokes the <code>main</code> method of the given class with the given arguments and returns an object
+     * that represents the result of invoking that method.
+     *
+     * This method will not throw a {@link MainClassContainsMutableStaticFields} exception
+     * if the <code>mainClass</code> has mutable <code>static</code> fields.
+     *
+     * @param mainClass The class whose main method is invoked
+     * @param args The arguments passed to the main method
+     * @return The result of the method invocation
+     */
+    protected MainMethodResult invokeMainAllowingMutableStaticFields( Class<?> mainClass, String... args )
+    {
+        return new MainMethodResult(mainClass, args).invoke(true);
     }
 
     /**
      * Invokes the <code>main</code> method of a class and captures information about the invocation such as the data
      * written to standard out and standard error and the exit code.
      */
-    protected class MainMethodResult
+    protected static class MainMethodResult
     {
-        private final Class mainClass;
+        private final Class<?> mainClass;
         private final String[] args;
         private Integer exitCode;
         private String out;
         private String err;
 
-        MainMethodResult( Class mainClass, String[] args )
+        MainMethodResult( Class<?> mainClass, String[] args )
         {
             this.mainClass = mainClass;
             this.args = args;
@@ -48,7 +68,7 @@ public abstract class InvokeMainTestCase
          * Invokes the main method
          * @return This <code>MainMethodResult</code>
          */
-        public MainMethodResult invoke()
+        public MainMethodResult invoke(boolean allowMutableStaticFields)
         {
             Method main;
             try
@@ -58,6 +78,10 @@ public abstract class InvokeMainTestCase
             catch ( NoSuchMethodException e )
             {
                 throw new IllegalArgumentException( "Class " + mainClass.getName() + " does not have a main method" );
+            }
+
+            if (!allowMutableStaticFields) {
+                checkForMutableStaticFields();
             }
 
             try
@@ -75,6 +99,21 @@ public abstract class InvokeMainTestCase
             return this;
         }
 
+        private void checkForMutableStaticFields() {
+            List<String> mutableStaticFieldNames = new ArrayList<>();
+            for (Field field : mainClass.getDeclaredFields()) {
+                int modifiers = field.getModifiers();
+                if (Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers)) {
+                    mutableStaticFieldNames.add(field.getName());
+                }
+            }
+
+            if (!mutableStaticFieldNames.isEmpty()) {
+                throw new MainClassContainsMutableStaticFields(mainClass.getName(), mutableStaticFieldNames);
+            }
+
+        }
+
         private void invokeMain( Method main )
             throws IllegalAccessException, InvocationTargetException
         {
@@ -82,7 +121,7 @@ public abstract class InvokeMainTestCase
             PrintStream oldOut = System.out;
             PrintStream oldErr = System.err;
             try {
-                MainMethodResult.ExitStatusSecurityManager essm = new MainMethodResult.ExitStatusSecurityManager( oldSecurityManager );
+                MainMethodResult.ExitStatusSecurityManager essm = new ExitStatusSecurityManager(oldSecurityManager);
                 System.setSecurityManager( essm );
 
                 ByteArrayOutputStream newOut = new ByteArrayOutputStream();
@@ -91,7 +130,7 @@ public abstract class InvokeMainTestCase
                 System.setErr( new PrintStream(newErr) );
 
                 try {
-                    main.invoke( null, (Object) this.args );
+                    main.invoke( null, (Object) copyOfArgs());
 
                 } catch ( InvocationTargetException ex ) {
                     if ( ex.getCause() instanceof ExitException ) {
@@ -110,6 +149,17 @@ public abstract class InvokeMainTestCase
                 System.setOut( oldOut );
                 System.setErr( oldErr );
             }
+        }
+
+        @SuppressWarnings("StringOperationCanBeSimplified")
+        private String[] copyOfArgs() {
+            String[] copy = new String[this.args.length];
+            String[] strings = this.args;
+            for (int i = 0; i < strings.length; i++) {
+                String arg = strings[i];
+                copy[i] = new String(arg);
+            }
+            return copy;
         }
 
         /**
@@ -143,7 +193,7 @@ public abstract class InvokeMainTestCase
          * A {@link SecurityManager} that delegates security checks to another {@link SecurityManager}, but captures
          * the exit code called by {@link System#exit(int)}
          */
-        private class ExitStatusSecurityManager extends SecurityManager
+        private static class ExitStatusSecurityManager extends SecurityManager
         {
             private final SecurityManager delegate;
 
@@ -175,7 +225,7 @@ public abstract class InvokeMainTestCase
                     this.delegate.checkExit( status );
                 }
 
-                throw new ExitException( status );
+                throw new ExitException(status);
             }
 
         }
@@ -184,7 +234,7 @@ public abstract class InvokeMainTestCase
          * An exception that is thrown when the the main method calls {@link System#exit(int)}.  This lets us capture
          * the exit code without the VM actually exiting.
          */
-        private class ExitException extends SecurityException
+        private static class ExitException extends SecurityException
         {
             private final int exitCode;
 

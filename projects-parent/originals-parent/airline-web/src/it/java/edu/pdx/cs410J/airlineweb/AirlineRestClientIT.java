@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.airlineweb;
 
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,8 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Integration test that tests the REST calls made by {@link AirlineRestClient}
@@ -33,14 +34,14 @@ class AirlineRestClientIT {
   }
 
   @Test
-  void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoDictionaryEntries() throws IOException, ParserException {
     AirlineRestClient client = newAirlineRestClient();
     Map<String, String> dictionary = client.getAllDictionaryEntries();
     assertThat(dictionary.size(), equalTo(0));
   }
 
   @Test
-  void test2DefineOneWord() throws IOException {
+  void test2DefineOneWord() throws IOException, ParserException {
     AirlineRestClient client = newAirlineRestClient();
     String testWord = "TEST WORD";
     String testDefinition = "TEST DEFINITION";
@@ -51,10 +52,12 @@ class AirlineRestClientIT {
   }
 
   @Test
-  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test4EmptyWordThrowsException() {
     AirlineRestClient client = newAirlineRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-  }
-}
+    String emptyString = "";
+
+    HttpRequestHelper.RestException ex =
+      assertThrows(HttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
+    assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));
+  }}

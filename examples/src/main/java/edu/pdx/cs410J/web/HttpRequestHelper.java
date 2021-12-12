@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,7 +65,7 @@ public class HttpRequestHelper {
     conn.setRequestMethod(requestMethod);
     conn.setDoOutput(true);
 
-    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), Charset.forName("UTF-8"));
+    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
     wr.write(data.toString());
     wr.flush();
 
@@ -80,9 +79,8 @@ public class HttpRequestHelper {
    * Encodes parameters to be sent to the server via an HTTP GET, POST, or DELETE
    * @param parameters The parameter key/value pairs
    * @return The encoded parameters
-   * @throws java.io.UnsupportedEncodingException If we can't encode UTF-8
    */
-  private StringBuilder encodeParameters(Map<String, String> parameters) throws UnsupportedEncodingException {
+  private StringBuilder encodeParameters(Map<String, String> parameters) {
     StringBuilder query = new StringBuilder();
     for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
       Map.Entry<String, String> pair = iter.next();
@@ -122,7 +120,7 @@ public class HttpRequestHelper {
     conn.setRequestProperty("Content-Type", "text/plain");
     conn.setRequestProperty("Context-Length", String.valueOf(data.length()));
 
-    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), Charset.forName("UTF-8"));
+    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
     wr.write(data.toString());
     wr.flush();
 
@@ -145,20 +143,25 @@ public class HttpRequestHelper {
 
     private Response(HttpURLConnection conn) throws IOException {
       this.code = conn.getResponseCode();
+      InputStream stream;
       if (this.code != java.net.HttpURLConnection.HTTP_OK) {
-        this.content = conn.getResponseMessage();
-        return;
+        stream = conn.getErrorStream();
+
+      } else {
+        stream = conn.getInputStream();
       }
 
       StringBuilder content = new StringBuilder();
-      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-      String line;
-      while ((line = rd.readLine()) != null) {
-        content.append(line);
-        content.append("\n");
-        contentLines++;
+      if (stream != null) {
+        BufferedReader rd = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        while ((line = rd.readLine()) != null) {
+          content.append(line);
+          content.append("\n");
+          contentLines++;
+        }
+        rd.close();
       }
-      rd.close();
 
       this.content = content.toString().trim();
     }
@@ -231,12 +234,12 @@ public class HttpRequestHelper {
 
   }
 
-  public class RestException extends RuntimeException {
+  public static class RestException extends RuntimeException {
 
     private final int httpStatusCode;
 
     public RestException(int httpStatusCode, String message) {
-      super("Got an HTTP Status Code of " + httpStatusCode + ": " + message);
+      super(message);
 
       this.httpStatusCode = httpStatusCode;
     }

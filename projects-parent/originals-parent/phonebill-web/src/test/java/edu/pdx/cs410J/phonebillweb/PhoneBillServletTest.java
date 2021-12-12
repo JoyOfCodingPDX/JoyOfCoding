@@ -33,8 +33,8 @@ class PhoneBillServletTest {
 
     servlet.doGet(request, response);
 
-    int expectedWords = 0;
-    verify(pw).println(Messages.formatWordCount(expectedWords));
+    // Nothing is written to the response's PrintWriter
+    verify(pw, never()).println(anyString());
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 

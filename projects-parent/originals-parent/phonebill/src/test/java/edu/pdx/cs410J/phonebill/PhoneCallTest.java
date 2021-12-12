@@ -13,12 +13,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class PhoneCallTest {
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
-  void getStartTimeStringNeedsToBeImplemented() {
+  void getBeginTimeStringNeedsToBeImplemented() {
     PhoneCall call = new PhoneCall();
-    assertThrows(UnsupportedOperationException.class, call::getStartTimeString);
+    assertThrows(UnsupportedOperationException.class, call::getBeginTimeString);
   }
 
+  /**
+   * This unit test will need to be modified (likely deleted) as you implement
+   * your project.
+   */
   @Test
   void initiallyAllPhoneCallsHaveTheSameCallee() {
     PhoneCall call = new PhoneCall();
@@ -26,9 +34,9 @@ public class PhoneCallTest {
   }
 
   @Test
-  void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
+  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
-    assertThat(call.getStartTime(), is(nullValue()));
+    assertThat(call.getBeginTime(), is(nullValue()));
   }
   
 }

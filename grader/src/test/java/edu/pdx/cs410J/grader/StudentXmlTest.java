@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 
@@ -98,4 +99,12 @@ public class StudentXmlTest {
     assertThat(string, not(containsString(" <")));
   }
 
+  @Test
+  void canParseXmlFileWithSsn() throws ParserException {
+    InputStream resource = getClass().getResourceAsStream("studentWithSsn.xml");
+    XmlStudentParser parser = new XmlStudentParser(new InputStreamReader(resource));
+    Student student = parser.parseStudent();
+    assertThat(student, notNullValue());
+    assertThat(student.getId(), equalTo("studentId"));
+  }
 }
