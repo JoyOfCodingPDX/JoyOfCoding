@@ -8,8 +8,8 @@
 <div id="overview"><a href="../../../../../apidocs/edu/pdx/cs410J/di/Book.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> edu.pdx.cs410J.di;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> javax.xml.bind.annotation.XmlAccessType;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> javax.xml.bind.annotation.XmlAccessorType;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> jakarta.xml.bind.annotation.XmlAccessType;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> jakarta.xml.bind.annotation.XmlAccessorType;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * A book in a book store</em>
@@ -61,7 +61,7 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">if</strong> ( <strong class="jxr_keyword">this</strong> == o ) <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">if</strong> ( o == <strong class="jxr_keyword">null</strong> || getClass() != o.getClass() ) <strong class="jxr_keyword">return</strong> false;
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <a name="Book<a name="Book" href="../../../../edu/pdx/cs410J/di/Book.html#Book">Book</a>ef="../../../../edu/pdx/cs410J/di/Book.html#Book">Book</a> book = (<a name="Book" href="../../../../edu/pdx/cs410J/di/Book.html#Book">Book</a>) o;
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <a name="Book" href="../../../../edu/pdx/cs410J/di/Book.html#Book">Book</a> book = (<a name="Book" href="../../../../edu/pdx/cs410J/di/Book.html#Book">Book</a>) o;
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">if</strong> ( author != <strong class="jxr_keyword">null</strong> ? !author.equals( book.author ) : book.author != <strong class="jxr_keyword">null</strong> ) <strong class="jxr_keyword">return</strong> false;
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">if</strong> ( title != <strong class="jxr_keyword">null</strong> ? !title.equals( book.title ) : book.title != <strong class="jxr_keyword">null</strong> ) <strong class="jxr_keyword">return</strong> false;

@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>    @Override
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">long</strong> createMovie(String title, <strong class="jxr_keyword">int</strong> year) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Mo<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a>tml#Movie">Movie</a> movie = <strong class="jxr_keyword">new</strong> <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a>(title, year);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie = <strong class="jxr_keyword">new</strong> <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a>(title, year);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">long</strong> id = movie.getId();
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">this</strong>.movies.put(id, movie);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      System.out.println(<span class="jxr_string">"Created a new movie "</span> + movie);
@@ -116,7 +116,7 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">implements</strong> Comparator&lt;Movie&gt;, java.io.Serializable {
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> 
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     @Override
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Movie<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a>f="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie1, <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie2) {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie1, <a name="Movie" href="../../../../edu/pdx/cs410J/rmi/Movie.html#Movie">Movie</a> movie2) {
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>       <strong class="jxr_keyword">int</strong> year1 = movie1.getYear();
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>       <strong class="jxr_keyword">int</strong> year2 = movie2.getYear();
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>       <strong class="jxr_keyword">return</strong> Integer.compare(year1, year2);
@@ -167,7 +167,7 @@
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">int</strong> port = Integer.parseInt(args[0]);
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> 
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>       <a name="MovieDatabase" hr<a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a>../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a> database = (<a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a>) UnicastRemoteObject.exportObject(<strong class="jxr_keyword">new</strong> <a name="MovieDatabaseImpl" href="../../../../edu/pdx/cs410J/rmi/MovieDatabaseImpl.html#MovieDatabaseImpl">MovieDatabaseImpl</a>(), port);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>       <a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a> database = (<a name="MovieDatabase" href="../../../../edu/pdx/cs410J/rmi/MovieDatabase.html#MovieDatabase">MovieDatabase</a>) UnicastRemoteObject.exportObject(<strong class="jxr_keyword">new</strong> <a name="MovieDatabaseImpl" href="../../../../edu/pdx/cs410J/rmi/MovieDatabaseImpl.html#MovieDatabaseImpl">MovieDatabaseImpl</a>(), port);
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>       Registry registry = LocateRegistry.createRegistry(port);
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>       registry.bind(MovieDatabase.RMI_OBJECT_NAME, database);
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> 
