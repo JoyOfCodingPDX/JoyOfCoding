@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  @SuppressWarnings(<span class="jxr_string">"serial"</span>)
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/FamilyTreePanel.html#FamilyTreePanel">FamilyTreePanel</a> <strong class="jxr_keyword">extends</strong> JPanel {
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">protected</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/famil<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>ee.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <strong class="jxr_keyword">protected</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>    <em class="jxr_comment">// GUI components worth holding onto</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">protected</strong> JLabel sourceLocation;
@@ -223,7 +223,7 @@
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>     InputStream stream = url.openStream();
 <a class="jxr_linenumber" name="L217" href="#L217">217</a> 
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/<a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>.html#XmlParser">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(<strong class="jxr_keyword">new</strong> InputStreamReader(stream));
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(<strong class="jxr_keyword">new</strong> InputStreamReader(stream));
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     <strong class="jxr_keyword">return</strong> parser.parse();
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>   }
 <a class="jxr_linenumber" name="L221" href="#L221">221</a> 
@@ -246,7 +246,7 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>       System.exit(1);
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>     }
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> 
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/<a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/FamilyTreePanel.html#FamilyTreePanel">FamilyTreePanel</a>.html#FamilyTreePanel">FamilyTreePanel</a> viewer = <strong class="jxr_keyword">new</strong> <a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/FamilyTreePanel.html#FamilyTreePanel">FamilyTreePanel</a>();
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/FamilyTreePanel.html#FamilyTreePanel">FamilyTreePanel</a> viewer = <strong class="jxr_keyword">new</strong> <a name="FamilyTreePanel" href="../../../../edu/pdx/cs410J/family/FamilyTreePanel.html#FamilyTreePanel">FamilyTreePanel</a>();
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>     viewer.setURLSource(url);
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 

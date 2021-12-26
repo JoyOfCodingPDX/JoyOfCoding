@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     <em class="jxr_comment">// all exist.</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     Iterator people = <strong class="jxr_keyword">this</strong>.tree.getPeople().iterator();
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">while</strong> (people.hasNext()) {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>       <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>       <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) people.next();
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>       person.patchUp(<strong class="jxr_keyword">this</strong>.tree);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
@@ -480,11 +480,11 @@
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>     <em class="jxr_comment">// Parse the input file</em>
 <a class="jxr_linenumber" name="L473" href="#L473">473</a>     String fileName = args[0];
 <a class="jxr_linenumber" name="L474" href="#L474">474</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>       <a name="TextParser" href="../../../../edu/pdx/cs410J/family/<a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>.html#TextParser">TextParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(fileName);
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>       <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="TextParser" href="../../../../edu/pdx/cs410J/family/TextParser.html#TextParser">TextParser</a>(fileName);
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>       <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = parser.parse();
 <a class="jxr_linenumber" name="L477" href="#L477">477</a> 
 <a class="jxr_linenumber" name="L478" href="#L478">478</a>       PrintWriter out = <strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>       <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/<a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>.html#PrettyPrinter">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(out);
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>       <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(out);
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>       pretty.dump(tree);
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> 
 <a class="jxr_linenumber" name="L482" href="#L482">482</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {

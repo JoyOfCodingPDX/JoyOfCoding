@@ -330,7 +330,7 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> <em class="jxr_comment">//     System.out.println("Saving to an XML file");</em>
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> 
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.file);
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/family/XmlDumper.html#XmlDumper">XmlDumper</a>(<strong class="jxr_keyword">this</strong>.file);
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>       dumper.dump(<strong class="jxr_keyword">this</strong>.tree);
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>       <strong class="jxr_keyword">this</strong>.setDirty(false);
 <a class="jxr_linenumber" name="L328" href="#L328">328</a> 
@@ -445,7 +445,7 @@
 <a class="jxr_linenumber" name="L437" href="#L437">437</a>       <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L438" href="#L438">438</a> 
 <a class="jxr_linenumber" name="L439" href="#L439">439</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/<a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>.html#XmlParser">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(file);
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlParser" href="../../../../edu/pdx/cs410J/family/XmlParser.html#XmlParser">XmlParser</a>(file);
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>         tree = parser.parse();
 <a class="jxr_linenumber" name="L442" href="#L442">442</a> 
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>       } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -533,7 +533,7 @@
 <a class="jxr_linenumber" name="L525" href="#L525">525</a> <em class="jxr_javadoccomment">   * Creates a &lt;code&gt;FamilyTreeGUI&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L526" href="#L526">526</a> <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L527" href="#L527">527</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>     <a name="FamilyTreeGUI" href="../../../../edu/pdx/cs410J/fami<a name="FamilyTreeGUI" href="../../../../edu/pdx/cs410J/family/FamilyTreeGUI.html#FamilyTreeGUI">FamilyTreeGUI</a>GUI.html#FamilyTreeGUI">FamilyTreeGUI</a> gui = <strong class="jxr_keyword">new</strong> <a name="FamilyTreeGUI" href="../../../../edu/pdx/cs410J/family/FamilyTreeGUI.html#FamilyTreeGUI">FamilyTreeGUI</a>(<span class="jxr_string">"Family Tree Program"</span>);
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>     <a name="FamilyTreeGUI" href="../../../../edu/pdx/cs410J/family/FamilyTreeGUI.html#FamilyTreeGUI">FamilyTreeGUI</a> gui = <strong class="jxr_keyword">new</strong> <a name="FamilyTreeGUI" href="../../../../edu/pdx/cs410J/family/FamilyTreeGUI.html#FamilyTreeGUI">FamilyTreeGUI</a>(<span class="jxr_string">"Family Tree Program"</span>);
 <a class="jxr_linenumber" name="L529" href="#L529">529</a>     gui.pack();
 <a class="jxr_linenumber" name="L530" href="#L530">530</a>     gui.setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L531" href="#L531">531</a>   }
