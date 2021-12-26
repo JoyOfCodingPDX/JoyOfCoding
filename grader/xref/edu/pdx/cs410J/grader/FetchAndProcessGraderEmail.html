@@ -59,7 +59,7 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      File directory = getDirectory(directoryName);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> gradeBook = getGradeBook(gradeBookFile);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/G<a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>html#GraderEmailAccount">GraderEmailAccount</a> account = <strong class="jxr_keyword">new</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(<span class="jxr_string">"sjavata"</span>, password, m -&gt; { });
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a> account = <strong class="jxr_keyword">new</strong> <a name="GraderEmailAccount" href="../../../../edu/pdx/cs410J/grader/GraderEmailAccount.html#GraderEmailAccount">GraderEmailAccount</a>(<span class="jxr_string">"sjavata"</span>, password, m -&gt; { });
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      fetchAndProcessGraderEmails(whatToFetch, account, directory, gradeBook);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      saveGradeBookIfModified(gradeBook, gradeBookFile);
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">if</strong> (gradeBook.isDirty()) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>        File file = <strong class="jxr_keyword">new</strong> File(gradeBookFile);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>        <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          dumper.dump(gradeBook);
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>        } <strong class="jxr_keyword">catch</strong> (IOException e) {
@@ -101,7 +101,7 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> getGradeBook(String gradeBookFile) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>        <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFile);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>        <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFile);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>        <strong class="jxr_keyword">return</strong> parser.parse();
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      } <strong class="jxr_keyword">catch</strong> (IOException ex) {

@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      String xmlFile = args[2];
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <em class="jxr_comment">// Make a grade book</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grade<a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a>ok.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">new</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a>(courseName);
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">new</strong> <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a>(courseName);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <em class="jxr_comment">// Parse the text file</em>
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      BufferedReader in = <strong class="jxr_keyword">null</strong>;
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>            }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>            <a name="Grade" href="../../../../edu/pdx/cs410J/grader<a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>e.html#Grade">Grade</a> grade = <strong class="jxr_keyword">new</strong> <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>(assignment, score);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>            <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> grade = <strong class="jxr_keyword">new</strong> <a name="Grade" href="../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a>(assignment, score);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>            student.setGrade(assignment, grade);
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          }
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
@@ -93,7 +93,7 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <em class="jxr_comment">// Save grade book to XML file</em>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>        <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(xmlFile);
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>        <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(xmlFile);
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>        dumper.dump(book);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      } <strong class="jxr_keyword">catch</strong> (IOException ex) {

@@ -52,7 +52,7 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"main"</span>, <span class="jxr_string">"java"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"ProjectClass.java"</span>);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      submit.setUserId(userId);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>    }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"main"</span>, <span class="jxr_string">"java"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"subpackage"</span>, <span class="jxr_string">"ProjectClass.java"</span>);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      submit.setUserId(userId);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>    }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
@@ -98,7 +98,7 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"test"</span>, <span class="jxr_string">"java"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"subpackage"</span>, <span class="jxr_string">"ProjectTest.java"</span>);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      submit.setUserId(userId);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>    }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
@@ -108,7 +108,7 @@
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"it"</span>, <span class="jxr_string">"java"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"subpackage"</span>, <span class="jxr_string">"ProjectTest.java"</span>);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>   }
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> 
@@ -118,7 +118,7 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"main"</span>, <span class="jxr_string">"javadoc"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"package.html"</span>);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>   }
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
@@ -128,7 +128,7 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> 
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     File file = makeFileWithPath(<span class="jxr_string">"proj"</span>, <span class="jxr_string">"pom.xml"</span>);
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>   }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"main"</span>, <span class="jxr_string">"groovy"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"Project.java"</span>);
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(false));
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>   }
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> 
@@ -185,7 +185,7 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> 
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"main"</span>, <span class="jxr_string">"resources"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"testData.xml"</span>);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>   }
 <a class="jxr_linenumber" name="L183" href="#L183">183</a> 
@@ -195,7 +195,7 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"test"</span>, <span class="jxr_string">"resources"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"testData.xml"</span>);
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>   }
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> 
@@ -205,7 +205,7 @@
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> 
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     File file = makeFileWithPath(<span class="jxr_string">"src"</span>, <span class="jxr_string">"it"</span>, <span class="jxr_string">"resources"</span>, <span class="jxr_string">"edu"</span>, <span class="jxr_string">"pdx"</span>, <span class="jxr_string">"cs410J"</span>, userId, <span class="jxr_string">"testData.xml"</span>);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>     assertThat(submit.isInMavenProjectDirectory(file), equalTo(<strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>   }
 <a class="jxr_linenumber" name="L203" href="#L203">203</a> 
@@ -284,7 +284,7 @@
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>     projectFile.createNewFile();
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> 
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>     Submit submit = <strong class="jxr_keyword">new</strong> Submit();
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>     submit.setUserId(userId);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     submit.setStudent(<strong class="jxr_keyword">new</strong> Student(userId));
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>     assertThat(submit.canBeSubmitted(projectFile), equalTo(canSubmit));
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>   }
 <a class="jxr_linenumber" name="L282" href="#L282">282</a> 

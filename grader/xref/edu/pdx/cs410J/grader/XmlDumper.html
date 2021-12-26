@@ -414,53 +414,52 @@
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"lastName"</span>, student.getLastName());
 <a class="jxr_linenumber" name="L407" href="#L407">407</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"nickName"</span>, student.getNickName());
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"email"</span>, student.getEmail());
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"ssn"</span>, student.getSsn());
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"major"</span>, student.getMajor());
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"d2l-id"</span>, student.getD2LId());
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"letter-grade"</span>, Objects.toString(student.getLetterGrade(), <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L413" href="#L413">413</a> 
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>     setAttributeIfValueIsNotNull(root, <span class="jxr_string">"enrolled-section"</span>, getSectionXmlAttributeValue(student.getEnrolledSection()));
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>   }
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setAttributeIfValueIsNotNull(Element root, String name, String value) {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>     <strong class="jxr_keyword">if</strong> (value != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>       root.setAttribute(name, value);
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>     }
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>   }
-<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Document createXmlDocument() {
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>     Document doc = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L425" href="#L425">425</a> 
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>       DocumentBuilderFactory factory =
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         DocumentBuilderFactory.newInstance();
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>       factory.setValidating(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>       DocumentBuilder builder = factory.newDocumentBuilder();
-<a class="jxr_linenumber" name="L432" href="#L432">432</a> 
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>       DOMImplementation dom =
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         builder.getDOMImplementation();
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>       DocumentType docType =
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>         dom.createDocumentType(<span class="jxr_string">"student"</span>, publicID, systemID);
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>       doc = dom.createDocument(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"student"</span>, docType);
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> 
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>     } <strong class="jxr_keyword">catch</strong> (ParserConfigurationException | DOMException ex) {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>       ex.printStackTrace(System.err);
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>       System.exit(1);
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <strong class="jxr_keyword">return</strong> doc;
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>   }
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> appendTextElementIfValueIsNotNull(Element parent, String elementName, String textValue) {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>     <strong class="jxr_keyword">if</strong> (textValue != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>       Document doc = parent.getOwnerDocument();
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>       Element id = doc.createElement(elementName);
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>       id.appendChild(doc.createTextNode(textValue));
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>       parent.appendChild(id);
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>     }
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>   }
-<a class="jxr_linenumber" name="L454" href="#L454">454</a> 
-<a class="jxr_linenumber" name="L455" href="#L455">455</a> }
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"major"</span>, student.getMajor());
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"d2l-id"</span>, student.getD2LId());
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     appendTextElementIfValueIsNotNull(root, <span class="jxr_string">"letter-grade"</span>, Objects.toString(student.getLetterGrade(), <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L412" href="#L412">412</a> 
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     setAttributeIfValueIsNotNull(root, <span class="jxr_string">"enrolled-section"</span>, getSectionXmlAttributeValue(student.getEnrolledSection()));
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>   }
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setAttributeIfValueIsNotNull(Element root, String name, String value) {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>     <strong class="jxr_keyword">if</strong> (value != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>       root.setAttribute(name, value);
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>   }
+<a class="jxr_linenumber" name="L421" href="#L421">421</a> 
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Document createXmlDocument() {
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>     Document doc = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L424" href="#L424">424</a> 
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>       DocumentBuilderFactory factory =
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         DocumentBuilderFactory.newInstance();
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>       factory.setValidating(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L429" href="#L429">429</a> 
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>       DocumentBuilder builder = factory.newDocumentBuilder();
+<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>       DOMImplementation dom =
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>         builder.getDOMImplementation();
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>       DocumentType docType =
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         dom.createDocumentType(<span class="jxr_string">"student"</span>, publicID, systemID);
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>       doc = dom.createDocument(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"student"</span>, docType);
+<a class="jxr_linenumber" name="L437" href="#L437">437</a> 
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     } <strong class="jxr_keyword">catch</strong> (ParserConfigurationException | DOMException ex) {
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>       ex.printStackTrace(System.err);
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>       System.exit(1);
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     }
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     <strong class="jxr_keyword">return</strong> doc;
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>   }
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> 
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> appendTextElementIfValueIsNotNull(Element parent, String elementName, String textValue) {
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>     <strong class="jxr_keyword">if</strong> (textValue != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>       Document doc = parent.getOwnerDocument();
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>       Element id = doc.createElement(elementName);
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>       id.appendChild(doc.createTextNode(textValue));
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>       parent.appendChild(id);
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>     }
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>   }
+<a class="jxr_linenumber" name="L453" href="#L453">453</a> 
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
