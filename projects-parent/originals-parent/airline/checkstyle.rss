@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2000 - 2021 Portland State University</copyright>
     <item>
-      <title>File: 3,
-             Errors: 20,
+      <title>File: 6,
+             Errors: 43,
              Warnings: 0,
              Infos: 0
       </title>
@@ -44,6 +44,34 @@ under the License.
             </tr>
           </thead>
           <tbody>
+                          <tr>
+                <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.airline.TextDumper.java">edu/pdx/cs410J/airline/TextDumper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.airline.Airline.java">edu/pdx/cs410J/airline/Airline.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  10
+                </td>
+              </tr>
                           <tr>
                 <td>
                   <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.airline.Project1.java">edu/pdx/cs410J/airline/Project1.java</a>
@@ -84,6 +112,20 @@ under the License.
                 </td>
                 <td>
                   4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.airline.TextParser.java">edu/pdx/cs410J/airline/TextParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
                 </td>
               </tr>
                       </tbody>
