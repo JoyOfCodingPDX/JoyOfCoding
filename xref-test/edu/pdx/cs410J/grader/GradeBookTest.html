@@ -139,21 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     assertThat(book.getLetterGradeForScore(UNDERGRADUATE, 93.0), equalTo(LetterGrade.A_MINUS));
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>   }
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> 
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>   @Test
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> getStudentBySsnForNonExistentStudentReturnsNonPresentOptional() {
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     GradeBook book = <strong class="jxr_keyword">new</strong> GradeBook(<span class="jxr_string">"test"</span>);
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     assertThat(book.getStudentWithSsn(<span class="jxr_string">"123"</span>).isPresent(), equalTo(false));
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>   }
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>   @Test
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> getStudentBySsnForStudentReturnsStudent() {
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     GradeBook book = <strong class="jxr_keyword">new</strong> GradeBook(<span class="jxr_string">"test"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     String ssn = <span class="jxr_string">"123456789"</span>;
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>     Student student = <strong class="jxr_keyword">new</strong> Student(<span class="jxr_string">"id"</span>).setSsn(ssn);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>     book.addStudent(student);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     assertThat(book.getStudentWithSsn(ssn).get(), equalTo(student));
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>   }
-<a class="jxr_linenumber" name="L148" href="#L148">148</a> }
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>

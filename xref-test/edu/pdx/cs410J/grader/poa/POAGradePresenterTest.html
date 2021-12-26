@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.MatcherAssert.assertThat;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.Matchers.equalTo;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.hamcrest.Matchers.nullValue;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Matchers.eq;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.ArgumentMatchers.eq;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="POAGradePresenterTest" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradePresenterTest.html#POAGradePresenterTest">POAGradePresenterTest</a> <strong class="jxr_keyword">extends</strong> <a name="POASubmissionTestCase" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmissionTestCase.html#POASubmissionTestCase">POASubmissionTestCase</a> {
@@ -461,7 +461,7 @@
 <a class="jxr_linenumber" name="L453" href="#L453">453</a> 
 <a class="jxr_linenumber" name="L454" href="#L454">454</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> DisplayNextPOAEventHandler {
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>     @Subscribe
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> handleDisplayNextPOAEvent(SelectNextPOAEvent event);
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">void</strong> handleDisplayNextPOAEvent(SelectNextPOAEvent event);
 <a class="jxr_linenumber" name="L457" href="#L457">457</a>   }
 <a class="jxr_linenumber" name="L458" href="#L458">458</a> }
 </pre>

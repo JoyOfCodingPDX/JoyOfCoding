@@ -70,14 +70,14 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      File outputDirectory = <strong class="jxr_keyword">new</strong> File(outputDirectoryName);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book;
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>        <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFileName);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFileName);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>        book = parser.parse();
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      } <strong class="jxr_keyword">catch</strong> (IOException | <a name="ParserException" href="../../../../edu/pdx/cs410J/ParserException.html#ParserException">ParserException</a> ex) {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>        exitWithExceptionMessage(<span class="jxr_string">"While parsing grade book"</span>, ex);
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>        <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <a name="AndroidZipFixer" href="../../../../edu/pdx/cs410J/grader<a name="AndroidZipFixer" href="../../../../edu/pdx/cs410J/grader/AndroidZipFixer.html#AndroidZipFixer">AndroidZipFixer</a>r.html#AndroidZipFixer">AndroidZipFixer</a> fixer = <strong class="jxr_keyword">new</strong> <a name="AndroidZipFixer" href="../../../../edu/pdx/cs410J/grader/AndroidZipFixer.html#AndroidZipFixer">AndroidZipFixer</a>(book);
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <a name="AndroidZipFixer" href="../../../../edu/pdx/cs410J/grader/AndroidZipFixer.html#AndroidZipFixer">AndroidZipFixer</a> fixer = <strong class="jxr_keyword">new</strong> <a name="AndroidZipFixer" href="../../../../edu/pdx/cs410J/grader/AndroidZipFixer.html#AndroidZipFixer">AndroidZipFixer</a>(book);
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">for</strong> (String zipFileName : zipFileNames) {
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>        File zipFile = <strong class="jxr_keyword">new</strong> File(zipFileName);
@@ -113,7 +113,7 @@
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>   @VisibleForTesting
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>   <strong class="jxr_keyword">void</strong> fixZipFile(InputStream zipStream, OutputStream fixedZipStream, HashMap&lt;Attributes.Name, String&gt; manifestEntries) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader<a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a>r.html#ZipFileMaker">ZipFileMaker</a> maker = <strong class="jxr_keyword">new</strong> <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a>(fixedZipStream, manifestEntries);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a> maker = <strong class="jxr_keyword">new</strong> <a name="ZipFileMaker" href="../../../../edu/pdx/cs410J/grader/ZipFileMaker.html#ZipFileMaker">ZipFileMaker</a>(fixedZipStream, manifestEntries);
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">try</strong> (
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>       ZipInputStream input = <strong class="jxr_keyword">new</strong> ZipInputStream(zipStream)
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     ) {

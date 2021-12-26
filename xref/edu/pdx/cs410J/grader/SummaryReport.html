@@ -321,7 +321,7 @@
 <a class="jxr_linenumber" name="L313" href="#L313">313</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> saveGradeBookIfDirty(String xmlFileName, <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book) {
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     <strong class="jxr_keyword">if</strong> (book.isDirty()) {
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(xmlFileName);
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(xmlFileName);
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>         dumper.dump(book);
 <a class="jxr_linenumber" name="L318" href="#L318">318</a> 
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>       } <strong class="jxr_keyword">catch</strong> (IOException ex) {
@@ -333,7 +333,7 @@
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> SortedSet&lt;Student&gt; getStudentSortedByTotalPoints(Set&lt;Student&gt; students) {
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>     SortedSet&lt;Student&gt; sorted = <strong class="jxr_keyword">new</strong> TreeSet&lt;&gt;(<strong class="jxr_keyword">new</strong> Comparator&lt;Student&gt;() {
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         @Override
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Stu<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>ref="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> s1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> s2) {
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> s1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> s2) {
 <a class="jxr_linenumber" name="L329" href="#L329">329</a>           Double d1 = allTotals.get(s1);
 <a class="jxr_linenumber" name="L330" href="#L330">330</a>           Double d2 = allTotals.get(s2);
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>           <strong class="jxr_keyword">if</strong> ( d2.compareTo( d1 ) == 0 ) {
@@ -400,7 +400,7 @@
 <a class="jxr_linenumber" name="L392" href="#L392">392</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>       err.println(<span class="jxr_string">"Parsing "</span> + gradeBookFile);
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFile);
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(gradeBookFile);
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>       book = parser.parse();
 <a class="jxr_linenumber" name="L397" href="#L397">397</a> 
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {

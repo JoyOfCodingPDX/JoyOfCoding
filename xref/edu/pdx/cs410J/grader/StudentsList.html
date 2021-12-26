@@ -99,7 +99,7 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setGradeBook(<a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book) {
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      SortedSet&lt;Student&gt; sortedByName = <strong class="jxr_keyword">new</strong> TreeSet&lt;Student&gt;(<strong class="jxr_keyword">new</strong> Comparator&lt;Student&gt;() {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          <em class="jxr_comment">// Sort by last names</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Stu<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>ref="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o2) {
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o2) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>            String lastName1 = o1.getLastName();
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>            String lastName2 = o2.getLastName();
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
@@ -126,7 +126,7 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     SortedSet&lt;Student&gt; sortedById = <strong class="jxr_keyword">new</strong> TreeSet&lt;Student&gt;(<strong class="jxr_keyword">new</strong> Comparator&lt;Student&gt;() {
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         <em class="jxr_comment">// Sort by ids</em>
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Stu<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>ref="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o2) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o1, <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> o2) {
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>           String id1 = o1.getId();
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>           String id2 = o2.getId();
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>           <strong class="jxr_keyword">return</strong> id1.compareTo(id2);
@@ -177,7 +177,7 @@
 <a class="jxr_linenumber" name="L169" href="#L169">169</a> 
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>     Iterator iter = list.iterator();
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; iter.hasNext(); i++) {
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>       <a name="Student" h<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>/../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = (<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>) iter.next();
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>       <a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student = (<a name="Student" href="../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a>) iter.next();
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>       array[i] = student.getFullName() + <span class="jxr_string">" ("</span> + student.getId() + <span class="jxr_string">")"</span>;
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>     }
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>     
@@ -199,7 +199,7 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(fileName);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(fileName);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>       book = parser.parse();
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -215,7 +215,7 @@
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>       System.exit(1);
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>     }
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> 
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <a name="StudentsList" href="../../../../edu/pdx/cs410J/grade<a name="StudentsList" href="../../../../edu/pdx/cs410J/grader/StudentsList.html#StudentsList">StudentsList</a>st.html#StudentsList">StudentsList</a> list = <strong class="jxr_keyword">new</strong> <a name="StudentsList" href="../../../../edu/pdx/cs410J/grader/StudentsList.html#StudentsList">StudentsList</a>();
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <a name="StudentsList" href="../../../../edu/pdx/cs410J/grader/StudentsList.html#StudentsList">StudentsList</a> list = <strong class="jxr_keyword">new</strong> <a name="StudentsList" href="../../../../edu/pdx/cs410J/grader/StudentsList.html#StudentsList">StudentsList</a>();
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     list.setGradeBook(book);
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     JFrame frame = <strong class="jxr_keyword">new</strong> JFrame(<span class="jxr_string">"StudentsList test"</span>);

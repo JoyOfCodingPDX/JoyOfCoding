@@ -602,10 +602,10 @@
 <a class="jxr_linenumber" name="L594" href="#L594">594</a> 
 <a class="jxr_linenumber" name="L595" href="#L595">595</a>     <em class="jxr_comment">// Install a TesterSecurityManager that will allow us to run a</em>
 <a class="jxr_linenumber" name="L596" href="#L596">596</a>     <em class="jxr_comment">// main method multiple times without exiting.</em>
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>     <a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grad<a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html#TesterSecurityManager">TesterSecurityManager</a>ger.html#TesterSecurityManager">TesterSecurityManager</a> tsm = <strong class="jxr_keyword">new</strong> <a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html#TesterSecurityManager">TesterSecurityManager</a>();
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>     <a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html#TesterSecurityManager">TesterSecurityManager</a> tsm = <strong class="jxr_keyword">new</strong> <a name="TesterSecurityManager" href="../../../../edu/pdx/cs410J/grader/TesterSecurityManager.html#TesterSecurityManager">TesterSecurityManager</a>();
 <a class="jxr_linenumber" name="L598" href="#L598">598</a>     System.setSecurityManager(tsm);
 <a class="jxr_linenumber" name="L599" href="#L599">599</a> 
-<a class="jxr_linenumber" name="L600" href="#L600">600</a>     <a name="Tester" href="../../../../edu/pdx/cs410J/grader/<a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>.html#Tester">Tester</a> tester = <strong class="jxr_keyword">new</strong> <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>(<strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>));
+<a class="jxr_linenumber" name="L600" href="#L600">600</a>     <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a> tester = <strong class="jxr_keyword">new</strong> <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>(<strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L601" href="#L601">601</a>     tester.setURLs(Tester.parseURLPath(url));
 <a class="jxr_linenumber" name="L602" href="#L602">602</a> 
 <a class="jxr_linenumber" name="L603" href="#L603">603</a>     String[] classArgs = { <span class="jxr_string">"Hello"</span>, <span class="jxr_string">"World"</span> };
@@ -619,7 +619,7 @@
 <a class="jxr_linenumber" name="L611" href="#L611">611</a>     <em class="jxr_comment">// Make a new Tester</em>
 <a class="jxr_linenumber" name="L612" href="#L612">612</a>     String userDir = System.getProperty(<span class="jxr_string">"user.dir"</span>);
 <a class="jxr_linenumber" name="L613" href="#L613">613</a>     File cwd = <strong class="jxr_keyword">new</strong> File(userDir);
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>     <a name="Tester" href="../../../../edu/pdx/cs410J/grader/<a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>.html#Tester">Tester</a> tester = <strong class="jxr_keyword">new</strong> <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>(<span class="jxr_string">"test"</span>, cwd);
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>     <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a> tester = <strong class="jxr_keyword">new</strong> <a name="Tester" href="../../../../edu/pdx/cs410J/grader/Tester.html#Tester">Tester</a>(<span class="jxr_string">"test"</span>, cwd);
 <a class="jxr_linenumber" name="L615" href="#L615">615</a> 
 <a class="jxr_linenumber" name="L616" href="#L616">616</a>     System.out.println(<span class="jxr_string">"Does System.out work?"</span>);
 <a class="jxr_linenumber" name="L617" href="#L617">617</a>     System.err.println(<span class="jxr_string">"Does System.err work?"</span>);

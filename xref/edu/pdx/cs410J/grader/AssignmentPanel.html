@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     <em class="jxr_comment">// Create a new Assignment object</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>       <strong class="jxr_keyword">double</strong> d = Double.parseDouble(points);
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>       <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Ass<a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>ml#Assignment">Assignment</a> newAssign = <strong class="jxr_keyword">new</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>(name, d);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>       <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> newAssign = <strong class="jxr_keyword">new</strong> <a name="Assignment" href="../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a>(name, d);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>       <strong class="jxr_keyword">this</strong>.notes.getNotable().getNotes().forEach(newAssign::addNote);
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>       updateAssignment(newAssign);
@@ -296,7 +296,7 @@
 <a class="jxr_linenumber" name="L288" href="#L288">288</a> 
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>     <a name="GradeBook" href="../../../../edu/pdx/cs410J/grader/GradeBook.html#GradeBook">GradeBook</a> book = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(fileName);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>       <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(fileName);
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>       book = parser.parse();
 <a class="jxr_linenumber" name="L293" href="#L293">293</a> 
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>     } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -318,7 +318,7 @@
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>       System.exit(1);
 <a class="jxr_linenumber" name="L311" href="#L311">311</a>     }
 <a class="jxr_linenumber" name="L312" href="#L312">312</a> 
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/Assig<a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>#AssignmentPanel">AssignmentPanel</a> assignPanel = <strong class="jxr_keyword">new</strong> <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>(false);
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a> assignPanel = <strong class="jxr_keyword">new</strong> <a name="AssignmentPanel" href="../../../../edu/pdx/cs410J/grader/AssignmentPanel.html#AssignmentPanel">AssignmentPanel</a>(false);
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     assignPanel.displayAssignment(assign);
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> 
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>     JFrame frame = <strong class="jxr_keyword">new</strong> JFrame(<span class="jxr_string">"AssignmentPanel test"</span>);

@@ -59,17 +59,17 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <em class="jxr_comment">// Each customer wants a BigMac(tm)</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDona<a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>McDonalds">McDonalds</a> mcDonalds = <strong class="jxr_keyword">new</strong> <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>(nCustomers);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a> mcDonalds = <strong class="jxr_keyword">new</strong> <a name="McDonalds" href="../../../../edu/pdx/cs410J/net/McDonalds.html#McDonalds">McDonalds</a>(nCustomers);
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <em class="jxr_comment">// The customers enter...</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; nCustomers; i++) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>        <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCus<a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a>#McCustomer">McCustomer</a> customer = <strong class="jxr_keyword">new</strong> <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a>(i, mcDonalds);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>        <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a> customer = <strong class="jxr_keyword">new</strong> <a name="McCustomer" href="../../../../edu/pdx/cs410J/net/McCustomer.html#McCustomer">McCustomer</a>(i, mcDonalds);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>        (<strong class="jxr_keyword">new</strong> Thread(customer)).start();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <em class="jxr_comment">// The employees start cooking...</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; nEmployees; i++) {
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>        <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmp<a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a>#McEmployee">McEmployee</a> employee = <strong class="jxr_keyword">new</strong> <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a>(i, mcDonalds);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>        <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a> employee = <strong class="jxr_keyword">new</strong> <a name="McEmployee" href="../../../../edu/pdx/cs410J/net/McEmployee.html#McEmployee">McEmployee</a>(i, mcDonalds);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>        (<strong class="jxr_keyword">new</strong> Thread(employee)).start();
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  

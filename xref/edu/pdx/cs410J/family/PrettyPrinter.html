@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <em class="jxr_comment">// out a description of each person.</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      Iterator iter = sortedTree.iterator();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">while</strong> (iter.hasNext()) {
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>        <a name="Person" <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) iter.next();
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>        <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> person = (<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>) iter.next();
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>        pw.println(<span class="jxr_string">"Person "</span> + person.getId() + <span class="jxr_string">": "</span> +
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  		 person.getFullName());
@@ -151,7 +151,7 @@
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * person one is equal to the id of person two, then the two</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * persons are equal.</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Pe<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a>href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> p1, <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> p2) {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> p1, <a name="Person" href="../../../../edu/pdx/cs410J/family/Person.html#Person">Person</a> p2) {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>       <strong class="jxr_keyword">return</strong> p1.getId() - p2.getId();
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>     }
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> 
@@ -183,7 +183,7 @@
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>     me.setMother(mom);
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>     me.setFather(dad);
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> 
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Ma<a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>tml#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(dad, mom);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>     <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a> marriage = <strong class="jxr_keyword">new</strong> <a name="Marriage" href="../../../../edu/pdx/cs410J/family/Marriage.html#Marriage">Marriage</a>(dad, mom);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     marriage.setLocation(<span class="jxr_string">"Durham, NH"</span>);
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> 
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     <strong class="jxr_keyword">try</strong> {
@@ -199,14 +199,14 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>     dad.addMarriage(marriage);
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> 
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>     <em class="jxr_comment">// Create a family tree.  Add people in an interesting order.</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <a name="FamilyTree" href="../../../../edu/pdx/cs410J/famil<a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>ee.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a> tree = <strong class="jxr_keyword">new</strong> <a name="FamilyTree" href="../../../../edu/pdx/cs410J/family/FamilyTree.html#FamilyTree">FamilyTree</a>();
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     tree.addPerson(dad);
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     tree.addPerson(mom);
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     tree.addPerson(me);
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> 
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>     <em class="jxr_comment">// Pretty print the tree to the console</em>
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>     PrintWriter out = <strong class="jxr_keyword">new</strong> PrintWriter(System.out, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/<a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>.html#PrettyPrinter">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(out);
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a> pretty = <strong class="jxr_keyword">new</strong> <a name="PrettyPrinter" href="../../../../edu/pdx/cs410J/family/PrettyPrinter.html#PrettyPrinter">PrettyPrinter</a>(out);
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     pretty.dump(tree);
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>   }
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 

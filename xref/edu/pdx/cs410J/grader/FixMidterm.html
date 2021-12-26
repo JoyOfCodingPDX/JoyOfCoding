@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">if</strong> (file.exists()) {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>        <em class="jxr_comment">// Parse a grade book from the XML file</em>
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>        <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/<a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a> parser = <strong class="jxr_keyword">new</strong> <a name="XmlGradeBookParser" href="../../../../edu/pdx/cs410J/grader/XmlGradeBookParser.html#XmlGradeBookParser">XmlGradeBookParser</a>(file);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          book = parser.parse();
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>        } <strong class="jxr_keyword">catch</strong> (FileNotFoundException ex) {
@@ -108,7 +108,7 @@
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     <em class="jxr_comment">// Write the grade book to the XML file</em>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/<a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>       <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a> dumper = <strong class="jxr_keyword">new</strong> <a name="XmlDumper" href="../../../../edu/pdx/cs410J/grader/XmlDumper.html#XmlDumper">XmlDumper</a>(file);
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>       dumper.dump(book);
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     } <strong class="jxr_keyword">catch</strong> (IOException ex) {
