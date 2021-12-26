@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2000 - 2021 Portland State University</copyright>
     <item>
-      <title>File: 2,
-             Errors: 12,
+      <title>File: 5,
+             Errors: 36,
              Warnings: 0,
              Infos: 0
       </title>
@@ -46,6 +46,20 @@ under the License.
           <tbody>
                           <tr>
                 <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.apptbook.TextDumper.java">edu/pdx/cs410J/apptbook/TextDumper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.apptbook.Appointment.java">edu/pdx/cs410J/apptbook/Appointment.java</a>
                 </td>
                 <td>
@@ -60,7 +74,35 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.apptbook.AppointmentBook.java">edu/pdx/cs410J/apptbook/AppointmentBook.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  10
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.apptbook.Project1.java">edu/pdx/cs410J/apptbook/Project1.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.cs.pdx.edu/~whitlock/checkstyle.html#edu.pdx.cs410J.apptbook.TextParser.java">edu/pdx/cs410J/apptbook/TextParser.java</a>
                 </td>
                 <td>
                   0
