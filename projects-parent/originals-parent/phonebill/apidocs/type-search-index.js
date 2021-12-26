@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"edu.pdx.cs410J.phonebill","l":"PhoneCall"},{"p":"edu.pdx.cs410J.phonebill","l":"Project1"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"edu.pdx.cs410J.phonebill","l":"PhoneBill"},{"p":"edu.pdx.cs410J.phonebill","l":"PhoneCall"},{"p":"edu.pdx.cs410J.phonebill","l":"Project1"},{"p":"edu.pdx.cs410J.phonebill","l":"TextDumper"},{"p":"edu.pdx.cs410J.phonebill","l":"TextParser"}];updateSearchResults();
