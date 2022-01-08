@@ -6,6 +6,7 @@ import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.store.FolderListener;
 import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
+import edu.pdx.cs410J.grader.Grade.SubmissionInfo;
 import jakarta.mail.Address;
 import jakarta.mail.Flags;
 import jakarta.mail.Message;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -108,6 +110,29 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     assertZipFileContainsFilesInMavenProjectDirectories();
   }
 
+  @Test
+  void estimatedHoursArePassedThroughToManifest() throws MessagingException, IOException {
+    double estimatedHours = 12.5;
+    LocalDateTime submitTime = LocalDateTime.now();
+    submitFiles(estimatedHours, submitTime);
+
+    GradeBook gradeBook = new GradeBook("SubmitIT");
+    gradeBook.addStudent(new Student(studentLoginId));
+    gradeBook.addAssignment(new Assignment(projectName, 3.5));
+
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true, m -> { });
+    FetchAndProcessGraderEmail.fetchAndProcessGraderEmails("projects", account, this.tempDirectory, gradeBook);
+
+    Grade grade = gradeBook.getStudent(studentLoginId).get().getGrade(projectName);
+    assertThat(grade, is(notNullValue()));
+    assertThat(grade.getScore(), equalTo(Grade.NO_GRADE));
+    assertThat(grade.getSubmissionInfos(), hasSize(1));
+
+    SubmissionInfo info = grade.getSubmissionInfos().get(0);
+    assertThat(info.getSubmissionTime(), equalTo(submitTime));
+
+  }
+
   private void assertZipFileContainsFilesInMavenProjectDirectories() throws IOException {
     File zipFile = findNewestZipFileInTempDirectory();
     assertThat(zipFile, is(notNullValue()));
@@ -145,19 +170,28 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     }
   }
 
+  private void submitFiles(double estimatedHours, LocalDateTime submitTime) throws IOException, MessagingException {
+    submitFiles(false, estimatedHours, submitTime);
+  }
+
   private void submitFiles() throws IOException, MessagingException {
     submitFiles(false);
   }
 
   private void submitFiles(boolean sendReceipt) throws IOException, MessagingException {
+    submitFiles(sendReceipt, null, LocalDateTime.now());
+  }
+
+  private void submitFiles(boolean sendReceipt, Double estimatedHours, LocalDateTime submitTime) throws IOException, MessagingException {
     Student student = new Student(studentLoginId);
     student.setEmail(studentEmail);
     student.setFirstName(studentFirstName);
     student.setLastName(studentLastName);
 
-    Submit submit = new Submit();
+    Submit submit = new Submit(() -> submitTime);
     submit.setProjectName(projectName);
     submit.setStudent(student);
+    submit.setEstimatedHours(estimatedHours);
 
     for (File file : filesToSubmit) {
       submit.addFile(file.getAbsolutePath());
@@ -216,7 +250,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @Test
   public void submissionEmailIsSentByToGraderAndReplyToStudent() throws IOException, MessagingException {
-    submitFiles();
+    submitFiles(false);
 
     List<Message> messages = new ArrayList<>();
 

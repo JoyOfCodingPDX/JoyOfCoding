@@ -96,6 +96,8 @@ public class Submit extends EmailSender {
   private boolean isSubmittingKoans = false;
   private boolean sendReceipt = true;
   private String studentXmlFileName;
+  private Double estimatedHours;
+  private final CurrentTimeProvider currentTimeProvider;
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -103,7 +105,12 @@ public class Submit extends EmailSender {
    * Creates a new <code>Submit</code> program
    */
   Submit() {
+    this(LocalDateTime::now);
+  }
 
+  @VisibleForTesting
+  Submit(CurrentTimeProvider currentTimeProvider) {
+    this.currentTimeProvider = currentTimeProvider;
   }
 
   /////////////////////  Instance Methods  ///////////////////////
@@ -311,7 +318,7 @@ public class Submit extends EmailSender {
     }
 
     // Timestamp
-    this.submitTime = LocalDateTime.now();
+    this.submitTime = this.currentTimeProvider.getCurrentTime();
 
     // Create a temporary zip file to hold the source files
     File zipFile = makeZipFileWith(sourceFiles);
@@ -847,6 +854,14 @@ public class Submit extends EmailSender {
 
   }
 
+  public void setEstimatedHours(Double estimatedHours) {
+    this.estimatedHours = estimatedHours;
+  }
+
+  public Double getEstimatedHours() {
+    return estimatedHours;
+  }
+
   static class ManifestAttributes {
 
     static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
@@ -873,4 +888,8 @@ public class Submit extends EmailSender {
     }
   }
 
+  @VisibleForTesting
+  interface CurrentTimeProvider {
+    LocalDateTime getCurrentTime();
+  }
 }

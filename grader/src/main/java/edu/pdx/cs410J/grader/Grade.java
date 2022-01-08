@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represent the grade a student got on an assignment.
@@ -24,9 +25,9 @@ public class Grade extends NotableImpl {
    */
   public static final double NO_GRADE = -2.0;
 
-  private String assignmentName;
+  private final String assignmentName;
   private double score;         // Score student received
-  private final List<LocalDateTime> submissionTimes = new ArrayList<>();
+  private final List<SubmissionInfo> submissionInfo = new ArrayList<>();
 
   /**
    * Creates a <code>Grade</code> for a given assignment
@@ -284,11 +285,29 @@ public class Grade extends NotableImpl {
   }
 
   public List<LocalDateTime> getSubmissionTimes() {
-    return submissionTimes;
+    return submissionInfo.stream().map(SubmissionInfo::getSubmissionTime).collect(Collectors.toList());
   }
 
   public void addSubmissionTime(LocalDateTime submissionTime) {
     this.setDirty(true);
-    this.submissionTimes.add(submissionTime);
+    SubmissionInfo info = new SubmissionInfo();
+    info.setSubmissionTime(submissionTime);
+    this.submissionInfo.add(info);
+  }
+
+  public List<SubmissionInfo> getSubmissionInfos() {
+    return this.submissionInfo;
+  }
+
+  public static class SubmissionInfo {
+    private LocalDateTime submissionTime;
+
+    public LocalDateTime getSubmissionTime() {
+      return submissionTime;
+    }
+
+    public void setSubmissionTime(LocalDateTime submissionTime) {
+      this.submissionTime = submissionTime;
+    }
   }
 }
