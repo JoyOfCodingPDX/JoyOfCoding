@@ -288,21 +288,13 @@ public class Grade extends NotableImpl {
     return submissionInfo.stream().map(SubmissionInfo::getSubmissionTime).collect(Collectors.toList());
   }
 
-  @Deprecated(forRemoval = true)
-  public void addSubmissionTime(LocalDateTime submissionTime) {
-    noteSubmission(submissionTime);
-  }
-
-  public void noteSubmission(LocalDateTime submissionTime) {
-    noteSubmission(submissionTime, null);
-  }
-
-  public void noteSubmission(LocalDateTime submissionTime, Double estimatedHours) {
+  public SubmissionInfo noteSubmission(LocalDateTime submissionTime) {
     this.setDirty(true);
     SubmissionInfo info = new SubmissionInfo();
     info.setSubmissionTime(submissionTime);
-    info.setEstimatedHours(estimatedHours);
     this.submissionInfo.add(info);
+
+    return info;
   }
 
   public List<SubmissionInfo> getSubmissionInfos() {

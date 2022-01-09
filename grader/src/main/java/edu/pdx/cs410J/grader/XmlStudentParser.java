@@ -89,7 +89,7 @@ class XmlStudentParser extends XmlHelper {
         notes.forEach(grade::addNote);
       }
       if (submissions != null) {
-        submissions.forEach(grade::addSubmissionTime);
+        submissions.forEach(grade::noteSubmission);
       }
 
       return grade;

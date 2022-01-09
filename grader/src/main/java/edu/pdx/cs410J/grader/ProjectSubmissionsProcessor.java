@@ -119,7 +119,8 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     grade.addNote(note);
 
     LocalDateTime submissionTime = getSubmissionTime(attrs);
-    grade.noteSubmission(submissionTime, getEstimatedHours(attrs));
+    Grade.SubmissionInfo submission = grade.noteSubmission(submissionTime);
+    submission.setEstimatedHours(getEstimatedHours(attrs));
 
     if (project.isSubmissionLate(submissionTime)) {
       student.addLate(project.getName());

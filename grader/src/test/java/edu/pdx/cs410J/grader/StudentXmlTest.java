@@ -8,6 +8,7 @@ import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class StudentXmlTest {
     LocalDateTime submissionTime = LocalDateTime.now().minusHours(3).withNano(0);
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.addSubmissionTime(submissionTime);
+    grade.noteSubmission(submissionTime);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
@@ -58,8 +59,8 @@ public class StudentXmlTest {
     LocalDateTime submissionTime2 = LocalDateTime.now().minusHours(4).withNano(0);
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.addSubmissionTime(submissionTime1);
-    grade.addSubmissionTime(submissionTime2);
+    grade.noteSubmission(submissionTime1);
+    grade.noteSubmission(submissionTime2);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
@@ -102,17 +103,24 @@ public class StudentXmlTest {
 
   @Test
   void canParseXmlFileWithSsn() throws ParserException {
-    InputStream resource = getClass().getResourceAsStream("studentWithSsn.xml");
-    XmlStudentParser parser = new XmlStudentParser(new InputStreamReader(resource));
+    Reader reader = readTextResource("studentWithSsn.xml");
+    XmlStudentParser parser = new XmlStudentParser(reader);
     Student student = parser.parseStudent();
     assertThat(student, notNullValue());
     assertThat(student.getId(), equalTo("studentId"));
   }
 
+  private Reader readTextResource(String resourceName) {
+    InputStream resource = getClass().getResourceAsStream(resourceName);
+    if (resource == null) {
+      throw new IllegalArgumentException("Can't find resource " + resourceName);
+    }
+    return new InputStreamReader(resource);
+  }
+
   @Test
   void canParseOldXmlFileWithSubmissionTimesInsteadOfSubmissionInfo() throws ParserException {
-    InputStream resource = getClass().getResourceAsStream("studentWithSubmissionDatesAndNoSubmissionInfo.xml");
-    XmlStudentParser parser = new XmlStudentParser(new InputStreamReader(resource));
+    XmlStudentParser parser = new XmlStudentParser(readTextResource("studentWithSubmissionDatesAndNoSubmissionInfo.xml"));
     Student student = parser.parseStudent();
     assertThat(student, notNullValue());
     Grade grade = student.getGrade("Project2");
