@@ -73,7 +73,7 @@ public abstract class ZipFileSubmissionsProcessor extends StudentEmailAttachment
       student.setGrade(project.getName(), grade);
     }
     grade.addNote(note);
-    grade.addSubmissionTime(getSentDate(message));
+    grade.noteSubmission(getSentDate(message));
   }
 
   private String getSubmissionNote(Message message) throws SubmissionException {

@@ -231,7 +231,7 @@ public class SubmitTest {
 
   @Test
   public void testClassesWereSubmitted() {
-    Set files = Set.of(
+    Set<File> files = Set.of(
       makeFileWithPath("src", "test", "java", "edu", "pdx", "cs410J", "student", "StudentTest.java")
     );
 
@@ -240,7 +240,7 @@ public class SubmitTest {
 
   @Test
   public void notestClassesWereSubmitted() {
-    Set files = Set.of(
+    Set<File> files = Set.of(
       makeFileWithPath("src", "main", "java", "edu", "pdx", "cs410J", "student", "Student.java")
     );
 
@@ -310,7 +310,7 @@ public class SubmitTest {
     List.of("koans", "Project0", "Project4").forEach(
       projectName -> {
         Submit submit = new Submit();
-        submit.setProjectName("koans");
+        submit.setProjectName(projectName);
         submit.validateProjectName();
       }
     );

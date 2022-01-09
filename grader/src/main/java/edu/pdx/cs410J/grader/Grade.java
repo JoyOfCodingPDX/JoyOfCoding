@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represent the grade a student got on an assignment.
@@ -24,9 +25,9 @@ public class Grade extends NotableImpl {
    */
   public static final double NO_GRADE = -2.0;
 
-  private String assignmentName;
+  private final String assignmentName;
   private double score;         // Score student received
-  private final List<LocalDateTime> submissionTimes = new ArrayList<>();
+  private final List<SubmissionInfo> submissionInfo = new ArrayList<>();
 
   /**
    * Creates a <code>Grade</code> for a given assignment
@@ -284,11 +285,56 @@ public class Grade extends NotableImpl {
   }
 
   public List<LocalDateTime> getSubmissionTimes() {
-    return submissionTimes;
+    return submissionInfo.stream().map(SubmissionInfo::getSubmissionTime).collect(Collectors.toList());
   }
 
-  public void addSubmissionTime(LocalDateTime submissionTime) {
+  public SubmissionInfo noteSubmission(LocalDateTime submissionTime) {
+    SubmissionInfo info = new SubmissionInfo();
+    info.setSubmissionTime(submissionTime);
+    return noteSubmission(info);
+  }
+
+  public SubmissionInfo noteSubmission(SubmissionInfo info) {
     this.setDirty(true);
-    this.submissionTimes.add(submissionTime);
+    this.submissionInfo.add(info);
+
+    return info;
+  }
+
+  public List<SubmissionInfo> getSubmissionInfos() {
+    return this.submissionInfo;
+  }
+
+  public static class SubmissionInfo {
+    private LocalDateTime submissionTime;
+    private Double estimatedHours;
+    private boolean isLate;
+
+    public LocalDateTime getSubmissionTime() {
+      return submissionTime;
+    }
+
+    public SubmissionInfo setSubmissionTime(LocalDateTime submissionTime) {
+      this.submissionTime = submissionTime;
+      return this;
+    }
+
+    public Double getEstimatedHours() {
+      return estimatedHours;
+    }
+
+    public SubmissionInfo setEstimatedHours(Double estimatedHours) {
+      this.estimatedHours = estimatedHours;
+      return this;
+    }
+
+    public SubmissionInfo setIsLate(boolean isLate) {
+      this.isLate = isLate;
+      return this;
+    }
+
+    public boolean isLate() {
+      return isLate;
+    }
   }
 }

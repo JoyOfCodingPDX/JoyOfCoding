@@ -28,7 +28,7 @@ import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange
 public class XmlDumper extends XmlHelper {
 
   private File studentDir = null; // Where to dump student XML files
-  PrintWriter pw = null;          // Where to dump grade book
+  PrintWriter pw;          // Where to dump grade book
 
   /**
    * Creates a new <code>XmlDumper</code> that dumps the contents of a
@@ -95,12 +95,12 @@ public class XmlDumper extends XmlHelper {
     book.makeClean();
   }
 
-  static Document dumpGradeBook(GradeBook book, XmlHelper helper) throws IOException {
+  static Document dumpGradeBook(GradeBook book, XmlHelper helper) {
     Document doc = createDocumentForGradeBook(helper);
 
     Element root = doc.getDocumentElement();
 
-    appendXmlForClassName(book, doc, root);
+    appendXmlForClassName(book, root);
     appendXmlForAssignments(book, doc, root);
     appendXmlForLetterGradeRanges(book, doc, root);
     appendXmlForStudents(book, doc, root);
@@ -167,20 +167,14 @@ public class XmlDumper extends XmlHelper {
     // Students
     Element studentsNode = doc.createElement("students");
     for (String id : book.getStudentIds()) {
-      Element studentNode = doc.createElement("id");
-      studentNode.appendChild(doc.createTextNode(id));
-
-      studentsNode.appendChild(studentNode);
+      appendTextElementIfValueIsNotNull(studentsNode, "id", id);
     }
 
     root.appendChild(studentsNode);
   }
 
-  private static void appendXmlForClassName(GradeBook book, Document doc, Element root) {
-    // name node
-    Element name = doc.createElement("name");
-    name.appendChild(doc.createTextNode(book.getClassName()));
-    root.appendChild(name);
+  private static void appendXmlForClassName(GradeBook book, Element root) {
+    appendTextElementIfValueIsNotNull(root, "name", book.getClassName());
   }
 
   private static void appendXmlForAssignments(GradeBook book, Document doc, Element root) {
@@ -239,7 +233,7 @@ public class XmlDumper extends XmlHelper {
     }
   }
 
-  private void dumpDirtyStudents(GradeBook book) throws IOException {
+  private void dumpDirtyStudents(GradeBook book) {
     book.forEachStudent(student -> {
       if (student.isDirty()) {
         dumpStudent(student);
@@ -254,9 +248,7 @@ public class XmlDumper extends XmlHelper {
   private static void doNotes(Document doc, Element parent, List<String> notes) {
     Element notesNode = doc.createElement("notes");
     for (String note : notes) {
-      Element noteNode = doc.createElement("note");
-      noteNode.appendChild(doc.createTextNode(note));
-      notesNode.appendChild(noteNode);
+      appendTextElementIfValueIsNotNull(notesNode, "note", note);
     }
 
     parent.appendChild(notesNode);
@@ -323,9 +315,7 @@ public class XmlDumper extends XmlHelper {
       Element resubNode = doc.createElement("resubmitted");
 
       for (String assignmentName : resubmitted) {
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(assignmentName));
-        resubNode.appendChild(nameNode);
+        appendTextElementIfValueIsNotNull(resubNode, "name", assignmentName);
       }
 
       parent.appendChild(resubNode);
@@ -339,9 +329,7 @@ public class XmlDumper extends XmlHelper {
       Element lateNode = doc.createElement("late");
 
       for (String assignmentName : late) {
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(assignmentName));
-        lateNode.appendChild(nameNode);
+        appendTextElementIfValueIsNotNull(lateNode, "name", assignmentName);
       }
 
       parent.appendChild(lateNode);
@@ -350,24 +338,19 @@ public class XmlDumper extends XmlHelper {
 
   private static void appendGradesInformation(Student student, Element parent) {
     Document doc = parent.getOwnerDocument();
-    Iterator gradeNames = student.getGradeNames().iterator();
+    Iterator<String> gradeNames = student.getGradeNames().iterator();
     if (gradeNames.hasNext()) {
       Element gradesNode = doc.createElement("grades");
       while (gradeNames.hasNext()) {
-        String gradeName = (String) gradeNames.next();
+        String gradeName = gradeNames.next();
         Grade grade = student.getGrade(gradeName);
 
         Element gradeNode = doc.createElement("grade");
 
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(grade.getAssignmentName()));
-        gradeNode.appendChild(nameNode);
+        appendTextElementIfValueIsNotNull(gradeNode, "name", grade.getAssignmentName());
+        appendTextElementIfValueIsNotNull(gradeNode, "score", String.valueOf(grade.getScore()));
 
-        Element scoreNode = doc.createElement("score");
-        scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
-        gradeNode.appendChild(scoreNode);
-
-        appendSubmissionTimesInformation(grade.getSubmissionTimes(), gradeNode);
+        appendSubmissionsInformation(grade.getSubmissionInfos(), gradeNode);
 
         doNotes(doc, gradeNode, grade.getNotes());
 
@@ -385,19 +368,27 @@ public class XmlDumper extends XmlHelper {
     }
   }
 
-  private static void appendSubmissionTimesInformation(List<LocalDateTime> submissionTimes, Element parent) {
-    if (!submissionTimes.isEmpty()) {
+  private static void appendSubmissionsInformation(List<Grade.SubmissionInfo> submissionInfos, Element parent) {
+    if (!submissionInfos.isEmpty()) {
       Document doc = parent.getOwnerDocument();
       Element submissions = doc.createElement("submissions");
       parent.appendChild(submissions);
 
-      submissionTimes.forEach(submissionTime -> {
-        Element submission = doc.createElement("submission");
-        submissions.appendChild(submission);
-        submission.appendChild(doc.createTextNode(submissionTime.format(DATE_TIME_FORMAT)));
+      submissionInfos.forEach(info -> {
+        Element submissionInfo = doc.createElement("submission-info");
+        if (info.isLate()) {
+          submissionInfo.setAttribute("late", "true");
+        }
+        submissions.appendChild(submissionInfo);
+        appendSubmissionInformation(info, submissionInfo);
       });
     }
 
+  }
+
+  private static void appendSubmissionInformation(Grade.SubmissionInfo info, Element parent) {
+    appendTextElementIfValueIsNotNull(parent, "date", info.getSubmissionTime());
+    appendTextElementIfValueIsNotNull(parent, "estimated-hours", info.getEstimatedHours());
   }
 
   private static void appendStudentInformation(Student student, Element root) {
@@ -442,11 +433,11 @@ public class XmlDumper extends XmlHelper {
     return doc;
   }
 
-  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, String textValue) {
+  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, Object textValue) {
     if (textValue != null) {
       Document doc = parent.getOwnerDocument();
       Element id = doc.createElement(elementName);
-      id.appendChild(doc.createTextNode(textValue));
+      id.appendChild(doc.createTextNode(String.valueOf(textValue)));
       parent.appendChild(id);
     }
   }

@@ -96,6 +96,9 @@ public class Submit extends EmailSender {
   private boolean isSubmittingKoans = false;
   private boolean sendReceipt = true;
   private String studentXmlFileName;
+  private Double estimatedHours;
+  private final CurrentTimeProvider currentTimeProvider;
+  private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -103,7 +106,12 @@ public class Submit extends EmailSender {
    * Creates a new <code>Submit</code> program
    */
   Submit() {
+    this(LocalDateTime::now);
+  }
 
+  @VisibleForTesting
+  Submit(CurrentTimeProvider currentTimeProvider) {
+    this.currentTimeProvider = currentTimeProvider;
   }
 
   /////////////////////  Instance Methods  ///////////////////////
@@ -311,7 +319,7 @@ public class Submit extends EmailSender {
     }
 
     // Timestamp
-    this.submitTime = LocalDateTime.now();
+    this.submitTime = this.currentTimeProvider.getCurrentTime();
 
     // Create a temporary zip file to hold the source files
     File zipFile = makeZipFileWith(sourceFiles);
@@ -326,6 +334,39 @@ public class Submit extends EmailSender {
     }
 
     return true;
+  }
+
+  private void askForEstimatedHours() {
+    out.println("\nTo help inform how future students plan their approach to this project, you can");
+    out.println("record the approximate number of hours you spent on this project. This estimate");
+    out.println("is completely optional, is used for informational purposes only, has no impact");
+    out.println("on your grade, and will only be shared with others as part of an aggregate");
+    out.println("summary report.\n");
+
+    while (true) {
+      out.print("About how many hours did you spend on this project?  ");
+      out.flush();
+
+      try {
+        String line = in.readLine();
+        if (line == null || line.isEmpty()) {
+          return;
+        }
+
+        try {
+          double estimatedHours = Double.parseDouble(line.trim());
+          this.setEstimatedHours(estimatedHours);
+          return;
+
+        } catch (NumberFormatException ex) {
+          out.println("** Please enter a valid number or a blank line to opt out");
+        }
+
+      } catch (IOException ex) {
+        err.println("** Exception while reading from System.in: " + ex);
+      }
+    }
+
   }
 
   /**
@@ -520,6 +561,8 @@ public class Submit extends EmailSender {
 
     warnIfTestClassesAreNotSubmitted(sourceFiles);
 
+    askForEstimatedHours();
+
     return doesUserWantToSubmit();
   }
 
@@ -547,11 +590,8 @@ public class Submit extends EmailSender {
   }
 
   private boolean doesUserWantToSubmit() {
-    InputStreamReader isr = new InputStreamReader(System.in);
-    BufferedReader in = new BufferedReader(isr);
-
     while (true) {
-      out.print("Do you wish to continue with the submission? (yes/no) ");
+      out.print("\nDo you wish to continue with the submission? (yes/no) ");
       out.flush();
 
       try {
@@ -631,6 +671,9 @@ public class Submit extends EmailSender {
     manifestEntries.put(ManifestAttributes.PROJECT_NAME, projName);
     manifestEntries.put(ManifestAttributes.SUBMISSION_COMMENT, comment);
     manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));
+    if (estimatedHours != null) {
+      manifestEntries.put(ManifestAttributes.ESTIMATED_HOURS, String.valueOf(estimatedHours));
+    }
     return manifestEntries;
   }
 
@@ -847,6 +890,10 @@ public class Submit extends EmailSender {
 
   }
 
+  public void setEstimatedHours(Double estimatedHours) {
+    this.estimatedHours = estimatedHours;
+  }
+
   static class ManifestAttributes {
 
     static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
@@ -855,6 +902,7 @@ public class Submit extends EmailSender {
     static final Attributes.Name PROJECT_NAME = new Attributes.Name("Project-Name");
     static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
+    static final Attributes.Name ESTIMATED_HOURS = new Attributes.Name("Estimated-Hours");
 
     private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
@@ -873,4 +921,8 @@ public class Submit extends EmailSender {
     }
   }
 
+  @VisibleForTesting
+  interface CurrentTimeProvider {
+    LocalDateTime getCurrentTime();
+  }
 }

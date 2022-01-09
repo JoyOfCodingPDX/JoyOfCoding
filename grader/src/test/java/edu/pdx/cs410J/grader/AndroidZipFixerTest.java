@@ -245,7 +245,7 @@ public class AndroidZipFixerTest {
 
     Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
     LocalDateTime submissionTime = LocalDateTime.now();
-    grade.addSubmissionTime(submissionTime);
+    grade.noteSubmission(submissionTime);
 
     student.setGrade(gwtProject, grade);
 
@@ -266,9 +266,9 @@ public class AndroidZipFixerTest {
     Grade grade = new Grade(gwtProject, Grade.NO_GRADE);
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime firstSubmissionTime = now.minusDays(1);
-    grade.addSubmissionTime(firstSubmissionTime);
+    grade.noteSubmission(firstSubmissionTime);
     LocalDateTime secondSubmissionTime = now.minusHours(6);
-    grade.addSubmissionTime(secondSubmissionTime);
+    grade.noteSubmission(secondSubmissionTime);
 
     student.setGrade(gwtProject, grade);
 

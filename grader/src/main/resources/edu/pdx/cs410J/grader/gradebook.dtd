@@ -78,10 +78,17 @@ assignments, and some notes -->
 
 <!-- A grade has an assignment name, a score, submissions, and some notes -->
 <!ELEMENT submission (#PCDATA)>
-<!ELEMENT submissions (submission)*>
+<!ELEMENT submissions (submission | submission-info)*>
 <!ELEMENT grade (name, score, submissions?, notes?)>
 <!ATTLIST grade
   type (INCOMPLETE | NO_GRADE) #IMPLIED
 >
+
+<!ELEMENT submission-info (date, estimated-hours?)>
+<!ATTLIST submission-info
+          late (true | false) "false"
+>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT estimated-hours (#PCDATA)>
 
 <!ELEMENT score (#PCDATA)>

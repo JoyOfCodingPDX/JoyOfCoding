@@ -8,7 +8,9 @@ import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -39,14 +41,23 @@ public class StudentXmlTest {
     Student student = new Student("test");
     String assignmentName = "project";
     LocalDateTime submissionTime = LocalDateTime.now().minusHours(3).withNano(0);
+    double estimatedHours = 43.5;
+    boolean isLate = true;
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.addSubmissionTime(submissionTime);
+    grade.noteSubmission(submissionTime)
+      .setEstimatedHours(estimatedHours)
+      .setIsLate(isLate);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
+    Grade grade2 = student2.getGrade(assignmentName);
+    assertThat(grade2.getSubmissionInfos(), hasSize(1));
 
-    assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime));
+    Grade.SubmissionInfo info = grade2.getSubmissionInfos().get(0);
+    assertThat(info.getSubmissionTime(), equalTo(submissionTime));
+    assertThat(info.getEstimatedHours(), equalTo(estimatedHours));
+    assertThat(info.isLate(), equalTo(isLate));
   }
 
   @Test
@@ -54,16 +65,25 @@ public class StudentXmlTest {
     Student student = new Student("test");
     String assignmentName = "project";
     LocalDateTime submissionTime1 = LocalDateTime.now().minusHours(3).withNano(0);
+    double estimatedHours1 = 24.8;
     LocalDateTime submissionTime2 = LocalDateTime.now().minusHours(4).withNano(0);
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.addSubmissionTime(submissionTime1);
-    grade.addSubmissionTime(submissionTime2);
+    grade.noteSubmission(submissionTime1).setEstimatedHours(estimatedHours1);
+    grade.noteSubmission(submissionTime2);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
+    Grade grade2 = student2.getGrade(assignmentName);
+    assertThat(grade2.getSubmissionInfos(), hasSize(2));
 
-    assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime1, submissionTime2));
+    Grade.SubmissionInfo info1 = grade2.getSubmissionInfos().get(0);
+    assertThat(info1.getSubmissionTime(), equalTo(submissionTime1));
+    assertThat(info1.getEstimatedHours(), equalTo(estimatedHours1));
+
+    Grade.SubmissionInfo info2 = grade2.getSubmissionInfos().get(1);
+    assertThat(info2.getSubmissionTime(), equalTo(submissionTime2));
+    assertThat(info2.getEstimatedHours(), nullValue());
   }
 
   @Test
@@ -101,10 +121,29 @@ public class StudentXmlTest {
 
   @Test
   void canParseXmlFileWithSsn() throws ParserException {
-    InputStream resource = getClass().getResourceAsStream("studentWithSsn.xml");
-    XmlStudentParser parser = new XmlStudentParser(new InputStreamReader(resource));
+    Reader reader = readTextResource("studentWithSsn.xml");
+    XmlStudentParser parser = new XmlStudentParser(reader);
     Student student = parser.parseStudent();
     assertThat(student, notNullValue());
     assertThat(student.getId(), equalTo("studentId"));
+  }
+
+  private Reader readTextResource(String resourceName) {
+    InputStream resource = getClass().getResourceAsStream(resourceName);
+    if (resource == null) {
+      throw new IllegalArgumentException("Can't find resource " + resourceName);
+    }
+    return new InputStreamReader(resource);
+  }
+
+  @Test
+  void canParseOldXmlFileWithSubmissionTimesInsteadOfSubmissionInfo() throws ParserException {
+    XmlStudentParser parser = new XmlStudentParser(readTextResource("studentWithSubmissionDatesAndNoSubmissionInfo.xml"));
+    Student student = parser.parseStudent();
+    assertThat(student, notNullValue());
+    Grade grade = student.getGrade("Project2");
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(3));
   }
 }

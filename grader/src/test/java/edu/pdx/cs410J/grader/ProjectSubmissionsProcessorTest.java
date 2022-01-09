@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -39,9 +40,12 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = student.getFirstName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudentName(studentName)
+      .setStudentId(wrongStudentId)
+      .setStudentEmail(wrongEmail)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
@@ -60,9 +64,12 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = student.getNickName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudentName(studentName)
+      .setStudentId(wrongStudentId)
+      .setStudentEmail(wrongEmail)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
@@ -81,9 +88,12 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = "Not the student name we expect";
     String wrongStudentId = "Not the student id we expect";
     String email = student.getEmail();
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, email, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudentName(studentName)
+      .setStudentId(wrongStudentId)
+      .setStudentEmail(email)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
@@ -93,18 +103,20 @@ public class ProjectSubmissionsProcessorTest {
   }
 
   @Test
-  public void submissionDoesNotMatchAnyStudentInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+  public void submissionDoesNotMatchAnyStudentInGradeBook() {
     String projectName = "Project";
 
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
-    Student student = createStudentInGradeBook(gradebook);
 
     String studentName = "Not the student name we expect";
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudentName(studentName)
+      .setStudentId(wrongStudentId)
+      .setStudentEmail(wrongEmail)
+      .build();
 
     assertThrows(StudentEmailAttachmentProcessor.SubmissionException.class, () ->
       noteProjectSubmissionInGradeBook(gradebook, manifest)
@@ -118,13 +130,35 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = LocalDateTime.now().minusHours(2).withNano(0);
-    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setSubmissionDate(submissionDate)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
+  }
+
+  @Test
+  public void estimatedHoursNotedInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    Double estimatedHours = 4.5;
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setEstimatedHours(estimatedHours)
+      .build();
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    List<Grade.SubmissionInfo> submissions = student.getGrade(projectName).getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    assertThat(submissions.get(0).getEstimatedHours(), equalTo(estimatedHours));
   }
 
   @Test
@@ -135,13 +169,23 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = dueDate.plusDays(3);
-    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setSubmissionDate(submissionDate)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getLate(), contains(projectName));
+
+    Grade grade = student.getGrade(projectName);
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    Grade.SubmissionInfo submission = submissions.get(0);
+    assertThat(submission.getSubmissionTime(), equalTo(submissionDate));
+    assertThat(submission.isLate(), equalTo(true));
   }
 
   @Test
@@ -152,18 +196,23 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = dueDate.minusDays(3);
-    Manifest manifest = createManifest(projectName, student, submissionDate, submissionComment);
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setSubmissionDate(submissionDate)
+      .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getLate(), not(contains(projectName)));
-  }
 
-  private Manifest createManifest(String projectName, Student student, LocalDateTime submissionDate, String submissionComment) {
-    return createManifest(projectName, student.getFullName(), student.getId(), student.getEmail(), submissionComment,
-      Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
+    Grade grade = student.getGrade(projectName);
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    Grade.SubmissionInfo submission = submissions.get(0);
+    assertThat(submission.getSubmissionTime(), equalTo(submissionDate));
+    assertThat(submission.isLate(), equalTo(false));
   }
 
   private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
@@ -176,22 +225,6 @@ public class ProjectSubmissionsProcessorTest {
     Grade grade = student.getGrade(projectName);
     assertThat(grade, not(nullValue()));
     assertThat(grade.isNotGraded(), equalTo(true));
-  }
-
-  private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment) {
-    return createManifest(projectName, studentName, wrongStudentId, wrongEmail, submissionComment, Submit.ManifestAttributes.formatSubmissionTime(LocalDateTime.now()));
-  }
-
-  private Manifest createManifest(String projectName, String studentName, String wrongStudentId, String wrongEmail, String submissionComment, String submissionTime) {
-    Manifest manifest = new Manifest();
-    Attributes attributes = manifest.getMainAttributes();
-    attributes.put(USER_ID, wrongStudentId);
-    attributes.put(USER_EMAIL, wrongEmail);
-    attributes.put(USER_NAME, studentName);
-    attributes.put(PROJECT_NAME, projectName);
-    attributes.put(SUBMISSION_TIME, submissionTime);
-    attributes.put(SUBMISSION_COMMENT, submissionComment);
-    return manifest;
   }
 
   private Student createStudentInGradeBook(GradeBook gradebook) {
@@ -216,13 +249,13 @@ public class ProjectSubmissionsProcessorTest {
     return gradebook;
   }
 
-  // Test match on email and nick name
+  // Test match on email and nickname
 
   private static Matcher<? super Optional<Student>> isNotPresent() {
-    return new TypeSafeMatcher<Optional<Student>>() {
+    return new TypeSafeMatcher<>() {
       @Override
       protected boolean matchesSafely(Optional<Student> item) {
-        return !item.isPresent();
+        return item.isEmpty();
       }
 
       @Override
@@ -231,4 +264,65 @@ public class ProjectSubmissionsProcessorTest {
       }
     };
   }
+
+  private ManifestBuilder manifest(String projectName) {
+    return new ManifestBuilder()
+      .setProjectName(projectName)
+      .setSubmissionDate(LocalDateTime.now())
+      .setSubmissionComment("Why is a comment required?")
+      ;
+  }
+
+  private static class ManifestBuilder {
+    Manifest manifest = new Manifest();
+
+    private ManifestBuilder setAttribute(Attributes.Name name, String value) {
+      this.manifest.getMainAttributes().put(name, value);
+      return this;
+    }
+
+    Manifest build() {
+      return manifest;
+    }
+
+    private ManifestBuilder setProjectName(String projectName) {
+      return setAttribute(PROJECT_NAME, projectName);
+    }
+
+    public ManifestBuilder setStudent(Student student) {
+      return setStudentId(student.getId())
+        .setStudentName(student.getFullName())
+        .setStudentEmail(student.getEmail())
+        ;
+    }
+
+    private ManifestBuilder setStudentId(String studentId) {
+      return setAttribute(USER_ID, studentId);
+    }
+
+    public ManifestBuilder setStudentName(String studentName) {
+      return setAttribute(USER_NAME, studentName);
+    }
+
+    public ManifestBuilder setStudentEmail(String studentEmail) {
+      return setAttribute(USER_EMAIL, studentEmail);
+    }
+
+    public ManifestBuilder setSubmissionDate(LocalDateTime submissionDate) {
+      return setSubmissionDate(Submit.ManifestAttributes.formatSubmissionTime(submissionDate));
+    }
+
+    private ManifestBuilder setSubmissionDate(String submissionDate) {
+      return setAttribute(SUBMISSION_TIME, submissionDate);
+    }
+
+    public ManifestBuilder setSubmissionComment(String submissionComment) {
+      return setAttribute(SUBMISSION_COMMENT, submissionComment);
+    }
+
+    public ManifestBuilder setEstimatedHours(Double estimatedHours) {
+      return setAttribute(ESTIMATED_HOURS, String.valueOf(estimatedHours));
+    }
+  }
+
 }
