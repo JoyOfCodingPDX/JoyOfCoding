@@ -125,6 +125,11 @@ class XmlStudentParser extends XmlHelper {
 
   private static Grade.SubmissionInfo extractSubmissionFrom(Element parent) {
     Grade.SubmissionInfo info = new Grade.SubmissionInfo();
+    if (parent.hasAttribute("late")) {
+      if ("true".equals(parent.getAttribute("late"))) {
+        info.setIsLate(true);
+      }
+    }
 
     NodeList children = parent.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {

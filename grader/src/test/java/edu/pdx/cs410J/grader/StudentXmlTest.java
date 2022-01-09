@@ -42,9 +42,12 @@ public class StudentXmlTest {
     String assignmentName = "project";
     LocalDateTime submissionTime = LocalDateTime.now().minusHours(3).withNano(0);
     double estimatedHours = 43.5;
+    boolean isLate = true;
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.noteSubmission(submissionTime).setEstimatedHours(estimatedHours);
+    grade.noteSubmission(submissionTime)
+      .setEstimatedHours(estimatedHours)
+      .setIsLate(isLate);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
@@ -54,6 +57,7 @@ public class StudentXmlTest {
     Grade.SubmissionInfo info = grade2.getSubmissionInfos().get(0);
     assertThat(info.getSubmissionTime(), equalTo(submissionTime));
     assertThat(info.getEstimatedHours(), equalTo(estimatedHours));
+    assertThat(info.isLate(), equalTo(isLate));
   }
 
   @Test

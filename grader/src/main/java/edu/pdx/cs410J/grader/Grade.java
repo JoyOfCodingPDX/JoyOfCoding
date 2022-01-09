@@ -308,21 +308,33 @@ public class Grade extends NotableImpl {
   public static class SubmissionInfo {
     private LocalDateTime submissionTime;
     private Double estimatedHours;
+    private boolean isLate;
 
     public LocalDateTime getSubmissionTime() {
       return submissionTime;
     }
 
-    public void setSubmissionTime(LocalDateTime submissionTime) {
+    public SubmissionInfo setSubmissionTime(LocalDateTime submissionTime) {
       this.submissionTime = submissionTime;
+      return this;
     }
 
     public Double getEstimatedHours() {
       return estimatedHours;
     }
 
-    public void setEstimatedHours(Double estimatedHours) {
+    public SubmissionInfo setEstimatedHours(Double estimatedHours) {
       this.estimatedHours = estimatedHours;
+      return this;
+    }
+
+    public SubmissionInfo setIsLate(boolean isLate) {
+      this.isLate = isLate;
+      return this;
+    }
+
+    public boolean isLate() {
+      return isLate;
     }
   }
 }

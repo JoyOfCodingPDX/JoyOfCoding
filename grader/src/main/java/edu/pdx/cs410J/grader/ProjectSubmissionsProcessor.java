@@ -124,6 +124,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
 
     if (project.isSubmissionLate(submissionTime)) {
       student.addLate(project.getName());
+      submission.setIsLate(true);
     }
   }
 

@@ -178,6 +178,14 @@ public class ProjectSubmissionsProcessorTest {
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getLate(), contains(projectName));
+
+    Grade grade = student.getGrade(projectName);
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    Grade.SubmissionInfo submission = submissions.get(0);
+    assertThat(submission.getSubmissionTime(), equalTo(submissionDate));
+    assertThat(submission.isLate(), equalTo(true));
   }
 
   @Test
@@ -197,6 +205,14 @@ public class ProjectSubmissionsProcessorTest {
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getLate(), not(contains(projectName)));
+
+    Grade grade = student.getGrade(projectName);
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    Grade.SubmissionInfo submission = submissions.get(0);
+    assertThat(submission.getSubmissionTime(), equalTo(submissionDate));
+    assertThat(submission.isLate(), equalTo(false));
   }
 
   private void noteProjectSubmissionInGradeBook(GradeBook gradebook, Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {

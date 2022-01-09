@@ -376,6 +376,9 @@ public class XmlDumper extends XmlHelper {
 
       submissionInfos.forEach(info -> {
         Element submissionInfo = doc.createElement("submission-info");
+        if (info.isLate()) {
+          submissionInfo.setAttribute("late", "true");
+        }
         submissions.appendChild(submissionInfo);
         appendSubmissionInformation(info, submissionInfo);
       });

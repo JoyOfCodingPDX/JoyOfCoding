@@ -85,6 +85,9 @@ assignments, and some notes -->
 >
 
 <!ELEMENT submission-info (date, estimated-hours?)>
+<!ATTLIST submission-info
+          late (true | false) "false"
+>
 <!ELEMENT date (#PCDATA)>
 <!ELEMENT estimated-hours (#PCDATA)>
 
