@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -106,5 +107,17 @@ public class StudentXmlTest {
     Student student = parser.parseStudent();
     assertThat(student, notNullValue());
     assertThat(student.getId(), equalTo("studentId"));
+  }
+
+  @Test
+  void canParseOldXmlFileWithSubmissionTimesInsteadOfSubmissionInfo() throws ParserException {
+    InputStream resource = getClass().getResourceAsStream("studentWithSubmissionDatesAndNoSubmissionInfo.xml");
+    XmlStudentParser parser = new XmlStudentParser(new InputStreamReader(resource));
+    Student student = parser.parseStudent();
+    assertThat(student, notNullValue());
+    Grade grade = student.getGrade("Project2");
+    assertThat(grade, notNullValue());
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(3));
   }
 }
