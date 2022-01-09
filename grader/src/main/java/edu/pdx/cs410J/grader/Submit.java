@@ -98,6 +98,7 @@ public class Submit extends EmailSender {
   private String studentXmlFileName;
   private Double estimatedHours;
   private final CurrentTimeProvider currentTimeProvider;
+  private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
   ///////////////////////  Constructors  /////////////////////////
 
@@ -335,6 +336,39 @@ public class Submit extends EmailSender {
     return true;
   }
 
+  private void askForEstimatedHours() {
+    out.println("\nTo help inform how future students plan their approach to this project, you can");
+    out.println("record the approximate number of hours you spent on this project. This estimate");
+    out.println("is completely optional, is used for informational purposes only, has no impact");
+    out.println("on your grade, and will only be shared with others as part of an aggregate");
+    out.println("summary report.\n");
+
+    while (true) {
+      out.print("About how many hours did you spend on this project?  ");
+      out.flush();
+
+      try {
+        String line = in.readLine();
+        if (line == null || line.isEmpty()) {
+          return;
+        }
+
+        try {
+          double estimatedHours = Double.parseDouble(line.trim());
+          this.setEstimatedHours(estimatedHours);
+          return;
+
+        } catch (NumberFormatException ex) {
+          out.println("** Please enter a valid number or a blank line to opt out");
+        }
+
+      } catch (IOException ex) {
+        err.println("** Exception while reading from System.in: " + ex);
+      }
+    }
+
+  }
+
   /**
    * Prints debugging output.
    */
@@ -527,6 +561,8 @@ public class Submit extends EmailSender {
 
     warnIfTestClassesAreNotSubmitted(sourceFiles);
 
+    askForEstimatedHours();
+
     return doesUserWantToSubmit();
   }
 
@@ -554,11 +590,8 @@ public class Submit extends EmailSender {
   }
 
   private boolean doesUserWantToSubmit() {
-    InputStreamReader isr = new InputStreamReader(System.in);
-    BufferedReader in = new BufferedReader(isr);
-
     while (true) {
-      out.print("Do you wish to continue with the submission? (yes/no) ");
+      out.print("\nDo you wish to continue with the submission? (yes/no) ");
       out.flush();
 
       try {
