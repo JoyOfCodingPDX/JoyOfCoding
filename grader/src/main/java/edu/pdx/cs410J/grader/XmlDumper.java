@@ -167,20 +167,14 @@ public class XmlDumper extends XmlHelper {
     // Students
     Element studentsNode = doc.createElement("students");
     for (String id : book.getStudentIds()) {
-      Element studentNode = doc.createElement("id");
-      studentNode.appendChild(doc.createTextNode(id));
-
-      studentsNode.appendChild(studentNode);
+      appendTextElementIfValueIsNotNull(studentsNode, "id", id);
     }
 
     root.appendChild(studentsNode);
   }
 
   private static void appendXmlForClassName(GradeBook book, Document doc, Element root) {
-    // name node
-    Element name = doc.createElement("name");
-    name.appendChild(doc.createTextNode(book.getClassName()));
-    root.appendChild(name);
+    appendTextElementIfValueIsNotNull(root, "name", book.getClassName());
   }
 
   private static void appendXmlForAssignments(GradeBook book, Document doc, Element root) {
@@ -254,9 +248,7 @@ public class XmlDumper extends XmlHelper {
   private static void doNotes(Document doc, Element parent, List<String> notes) {
     Element notesNode = doc.createElement("notes");
     for (String note : notes) {
-      Element noteNode = doc.createElement("note");
-      noteNode.appendChild(doc.createTextNode(note));
-      notesNode.appendChild(noteNode);
+      appendTextElementIfValueIsNotNull(notesNode, "note", note);
     }
 
     parent.appendChild(notesNode);
@@ -323,9 +315,7 @@ public class XmlDumper extends XmlHelper {
       Element resubNode = doc.createElement("resubmitted");
 
       for (String assignmentName : resubmitted) {
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(assignmentName));
-        resubNode.appendChild(nameNode);
+        appendTextElementIfValueIsNotNull(resubNode, "name", assignmentName);
       }
 
       parent.appendChild(resubNode);
@@ -339,9 +329,7 @@ public class XmlDumper extends XmlHelper {
       Element lateNode = doc.createElement("late");
 
       for (String assignmentName : late) {
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(assignmentName));
-        lateNode.appendChild(nameNode);
+        appendTextElementIfValueIsNotNull(lateNode, "name", assignmentName);
       }
 
       parent.appendChild(lateNode);
@@ -359,13 +347,8 @@ public class XmlDumper extends XmlHelper {
 
         Element gradeNode = doc.createElement("grade");
 
-        Element nameNode = doc.createElement("name");
-        nameNode.appendChild(doc.createTextNode(grade.getAssignmentName()));
-        gradeNode.appendChild(nameNode);
-
-        Element scoreNode = doc.createElement("score");
-        scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
-        gradeNode.appendChild(scoreNode);
+        appendTextElementIfValueIsNotNull(gradeNode, "name", grade.getAssignmentName());
+        appendTextElementIfValueIsNotNull(gradeNode, "score", String.valueOf(grade.getScore()));
 
         appendSubmissionsInformation(grade.getSubmissionInfos(), gradeNode);
 
