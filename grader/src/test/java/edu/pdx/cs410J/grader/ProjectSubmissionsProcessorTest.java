@@ -39,14 +39,11 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = student.getFirstName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudentName(studentName)
       .setStudentId(wrongStudentId)
       .setStudentEmail(wrongEmail)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -66,14 +63,11 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = student.getNickName() + " " + student.getLastName();
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email that we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudentName(studentName)
       .setStudentId(wrongStudentId)
       .setStudentEmail(wrongEmail)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -93,14 +87,11 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = "Not the student name we expect";
     String wrongStudentId = "Not the student id we expect";
     String email = student.getEmail();
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudentName(studentName)
       .setStudentId(wrongStudentId)
       .setStudentEmail(email)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -119,14 +110,11 @@ public class ProjectSubmissionsProcessorTest {
     String studentName = "Not the student name we expect";
     String wrongStudentId = "Not the student id we expect";
     String wrongEmail = "Not the email we expect";
-    String submissionComment = "This is only a test";
 
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudentName(studentName)
       .setStudentId(wrongStudentId)
       .setStudentEmail(wrongEmail)
-      .setSubmissionComment(submissionComment)
       .build();
 
     assertThrows(StudentEmailAttachmentProcessor.SubmissionException.class, () ->
@@ -141,13 +129,10 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = LocalDateTime.now().minusHours(2).withNano(0);
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudent(student)
       .setSubmissionDate(submissionDate)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -163,13 +148,10 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = dueDate.plusDays(3);
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudent(student)
       .setSubmissionDate(submissionDate)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -185,13 +167,10 @@ public class ProjectSubmissionsProcessorTest {
     GradeBook gradebook = createGradeBookWithAssignment(projectName, dueDate);
     Student student = createStudentInGradeBook(gradebook);
 
-    String submissionComment = "This is only a test";
     LocalDateTime submissionDate = dueDate.minusDays(3);
-    Manifest manifest = manifest()
-      .setProjectName(projectName)
+    Manifest manifest = manifest(projectName)
       .setStudent(student)
       .setSubmissionDate(submissionDate)
-      .setSubmissionComment(submissionComment)
       .build();
 
     noteProjectSubmissionInGradeBook(gradebook, manifest);
@@ -249,9 +228,11 @@ public class ProjectSubmissionsProcessorTest {
     };
   }
 
-  private ManifestBuilder manifest() {
+  private ManifestBuilder manifest(String projectName) {
     return new ManifestBuilder()
+      .setProjectName(projectName)
       .setSubmissionDate(LocalDateTime.now())
+      .setSubmissionComment("Why is a comment required?")
       ;
   }
 
@@ -267,7 +248,7 @@ public class ProjectSubmissionsProcessorTest {
       return manifest;
     }
 
-    public ManifestBuilder setProjectName(String projectName) {
+    private ManifestBuilder setProjectName(String projectName) {
       return setAttribute(PROJECT_NAME, projectName);
     }
 
