@@ -93,7 +93,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @Test
   public void submitFilesAndDownloadSubmission() throws IOException, MessagingException {
-    submitFiles();
+    submitter().submitFiles();
 
     GradeBook gradeBook = new GradeBook("SubmitIT");
     gradeBook.addStudent(new Student(studentLoginId));
@@ -114,7 +114,8 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   void estimatedHoursArePassedThroughToManifest() throws MessagingException, IOException {
     double estimatedHours = 12.5;
     LocalDateTime submitTime = LocalDateTime.now();
-    submitFiles(estimatedHours, submitTime);
+
+    submitter().setEstimatedHours(estimatedHours).setSubmitTime(submitTime).submitFiles();
 
     GradeBook gradeBook = new GradeBook("SubmitIT");
     gradeBook.addStudent(new Student(studentLoginId));
@@ -130,6 +131,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     SubmissionInfo info = grade.getSubmissionInfos().get(0);
     assertThat(info.getSubmissionTime(), equalTo(submitTime));
+    assertThat(info.getEstimatedHours(), equalTo(estimatedHours));
 
   }
 
@@ -149,7 +151,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     List<String> entryNames = new ArrayList<>();
     FileInputStream stream = new FileInputStream(zipFile);
     try (
-      ZipInputStream zipStream = new ZipInputStream(stream);
+      ZipInputStream zipStream = new ZipInputStream(stream)
     ) {
       for (ZipEntry entry = zipStream.getNextEntry(); entry != null; entry = zipStream.getNextEntry()) {
         String entryName = entry.getName();
@@ -160,7 +162,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     return entryNames;
   }
 
-  private File findNewestZipFileInTempDirectory() throws IOException {
+  private File findNewestZipFileInTempDirectory() {
     File[] zipFiles = this.tempDirectory.listFiles((dir, name) -> name.endsWith(".zip"));
     if (zipFiles == null) {
       return null;
@@ -170,38 +172,53 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     }
   }
 
-  private void submitFiles(double estimatedHours, LocalDateTime submitTime) throws IOException, MessagingException {
-    submitFiles(false, estimatedHours, submitTime);
+  private FileSubmitter submitter() {
+    return new FileSubmitter();
   }
 
-  private void submitFiles() throws IOException, MessagingException {
-    submitFiles(false);
-  }
+  private class FileSubmitter {
 
-  private void submitFiles(boolean sendReceipt) throws IOException, MessagingException {
-    submitFiles(sendReceipt, null, LocalDateTime.now());
-  }
+    private LocalDateTime submitTime = LocalDateTime.now();
+    private Double estimatedHours = null;
+    private boolean sendReceipt = false;
 
-  private void submitFiles(boolean sendReceipt, Double estimatedHours, LocalDateTime submitTime) throws IOException, MessagingException {
-    Student student = new Student(studentLoginId);
-    student.setEmail(studentEmail);
-    student.setFirstName(studentFirstName);
-    student.setLastName(studentLastName);
-
-    Submit submit = new Submit(() -> submitTime);
-    submit.setProjectName(projectName);
-    submit.setStudent(student);
-    submit.setEstimatedHours(estimatedHours);
-
-    for (File file : filesToSubmit) {
-      submit.addFile(file.getAbsolutePath());
+    public FileSubmitter setSubmitTime(LocalDateTime submitTime) {
+      this.submitTime = submitTime;
+      return this;
     }
 
-    submit.setEmailServerHostName(emailServerHost);
-    submit.setEmailServerPort(smtpPort);
-    submit.setDebug(true);
-    submit.setSendReceipt(sendReceipt);
-    submit.submit(false);
+    public FileSubmitter setEstimatedHours(Double estimatedHours) {
+      this.estimatedHours = estimatedHours;
+      return this;
+    }
+
+    public FileSubmitter setSendReceipt(boolean sendReceipt) {
+      this.sendReceipt = sendReceipt;
+      return this;
+    }
+
+    private void submitFiles() throws IOException, MessagingException {
+      Student student = new Student(studentLoginId);
+      student.setEmail(studentEmail);
+      student.setFirstName(studentFirstName);
+      student.setLastName(studentLastName);
+
+      Submit submit = new Submit(() -> submitTime);
+      submit.setProjectName(projectName);
+      submit.setStudent(student);
+      submit.setEstimatedHours(estimatedHours);
+
+      for (File file : filesToSubmit) {
+        submit.addFile(file.getAbsolutePath());
+      }
+
+      submit.setEmailServerHostName(emailServerHost);
+      submit.setEmailServerPort(smtpPort);
+      submit.setDebug(true);
+      submit.setSendReceipt(sendReceipt);
+      submit.submit(false);
+    }
+
   }
 
   @Override
@@ -250,7 +267,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @Test
   public void submissionEmailIsSentByToGraderAndReplyToStudent() throws IOException, MessagingException {
-    submitFiles(false);
+    submitter().submitFiles();
 
     List<Message> messages = new ArrayList<>();
 
@@ -289,7 +306,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @Test
   public void receiptEmailRepliesToDave() throws IOException, MessagingException {
-    submitFiles(true);
+    submitter().setSendReceipt(true).submitFiles();
 
     List<Message> messages = new ArrayList<>();
 

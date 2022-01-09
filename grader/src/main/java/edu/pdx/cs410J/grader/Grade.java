@@ -288,10 +288,20 @@ public class Grade extends NotableImpl {
     return submissionInfo.stream().map(SubmissionInfo::getSubmissionTime).collect(Collectors.toList());
   }
 
+  @Deprecated(forRemoval = true)
   public void addSubmissionTime(LocalDateTime submissionTime) {
+    noteSubmission(submissionTime);
+  }
+
+  public void noteSubmission(LocalDateTime submissionTime) {
+    noteSubmission(submissionTime, null);
+  }
+
+  public void noteSubmission(LocalDateTime submissionTime, Double estimatedHours) {
     this.setDirty(true);
     SubmissionInfo info = new SubmissionInfo();
     info.setSubmissionTime(submissionTime);
+    info.setEstimatedHours(estimatedHours);
     this.submissionInfo.add(info);
   }
 
@@ -301,6 +311,7 @@ public class Grade extends NotableImpl {
 
   public static class SubmissionInfo {
     private LocalDateTime submissionTime;
+    private Double estimatedHours;
 
     public LocalDateTime getSubmissionTime() {
       return submissionTime;
@@ -308,6 +319,14 @@ public class Grade extends NotableImpl {
 
     public void setSubmissionTime(LocalDateTime submissionTime) {
       this.submissionTime = submissionTime;
+    }
+
+    public Double getEstimatedHours() {
+      return estimatedHours;
+    }
+
+    public void setEstimatedHours(Double estimatedHours) {
+      this.estimatedHours = estimatedHours;
     }
   }
 }

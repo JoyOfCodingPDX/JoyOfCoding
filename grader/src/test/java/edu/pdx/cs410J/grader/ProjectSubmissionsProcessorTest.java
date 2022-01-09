@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -138,6 +139,26 @@ public class ProjectSubmissionsProcessorTest {
     noteProjectSubmissionInGradeBook(gradebook, manifest);
 
     assertThat(student.getGrade(projectName).getSubmissionTimes(), contains(submissionDate));
+  }
+
+  @Test
+  public void estimatedHoursNotedInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    Double estimatedHours = 4.5;
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setEstimatedHours(estimatedHours)
+      .build();
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    List<Grade.SubmissionInfo> submissions = student.getGrade(projectName).getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    assertThat(submissions.get(0).getEstimatedHours(), equalTo(estimatedHours));
   }
 
   @Test

@@ -638,6 +638,9 @@ public class Submit extends EmailSender {
     manifestEntries.put(ManifestAttributes.PROJECT_NAME, projName);
     manifestEntries.put(ManifestAttributes.SUBMISSION_COMMENT, comment);
     manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));
+    if (estimatedHours != null) {
+      manifestEntries.put(ManifestAttributes.ESTIMATED_HOURS, String.valueOf(estimatedHours));
+    }
     return manifestEntries;
   }
 
@@ -858,10 +861,6 @@ public class Submit extends EmailSender {
     this.estimatedHours = estimatedHours;
   }
 
-  public Double getEstimatedHours() {
-    return estimatedHours;
-  }
-
   static class ManifestAttributes {
 
     static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
@@ -870,6 +869,7 @@ public class Submit extends EmailSender {
     static final Attributes.Name PROJECT_NAME = new Attributes.Name("Project-Name");
     static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
+    static final Attributes.Name ESTIMATED_HOURS = new Attributes.Name("Estimated-Hours");
 
     private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;

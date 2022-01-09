@@ -119,7 +119,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     grade.addNote(note);
 
     LocalDateTime submissionTime = getSubmissionTime(attrs);
-    grade.addSubmissionTime(submissionTime);
+    grade.noteSubmission(submissionTime, getEstimatedHours(attrs));
 
     if (project.isSubmissionLate(submissionTime)) {
       student.addLate(project.getName());
@@ -129,6 +129,11 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   private LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {
     String string = getSubmissionTimeString(attrs);
     return Submit.ManifestAttributes.parseSubmissionTime(string);
+  }
+
+  private Double getEstimatedHours(Attributes attrs) {
+    String estimateHours = attrs.getValue(ESTIMATED_HOURS);
+    return estimateHours == null ? null : Double.parseDouble(estimateHours);
   }
 
   private String getSubmissionNote(Attributes attrs) throws SubmissionException {
