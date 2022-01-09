@@ -289,9 +289,13 @@ public class Grade extends NotableImpl {
   }
 
   public SubmissionInfo noteSubmission(LocalDateTime submissionTime) {
-    this.setDirty(true);
     SubmissionInfo info = new SubmissionInfo();
     info.setSubmissionTime(submissionTime);
+    return noteSubmission(info);
+  }
+
+  public SubmissionInfo noteSubmission(SubmissionInfo info) {
+    this.setDirty(true);
     this.submissionInfo.add(info);
 
     return info;

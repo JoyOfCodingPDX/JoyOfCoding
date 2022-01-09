@@ -54,7 +54,7 @@ class XmlStudentParser extends XmlHelper {
     String name = null;
     String score = null;
     List<String> notes = null;
-    List<LocalDateTime> submissions = null;
+    List<Grade.SubmissionInfo> submissions = null;
 
     NodeList kids = root.getChildNodes();
     for (int j = 0; j < kids.getLength(); j++) {
@@ -99,8 +99,8 @@ class XmlStudentParser extends XmlHelper {
     }
   }
 
-  private static List<LocalDateTime> extractSubmissionsFrom(Element parent) {
-    List<LocalDateTime> list = new ArrayList<>();
+  private static List<Grade.SubmissionInfo> extractSubmissionsFrom(Element parent) {
+    List<Grade.SubmissionInfo> list = new ArrayList<>();
 
     NodeList children = parent.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
@@ -110,13 +110,42 @@ class XmlStudentParser extends XmlHelper {
       }
 
       Element child = (Element) node;
-      if (child.getTagName().equals("submission")) {
-        String text = extractTextFrom(child);
-        list.add(LocalDateTime.parse(text, DATE_TIME_FORMAT));
+      if (child.getTagName().equals("submission-info")) {
+        list.add(extractSubmissionFrom(child));
+
+      } else if (child.getTagName().equals("submission")) {
+        Grade.SubmissionInfo info = new Grade.SubmissionInfo();
+        setSubmissionTimeFromTextInNode(info, child);
+        list.add(info);
       }
     }
 
     return list;
+  }
+
+  private static Grade.SubmissionInfo extractSubmissionFrom(Element parent) {
+    Grade.SubmissionInfo info = new Grade.SubmissionInfo();
+
+    NodeList children = parent.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      Node node = children.item(i);
+      if (!(node instanceof Element)) {
+        continue;
+      }
+
+      Element child = (Element) node;
+      if (child.getTagName().equals("date")) {
+        setSubmissionTimeFromTextInNode(info, child);
+      }
+    }
+
+    return info;
+  }
+
+  private static void setSubmissionTimeFromTextInNode(Grade.SubmissionInfo info, Element node) {
+    String text = extractTextFrom(node);
+    LocalDateTime submitTime = LocalDateTime.parse(text, DATE_TIME_FORMAT);
+    info.setSubmissionTime(submitTime);
   }
 
   /**

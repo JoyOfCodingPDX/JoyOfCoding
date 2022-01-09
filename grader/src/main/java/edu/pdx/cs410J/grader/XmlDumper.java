@@ -350,7 +350,7 @@ public class XmlDumper extends XmlHelper {
 
   private static void appendGradesInformation(Student student, Element parent) {
     Document doc = parent.getOwnerDocument();
-    Iterator gradeNames = student.getGradeNames().iterator();
+    Iterator<String> gradeNames = student.getGradeNames().iterator();
     if (gradeNames.hasNext()) {
       Element gradesNode = doc.createElement("grades");
       while (gradeNames.hasNext()) {
@@ -367,7 +367,7 @@ public class XmlDumper extends XmlHelper {
         scoreNode.appendChild(doc.createTextNode(grade.getScore() + ""));
         gradeNode.appendChild(scoreNode);
 
-        appendSubmissionTimesInformation(grade.getSubmissionTimes(), gradeNode);
+        appendSubmissionsInformation(grade.getSubmissionInfos(), gradeNode);
 
         doNotes(doc, gradeNode, grade.getNotes());
 
@@ -385,19 +385,23 @@ public class XmlDumper extends XmlHelper {
     }
   }
 
-  private static void appendSubmissionTimesInformation(List<LocalDateTime> submissionTimes, Element parent) {
-    if (!submissionTimes.isEmpty()) {
+  private static void appendSubmissionsInformation(List<Grade.SubmissionInfo> submissionInfos, Element parent) {
+    if (!submissionInfos.isEmpty()) {
       Document doc = parent.getOwnerDocument();
       Element submissions = doc.createElement("submissions");
       parent.appendChild(submissions);
 
-      submissionTimes.forEach(submissionTime -> {
-        Element submission = doc.createElement("submission");
-        submissions.appendChild(submission);
-        submission.appendChild(doc.createTextNode(submissionTime.format(DATE_TIME_FORMAT)));
+      submissionInfos.forEach(info -> {
+        Element submissionInfo = doc.createElement("submission-info");
+        submissions.appendChild(submissionInfo);
+        appendSubmissionInformation(info, submissionInfo);
       });
     }
 
+  }
+
+  private static void appendSubmissionInformation(Grade.SubmissionInfo info, Element parent) {
+    appendTextElementIfValueIsNotNull(parent, "date", info.getSubmissionTime());
   }
 
   private static void appendStudentInformation(Student student, Element root) {
