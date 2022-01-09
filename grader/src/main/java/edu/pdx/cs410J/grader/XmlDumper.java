@@ -28,7 +28,7 @@ import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange
 public class XmlDumper extends XmlHelper {
 
   private File studentDir = null; // Where to dump student XML files
-  PrintWriter pw = null;          // Where to dump grade book
+  PrintWriter pw;          // Where to dump grade book
 
   /**
    * Creates a new <code>XmlDumper</code> that dumps the contents of a
@@ -95,12 +95,12 @@ public class XmlDumper extends XmlHelper {
     book.makeClean();
   }
 
-  static Document dumpGradeBook(GradeBook book, XmlHelper helper) throws IOException {
+  static Document dumpGradeBook(GradeBook book, XmlHelper helper) {
     Document doc = createDocumentForGradeBook(helper);
 
     Element root = doc.getDocumentElement();
 
-    appendXmlForClassName(book, doc, root);
+    appendXmlForClassName(book, root);
     appendXmlForAssignments(book, doc, root);
     appendXmlForLetterGradeRanges(book, doc, root);
     appendXmlForStudents(book, doc, root);
@@ -173,7 +173,7 @@ public class XmlDumper extends XmlHelper {
     root.appendChild(studentsNode);
   }
 
-  private static void appendXmlForClassName(GradeBook book, Document doc, Element root) {
+  private static void appendXmlForClassName(GradeBook book, Element root) {
     appendTextElementIfValueIsNotNull(root, "name", book.getClassName());
   }
 
@@ -233,7 +233,7 @@ public class XmlDumper extends XmlHelper {
     }
   }
 
-  private void dumpDirtyStudents(GradeBook book) throws IOException {
+  private void dumpDirtyStudents(GradeBook book) {
     book.forEachStudent(student -> {
       if (student.isDirty()) {
         dumpStudent(student);
@@ -342,7 +342,7 @@ public class XmlDumper extends XmlHelper {
     if (gradeNames.hasNext()) {
       Element gradesNode = doc.createElement("grades");
       while (gradeNames.hasNext()) {
-        String gradeName = (String) gradeNames.next();
+        String gradeName = gradeNames.next();
         Grade grade = student.getGrade(gradeName);
 
         Element gradeNode = doc.createElement("grade");
@@ -385,6 +385,7 @@ public class XmlDumper extends XmlHelper {
 
   private static void appendSubmissionInformation(Grade.SubmissionInfo info, Element parent) {
     appendTextElementIfValueIsNotNull(parent, "date", info.getSubmissionTime());
+    appendTextElementIfValueIsNotNull(parent, "estimated-hours", info.getEstimatedHours());
   }
 
   private static void appendStudentInformation(Student student, Element root) {
@@ -429,11 +430,11 @@ public class XmlDumper extends XmlHelper {
     return doc;
   }
 
-  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, String textValue) {
+  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, Object textValue) {
     if (textValue != null) {
       Document doc = parent.getOwnerDocument();
       Element id = doc.createElement(elementName);
-      id.appendChild(doc.createTextNode(textValue));
+      id.appendChild(doc.createTextNode(String.valueOf(textValue)));
       parent.appendChild(id);
     }
   }

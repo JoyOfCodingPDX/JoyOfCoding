@@ -136,10 +136,19 @@ class XmlStudentParser extends XmlHelper {
       Element child = (Element) node;
       if (child.getTagName().equals("date")) {
         setSubmissionTimeFromTextInNode(info, child);
+
+      } else if (child.getTagName().equals("estimated-hours")) {
+        setSubmissionEstimatedHoursFromTextInNode(info, child);
       }
     }
 
     return info;
+  }
+
+  private static void setSubmissionEstimatedHoursFromTextInNode(Grade.SubmissionInfo info, Element node) {
+    String text = extractTextFrom(node);
+    Double estimatedHours = Double.parseDouble(text);
+    info.setEstimatedHours(estimatedHours);
   }
 
   private static void setSubmissionTimeFromTextInNode(Grade.SubmissionInfo info, Element node) {

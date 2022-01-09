@@ -84,7 +84,8 @@ assignments, and some notes -->
   type (INCOMPLETE | NO_GRADE) #IMPLIED
 >
 
-<!ELEMENT submission-info (date)>
+<!ELEMENT submission-info (date, estimated-hours?)>
 <!ELEMENT date (#PCDATA)>
+<!ELEMENT estimated-hours (#PCDATA)>
 
 <!ELEMENT score (#PCDATA)>

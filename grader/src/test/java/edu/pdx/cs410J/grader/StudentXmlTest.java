@@ -41,14 +41,19 @@ public class StudentXmlTest {
     Student student = new Student("test");
     String assignmentName = "project";
     LocalDateTime submissionTime = LocalDateTime.now().minusHours(3).withNano(0);
+    double estimatedHours = 43.5;
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.noteSubmission(submissionTime);
+    grade.noteSubmission(submissionTime).setEstimatedHours(estimatedHours);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
+    Grade grade2 = student2.getGrade(assignmentName);
+    assertThat(grade2.getSubmissionInfos(), hasSize(1));
 
-    assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime));
+    Grade.SubmissionInfo info = grade2.getSubmissionInfos().get(0);
+    assertThat(info.getSubmissionTime(), equalTo(submissionTime));
+    assertThat(info.getEstimatedHours(), equalTo(estimatedHours));
   }
 
   @Test
@@ -56,16 +61,25 @@ public class StudentXmlTest {
     Student student = new Student("test");
     String assignmentName = "project";
     LocalDateTime submissionTime1 = LocalDateTime.now().minusHours(3).withNano(0);
+    double estimatedHours1 = 24.8;
     LocalDateTime submissionTime2 = LocalDateTime.now().minusHours(4).withNano(0);
 
     Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
-    grade.noteSubmission(submissionTime1);
+    grade.noteSubmission(submissionTime1).setEstimatedHours(estimatedHours1);
     grade.noteSubmission(submissionTime2);
     student.setGrade(assignmentName, grade);
 
     Student student2 = writeAndReadStudentAsXml(student);
+    Grade grade2 = student2.getGrade(assignmentName);
+    assertThat(grade2.getSubmissionInfos(), hasSize(2));
 
-    assertThat(student2.getGrade(assignmentName).getSubmissionTimes(), contains(submissionTime1, submissionTime2));
+    Grade.SubmissionInfo info1 = grade2.getSubmissionInfos().get(0);
+    assertThat(info1.getSubmissionTime(), equalTo(submissionTime1));
+    assertThat(info1.getEstimatedHours(), equalTo(estimatedHours1));
+
+    Grade.SubmissionInfo info2 = grade2.getSubmissionInfos().get(1);
+    assertThat(info2.getSubmissionTime(), equalTo(submissionTime2));
+    assertThat(info2.getEstimatedHours(), nullValue());
   }
 
   @Test
