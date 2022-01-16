@@ -9,6 +9,10 @@ public interface EmailCredentialsView {
 
   void addSubmitCredentialsListener(SubmitCredentialsListener listener);
 
+  void setEmailAddress(String emailAddress);
+
+  void setPassword(String password);
+
   public interface EmailAddressValueListener {
     void setEmailAddress(String address);
   }

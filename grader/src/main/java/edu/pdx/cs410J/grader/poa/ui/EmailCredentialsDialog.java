@@ -6,9 +6,11 @@ import edu.pdx.cs410J.grader.poa.EmailCredentialsView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Singleton
@@ -131,6 +133,21 @@ public class EmailCredentialsDialog extends JDialog implements EmailCredentialsV
   @Override
   public void addSubmitCredentialsListener(SubmitCredentialsListener listener) {
     this.submitCredentialsListeners.add(listener);
+  }
+
+  @Override
+  public void setEmailAddress(String emailAddress) {
+    setFieldText(this.emailAddressField, emailAddress);
+  }
+
+  private void setFieldText(JTextField field, String emailAddress) {
+    field.setText(emailAddress);
+    Arrays.asList(field.getActionListeners()).forEach(actionListener -> actionListener.actionPerformed(new ActionEvent(field, 42, "update")));
+  }
+
+  @Override
+  public void setPassword(String password) {
+    setFieldText(this.passwordField, password);
   }
 
   private void submitCredentials(SubmitCredentialsListener listener) {

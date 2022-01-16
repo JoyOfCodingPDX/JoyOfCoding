@@ -29,11 +29,19 @@ public class EmailCredentialsPresenter {
   }
 
   private void fireEmailCredentialsEvent() {
-    this.bus.post(new EmailCredentials(this.emailAddress, this.password));
+    if (this.emailAddress != null && this.password != null) {
+      this.bus.post(new EmailCredentials(this.emailAddress, this.password));
+    }
   }
 
   @Subscribe
   public void displayEmailCredentialsView(DownloadPOASubmissionsRequest event) {
+    if (event.getEmailAddress() != null) {
+      this.view.setEmailAddress(event.getEmailAddress());
+    }
+    if (event.getPassword() != null) {
+      this.view.setPassword(event.getPassword());
+    }
     fireStatusMessageEvent(ENTER_CREDENTIALS_MESSAGE);
     this.view.setIsVisible(true);
   }

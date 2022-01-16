@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.File;
+import java.io.*;
 import java.time.LocalDateTime;
 
 @Singleton
@@ -54,7 +54,35 @@ public class PlanOfAttackGrader {
       bus.post(new LoadGradeBook(gradeBookFile));
     }
 
-    bus.post(new DownloadPOASubmissionsRequest());
+    DownloadPOASubmissionsRequest downloadPOASubmissionsRequest;
+    if (args.length >= 3) {
+      String email = args[1];
+      String password = loadPasswordFromFile(args[2]);
+      downloadPOASubmissionsRequest = new DownloadPOASubmissionsRequest(email, password);
+
+    } else {
+      downloadPOASubmissionsRequest = new DownloadPOASubmissionsRequest();
+    }
+
+    bus.post(downloadPOASubmissionsRequest);
+  }
+
+  private static String loadPasswordFromFile(String fileName) {
+    File file = new File(fileName);
+    if (!file.exists()) {
+      System.err.println("Password file does not exist: " + file);
+      System.exit(1);
+    }
+
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      return br.readLine();
+
+    } catch (IOException e) {
+      System.err.println("While reading password from " + file);
+      e.printStackTrace(System.err);
+      System.exit(1);
+      return null;
+    }
   }
 
   private static void printStackTrace(Throwable e) {

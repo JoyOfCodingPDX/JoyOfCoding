@@ -10,8 +10,7 @@ import static edu.pdx.cs410J.grader.poa.EmailCredentialsView.PasswordValueListen
 import static edu.pdx.cs410J.grader.poa.EmailCredentialsView.SubmitCredentialsListener;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class EmailCredentialsPresenterTest extends EventBusTestCase {
 
@@ -47,6 +46,24 @@ public class EmailCredentialsPresenterTest extends EventBusTestCase {
 
     StatusMessage status = captor.getValue();
     assertThat(status.getStatusMessage(), equalTo(EmailCredentialsPresenter.ENTER_CREDENTIALS_MESSAGE));
+  }
+
+  @Test
+  void downloadingSubmissionsWithNoCredentialsDoesNotPopulateView() {
+    this.bus.post(new DownloadPOASubmissionsRequest());
+
+    verify(this.view, never()).setEmailAddress(any(String.class));
+    verify(this.view, never()).setPassword(any(String.class));
+  }
+
+  @Test
+  void downloadingSubmissionsWithCredentialsPopulatesView() {
+    String email = "me@me.com";
+    String password = "password";
+    this.bus.post(new DownloadPOASubmissionsRequest(email, password));
+
+    verify(this.view).setEmailAddress(eq(email));
+    verify(this.view).setPassword(eq(password));
   }
 
   @Test
