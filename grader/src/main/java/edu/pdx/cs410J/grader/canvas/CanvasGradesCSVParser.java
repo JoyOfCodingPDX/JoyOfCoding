@@ -3,7 +3,6 @@ package edu.pdx.cs410J.grader.canvas;
 import com.google.common.annotations.VisibleForTesting;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import edu.pdx.cs410J.grader.GradesFromCanvas;
 
 import java.io.IOException;
 import java.io.Reader;

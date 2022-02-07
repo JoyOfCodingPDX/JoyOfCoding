@@ -1,7 +1,7 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.canvas;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.grader.canvas.CanvasGradesCSVParser;
+import edu.pdx.cs410J.grader.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

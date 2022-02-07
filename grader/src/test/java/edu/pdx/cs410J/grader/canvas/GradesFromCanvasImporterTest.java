@@ -1,5 +1,6 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.canvas;
 
+import edu.pdx.cs410J.grader.*;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

@@ -1,4 +1,8 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.canvas;
+
+import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.Student;
 
 import java.util.*;
 

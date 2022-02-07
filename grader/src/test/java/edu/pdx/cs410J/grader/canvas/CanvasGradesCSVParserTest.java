@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.grader.canvas;
 
-import edu.pdx.cs410J.grader.GradesFromCanvas;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
