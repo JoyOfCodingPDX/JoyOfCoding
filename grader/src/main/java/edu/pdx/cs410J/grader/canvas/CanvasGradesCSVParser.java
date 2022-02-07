@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader.canvas;
 import com.google.common.annotations.VisibleForTesting;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import edu.pdx.cs410J.grader.GradesFromCanvas;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -45,13 +46,16 @@ public class CanvasGradesCSVParser {
   private int studentNameColumn;
   private int studentIdColumn;
   private final SortedMap<Integer, Assignment> columnToAssignment = new TreeMap<>();
-  private final List<Student> students = new ArrayList<>();
+  private final GradesFromCanvas grades;
 
   public CanvasGradesCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader(reader);
     try {
       extractColumnNamesFromFirstLineOfCsv(csv.readNext());
       extractPossiblePointsFromSecondLineOfCsv(csv.readNext());
+
+      grades = new GradesFromCanvas();
+
       String[] studentLine;
       while ((studentLine = csv.readNext()) != null) {
         addStudentAndGradesFromLineOfCsv(studentLine);
@@ -64,20 +68,20 @@ public class CanvasGradesCSVParser {
   }
 
   private void addStudentAndGradesFromLineOfCsv(String[] studentLine) {
-    Student student = createStudentFrom(studentLine);
+    GradesFromCanvas.CanvasStudent student = createStudentFrom(studentLine);
 
     if (!student.getFirstName().equals("Test")) {
-      this.students.add(student);
+      this.grades.addStudent(student);
     }
 
     addGradesFromLineOfCsv(student, studentLine);
   }
 
-  private void addGradesFromLineOfCsv(Student student, String[] studentLine) {
+  private void addGradesFromLineOfCsv(GradesFromCanvas.CanvasStudent student, String[] studentLine) {
     this.columnToAssignment.forEach((column, assignment) -> {
       String score = studentLine[column];
       if (!isEmptyString(score)) {
-        student.setScore(assignment, parseScore(score));
+        student.setScore(assignment.getName(), parseScore(score));
       }
     });
 
@@ -91,16 +95,17 @@ public class CanvasGradesCSVParser {
     return Double.parseDouble(score);
   }
 
-  private Student createStudentFrom(String[] studentLine) {
+  private GradesFromCanvas.CanvasStudent createStudentFrom(String[] studentLine) {
     String studentName = studentLine[studentNameColumn];
     Pattern studentNamePattern = Pattern.compile("(.*), (.*)");
     Matcher matcher = studentNamePattern.matcher(studentName);
     if (matcher.matches()) {
-      String firstName = matcher.group(2);
-      String lastName = matcher.group(1);
-      String studentId = studentLine[studentIdColumn];
+      GradesFromCanvas.CanvasStudentBuilder builder = GradesFromCanvas.newStudent();
+      builder.setFirstName(matcher.group(2));
+      builder.setLastName(matcher.group(1));
+      builder.setLoginId(studentLine[studentIdColumn]);
 
-      return new Student(firstName, lastName, studentId);
+      return builder.create();
 
     } else {
       throw new IllegalStateException("Can't parse student name \"" + studentName + "\"");
@@ -170,8 +175,8 @@ public class CanvasGradesCSVParser {
     return new ArrayList<>(this.columnToAssignment.values());
   }
 
-  public List<Student> getStudents() {
-    return this.students;
+  public GradesFromCanvas getGrades() {
+    return this.grades;
   }
 
   public static class Assignment {
@@ -201,36 +206,4 @@ public class CanvasGradesCSVParser {
     }
   }
 
-  public static class Student {
-    private final String firstName;
-    private final String lastName;
-    private final String id;
-    private final Map<Assignment, Double> scores = new HashMap<>();
-
-    private Student(String firstName, String lastName, String studentId) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.id = studentId;
-    }
-
-    public String getFirstName() {
-      return firstName;
-    }
-
-    public String getLastName() {
-      return lastName;
-    }
-
-    public String getId() {
-      return id;
-    }
-
-    public Double getScore(Assignment assignment) {
-      return this.scores.get(assignment);
-    }
-
-    public void setScore(Assignment assignment, double score) {
-      this.scores.put(assignment, score);
-    }
-  }
 }

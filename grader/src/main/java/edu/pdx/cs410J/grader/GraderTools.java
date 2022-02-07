@@ -52,7 +52,7 @@ public class GraderTools {
         return FetchAndProcessGraderEmail.class;
 
       case "importFromD2L" :
-        return GradesFromD2LImporter.class;
+        return GradesFromCanvasImporter.class;
 
       case "importFromProjectReports" :
         return ProjectGradesImporter.class;

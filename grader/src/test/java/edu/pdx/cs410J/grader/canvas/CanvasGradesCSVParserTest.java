@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.canvas;
 
+import edu.pdx.cs410J.grader.GradesFromCanvas;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -47,19 +48,19 @@ public class CanvasGradesCSVParserTest {
   @Test
   void canReadStudentsFromCSV() throws IOException {
     CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
-    List<CanvasGradesCSVParser.Student> students = parser.getStudents();
+    List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
     assertThat(students.get(0).getFirstName(), equalTo("First1"));
     assertThat(students.get(0).getLastName(), equalTo("Last1"));
-    assertThat(students.get(0).getId(), equalTo("student1"));
+    assertThat(students.get(0).getLoginId(), equalTo("student1"));
     assertThat(students.get(1).getFirstName(), equalTo("First2"));
     assertThat(students.get(1).getLastName(), equalTo("Last2"));
-    assertThat(students.get(1).getId(), equalTo("student2"));
+    assertThat(students.get(1).getLoginId(), equalTo("student2"));
   }
 
   @Test
   void testStudentIsNotReadFromCSV() throws IOException {
     CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
-    List<CanvasGradesCSVParser.Student> students = parser.getStudents();
+    List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
     assertThat(students, hasSize(2));
   }
 
@@ -67,15 +68,15 @@ public class CanvasGradesCSVParserTest {
   void canReadGradesFromCSV() throws IOException {
     CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
     List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
-    List<CanvasGradesCSVParser.Student> students = parser.getStudents();
+    List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
 
     CanvasGradesCSVParser.Assignment quiz1 = getAssignment(assignments, "Quiz 1: Programming Background");
-    assertThat(students.get(0).getScore(quiz1), equalTo(3.00));
-    assertThat(students.get(1).getScore(quiz1), equalTo(2.85));
+    assertThat(students.get(0).getScore(quiz1.getName()), equalTo(3.00));
+    assertThat(students.get(1).getScore(quiz1.getName()), equalTo(2.85));
 
     CanvasGradesCSVParser.Assignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
-    assertThat(students.get(0).getScore(quiz2), nullValue());
-    assertThat(students.get(1).getScore(quiz2), equalTo(3.00));
+    assertThat(students.get(0).getScore(quiz2.getName()), nullValue());
+    assertThat(students.get(1).getScore(quiz2.getName()), equalTo(3.00));
   }
 
   private CanvasGradesCSVParser.Assignment getAssignment(List<CanvasGradesCSVParser.Assignment> assignments, String assignmentName) {

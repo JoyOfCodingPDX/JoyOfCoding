@@ -10,21 +10,21 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class D2LStudentPropertyMatcher extends TypeSafeMatcher<List<GradesFromD2L.D2LStudent>> {
+public class D2LStudentPropertyMatcher extends TypeSafeMatcher<List<GradesFromCanvas.CanvasStudent>> {
 
   private final String expectedValue;
-  private final Function<GradesFromD2L.D2LStudent, String> accessor;
+  private final Function<GradesFromCanvas.CanvasStudent, String> accessor;
   private final String propertyName;
 
-  public D2LStudentPropertyMatcher(Function<GradesFromD2L.D2LStudent, String> accessor, String propertyName, String expectedValue) {
+  public D2LStudentPropertyMatcher(Function<GradesFromCanvas.CanvasStudent, String> accessor, String propertyName, String expectedValue) {
     this.expectedValue = expectedValue;
     this.accessor = accessor;
     this.propertyName = propertyName;
   }
 
   @Override
-  protected boolean matchesSafely(List<GradesFromD2L.D2LStudent> students) {
-    for (GradesFromD2L.D2LStudent student : students) {
+  protected boolean matchesSafely(List<GradesFromCanvas.CanvasStudent> students) {
+    for (GradesFromCanvas.CanvasStudent student : students) {
       if (this.accessor.apply(student).equals(expectedValue)) {
         return true;
       }
@@ -39,7 +39,7 @@ public class D2LStudentPropertyMatcher extends TypeSafeMatcher<List<GradesFromD2
   }
 
   @Override
-  protected void describeMismatchSafely(List<GradesFromD2L.D2LStudent> students, Description mismatchDescription) {
+  protected void describeMismatchSafely(List<GradesFromCanvas.CanvasStudent> students, Description mismatchDescription) {
     mismatchDescription.appendText("the students' " + propertyName + "s were: ");
     Stream<String> actualValues = students.stream().map(accessor);
     mismatchDescription.appendValueList("", ",", "", toIterable(actualValues));

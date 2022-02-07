@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class GradesFromD2LTest {
+public class GradesFromCanvasTest {
 
   @Test
   public void noStudentInGradebookThatMatchesD2LStudent() {
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("firstName").setLastName("lastName").setD2LId("d2lId").create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("firstName").setLastName("lastName").setLoginId("d2lId").create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -18,13 +18,13 @@ public class GradesFromD2LTest {
     student.setD2LId("notD2LId");
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).isPresent(), is(false));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).isPresent(), is(false));
   }
 
   @Test
   public void matchStudentByD2LId() {
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("firstName").setLastName("lastName").setD2LId("d2lId").create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("firstName").setLastName("lastName").setLoginId("d2lId").create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -32,22 +32,22 @@ public class GradesFromD2LTest {
     student.setD2LId("d2lId");
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
   }
 
   @Test
   public void matchStudentByIdAndD2LId() {
     String studentId = "studentId";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("firstName").setLastName("lastName").setD2LId(studentId).create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("firstName").setLastName("lastName").setLoginId(studentId).create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
     Student student = new Student(studentId);
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.isDirty(), is(true));
     assertThat(student.getD2LId(), equalTo(studentId));
   }
@@ -58,8 +58,8 @@ public class GradesFromD2LTest {
     String firstName = "firstName";
     String lastName = "lastName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId(d2lId).create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName(firstName).setLastName(lastName).setLoginId(d2lId).create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -72,7 +72,7 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(true));
   }
@@ -83,8 +83,8 @@ public class GradesFromD2LTest {
     String firstName = "firstName";
     String lastName = "lastName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId(d2lId).create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName(firstName).setLastName(lastName).setLoginId(d2lId).create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -97,7 +97,7 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(true));
   }
@@ -108,8 +108,8 @@ public class GradesFromD2LTest {
     String firstName = "firstName";
     String lastName = "lastName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId(d2lId).create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName(firstName).setLastName(lastName).setLoginId(d2lId).create();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -123,14 +123,14 @@ public class GradesFromD2LTest {
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForD2LStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
     assertThat(student.getD2LId(), equalTo(d2lId));
     assertThat(student.isDirty(), is(false));
   }
 
   @Test
   public void gradeIsSet() {
-    GradesFromD2L.D2LStudent student = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    GradesFromCanvas.CanvasStudent student = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId("id").create();
     String quizName = "quizName";
     double score = 3.4;
     student.setScore(quizName, score);
@@ -142,8 +142,8 @@ public class GradesFromD2LTest {
   public void matchQuizWithSameName() {
     String quizName = "quizName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId("id").create();
     grades.addStudent(d2lStudent);
     d2lStudent.setScore(quizName, 3.6);
 
@@ -151,15 +151,15 @@ public class GradesFromD2LTest {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).get(), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).get(), equalTo(assignment));
   }
 
   @Test
   public void matchQuizWithPrefixThatIsTheSameAsQuizNameInD2L() {
     String quizName = "quizName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId("id").create();
     grades.addStudent(d2lStudent);
     d2lStudent.setScore(quizName + " Quiz", 3.6);
 
@@ -167,7 +167,7 @@ public class GradesFromD2LTest {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
 
   }
 
@@ -175,8 +175,8 @@ public class GradesFromD2LTest {
   public void matchQuizWithDescriptionPrefixThatIsTheSameAsQuizNameInD2L() {
     String quizName = "quizName";
 
-    GradesFromD2L grades = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2lStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId("id").create();
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId("id").create();
     grades.addStudent(d2lStudent);
     d2lStudent.setScore(quizName + " Quiz", 3.6);
 
@@ -185,7 +185,7 @@ public class GradesFromD2LTest {
     assignment.setDescription(quizName);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForD2lQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
 
   }
 

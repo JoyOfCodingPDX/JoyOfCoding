@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GradesFromD2LImporterTest {
+public class GradesFromCanvasImporterTest {
 
   @Test
   public void errorWhenD2LQuizDoesNotExistInGradebook() {
@@ -17,13 +17,13 @@ public class GradesFromD2LImporterTest {
     Student student = new Student(studentId);
     gradebook.addStudent(student);
 
-    GradesFromD2L d2l = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2LStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId(studentId).create();
+    GradesFromCanvas d2l = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId(studentId).create();
     d2LStudent.setScore("quiz", 3.4);
     d2l.addStudent(d2LStudent);
 
     assertThrows(IllegalStateException.class, () ->
-      GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook)
+      GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook)
     );
   }
 
@@ -38,12 +38,12 @@ public class GradesFromD2LImporterTest {
     Student student = new Student(studentId);
     gradebook.addStudent(student);
 
-    GradesFromD2L d2l = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2LStudent = GradesFromD2L.newStudent().setFirstName("first").setLastName("last").setD2LId(studentId).create();
+    GradesFromCanvas d2l = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId(studentId).create();
     d2LStudent.setScore(quizName, score);
     d2l.addStudent(d2LStudent);
 
-    GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook);
+    GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook);
 
     assertThat(student.getGradeNames(), hasItem(quizName));
     assertThat(student.getGrade(quizName).getScore(), equalTo(score));
@@ -64,12 +64,12 @@ public class GradesFromD2LImporterTest {
     student.setLastName(lastName);
     gradebook.addStudent(student);
 
-    GradesFromD2L d2l = new GradesFromD2L();
-    GradesFromD2L.D2LStudent d2LStudent = GradesFromD2L.newStudent().setFirstName(firstName).setLastName(lastName).setD2LId("d2LstudentId").create();
+    GradesFromCanvas d2l = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName(firstName).setLastName(lastName).setLoginId("d2LstudentId").create();
     d2LStudent.setScore(quizName, score);
     d2l.addStudent(d2LStudent);
 
-    GradesFromD2LImporter.importGradesFromD2L(d2l, gradebook);
+    GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook);
 
     assertThat(student.getGradeNames(), hasItem(quizName));
     assertThat(student.getGrade(quizName).getScore(), equalTo(score));
