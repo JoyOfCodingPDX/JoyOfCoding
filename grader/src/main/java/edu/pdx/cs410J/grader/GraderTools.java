@@ -52,7 +52,7 @@ public class GraderTools {
       case "fetch":
         return FetchAndProcessGraderEmail.class;
 
-      case "importFromD2L" :
+      case "importFromCanvas" :
         return GradesFromCanvasImporter.class;
 
       case "importFromProjectReports" :
@@ -97,7 +97,7 @@ public class GraderTools {
     err.println("    gradebook                 The Grade Book GUI");
     err.println("    fetch                     Fetch student surveys or projects from the Grader's");
     err.println("                              emails account");
-    err.println("    importFromD2L             Import grades from a D2L CSV");
+    err.println("    importFromCanvas          Import grades from a Canvas CSV");
     err.println("    importFromProjectReports  Import grades from graded project reports");
     err.println("    mailFileToStudent         Email text files to students");
     err.println("    gradePOAs                 Tool for downloading and grading POAs");
