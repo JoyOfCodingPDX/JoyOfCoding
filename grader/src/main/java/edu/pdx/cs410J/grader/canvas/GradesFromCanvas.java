@@ -7,7 +7,7 @@ import edu.pdx.cs410J.grader.Student;
 import java.util.*;
 
 public class GradesFromCanvas {
-  private List<CanvasStudent> students = new ArrayList<>();
+  private final List<CanvasStudent> students = new ArrayList<>();
 
   public static CanvasStudentBuilder newStudent() {
     return new CanvasStudentBuilder();
@@ -17,17 +17,17 @@ public class GradesFromCanvas {
     this.students.add(student);
   }
 
-  public Optional<Student> findStudentInGradebookForCanvasStudent(CanvasStudent d2lStudent, GradeBook book) {
+  public Optional<Student> findStudentInGradebookForCanvasStudent(CanvasStudent canvasStudent, GradeBook book) {
     return book.studentsStream().filter((Student student) -> {
-      if (haveSameD2LId(d2lStudent, student)) {
+      if (haveSameLoginId(canvasStudent, student)) {
         return true;
 
-      } else if (studentIdIsSameAsD2LId(d2lStudent, student)) {
-        student.setD2LId(d2lStudent.getLoginId());
+      } else if (studentIdIsSameAsLoginId(canvasStudent, student)) {
+        student.setD2LId(canvasStudent.getLoginId());
         return true;
 
-      } else if (haveSameFirstAndLastNameIgnoringCase(d2lStudent, student)) {
-        student.setD2LId(d2lStudent.getLoginId());
+      } else if (haveSameFirstAndLastNameIgnoringCase(canvasStudent, student)) {
+        student.setD2LId(canvasStudent.getLoginId());
         return true;
 
       } else {
@@ -36,7 +36,7 @@ public class GradesFromCanvas {
     }).findAny();
   }
 
-  private boolean studentIdIsSameAsD2LId(CanvasStudent d2lStudent, Student student) {
+  private boolean studentIdIsSameAsLoginId(CanvasStudent d2lStudent, Student student) {
     return d2lStudent.getLoginId().equals(student.getId());
   }
 
@@ -45,8 +45,8 @@ public class GradesFromCanvas {
       d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
   }
 
-  private boolean haveSameD2LId(CanvasStudent d2lStudent, Student student) {
-    return d2lStudent.getLoginId().equals(student.getD2LId());
+  private boolean haveSameLoginId(CanvasStudent canvasStudent, Student student) {
+    return canvasStudent.getLoginId().equals(student.getD2LId());
   }
 
   public List<CanvasStudent> getStudents() {
@@ -56,7 +56,7 @@ public class GradesFromCanvas {
   public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String quizName, GradeBook gradebook) {
     Assignment assignment = gradebook.getAssignment(quizName);
     if (assignment != null) {
-      return Optional.ofNullable(assignment);
+      return Optional.of(assignment);
     }
 
     return findAssignmentInGradebookLike(quizName, gradebook);
@@ -76,20 +76,20 @@ public class GradesFromCanvas {
     return Optional.empty();
   }
 
-  public static class CanvasStudent {
+  static class CanvasStudent {
     private final String firstName;
     private final String lastName;
-    private final String d2lId;
-    private Map<String, Double> scores = new HashMap<>();
+    private final String loginId;
+    private final Map<String, Double> scores = new HashMap<>();
 
-    public CanvasStudent(String firstName, String lastName, String d2lId) {
+    public CanvasStudent(String firstName, String lastName, String loginId) {
       this.firstName = firstName;
       this.lastName = lastName;
-      this.d2lId = d2lId;
+      this.loginId = loginId;
     }
 
     public String getLoginId() {
-      return d2lId;
+      return loginId;
     }
 
     public String getFirstName() {
@@ -114,14 +114,14 @@ public class GradesFromCanvas {
 
     @Override
     public String toString() {
-      return "D2L student \"" + getFirstName() + " " + getLastName() + "\" with id " + getLoginId();
+      return "Canvas student \"" + getFirstName() + " " + getLastName() + "\" with id " + getLoginId();
     }
   }
 
-  public static class CanvasStudentBuilder {
+  static class CanvasStudentBuilder {
     private String firstName;
     private String lastName;
-    private String d2lId;
+    private String loginId;
 
     private CanvasStudentBuilder() {
 
@@ -137,8 +137,8 @@ public class GradesFromCanvas {
       return this;
     }
 
-    public CanvasStudentBuilder setLoginId(String d2lId) {
-      this.d2lId = d2lId;
+    public CanvasStudentBuilder setLoginId(String loginId) {
+      this.loginId = loginId;
       return this;
     }
 
@@ -151,11 +151,11 @@ public class GradesFromCanvas {
         throw new IllegalStateException("Missing last name");
       }
 
-      if (d2lId == null) {
-        throw new IllegalStateException("Missing d2l Id");
+      if (loginId == null) {
+        throw new IllegalStateException("Missing login Id");
       }
 
-      return new CanvasStudent(firstName, lastName, d2lId);
+      return new CanvasStudent(firstName, lastName, loginId);
     }
   }
 }
