@@ -45,17 +45,66 @@ public class CanvasGradesCSVParser {
   private int studentNameColumn;
   private int studentIdColumn;
   private final SortedMap<Integer, Assignment> columnToAssignment = new TreeMap<>();
+  private final List<Student> students = new ArrayList<>();
 
   public CanvasGradesCSVParser(Reader reader) throws IOException {
     CSVReader csv = new CSVReader(reader);
     try {
       extractColumnNamesFromFirstLineOfCsv(csv.readNext());
       extractPossiblePointsFromSecondLineOfCsv(csv.readNext());
+      String[] studentLine;
+      while ((studentLine = csv.readNext()) != null) {
+        addStudentAndGradesFromLineOfCsv(studentLine);
+      }
 
     } catch (CsvValidationException ex) {
       throw new IOException("While parsing CSV", ex);
     }
 
+  }
+
+  private void addStudentAndGradesFromLineOfCsv(String[] studentLine) {
+    Student student = createStudentFrom(studentLine);
+
+    if (!student.getFirstName().equals("Test")) {
+      this.students.add(student);
+    }
+
+    addGradesFromLineOfCsv(student, studentLine);
+  }
+
+  private void addGradesFromLineOfCsv(Student student, String[] studentLine) {
+    this.columnToAssignment.forEach((column, assignment) -> {
+      String score = studentLine[column];
+      if (!isEmptyString(score)) {
+        student.setScore(assignment, parseScore(score));
+      }
+    });
+
+  }
+
+  private boolean isEmptyString(String score) {
+    return "".equals(score);
+  }
+
+  private double parseScore(String score) {
+    return Double.parseDouble(score);
+  }
+
+  private Student createStudentFrom(String[] studentLine) {
+    String studentName = studentLine[studentNameColumn];
+    Pattern studentNamePattern = Pattern.compile("(.*), (.*)");
+    Matcher matcher = studentNamePattern.matcher(studentName);
+    if (matcher.matches()) {
+      String firstName = matcher.group(2);
+      String lastName = matcher.group(1);
+      String studentId = studentLine[studentIdColumn];
+
+      return new Student(firstName, lastName, studentId);
+
+    } else {
+      throw new IllegalStateException("Can't parse student name \"" + studentName + "\"");
+    }
   }
 
   private void extractPossiblePointsFromSecondLineOfCsv(String[] secondLine) {
@@ -121,6 +170,10 @@ public class CanvasGradesCSVParser {
     return new ArrayList<>(this.columnToAssignment.values());
   }
 
+  public List<Student> getStudents() {
+    return this.students;
+  }
+
   public static class Assignment {
     private final String name;
     private final int id;
@@ -145,6 +198,39 @@ public class CanvasGradesCSVParser {
 
     void setPossiblePoints(double possiblePoints) {
       this.pointsPossible = possiblePoints;
+    }
+  }
+
+  public static class Student {
+    private final String firstName;
+    private final String lastName;
+    private final String id;
+    private final Map<Assignment, Double> scores = new HashMap<>();
+
+    private Student(String firstName, String lastName, String studentId) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.id = studentId;
+    }
+
+    public String getFirstName() {
+      return firstName;
+    }
+
+    public String getLastName() {
+      return lastName;
+    }
+
+    public String getId() {
+      return id;
+    }
+
+    public Double getScore(Assignment assignment) {
+      return this.scores.get(assignment);
+    }
+
+    public void setScore(Assignment assignment, double score) {
+      this.scores.put(assignment, score);
     }
   }
 }
