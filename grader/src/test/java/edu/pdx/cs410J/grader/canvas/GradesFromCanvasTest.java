@@ -192,4 +192,23 @@ public class GradesFromCanvasTest {
 
   }
 
+  @Test
+  void matchQuizWithDescriptionThatIsContainedInQuizNameInCanvas() {
+    String quizDescription = "Quiz Description";
+
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId("id").create();
+    grades.addStudent(d2lStudent);
+    String canvasQuizName = "Quiz 1: " + quizDescription + " (12345)";
+    d2lStudent.setScore(canvasQuizName, 3.6);
+
+    GradeBook book = new GradeBook("test");
+    Assignment assignment = new Assignment("quiz1", 4.0);
+    assignment.setDescription(quizDescription);
+    book.addAssignment(assignment);
+
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(canvasQuizName, book).orElseGet(() -> null), equalTo(assignment));
+
+  }
+
 }

@@ -53,23 +53,23 @@ public class GradesFromCanvas {
     return this.students;
   }
 
-  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String quizName, GradeBook gradebook) {
-    Assignment assignment = gradebook.getAssignment(quizName);
+  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String canvasQuizName, GradeBook gradebook) {
+    Assignment assignment = gradebook.getAssignment(canvasQuizName);
     if (assignment != null) {
       return Optional.of(assignment);
     }
 
-    return findAssignmentInGradebookLike(quizName, gradebook);
+    return findAssignmentInGradebookLike(canvasQuizName, gradebook);
   }
 
-  private Optional<Assignment> findAssignmentInGradebookLike(String quizName, GradeBook gradebook) {
+  private Optional<Assignment> findAssignmentInGradebookLike(String canvasQuizName, GradeBook gradebook) {
     for (String assignmentName : gradebook.getAssignmentNames()) {
       Assignment assignment = gradebook.getAssignment(assignmentName);
-      if (quizName.startsWith(assignmentName)) {
+      if (canvasQuizName.startsWith(assignmentName)) {
         return Optional.ofNullable(assignment);
       }
 
-      if (quizName.startsWith(assignment.getDescription())) {
+      if (canvasQuizName.contains(assignment.getDescription())) {
         return Optional.of(assignment);
       }
     }
