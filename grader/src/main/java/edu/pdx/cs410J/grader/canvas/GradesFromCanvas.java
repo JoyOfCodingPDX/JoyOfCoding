@@ -80,12 +80,14 @@ public class GradesFromCanvas {
     private final String firstName;
     private final String lastName;
     private final String loginId;
+    private final String canvasId;
     private final Map<String, Double> scores = new HashMap<>();
 
-    public CanvasStudent(String firstName, String lastName, String loginId) {
+    public CanvasStudent(String firstName, String lastName, String loginId, String canvasId) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.loginId = loginId;
+      this.canvasId = canvasId;
     }
 
     public String getLoginId() {
@@ -98,6 +100,10 @@ public class GradesFromCanvas {
 
     public String getLastName() {
       return lastName;
+    }
+
+    public String getCanvasId() {
+      return this.canvasId;
     }
 
     public void setScore(String quizName, double score) {
@@ -122,6 +128,7 @@ public class GradesFromCanvas {
     private String firstName;
     private String lastName;
     private String loginId;
+    private String canvasId;
 
     private CanvasStudentBuilder() {
 
@@ -142,6 +149,11 @@ public class GradesFromCanvas {
       return this;
     }
 
+    public CanvasStudentBuilder setCanvasId(String canvasId) {
+      this.canvasId = canvasId;
+      return this;
+    }
+
     public CanvasStudent create() {
       if (firstName == null) {
         throw new IllegalStateException("Missing first name");
@@ -155,7 +167,7 @@ public class GradesFromCanvas {
         throw new IllegalStateException("Missing login Id");
       }
 
-      return new CanvasStudent(firstName, lastName, loginId);
+      return new CanvasStudent(firstName, lastName, loginId, canvasId);
     }
   }
 }
