@@ -19,15 +19,15 @@ public class GradesFromCanvas {
 
   public Optional<Student> findStudentInGradebookForCanvasStudent(CanvasStudent canvasStudent, GradeBook book) {
     return book.studentsStream().filter((Student student) -> {
-      if (haveSameLoginId(canvasStudent, student)) {
+      if (haveSameCanvasId(canvasStudent, student)) {
         return true;
 
       } else if (studentIdIsSameAsLoginId(canvasStudent, student)) {
-        student.setD2LId(canvasStudent.getLoginId());
+        student.setCanvasId(canvasStudent.getCanvasId());
         return true;
 
       } else if (haveSameFirstAndLastNameIgnoringCase(canvasStudent, student)) {
-        student.setD2LId(canvasStudent.getLoginId());
+        student.setCanvasId(canvasStudent.getCanvasId());
         return true;
 
       } else {
@@ -45,8 +45,8 @@ public class GradesFromCanvas {
       d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
   }
 
-  private boolean haveSameLoginId(CanvasStudent canvasStudent, Student student) {
-    return canvasStudent.getLoginId().equals(student.getD2LId());
+  private boolean haveSameCanvasId(CanvasStudent canvasStudent, Student student) {
+    return canvasStudent.getCanvasId().equals(student.getCanvasId());
   }
 
   public List<CanvasStudent> getStudents() {
@@ -165,6 +165,10 @@ public class GradesFromCanvas {
 
       if (loginId == null) {
         throw new IllegalStateException("Missing login Id");
+      }
+
+      if (canvasId == null) {
+        throw new IllegalStateException("Missing canvas Id");
       }
 
       return new CanvasStudent(firstName, lastName, loginId, canvasId);
