@@ -203,9 +203,9 @@ class XmlStudentParser extends XmlHelper {
         String major = extractTextFrom(child);
         student.setMajor(major);
 
-      } else if (child.getTagName().equals("d2l-id")) {
-        String d2lId = extractTextFrom(child);
-        student.setCanvasId(d2lId);
+      } else if (child.getTagName().equals("canvas-id")) {
+        String canvasId = extractTextFrom(child);
+        student.setCanvasId(canvasId);
 
       } else if (child.getTagName().equals("letter-grade")) {
         String letterGrade = extractTextFrom(child);
