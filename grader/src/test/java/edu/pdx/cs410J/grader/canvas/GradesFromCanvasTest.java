@@ -30,7 +30,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
   public void matchStudentByCanvasId() {
     GradesFromCanvas grades = new GradesFromCanvas();
     String canvasId = "d2lId";
-    GradesFromCanvas.CanvasStudent d2lStudent = GradesFromCanvas.newStudent().setFirstName("firstName").setLastName("lastName").setCanvasId(canvasId).setLoginId("logId").create();
+    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent("firstName", "lastName", "logId", canvasId);
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");

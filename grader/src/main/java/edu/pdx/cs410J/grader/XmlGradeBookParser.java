@@ -193,6 +193,9 @@ public class XmlGradeBookParser extends XmlHelper {
       } else if (child.getTagName().equals("letter-grade-ranges")) {
         extractLetterGradeRangesFrom(child);
 
+      } else if (child.getTagName().equals("section-name")) {
+        extractSectionName(child);
+
       } else if (child.getTagName().equals("students")) {
         extractStudentsFrom(child);
 
@@ -209,16 +212,14 @@ public class XmlGradeBookParser extends XmlHelper {
     return this.book;
   }
 
-  private void extractLetterGradeRangesFrom(Element parent) {
-    Student.Section section;
-    String attributeName = "for-section";
-    if (parent.hasAttribute(attributeName)) {
-      String value = parent.getAttribute(attributeName);
-      section = Student.Section.fromString(value);
+  private void extractSectionName(Element element) {
+    Student.Section section = extractSection(element);
+    String sectionName = extractTextFrom(element);
+    this.book.setSectionName(section, sectionName);
+  }
 
-    } else {
-      section = Student.Section.UNDERGRADUATE;
-    }
+  private void extractLetterGradeRangesFrom(Element parent) {
+    Student.Section section = extractSection(parent);
 
     NodeList ranges = parent.getChildNodes();
     for (int j = 0; j < ranges.getLength(); j++) {
@@ -230,6 +231,19 @@ public class XmlGradeBookParser extends XmlHelper {
 
       extractLetterGradeRangeFrom((Element) range, section);
     }
+  }
+
+  private Student.Section extractSection(Element parent) {
+    Student.Section section;
+    String attributeName = "for-section";
+    if (parent.hasAttribute(attributeName)) {
+      String value = parent.getAttribute(attributeName);
+      section = Student.Section.fromString(value);
+
+    } else {
+      section = Student.Section.UNDERGRADUATE;
+    }
+    return section;
   }
 
   private void extractLetterGradeRangeFrom(Element element, Student.Section section) {
