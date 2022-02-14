@@ -45,6 +45,7 @@ public class CanvasGradesCSVParser {
   private int studentNameColumn;
   private int studentIdColumn;
   private int canvasIdColumn;
+  private int sectionIdColumn;
   private final SortedMap<Integer, Assignment> columnToAssignment = new TreeMap<>();
   private final GradesFromCanvas grades;
 
@@ -105,6 +106,7 @@ public class CanvasGradesCSVParser {
       builder.setLastName(matcher.group(1));
       builder.setLoginId(studentLine[studentIdColumn]);
       builder.setCanvasId(studentLine[canvasIdColumn]);
+      builder.setSection(studentLine[sectionIdColumn]);
 
       return builder.create();
 
@@ -138,6 +140,9 @@ public class CanvasGradesCSVParser {
           break;
         case "ID":
           this.canvasIdColumn = i;
+          break;
+        case "Section":
+          this.sectionIdColumn = i;
           break;
         default:
           if (!isColumnIgnored(cell)) {

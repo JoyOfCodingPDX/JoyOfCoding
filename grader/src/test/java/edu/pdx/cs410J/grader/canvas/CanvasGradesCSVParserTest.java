@@ -31,7 +31,7 @@ public class CanvasGradesCSVParserTest {
 
   @Test
   void canReadAssignmentsFromCSV() throws IOException {
-    CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
+    CanvasGradesCSVParser parser = createParserFromResource();
     List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
     assertThat(assignments.get(0).getName(), equalTo("End of Term Survey"));
     assertThat(assignments.get(0).getId(), equalTo(95625));
@@ -44,30 +44,36 @@ public class CanvasGradesCSVParserTest {
     assertThat(assignments.get(2).getPointsPossible(), equalTo(1.00));
   }
 
+  private CanvasGradesCSVParser createParserFromResource() throws IOException {
+    return new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
+  }
+
   @Test
   void canReadStudentsFromCSV() throws IOException {
-    CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
+    CanvasGradesCSVParser parser = createParserFromResource();
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
     assertThat(students.get(0).getFirstName(), equalTo("First1"));
     assertThat(students.get(0).getLastName(), equalTo("Last1"));
     assertThat(students.get(0).getLoginId(), equalTo("student1"));
     assertThat(students.get(0).getCanvasId(), equalTo("11111"));
+    assertThat(students.get(0).getSection(), equalTo("CS-410P-069: TOP: Adv Prog In Java"));
     assertThat(students.get(1).getFirstName(), equalTo("First2"));
     assertThat(students.get(1).getLastName(), equalTo("Last2"));
     assertThat(students.get(1).getLoginId(), equalTo("student2"));
     assertThat(students.get(1).getCanvasId(), equalTo("22222"));
+    assertThat(students.get(1).getSection(), equalTo("CS-510-090: TOP: Adv Prog In Java"));
   }
 
   @Test
   void testStudentIsNotReadFromCSV() throws IOException {
-    CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
+    CanvasGradesCSVParser parser = createParserFromResource();
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
     assertThat(students, hasSize(2));
   }
 
   @Test
   void canReadGradesFromCSV() throws IOException {
-    CanvasGradesCSVParser parser = new CanvasGradesCSVParser(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("canvas.csv"))));
+    CanvasGradesCSVParser parser = createParserFromResource();
     List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
 
