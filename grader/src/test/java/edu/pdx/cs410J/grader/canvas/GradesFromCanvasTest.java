@@ -217,4 +217,26 @@ public class GradesFromCanvasTest extends CanvasTestCase {
 
   }
 
+  @Test
+  void undergradSectionIsSetFromCanvasGrades() {
+    String firstName = "firstName";
+    String lastName = "lastName";
+    String section = "Section";
+
+    GradesFromCanvas grades = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", "canvasId", section);
+    grades.addStudent(d2lStudent);
+
+    GradeBook book = new GradeBook("test");
+    Student student = new Student("studentId");
+    student.setFirstName(firstName);
+    student.setLastName(lastName);
+    student.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    book.addStudent(student);
+
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(student.getCanvasId(), equalTo("canvasId"));
+    assertThat(book.getSectionName(Student.Section.UNDERGRADUATE), equalTo(section));
+  }
+
 }

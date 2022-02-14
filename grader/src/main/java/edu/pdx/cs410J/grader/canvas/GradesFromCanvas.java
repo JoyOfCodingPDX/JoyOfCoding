@@ -23,17 +23,22 @@ public class GradesFromCanvas {
         return true;
 
       } else if (studentIdIsSameAsLoginId(canvasStudent, student)) {
-        student.setCanvasId(canvasStudent.getCanvasId());
+        noteStudent(canvasStudent, student, book);
         return true;
 
       } else if (haveSameFirstAndLastNameIgnoringCase(canvasStudent, student)) {
-        student.setCanvasId(canvasStudent.getCanvasId());
+        noteStudent(canvasStudent, student, book);
         return true;
 
       } else {
         return false;
       }
     }).findAny();
+  }
+
+  private void noteStudent(CanvasStudent canvasStudent, Student student, GradeBook book) {
+    student.setCanvasId(canvasStudent.getCanvasId());
+    book.setSectionName(student.getEnrolledSection(), canvasStudent.getSection());
   }
 
   private boolean studentIdIsSameAsLoginId(CanvasStudent d2lStudent, Student student) {
