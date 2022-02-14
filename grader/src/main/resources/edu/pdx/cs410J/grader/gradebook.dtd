@@ -57,7 +57,7 @@ points it is worth, a type, a due date, and some optional notes -->
 address, social security number, a major, some grades, some late
 assignments, and some notes -->
 <!ELEMENT student (id, firstName?, lastName?, nickName?, email?, ssn?,
-                   major?, d2l-id?, letter-grade?, grades?, late?, resubmitted?, notes?)>
+                   major?, canvas-id?, d2l-id?, letter-grade?, grades?, late?, resubmitted?, notes?)>
 <!ATTLIST student
           enrolled-section (undergraduate | graduate) #IMPLIED
 >
@@ -70,6 +70,7 @@ assignments, and some notes -->
 <!ELEMENT email (#PCDATA)>
 <!ELEMENT ssn (#PCDATA)>  <!-- xxx-xx-xxxx -->
 <!ELEMENT major (#PCDATA)>
+<!ELEMENT canvas-id (#PCDATA)>
 <!ELEMENT d2l-id (#PCDATA)>
 <!ELEMENT letter-grade (#PCDATA)>
 <!ELEMENT grades (grade*)>

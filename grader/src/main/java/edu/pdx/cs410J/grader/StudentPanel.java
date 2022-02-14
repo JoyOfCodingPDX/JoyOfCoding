@@ -30,7 +30,7 @@ public class StudentPanel extends JPanel {
   private JTextField nickNameField;
   private JTextField emailField;
   private JTextField majorField;
-  private JTextField d2lIdField;
+  private JTextField canvasId;
   private final JComboBox<LetterGrade> letterGraderComboBox;
   private final JComboBox<Student.Section> enrolledSectionComboBox;
 
@@ -55,7 +55,7 @@ public class StudentPanel extends JPanel {
     labels.add(new JLabel("Email:"));
     labels.add(new JLabel("SSN:"));
     labels.add(new JLabel("Major:"));
-    labels.add(new JLabel("D2L Id:"));
+    labels.add(new JLabel("Canvas Id:"));
     labels.add(new JLabel("Letter Grade:"));
     labels.add(new JLabel("Enrolled Section:"));
 
@@ -74,8 +74,8 @@ public class StudentPanel extends JPanel {
     fields.add(this.emailField);
     this.majorField = new JTextField(15);
     fields.add(this.majorField);
-    this.d2lIdField = new JTextField(10);
-    fields.add(this.d2lIdField);
+    this.canvasId = new JTextField(10);
+    fields.add(this.canvasId);
     this.letterGraderComboBox = createLetterGradeComboBox();
     fields.add(this.letterGraderComboBox);
     this.enrolledSectionComboBox= createEnrolledSectionComboBox();
@@ -131,7 +131,7 @@ public class StudentPanel extends JPanel {
     this.nickNameField.setText("");
     this.emailField.setText("");
     this.majorField.setText("");
-    this.d2lIdField.setText("");
+    this.canvasId.setText("");
     this.letterGraderComboBox.setSelectedItem(null);
     this.enrolledSectionComboBox.setSelectedItem(null);
     this.notes.clearNotes();
@@ -176,9 +176,9 @@ public class StudentPanel extends JPanel {
       this.majorField.setText(major);
     }
 
-    String d2lId = student.getD2LId();
-    if (d2lId != null && !d2lId.equals("")) {
-      this.d2lIdField.setText(d2lId);
+    String canvasId = student.getCanvasId();
+    if (canvasId != null && !canvasId.equals("")) {
+      this.canvasId.setText(canvasId);
     }
 
     LetterGrade letterGrade = student.getLetterGrade();
@@ -240,12 +240,12 @@ public class StudentPanel extends JPanel {
       }
     }
     
-    String d2lId = this.d2lIdField.getText();
-    if (d2lId != null) {
-      if (d2lId.equals("")) {
-        student.setD2LId(null);
+    String canvasId = this.canvasId.getText();
+    if (canvasId != null) {
+      if (canvasId.equals("")) {
+        student.setCanvasId(null);
       } else {
-        student.setD2LId(d2lId);
+        student.setCanvasId(canvasId);
       }
     }
 

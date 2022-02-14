@@ -8,28 +8,32 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GradesFromCanvasImporterTest {
+public class GradesFromCanvasImporterTest extends CanvasTestCase {
 
   @Test
-  public void errorWhenD2LQuizDoesNotExistInGradebook() {
+  public void errorWhenCanvasQuizDoesNotExistInGradebook() {
     String studentId = "studentId";
 
     GradeBook gradebook = new GradeBook("test");
     Student student = new Student(studentId);
     gradebook.addStudent(student);
 
-    GradesFromCanvas d2l = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId(studentId).create();
-    d2LStudent.setScore("quiz", 3.4);
-    d2l.addStudent(d2LStudent);
+    GradesFromCanvas canvas = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
+    canvasStudent.setScore("quiz", 3.4);
+    canvas.addStudent(canvasStudent);
 
     assertThrows(IllegalStateException.class, () ->
-      GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook)
+      GradesFromCanvasImporter.importGradesFromCanvas(canvas, gradebook)
     );
   }
 
+  private GradesFromCanvas.CanvasStudent createCanvasStudentWithId(String studentId) {
+    return createCanvasStudent("First", "Last", studentId);
+  }
+
   @Test
-  public void importScoreFromD2LWhenStudentIdMatchesD2LId() {
+  public void importScoreFromCanvasWhenStudentIdMatchesCanvasId() {
     String studentId = "studentId";
     String quizName = "quiz";
     double score = 3.4;
@@ -39,19 +43,19 @@ public class GradesFromCanvasImporterTest {
     Student student = new Student(studentId);
     gradebook.addStudent(student);
 
-    GradesFromCanvas d2l = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName("first").setLastName("last").setLoginId(studentId).create();
-    d2LStudent.setScore(quizName, score);
-    d2l.addStudent(d2LStudent);
+    GradesFromCanvas canvas = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
+    canvasStudent.setScore(quizName, score);
+    canvas.addStudent(canvasStudent);
 
-    GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook);
+    GradesFromCanvasImporter.importGradesFromCanvas(canvas, gradebook);
 
     assertThat(student.getGradeNames(), hasItem(quizName));
     assertThat(student.getGrade(quizName).getScore(), equalTo(score));
   }
 
   @Test
-  public void importScoreFromD2LWhenStudentNameMatchesD2LName() {
+  public void importScoreFromCanvasWhenStudentNameMatchesCanvasName() {
     String firstName = "first";
     String lastName = "last";
 
@@ -65,12 +69,12 @@ public class GradesFromCanvasImporterTest {
     student.setLastName(lastName);
     gradebook.addStudent(student);
 
-    GradesFromCanvas d2l = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2LStudent = GradesFromCanvas.newStudent().setFirstName(firstName).setLastName(lastName).setLoginId("d2LstudentId").create();
-    d2LStudent.setScore(quizName, score);
-    d2l.addStudent(d2LStudent);
+    GradesFromCanvas canvas = new GradesFromCanvas();
+    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName);
+    canvasStudent.setScore(quizName, score);
+    canvas.addStudent(canvasStudent);
 
-    GradesFromCanvasImporter.importGradesFromCanvas(d2l, gradebook);
+    GradesFromCanvasImporter.importGradesFromCanvas(canvas, gradebook);
 
     assertThat(student.getGradeNames(), hasItem(quizName));
     assertThat(student.getGrade(quizName).getScore(), equalTo(score));

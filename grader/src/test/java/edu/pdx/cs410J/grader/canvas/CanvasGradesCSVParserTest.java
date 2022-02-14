@@ -51,9 +51,11 @@ public class CanvasGradesCSVParserTest {
     assertThat(students.get(0).getFirstName(), equalTo("First1"));
     assertThat(students.get(0).getLastName(), equalTo("Last1"));
     assertThat(students.get(0).getLoginId(), equalTo("student1"));
+    assertThat(students.get(0).getCanvasId(), equalTo("11111"));
     assertThat(students.get(1).getFirstName(), equalTo("First2"));
     assertThat(students.get(1).getLastName(), equalTo("Last2"));
     assertThat(students.get(1).getLoginId(), equalTo("student2"));
+    assertThat(students.get(1).getCanvasId(), equalTo("22222"));
   }
 
   @Test
