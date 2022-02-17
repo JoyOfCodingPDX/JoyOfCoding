@@ -38,7 +38,8 @@ public class GradeBook {
   private int crn = 0;
 
   private final Map<Section, LetterGradeRanges> letterGradeRanges = new HashMap<>();
-  
+  private final Map<Section, String> sectionNames = new HashMap<>();
+
   /**
    * Creates a new <code>GradeBook</code> for a given class
    */
@@ -351,6 +352,14 @@ public class GradeBook {
 
   public Stream<Assignment> assignmentsStream() {
     return this.assignments.values().stream();
+  }
+
+  public String getSectionName(Section section) {
+    return this.sectionNames.get(section);
+  }
+
+  public void setSectionName(Section section, String sectionName) {
+    this.sectionNames.put(section, sectionName);
   }
 
   static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {

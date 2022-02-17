@@ -23,17 +23,22 @@ public class GradesFromCanvas {
         return true;
 
       } else if (studentIdIsSameAsLoginId(canvasStudent, student)) {
-        student.setCanvasId(canvasStudent.getCanvasId());
+        noteStudent(canvasStudent, student, book);
         return true;
 
       } else if (haveSameFirstAndLastNameIgnoringCase(canvasStudent, student)) {
-        student.setCanvasId(canvasStudent.getCanvasId());
+        noteStudent(canvasStudent, student, book);
         return true;
 
       } else {
         return false;
       }
     }).findAny();
+  }
+
+  private void noteStudent(CanvasStudent canvasStudent, Student student, GradeBook book) {
+    student.setCanvasId(canvasStudent.getCanvasId());
+    book.setSectionName(student.getEnrolledSection(), canvasStudent.getSection());
   }
 
   private boolean studentIdIsSameAsLoginId(CanvasStudent d2lStudent, Student student) {
@@ -81,13 +86,15 @@ public class GradesFromCanvas {
     private final String lastName;
     private final String loginId;
     private final String canvasId;
+    private final String section;
     private final Map<String, Double> scores = new HashMap<>();
 
-    public CanvasStudent(String firstName, String lastName, String loginId, String canvasId) {
+    public CanvasStudent(String firstName, String lastName, String loginId, String canvasId, String section) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.loginId = loginId;
       this.canvasId = canvasId;
+      this.section = section;
     }
 
     public String getLoginId() {
@@ -118,6 +125,10 @@ public class GradesFromCanvas {
       return this.scores.keySet();
     }
 
+    public String getSection() {
+      return section;
+    }
+
     @Override
     public String toString() {
       return "Canvas student \"" + getFirstName() + " " + getLastName() + "\" with id " + getLoginId();
@@ -129,6 +140,7 @@ public class GradesFromCanvas {
     private String lastName;
     private String loginId;
     private String canvasId;
+    private String section;
 
     private CanvasStudentBuilder() {
 
@@ -154,6 +166,11 @@ public class GradesFromCanvas {
       return this;
     }
 
+    public CanvasStudentBuilder setSection(String section) {
+      this.section = section;
+      return this;
+    }
+
     public CanvasStudent create() {
       if (firstName == null) {
         throw new IllegalStateException("Missing first name");
@@ -171,7 +188,11 @@ public class GradesFromCanvas {
         throw new IllegalStateException("Missing canvas Id");
       }
 
-      return new CanvasStudent(firstName, lastName, loginId, canvasId);
+      if (section == null) {
+        throw new IllegalStateException("Missing section");
+      }
+
+      return new CanvasStudent(firstName, lastName, loginId, canvasId, section);
     }
   }
 }
