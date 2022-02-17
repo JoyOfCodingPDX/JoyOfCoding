@@ -3,6 +3,7 @@ package edu.pdx.cs410J.grader;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.grader.canvas.GradesFromCanvasImporter;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
 import org.slf4j.LoggerFactory;
 
@@ -51,8 +52,8 @@ public class GraderTools {
       case "fetch":
         return FetchAndProcessGraderEmail.class;
 
-      case "importFromD2L" :
-        return GradesFromD2LImporter.class;
+      case "importFromCanvas" :
+        return GradesFromCanvasImporter.class;
 
       case "importFromProjectReports" :
         return ProjectGradesImporter.class;
@@ -96,7 +97,7 @@ public class GraderTools {
     err.println("    gradebook                 The Grade Book GUI");
     err.println("    fetch                     Fetch student surveys or projects from the Grader's");
     err.println("                              emails account");
-    err.println("    importFromD2L             Import grades from a D2L CSV");
+    err.println("    importFromCanvas          Import grades from a Canvas CSV");
     err.println("    importFromProjectReports  Import grades from graded project reports");
     err.println("    mailFileToStudent         Email text files to students");
     err.println("    gradePOAs                 Tool for downloading and grading POAs");

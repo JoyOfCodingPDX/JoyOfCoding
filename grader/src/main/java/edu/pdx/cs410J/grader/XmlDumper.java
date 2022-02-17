@@ -103,9 +103,25 @@ public class XmlDumper extends XmlHelper {
     appendXmlForClassName(book, root);
     appendXmlForAssignments(book, doc, root);
     appendXmlForLetterGradeRanges(book, doc, root);
+    appendXmlForSectionNames(book, doc, root);
     appendXmlForStudents(book, doc, root);
 
     return doc;
+  }
+
+  private static void appendXmlForSectionNames(GradeBook book, Document doc, Element root) {
+    for (Student.Section section : book.getSections()) {
+      String sectionName = book.getSectionName(section);
+      if (sectionName != null) {
+        root.appendChild(appendXmlForSectionName(root, section, sectionName));
+      }
+    }
+  }
+
+  private static Element appendXmlForSectionName(Element parent, Student.Section section, String sectionName) {
+    Element sectionNameNode = appendTextElementIfValueIsNotNull(parent, "section-name", sectionName);
+    sectionNameNode.setAttribute("for-section", getSectionXmlAttributeValue(section));
+    return sectionNameNode;
   }
 
   private static void appendXmlForLetterGradeRanges(GradeBook book, Document doc, Element root) {
@@ -398,7 +414,7 @@ public class XmlDumper extends XmlHelper {
     appendTextElementIfValueIsNotNull(root, "nickName", student.getNickName());
     appendTextElementIfValueIsNotNull(root, "email", student.getEmail());
     appendTextElementIfValueIsNotNull(root, "major", student.getMajor());
-    appendTextElementIfValueIsNotNull(root, "d2l-id", student.getD2LId());
+    appendTextElementIfValueIsNotNull(root, "canvas-id", student.getCanvasId());
     appendTextElementIfValueIsNotNull(root, "letter-grade", Objects.toString(student.getLetterGrade(), null));
 
     setAttributeIfValueIsNotNull(root, "enrolled-section", getSectionXmlAttributeValue(student.getEnrolledSection()));
@@ -433,12 +449,16 @@ public class XmlDumper extends XmlHelper {
     return doc;
   }
 
-  private static void appendTextElementIfValueIsNotNull(Element parent, String elementName, Object textValue) {
+  private static Element appendTextElementIfValueIsNotNull(Element parent, String elementName, Object textValue) {
     if (textValue != null) {
       Document doc = parent.getOwnerDocument();
       Element id = doc.createElement(elementName);
       id.appendChild(doc.createTextNode(String.valueOf(textValue)));
       parent.appendChild(id);
+      return id;
+
+    } else {
+      return null;
     }
   }
 

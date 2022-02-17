@@ -120,6 +120,17 @@ public class StudentXmlTest {
   }
 
   @Test
+  public void canvasIdIsPersistedInXml() throws TransformerException, ParserException {
+    String canvasId = "canvasId";
+    Student student = new Student("studentId");
+    student.setCanvasId(canvasId);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getCanvasId(), equalTo(canvasId));
+  }
+
+  @Test
   void canParseXmlFileWithSsn() throws ParserException {
     Reader reader = readTextResource("studentWithSsn.xml");
     XmlStudentParser parser = new XmlStudentParser(reader);
@@ -146,4 +157,14 @@ public class StudentXmlTest {
     List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
     assertThat(submissions, hasSize(3));
   }
+
+  @Test
+  void canParseOldXmlFileWithD2LId() throws ParserException {
+    XmlStudentParser parser = new XmlStudentParser(readTextResource("studentWithD2LId.xml"));
+    Student student = parser.parseStudent();
+    assertThat(student, notNullValue());
+    assertThat(student.getId(), equalTo("studentId"));
+    assertThat(student.getCanvasId(), nullValue());
+  }
+
 }
