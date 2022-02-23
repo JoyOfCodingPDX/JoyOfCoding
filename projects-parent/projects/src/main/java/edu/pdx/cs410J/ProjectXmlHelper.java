@@ -36,7 +36,7 @@ public abstract class ProjectXmlHelper implements ErrorHandler, EntityResolver {
   public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
     if (this.publicId.equals(publicId) || this.systemId.equals(systemId)) {
       // We're resolving the external entity for the DTD
-      // Check to see if its in the jar file.  This way we don't
+      // Check to see if it's in the jar file.  This way we don't
       // need to go all the way to the website to find the DTD.
       InputStream stream =
         ProjectXmlHelper.class.getResourceAsStream(this.dtdFileName);

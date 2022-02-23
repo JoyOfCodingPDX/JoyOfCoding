@@ -9,7 +9,7 @@
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>apptbook</artifactId>
   <packaging>jar</packaging>
-  <version>2022.0.0</version>
+  <version>2022.1.0</version>
   <name>CS410J Appointment Book Project</name>
   <description>An Appointment Book application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
@@ -34,6 +34,11 @@
       <artifactId>junit-jupiter</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
