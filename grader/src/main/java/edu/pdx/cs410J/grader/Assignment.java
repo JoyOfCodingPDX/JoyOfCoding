@@ -75,9 +75,10 @@ public class Assignment extends NotableImpl {
   /**
    * Sets the description of this <code>Assignment</code>
    */
-  public void setDescription(String description) {
+  public Assignment setDescription(String description) {
     this.setDirty(true);
     this.description = description;
+    return this;
   }
 
   /**
