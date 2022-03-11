@@ -8,7 +8,7 @@ import com.google.common.annotations.VisibleForTesting;
 public class Project1 {
 
   @VisibleForTesting
-  static boolean isValidPhoneNumber(String phoneNumber) {
+  static boolean isValidDateAndTime(String dateAndTime) {
     return true;
   }
 
