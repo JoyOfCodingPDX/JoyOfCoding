@@ -5,6 +5,7 @@ import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GradesFromCanvas {
   private final List<CanvasStudent> students = new ArrayList<>();
@@ -68,17 +69,29 @@ public class GradesFromCanvas {
   }
 
   private Optional<Assignment> findAssignmentInGradebookLike(String canvasQuizName, GradeBook gradebook) {
+    List<Assignment> assignments = new ArrayList<>();
     for (String assignmentName : gradebook.getAssignmentNames()) {
       Assignment assignment = gradebook.getAssignment(assignmentName);
       if (canvasQuizName.startsWith(assignmentName)) {
-        return Optional.ofNullable(assignment);
+        assignments.add(assignment);
       }
 
       if (canvasQuizName.contains(assignment.getDescription())) {
-        return Optional.of(assignment);
+        assignments.add(assignment);
       }
     }
-    return Optional.empty();
+
+    if (assignments.isEmpty()) {
+      return Optional.empty();
+
+    } else if (assignments.size() == 1) {
+      return Optional.of(assignments.get(0));
+
+    } else {
+      String message = "Multiple assignments match \"" + canvasQuizName + "\": " +
+        assignments.stream().map(Assignment::getName).collect(Collectors.joining(", "));
+      throw new IllegalStateException(message);
+    }
   }
 
   static class CanvasStudent {
@@ -113,7 +126,7 @@ public class GradesFromCanvas {
       return this.canvasId;
     }
 
-    public void setScore(String quizName, double score) {
+    public void setScore(String quizName, Double score) {
       this.scores.put(quizName, score);
     }
 

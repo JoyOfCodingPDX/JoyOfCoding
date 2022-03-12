@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GradesFromCanvasTest extends CanvasTestCase {
 
@@ -238,5 +239,27 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assertThat(student.getCanvasId(), equalTo("canvasId"));
     assertThat(book.getSectionName(Student.Section.UNDERGRADUATE), equalTo(section));
   }
+
+  @Test
+  void ambigousCanvasAssignmentNameThrowsIllegalStateException() {
+    GradeBook gradebook = new GradeBook("test");
+    String quizName = "restquiz";
+    Assignment quiz = new Assignment(quizName, 3.0).setType(Assignment.AssignmentType.QUIZ).setDescription("Web and REST");
+    gradebook.addAssignment(quiz);
+
+    String projectName = "Project5";
+    Assignment project = new Assignment(projectName, 10.0).setType(Assignment.AssignmentType.PROJECT).setDescription("REST");
+    gradebook.addAssignment(project);
+
+    String assignmentInCanvas = "Quiz 5: Web and REST";
+
+    GradesFromCanvas canvas = new GradesFromCanvas();
+    IllegalStateException ex =
+      assertThrows(IllegalStateException.class, () -> canvas.findAssignmentInGradebookForCanvasQuiz(assignmentInCanvas, gradebook));
+    String message = ex.getMessage();
+    assertThat(message, containsString(quizName));
+    assertThat(message, containsString(projectName));
+  }
+
 
 }
