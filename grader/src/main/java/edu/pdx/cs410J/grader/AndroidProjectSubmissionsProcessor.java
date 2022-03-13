@@ -14,6 +14,6 @@ public class AndroidProjectSubmissionsProcessor extends ZipFileSubmissionsProces
 
   @Override
   protected String getAssignmentName() {
-    return "Project5";
+    return "Project6";
   }
 }
