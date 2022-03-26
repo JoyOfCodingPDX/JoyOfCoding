@@ -78,6 +78,6 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
   }
 
   private String getAssignmentHeaderCell(Assignment assignment) {
-    return assignment.getName() + " (1234)";
+    return assignment.getName() + " (" + assignment.getCanvasId() + ")" ;
   }
 }

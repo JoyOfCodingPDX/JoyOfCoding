@@ -57,7 +57,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Student student = new Student(studentId);
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(canvasStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(canvasStudent, book).orElse(null), equalTo(student));
     assertThat(student.isDirty(), is(true));
     assertThat(student.getCanvasId(), equalTo(canvasId));
   }
@@ -82,7 +82,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assertThat(student.getCanvasId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
     assertThat(student.getCanvasId(), equalTo(canvasId));
     assertThat(student.isDirty(), is(true));
   }
@@ -107,7 +107,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assertThat(student.getCanvasId(), is(nullValue()));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
     assertThat(student.getCanvasId(), equalTo(canvasId));
     assertThat(student.isDirty(), is(true));
   }
@@ -133,7 +133,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assertThat(student.getCanvasId(), equalTo(canvasId));
     assertThat(student.isDirty(), is(false));
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
     assertThat(student.getCanvasId(), equalTo(canvasId));
     assertThat(student.isDirty(), is(false));
   }
@@ -161,7 +161,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).get(), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
   }
 
   @Test
@@ -177,7 +177,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
 
   }
 
@@ -195,7 +195,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assignment.setDescription(quizName);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElseGet(() -> null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
 
   }
 
@@ -214,7 +214,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assignment.setDescription(quizDescription);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(canvasQuizName, book).orElseGet(() -> null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(canvasQuizName, book).orElse(null), equalTo(assignment));
 
   }
 
@@ -235,13 +235,13 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     student.setEnrolledSection(Student.Section.UNDERGRADUATE);
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).get(), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
     assertThat(student.getCanvasId(), equalTo("canvasId"));
     assertThat(book.getSectionName(Student.Section.UNDERGRADUATE), equalTo(section));
   }
 
   @Test
-  void ambigousCanvasAssignmentNameThrowsIllegalStateException() {
+  void ambiguousCanvasAssignmentNameThrowsIllegalStateException() {
     GradeBook gradebook = new GradeBook("test");
     String quizName = "restquiz";
     Assignment quiz = new Assignment(quizName, 3.0).setType(Assignment.AssignmentType.QUIZ).setDescription("Web and REST");

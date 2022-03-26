@@ -69,11 +69,12 @@ public class CanvasGradesCSVGeneratorTest {
   }
 
   @Test
-  void canvasCSVHasAssignmentName() throws IOException {
+  void canvasCSVHasAssignment() throws IOException {
     GradeBook book = new GradeBook("Test");
     String assignmentName = "Test Assignment";
     double points = 3.0;
-    book.addAssignment(new Assignment(assignmentName, points));
+    int canvasId = 12345;
+    book.addAssignment(new Assignment(assignmentName, points).setCanvasId(canvasId));
 
     CanvasGradesCSVParser parser = convertToCSVAndBack(book);
     List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
@@ -83,6 +84,7 @@ public class CanvasGradesCSVGeneratorTest {
     CanvasGradesCSVParser.Assignment canvasAssignment = assignments.get(0);
     assertThat(canvasAssignment.getName(), equalTo(assignmentName));
     assertThat(canvasAssignment.getPointsPossible(), equalTo(points));
+    assertThat(canvasAssignment.getId(), equalTo(canvasId));
   }
 
   private CanvasGradesCSVParser convertToCSVAndBack(GradeBook book) throws IOException {
