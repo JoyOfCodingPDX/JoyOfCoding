@@ -59,7 +59,8 @@ public class GradesFromCanvas {
     return this.students;
   }
 
-  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String canvasQuizName, GradeBook gradebook) {
+  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(CanvasAssignment canvasAssignment, GradeBook gradebook) {
+    String canvasQuizName = canvasAssignment.getName();
     Optional<Assignment> maybeAssignment;
 
     Assignment assignment = gradebook.getAssignment(canvasQuizName);
@@ -84,9 +85,8 @@ public class GradesFromCanvas {
       Assignment assignment = gradebook.getAssignment(assignmentName);
       if (canvasQuizName.startsWith(assignmentName)) {
         assignments.add(assignment);
-      }
 
-      if (canvasQuizName.contains(assignment.getDescription())) {
+      } else if (canvasQuizName.contains(assignment.getDescription())) {
         assignments.add(assignment);
       }
     }

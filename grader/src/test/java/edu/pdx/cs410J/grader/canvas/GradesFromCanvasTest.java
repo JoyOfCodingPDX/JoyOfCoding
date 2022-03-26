@@ -165,7 +165,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
   }
 
   @Test
@@ -182,8 +182,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
-
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
   }
 
   @Test
@@ -201,7 +200,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assignment.setDescription(quizName);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
 
   }
 
@@ -221,7 +220,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     assignment.setDescription(quizDescription);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(canvasQuizName, book).orElse(null), equalTo(assignment));
+    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
 
   }
 
@@ -280,10 +279,11 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     gradebook.addAssignment(project);
 
     String assignmentInCanvas = "Quiz 5: Web and REST";
+    CanvasAssignment canvasAssignment = new CanvasAssignment(assignmentInCanvas, 12345);
 
     GradesFromCanvas canvas = new GradesFromCanvas();
     IllegalStateException ex =
-      assertThrows(IllegalStateException.class, () -> canvas.findAssignmentInGradebookForCanvasQuiz(assignmentInCanvas, gradebook));
+      assertThrows(IllegalStateException.class, () -> canvas.findAssignmentInGradebookForCanvasQuiz(canvasAssignment, gradebook));
     String message = ex.getMessage();
     assertThat(message, containsString(quizName));
     assertThat(message, containsString(projectName));

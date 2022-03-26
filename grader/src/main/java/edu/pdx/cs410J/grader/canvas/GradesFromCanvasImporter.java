@@ -28,7 +28,7 @@ public class GradesFromCanvasImporter {
 
       } else {
         for (GradesFromCanvas.CanvasAssignment canvasAssignment : canvasStudent.getAssignments()) {
-          Optional<Assignment> optional = canvasGrades.findAssignmentInGradebookForCanvasQuiz(canvasAssignment.getName(), gradebook);
+          Optional<Assignment> optional = canvasGrades.findAssignmentInGradebookForCanvasQuiz(canvasAssignment, gradebook);
           Assignment assignment = optional.orElseThrow(() -> new IllegalStateException("No assignment named \"" + canvasAssignment.getName() + "\" in gradebook"));
 
           Double score = canvasStudent.getScore(canvasAssignment);
