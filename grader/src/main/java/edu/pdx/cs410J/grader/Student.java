@@ -489,9 +489,10 @@ public class Student extends NotableImpl {
     return this.getGrade(project.getName());
   }
 
-  public void setCanvasId(String canvasId) {
+  public Student setCanvasId(String canvasId) {
     this.setDirty(true);
     this.canvasId = canvasId;
+    return this;
   }
 
   public String getCanvasId() {
@@ -521,8 +522,9 @@ public class Student extends NotableImpl {
 
   }
 
-  public void setEnrolledSection(Section enrolledSection) {
+  public Student setEnrolledSection(Section enrolledSection) {
     this.enrolledSection = enrolledSection;
+    return this;
   }
 
   public Section getEnrolledSection() {
