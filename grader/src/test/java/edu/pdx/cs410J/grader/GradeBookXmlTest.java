@@ -120,4 +120,20 @@ public class GradeBookXmlTest {
     assertThat(book2.getSectionName(Student.Section.GRADUATE), equalTo(graduate));
   }
 
+  @Test
+  void assignmentCanvasIdsArePersistedToXml() throws ParserException, IOException, TransformerException {
+    String name = "Assignment";
+    double points = 1.34;
+    int canvasId = 12345;
+
+    GradeBook book = new GradeBook("test");
+    book.addAssignment(new Assignment(name, points).setCanvasId(canvasId));
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+    Assignment assignment = book2.getAssignment(name);
+
+    assertThat(assignment.getName(), equalTo(name));
+    assertThat(assignment.getPoints(), equalTo(points));
+    assertThat(assignment.getCanvasId(), equalTo(canvasId));
+  }
 }
