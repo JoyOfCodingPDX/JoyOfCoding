@@ -78,12 +78,12 @@ public class CanvasGradesCSVParserTest {
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
 
     GradesFromCanvas.CanvasAssignment quiz1 = getAssignment(assignments, "Quiz 1: Programming Background");
-    assertThat(students.get(0).getScore(quiz1.getName()), equalTo(3.00));
-    assertThat(students.get(1).getScore(quiz1.getName()), equalTo(2.85));
+    assertThat(students.get(0).getScore(quiz1), equalTo(3.00));
+    assertThat(students.get(1).getScore(quiz1), equalTo(2.85));
 
     GradesFromCanvas.CanvasAssignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
-    assertThat(students.get(0).getScore(quiz2.getName()), nullValue());
-    assertThat(students.get(1).getScore(quiz2.getName()), equalTo(3.00));
+    assertThat(students.get(0).getScore(quiz2), nullValue());
+    assertThat(students.get(1).getScore(quiz2), equalTo(3.00));
   }
 
   private GradesFromCanvas.CanvasAssignment getAssignment(List<GradesFromCanvas.CanvasAssignment> assignments, String assignmentName) {

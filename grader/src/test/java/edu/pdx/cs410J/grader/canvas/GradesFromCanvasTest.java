@@ -3,6 +3,8 @@ package edu.pdx.cs410J.grader.canvas;
 import edu.pdx.cs410J.grader.Assignment;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasAssignment;
+import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasStudent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -16,7 +18,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
   @Test
   public void noStudentInGradebookThatMatchesD2LStudent() {
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent();
+    CanvasStudent d2lStudent = createCanvasStudent();
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -31,7 +33,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
   public void matchStudentByCanvasId() {
     GradesFromCanvas grades = new GradesFromCanvas();
     String canvasId = "d2lId";
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent("firstName", "lastName", "logId", canvasId);
+    CanvasStudent d2lStudent = createCanvasStudent("firstName", "lastName", "logId", canvasId);
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -50,7 +52,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String canvasId = "canvasId";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudent("First Name", "Last Name", studentId, canvasId);
+    CanvasStudent canvasStudent = createCanvasStudent("First Name", "Last Name", studentId, canvasId);
     grades.addStudent(canvasStudent);
 
     GradeBook book = new GradeBook("test");
@@ -69,7 +71,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String canvasId = "canvasId";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
+    CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -94,7 +96,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String canvasId = "canvasId";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
+    CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -119,7 +121,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String lastName = "lastName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
+    CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", canvasId);
     grades.addStudent(d2lStudent);
 
     GradeBook book = new GradeBook("test");
@@ -140,12 +142,13 @@ public class GradesFromCanvasTest extends CanvasTestCase {
 
   @Test
   public void gradeIsSet() {
-    GradesFromCanvas.CanvasStudent student = createCanvasStudent();
+    CanvasStudent student = createCanvasStudent();
     String quizName = "quizName";
+    CanvasAssignment quiz = new CanvasAssignment(quizName, 1234);
     double score = 3.4;
-    student.setScore(quizName, score);
+    student.setScore(quiz, score);
 
-    assertThat(student.getScore(quizName), equalTo(score));
+    assertThat(student.getScore(quiz), equalTo(score));
   }
 
   @Test
@@ -153,9 +156,10 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizName = "quizName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
+    CanvasAssignment quiz = new CanvasAssignment(quizName, 1234);
+    CanvasStudent d2lStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
     grades.addStudent(d2lStudent);
-    d2lStudent.setScore(quizName, 3.6);
+    d2lStudent.setScore(quiz, 3.6);
 
     GradeBook book = new GradeBook("test");
     Assignment assignment = new Assignment(quizName, 4.0);
@@ -169,9 +173,10 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizName = "quizName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent();
+    CanvasAssignment quiz = new CanvasAssignment(quizName + " Quiz", 1234);
+    CanvasStudent d2lStudent = createCanvasStudent();
     grades.addStudent(d2lStudent);
-    d2lStudent.setScore(quizName + " Quiz", 3.6);
+    d2lStudent.setScore(quiz, 3.6);
 
     GradeBook book = new GradeBook("test");
     Assignment assignment = new Assignment(quizName, 4.0);
@@ -186,9 +191,10 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizName = "quizName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent();
+    CanvasStudent d2lStudent = createCanvasStudent();
+    CanvasAssignment quiz = new CanvasAssignment(quizName + " Quiz", 1234);
     grades.addStudent(d2lStudent);
-    d2lStudent.setScore(quizName + " Quiz", 3.6);
+    d2lStudent.setScore(quiz, 3.6);
 
     GradeBook book = new GradeBook("test");
     Assignment assignment = new Assignment("quiz0", 4.0);
@@ -204,10 +210,11 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizDescription = "Quiz Description";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent();
+    CanvasStudent d2lStudent = createCanvasStudent();
     grades.addStudent(d2lStudent);
     String canvasQuizName = "Quiz 1: " + quizDescription + " (12345)";
-    d2lStudent.setScore(canvasQuizName, 3.6);
+    CanvasAssignment quiz = new CanvasAssignment(canvasQuizName, 12345);
+    d2lStudent.setScore(quiz, 3.6);
 
     GradeBook book = new GradeBook("test");
     Assignment assignment = new Assignment("quiz1", 4.0);
@@ -225,7 +232,7 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String section = "Section";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName, "loginId", "canvasId", section);
+    CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName, "loginId", "canvasId", section);
     grades.addStudent(canvasStudent);
 
     GradeBook book = new GradeBook("test");
@@ -243,18 +250,22 @@ public class GradesFromCanvasTest extends CanvasTestCase {
 //  @Test
 //  void assignmentCanvasIdIsSetFromCanvasGrades() {
 //    String quizName = "quizName";
+//    int quizId = 4567;
 //
 //    GradesFromCanvas grades = new GradesFromCanvas();
-//    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
-//    grades.addStudent(d2lStudent);
-//    d2lStudent.setScore(quizName, 3.6);
+//    CanvasStudent canvasStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
+//    grades.addStudent(canvasStudent);
+//    canvasStudent.setScore(quizName, 3.6);
+//
+//    CanvasAssignment canvasAssignment = new CanvasAssignment(quizName, quizId);
+//    grades.addAssignment(canvasAssignment);
 //
 //    GradeBook book = new GradeBook("test");
 //    Assignment assignment = new Assignment(quizName, 4.0);
 //    book.addAssignment(assignment);
 //
 //    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
-//
+//    assertThat(book.getAssignment(quizName).getCanvasId(), equalTo(quizId));
 //  }
 
   @Test

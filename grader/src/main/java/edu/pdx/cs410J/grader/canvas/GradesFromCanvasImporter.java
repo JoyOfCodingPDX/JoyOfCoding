@@ -5,7 +5,10 @@ import edu.pdx.cs410J.grader.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +27,11 @@ public class GradesFromCanvasImporter {
         System.err.println(message);
 
       } else {
-        for (String assignmentName : canvasStudent.getAssignmentNames()) {
-          Optional<Assignment> optional = canvasGrades.findAssignmentInGradebookForCanvasQuiz(assignmentName, gradebook);
-          Assignment assignment = optional.orElseThrow(() -> new IllegalStateException("No assignment named \"" + assignmentName + "\" in gradebook"));
+        for (GradesFromCanvas.CanvasAssignment canvasAssignment : canvasStudent.getAssignments()) {
+          Optional<Assignment> optional = canvasGrades.findAssignmentInGradebookForCanvasQuiz(canvasAssignment.getName(), gradebook);
+          Assignment assignment = optional.orElseThrow(() -> new IllegalStateException("No assignment named \"" + canvasAssignment.getName() + "\" in gradebook"));
 
-          Double score = canvasStudent.getScore(assignmentName);
+          Double score = canvasStudent.getScore(canvasAssignment);
           logger.debug("Recording grade of " + score + " for " + student.get() + " for " + assignment.getName());
           student.get().setGrade(assignment.getName(), new Grade(assignment, score));
         }

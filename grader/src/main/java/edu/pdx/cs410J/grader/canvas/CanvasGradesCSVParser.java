@@ -85,7 +85,7 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
     this.columnToAssignment.forEach((column, assignment) -> {
       String score = studentLine[column];
       if (!isEmptyString(score)) {
-        student.setScore(assignment.getName(), parseScore(score));
+        student.setScore(assignment, parseScore(score));
       }
     });
 

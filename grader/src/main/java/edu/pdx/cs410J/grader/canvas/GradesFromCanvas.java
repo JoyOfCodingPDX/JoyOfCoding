@@ -60,12 +60,22 @@ public class GradesFromCanvas {
   }
 
   public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String canvasQuizName, GradeBook gradebook) {
+    Optional<Assignment> maybeAssignment;
+
     Assignment assignment = gradebook.getAssignment(canvasQuizName);
     if (assignment != null) {
-      return Optional.of(assignment);
+      maybeAssignment = Optional.of(assignment);
+
+    } else {
+      maybeAssignment = findAssignmentInGradebookLike(canvasQuizName, gradebook);
     }
 
-    return findAssignmentInGradebookLike(canvasQuizName, gradebook);
+    if (maybeAssignment.isPresent()) {
+      assignment = maybeAssignment.get();
+
+    }
+
+    return maybeAssignment;
   }
 
   private Optional<Assignment> findAssignmentInGradebookLike(String canvasQuizName, GradeBook gradebook) {
@@ -100,7 +110,7 @@ public class GradesFromCanvas {
     private final String loginId;
     private final String canvasId;
     private final String section;
-    private final Map<String, Double> scores = new HashMap<>();
+    private final Map<CanvasAssignment, Double> scores = new HashMap<>();
 
     public CanvasStudent(String firstName, String lastName, String loginId, String canvasId, String section) {
       this.firstName = firstName;
@@ -126,15 +136,15 @@ public class GradesFromCanvas {
       return this.canvasId;
     }
 
-    public void setScore(String quizName, Double score) {
-      this.scores.put(quizName, score);
+    public void setScore(CanvasAssignment assignment, Double score) {
+      this.scores.put(assignment, score);
     }
 
-    public Double getScore(String quizName) {
-      return this.scores.get(quizName);
+    public Double getScore(CanvasAssignment assignment) {
+      return this.scores.get(assignment);
     }
 
-    public Iterable<String> getAssignmentNames() {
+    public Iterable<CanvasAssignment> getAssignments() {
       return this.scores.keySet();
     }
 
