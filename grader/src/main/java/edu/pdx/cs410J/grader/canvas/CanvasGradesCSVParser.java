@@ -49,7 +49,7 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   private int studentIdColumn;
   private int canvasIdColumn;
   private int sectionIdColumn;
-  private final SortedMap<Integer, Assignment> columnToAssignment = new TreeMap<>();
+  private final SortedMap<Integer, GradesFromCanvas.CanvasAssignment> columnToAssignment = new TreeMap<>();
   private final GradesFromCanvas grades;
 
   public CanvasGradesCSVParser(Reader reader) throws IOException {
@@ -157,12 +157,12 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   }
 
   @VisibleForTesting
-  static Assignment createAssignment(String assignmentText) {
+  static GradesFromCanvas.CanvasAssignment createAssignment(String assignmentText) {
     Matcher matcher = assignmentNamePattern.matcher(assignmentText);
     if (matcher.matches()) {
       String name = matcher.group(1);
       String idText = matcher.group(2);
-      return new Assignment(name, Integer.parseInt(idText));
+      return new GradesFromCanvas.CanvasAssignment(name, Integer.parseInt(idText));
 
     } else {
       throw new IllegalStateException("Can't create Assignment from \"" + assignmentText + "\"");
@@ -183,39 +183,12 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
     return false;
   }
 
-  public List<Assignment> getAssignments() {
+  public List<GradesFromCanvas.CanvasAssignment> getAssignments() {
     return new ArrayList<>(this.columnToAssignment.values());
   }
 
   public GradesFromCanvas getGrades() {
     return this.grades;
-  }
-
-  public static class Assignment {
-    private final String name;
-    private final int id;
-    private double pointsPossible;
-
-    public Assignment(String name, int id) {
-      this.name = name;
-      this.id = id;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public int getId() {
-      return id;
-    }
-
-    public double getPointsPossible() {
-      return pointsPossible;
-    }
-
-    void setPossiblePoints(double possiblePoints) {
-      this.pointsPossible = possiblePoints;
-    }
   }
 
 }

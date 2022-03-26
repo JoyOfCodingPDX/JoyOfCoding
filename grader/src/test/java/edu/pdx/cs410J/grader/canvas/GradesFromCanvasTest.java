@@ -225,8 +225,8 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String section = "Section";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent(firstName, lastName, "loginId", "canvasId", section);
-    grades.addStudent(d2lStudent);
+    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName, "loginId", "canvasId", section);
+    grades.addStudent(canvasStudent);
 
     GradeBook book = new GradeBook("test");
     Student student = new Student("studentId");
@@ -235,10 +235,27 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     student.setEnrolledSection(Student.Section.UNDERGRADUATE);
     book.addStudent(student);
 
-    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
+    assertThat(grades.findStudentInGradebookForCanvasStudent(canvasStudent, book).orElse(null), equalTo(student));
     assertThat(student.getCanvasId(), equalTo("canvasId"));
     assertThat(book.getSectionName(Student.Section.UNDERGRADUATE), equalTo(section));
   }
+
+//  @Test
+//  void assignmentCanvasIdIsSetFromCanvasGrades() {
+//    String quizName = "quizName";
+//
+//    GradesFromCanvas grades = new GradesFromCanvas();
+//    GradesFromCanvas.CanvasStudent d2lStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
+//    grades.addStudent(d2lStudent);
+//    d2lStudent.setScore(quizName, 3.6);
+//
+//    GradeBook book = new GradeBook("test");
+//    Assignment assignment = new Assignment(quizName, 4.0);
+//    book.addAssignment(assignment);
+//
+//    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quizName, book).orElse(null), equalTo(assignment));
+//
+//  }
 
   @Test
   void ambiguousCanvasAssignmentNameThrowsIllegalStateException() {

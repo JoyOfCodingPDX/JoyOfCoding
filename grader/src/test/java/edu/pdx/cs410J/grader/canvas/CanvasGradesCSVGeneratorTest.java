@@ -77,11 +77,11 @@ public class CanvasGradesCSVGeneratorTest {
     book.addAssignment(new Assignment(assignmentName, points).setCanvasId(canvasId));
 
     CanvasGradesCSVParser parser = convertToCSVAndBack(book);
-    List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
+    List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
 
     assertThat(assignments, hasSize(1));
 
-    CanvasGradesCSVParser.Assignment canvasAssignment = assignments.get(0);
+    GradesFromCanvas.CanvasAssignment canvasAssignment = assignments.get(0);
     assertThat(canvasAssignment.getName(), equalTo(assignmentName));
     assertThat(canvasAssignment.getPointsPossible(), equalTo(points));
     assertThat(canvasAssignment.getId(), equalTo(canvasId));

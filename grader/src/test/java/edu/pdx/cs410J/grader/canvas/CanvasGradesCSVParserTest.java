@@ -16,7 +16,7 @@ public class CanvasGradesCSVParserTest {
   @Test
   void canCreateAssignmentFromText() {
     String assignmentText = "Name (123)";
-    CanvasGradesCSVParser.Assignment assignment = CanvasGradesCSVParser.createAssignment(assignmentText);
+    GradesFromCanvas.CanvasAssignment assignment = CanvasGradesCSVParser.createAssignment(assignmentText);
     assertThat(assignment.getName(), equalTo("Name"));
     assertThat(assignment.getId(), equalTo(123));
   }
@@ -24,7 +24,7 @@ public class CanvasGradesCSVParserTest {
   @Test
   void canCreateAssignmentFromMultiWordText() {
     String assignmentText = "Two Names (123)";
-    CanvasGradesCSVParser.Assignment assignment = CanvasGradesCSVParser.createAssignment(assignmentText);
+    GradesFromCanvas.CanvasAssignment assignment = CanvasGradesCSVParser.createAssignment(assignmentText);
     assertThat(assignment.getName(), equalTo("Two Names"));
     assertThat(assignment.getId(), equalTo(123));
   }
@@ -32,7 +32,7 @@ public class CanvasGradesCSVParserTest {
   @Test
   void canReadAssignmentsFromCSV() throws IOException {
     CanvasGradesCSVParser parser = createParserFromResource();
-    List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
+    List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
     assertThat(assignments.get(0).getName(), equalTo("End of Term Survey"));
     assertThat(assignments.get(0).getId(), equalTo(95625));
     assertThat(assignments.get(0).getPointsPossible(), equalTo(3.00));
@@ -74,20 +74,20 @@ public class CanvasGradesCSVParserTest {
   @Test
   void canReadGradesFromCSV() throws IOException {
     CanvasGradesCSVParser parser = createParserFromResource();
-    List<CanvasGradesCSVParser.Assignment> assignments = parser.getAssignments();
+    List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
 
-    CanvasGradesCSVParser.Assignment quiz1 = getAssignment(assignments, "Quiz 1: Programming Background");
+    GradesFromCanvas.CanvasAssignment quiz1 = getAssignment(assignments, "Quiz 1: Programming Background");
     assertThat(students.get(0).getScore(quiz1.getName()), equalTo(3.00));
     assertThat(students.get(1).getScore(quiz1.getName()), equalTo(2.85));
 
-    CanvasGradesCSVParser.Assignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
+    GradesFromCanvas.CanvasAssignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
     assertThat(students.get(0).getScore(quiz2.getName()), nullValue());
     assertThat(students.get(1).getScore(quiz2.getName()), equalTo(3.00));
   }
 
-  private CanvasGradesCSVParser.Assignment getAssignment(List<CanvasGradesCSVParser.Assignment> assignments, String assignmentName) {
-    Optional<CanvasGradesCSVParser.Assignment> optional = assignments.stream().filter(assignment -> assignment.getName().equals(assignmentName)).findFirst();
+  private GradesFromCanvas.CanvasAssignment getAssignment(List<GradesFromCanvas.CanvasAssignment> assignments, String assignmentName) {
+    Optional<GradesFromCanvas.CanvasAssignment> optional = assignments.stream().filter(assignment -> assignment.getName().equals(assignmentName)).findFirst();
     return optional.orElseThrow(() -> new IllegalStateException("Can't find assignment \"" + assignmentName + "\""));
   }
 }
