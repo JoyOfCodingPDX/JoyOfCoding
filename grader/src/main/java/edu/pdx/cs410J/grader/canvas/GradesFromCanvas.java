@@ -65,22 +65,23 @@ public class GradesFromCanvas {
 
     Assignment assignment = gradebook.getAssignment(canvasQuizName);
     if (assignment != null) {
-      maybeAssignment = Optional.of(assignment);
+      maybeAssignment = noteMatchedAssignment(assignment, canvasAssignment);
 
     } else {
-      maybeAssignment = findAssignmentInGradebookLike(canvasQuizName, gradebook);
-    }
-
-    if (maybeAssignment.isPresent()) {
-      assignment = maybeAssignment.get();
-
+      maybeAssignment = findAssignmentInGradebookLike(canvasAssignment, gradebook);
     }
 
     return maybeAssignment;
   }
 
-  private Optional<Assignment> findAssignmentInGradebookLike(String canvasQuizName, GradeBook gradebook) {
+  private Optional<Assignment> noteMatchedAssignment(Assignment assignment, CanvasAssignment canvasAssignment) {
+    assignment.setCanvasId(canvasAssignment.getId());
+    return Optional.of(assignment);
+  }
+
+  private Optional<Assignment> findAssignmentInGradebookLike(CanvasAssignment canvasAssignment, GradeBook gradebook) {
     List<Assignment> assignments = new ArrayList<>();
+    String canvasQuizName = canvasAssignment.getName();
     for (String assignmentName : gradebook.getAssignmentNames()) {
       Assignment assignment = gradebook.getAssignment(assignmentName);
       if (canvasQuizName.startsWith(assignmentName)) {
@@ -95,7 +96,7 @@ public class GradesFromCanvas {
       return Optional.empty();
 
     } else if (assignments.size() == 1) {
-      return Optional.of(assignments.get(0));
+      return noteMatchedAssignment(assignments.get(0), canvasAssignment);
 
     } else {
       String message = "Multiple assignments match \"" + canvasQuizName + "\": " +

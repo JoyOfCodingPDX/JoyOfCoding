@@ -156,7 +156,8 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizName = "quizName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    CanvasAssignment quiz = new CanvasAssignment(quizName, 1234);
+    int canvasId = 1234;
+    CanvasAssignment quiz = new CanvasAssignment(quizName, canvasId);
     CanvasStudent d2lStudent = createCanvasStudent("first", "last", "loginId", "canvasId");
     grades.addStudent(d2lStudent);
     d2lStudent.setScore(quiz, 3.6);
@@ -165,7 +166,9 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
+    Assignment found = grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElseThrow();
+    assertThat(found, equalTo(assignment));
+    assertThat(found.getCanvasId(), equalTo(canvasId));
   }
 
   @Test
@@ -173,7 +176,8 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     String quizName = "quizName";
 
     GradesFromCanvas grades = new GradesFromCanvas();
-    CanvasAssignment quiz = new CanvasAssignment(quizName + " Quiz", 1234);
+    int canvasId = 1234;
+    CanvasAssignment quiz = new CanvasAssignment(quizName + " Quiz", canvasId);
     CanvasStudent d2lStudent = createCanvasStudent();
     grades.addStudent(d2lStudent);
     d2lStudent.setScore(quiz, 3.6);
@@ -182,7 +186,9 @@ public class GradesFromCanvasTest extends CanvasTestCase {
     Assignment assignment = new Assignment(quizName, 4.0);
     book.addAssignment(assignment);
 
-    assertThat(grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElse(null), equalTo(assignment));
+    Assignment found = grades.findAssignmentInGradebookForCanvasQuiz(quiz, book).orElseThrow();
+    assertThat(found, equalTo(assignment));
+    assertThat(found.getCanvasId(), equalTo(canvasId));
   }
 
   @Test
