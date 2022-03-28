@@ -8,7 +8,7 @@
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>2022.4.2</version>
+  <version>2022.4.4</version>
   <packaging>jar</packaging>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
