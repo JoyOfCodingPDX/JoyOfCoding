@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.canvas;
 
 import com.opencsv.CSVWriter;
 import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
@@ -49,11 +50,24 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
   }
 
   private String[] getStudentLine(GradeBook book, Student student) {
-    return new String[] {
-      getStudentName(student),
-      student.getCanvasId(),
-      book.getSectionName(student.getEnrolledSection())
-    };
+    List<String> line = new ArrayList<>();
+    line.add(getStudentName(student));
+    line.add(student.getCanvasId());
+    line.add(book.getSectionName(student.getEnrolledSection()));
+
+    addCellsForEachAssignment(book, line, assignment -> getGrade(student, assignment));
+
+    return line.toArray(new String[0]);
+  }
+
+  private String getGrade(Student student, Assignment assignment) {
+    Grade grade = student.getGrade(assignment);
+    if (grade == null) {
+      return null;
+
+    } else {
+      return String.valueOf(grade.getScore());
+    }
   }
 
   private String getStudentName(Student student) {
