@@ -6,6 +6,7 @@ import edu.pdx.cs410J.grader.Grade;
 import edu.pdx.cs410J.grader.GradeBook;
 import edu.pdx.cs410J.grader.Student;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,15 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
     this.writer = writer;
   }
 
-  public void generate(GradeBook book) {
-    CSVWriter csv = new CSVWriter(writer);
-    writeHeaderRow(book, csv);
-    writePossiblePointsRow(book, csv);
-    writeStudentRows(book, csv);
+  public void generate(GradeBook book) throws IOException {
+    try (
+      CSVWriter csv = new CSVWriter(writer);
+    ) {
+      writeHeaderRow(book, csv);
+      writePossiblePointsRow(book, csv);
+      writeStudentRows(book, csv);
+      csv.flush();
+    }
   }
 
   private void writePossiblePointsRow(GradeBook book, CSVWriter csv) {
