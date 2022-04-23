@@ -3,13 +3,13 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>airline</artifactId>
   <packaging>jar</packaging>
-  <version>2022.1.0</version>
+  <version>2022.1.0-SNAPSHOT</version>
   <name>CS410J Airline Project</name>
   <description>An Airline application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
@@ -43,12 +43,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.0.0</version>
+      <version>2022.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.0.0</version>
+      <version>2022.1.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -151,7 +151,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2022.0.0</version>
+                <version>2022.1.0-SNAPSHOT</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
