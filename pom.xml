@@ -89,6 +89,8 @@
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
       <maven-pmd-plugin.version>3.12.0</maven-pmd-plugin.version>
+
+      <student.version>2022.5.0-SNAPSHOT</student.version>
     </properties>
     <repositories>
       <repository>  <!-- Needed for Groovy dependencies -->
