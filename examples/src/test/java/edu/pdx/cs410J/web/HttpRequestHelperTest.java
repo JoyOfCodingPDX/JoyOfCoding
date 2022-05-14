@@ -18,7 +18,7 @@ public class HttpRequestHelperTest {
   public void testGet() throws IOException {
     NewHttpRequestHelper helper = new NewHttpRequestHelper("http://www.google.com");
     NewHttpRequestHelper.Response response = helper.get(Map.of());
-    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
+    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Google"));
   }
 
@@ -26,7 +26,7 @@ public class HttpRequestHelperTest {
   public void testGetWithParameters() throws IOException {
     NewHttpRequestHelper helper = new NewHttpRequestHelper("https://www.google.com/search");
     NewHttpRequestHelper.Response response = helper.get(Map.of("p", "Java"));
-    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
+    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Java"));
   }
 }

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.airlineweb;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.NewHttpRequestHelper;
 
@@ -31,7 +32,12 @@ public class AirlineRestClient
      */
     public AirlineRestClient( String hostName, int port )
     {
-        this.http = new NewHttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET ));
+        this(new NewHttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
+    }
+
+    @VisibleForTesting
+    AirlineRestClient(NewHttpRequestHelper http) {
+      this.http = http;
     }
 
   /**
@@ -67,7 +73,7 @@ public class AirlineRestClient
   }
 
   private void throwExceptionIfNotOkayHttpStatus(Response response) {
-    int code = response.getCode();
+    int code = response.getHttpStatusCode();
     if (code != HTTP_OK) {
       String message = response.getContent();
       throw new RestException(code, message);

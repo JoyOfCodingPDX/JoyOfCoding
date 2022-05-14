@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.web;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -139,16 +141,16 @@ public class NewHttpRequestHelper {
    */
   public static class Response {
 
-    private final int code;
+    private final int httpStatusCode;
 
     private final String content;
 
     private int contentLines = 0;
 
     private Response(HttpURLConnection conn) throws IOException {
-      this.code = conn.getResponseCode();
+      this.httpStatusCode = conn.getResponseCode();
       InputStream stream;
-      if (this.code != java.net.HttpURLConnection.HTTP_OK) {
+      if (this.httpStatusCode != java.net.HttpURLConnection.HTTP_OK) {
         stream = conn.getErrorStream();
 
       } else {
@@ -170,12 +172,18 @@ public class NewHttpRequestHelper {
       this.content = content.toString().trim();
     }
 
+    @VisibleForTesting
+    public Response(String content) {
+      this.content = content;
+      this.httpStatusCode = HttpURLConnection.HTTP_OK;
+    }
+
     /**
      * Returns the HTTP status code of the response
      * @see java.net.HttpURLConnection#getResponseCode()
      */
-    public int getCode() {
-      return code;
+    public int getHttpStatusCode() {
+      return httpStatusCode;
     }
 
     /**
@@ -232,7 +240,7 @@ public class NewHttpRequestHelper {
       return;
     }
 
-    System.out.println("Returned code " + response.getCode() + " and " +
+    System.out.println("Returned code " + response.getHttpStatusCode() + " and " +
       response.getContentLines() + " lines of content\n");
     System.out.println(response.getContent());
 
