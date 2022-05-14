@@ -22,24 +22,23 @@ public class MovieDatabaseServletIT {
    */
   private static final String MOVIES = "http://localhost:8080/web/movies";
 
-  @Test
-  public void testMissingTitle() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(Map.of()).getHttpStatusCode());
+  private NewHttpRequestHelper http() {
+    return new NewHttpRequestHelper(MOVIES);
   }
 
-  private Response post(Map<String, String> parameters) throws IOException {
-    NewHttpRequestHelper http = new NewHttpRequestHelper(MOVIES);
-    return http.post(parameters);
+  @Test
+  public void testMissingTitle() throws IOException {
+    assertEquals(HTTP_BAD_REQUEST, http().post(Map.of()).getHttpStatusCode());
   }
 
   @Test
   public void testMissingYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(Map.of("title", "Title")).getHttpStatusCode());
+    assertEquals(HTTP_BAD_REQUEST, http().post(Map.of("title", "Title")).getHttpStatusCode());
   }
 
   @Test
   public void testMalformedYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(Map.of("title", "Title", "year", "asdfa")).getHttpStatusCode());
+    assertEquals(HTTP_BAD_REQUEST, http().post(Map.of("title", "Title", "year", "asdfa")).getHttpStatusCode());
   }
 
   @Test
@@ -48,7 +47,7 @@ public class MovieDatabaseServletIT {
   }
 
   private long createMovie(String title, String year) throws IOException {
-    Response response = post(Map.of("title", title, "year", year));
+    Response response = http().post(Map.of("title", title, "year", year));
     assertEquals(HTTP_OK, response.getHttpStatusCode(), response.getContent());
     assertNotNull(response.getContent());
     return Long.parseLong(response.getContent().trim());
@@ -60,7 +59,7 @@ public class MovieDatabaseServletIT {
     createMovie(title1, "2007");
     String title2 = "testGetAllMovies2";
     createMovie(title2, "2013");
-    Response response = get(Map.of());
+    Response response = http().get(Map.of());
     assertNotNull(response);
     String content = response.getContent();
     assertTrue(content.contains(title1), content);
@@ -70,17 +69,12 @@ public class MovieDatabaseServletIT {
       "In content: " + content);
   }
 
-  private Response get(Map<String, String> parameters) throws IOException {
-    NewHttpRequestHelper http = new NewHttpRequestHelper(MOVIES);
-    return http.get(parameters);
-  }
-
   @Test
   public void testGetOneMovie() throws IOException {
     String title = "testGetOneMovie" + "-title";
     String year = "1997";
     long id = createMovie(title, year);
-    Response response = get(Map.of("id", String.valueOf(id)));
+    Response response = http().get(Map.of("id", String.valueOf(id)));
     assertNotNull(response);
     assertTrue(response.getContent().contains(title), response.getContent());
     assertTrue(response.getContent().contains(year), response.getContent());
@@ -101,7 +95,7 @@ public class MovieDatabaseServletIT {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(Map.of("title", query));
+    Response response = http().get(Map.of("title", query));
     assertTrue(response.getContent().contains(title1), response.getContent());
     assertFalse(response.getContent().contains(title2), response.getContent());
     assertTrue(response.getContent().contains(title3), response.getContent());
@@ -121,7 +115,7 @@ public class MovieDatabaseServletIT {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(Map.of("year", query));
+    Response response = http().get(Map.of("year", query));
     assertFalse(response.getContent().contains(title1), response.getContent());
     assertTrue(response.getContent().contains(title2), response.getContent());
     assertTrue(response.getContent().contains(title3), response.getContent());
@@ -143,15 +137,10 @@ public class MovieDatabaseServletIT {
     createMovie(title2, year2);
     createMovie(title3, year3);
 
-    Response response = get(Map.of("title", titleQuery));
+    Response response = http().get(Map.of("title", titleQuery));
     assertTrue(response.getContent().contains(title1), response.getContent());
     assertFalse(response.getContent().contains(title2), response.getContent());
     assertTrue(response.getContent().contains(title3), response.getContent());
-  }
-
-  private Response put(Map<String, String> parameters) throws IOException {
-    NewHttpRequestHelper http = new NewHttpRequestHelper(MOVIES);
-    return http.put(parameters);
   }
 
   @Test
@@ -161,31 +150,26 @@ public class MovieDatabaseServletIT {
     String newTitle = "New Title";
     String newYear = "2008";
     Response response =
-      put(Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
+      http().put(Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
     assertEquals(HTTP_OK, response.getHttpStatusCode(), response.getContent());
     assertEquals(1, response.getContentLines());
     assertEquals(String.valueOf(id), response.getContent());
 
-    response = get(Map.of("id", String.valueOf(id)));
+    response = http().get(Map.of("id", String.valueOf(id)));
     assertEquals(HTTP_OK, response.getHttpStatusCode());
     assertEquals(1, response.getContentLines());
     assertTrue(response.getContent().contains(newTitle));
     assertTrue(response.getContent().contains(newYear));
   }
 
-  private Response delete(Map<String, String> parameters) throws IOException {
-    NewHttpRequestHelper http = new NewHttpRequestHelper(MOVIES);
-    return http.delete(parameters);
-  }
-
   @Test
   public void canDeleteMovieFromServer() throws IOException {
     long id = createMovie("Movie to be deleted", "2015");
 
-    Response response = delete(Map.of("id", String.valueOf(id)));
+    Response response = http().delete(Map.of("id", String.valueOf(id)));
     assertThat(response.getContent(), response.getHttpStatusCode(), equalTo(HTTP_OK));
 
-    response = get(Map.of("id", String.valueOf(id)));
+    response = http().get(Map.of("id", String.valueOf(id)));
     assertThat(response.getContent(), response.getHttpStatusCode(), equalTo(HTTP_NOT_FOUND));
   }
 
