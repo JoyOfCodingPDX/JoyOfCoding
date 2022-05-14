@@ -9,7 +9,7 @@ import java.util.Set;
 public class SubmitAndroidProject extends Submit {
 
   private SubmitAndroidProject() {
-    this.setProjectName("Project5");
+
   }
 
   @Override

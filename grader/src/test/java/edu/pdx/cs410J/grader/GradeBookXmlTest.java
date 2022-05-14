@@ -106,4 +106,18 @@ public class GradeBookXmlTest {
     assertThat(string, not(containsString(" <")));
   }
 
+  @Test
+  void sectionNamesArePersistedToXml() throws ParserException, IOException, TransformerException {
+    String undergraduate = "Undergraduate Section";
+    String graduate = "Graduate Section";
+    GradeBook book = new GradeBook("test");
+    book.setSectionName(Student.Section.UNDERGRADUATE, undergraduate);
+    book.setSectionName(Student.Section.GRADUATE, graduate);
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+
+    assertThat(book2.getSectionName(Student.Section.UNDERGRADUATE), equalTo(undergraduate));
+    assertThat(book2.getSectionName(Student.Section.GRADUATE), equalTo(graduate));
+  }
+
 }

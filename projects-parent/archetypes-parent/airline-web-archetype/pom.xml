@@ -4,10 +4,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>airline-web-archetype</artifactId>
-  <version>2022.0.0</version>
+  <version>2022.1.0-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>airline-web-archetype</name>
