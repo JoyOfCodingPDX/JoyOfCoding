@@ -109,7 +109,7 @@ public class NewHttpRequestHelper {
    * @param parameters key/value parameters to the put
    * @return A <code>Response</code> summarizing the result of the PUT
    */
-  protected Response put(Map<String, String> parameters) throws IOException {
+  public Response put(Map<String, String> parameters) throws IOException {
     StringBuilder data = new StringBuilder();
     parameters.forEach((key, value) -> {
       data.append(key);

@@ -1,14 +1,13 @@
 package edu.pdx.cs410J.servlets;
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the functionality of the <code>MovieDatabaseRestServlet</code>
  */
-public class MovieDatabaseServletIT extends HttpRequestHelper {
+public class MovieDatabaseServletIT {
 
   /**
    * The URL for accessing the Movie database application
@@ -27,17 +26,22 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
   @Test
   public void testMissingTitle() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of()).getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of()).getHttpStatusCode());
+  }
+
+  private Response post(String url, Map<String, String> parameters) throws IOException {
+    NewHttpRequestHelper http = new NewHttpRequestHelper(url);
+    return http.post(parameters);
   }
 
   @Test
   public void testMissingYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title")).getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title")).getHttpStatusCode());
   }
 
   @Test
   public void testMalformedYear() throws IOException {
-    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title", "year", "asdfa")).getCode());
+    assertEquals(HTTP_BAD_REQUEST, post(getResourceURL(MOVIES), Map.of("title", "Title", "year", "asdfa")).getHttpStatusCode());
   }
 
   @Test
@@ -47,7 +51,7 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
 
   private long createMovie(String title, String year) throws IOException {
     Response response = post(getResourceURL(MOVIES), Map.of("title", title, "year", year));
-    assertEquals(HTTP_OK, response.getCode(), response.getContent());
+    assertEquals(HTTP_OK, response.getHttpStatusCode(), response.getContent());
     assertNotNull(response.getContent());
     return Long.parseLong(response.getContent().trim());
   }
@@ -66,6 +70,11 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     int lines = response.getContentLines();
     assertTrue(lines > 1, () -> "Expected more than 1 line, only got " + lines + "\n" +
       "In content: " + content);
+  }
+
+  private Response get(String url, Map<String, String> parameters) throws IOException {
+    NewHttpRequestHelper http = new NewHttpRequestHelper(url);
+    return http.get(parameters);
   }
 
   @Test
@@ -142,6 +151,11 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     assertTrue(response.getContent().contains(title3), response.getContent());
   }
 
+  private Response put(String url, Map<String, String> parameters) throws IOException {
+    NewHttpRequestHelper http = new NewHttpRequestHelper(url);
+    return http.put(parameters);
+  }
+
   @Test
   public void testUpdateMovie() throws IOException {
     long id = createMovie("Old Title", "1998");
@@ -150,15 +164,20 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     String newYear = "2008";
     Response response =
       put(getResourceURL(MOVIES), Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
-    assertEquals(HTTP_OK, response.getCode(), response.getContent());
+    assertEquals(HTTP_OK, response.getHttpStatusCode(), response.getContent());
     assertEquals(1, response.getContentLines());
     assertEquals(String.valueOf(id), response.getContent());
 
     response = get(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
-    assertEquals(HTTP_OK, response.getCode());
+    assertEquals(HTTP_OK, response.getHttpStatusCode());
     assertEquals(1, response.getContentLines());
     assertTrue(response.getContent().contains(newTitle));
     assertTrue(response.getContent().contains(newYear));
+  }
+
+  private Response delete(String url, Map<String, String> parameters) throws IOException {
+    NewHttpRequestHelper http = new NewHttpRequestHelper(url);
+    return http.delete(parameters);
   }
 
   @Test
@@ -166,10 +185,10 @@ public class MovieDatabaseServletIT extends HttpRequestHelper {
     long id = createMovie("Movie to be deleted", "2015");
 
     Response response = delete(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
-    assertThat(response.getContent(), response.getCode(), equalTo(HTTP_OK));
+    assertThat(response.getContent(), response.getHttpStatusCode(), equalTo(HTTP_OK));
 
     response = get(getResourceURL(MOVIES), Map.of("id", String.valueOf(id)));
-    assertThat(response.getContent(), response.getCode(), equalTo(HTTP_NOT_FOUND));
+    assertThat(response.getContent(), response.getHttpStatusCode(), equalTo(HTTP_NOT_FOUND));
   }
 
   private String getResourceURL(String resource) {

@@ -3,7 +3,8 @@ package edu.pdx.cs410J.servlets;
 import edu.pdx.cs410J.family.FamilyTree;
 import edu.pdx.cs410J.family.Person;
 import edu.pdx.cs410J.family.XmlParser;
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the REST web service provided by the <code>FamilyTreeServlet</code>
  */
-public class FamilyTreeServletIT extends HttpRequestHelper {
+public class FamilyTreeServletIT {
 
   private static final String PERSON_URL = "http://localhost:8080/web/family/person";
 
@@ -44,9 +45,10 @@ public class FamilyTreeServletIT extends HttpRequestHelper {
     params.put("DateOfBirth", String.valueOf(person.getDateOfBirth().getTime()));
     params.put("DateOfDeath", String.valueOf(person.getDateOfBirth().getTime()));
 
-    Response response = post(PERSON_URL, params);
-    if (response.getCode() != HTTP_OK) {
-      String s = "Could not create Person (error code " + response.getCode() + "): " + response.getContent();
+    NewHttpRequestHelper http = new NewHttpRequestHelper(PERSON_URL);
+    Response response = http.post(params);
+    if (response.getHttpStatusCode() != HTTP_OK) {
+      String s = "Could not create Person (error code " + response.getHttpStatusCode() + "): " + response.getContent();
       throw new IllegalArgumentException(s);
     }
 
@@ -60,13 +62,14 @@ public class FamilyTreeServletIT extends HttpRequestHelper {
    * Returns the person with the given id
    */
   private Person getPerson(int id) throws IOException {
-    Response response = get(PERSON_URL + "/" + id, Map.of());
+    NewHttpRequestHelper http = new NewHttpRequestHelper(PERSON_URL + "/" + id);
+    Response response = http.get(Map.of());
 
-    if (response.getCode() == HTTP_NOT_FOUND) {
+    if (response.getHttpStatusCode() == HTTP_NOT_FOUND) {
       return null;
 
-    } else if (response.getCode() != HTTP_OK) {
-      String s = "Could not get Person (error code " + response.getCode() + ")";
+    } else if (response.getHttpStatusCode() != HTTP_OK) {
+      String s = "Could not get Person (error code " + response.getHttpStatusCode() + ")";
       throw new IllegalArgumentException(s);
     }
 
@@ -84,6 +87,7 @@ public class FamilyTreeServletIT extends HttpRequestHelper {
   @Test
   public void testCreateAndGetPerson() throws IOException {
     Person person = new Person(7, Person.Gender.MALE) {
+      @Override
       public int getId() {
         return 0;
       }
