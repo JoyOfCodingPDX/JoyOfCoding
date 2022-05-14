@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.phonebillweb;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class PhoneBillRestClientTest {
   void getAllDictionaryEntriesPerformsHttpGetWithNoParameters() throws ParserException, IOException {
     Map<String, String> dictionary = Map.of("One", "1", "Two", "2");
 
-    NewHttpRequestHelper http = mock(NewHttpRequestHelper.class);
+    HttpRequestHelper http = mock(HttpRequestHelper.class);
     when(http.get(eq(Map.of()))).thenReturn(dictionaryAsText(dictionary));
 
     PhoneBillRestClient client = new PhoneBillRestClient(http);
@@ -28,10 +28,10 @@ public class PhoneBillRestClientTest {
     assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
   }
 
-  private NewHttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
+  private HttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
     StringWriter writer = new StringWriter();
     new TextDumper(writer).dump(dictionary);
 
-    return new NewHttpRequestHelper.Response(writer.toString());
+    return new HttpRequestHelper.Response(writer.toString());
   }
 }

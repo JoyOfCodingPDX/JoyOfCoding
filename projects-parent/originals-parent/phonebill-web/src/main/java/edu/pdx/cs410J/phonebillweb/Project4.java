@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.phonebillweb;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -93,7 +93,7 @@ public class Project4 {
      * @param code The expected status code
      * @param response The response from the server
      */
-    private static void checkResponseCode( int code, NewHttpRequestHelper.Response response )
+    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
     {
         if (response.getHttpStatusCode() != code) {
             error(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,

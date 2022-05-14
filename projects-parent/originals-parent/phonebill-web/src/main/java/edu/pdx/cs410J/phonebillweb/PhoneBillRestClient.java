@@ -2,14 +2,14 @@ package edu.pdx.cs410J.phonebillweb;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
-import static edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
-import static edu.pdx.cs410J.web.NewHttpRequestHelper.RestException;
+import static edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import static edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
@@ -22,7 +22,7 @@ public class PhoneBillRestClient {
     private static final String WEB_APP = "phonebill";
     private static final String SERVLET = "calls";
 
-  private final NewHttpRequestHelper http;
+  private final HttpRequestHelper http;
 
 
     /**
@@ -32,11 +32,11 @@ public class PhoneBillRestClient {
      */
     public PhoneBillRestClient( String hostName, int port )
     {
-      this(new NewHttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
+      this(new HttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
     }
 
   @VisibleForTesting
-  PhoneBillRestClient(NewHttpRequestHelper http) {
+  PhoneBillRestClient(HttpRequestHelper http) {
     this.http = http;
   }
 

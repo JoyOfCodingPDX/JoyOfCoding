@@ -3,8 +3,8 @@ package edu.pdx.cs410J.servlets;
 import edu.pdx.cs410J.family.FamilyTree;
 import edu.pdx.cs410J.family.Person;
 import edu.pdx.cs410J.family.XmlParser;
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
-import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
+import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class FamilyTreeServletIT {
     params.put("DateOfBirth", String.valueOf(person.getDateOfBirth().getTime()));
     params.put("DateOfDeath", String.valueOf(person.getDateOfBirth().getTime()));
 
-    NewHttpRequestHelper http = new NewHttpRequestHelper(PERSON_URL);
+    HttpRequestHelper http = new HttpRequestHelper(PERSON_URL);
     Response response = http.post(params);
     if (response.getHttpStatusCode() != HTTP_OK) {
       String s = "Could not create Person (error code " + response.getHttpStatusCode() + "): " + response.getContent();
@@ -62,7 +62,7 @@ public class FamilyTreeServletIT {
    * Returns the person with the given id
    */
   private Person getPerson(int id) throws IOException {
-    NewHttpRequestHelper http = new NewHttpRequestHelper(PERSON_URL + "/" + id);
+    HttpRequestHelper http = new HttpRequestHelper(PERSON_URL + "/" + id);
     Response response = http.get(Map.of());
 
     if (response.getHttpStatusCode() == HTTP_NOT_FOUND) {

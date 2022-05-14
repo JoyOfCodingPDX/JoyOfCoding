@@ -2,14 +2,14 @@ package edu.pdx.cs410J.apptbookweb;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
-import static edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
-import static edu.pdx.cs410J.web.NewHttpRequestHelper.RestException;
+import static edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import static edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
@@ -21,7 +21,7 @@ public class AppointmentBookRestClient {
   private static final String WEB_APP = "apptbook";
   private static final String SERVLET = "appointments";
 
-  private final NewHttpRequestHelper http;
+  private final HttpRequestHelper http;
 
 
   /**
@@ -31,11 +31,11 @@ public class AppointmentBookRestClient {
    * @param port     The port
    */
   public AppointmentBookRestClient(String hostName, int port) {
-    this(new NewHttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
+    this(new HttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
   }
 
   @VisibleForTesting
-  AppointmentBookRestClient(NewHttpRequestHelper http) {
+  AppointmentBookRestClient(HttpRequestHelper http) {
     this.http = http;
   }
 

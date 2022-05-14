@@ -16,16 +16,16 @@ public class HttpRequestHelperTest {
 
   @Test
   public void testGet() throws IOException {
-    NewHttpRequestHelper helper = new NewHttpRequestHelper("http://www.google.com");
-    NewHttpRequestHelper.Response response = helper.get(Map.of());
+    HttpRequestHelper helper = new HttpRequestHelper("http://www.google.com");
+    HttpRequestHelper.Response response = helper.get(Map.of());
     assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Google"));
   }
 
   @Test
   public void testGetWithParameters() throws IOException {
-    NewHttpRequestHelper helper = new NewHttpRequestHelper("https://www.google.com/search");
-    NewHttpRequestHelper.Response response = helper.get(Map.of("p", "Java"));
+    HttpRequestHelper helper = new HttpRequestHelper("https://www.google.com/search");
+    HttpRequestHelper.Response response = helper.get(Map.of("p", "Java"));
     assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Java"));
   }

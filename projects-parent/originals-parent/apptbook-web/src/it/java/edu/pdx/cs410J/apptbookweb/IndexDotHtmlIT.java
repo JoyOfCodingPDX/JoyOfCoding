@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.apptbookweb;
 
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
-import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
+import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -34,10 +34,10 @@ class IndexDotHtmlIT {
 
   static class IndexDotHtmlHelper {
     private static final String WEB_APP = "apptbook";
-    private final NewHttpRequestHelper http;
+    private final HttpRequestHelper http;
 
     IndexDotHtmlHelper(String hostName, int port) {
-      this.http = new NewHttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" ));
+      this.http = new HttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" ));
     }
 
     Response getIndexDotHtml() throws IOException {

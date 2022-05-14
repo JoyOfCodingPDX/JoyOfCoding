@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.servlets;
 
-import edu.pdx.cs410J.web.NewHttpRequestHelper;
-import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
+import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -22,8 +22,8 @@ public class MovieDatabaseServletIT {
    */
   private static final String MOVIES = "http://localhost:8080/web/movies";
 
-  private NewHttpRequestHelper http() {
-    return new NewHttpRequestHelper(MOVIES);
+  private HttpRequestHelper http() {
+    return new HttpRequestHelper(MOVIES);
   }
 
   @Test

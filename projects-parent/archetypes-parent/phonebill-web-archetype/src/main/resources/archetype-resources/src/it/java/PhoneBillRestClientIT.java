@@ -4,7 +4,7 @@
 package ${package};
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.NewHttpRequestHelper.RestException;
+import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
