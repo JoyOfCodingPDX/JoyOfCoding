@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.airlineweb;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -56,8 +56,8 @@ class AirlineRestClientIT {
     AirlineRestClient client = newAirlineRestClient();
     String emptyString = "";
 
-    HttpRequestHelper.RestException ex =
-      assertThrows(HttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
+    NewHttpRequestHelper.RestException ex =
+      assertThrows(NewHttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
     assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
     assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));
   }}

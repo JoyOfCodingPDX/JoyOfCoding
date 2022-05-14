@@ -26,7 +26,7 @@ public class NewHttpRequestHelper {
    * @param parameters The key/value query parameters
    * @return A <code>Response</code> summarizing the result of the GET
    */
-  protected Response get(Map<String, String> parameters) throws IOException {
+  public Response get(Map<String, String> parameters) throws IOException {
     StringBuilder query = encodeParameters(parameters);
     if (query.length() > 0) {
       query.insert(0, '?');
@@ -48,7 +48,7 @@ public class NewHttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response post(Map<String, String> parameters) throws IOException {
+  public Response post(Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "POST", parameters);
   }
 
@@ -58,7 +58,7 @@ public class NewHttpRequestHelper {
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response delete(Map<String, String> parameters) throws IOException {
+  public Response delete(Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "DELETE", parameters);
   }
 

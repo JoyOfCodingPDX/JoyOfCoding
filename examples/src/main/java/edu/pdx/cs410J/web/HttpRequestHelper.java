@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * A helper class that provides methods for requesting resources via HTTP
  */
+@Deprecated(forRemoval = true)
 public class HttpRequestHelper {
 
   /**
