@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
-import edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import edu.pdx.cs410J.web.NewHttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ class IndexDotHtmlIT {
   @Test
   void indexDotHtmlExists() throws IOException {
     Response indexDotHtml = fetchIndexDotHtml();
-    assertThat(indexDotHtml.getCode(), equalTo(200));
+    assertThat(indexDotHtml.getHttpStatusCode(), equalTo(200));
   }
 
   @Test
@@ -35,16 +35,16 @@ class IndexDotHtmlIT {
     return new IndexDotHtmlHelper(HOSTNAME, port).getIndexDotHtml();
   }
 
-  static class IndexDotHtmlHelper extends HttpRequestHelper {
+  static class IndexDotHtmlHelper {
     private static final String WEB_APP = "airline";
-    private final String url;
+    private final NewHttpRequestHelper http;
 
     IndexDotHtmlHelper(String hostName, int port) {
-      this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" );
+      this.http = new NewHttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" ));
     }
 
     Response getIndexDotHtml() throws IOException {
-      return get(this.url, Map.of());
+      return http.get(Map.of());
     }
   }
 }
