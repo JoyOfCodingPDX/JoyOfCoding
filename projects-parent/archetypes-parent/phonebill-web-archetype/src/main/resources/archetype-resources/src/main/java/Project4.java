@@ -4,11 +4,10 @@
 package ${package};
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.web.NewHttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -97,11 +96,11 @@ public class Project4 {
      * @param code The expected status code
      * @param response The response from the server
      */
-    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
+    private static void checkResponseCode( int code, NewHttpRequestHelper.Response response )
     {
-        if (response.getCode() != code) {
+        if (response.getHttpStatusCode() != code) {
             error(String.format("Expected HTTP code %d, got code %d.${symbol_escape}n${symbol_escape}n%s", code,
-                                response.getCode(), response.getContent()));
+                                response.getHttpStatusCode(), response.getContent()));
         }
     }
 
