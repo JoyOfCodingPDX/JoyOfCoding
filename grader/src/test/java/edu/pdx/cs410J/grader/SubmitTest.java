@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -314,6 +316,27 @@ public class SubmitTest {
         submit.validateProjectName();
       }
     );
+  }
+
+  @Test
+  void zipFileAttachmentDoesNotContainStudentNickName() {
+    Student student = new Student("studentId");
+    String firstName = "FirstName";
+    String nickName = "NickName";
+    String lastName = "LastName";
+
+    student.setFirstName(firstName);
+    student.setNickName(nickName);
+    student.setLastName(lastName);
+
+    Submit submit = new Submit();
+    submit.setStudent(student);
+
+    String zipFileTitle = submit.getZipFileTitle();
+
+    assertThat(zipFileTitle, containsString(firstName));
+    assertThat(zipFileTitle, containsString(lastName));
+    assertThat(zipFileTitle, not(containsString(nickName)));
   }
 
 }
