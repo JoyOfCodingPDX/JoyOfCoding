@@ -5,7 +5,6 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -96,9 +95,9 @@ public class Project4 {
      */
     private static void checkResponseCode( int code, HttpRequestHelper.Response response )
     {
-        if (response.getCode() != code) {
+        if (response.getHttpStatusCode() != code) {
             error(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
-                                response.getCode(), response.getContent()));
+                                response.getHttpStatusCode(), response.getContent()));
         }
     }
 

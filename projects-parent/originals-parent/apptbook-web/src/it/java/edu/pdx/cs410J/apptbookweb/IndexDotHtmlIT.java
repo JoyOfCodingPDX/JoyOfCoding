@@ -18,7 +18,7 @@ class IndexDotHtmlIT {
   @Test
   void indexDotHtmlExists() throws IOException {
     Response indexDotHtml = fetchIndexDotHtml();
-    assertThat(indexDotHtml.getCode(), equalTo(200));
+    assertThat(indexDotHtml.getHttpStatusCode(), equalTo(200));
   }
 
   @Test
@@ -32,16 +32,16 @@ class IndexDotHtmlIT {
     return new IndexDotHtmlHelper(HOSTNAME, port).getIndexDotHtml();
   }
 
-  static class IndexDotHtmlHelper extends HttpRequestHelper {
+  static class IndexDotHtmlHelper {
     private static final String WEB_APP = "apptbook";
-    private final String url;
+    private final HttpRequestHelper http;
 
     IndexDotHtmlHelper(String hostName, int port) {
-      this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" );
+      this.http = new HttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" ));
     }
 
     Response getIndexDotHtml() throws IOException {
-      return get(this.url, Map.of());
+      return http.get(Map.of());
     }
   }
 }

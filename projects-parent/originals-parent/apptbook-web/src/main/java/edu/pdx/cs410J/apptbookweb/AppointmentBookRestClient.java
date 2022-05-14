@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
+import static edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import static edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
@@ -15,11 +17,11 @@ import static java.net.HttpURLConnection.HTTP_OK;
  * an example of how to make gets and posts to a URL.  You'll need to change it
  * to do something other than just send dictionary entries.
  */
-public class AppointmentBookRestClient extends HttpRequestHelper {
+public class AppointmentBookRestClient {
   private static final String WEB_APP = "apptbook";
   private static final String SERVLET = "appointments";
 
-  private final String url;
+  private final HttpRequestHelper http;
 
 
   /**
@@ -29,14 +31,19 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * @param port     The port
    */
   public AppointmentBookRestClient(String hostName, int port) {
-    this.url = String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET);
+    this(new HttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
+  }
+
+  @VisibleForTesting
+  AppointmentBookRestClient(HttpRequestHelper http) {
+    this.http = http;
   }
 
   /**
    * Returns all dictionary entries from the server
    */
   public Map<String, String> getAllDictionaryEntries() throws IOException, ParserException {
-    Response response = get(this.url, Map.of());
+    Response response = http.get(Map.of());
 
     TextParser parser = new TextParser(new StringReader(response.getContent()));
     return parser.parse();
@@ -46,7 +53,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException, ParserException {
-    Response response = get(this.url, Map.of("word", word));
+    Response response = http.get(Map.of("word", word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -61,16 +68,16 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 
   @VisibleForTesting
   Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
-    return post(this.url, dictionaryEntries);
+    return http.post(dictionaryEntries);
   }
 
   public void removeAllDictionaryEntries() throws IOException {
-    Response response = delete(this.url, Map.of());
+    Response response = http.delete(Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
   private void throwExceptionIfNotOkayHttpStatus(Response response) {
-    int code = response.getCode();
+    int code = response.getHttpStatusCode();
     if (code != HTTP_OK) {
       String message = response.getContent();
       throw new RestException(code, message);
