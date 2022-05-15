@@ -10,16 +10,17 @@ import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummaries.formatProjectType;
 import static edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummary.*;
 import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
 import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.TEXT_FILE;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.matchesRegex;
+import static org.hamcrest.Matchers.*;
 
 public class ProjectTimeEstimatesSummaryTest {
 
@@ -325,5 +326,12 @@ public class ProjectTimeEstimatesSummaryTest {
     assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
     assertThat(lines.get(2), equalTo("| Count | 0 | 0 |"));
     assertThat(lines.get(3), equalTo("| Average | n/a | n/a |"));
+  }
+
+  @Test
+  void allProjectTypesAreFormatted() {
+    Arrays.stream(ProjectType.values()).forEach(projectType -> {
+      assertThat(formatProjectType(projectType), notNullValue());
+    });
   }
 }

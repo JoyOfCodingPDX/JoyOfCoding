@@ -153,17 +153,30 @@ public class ProjectTimeEstimatesSummary {
     }
 
     private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRow(pw, projectTypes, "", this::formatProjectType);
+      formatRow(pw, projectTypes, "", TimeEstimatesSummaries::formatProjectType);
       formatRow(pw, projectTypes, ":---", summary -> "---:");
     }
 
-    private String formatProjectType(ProjectType projectType) {
+    @VisibleForTesting
+    static String formatProjectType(ProjectType projectType) {
       switch (projectType) {
         case APP_CLASSES:
           return "App Classes";
 
         case TEXT_FILE:
           return "Text File";
+
+        case PRETTY_PRINT:
+          return "Pretty Print";
+
+        case XML:
+          return "XML";
+
+        case REST:
+          return "REST";
+
+        case ANDROID:
+          return "Android";
 
         default:
           throw new UnsupportedOperationException("Don't know how to format " + projectType);
