@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.grader.gradebook.Assignment;
 import edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType;
 import edu.pdx.cs410J.grader.gradebook.Grade;
@@ -7,6 +8,7 @@ import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProjectTimeEstimatesSummary {
   public TimeEstimatesSummaries getTimeEstimateSummaries(GradeBook book) {
@@ -37,7 +39,8 @@ public class ProjectTimeEstimatesSummary {
   static class TimeEstimatesSummary {
     private final int count;
     private final double maximum;
-    private double minimum;
+    private final double minimum;
+    private final double median;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
       Collection<Double> estimates = getEstimates(book, assignment);
@@ -48,7 +51,26 @@ public class ProjectTimeEstimatesSummary {
         this.count = estimates.size();
         this.maximum = estimates.stream().max(Comparator.naturalOrder()).get();
         this.minimum = estimates.stream().min(Comparator.naturalOrder()).get();
+        this.median = median(estimates);
       }
+    }
+
+    @VisibleForTesting
+    static double median(Collection<Double> doubles) {
+      List<Double> values = doubles.stream().sorted().collect(Collectors.toList());
+      int size = values.size();
+      if (size % 2 == 0) {
+        int midpoint = (size / 2);
+        return average(values.get(midpoint - 1), values.get(midpoint));
+
+      } else {
+        int midpoint = (size / 2);
+        return values.get(midpoint);
+      }
+    }
+
+    private static double average(double d1, double d2) {
+      return (d1 + d2) / 2.0;
     }
 
     private Collection<Double> getEstimates(GradeBook book, Assignment assignment) {
@@ -82,6 +104,10 @@ public class ProjectTimeEstimatesSummary {
 
     public double getMinimum() {
       return minimum;
+    }
+
+    public double getMedian() {
+      return median;
     }
   }
 }

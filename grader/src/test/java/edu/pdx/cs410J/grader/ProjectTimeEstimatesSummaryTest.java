@@ -8,6 +8,10 @@ import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.List;
+
+import static edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummary.median;
 import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -69,7 +73,7 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
-  void maximumFromMultipleSubmissions() {
+  void maximumFromMultipleStudents() {
     GradeBook book = new GradeBook("test");
 
     ProjectType projectType = APP_CLASSES;
@@ -87,7 +91,7 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
-  void minimumFromMultipleSubmissions() {
+  void minimumFromMultipleStudents() {
     GradeBook book = new GradeBook("test");
 
     ProjectType projectType = APP_CLASSES;
@@ -103,4 +107,44 @@ public class ProjectTimeEstimatesSummaryTest {
     assertThat(estimates.getCount(), equalTo(2));
     assertThat(estimates.getMinimum(), equalTo(minimumEstimate));
   }
+
+  @Test
+  void medianFromMultipleStudents() {
+    GradeBook book = new GradeBook("test");
+
+    ProjectType projectType = APP_CLASSES;
+
+    Assignment project = addProject(book, projectType);
+    double medianEstimate = 10.0;
+    noteSubmission(addStudent(book, "student1"), project, medianEstimate);
+    noteSubmission(addStudent(book, "student2"), project, 9.0);
+    noteSubmission(addStudent(book, "student3"), project, 11.0);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getCount(), equalTo(3));
+    assertThat(estimates.getMedian(), equalTo(medianEstimate));
+  }
+
+  @Test
+  void medianOfOddNumberOfValuesIsMiddleValue() {
+    double median = 2.0;
+    Collection<Double> doubles = List.of(1.0, median, 3.0);
+    assertThat(median(doubles), equalTo(median));
+  }
+
+  @Test
+  void medianOfEvenNumberOfValuesIsAverageOfMiddleValues() {
+    Collection<Double> doubles = List.of(1.0, 2.0, 3.0, 4.0);
+    assertThat(median(doubles), equalTo(2.5));
+  }
+
+  @Test
+  void medianSortsValues() {
+    double median = 2.0;
+    Collection<Double> doubles = List.of(median, 1.0, 3.0);
+    assertThat(median(doubles), equalTo(median));
+  }
+
 }
