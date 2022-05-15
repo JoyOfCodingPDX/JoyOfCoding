@@ -299,5 +299,9 @@ public class ProjectTimeEstimatesSummaryTest {
     assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
     assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
     assertThat(lines.get(4), matchesRegex("\\| Maximum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(5), matchesRegex("\\| Top 25% \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(6), matchesRegex("\\| Median \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(7), matchesRegex("\\| Bottom 25% \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(8), matchesRegex("\\| Minimum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
   }
 }

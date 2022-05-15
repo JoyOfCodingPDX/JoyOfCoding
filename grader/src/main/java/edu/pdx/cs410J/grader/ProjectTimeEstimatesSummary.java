@@ -44,7 +44,27 @@ public class ProjectTimeEstimatesSummary {
       countRow(pw, projectTypes);
       averageRow(pw, projectTypes);
       maximumRow(pw, projectTypes);
+      upperQuartileRow(pw, projectTypes);
+      medianRow(pw, projectTypes);
+      lowerQuartileRow(pw, projectTypes);
+      minimumRow(pw, projectTypes);
 
+    }
+
+    private void minimumRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Minimum", TimeEstimatesSummary::getMinimum);
+    }
+
+    private void lowerQuartileRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Bottom 25%", TimeEstimatesSummary::getLowerQuartile);
+    }
+
+    private void medianRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Median", TimeEstimatesSummary::getMedian);
+    }
+
+    private void upperQuartileRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Top 25%", TimeEstimatesSummary::getUpperQuartile);
     }
 
     private void maximumRow(PrintWriter pw, List<ProjectType> projectTypes) {
