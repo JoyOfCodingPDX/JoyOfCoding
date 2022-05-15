@@ -221,8 +221,31 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
-  void upperQuartileOfThreeValuesIsThirdValue() {
-    double value = 3.0;
-    assertThat(upperQuartile(List.of(1.0, 2.0, value)), equalTo(value));
+  void upperQuartileOfThreeValuesIsAverageOfSecondAndThirdValue() {
+    assertThat(upperQuartile(List.of(1.0, 2.0, 3.0)), equalTo(2.5));
   }
+
+  @Test
+  void upperQuartileOfFourValuesIsAverageOfThirdAndFourthValues() {
+    assertThat(upperQuartile(List.of(1.0, 2.0, 3.0, 4.0)), equalTo(3.5));
+  }
+
+  @Test
+  void averageFromMultipleStudents() {
+    GradeBook book = new GradeBook("test");
+
+    ProjectType projectType = APP_CLASSES;
+
+    Assignment project = addProject(book, projectType);
+    noteSubmission(addStudent(book, "student1"), project, 1.0);
+    noteSubmission(addStudent(book, "student2"), project, 2.0);
+    noteSubmission(addStudent(book, "student4"), project, 4.0);
+    noteSubmission(addStudent(book, "student5"), project, 5.0);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getAverage(), equalTo(3.0));
+  }
+
 }

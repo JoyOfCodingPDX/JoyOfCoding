@@ -43,6 +43,7 @@ public class ProjectTimeEstimatesSummary {
     private final double median;
     private final double upperQuartile;
     private final double lowerQuartile;
+    private final double average;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
       Collection<Double> estimates = getEstimates(book, assignment);
@@ -51,6 +52,7 @@ public class ProjectTimeEstimatesSummary {
 
       } else {
         this.count = estimates.size();
+        this.average = estimates.stream().reduce(Double::sum).get() / ((double) this.count);
         List<Double> sorted = estimates.stream().sorted().collect(Collectors.toList());
         this.minimum = sorted.get(0);
         this.maximum = sorted.get(sorted.size() - 1);
@@ -62,19 +64,14 @@ public class ProjectTimeEstimatesSummary {
 
     @VisibleForTesting
     static double lowerQuartile(List<Double> doubles) {
-        int midway = Math.round(doubles.size() / 2.0f);
-        return median(doubles.subList(0, midway));
+      int midway = (int) Math.ceil(doubles.size() / 2.0f);
+      return median(doubles.subList(0, midway));
     }
 
     @VisibleForTesting
     static double upperQuartile(List<Double> doubles) {
-      if (doubles.size() <= 3) {
-        return doubles.get(doubles.size() - 1);
-
-      } else {
-        int midway = (doubles.size() / 2) + 1;
-        return median(doubles.subList(midway, doubles.size() - 1));
-      }
+      int midway = (int) Math.floor(doubles.size() / 2.0f);
+      return median(doubles.subList(midway, doubles.size()));
     }
 
     @VisibleForTesting
@@ -142,6 +139,10 @@ public class ProjectTimeEstimatesSummary {
 
     public double getLowerQuartile() {
       return lowerQuartile;
+    }
+
+    public double getAverage() {
+      return average;
     }
   }
 }
