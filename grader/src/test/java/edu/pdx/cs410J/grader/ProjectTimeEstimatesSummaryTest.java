@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummaries;
+import edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummary;
 import edu.pdx.cs410J.grader.gradebook.Assignment;
 import edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType;
 import edu.pdx.cs410J.grader.gradebook.Grade;
@@ -8,13 +9,17 @@ import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummary.*;
-import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.matchesRegex;
 
 public class ProjectTimeEstimatesSummaryTest {
 
@@ -35,7 +40,11 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   private Assignment addProject(GradeBook book, ProjectType projectType) {
-    Assignment project = new Assignment("project", 1.0)
+    return addProject(book, "project", projectType);
+  }
+
+  private Assignment addProject(GradeBook book, String projectName, ProjectType projectType) {
+    Assignment project = new Assignment(projectName, 1.0)
       .setProjectType(projectType);
     book.addAssignment(project);
     return project;
@@ -51,7 +60,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(1));
   }
 
@@ -66,7 +75,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(1));
     assertThat(estimates.getMaximum(), equalTo(maximumEstimate));
 
@@ -85,7 +94,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(2));
     assertThat(estimates.getMaximum(), equalTo(maximumEstimate));
   }
@@ -103,7 +112,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(2));
     assertThat(estimates.getMinimum(), equalTo(minimumEstimate));
   }
@@ -122,7 +131,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(3));
     assertThat(estimates.getMedian(), equalTo(medianEstimate));
   }
@@ -163,7 +172,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getUpperQuartile(), equalTo(upperQuartile));
   }
 
@@ -183,7 +192,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getLowerQuartile(), equalTo(lowerQuartile));
   }
 
@@ -244,8 +253,47 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getAverage(), equalTo(3.0));
   }
 
+  @Test
+  void generateMarkdown() throws IOException {
+    GradeBook book = new GradeBook("test");
+
+    Assignment appClasses = addProject(book, "AppClasses", APP_CLASSES);
+    Assignment textFile = addProject(book, "TextFile", TEXT_FILE);
+    
+    Student student1 = addStudent(book, "student1");
+    Student student2 = addStudent(book, "student2");
+    Student student3 = addStudent(book, "student3");
+    Student student4 = addStudent(book, "student4");
+    Student student5 = addStudent(book, "student5");
+    
+    noteSubmission(student1, appClasses, 4.0);    
+    noteSubmission(student2, appClasses, 5.0);    
+    noteSubmission(student3, appClasses, 3.0);    
+    noteSubmission(student4, appClasses, 6.0);    
+    noteSubmission(student5, appClasses, 2.0);    
+    noteSubmission(student1, textFile, 7.0);
+    noteSubmission(student2, textFile, 6.0);
+    noteSubmission(student3, textFile, 8.0);
+    noteSubmission(student4, textFile, 6.0);    
+    noteSubmission(student5, textFile, 7.0);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    TimeEstimatesSummary appClassesEstimates = summaries.getTimeEstimateSummary(appClasses.getProjectType());
+    assertThat(appClassesEstimates.getCount(), equalTo(5));
+
+    StringWriter sw = new StringWriter();
+    summaries.generateMarkdown(sw, List.of(appClasses.getProjectType(), textFile.getProjectType()));
+    String markdown = sw.toString();
+    List<String> lines = markdown.lines().collect(Collectors.toList());
+
+    assertThat(lines.get(0), equalTo("| | App Classes | Text File |"));
+    assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
+    assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
+    assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d \\| \\d\\.\\d \\|"));
+  }
 }

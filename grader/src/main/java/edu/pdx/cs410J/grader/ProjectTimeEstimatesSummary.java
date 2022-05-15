@@ -7,6 +7,9 @@ import edu.pdx.cs410J.grader.gradebook.Grade;
 import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,63 @@ public class ProjectTimeEstimatesSummary {
 
     void addSummariesFor(GradeBook book, Assignment assignment) {
       summaries.put(assignment.getProjectType(), new TimeEstimatesSummary(book, assignment));
+    }
+
+    public void generateMarkdown(Writer writer, List<ProjectType> projectTypes) throws IOException {
+      PrintWriter pw = new PrintWriter(writer, true);
+      headerRows(pw, projectTypes);
+      countRow(pw, projectTypes);
+      averageRow(pw, projectTypes);
+
+    }
+
+    private void averageRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      pw.print("| Average |");
+      projectTypes.forEach(projectType -> {
+        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
+        pw.print(" ");
+        pw.print(summary.getAverage());
+        pw.print(" |");
+      });
+      pw.println();
+    }
+
+    private void countRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      pw.print("| Count |");
+      projectTypes.forEach(projectType -> {
+        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
+        pw.print(" ");
+        pw.print(summary.getCount());
+        pw.print(" |");
+      });
+      pw.println();
+    }
+
+    private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) throws IOException {
+      pw.print("| |");
+      projectTypes.forEach(projectType -> {
+        pw.print(" ");
+        pw.print(formatProjectType(projectType));
+        pw.print(" |");
+      });
+      pw.println("");
+
+      pw.print("| :--- |");
+      projectTypes.stream().map(projectType -> " ---: |").forEach(pw::print);
+      pw.println("");
+    }
+
+    private String formatProjectType(ProjectType projectType) {
+      switch (projectType) {
+        case APP_CLASSES:
+          return "App Classes";
+
+        case TEXT_FILE:
+          return "Text File";
+
+        default:
+          throw new UnsupportedOperationException("Don't know how to format " + projectType);
+      }
     }
   }
 
