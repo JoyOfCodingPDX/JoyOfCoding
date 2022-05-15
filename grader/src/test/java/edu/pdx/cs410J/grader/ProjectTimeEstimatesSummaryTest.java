@@ -9,14 +9,14 @@ import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static edu.pdx.cs410J.grader.ProjectTimeEstimatesSummary.TimeEstimatesSummary.*;
-import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.TEXT_FILE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesRegex;
@@ -258,7 +258,7 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
-  void generateMarkdown() throws IOException {
+  void generateMarkdown() {
     GradeBook book = new GradeBook("test");
 
     Assignment appClasses = addProject(book, "AppClasses", APP_CLASSES);
@@ -303,5 +303,27 @@ public class ProjectTimeEstimatesSummaryTest {
     assertThat(lines.get(6), matchesRegex("\\| Median \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
     assertThat(lines.get(7), matchesRegex("\\| Bottom 25% \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
     assertThat(lines.get(8), matchesRegex("\\| Minimum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+  }
+
+  @Test
+  void okayToGenerateMarkdownWhenProjectsWithoutType() {
+    GradeBook book = new GradeBook("test");
+    book.addAssignment(new Assignment("project1", 1.0));
+    book.addAssignment(new Assignment("project2", 1.0));
+    book.addAssignment(new Assignment("project3", 1.0));
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+
+    StringWriter sw = new StringWriter();
+    summaries.generateMarkdown(sw, List.of(APP_CLASSES, TEXT_FILE));
+    String markdown = sw.toString();
+
+    List<String> lines = markdown.lines().collect(Collectors.toList());
+
+    assertThat(lines.get(0), equalTo("|  | App Classes | Text File |"));
+    assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
+    assertThat(lines.get(2), equalTo("| Count | 0 | 0 |"));
+    assertThat(lines.get(3), equalTo("| Average | n/a | n/a |"));
   }
 }

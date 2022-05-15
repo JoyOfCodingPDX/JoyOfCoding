@@ -64,7 +64,7 @@ public class ProjectTimeEstimatesSummary {
   private static void usage(String message) {
     PrintStream err = System.err;
     err.println("** " + message);
-    err.println("");
+    err.println();
     err.println("usage: ProjectTimeEstimatesSummary gradeBookFile");
     err.println();
 
@@ -119,26 +119,41 @@ public class ProjectTimeEstimatesSummary {
     }
 
     private void formatRowOfDoubles(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, Double> cellValue) {
-      formatRow(pw, projectTypes, rowTitle, summary -> cellValue.apply(summary) + " hrs");
+      formatRow(pw, projectTypes, rowTitle,projectType -> {
+        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
+        if (summary == null) {
+          return "n/a";
+
+        } else {
+          return cellValue.apply(summary) + " hrs";
+        }
+      });
     }
 
-    private void formatRow(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, String> cellValue) {
+    private void formatRow(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<ProjectType, String> cellValue) {
       pw.print("| " + rowTitle + " |");
       projectTypes.forEach(projectType -> {
-        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
         pw.print(" ");
-        pw.print(cellValue.apply(summary));
+        pw.print(cellValue.apply(projectType));
         pw.print(" |");
       });
       pw.println();
     }
 
     private void countRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRow(pw, projectTypes, "Count", summary -> String.valueOf(summary.getCount()));
+      formatRow(pw, projectTypes, "Count", projectType -> {
+          TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
+          if (summary == null) {
+            return "0";
+
+          } else {
+            return String.valueOf(summary.getCount());
+          }
+        });
     }
 
     private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRow(pw, projectTypes, "", summary -> formatProjectType(summary.getProjectType()));
+      formatRow(pw, projectTypes, "", this::formatProjectType);
       formatRow(pw, projectTypes, ":---", summary -> "---:");
     }
 
@@ -164,11 +179,8 @@ public class ProjectTimeEstimatesSummary {
     private final double upperQuartile;
     private final double lowerQuartile;
     private final double average;
-    private final ProjectType projectType;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
-      this.projectType = assignment.getProjectType();
-
       Collection<Double> estimates = getEstimates(book, assignment);
       if (estimates.isEmpty()) {
         throw new IllegalStateException("No estimates for " + assignment);
@@ -267,8 +279,5 @@ public class ProjectTimeEstimatesSummary {
       return average;
     }
 
-    public ProjectType getProjectType() {
-      return projectType;
-    }
   }
 }
