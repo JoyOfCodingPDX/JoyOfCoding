@@ -289,11 +289,15 @@ public class ProjectTimeEstimatesSummaryTest {
     StringWriter sw = new StringWriter();
     summaries.generateMarkdown(sw, List.of(appClasses.getProjectType(), textFile.getProjectType()));
     String markdown = sw.toString();
+
+    System.out.println(markdown);
+
     List<String> lines = markdown.lines().collect(Collectors.toList());
 
     assertThat(lines.get(0), equalTo("|  | App Classes | Text File |"));
     assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
     assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
     assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(4), matchesRegex("\\| Maximum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
   }
 }

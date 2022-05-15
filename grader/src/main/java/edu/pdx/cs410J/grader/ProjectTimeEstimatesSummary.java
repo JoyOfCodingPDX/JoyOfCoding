@@ -43,11 +43,20 @@ public class ProjectTimeEstimatesSummary {
       headerRows(pw, projectTypes);
       countRow(pw, projectTypes);
       averageRow(pw, projectTypes);
+      maximumRow(pw, projectTypes);
 
     }
 
+    private void maximumRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Maximum", TimeEstimatesSummary::getMaximum);
+    }
+
     private void averageRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRow(pw, projectTypes, "Average", summary -> summary.getAverage() + " hrs");
+      formatRowOfDoubles(pw, projectTypes, "Average", TimeEstimatesSummary::getAverage);
+    }
+
+    private void formatRowOfDoubles(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, Double> cellValue) {
+      formatRow(pw, projectTypes, rowTitle, summary -> cellValue.apply(summary) + " hrs");
     }
 
     private void formatRow(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, String> cellValue) {
