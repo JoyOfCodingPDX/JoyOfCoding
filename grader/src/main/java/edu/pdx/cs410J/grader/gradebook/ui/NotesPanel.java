@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.gradebook.ui;
 
-import edu.pdx.cs410J.grader.Notable;
+import edu.pdx.cs410J.grader.gradebook.Notable;
 
 import javax.swing.*;
 import javax.swing.border.Border;

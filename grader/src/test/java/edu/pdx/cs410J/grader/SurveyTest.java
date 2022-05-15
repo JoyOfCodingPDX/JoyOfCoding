@@ -1,6 +1,8 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlStudentParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

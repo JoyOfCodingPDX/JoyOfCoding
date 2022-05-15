@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import org.w3c.dom.*;
 import org.xml.sax.*;
@@ -16,7 +16,7 @@ import java.util.List;
  * This class contains fields and methods that are useful when dealing
  * with XML data.
  */
-class XmlHelper implements EntityResolver, ErrorHandler {
+public class XmlHelper implements EntityResolver, ErrorHandler {
 
   /** The System ID for the Grade Book DTD */
   protected static final String systemID = 
@@ -28,7 +28,7 @@ class XmlHelper implements EntityResolver, ErrorHandler {
 
   protected static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-  static byte[] getBytesForXmlDocument(Document xmlDoc) throws TransformerException {
+  public static byte[] getBytesForXmlDocument(Document xmlDoc) throws TransformerException {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       PrintWriter pw =
         new PrintWriter(new OutputStreamWriter(baos), true);

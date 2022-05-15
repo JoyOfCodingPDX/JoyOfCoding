@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.io.CharStreams;
+import edu.pdx.cs410J.grader.gradebook.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;
-import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
+import static edu.pdx.cs410J.grader.gradebook.Student.Section.GRADUATE;
+import static edu.pdx.cs410J.grader.gradebook.Student.Section.UNDERGRADUATE;
 import static edu.pdx.cs410J.grader.SummaryReport.GRADUATE_DIRECTORY_NAME;
 import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import org.w3c.dom.*;
 
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class dumps the contents of a <code>GradeBook</code> to an XML
@@ -303,7 +303,7 @@ public class XmlDumper extends XmlHelper {
   /**
    * Returns a DOM tree that represents a <code>Student</code>
    */
-  static Document toXml(Student student) {
+  public static Document toXml(Student student) {
     Document doc = createXmlDocument();
 
     Element root = doc.getDocumentElement();

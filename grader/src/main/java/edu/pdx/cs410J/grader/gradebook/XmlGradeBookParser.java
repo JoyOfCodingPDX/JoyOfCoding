@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
 import org.w3c.dom.Document;
@@ -15,7 +15,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class creates a <code>GradeBook</code> from the contents of an
@@ -71,7 +71,7 @@ public class XmlGradeBookParser extends XmlHelper {
   /**
    * Extracts an <code>Assignment</code> from an <code>Element</code>
    */
-  private static Assignment extractAssignmentFrom(Element element) 
+  private static Assignment extractAssignmentFrom(Element element)
     throws ParserException {
     Assignment assign = null;
 

@@ -1,11 +1,13 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.LetterGrade;
 import org.junit.jupiter.api.Test;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange.InvalidLetterGradeRange;
-import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;
-import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange.InvalidLetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.Student.Section.GRADUATE;
+import static edu.pdx.cs410J.grader.gradebook.Student.Section.UNDERGRADUATE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
 
@@ -216,7 +216,7 @@ public class Student extends NotableImpl {
 	  super.makeClean();
 
     // Make all Grades clean
-    this.grades.values().forEach(edu.pdx.cs410J.grader.Grade::makeClean);
+    this.grades.values().forEach(Grade::makeClean);
   }
 
   /**

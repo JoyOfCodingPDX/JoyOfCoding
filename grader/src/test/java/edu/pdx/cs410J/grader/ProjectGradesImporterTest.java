@@ -1,6 +1,9 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.grader.ProjectGradesImporter.ProjectScore;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;

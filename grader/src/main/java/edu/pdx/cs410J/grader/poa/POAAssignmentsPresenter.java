@@ -5,8 +5,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

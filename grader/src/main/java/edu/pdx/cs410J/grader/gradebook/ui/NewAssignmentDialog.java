@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.gradebook.ui;
 
-import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

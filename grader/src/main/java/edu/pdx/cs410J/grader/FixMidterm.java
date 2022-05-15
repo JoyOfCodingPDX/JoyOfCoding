@@ -1,6 +1,10 @@
 package edu.pdx.cs410J.grader;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.XmlDumper;
+import edu.pdx.cs410J.grader.gradebook.XmlGradeBookParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
