@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
@@ -162,6 +163,13 @@ public class GradeBookXmlTest {
   @Test
   void androidProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
     persistProjectOfType(ANDROID);
+  }
+
+  @Test
+  void canParseGradeBookWithoutProjectType() throws ParserException {
+    InputStream stream = getClass().getResourceAsStream("gradebookWithoutProjectTypes.xml");
+    GradeBook book = new XmlGradeBookParser(stream).parse();
+    assertThat(book, notNullValue());
   }
 
 }
