@@ -1,17 +1,16 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
-import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.*;
 import edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType;
-import edu.pdx.cs410J.grader.gradebook.Grade;
-import edu.pdx.cs410J.grader.gradebook.GradeBook;
-import edu.pdx.cs410J.grader.gradebook.Student;
 
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
 
 public class ProjectTimeEstimatesSummary {
   public TimeEstimatesSummaries getTimeEstimateSummaries(GradeBook book) {
@@ -25,6 +24,51 @@ public class ProjectTimeEstimatesSummary {
     });
 
     return summaries;
+  }
+
+  public static void main(String[] args) {
+    String gradeBookFileName = null;
+
+    for (String arg : args) {
+      if (gradeBookFileName == null) {
+        gradeBookFileName = arg;
+      }
+    }
+
+    if (gradeBookFileName == null) {
+      usage("Missing grade book file name");
+      return;
+    }
+
+    File gradeBookFile = new File(gradeBookFileName);
+    if (!gradeBookFile.exists()) {
+      usage("Cannot find grade book file: " + gradeBookFile);
+      return;
+    }
+
+    try {
+      GradeBook book = new XmlGradeBookParser(gradeBookFile).parse();
+
+      ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+      TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+
+      PrintWriter pw = new PrintWriter(System.out, true);
+      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, XML, ANDROID));
+      pw.flush();
+
+    } catch (ParserException | IOException e) {
+      usage("While parsing " + gradeBookFile + ": " + e);
+    }
+  }
+
+  private static void usage(String message) {
+    PrintStream err = System.err;
+    err.println("** " + message);
+    err.println("");
+    err.println("usage: ProjectTimeEstimatesSummary gradeBookFile");
+    err.println();
+
+    System.exit(1);
   }
 
   static class TimeEstimatesSummaries {
@@ -48,7 +92,6 @@ public class ProjectTimeEstimatesSummary {
       medianRow(pw, projectTypes);
       lowerQuartileRow(pw, projectTypes);
       minimumRow(pw, projectTypes);
-
     }
 
     private void minimumRow(PrintWriter pw, List<ProjectType> projectTypes) {
