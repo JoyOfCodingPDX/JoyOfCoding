@@ -7,13 +7,13 @@ import org.w3c.dom.Document;
 import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges;
 import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.containsString;
 
 public class GradeBookXmlTest {
 
@@ -118,6 +118,30 @@ public class GradeBookXmlTest {
 
     assertThat(book2.getSectionName(Student.Section.UNDERGRADUATE), equalTo(undergraduate));
     assertThat(book2.getSectionName(Student.Section.GRADUATE), equalTo(graduate));
+  }
+
+  @Test
+  void assignmentCanvasIdsArePersistedToXml() throws ParserException, IOException, TransformerException {
+    String name = "Assignment";
+    double points = 1.34;
+    int canvasId = 12345;
+
+    GradeBook book = new GradeBook("test");
+    book.addAssignment(new Assignment(name, points).setCanvasId(canvasId));
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+    Assignment assignment = book2.getAssignment(name);
+
+    assertThat(assignment.getName(), equalTo(name));
+    assertThat(assignment.getPoints(), equalTo(points));
+    assertThat(assignment.getCanvasId(), equalTo(canvasId));
+  }
+
+  @Test
+  void canParseGradebookWithoutAssignmentCanvasIds() throws ParserException {
+    InputStream stream = getClass().getResourceAsStream("gradebookWithoutAssignmentCanvasIds.xml");
+    GradeBook book = new XmlGradeBookParser(stream).parse();
+    assertThat(book, notNullValue());
   }
 
 }
