@@ -36,6 +36,7 @@ public class Assignment extends NotableImpl {
   private String name;
   private String description;
   private double points;
+  private int canvasId;
   private AssignmentType type;
   private LocalDateTime dueDate;
   private ProjectType projectType;
@@ -107,6 +108,18 @@ public class Assignment extends NotableImpl {
     this.type = type;
     return this;
   }
+
+
+  public Assignment setCanvasId(int canvasId) {
+    this.canvasId = canvasId;
+    this.setDirty(true);
+    return this;
+  }
+
+  public int getCanvasId() {
+    return canvasId;
+  }
+
 
   /**
    * Returns a brief textual description of this

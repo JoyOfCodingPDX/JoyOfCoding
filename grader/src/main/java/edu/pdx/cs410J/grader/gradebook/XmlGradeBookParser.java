@@ -110,6 +110,15 @@ public class XmlGradeBookParser extends XmlHelper {
             points);
         }
 
+      } else if (child.getTagName().equals("canvas-id")) {
+        String canvasId = extractTextFrom(child);
+        try {
+          assign.setCanvasId(Integer.parseInt(canvasId));
+
+        } catch(NumberFormatException ex) {
+          throw new ParserException("Invalidate Canvas Id: " + canvasId, ex);
+        }
+
       } else if (child.getTagName().equals("due-date")) {
         String dueDate = extractTextFrom(child);
         try {

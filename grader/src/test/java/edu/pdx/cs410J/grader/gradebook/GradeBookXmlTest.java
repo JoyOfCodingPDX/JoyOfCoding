@@ -124,6 +124,30 @@ public class GradeBookXmlTest {
   }
 
   @Test
+  void assignmentCanvasIdsArePersistedToXml() throws ParserException, IOException, TransformerException {
+    String name = "Assignment";
+    double points = 1.34;
+    int canvasId = 12345;
+
+    GradeBook book = new GradeBook("test");
+    book.addAssignment(new Assignment(name, points).setCanvasId(canvasId));
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+    Assignment assignment = book2.getAssignment(name);
+
+    assertThat(assignment.getName(), equalTo(name));
+    assertThat(assignment.getPoints(), equalTo(points));
+    assertThat(assignment.getCanvasId(), equalTo(canvasId));
+  }
+
+  @Test
+  void canParseGradebookWithoutAssignmentCanvasIds() throws ParserException {
+    InputStream stream = getClass().getResourceAsStream("gradebookWithoutAssignmentCanvasIds.xml");
+    GradeBook book = new XmlGradeBookParser(stream).parse();
+    assertThat(book, notNullValue());
+  }
+
+  @Test
   void projectTypesArePersistedToXml() throws ParserException, IOException, TransformerException {
     Assignment.ProjectType projectType = APP_CLASSES;
     persistProjectOfType(projectType);

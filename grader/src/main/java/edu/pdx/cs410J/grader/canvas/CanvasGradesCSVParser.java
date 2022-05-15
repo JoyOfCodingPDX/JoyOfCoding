@@ -6,16 +6,19 @@ import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CanvasGradesCSVParser {
+public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   private static final Pattern assignmentNamePattern = Pattern.compile("(.+) \\((\\d+)\\)");
   private static final String[] ignoredColumnNames = new String[] {
     "ID",
     "SIS User ID",
-    "Section",
+    SECTION_COLUMN,
     "Getting Ready Current Points",
     "Getting Ready Final Points",
     "Getting Ready Current Score",
@@ -46,7 +49,7 @@ public class CanvasGradesCSVParser {
   private int studentIdColumn;
   private int canvasIdColumn;
   private int sectionIdColumn;
-  private final SortedMap<Integer, Assignment> columnToAssignment = new TreeMap<>();
+  private final SortedMap<Integer, GradesFromCanvas.CanvasAssignment> columnToAssignment = new TreeMap<>();
   private final GradesFromCanvas grades;
 
   public CanvasGradesCSVParser(Reader reader) throws IOException {
@@ -82,7 +85,7 @@ public class CanvasGradesCSVParser {
     this.columnToAssignment.forEach((column, assignment) -> {
       String score = studentLine[column];
       if (!isEmptyString(score)) {
-        student.setScore(assignment.getName(), parseScore(score));
+        student.setScore(assignment, parseScore(score));
       }
     });
 
@@ -132,16 +135,16 @@ public class CanvasGradesCSVParser {
     for (int i = 0; i < firstLine.length; i++) {
       String cell = firstLine[i];
       switch (cell) {
-        case "Student":
+        case STUDENT_COLUMN:
           this.studentNameColumn = i;
           break;
         case "SIS Login ID":
           this.studentIdColumn = i;
           break;
-        case "ID":
+        case ID_COLUMN:
           this.canvasIdColumn = i;
           break;
-        case "Section":
+        case SECTION_COLUMN:
           this.sectionIdColumn = i;
           break;
         default:
@@ -154,12 +157,12 @@ public class CanvasGradesCSVParser {
   }
 
   @VisibleForTesting
-  static Assignment createAssignment(String assignmentText) {
+  static GradesFromCanvas.CanvasAssignment createAssignment(String assignmentText) {
     Matcher matcher = assignmentNamePattern.matcher(assignmentText);
     if (matcher.matches()) {
       String name = matcher.group(1);
       String idText = matcher.group(2);
-      return new Assignment(name, Integer.parseInt(idText));
+      return new GradesFromCanvas.CanvasAssignment(name, Integer.parseInt(idText));
 
     } else {
       throw new IllegalStateException("Can't create Assignment from \"" + assignmentText + "\"");
@@ -180,39 +183,12 @@ public class CanvasGradesCSVParser {
     return false;
   }
 
-  public List<Assignment> getAssignments() {
+  public List<GradesFromCanvas.CanvasAssignment> getAssignments() {
     return new ArrayList<>(this.columnToAssignment.values());
   }
 
   public GradesFromCanvas getGrades() {
     return this.grades;
-  }
-
-  public static class Assignment {
-    private final String name;
-    private final int id;
-    private double pointsPossible;
-
-    public Assignment(String name, int id) {
-      this.name = name;
-      this.id = id;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public int getId() {
-      return id;
-    }
-
-    public double getPointsPossible() {
-      return pointsPossible;
-    }
-
-    void setPossiblePoints(double possiblePoints) {
-      this.pointsPossible = possiblePoints;
-    }
   }
 
 }

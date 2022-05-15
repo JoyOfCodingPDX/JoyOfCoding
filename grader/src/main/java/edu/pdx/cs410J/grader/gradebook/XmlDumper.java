@@ -205,6 +205,7 @@ public class XmlDumper extends XmlHelper {
       appendTextElementIfValueIsNotNull(assignNode, "name", assign.getName());
       appendTextElementIfValueIsNotNull(assignNode, "description", assign.getDescription());
       appendTextElementIfValueIsNotNull(assignNode, "points", String.valueOf(assign.getPoints()));
+      appendTextElementIfValueIsNotNull(assignNode, "canvas-id", String.valueOf(assign.getCanvasId()));
       appendTextElementIfValueIsNotNull(assignNode, "due-date", assign.getDueDate());
 
       doNotes(doc, assignNode, assign.getNotes());
