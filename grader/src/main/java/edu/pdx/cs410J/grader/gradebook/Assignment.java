@@ -23,11 +23,15 @@ public class Assignment extends NotableImpl {
     OPTIONAL
   }
 
+
+  public enum ProjectType {APP_CLASSES}
+
   private String name;
   private String description;
   private double points;
   private AssignmentType type;
   private LocalDateTime dueDate;
+  private ProjectType projectType;
 
   /**
    * Creates a new <code>Assignment</code> with the given name and
@@ -322,4 +326,14 @@ public class Assignment extends NotableImpl {
       return submissionTime.isAfter(this.dueDate);
     }
   }
+
+  public Assignment setProjectType(ProjectType projectType) {
+    this.projectType = projectType;
+    return this;
+  }
+
+  public ProjectType getProjectType() {
+    return projectType;
+  }
+
 }
