@@ -41,6 +41,8 @@ public class ProjectTimeEstimatesSummary {
     private final double maximum;
     private final double minimum;
     private final double median;
+    private final double upperQuartile;
+    private final double lowerQuartile;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
       Collection<Double> estimates = getEstimates(book, assignment);
@@ -49,23 +51,47 @@ public class ProjectTimeEstimatesSummary {
 
       } else {
         this.count = estimates.size();
-        this.maximum = estimates.stream().max(Comparator.naturalOrder()).get();
-        this.minimum = estimates.stream().min(Comparator.naturalOrder()).get();
-        this.median = median(estimates);
+        List<Double> sorted = estimates.stream().sorted().collect(Collectors.toList());
+        this.minimum = sorted.get(0);
+        this.maximum = sorted.get(sorted.size() - 1);
+        this.median = median(sorted);
+        this.upperQuartile = upperQuartile(sorted);
+        this.lowerQuartile = lowerQuartile(sorted);
+      }
+    }
+
+    @VisibleForTesting
+    static double lowerQuartile(List<Double> doubles) {
+        int midway = Math.round(doubles.size() / 2.0f);
+        return median(doubles.subList(0, midway));
+    }
+
+    @VisibleForTesting
+    static double upperQuartile(List<Double> doubles) {
+      if (doubles.size() <= 3) {
+        return doubles.get(doubles.size() - 1);
+
+      } else {
+        int midway = (doubles.size() / 2) + 1;
+        return median(doubles.subList(midway, doubles.size() - 1));
       }
     }
 
     @VisibleForTesting
     static double median(Collection<Double> doubles) {
       List<Double> values = doubles.stream().sorted().collect(Collectors.toList());
-      int size = values.size();
+      return median(values);
+    }
+
+    private static double median(List<Double> doubles) {
+      int size = doubles.size();
       if (size % 2 == 0) {
         int midpoint = (size / 2);
-        return average(values.get(midpoint - 1), values.get(midpoint));
+        return average(doubles.get(midpoint - 1), doubles.get(midpoint));
 
       } else {
         int midpoint = (size / 2);
-        return values.get(midpoint);
+        return doubles.get(midpoint);
       }
     }
 
@@ -108,6 +134,14 @@ public class ProjectTimeEstimatesSummary {
 
     public double getMedian() {
       return median;
+    }
+
+    public double getUpperQuartile() {
+      return upperQuartile;
+    }
+
+    public double getLowerQuartile() {
+      return lowerQuartile;
     }
   }
 }
