@@ -1,11 +1,15 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import edu.pdx.cs410J.grader.Notable;
+
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
 
 /**
  * This panel displays and edits notes.

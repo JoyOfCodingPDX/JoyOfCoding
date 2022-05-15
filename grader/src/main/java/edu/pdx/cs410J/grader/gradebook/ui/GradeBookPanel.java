@@ -1,6 +1,7 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook.ui;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

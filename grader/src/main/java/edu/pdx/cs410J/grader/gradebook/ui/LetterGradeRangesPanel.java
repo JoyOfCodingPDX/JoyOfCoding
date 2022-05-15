@@ -1,4 +1,8 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook.ui;
+
+import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.LetterGrade;
+import edu.pdx.cs410J.grader.Student;
 
 import javax.swing.*;
 import java.awt.*;

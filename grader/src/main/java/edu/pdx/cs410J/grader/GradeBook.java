@@ -362,7 +362,7 @@ public class GradeBook {
     this.sectionNames.put(section, sectionName);
   }
 
-  static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
+  public static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
     private LetterGradeRanges() {
@@ -440,7 +440,7 @@ public class GradeBook {
       return this.ranges.values().spliterator();
     }
 
-    static class LetterGradeRange {
+    public static class LetterGradeRange {
       private final LetterGrade letterGrade;
       private int maximum;
       private int minimum;
