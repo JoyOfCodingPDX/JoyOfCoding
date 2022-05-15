@@ -24,11 +24,13 @@ import static org.hamcrest.Matchers.*;
 
 public class ProjectTimeEstimatesSummaryTest {
 
-  private void noteSubmission(Student student, Assignment project, double... estimates) {
+  private void noteSubmission(Student student, Assignment project, Double... estimates) {
     Grade grade = new Grade(project, Grade.NO_GRADE);
-    for (double estimate : estimates) {
+    for (Double estimate : estimates) {
       Grade.SubmissionInfo submission = new Grade.SubmissionInfo();
-      submission.setEstimatedHours(estimate);
+      if (estimate != null) {
+        submission.setEstimatedHours(estimate);
+      }
       grade.noteSubmission(submission);
     }
     student.setGrade(project, grade);
@@ -91,7 +93,7 @@ public class ProjectTimeEstimatesSummaryTest {
     double maximumEstimate = 11.0;
     Assignment project = addProject(book, projectType);
     noteSubmission(addStudent(book, "student1"), project, 10.0, maximumEstimate);
-    noteSubmission(addStudent(book, "student2"), project, 9);
+    noteSubmission(addStudent(book, "student2"), project, 9.0);
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
@@ -330,8 +332,19 @@ public class ProjectTimeEstimatesSummaryTest {
 
   @Test
   void allProjectTypesAreFormatted() {
-    Arrays.stream(ProjectType.values()).forEach(projectType -> {
-      assertThat(formatProjectType(projectType), notNullValue());
-    });
+    Arrays.stream(ProjectType.values()).forEach(projectType -> assertThat(formatProjectType(projectType), notNullValue()));
+  }
+
+  @Test
+  void submissionsWithoutEstimatesDoNotCount() {
+    GradeBook book = new GradeBook("test");
+
+    Assignment appClasses = addProject(book, "AppClasses", APP_CLASSES);
+    Student student1 = addStudent(book, "student1");
+    noteSubmission(student1, appClasses, (Double) null);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    assertThat(summaries.getTimeEstimateSummary(APP_CLASSES), nullValue());
   }
 }

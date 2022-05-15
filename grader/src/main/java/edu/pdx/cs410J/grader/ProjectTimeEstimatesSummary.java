@@ -79,7 +79,34 @@ public class ProjectTimeEstimatesSummary {
     }
 
     void addSummariesFor(GradeBook book, Assignment assignment) {
-      summaries.put(assignment.getProjectType(), new TimeEstimatesSummary(book, assignment));
+      Collection<Double> estimates = getEstimates(book, assignment);
+      if (!estimates.isEmpty()) {
+        summaries.put(assignment.getProjectType(), new TimeEstimatesSummary(estimates));
+      }
+    }
+
+    private Collection<Double> getEstimates(GradeBook book, Assignment assignment) {
+      List<Double> estimates = new ArrayList<>();
+
+      book.studentsStream().forEach(student -> getEstimate(student, assignment).ifPresent(estimates::add));
+
+      return estimates;
+    }
+
+    private Optional<Double> getEstimate(Student student, Assignment assignment) {
+      Grade grade = student.getGrade(assignment);
+      if (grade != null) {
+        return getMaximumEstimate(grade.getSubmissionInfos());
+      }
+
+      return Optional.empty();
+    }
+
+    private Optional<Double> getMaximumEstimate(List<Grade.SubmissionInfo> submissions) {
+      return submissions.stream()
+        .map(Grade.SubmissionInfo::getEstimatedHours)
+        .filter(Objects::nonNull)
+        .max(Comparator.naturalOrder());
     }
 
     public void generateMarkdown(Writer writer, List<ProjectType> projectTypes) {
@@ -193,21 +220,15 @@ public class ProjectTimeEstimatesSummary {
     private final double lowerQuartile;
     private final double average;
 
-    TimeEstimatesSummary(GradeBook book, Assignment assignment) {
-      Collection<Double> estimates = getEstimates(book, assignment);
-      if (estimates.isEmpty()) {
-        throw new IllegalStateException("No estimates for " + assignment);
-
-      } else {
-        this.count = estimates.size();
-        this.average = estimates.stream().reduce(Double::sum).get() / ((double) this.count);
-        List<Double> sorted = estimates.stream().sorted().collect(Collectors.toList());
-        this.minimum = sorted.get(0);
-        this.maximum = sorted.get(sorted.size() - 1);
-        this.median = median(sorted);
-        this.upperQuartile = upperQuartile(sorted);
-        this.lowerQuartile = lowerQuartile(sorted);
-      }
+    TimeEstimatesSummary(Collection<Double> estimates) {
+      this.count = estimates.size();
+      this.average = estimates.stream().reduce(Double::sum).get() / ((double) this.count);
+      List<Double> sorted = estimates.stream().sorted().collect(Collectors.toList());
+      this.minimum = sorted.get(0);
+      this.maximum = sorted.get(sorted.size() - 1);
+      this.median = median(sorted);
+      this.upperQuartile = upperQuartile(sorted);
+      this.lowerQuartile = lowerQuartile(sorted);
     }
 
     @VisibleForTesting
@@ -241,27 +262,6 @@ public class ProjectTimeEstimatesSummary {
 
     private static double average(double d1, double d2) {
       return (d1 + d2) / 2.0;
-    }
-
-    private Collection<Double> getEstimates(GradeBook book, Assignment assignment) {
-      List<Double> estimates = new ArrayList<>();
-
-      book.studentsStream().forEach(student -> getEstimate(student, assignment).ifPresent(estimates::add));
-
-      return estimates;
-    }
-
-    private Optional<Double> getEstimate(Student student, Assignment assignment) {
-      Grade grade = student.getGrade(assignment);
-      if (grade != null) {
-        return getMaximumEstimate(grade.getSubmissionInfos());
-      }
-
-      return Optional.empty();
-    }
-
-    private Optional<Double> getMaximumEstimate(List<Grade.SubmissionInfo> submissions) {
-      return submissions.stream().map(Grade.SubmissionInfo::getEstimatedHours).max(Comparator.naturalOrder());
     }
 
     public int getCount() {
