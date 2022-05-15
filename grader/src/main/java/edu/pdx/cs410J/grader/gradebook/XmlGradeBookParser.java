@@ -15,7 +15,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
@@ -165,6 +165,26 @@ public class XmlGradeBookParser extends XmlHelper {
       switch (projectType) {
         case "APP_CLASSES":
           assignment.setProjectType(APP_CLASSES);
+          break;
+
+        case "TEXT_FILE":
+          assignment.setProjectType(TEXT_FILE);
+          break;
+
+        case "PRETTY_PRINT":
+          assignment.setProjectType(PRETTY_PRINT);
+          break;
+
+        case "XML":
+          assignment.setProjectType(XML);
+          break;
+
+        case "REST":
+          assignment.setProjectType(REST);
+          break;
+
+        case "ANDROID":
+          assignment.setProjectType(ANDROID);
           break;
 
         default:

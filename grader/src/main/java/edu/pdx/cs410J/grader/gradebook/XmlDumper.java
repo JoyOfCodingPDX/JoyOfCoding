@@ -259,6 +259,26 @@ public class XmlDumper extends XmlHelper {
           assignmentNode.setAttribute("project-type", "APP_CLASSES");
           break;
 
+        case TEXT_FILE:
+          assignmentNode.setAttribute("project-type", "TEXT_FILE");
+          break;
+
+        case PRETTY_PRINT:
+          assignmentNode.setAttribute("project-type", "PRETTY_PRINT");
+          break;
+
+        case XML:
+          assignmentNode.setAttribute("project-type", "XML");
+          break;
+
+        case REST:
+          assignmentNode.setAttribute("project-type", "REST");
+          break;
+
+        case ANDROID:
+          assignmentNode.setAttribute("project-type", "ANDROID");
+          break;
+
         default:
           throw new IllegalStateException("Can't handle project type: " + projectType);
       }

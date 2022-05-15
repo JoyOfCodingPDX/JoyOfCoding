@@ -24,7 +24,14 @@ public class Assignment extends NotableImpl {
   }
 
 
-  public enum ProjectType {APP_CLASSES}
+  public enum ProjectType {
+    APP_CLASSES,
+    TEXT_FILE,
+    PRETTY_PRINT,
+    XML,
+    REST,
+    ANDROID
+  }
 
   private String name;
   private String description;

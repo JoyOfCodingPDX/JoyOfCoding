@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,7 +63,7 @@ public class GradeBookXmlTest {
     Document doc = XmlDumper.dumpGradeBook(book, new XmlHelper());
     byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
 
-    System.out.println(new String(bytes));
+//    System.out.println(new String(bytes));
 
     XmlGradeBookParser parser = new XmlGradeBookParser(new ByteArrayInputStream(bytes));
     return parser.parse();
@@ -124,15 +124,44 @@ public class GradeBookXmlTest {
 
   @Test
   void projectTypesArePersistedToXml() throws ParserException, IOException, TransformerException {
+    Assignment.ProjectType projectType = APP_CLASSES;
+    persistProjectOfType(projectType);
+  }
+
+  private void persistProjectOfType(Assignment.ProjectType projectType) throws IOException, TransformerException, ParserException {
     GradeBook book = new GradeBook("test");
     String projectName = "appClasses";
-    Assignment appClasses = new Assignment(projectName, 1.0).setProjectType(APP_CLASSES);
+    Assignment appClasses = new Assignment(projectName, 1.0).setProjectType(projectType);
     book.addAssignment(appClasses);
 
     GradeBook book2 = writeAndReadGradeBookAsXml(book);
 
-    assertThat(book2.getAssignment(projectName).getProjectType(), equalTo(APP_CLASSES));
+    assertThat(book2.getAssignment(projectName).getProjectType(), equalTo(projectType));
+  }
 
+  @Test
+  void textFileProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(TEXT_FILE);
+  }
+
+  @Test
+  void prettyPrintProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(PRETTY_PRINT);
+  }
+
+  @Test
+  void xmlProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(XML);
+  }
+
+  @Test
+  void restProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(REST);
+  }
+
+  @Test
+  void androidProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(ANDROID);
   }
 
 }
