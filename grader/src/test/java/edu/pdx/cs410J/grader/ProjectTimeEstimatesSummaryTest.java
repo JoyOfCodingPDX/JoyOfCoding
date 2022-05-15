@@ -24,8 +24,8 @@ public class ProjectTimeEstimatesSummaryTest {
     student.setGrade(project, grade);
   }
 
-  private Student addStudent(GradeBook book) {
-    Student student = new Student("student");
+  private Student addStudent(GradeBook book, String studentName) {
+    Student student = new Student(studentName);
     book.addStudent(student);
     return student;
   }
@@ -43,7 +43,7 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectType projectType = APP_CLASSES;
 
-    noteSubmission(addStudent(book), addProject(book, projectType), 10.0);
+    noteSubmission(addStudent(book, "student"), addProject(book, projectType), 10.0);
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
@@ -52,13 +52,13 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
-  void maximumEstimateIsConsidered() {
+  void maximumEstimateByStudentIsConsidered() {
     GradeBook book = new GradeBook("test");
 
     ProjectType projectType = APP_CLASSES;
 
     double maximumEstimate = 11.0;
-    noteSubmission(addStudent(book), addProject(book, projectType), 10.0, maximumEstimate);
+    noteSubmission(addStudent(book, "student"), addProject(book, projectType), 10.0, maximumEstimate);
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
@@ -68,4 +68,39 @@ public class ProjectTimeEstimatesSummaryTest {
 
   }
 
+  @Test
+  void maximumFromMultipleSubmissions() {
+    GradeBook book = new GradeBook("test");
+
+    ProjectType projectType = APP_CLASSES;
+
+    double maximumEstimate = 11.0;
+    Assignment project = addProject(book, projectType);
+    noteSubmission(addStudent(book, "student1"), project, 10.0, maximumEstimate);
+    noteSubmission(addStudent(book, "student2"), project, 9);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getCount(), equalTo(2));
+    assertThat(estimates.getMaximum(), equalTo(maximumEstimate));
+  }
+
+  @Test
+  void minimumFromMultipleSubmissions() {
+    GradeBook book = new GradeBook("test");
+
+    ProjectType projectType = APP_CLASSES;
+
+    double minimumEstimate = 9.0;
+    Assignment project = addProject(book, projectType);
+    noteSubmission(addStudent(book, "student1"), project, 10.0, 11.0);
+    noteSubmission(addStudent(book, "student2"), project, minimumEstimate);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getCount(), equalTo(2));
+    assertThat(estimates.getMinimum(), equalTo(minimumEstimate));
+  }
 }

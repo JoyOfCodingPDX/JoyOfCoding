@@ -37,6 +37,7 @@ public class ProjectTimeEstimatesSummary {
   static class TimeEstimatesSummary {
     private final int count;
     private final double maximum;
+    private double minimum;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
       Collection<Double> estimates = getEstimates(book, assignment);
@@ -46,6 +47,7 @@ public class ProjectTimeEstimatesSummary {
       } else {
         this.count = estimates.size();
         this.maximum = estimates.stream().max(Comparator.naturalOrder()).get();
+        this.minimum = estimates.stream().min(Comparator.naturalOrder()).get();
       }
     }
 
@@ -76,6 +78,10 @@ public class ProjectTimeEstimatesSummary {
 
     public double getMaximum() {
       return maximum;
+    }
+
+    public double getMinimum() {
+      return minimum;
     }
   }
 }
