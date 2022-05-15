@@ -291,9 +291,9 @@ public class ProjectTimeEstimatesSummaryTest {
     String markdown = sw.toString();
     List<String> lines = markdown.lines().collect(Collectors.toList());
 
-    assertThat(lines.get(0), equalTo("| | App Classes | Text File |"));
+    assertThat(lines.get(0), equalTo("|  | App Classes | Text File |"));
     assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
     assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
-    assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d \\| \\d\\.\\d \\|"));
+    assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
   }
 }

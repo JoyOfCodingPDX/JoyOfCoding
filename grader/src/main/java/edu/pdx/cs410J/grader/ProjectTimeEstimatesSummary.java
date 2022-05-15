@@ -7,10 +7,10 @@ import edu.pdx.cs410J.grader.gradebook.Grade;
 import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ProjectTimeEstimatesSummary {
@@ -38,7 +38,7 @@ public class ProjectTimeEstimatesSummary {
       summaries.put(assignment.getProjectType(), new TimeEstimatesSummary(book, assignment));
     }
 
-    public void generateMarkdown(Writer writer, List<ProjectType> projectTypes) throws IOException {
+    public void generateMarkdown(Writer writer, List<ProjectType> projectTypes) {
       PrintWriter pw = new PrintWriter(writer, true);
       headerRows(pw, projectTypes);
       countRow(pw, projectTypes);
@@ -47,39 +47,27 @@ public class ProjectTimeEstimatesSummary {
     }
 
     private void averageRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      pw.print("| Average |");
+      formatRow(pw, projectTypes, "Average", summary -> summary.getAverage() + " hrs");
+    }
+
+    private void formatRow(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, String> cellValue) {
+      pw.print("| " + rowTitle + " |");
       projectTypes.forEach(projectType -> {
         TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
         pw.print(" ");
-        pw.print(summary.getAverage());
+        pw.print(cellValue.apply(summary));
         pw.print(" |");
       });
       pw.println();
     }
 
     private void countRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      pw.print("| Count |");
-      projectTypes.forEach(projectType -> {
-        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
-        pw.print(" ");
-        pw.print(summary.getCount());
-        pw.print(" |");
-      });
-      pw.println();
+      formatRow(pw, projectTypes, "Count", summary -> String.valueOf(summary.getCount()));
     }
 
-    private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) throws IOException {
-      pw.print("| |");
-      projectTypes.forEach(projectType -> {
-        pw.print(" ");
-        pw.print(formatProjectType(projectType));
-        pw.print(" |");
-      });
-      pw.println("");
-
-      pw.print("| :--- |");
-      projectTypes.stream().map(projectType -> " ---: |").forEach(pw::print);
-      pw.println("");
+    private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRow(pw, projectTypes, "", summary -> formatProjectType(summary.getProjectType()));
+      formatRow(pw, projectTypes, ":---", summary -> "---:");
     }
 
     private String formatProjectType(ProjectType projectType) {
@@ -104,8 +92,11 @@ public class ProjectTimeEstimatesSummary {
     private final double upperQuartile;
     private final double lowerQuartile;
     private final double average;
+    private final ProjectType projectType;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
+      this.projectType = assignment.getProjectType();
+
       Collection<Double> estimates = getEstimates(book, assignment);
       if (estimates.isEmpty()) {
         throw new IllegalStateException("No estimates for " + assignment);
@@ -142,12 +133,11 @@ public class ProjectTimeEstimatesSummary {
 
     private static double median(List<Double> doubles) {
       int size = doubles.size();
+      int midpoint = (size / 2);
       if (size % 2 == 0) {
-        int midpoint = (size / 2);
         return average(doubles.get(midpoint - 1), doubles.get(midpoint));
 
       } else {
-        int midpoint = (size / 2);
         return doubles.get(midpoint);
       }
     }
@@ -203,6 +193,10 @@ public class ProjectTimeEstimatesSummary {
 
     public double getAverage() {
       return average;
+    }
+
+    public ProjectType getProjectType() {
+      return projectType;
     }
   }
 }
