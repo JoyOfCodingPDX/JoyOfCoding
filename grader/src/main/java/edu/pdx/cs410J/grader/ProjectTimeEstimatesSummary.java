@@ -36,18 +36,23 @@ public class ProjectTimeEstimatesSummary {
 
   static class TimeEstimatesSummary {
     private final int count;
+    private final double maximum;
 
     TimeEstimatesSummary(GradeBook book, Assignment assignment) {
       Collection<Double> estimates = getEstimates(book, assignment);
-      this.count = estimates.size();
+      if (estimates.isEmpty()) {
+        throw new IllegalStateException("No estimates for " + assignment);
+
+      } else {
+        this.count = estimates.size();
+        this.maximum = estimates.stream().max(Comparator.naturalOrder()).get();
+      }
     }
 
     private Collection<Double> getEstimates(GradeBook book, Assignment assignment) {
       List<Double> estimates = new ArrayList<>();
 
-      book.studentsStream().forEach(student -> {
-        getEstimate(student, assignment).ifPresent(estimates::add);
-      });
+      book.studentsStream().forEach(student -> getEstimate(student, assignment).ifPresent(estimates::add));
 
       return estimates;
     }
@@ -67,6 +72,10 @@ public class ProjectTimeEstimatesSummary {
 
     public int getCount() {
       return count;
+    }
+
+    public double getMaximum() {
+      return maximum;
     }
   }
 }

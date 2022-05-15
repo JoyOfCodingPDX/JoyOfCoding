@@ -24,8 +24,8 @@ public class ProjectTimeEstimatesSummaryTest {
     student.setGrade(project, grade);
   }
 
-  private Student addStudent(GradeBook book, String studentName) {
-    Student student = new Student(studentName);
+  private Student addStudent(GradeBook book) {
+    Student student = new Student("student");
     book.addStudent(student);
     return student;
   }
@@ -43,12 +43,29 @@ public class ProjectTimeEstimatesSummaryTest {
 
     ProjectType projectType = APP_CLASSES;
 
-    noteSubmission(addStudent(book, "student"), addProject(book, projectType), 10.0);
+    noteSubmission(addStudent(book), addProject(book, projectType), 10.0);
 
     ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
     ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
     assertThat(estimates.getCount(), equalTo(1));
+  }
+
+  @Test
+  void maximumEstimateIsConsidered() {
+    GradeBook book = new GradeBook("test");
+
+    ProjectType projectType = APP_CLASSES;
+
+    double maximumEstimate = 11.0;
+    noteSubmission(addStudent(book), addProject(book, projectType), 10.0, maximumEstimate);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getCount(), equalTo(1));
+    assertThat(estimates.getMaximum(), equalTo(maximumEstimate));
+
   }
 
 }
