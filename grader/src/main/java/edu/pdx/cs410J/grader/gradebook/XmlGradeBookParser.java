@@ -15,6 +15,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
@@ -134,26 +135,41 @@ public class XmlGradeBookParser extends XmlHelper {
     return assign;
   }
 
-  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assign) throws ParserException {
+  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assignment) throws ParserException {
     String type = assignmentElement.getAttribute("type");
     switch (type) {
       case "PROJECT":
-        assign.setType(Assignment.AssignmentType.PROJECT);
+        assignment.setType(Assignment.AssignmentType.PROJECT);
+        setProjectTypeFromXml(assignmentElement, assignment);
         break;
       case "QUIZ":
-        assign.setType(Assignment.AssignmentType.QUIZ);
+        assignment.setType(Assignment.AssignmentType.QUIZ);
         break;
       case "OTHER":
-        assign.setType(Assignment.AssignmentType.OTHER);
+        assignment.setType(Assignment.AssignmentType.OTHER);
         break;
       case "OPTIONAL":
-        assign.setType(Assignment.AssignmentType.OPTIONAL);
+        assignment.setType(Assignment.AssignmentType.OPTIONAL);
         break;
       case "POA":
-        assign.setType(Assignment.AssignmentType.POA);
+        assignment.setType(Assignment.AssignmentType.POA);
         break;
       default:
         throw new ParserException("Unknown assignment type: " + type);
+    }
+  }
+
+  private static void setProjectTypeFromXml(Element assignmentElement, Assignment assignment) throws ParserException {
+    String projectType = assignmentElement.getAttribute("project-type");
+    if (projectType != null && projectType.length() > 0) {
+      switch (projectType) {
+        case "APP_CLASSES":
+          assignment.setProjectType(APP_CLASSES);
+          break;
+
+        default:
+          throw new ParserException("Unknown project type: " + projectType);
+      }
     }
   }
 

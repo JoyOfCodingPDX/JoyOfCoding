@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.APP_CLASSES;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges;
 import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,6 +62,8 @@ public class GradeBookXmlTest {
   private GradeBook writeAndReadGradeBookAsXml(GradeBook book) throws IOException, TransformerException, ParserException {
     Document doc = XmlDumper.dumpGradeBook(book, new XmlHelper());
     byte[] bytes = XmlHelper.getBytesForXmlDocument(doc);
+
+    System.out.println(new String(bytes));
 
     XmlGradeBookParser parser = new XmlGradeBookParser(new ByteArrayInputStream(bytes));
     return parser.parse();
@@ -117,6 +120,19 @@ public class GradeBookXmlTest {
 
     assertThat(book2.getSectionName(Student.Section.UNDERGRADUATE), equalTo(undergraduate));
     assertThat(book2.getSectionName(Student.Section.GRADUATE), equalTo(graduate));
+  }
+
+  @Test
+  void projectTypesArePersistedToXml() throws ParserException, IOException, TransformerException {
+    GradeBook book = new GradeBook("test");
+    String projectName = "appClasses";
+    Assignment appClasses = new Assignment(projectName, 1.0).setProjectType(APP_CLASSES);
+    book.addAssignment(appClasses);
+
+    GradeBook book2 = writeAndReadGradeBookAsXml(book);
+
+    assertThat(book2.getAssignment(projectName).getProjectType(), equalTo(APP_CLASSES));
+
   }
 
 }

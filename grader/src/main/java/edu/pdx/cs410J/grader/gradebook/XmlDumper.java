@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader.gradebook;
 
+import edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -220,33 +221,49 @@ public class XmlDumper extends XmlHelper {
     }
   }
 
-  private static void setAssignmentTypeAttribute(Assignment assign, Element assignNode) {
-    Assignment.AssignmentType type = assign.getType();
+  private static void setAssignmentTypeAttribute(Assignment assignment, Element assignmentNode) {
+    Assignment.AssignmentType type = assignment.getType();
     switch (type) {
       case PROJECT:
-        assignNode.setAttribute("type", "PROJECT");
+        assignmentNode.setAttribute("type", "PROJECT");
+        setProjectTypeAttribute(assignment, assignmentNode);
         break;
 
       case QUIZ:
-        assignNode.setAttribute("type", "QUIZ");
+        assignmentNode.setAttribute("type", "QUIZ");
         break;
 
       case OTHER:
-        assignNode.setAttribute("type", "OTHER");
+        assignmentNode.setAttribute("type", "OTHER");
         break;
 
       case OPTIONAL:
-        assignNode.setAttribute("type", "OPTIONAL");
+        assignmentNode.setAttribute("type", "OPTIONAL");
         break;
 
       case POA:
-        assignNode.setAttribute("type", "POA");
+        assignmentNode.setAttribute("type", "POA");
         break;
 
       default:
         throw new IllegalArgumentException("Can't handle assignment " +
           "type " + type);
     }
+  }
+
+  private static void setProjectTypeAttribute(Assignment assignment, Element assignmentNode) {
+    ProjectType projectType = assignment.getProjectType();
+    if (projectType != null) {
+      switch (projectType) {
+        case APP_CLASSES:
+          assignmentNode.setAttribute("project-type", "APP_CLASSES");
+          break;
+
+        default:
+          throw new IllegalStateException("Can't handle project type: " + projectType);
+      }
+    }
+
   }
 
   private void dumpDirtyStudents(GradeBook book) {
