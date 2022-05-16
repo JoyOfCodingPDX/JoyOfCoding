@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import java.util.*;
 

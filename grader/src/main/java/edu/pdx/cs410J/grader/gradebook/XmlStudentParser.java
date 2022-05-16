@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
 import org.w3c.dom.Document;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * This class parses XML data that describes a <code>Student</code>.
  */
-class XmlStudentParser extends XmlHelper {
+public class XmlStudentParser extends XmlHelper {
 
   /** The Reader from which the XML Data is read */ 
   private Reader reader;

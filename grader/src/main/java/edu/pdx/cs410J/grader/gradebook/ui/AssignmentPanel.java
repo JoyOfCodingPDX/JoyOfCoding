@@ -1,6 +1,10 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook.ui;
 
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Notable;
+import edu.pdx.cs410J.grader.gradebook.XmlGradeBookParser;
 
 import javax.swing.*;
 import java.awt.*;

@@ -4,8 +4,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.util.Collections;
 import java.util.Comparator;

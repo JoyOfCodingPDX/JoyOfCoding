@@ -1,10 +1,10 @@
 package edu.pdx.cs410J.grader.canvas;
 
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.Student;
 import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasAssignment;
 import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasStudent;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

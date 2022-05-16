@@ -1,5 +1,10 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlDumper;
+
 import java.io.*;
 import java.util.*;
 

@@ -1,6 +1,10 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

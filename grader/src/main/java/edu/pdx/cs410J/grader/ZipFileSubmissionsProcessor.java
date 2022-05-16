@@ -2,6 +2,10 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 import jakarta.mail.Address;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;

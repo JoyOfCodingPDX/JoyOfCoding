@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.*;
 
 import java.io.*;
 import java.text.NumberFormat;
@@ -13,7 +14,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static edu.pdx.cs410J.grader.Student.Section.*;
+import static edu.pdx.cs410J.grader.gradebook.Student.Section.*;
 
 /**
  * Class that creates a pretty report that summarizes a student's
@@ -29,7 +30,7 @@ public class SummaryReport {
    */
   @VisibleForTesting
   static void dumpReportTo(GradeBook book, Student student,
-                                   PrintWriter pw, boolean assignLetterGrades) {
+                           PrintWriter pw, boolean assignLetterGrades) {
     NumberFormat format = NumberFormat.getNumberInstance();
     format.setMinimumFractionDigits(1);
     format.setMaximumFractionDigits(1);

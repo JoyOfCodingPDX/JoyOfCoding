@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.grader.canvas.GradesFromCanvasImporter;
+import edu.pdx.cs410J.grader.gradebook.ui.GradeBookGUI;
 import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,10 @@ public class GraderTools {
         return SurveyResponsesFromD2LGenerator.class;
 
       case "fixAndroidZips":
-              return AndroidZipFixer.class;
+        return AndroidZipFixer.class;
+
+      case "projectTimeEstimates":
+        return ProjectTimeEstimatesSummary.class;
 
       default:
         usage("Unknown tool: " + tool);
@@ -104,6 +108,7 @@ public class GraderTools {
     err.println("    generateGradeSummary      Generate grade summary report for one or more students");
     err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");
     err.println("    fixAndroidZips            Fix zip files for the Android project to work with grading script");
+    err.println("    projectTimeEstimates      Generate markdown that summarizes the estimated project hours");
     err.println("  toolArg                     A command line argument to send to the tool");
     err.println();
 

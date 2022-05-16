@@ -1,7 +1,7 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.grader.Student.Section;
+import edu.pdx.cs410J.grader.gradebook.Student.Section;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class represents a grade book that contains information about
@@ -362,7 +362,7 @@ public class GradeBook {
     this.sectionNames.put(section, sectionName);
   }
 
-  static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
+  public static class LetterGradeRanges implements Iterable<LetterGradeRanges.LetterGradeRange> {
     private final Map<LetterGrade, LetterGradeRange> ranges = new TreeMap<>();
 
     private LetterGradeRanges() {
@@ -440,7 +440,7 @@ public class GradeBook {
       return this.ranges.values().spliterator();
     }
 
-    static class LetterGradeRange {
+    public static class LetterGradeRange {
       private final LetterGrade letterGrade;
       private int maximum;
       private int minimum;

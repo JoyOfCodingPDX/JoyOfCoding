@@ -1,11 +1,15 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook.ui;
+
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.LetterGrade;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 public class LetterGradeRangesPanel extends JPanel {
 

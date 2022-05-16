@@ -4,9 +4,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.XmlDumper;
-import edu.pdx.cs410J.grader.XmlGradeBookParser;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.XmlDumper;
+import edu.pdx.cs410J.grader.gradebook.XmlGradeBookParser;
 
 import java.io.File;
 import java.io.IOException;

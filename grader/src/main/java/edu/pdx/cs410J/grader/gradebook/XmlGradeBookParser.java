@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.grader;
+package edu.pdx.cs410J.grader.gradebook;
 
 import edu.pdx.cs410J.ParserException;
 import org.w3c.dom.Document;
@@ -15,7 +15,8 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-import static edu.pdx.cs410J.grader.GradeBook.LetterGradeRanges.LetterGradeRange;
+import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
+import static edu.pdx.cs410J.grader.gradebook.GradeBook.LetterGradeRanges.LetterGradeRange;
 
 /**
  * This class creates a <code>GradeBook</code> from the contents of an
@@ -71,7 +72,7 @@ public class XmlGradeBookParser extends XmlHelper {
   /**
    * Extracts an <code>Assignment</code> from an <code>Element</code>
    */
-  private static Assignment extractAssignmentFrom(Element element) 
+  private static Assignment extractAssignmentFrom(Element element)
     throws ParserException {
     Assignment assign = null;
 
@@ -143,26 +144,61 @@ public class XmlGradeBookParser extends XmlHelper {
     return assign;
   }
 
-  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assign) throws ParserException {
+  private static void setAssignmentTypeFromXml(Element assignmentElement, Assignment assignment) throws ParserException {
     String type = assignmentElement.getAttribute("type");
     switch (type) {
       case "PROJECT":
-        assign.setType(Assignment.AssignmentType.PROJECT);
+        assignment.setType(Assignment.AssignmentType.PROJECT);
+        setProjectTypeFromXml(assignmentElement, assignment);
         break;
       case "QUIZ":
-        assign.setType(Assignment.AssignmentType.QUIZ);
+        assignment.setType(Assignment.AssignmentType.QUIZ);
         break;
       case "OTHER":
-        assign.setType(Assignment.AssignmentType.OTHER);
+        assignment.setType(Assignment.AssignmentType.OTHER);
         break;
       case "OPTIONAL":
-        assign.setType(Assignment.AssignmentType.OPTIONAL);
+        assignment.setType(Assignment.AssignmentType.OPTIONAL);
         break;
       case "POA":
-        assign.setType(Assignment.AssignmentType.POA);
+        assignment.setType(Assignment.AssignmentType.POA);
         break;
       default:
         throw new ParserException("Unknown assignment type: " + type);
+    }
+  }
+
+  private static void setProjectTypeFromXml(Element assignmentElement, Assignment assignment) throws ParserException {
+    String projectType = assignmentElement.getAttribute("project-type");
+    if (projectType != null && projectType.length() > 0) {
+      switch (projectType) {
+        case "APP_CLASSES":
+          assignment.setProjectType(APP_CLASSES);
+          break;
+
+        case "TEXT_FILE":
+          assignment.setProjectType(TEXT_FILE);
+          break;
+
+        case "PRETTY_PRINT":
+          assignment.setProjectType(PRETTY_PRINT);
+          break;
+
+        case "XML":
+          assignment.setProjectType(XML);
+          break;
+
+        case "REST":
+          assignment.setProjectType(REST);
+          break;
+
+        case "ANDROID":
+          assignment.setProjectType(ANDROID);
+          break;
+
+        default:
+          throw new ParserException("Unknown project type: " + projectType);
+      }
     }
   }
 

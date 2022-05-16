@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

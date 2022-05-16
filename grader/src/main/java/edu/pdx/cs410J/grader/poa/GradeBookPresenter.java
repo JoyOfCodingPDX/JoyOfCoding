@@ -3,9 +3,9 @@ package edu.pdx.cs410J.grader.poa;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.io.File;
 

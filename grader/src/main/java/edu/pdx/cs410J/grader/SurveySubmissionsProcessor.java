@@ -2,6 +2,9 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.ByteStreams;
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlStudentParser;
 import jakarta.mail.Message;
 
 import java.io.File;

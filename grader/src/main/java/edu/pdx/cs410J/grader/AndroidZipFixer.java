@@ -3,6 +3,10 @@ package edu.pdx.cs410J.grader;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlGradeBookParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
