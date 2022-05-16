@@ -1,6 +1,9 @@
 package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlDumper;
+import edu.pdx.cs410J.grader.gradebook.XmlHelper;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
 import jakarta.mail.*;

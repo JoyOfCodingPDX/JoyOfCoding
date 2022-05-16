@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
-import edu.pdx.cs410J.grader.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
 
 public class GradeBookLoaded {
   private final GradeBook gradeBook;

@@ -2,6 +2,8 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.grader.gradebook.Student;
+import edu.pdx.cs410J.grader.gradebook.XmlStudentParser;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
 import jakarta.activation.FileDataSource;
@@ -233,7 +235,7 @@ public class Submit extends EmailSender {
   @VisibleForTesting
   void setStudent(Student student) {
     this.userId = student.getId();
-    this.userName = student.getFullName();
+    this.userName = student.getFirstName() + " " + student.getLastName();
     this.userEmail = student.getEmail();
   }
 
@@ -713,13 +715,18 @@ public class Submit extends EmailSender {
     DataHandler dh = new DataHandler(ds);
     MimeBodyPart filePart = new MimeBodyPart();
 
-    String zipFileTitle = userName.replace(' ', '_') + ".zip";
+    String zipFileTitle = getZipFileTitle();
 
     filePart.setDataHandler(dh);
     filePart.setFileName(zipFileTitle);
     filePart.setDescription(userName + "'s " + projName);
 
     return filePart;
+  }
+
+  @VisibleForTesting
+  String getZipFileTitle() {
+    return userName.replace(' ', '_') + ".zip";
   }
 
   private MimeBodyPart createTextPartOfTAEmail(Set<File> sourceFiles) throws MessagingException {

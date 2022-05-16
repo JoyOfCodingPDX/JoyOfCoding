@@ -6,9 +6,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.Grade;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Grade;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.util.Optional;
 

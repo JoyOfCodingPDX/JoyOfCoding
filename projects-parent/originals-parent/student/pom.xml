@@ -4,11 +4,11 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0-SNAPSHOT</version>
   </parent>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>student</artifactId>
-  <version>2022.0.0</version>
+  <version>2022.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Student Project</name>
@@ -93,12 +93,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>2022.0.0</version>
+      <version>2022.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2022.0.0</version>
+      <version>2022.1.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -121,7 +121,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2022.0.0</version>
+                <version>2022.5.0-SNAPSHOT</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

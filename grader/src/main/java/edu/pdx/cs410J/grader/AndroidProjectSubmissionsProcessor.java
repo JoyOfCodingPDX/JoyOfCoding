@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.grader;
 
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+
 import java.io.File;
 
 public class AndroidProjectSubmissionsProcessor extends ZipFileSubmissionsProcessor {

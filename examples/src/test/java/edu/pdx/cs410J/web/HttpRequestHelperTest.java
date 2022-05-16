@@ -14,20 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class HttpRequestHelperTest {
 
-  private HttpRequestHelper helper = new HttpRequestHelper();
-
   @Test
   public void testGet() throws IOException {
-    HttpRequestHelper.Response response = helper.get("http://www.google.com", Map.of());
-    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
+    HttpRequestHelper helper = new HttpRequestHelper("http://www.google.com");
+    HttpRequestHelper.Response response = helper.get(Map.of());
+    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Google"));
   }
 
   @Test
   public void testGetWithParameters() throws IOException {
-    HttpRequestHelper.Response response = helper.get("https://www.google.com/search", Map.of("p", "Java"));
-    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());
+    HttpRequestHelper helper = new HttpRequestHelper("https://www.google.com/search");
+    HttpRequestHelper.Response response = helper.get(Map.of("p", "Java"));
+    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());
     assertTrue(response.getContent().contains("Java"));
-
   }
 }

@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 public class StudentSelectedEvent {
   private Student selectedStudent;

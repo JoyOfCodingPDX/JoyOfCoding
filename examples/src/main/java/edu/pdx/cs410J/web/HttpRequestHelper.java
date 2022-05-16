@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.web;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,14 +16,19 @@ import java.util.Map;
  */
 public class HttpRequestHelper {
 
+  private final String urlString;
+
+  public HttpRequestHelper(String urlString) {
+    this.urlString = urlString;
+  }
+
   /**
-   * Performs an HTTP GET on the given URL
+   * Performs an HTTP GET
    *
-   * @param urlString  The URL to get
    * @param parameters The key/value query parameters
    * @return A <code>Response</code> summarizing the result of the GET
    */
-  protected Response get(String urlString, Map<String, String> parameters) throws IOException {
+  public Response get(Map<String, String> parameters) throws IOException {
     StringBuilder query = encodeParameters(parameters);
     if (query.length() > 0) {
       query.insert(0, '?');
@@ -38,22 +45,22 @@ public class HttpRequestHelper {
   }
 
   /**
-   * Performs an HTTP POST to the given URL
-   * @param urlString The URL to post to
+   * Performs an HTTP POST
+   *
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response post(String urlString, Map<String, String> parameters) throws IOException {
+  public Response post(Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "POST", parameters);
   }
 
   /**
-   * Performs an HTTP DELETE to the given URL
-   * @param urlString The URL to post to
+   * Performs an HTTP DELETE
+   *
    * @param parameters The key/value parameters
    * @return A <code>Response</code> summarizing the result of the POST
    */
-  protected Response delete(String urlString, Map<String, String> parameters) throws IOException {
+  public Response delete(Map<String, String> parameters) throws IOException {
     return sendEncodedRequest(urlString, "DELETE", parameters);
   }
 
@@ -99,11 +106,10 @@ public class HttpRequestHelper {
   /**
    * Performs an HTTP PUT on the given URL
    *
-   * @param urlString The URL to put to
    * @param parameters key/value parameters to the put
    * @return A <code>Response</code> summarizing the result of the PUT
    */
-  protected Response put(String urlString, Map<String, String> parameters) throws IOException {
+  public Response put(Map<String, String> parameters) throws IOException {
     StringBuilder data = new StringBuilder();
         parameters.forEach((key, value) -> {
           data.append(key);
@@ -135,16 +141,16 @@ public class HttpRequestHelper {
    */
   public static class Response {
 
-    private final int code;
+    private final int httpStatusCode;
 
     private final String content;
 
     private int contentLines = 0;
 
     private Response(HttpURLConnection conn) throws IOException {
-      this.code = conn.getResponseCode();
+      this.httpStatusCode = conn.getResponseCode();
       InputStream stream;
-      if (this.code != java.net.HttpURLConnection.HTTP_OK) {
+      if (this.httpStatusCode != java.net.HttpURLConnection.HTTP_OK) {
         stream = conn.getErrorStream();
 
       } else {
@@ -166,12 +172,18 @@ public class HttpRequestHelper {
       this.content = content.toString().trim();
     }
 
+    @VisibleForTesting
+    public Response(String content) {
+      this.content = content;
+      this.httpStatusCode = HttpURLConnection.HTTP_OK;
+    }
+
     /**
      * Returns the HTTP status code of the response
      * @see java.net.HttpURLConnection#getResponseCode()
      */
-    public int getCode() {
-      return code;
+    public int getHttpStatusCode() {
+      return httpStatusCode;
     }
 
     /**
@@ -209,26 +221,26 @@ public class HttpRequestHelper {
     String url = args[1];
     String[] parameters = new String[args.length - 2];
     System.arraycopy(args, 2, parameters, 0, parameters.length);
-    Map<String, String> map = HttpRequestHelper.arrayToMap(parameters);
+    Map<String, String> map = arrayToMap(parameters);
 
-    HttpRequestHelper helper = new HttpRequestHelper();
+    HttpRequestHelper helper = new HttpRequestHelper(url);
 
     Response response;
     if (method.equalsIgnoreCase("PUT")) {
-      response = helper.put(url, map);
+      response = helper.put(map);
 
     } else if (method.equalsIgnoreCase("GET")) {
-      response = helper.get(url, map);
+      response = helper.get(map);
 
     } else if (method.equalsIgnoreCase("POST")) {
-      response = helper.post(url, map);
+      response = helper.post(map);
 
     } else {
       System.err.println("** Unknown method: " + method);
       return;
     }
 
-    System.out.println("Returned code " + response.getCode() + " and " +
+    System.out.println("Returned code " + response.getHttpStatusCode() + " and " +
       response.getContentLines() + " lines of content\n");
     System.out.println(response.getContent());
 

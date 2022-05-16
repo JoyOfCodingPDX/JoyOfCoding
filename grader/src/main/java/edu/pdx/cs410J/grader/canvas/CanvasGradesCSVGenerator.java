@@ -1,10 +1,9 @@
 package edu.pdx.cs410J.grader.canvas;
 
 import com.opencsv.CSVWriter;
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.Grade;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.io.IOException;
 import java.io.Writer;
