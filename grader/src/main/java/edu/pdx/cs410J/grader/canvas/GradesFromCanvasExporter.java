@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.grader.canvas;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.XmlGradeBookParser;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.XmlGradeBookParser;
 
 import java.io.File;
 import java.io.FileWriter;

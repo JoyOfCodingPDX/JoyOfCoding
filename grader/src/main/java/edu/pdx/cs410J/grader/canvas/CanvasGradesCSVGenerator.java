@@ -2,6 +2,7 @@ package edu.pdx.cs410J.grader.canvas;
 
 import com.opencsv.CSVWriter;
 import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Grade;
 import edu.pdx.cs410J.grader.gradebook.GradeBook;
 import edu.pdx.cs410J.grader.gradebook.Student;
 
@@ -20,7 +21,7 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
 
   public void generate(GradeBook book) throws IOException {
     try (
-      CSVWriter csv = new CSVWriter(writer);
+      CSVWriter csv = new CSVWriter(writer)
     ) {
       writeHeaderRow(book, csv);
       writePossiblePointsRow(book, csv);
@@ -90,9 +91,7 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
   }
 
   private void addCellsForEachAssignment(GradeBook book, List<String> line, Function<Assignment, String> function) {
-    book.getAssignmentNames().stream().map(book::getAssignment).forEach(assignment -> {
-      line.add(function.apply(assignment));
-    });
+    book.getAssignmentNames().stream().map(book::getAssignment).forEach(assignment -> line.add(function.apply(assignment)));
   }
 
   private String getAssignmentHeaderCell(Assignment assignment) {
