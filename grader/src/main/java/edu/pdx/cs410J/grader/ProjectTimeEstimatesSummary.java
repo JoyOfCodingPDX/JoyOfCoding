@@ -53,7 +53,7 @@ public class ProjectTimeEstimatesSummary {
       TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
 
       PrintWriter pw = new PrintWriter(System.out, true);
-      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, XML, ANDROID));
+      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, REST, ANDROID));
       pw.flush();
 
     } catch (ParserException | IOException e) {
@@ -152,7 +152,7 @@ public class ProjectTimeEstimatesSummary {
           return "n/a";
 
         } else {
-          return cellValue.apply(summary) + " hrs";
+          return String.format("%.0f hours", cellValue.apply(summary));
         }
       });
     }

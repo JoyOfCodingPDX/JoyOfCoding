@@ -293,19 +293,19 @@ public class ProjectTimeEstimatesSummaryTest {
     summaries.generateMarkdown(sw, List.of(appClasses.getProjectType(), textFile.getProjectType()));
     String markdown = sw.toString();
 
-    System.out.println(markdown);
+//    System.out.println(markdown);
 
     List<String> lines = markdown.lines().collect(Collectors.toList());
 
     assertThat(lines.get(0), equalTo("|  | App Classes | Text File |"));
     assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
     assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
-    assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
-    assertThat(lines.get(4), matchesRegex("\\| Maximum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
-    assertThat(lines.get(5), matchesRegex("\\| Top 25% \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
-    assertThat(lines.get(6), matchesRegex("\\| Median \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
-    assertThat(lines.get(7), matchesRegex("\\| Bottom 25% \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
-    assertThat(lines.get(8), matchesRegex("\\| Minimum \\| \\d\\.\\d hrs \\| \\d\\.\\d hrs \\|"));
+    assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(4), matchesRegex("\\| Maximum \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(5), matchesRegex("\\| Top 25% \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(6), matchesRegex("\\| Median \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(7), matchesRegex("\\| Bottom 25% \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(8), matchesRegex("\\| Minimum \\| \\d hours \\| \\d hours \\|"));
   }
 
   @Test
