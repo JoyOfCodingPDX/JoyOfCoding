@@ -23,10 +23,10 @@ under the License.
     <link>http://www.cs.pdx.edu/~whitlock</link>
     <description>CS410J Airline Project - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2000 - 2021 Portland State University</copyright>
+    <copyright>&#169;2000 - 2022 Portland State University</copyright>
     <item>
       <title>File: 6,
-             Errors: 43,
+             Errors: 44,
              Warnings: 0,
              Infos: 0
       </title>
@@ -83,7 +83,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  6
+                  7
                 </td>
               </tr>
                           <tr>
