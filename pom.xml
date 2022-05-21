@@ -64,8 +64,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <pmd.version>6.45.0</pmd.version>
 
-        <wagon-git.version>2.0.4</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
-        <wagon-ssh.version>3.5.1</wagon-ssh.version>
+        <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
+        <wagon-ssh.version>3.4.3</wagon-ssh.version>
 
         <junit.version>5.9.0-M1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
