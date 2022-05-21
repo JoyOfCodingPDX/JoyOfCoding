@@ -14,9 +14,9 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.google.common.eventbus.Subscribe;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.google.inject.Inject;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.google.inject.Singleton;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.Assignment;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.Grade;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.Student;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.gradebook.Assignment;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.gradebook.Grade;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> edu.pdx.cs410J.grader.gradebook.Student;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
@@ -26,8 +26,8 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="POAGradeView" href="../../../../../edu/pdx/cs410J/grader/poa/POAGradeView.html#POAGradeView">POAGradeView</a> view;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">private</strong> <a name="POASubmission" href="../../../../../edu/pdx/cs410J/grader/poa/POASubmission.html#POASubmission">POASubmission</a> submission;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a name="Student" href="../../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <strong class="jxr_keyword">private</strong> <a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/gradebook/Assignment.html#Assignment">Assignment</a> assignment;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">private</strong> <a name="Student" href="../../../../../edu/pdx/cs410J/grader/gradebook/Student.html#Student">Student</a> student;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isLate;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>    <strong class="jxr_keyword">private</strong> Double score;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">private</strong> CurrentGradeCalculator currentGradeCalculator;
@@ -219,12 +219,12 @@
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">public</strong> CurrentGradeCalculator() {
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Double&gt; getCurrentGradeFor(<a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/Assignment.html#Assignment">Assignment</a> assignment, <a name="Student" href="../../../../../edu/pdx/cs410J/grader/Student.html#Student">Student</a> student) {
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Double&gt; getCurrentGradeFor(<a name="Assignment" href="../../../../../edu/pdx/cs410J/grader/gradebook/Assignment.html#Assignment">Assignment</a> assignment, <a name="Student" href="../../../../../edu/pdx/cs410J/grader/gradebook/Student.html#Student">Student</a> student) {
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>       <strong class="jxr_keyword">if</strong> (student == <strong class="jxr_keyword">null</strong> || assignment == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">return</strong> Optional.empty();
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>       }
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> 
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>       <a name="Grade" href="../../../../../edu/pdx/cs410J/grader/Grade.html#Grade">Grade</a> grade = student.getGrade(assignment);
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>       <a name="Grade" href="../../../../../edu/pdx/cs410J/grader/gradebook/Grade.html#Grade">Grade</a> grade = student.getGrade(assignment);
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>       <strong class="jxr_keyword">if</strong> (grade != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         <strong class="jxr_keyword">return</strong> Optional.of(grade.getScore());
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>       } <strong class="jxr_keyword">else</strong> {
@@ -235,6 +235,6 @@
 <a class="jxr_linenumber" name="L227" href="#L227">227</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>
 </body>
 </html>
