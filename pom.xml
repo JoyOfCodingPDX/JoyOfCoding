@@ -204,7 +204,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.4</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -219,7 +219,7 @@
           <buildNumberPropertyName>scmRevision</buildNumberPropertyName>
           <scmBranchPropertyName>scmBranch</scmBranchPropertyName>
           <timestampPropertyName>buildTimestamp</timestampPropertyName>
-          <timestampFormat>{0, date, yyyy-MM-dd'T'HH:mm:ss.SSSZ}</timestampFormat>
+          <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</timestampFormat>
           <revisionOnScmFailure>noScmFound</revisionOnScmFailure>
           <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
         </configuration>
