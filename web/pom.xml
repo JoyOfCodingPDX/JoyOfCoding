@@ -13,7 +13,7 @@
   <version>2022.1.0-SNAPSHOT</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>5.0.0.Final</resteasy.version>
+    <resteasy.version>6.1.0.Beta2</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>

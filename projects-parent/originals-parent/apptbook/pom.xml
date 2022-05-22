@@ -113,11 +113,6 @@
         <version>${maven-surefire-report-plugin.version}</version>
       </plugin>
        <plugin>
-         <groupId>org.codehaus.mojo</groupId>
-         <artifactId>jdepend-maven-plugin</artifactId>
-         <version>${jdepend-maven-plugin.version}</version>
-       </plugin>
-       <plugin>
          <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-checkstyle-plugin</artifactId>
          <version>${maven-checkstyle-plugin.version}</version>
@@ -145,7 +140,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>${maven.javadoc.plugin.version}</version>
+            <version>${maven-javadoc-plugin.version}</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
