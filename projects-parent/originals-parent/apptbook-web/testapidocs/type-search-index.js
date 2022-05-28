@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookServletTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"TextDumperParserTest"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookRestClientTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"AppointmentBookServletTest"},{"p":"edu.pdx.cs410J.apptbookweb","l":"TextDumperParserTest"}];updateSearchResults();
