@@ -27,23 +27,22 @@
 <span class="source-line-no">014</span><span id="line-14"> */</span>
 <span class="source-line-no">015</span><span id="line-15">public class HttpRequestHelperTest {</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">  private HttpRequestHelper helper = new HttpRequestHelper();</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">  @Test</span>
-<span class="source-line-no">020</span><span id="line-20">  public void testGet() throws IOException {</span>
-<span class="source-line-no">021</span><span id="line-21">    HttpRequestHelper.Response response = helper.get("http://www.google.com", Map.of());</span>
-<span class="source-line-no">022</span><span id="line-22">    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());</span>
-<span class="source-line-no">023</span><span id="line-23">    assertTrue(response.getContent().contains("Google"));</span>
-<span class="source-line-no">024</span><span id="line-24">  }</span>
-<span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">  @Test</span>
-<span class="source-line-no">027</span><span id="line-27">  public void testGetWithParameters() throws IOException {</span>
-<span class="source-line-no">028</span><span id="line-28">    HttpRequestHelper.Response response = helper.get("https://www.google.com/search", Map.of("p", "Java"));</span>
-<span class="source-line-no">029</span><span id="line-29">    assertEquals(HttpURLConnection.HTTP_OK, response.getCode());</span>
+<span class="source-line-no">017</span><span id="line-17">  @Test</span>
+<span class="source-line-no">018</span><span id="line-18">  public void testGet() throws IOException {</span>
+<span class="source-line-no">019</span><span id="line-19">    HttpRequestHelper helper = new HttpRequestHelper("http://www.google.com");</span>
+<span class="source-line-no">020</span><span id="line-20">    HttpRequestHelper.Response response = helper.get(Map.of());</span>
+<span class="source-line-no">021</span><span id="line-21">    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());</span>
+<span class="source-line-no">022</span><span id="line-22">    assertTrue(response.getContent().contains("Google"));</span>
+<span class="source-line-no">023</span><span id="line-23">  }</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">  @Test</span>
+<span class="source-line-no">026</span><span id="line-26">  public void testGetWithParameters() throws IOException {</span>
+<span class="source-line-no">027</span><span id="line-27">    HttpRequestHelper helper = new HttpRequestHelper("https://www.google.com/search");</span>
+<span class="source-line-no">028</span><span id="line-28">    HttpRequestHelper.Response response = helper.get(Map.of("p", "Java"));</span>
+<span class="source-line-no">029</span><span id="line-29">    assertEquals(HttpURLConnection.HTTP_OK, response.getHttpStatusCode());</span>
 <span class="source-line-no">030</span><span id="line-30">    assertTrue(response.getContent().contains("Java"));</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">  }</span>
-<span class="source-line-no">033</span><span id="line-33">}</span>
+<span class="source-line-no">031</span><span id="line-31">  }</span>
+<span class="source-line-no">032</span><span id="line-32">}</span>
 
 
 

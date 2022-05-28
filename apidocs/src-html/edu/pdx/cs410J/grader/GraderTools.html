@@ -16,112 +16,118 @@
 <span class="source-line-no">003</span><span id="line-3">import ch.qos.logback.classic.Level;</span>
 <span class="source-line-no">004</span><span id="line-4">import ch.qos.logback.classic.Logger;</span>
 <span class="source-line-no">005</span><span id="line-5">import com.google.common.annotations.VisibleForTesting;</span>
-<span class="source-line-no">006</span><span id="line-6">import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;</span>
-<span class="source-line-no">007</span><span id="line-7">import org.slf4j.LoggerFactory;</span>
-<span class="source-line-no">008</span><span id="line-8"></span>
-<span class="source-line-no">009</span><span id="line-9">import java.io.PrintStream;</span>
-<span class="source-line-no">010</span><span id="line-10">import java.lang.reflect.InvocationTargetException;</span>
-<span class="source-line-no">011</span><span id="line-11">import java.lang.reflect.Method;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.util.ArrayList;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.util.List;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">public class GraderTools {</span>
+<span class="source-line-no">006</span><span id="line-6">import edu.pdx.cs410J.grader.canvas.GradesFromCanvasImporter;</span>
+<span class="source-line-no">007</span><span id="line-7">import edu.pdx.cs410J.grader.gradebook.ui.GradeBookGUI;</span>
+<span class="source-line-no">008</span><span id="line-8">import edu.pdx.cs410J.grader.poa.ui.PlanOfAttackGrader;</span>
+<span class="source-line-no">009</span><span id="line-9">import org.slf4j.LoggerFactory;</span>
+<span class="source-line-no">010</span><span id="line-10"></span>
+<span class="source-line-no">011</span><span id="line-11">import java.io.PrintStream;</span>
+<span class="source-line-no">012</span><span id="line-12">import java.lang.reflect.InvocationTargetException;</span>
+<span class="source-line-no">013</span><span id="line-13">import java.lang.reflect.Method;</span>
+<span class="source-line-no">014</span><span id="line-14">import java.util.ArrayList;</span>
+<span class="source-line-no">015</span><span id="line-15">import java.util.List;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">  public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {</span>
-<span class="source-line-no">018</span><span id="line-18">    String tool = null;</span>
-<span class="source-line-no">019</span><span id="line-19">    List&lt;String&gt; toolArgs = new ArrayList&lt;&gt;();</span>
-<span class="source-line-no">020</span><span id="line-20">    for (String arg : args) {</span>
-<span class="source-line-no">021</span><span id="line-21">      if (arg.equals("-debug")) {</span>
-<span class="source-line-no">022</span><span id="line-22">        setLoggingLevelToDebug();</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">      } else if (tool == null) {</span>
-<span class="source-line-no">025</span><span id="line-25">        tool = arg;</span>
-<span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">      } else {</span>
-<span class="source-line-no">028</span><span id="line-28">        toolArgs.add(arg);</span>
-<span class="source-line-no">029</span><span id="line-29">      }</span>
-<span class="source-line-no">030</span><span id="line-30">    }</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">    if (tool == null) {</span>
-<span class="source-line-no">033</span><span id="line-33">      usage("Missing tool");</span>
-<span class="source-line-no">034</span><span id="line-34">    }</span>
-<span class="source-line-no">035</span><span id="line-35"></span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">    invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));</span>
-<span class="source-line-no">038</span><span id="line-38">  }</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">  @VisibleForTesting</span>
-<span class="source-line-no">041</span><span id="line-41">  static void setLoggingLevelToDebug() {</span>
-<span class="source-line-no">042</span><span id="line-42">    Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");</span>
-<span class="source-line-no">043</span><span id="line-43">    logger.setLevel(Level.DEBUG);</span>
-<span class="source-line-no">044</span><span id="line-44">  }</span>
-<span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">  private static Class getToolClass(String tool) {</span>
-<span class="source-line-no">047</span><span id="line-47">    switch (tool) {</span>
-<span class="source-line-no">048</span><span id="line-48">      case "gradebook":</span>
-<span class="source-line-no">049</span><span id="line-49">        return GradeBookGUI.class;</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">      case "fetch":</span>
-<span class="source-line-no">052</span><span id="line-52">        return FetchAndProcessGraderEmail.class;</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">      case "importFromD2L" :</span>
-<span class="source-line-no">055</span><span id="line-55">        return GradesFromD2LImporter.class;</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">      case "importFromProjectReports" :</span>
-<span class="source-line-no">058</span><span id="line-58">        return ProjectGradesImporter.class;</span>
-<span class="source-line-no">059</span><span id="line-59"></span>
-<span class="source-line-no">060</span><span id="line-60">      case "mailFileToStudent" :</span>
-<span class="source-line-no">061</span><span id="line-61">        return StudentFileMailer.class;</span>
-<span class="source-line-no">062</span><span id="line-62"></span>
-<span class="source-line-no">063</span><span id="line-63">      case "gradePOAs":</span>
-<span class="source-line-no">064</span><span id="line-64">        return PlanOfAttackGrader.class;</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">      case "generateGradeSummary":</span>
-<span class="source-line-no">067</span><span id="line-67">        return SummaryReport.class;</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">      case "htmlForSurveyResults":</span>
-<span class="source-line-no">070</span><span id="line-70">        return SurveyResponsesFromD2LGenerator.class;</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">      case "fixAndroidZips":</span>
-<span class="source-line-no">073</span><span id="line-73">              return AndroidZipFixer.class;</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">      default:</span>
-<span class="source-line-no">076</span><span id="line-76">        usage("Unknown tool: " + tool);</span>
-<span class="source-line-no">077</span><span id="line-77">        return null;</span>
-<span class="source-line-no">078</span><span id="line-78">    }</span>
-<span class="source-line-no">079</span><span id="line-79">  }</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">  @SuppressWarnings("unchecked")</span>
-<span class="source-line-no">082</span><span id="line-82">  private static void invokeMainMethod(Class aClass, String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {</span>
-<span class="source-line-no">083</span><span id="line-83">    Method main = aClass.getMethod("main", args.getClass());</span>
-<span class="source-line-no">084</span><span id="line-84">    main.invoke(aClass, new Object[] { args });</span>
+<span class="source-line-no">017</span><span id="line-17">public class GraderTools {</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">  public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {</span>
+<span class="source-line-no">020</span><span id="line-20">    String tool = null;</span>
+<span class="source-line-no">021</span><span id="line-21">    List&lt;String&gt; toolArgs = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">022</span><span id="line-22">    for (String arg : args) {</span>
+<span class="source-line-no">023</span><span id="line-23">      if (arg.equals("-debug")) {</span>
+<span class="source-line-no">024</span><span id="line-24">        setLoggingLevelToDebug();</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">      } else if (tool == null) {</span>
+<span class="source-line-no">027</span><span id="line-27">        tool = arg;</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">      } else {</span>
+<span class="source-line-no">030</span><span id="line-30">        toolArgs.add(arg);</span>
+<span class="source-line-no">031</span><span id="line-31">      }</span>
+<span class="source-line-no">032</span><span id="line-32">    }</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">    if (tool == null) {</span>
+<span class="source-line-no">035</span><span id="line-35">      usage("Missing tool");</span>
+<span class="source-line-no">036</span><span id="line-36">    }</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">    invokeMainMethod(getToolClass(tool), toolArgs.toArray(new String[toolArgs.size()]));</span>
+<span class="source-line-no">040</span><span id="line-40">  }</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">  @VisibleForTesting</span>
+<span class="source-line-no">043</span><span id="line-43">  static void setLoggingLevelToDebug() {</span>
+<span class="source-line-no">044</span><span id="line-44">    Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");</span>
+<span class="source-line-no">045</span><span id="line-45">    logger.setLevel(Level.DEBUG);</span>
+<span class="source-line-no">046</span><span id="line-46">  }</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">  private static Class getToolClass(String tool) {</span>
+<span class="source-line-no">049</span><span id="line-49">    switch (tool) {</span>
+<span class="source-line-no">050</span><span id="line-50">      case "gradebook":</span>
+<span class="source-line-no">051</span><span id="line-51">        return GradeBookGUI.class;</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">      case "fetch":</span>
+<span class="source-line-no">054</span><span id="line-54">        return FetchAndProcessGraderEmail.class;</span>
+<span class="source-line-no">055</span><span id="line-55"></span>
+<span class="source-line-no">056</span><span id="line-56">      case "importFromCanvas" :</span>
+<span class="source-line-no">057</span><span id="line-57">        return GradesFromCanvasImporter.class;</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">      case "importFromProjectReports" :</span>
+<span class="source-line-no">060</span><span id="line-60">        return ProjectGradesImporter.class;</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">      case "mailFileToStudent" :</span>
+<span class="source-line-no">063</span><span id="line-63">        return StudentFileMailer.class;</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">      case "gradePOAs":</span>
+<span class="source-line-no">066</span><span id="line-66">        return PlanOfAttackGrader.class;</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">      case "generateGradeSummary":</span>
+<span class="source-line-no">069</span><span id="line-69">        return SummaryReport.class;</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">      case "htmlForSurveyResults":</span>
+<span class="source-line-no">072</span><span id="line-72">        return SurveyResponsesFromD2LGenerator.class;</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">      case "fixAndroidZips":</span>
+<span class="source-line-no">075</span><span id="line-75">        return AndroidZipFixer.class;</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">      case "projectTimeEstimates":</span>
+<span class="source-line-no">078</span><span id="line-78">        return ProjectTimeEstimatesSummary.class;</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">      default:</span>
+<span class="source-line-no">081</span><span id="line-81">        usage("Unknown tool: " + tool);</span>
+<span class="source-line-no">082</span><span id="line-82">        return null;</span>
+<span class="source-line-no">083</span><span id="line-83">    }</span>
+<span class="source-line-no">084</span><span id="line-84">  }</span>
 <span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">  }</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">  private static void usage(String message) {</span>
-<span class="source-line-no">089</span><span id="line-89">    PrintStream err = System.err;</span>
-<span class="source-line-no">090</span><span id="line-90">    err.println("** " + message);</span>
-<span class="source-line-no">091</span><span id="line-91">    err.println();</span>
-<span class="source-line-no">092</span><span id="line-92">    err.println("Executes one of the Grader tools");</span>
-<span class="source-line-no">093</span><span id="line-93">    err.println();</span>
-<span class="source-line-no">094</span><span id="line-94">    err.println("usage: GraderTools tool toolArg*");</span>
-<span class="source-line-no">095</span><span id="line-95">    err.println("  tool                        The tool to execute");</span>
-<span class="source-line-no">096</span><span id="line-96">    err.println("    gradebook                 The Grade Book GUI");</span>
-<span class="source-line-no">097</span><span id="line-97">    err.println("    fetch                     Fetch student surveys or projects from the Grader's");</span>
-<span class="source-line-no">098</span><span id="line-98">    err.println("                              emails account");</span>
-<span class="source-line-no">099</span><span id="line-99">    err.println("    importFromD2L             Import grades from a D2L CSV");</span>
-<span class="source-line-no">100</span><span id="line-100">    err.println("    importFromProjectReports  Import grades from graded project reports");</span>
-<span class="source-line-no">101</span><span id="line-101">    err.println("    mailFileToStudent         Email text files to students");</span>
-<span class="source-line-no">102</span><span id="line-102">    err.println("    gradePOAs                 Tool for downloading and grading POAs");</span>
-<span class="source-line-no">103</span><span id="line-103">    err.println("    generateGradeSummary      Generate grade summary report for one or more students");</span>
-<span class="source-line-no">104</span><span id="line-104">    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");</span>
-<span class="source-line-no">105</span><span id="line-105">    err.println("    fixAndroidZips            Fix zip files for the Android project to work with grading script");</span>
-<span class="source-line-no">106</span><span id="line-106">    err.println("  toolArg                     A command line argument to send to the tool");</span>
-<span class="source-line-no">107</span><span id="line-107">    err.println();</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    System.exit(1);</span>
-<span class="source-line-no">110</span><span id="line-110">  }</span>
-<span class="source-line-no">111</span><span id="line-111">}</span>
+<span class="source-line-no">086</span><span id="line-86">  @SuppressWarnings("unchecked")</span>
+<span class="source-line-no">087</span><span id="line-87">  private static void invokeMainMethod(Class aClass, String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {</span>
+<span class="source-line-no">088</span><span id="line-88">    Method main = aClass.getMethod("main", args.getClass());</span>
+<span class="source-line-no">089</span><span id="line-89">    main.invoke(aClass, new Object[] { args });</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">  }</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">  private static void usage(String message) {</span>
+<span class="source-line-no">094</span><span id="line-94">    PrintStream err = System.err;</span>
+<span class="source-line-no">095</span><span id="line-95">    err.println("** " + message);</span>
+<span class="source-line-no">096</span><span id="line-96">    err.println();</span>
+<span class="source-line-no">097</span><span id="line-97">    err.println("Executes one of the Grader tools");</span>
+<span class="source-line-no">098</span><span id="line-98">    err.println();</span>
+<span class="source-line-no">099</span><span id="line-99">    err.println("usage: GraderTools tool toolArg*");</span>
+<span class="source-line-no">100</span><span id="line-100">    err.println("  tool                        The tool to execute");</span>
+<span class="source-line-no">101</span><span id="line-101">    err.println("    gradebook                 The Grade Book GUI");</span>
+<span class="source-line-no">102</span><span id="line-102">    err.println("    fetch                     Fetch student surveys or projects from the Grader's");</span>
+<span class="source-line-no">103</span><span id="line-103">    err.println("                              emails account");</span>
+<span class="source-line-no">104</span><span id="line-104">    err.println("    importFromCanvas          Import grades from a Canvas CSV");</span>
+<span class="source-line-no">105</span><span id="line-105">    err.println("    importFromProjectReports  Import grades from graded project reports");</span>
+<span class="source-line-no">106</span><span id="line-106">    err.println("    mailFileToStudent         Email text files to students");</span>
+<span class="source-line-no">107</span><span id="line-107">    err.println("    gradePOAs                 Tool for downloading and grading POAs");</span>
+<span class="source-line-no">108</span><span id="line-108">    err.println("    generateGradeSummary      Generate grade summary report for one or more students");</span>
+<span class="source-line-no">109</span><span id="line-109">    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");</span>
+<span class="source-line-no">110</span><span id="line-110">    err.println("    fixAndroidZips            Fix zip files for the Android project to work with grading script");</span>
+<span class="source-line-no">111</span><span id="line-111">    err.println("    projectTimeEstimates      Generate markdown that summarizes the estimated project hours");</span>
+<span class="source-line-no">112</span><span id="line-112">    err.println("  toolArg                     A command line argument to send to the tool");</span>
+<span class="source-line-no">113</span><span id="line-113">    err.println();</span>
+<span class="source-line-no">114</span><span id="line-114"></span>
+<span class="source-line-no">115</span><span id="line-115">    System.exit(1);</span>
+<span class="source-line-no">116</span><span id="line-116">  }</span>
+<span class="source-line-no">117</span><span id="line-117">}</span>
 
 
 

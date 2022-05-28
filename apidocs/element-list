@@ -8,6 +8,9 @@ edu.pdx.cs410J.di
 edu.pdx.cs410J.examples
 edu.pdx.cs410J.family
 edu.pdx.cs410J.grader
+edu.pdx.cs410J.grader.canvas
+edu.pdx.cs410J.grader.gradebook
+edu.pdx.cs410J.grader.gradebook.ui
 edu.pdx.cs410J.grader.poa
 edu.pdx.cs410J.grader.poa.ui
 edu.pdx.cs410J.j2se15
