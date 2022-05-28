@@ -14,236 +14,237 @@
 <pre><span class="source-line-no">001</span><span id="line-1">package edu.pdx.cs410J.grader;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import com.google.common.io.CharStreams;</span>
-<span class="source-line-no">004</span><span id="line-4">import org.junit.jupiter.api.AfterEach;</span>
-<span class="source-line-no">005</span><span id="line-5">import org.junit.jupiter.api.BeforeEach;</span>
-<span class="source-line-no">006</span><span id="line-6">import org.junit.jupiter.api.Test;</span>
-<span class="source-line-no">007</span><span id="line-7"></span>
-<span class="source-line-no">008</span><span id="line-8">import java.io.*;</span>
-<span class="source-line-no">009</span><span id="line-9">import java.nio.file.FileVisitResult;</span>
-<span class="source-line-no">010</span><span id="line-10">import java.nio.file.Files;</span>
-<span class="source-line-no">011</span><span id="line-11">import java.nio.file.Path;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.nio.file.SimpleFileVisitor;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.nio.file.attribute.BasicFileAttributes;</span>
-<span class="source-line-no">014</span><span id="line-14">import java.time.LocalDateTime;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.util.Arrays;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.util.stream.Collectors;</span>
-<span class="source-line-no">017</span><span id="line-17"></span>
-<span class="source-line-no">018</span><span id="line-18">import static edu.pdx.cs410J.grader.Student.Section.GRADUATE;</span>
-<span class="source-line-no">019</span><span id="line-19">import static edu.pdx.cs410J.grader.Student.Section.UNDERGRADUATE;</span>
-<span class="source-line-no">020</span><span id="line-20">import static edu.pdx.cs410J.grader.SummaryReport.GRADUATE_DIRECTORY_NAME;</span>
-<span class="source-line-no">021</span><span id="line-21">import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;</span>
-<span class="source-line-no">022</span><span id="line-22">import static org.hamcrest.MatcherAssert.assertThat;</span>
-<span class="source-line-no">023</span><span id="line-23">import static org.hamcrest.Matchers.*;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">public class SummaryReportTest {</span>
-<span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">  private File tempDirectory;</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">  @BeforeEach</span>
-<span class="source-line-no">030</span><span id="line-30">  public void createTempDirectoryForTest() {</span>
-<span class="source-line-no">031</span><span id="line-31">    String tempDirName = "SummaryReportTestTempDirectory-" + System.currentTimeMillis();</span>
-<span class="source-line-no">032</span><span id="line-32">    tempDirectory = new File(System.getProperty("java.io.tmpdir"), tempDirName);</span>
-<span class="source-line-no">033</span><span id="line-33">    System.out.println("Temp dir is " + tempDirectory.getAbsolutePath());</span>
-<span class="source-line-no">034</span><span id="line-34"></span>
-<span class="source-line-no">035</span><span id="line-35">    boolean dirWasCreated = tempDirectory.mkdirs();</span>
-<span class="source-line-no">036</span><span id="line-36">    assertThat(dirWasCreated, equalTo(true));</span>
-<span class="source-line-no">037</span><span id="line-37">  }</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">  @AfterEach</span>
-<span class="source-line-no">040</span><span id="line-40">  public void deleteTempDirectoryForTest() throws IOException {</span>
-<span class="source-line-no">041</span><span id="line-41">    Files.walkFileTree(tempDirectory.toPath(), new SimpleFileVisitor&lt;Path&gt;() {</span>
-<span class="source-line-no">042</span><span id="line-42">      @Override</span>
-<span class="source-line-no">043</span><span id="line-43">      public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {</span>
-<span class="source-line-no">044</span><span id="line-44">        return deleteFile(file);</span>
-<span class="source-line-no">045</span><span id="line-45">      }</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">      @Override</span>
-<span class="source-line-no">048</span><span id="line-48">      public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {</span>
-<span class="source-line-no">049</span><span id="line-49">        return deleteFile(dir);</span>
-<span class="source-line-no">050</span><span id="line-50">      }</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">      private FileVisitResult deleteFile(Path file) throws IOException {</span>
-<span class="source-line-no">053</span><span id="line-53">        Files.delete(file);</span>
-<span class="source-line-no">054</span><span id="line-54">        return FileVisitResult.CONTINUE;</span>
-<span class="source-line-no">055</span><span id="line-55">      }</span>
-<span class="source-line-no">056</span><span id="line-56">    });</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">    assertThat(tempDirectory.exists(), equalTo(false));</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">  @Test</span>
-<span class="source-line-no">062</span><span id="line-62">  public void ungradedAssignmentsDoNotCountTowardsGraded() {</span>
-<span class="source-line-no">063</span><span id="line-63">    GradeBook gradeBook = new GradeBook("test");</span>
-<span class="source-line-no">064</span><span id="line-64">    Student student = new Student("student");</span>
-<span class="source-line-no">065</span><span id="line-65">    gradeBook.addStudent(student);</span>
-<span class="source-line-no">066</span><span id="line-66">    Assignment assignment = new Assignment("assignment", 4.0);</span>
-<span class="source-line-no">067</span><span id="line-67">    gradeBook.addAssignment(assignment);</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    Grade grade = new Grade(assignment, Grade.NO_GRADE);</span>
-<span class="source-line-no">070</span><span id="line-70">    student.setGrade(assignment.getName(), grade);</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">    assertThat(SummaryReport.noStudentHasGradeFor(assignment, gradeBook), equalTo(true));</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">  }</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">  @Test</span>
-<span class="source-line-no">077</span><span id="line-77">  public void reportsAreGeneratedInCorrectDirectories() throws IOException {</span>
-<span class="source-line-no">078</span><span id="line-78">    GradeBook gradeBook = new GradeBook("test");</span>
-<span class="source-line-no">079</span><span id="line-79">    Assignment assignment = new Assignment("assignment", 4.0);</span>
-<span class="source-line-no">080</span><span id="line-80">    gradeBook.addAssignment(assignment);</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">    double undergradScore = 3.0;</span>
-<span class="source-line-no">083</span><span id="line-83">    Student undergrad = addStudentInSectionWithScore(gradeBook, assignment, "undergrad", UNDERGRADUATE, undergradScore);</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">    double gradScore = 3.5;</span>
-<span class="source-line-no">086</span><span id="line-86">    Student grad = addStudentInSectionWithScore(gradeBook, assignment, "grad", GRADUATE, gradScore);</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">    SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);</span>
-<span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90">    assertThatStudentHasReportInDirectoryWithScore(undergrad, UNDERGRADUATE_DIRECTORY_NAME, undergradScore);</span>
-<span class="source-line-no">091</span><span id="line-91">    assertThatStudentHasReportInDirectoryWithScore(grad, GRADUATE_DIRECTORY_NAME, gradScore);</span>
-<span class="source-line-no">092</span><span id="line-92">  }</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">  private Student addStudentInSectionWithScore(GradeBook gradeBook, Assignment assignment, String studentId, Student.Section enrolledSection, double undergradScore) {</span>
-<span class="source-line-no">095</span><span id="line-95">    Student undergrad = new Student(studentId);</span>
-<span class="source-line-no">096</span><span id="line-96">    undergrad.setEnrolledSection(enrolledSection);</span>
-<span class="source-line-no">097</span><span id="line-97">    gradeBook.addStudent(undergrad);</span>
-<span class="source-line-no">098</span><span id="line-98">    undergrad.setGrade(assignment, undergradScore);</span>
-<span class="source-line-no">099</span><span id="line-99">    return undergrad;</span>
-<span class="source-line-no">100</span><span id="line-100">  }</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">  private void assertThatStudentHasReportInDirectoryWithScore(Student student, String dirFileName, double studentScore) throws IOException {</span>
-<span class="source-line-no">103</span><span id="line-103">    File directory = new File(tempDirectory, dirFileName);</span>
-<span class="source-line-no">104</span><span id="line-104">    assertThat(directory.exists(), equalTo(true));</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">    File reportFile = new File(directory, SummaryReport.getReportFileName(student.getId()));</span>
-<span class="source-line-no">107</span><span id="line-107">    assertThat(reportFile.exists(), equalTo(true));</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    String reportContents = readTextFromFile(reportFile);</span>
-<span class="source-line-no">110</span><span id="line-110">    assertThat(reportContents, containsString(String.valueOf(studentScore)));</span>
-<span class="source-line-no">111</span><span id="line-111">  }</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">  private String readTextFromFile(File file) throws IOException {</span>
-<span class="source-line-no">114</span><span id="line-114">    StringWriter writer = new StringWriter();</span>
-<span class="source-line-no">115</span><span id="line-115">    CharStreams.copy(new FileReader(file), writer);</span>
-<span class="source-line-no">116</span><span id="line-116">    return writer.getBuffer().toString();</span>
-<span class="source-line-no">117</span><span id="line-117">  }</span>
-<span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">  @Test</span>
-<span class="source-line-no">120</span><span id="line-120">  public void totalsArePrintedForAllStudents() {</span>
-<span class="source-line-no">121</span><span id="line-121">    GradeBook gradeBook = new GradeBook("test");</span>
-<span class="source-line-no">122</span><span id="line-122">    Assignment assignment = new Assignment("assignment", 4.0);</span>
-<span class="source-line-no">123</span><span id="line-123">    gradeBook.addAssignment(assignment);</span>
-<span class="source-line-no">124</span><span id="line-124"></span>
-<span class="source-line-no">125</span><span id="line-125">    String worseUndergradStudentName = "worseUndergrad";</span>
-<span class="source-line-no">126</span><span id="line-126">    addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 3.0);</span>
-<span class="source-line-no">127</span><span id="line-127"></span>
-<span class="source-line-no">128</span><span id="line-128">    String betterUndergradStudentName = "betterUndergrad";</span>
-<span class="source-line-no">129</span><span id="line-129">    addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 3.5);</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">    String worseGradStudentName = "worseGrad";</span>
-<span class="source-line-no">132</span><span id="line-132">    addStudentInSectionWithScore(gradeBook, assignment, worseGradStudentName, GRADUATE, 3.0);</span>
-<span class="source-line-no">133</span><span id="line-133"></span>
-<span class="source-line-no">134</span><span id="line-134">    String betterGradStudentName = "betterGrad";</span>
-<span class="source-line-no">135</span><span id="line-135">    addStudentInSectionWithScore(gradeBook, assignment, betterGradStudentName, GRADUATE, 3.5);</span>
-<span class="source-line-no">136</span><span id="line-136"></span>
-<span class="source-line-no">137</span><span id="line-137">    calculateTotalGradesForStudents(gradeBook, false);</span>
-<span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">    CapturingPrintWriter out = new CapturingPrintWriter();</span>
-<span class="source-line-no">140</span><span id="line-140">    SummaryReport.printOutStudentTotals(gradeBook.studentsStream().collect(Collectors.toSet()), out);</span>
-<span class="source-line-no">141</span><span id="line-141"></span>
-<span class="source-line-no">142</span><span id="line-142">    String written = out.getTextWrittenToWriter();</span>
-<span class="source-line-no">143</span><span id="line-143">    String[] strings = { betterUndergradStudentName, worseUndergradStudentName, betterGradStudentName, worseGradStudentName };</span>
-<span class="source-line-no">144</span><span id="line-144">    assertThat(written, stringContainsInOrder(Arrays.asList(strings)));</span>
-<span class="source-line-no">145</span><span id="line-145">  }</span>
-<span class="source-line-no">146</span><span id="line-146"></span>
-<span class="source-line-no">147</span><span id="line-147">  private void calculateTotalGradesForStudents(GradeBook gradeBook, boolean assignLetterGrades) {</span>
-<span class="source-line-no">148</span><span id="line-148">    PrintWriter pw = new PrintWriter(new Writer() {</span>
-<span class="source-line-no">149</span><span id="line-149">      @Override</span>
-<span class="source-line-no">150</span><span id="line-150">      public void write(char[] cbuf, int off, int len) throws IOException {</span>
-<span class="source-line-no">151</span><span id="line-151"></span>
-<span class="source-line-no">152</span><span id="line-152">      }</span>
-<span class="source-line-no">153</span><span id="line-153"></span>
-<span class="source-line-no">154</span><span id="line-154">      @Override</span>
-<span class="source-line-no">155</span><span id="line-155">      public void flush() throws IOException {</span>
-<span class="source-line-no">156</span><span id="line-156"></span>
-<span class="source-line-no">157</span><span id="line-157">      }</span>
-<span class="source-line-no">158</span><span id="line-158"></span>
-<span class="source-line-no">159</span><span id="line-159">      @Override</span>
-<span class="source-line-no">160</span><span id="line-160">      public void close() throws IOException {</span>
-<span class="source-line-no">161</span><span id="line-161"></span>
-<span class="source-line-no">162</span><span id="line-162">      }</span>
-<span class="source-line-no">163</span><span id="line-163">    });</span>
-<span class="source-line-no">164</span><span id="line-164"></span>
-<span class="source-line-no">165</span><span id="line-165">    gradeBook.studentsStream().forEach(student -&gt; {</span>
-<span class="source-line-no">166</span><span id="line-166">      SummaryReport.dumpReportTo(gradeBook, student, pw, assignLetterGrades);</span>
-<span class="source-line-no">167</span><span id="line-167">    });</span>
-<span class="source-line-no">168</span><span id="line-168">  }</span>
-<span class="source-line-no">169</span><span id="line-169"></span>
-<span class="source-line-no">170</span><span id="line-170">  private class CapturingPrintWriter extends PrintWriter {</span>
-<span class="source-line-no">171</span><span id="line-171">    public CapturingPrintWriter() {</span>
-<span class="source-line-no">172</span><span id="line-172">      super(new StringWriter());</span>
-<span class="source-line-no">173</span><span id="line-173">    }</span>
-<span class="source-line-no">174</span><span id="line-174"></span>
-<span class="source-line-no">175</span><span id="line-175">    public String getTextWrittenToWriter() {</span>
-<span class="source-line-no">176</span><span id="line-176">      return ((StringWriter) this.out).getBuffer().toString();</span>
-<span class="source-line-no">177</span><span id="line-177">    }</span>
-<span class="source-line-no">178</span><span id="line-178">  }</span>
-<span class="source-line-no">179</span><span id="line-179"></span>
-<span class="source-line-no">180</span><span id="line-180">  @Test</span>
-<span class="source-line-no">181</span><span id="line-181">  public void assignLetterGradesAccordingToGradeBookRangesForSection() {</span>
-<span class="source-line-no">182</span><span id="line-182">    GradeBook gradeBook = new GradeBook("test");</span>
-<span class="source-line-no">183</span><span id="line-183">    Assignment assignment = new Assignment("assignment", 10.0);</span>
-<span class="source-line-no">184</span><span id="line-184">    gradeBook.addAssignment(assignment);</span>
-<span class="source-line-no">185</span><span id="line-185"></span>
-<span class="source-line-no">186</span><span id="line-186">    GradeBook.LetterGradeRanges undergradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.UNDERGRADUATE);</span>
-<span class="source-line-no">187</span><span id="line-187">    undergradLetterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);</span>
-<span class="source-line-no">188</span><span id="line-188">    undergradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);</span>
-<span class="source-line-no">189</span><span id="line-189">    undergradLetterGradeRanges.validate();</span>
-<span class="source-line-no">190</span><span id="line-190"></span>
-<span class="source-line-no">191</span><span id="line-191">    GradeBook.LetterGradeRanges gradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.GRADUATE);</span>
-<span class="source-line-no">192</span><span id="line-192">    gradLetterGradeRanges.getRange(LetterGrade.A).setRange(92, 100);</span>
-<span class="source-line-no">193</span><span id="line-193">    gradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 91);</span>
-<span class="source-line-no">194</span><span id="line-194">    gradLetterGradeRanges.validate();</span>
-<span class="source-line-no">195</span><span id="line-195"></span>
-<span class="source-line-no">196</span><span id="line-196">    String betterUndergradStudentName = "betterUndergrad";</span>
-<span class="source-line-no">197</span><span id="line-197">    Student betterUndergrad = addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 9.7);</span>
-<span class="source-line-no">198</span><span id="line-198">    assertThat(betterUndergrad.getLetterGrade(), nullValue());</span>
-<span class="source-line-no">199</span><span id="line-199"></span>
-<span class="source-line-no">200</span><span id="line-200">    String worseUndergradStudentName = "worseUndergrad";</span>
-<span class="source-line-no">201</span><span id="line-201">    Student worseUndergrad = addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 9.2);</span>
-<span class="source-line-no">202</span><span id="line-202">    assertThat(worseUndergrad.getLetterGrade(), nullValue());</span>
-<span class="source-line-no">203</span><span id="line-203"></span>
-<span class="source-line-no">204</span><span id="line-204">    String gradStudentName = "grad";</span>
-<span class="source-line-no">205</span><span id="line-205">    Student grad = addStudentInSectionWithScore(gradeBook, assignment, gradStudentName, GRADUATE, 9.2);</span>
-<span class="source-line-no">206</span><span id="line-206">    assertThat(grad.getLetterGrade(), nullValue());</span>
-<span class="source-line-no">207</span><span id="line-207"></span>
-<span class="source-line-no">208</span><span id="line-208">    calculateTotalGradesForStudents(gradeBook, true);</span>
-<span class="source-line-no">209</span><span id="line-209"></span>
-<span class="source-line-no">210</span><span id="line-210">    assertThat(betterUndergrad.getLetterGrade(), equalTo(LetterGrade.A));</span>
-<span class="source-line-no">211</span><span id="line-211">    assertThat(worseUndergrad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));</span>
-<span class="source-line-no">212</span><span id="line-212">    assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A));</span>
-<span class="source-line-no">213</span><span id="line-213">  }</span>
-<span class="source-line-no">214</span><span id="line-214"></span>
-<span class="source-line-no">215</span><span id="line-215">  @Test</span>
-<span class="source-line-no">216</span><span id="line-216">  public void assignmentDueInThePastIsLate() {</span>
-<span class="source-line-no">217</span><span id="line-217">    Assignment assignment = new Assignment("Test", 4.0);</span>
-<span class="source-line-no">218</span><span id="line-218">    LocalDateTime dueDate = LocalDateTime.now().minusDays(3);</span>
-<span class="source-line-no">219</span><span id="line-219">    assignment.setDueDate(dueDate);</span>
-<span class="source-line-no">220</span><span id="line-220"></span>
-<span class="source-line-no">221</span><span id="line-221">    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(true));</span>
-<span class="source-line-no">222</span><span id="line-222">  }</span>
-<span class="source-line-no">223</span><span id="line-223"></span>
-<span class="source-line-no">224</span><span id="line-224">  @Test</span>
-<span class="source-line-no">225</span><span id="line-225">  public void assignmentDueInTheFutureIsNotLate() {</span>
-<span class="source-line-no">226</span><span id="line-226">    Assignment assignment = new Assignment("Test", 4.0);</span>
-<span class="source-line-no">227</span><span id="line-227">    LocalDateTime dueDate = LocalDateTime.now().plusDays(3);</span>
-<span class="source-line-no">228</span><span id="line-228">    assignment.setDueDate(dueDate);</span>
-<span class="source-line-no">229</span><span id="line-229"></span>
-<span class="source-line-no">230</span><span id="line-230">    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(false));</span>
-<span class="source-line-no">231</span><span id="line-231">  }</span>
-<span class="source-line-no">232</span><span id="line-232"></span>
-<span class="source-line-no">233</span><span id="line-233">}</span>
+<span class="source-line-no">004</span><span id="line-4">import edu.pdx.cs410J.grader.gradebook.*;</span>
+<span class="source-line-no">005</span><span id="line-5">import org.junit.jupiter.api.AfterEach;</span>
+<span class="source-line-no">006</span><span id="line-6">import org.junit.jupiter.api.BeforeEach;</span>
+<span class="source-line-no">007</span><span id="line-7">import org.junit.jupiter.api.Test;</span>
+<span class="source-line-no">008</span><span id="line-8"></span>
+<span class="source-line-no">009</span><span id="line-9">import java.io.*;</span>
+<span class="source-line-no">010</span><span id="line-10">import java.nio.file.FileVisitResult;</span>
+<span class="source-line-no">011</span><span id="line-11">import java.nio.file.Files;</span>
+<span class="source-line-no">012</span><span id="line-12">import java.nio.file.Path;</span>
+<span class="source-line-no">013</span><span id="line-13">import java.nio.file.SimpleFileVisitor;</span>
+<span class="source-line-no">014</span><span id="line-14">import java.nio.file.attribute.BasicFileAttributes;</span>
+<span class="source-line-no">015</span><span id="line-15">import java.time.LocalDateTime;</span>
+<span class="source-line-no">016</span><span id="line-16">import java.util.Arrays;</span>
+<span class="source-line-no">017</span><span id="line-17">import java.util.stream.Collectors;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">import static edu.pdx.cs410J.grader.gradebook.Student.Section.GRADUATE;</span>
+<span class="source-line-no">020</span><span id="line-20">import static edu.pdx.cs410J.grader.gradebook.Student.Section.UNDERGRADUATE;</span>
+<span class="source-line-no">021</span><span id="line-21">import static edu.pdx.cs410J.grader.SummaryReport.GRADUATE_DIRECTORY_NAME;</span>
+<span class="source-line-no">022</span><span id="line-22">import static edu.pdx.cs410J.grader.SummaryReport.UNDERGRADUATE_DIRECTORY_NAME;</span>
+<span class="source-line-no">023</span><span id="line-23">import static org.hamcrest.MatcherAssert.assertThat;</span>
+<span class="source-line-no">024</span><span id="line-24">import static org.hamcrest.Matchers.*;</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">public class SummaryReportTest {</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">  private File tempDirectory;</span>
+<span class="source-line-no">029</span><span id="line-29"></span>
+<span class="source-line-no">030</span><span id="line-30">  @BeforeEach</span>
+<span class="source-line-no">031</span><span id="line-31">  public void createTempDirectoryForTest() {</span>
+<span class="source-line-no">032</span><span id="line-32">    String tempDirName = "SummaryReportTestTempDirectory-" + System.currentTimeMillis();</span>
+<span class="source-line-no">033</span><span id="line-33">    tempDirectory = new File(System.getProperty("java.io.tmpdir"), tempDirName);</span>
+<span class="source-line-no">034</span><span id="line-34">    System.out.println("Temp dir is " + tempDirectory.getAbsolutePath());</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">    boolean dirWasCreated = tempDirectory.mkdirs();</span>
+<span class="source-line-no">037</span><span id="line-37">    assertThat(dirWasCreated, equalTo(true));</span>
+<span class="source-line-no">038</span><span id="line-38">  }</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">  @AfterEach</span>
+<span class="source-line-no">041</span><span id="line-41">  public void deleteTempDirectoryForTest() throws IOException {</span>
+<span class="source-line-no">042</span><span id="line-42">    Files.walkFileTree(tempDirectory.toPath(), new SimpleFileVisitor&lt;Path&gt;() {</span>
+<span class="source-line-no">043</span><span id="line-43">      @Override</span>
+<span class="source-line-no">044</span><span id="line-44">      public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {</span>
+<span class="source-line-no">045</span><span id="line-45">        return deleteFile(file);</span>
+<span class="source-line-no">046</span><span id="line-46">      }</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">      @Override</span>
+<span class="source-line-no">049</span><span id="line-49">      public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {</span>
+<span class="source-line-no">050</span><span id="line-50">        return deleteFile(dir);</span>
+<span class="source-line-no">051</span><span id="line-51">      }</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">      private FileVisitResult deleteFile(Path file) throws IOException {</span>
+<span class="source-line-no">054</span><span id="line-54">        Files.delete(file);</span>
+<span class="source-line-no">055</span><span id="line-55">        return FileVisitResult.CONTINUE;</span>
+<span class="source-line-no">056</span><span id="line-56">      }</span>
+<span class="source-line-no">057</span><span id="line-57">    });</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    assertThat(tempDirectory.exists(), equalTo(false));</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  @Test</span>
+<span class="source-line-no">063</span><span id="line-63">  public void ungradedAssignmentsDoNotCountTowardsGraded() {</span>
+<span class="source-line-no">064</span><span id="line-64">    GradeBook gradeBook = new GradeBook("test");</span>
+<span class="source-line-no">065</span><span id="line-65">    Student student = new Student("student");</span>
+<span class="source-line-no">066</span><span id="line-66">    gradeBook.addStudent(student);</span>
+<span class="source-line-no">067</span><span id="line-67">    Assignment assignment = new Assignment("assignment", 4.0);</span>
+<span class="source-line-no">068</span><span id="line-68">    gradeBook.addAssignment(assignment);</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">    Grade grade = new Grade(assignment, Grade.NO_GRADE);</span>
+<span class="source-line-no">071</span><span id="line-71">    student.setGrade(assignment.getName(), grade);</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">    assertThat(SummaryReport.noStudentHasGradeFor(assignment, gradeBook), equalTo(true));</span>
+<span class="source-line-no">074</span><span id="line-74"></span>
+<span class="source-line-no">075</span><span id="line-75">  }</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">  @Test</span>
+<span class="source-line-no">078</span><span id="line-78">  public void reportsAreGeneratedInCorrectDirectories() throws IOException {</span>
+<span class="source-line-no">079</span><span id="line-79">    GradeBook gradeBook = new GradeBook("test");</span>
+<span class="source-line-no">080</span><span id="line-80">    Assignment assignment = new Assignment("assignment", 4.0);</span>
+<span class="source-line-no">081</span><span id="line-81">    gradeBook.addAssignment(assignment);</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    double undergradScore = 3.0;</span>
+<span class="source-line-no">084</span><span id="line-84">    Student undergrad = addStudentInSectionWithScore(gradeBook, assignment, "undergrad", UNDERGRADUATE, undergradScore);</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">    double gradScore = 3.5;</span>
+<span class="source-line-no">087</span><span id="line-87">    Student grad = addStudentInSectionWithScore(gradeBook, assignment, "grad", GRADUATE, gradScore);</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">    SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">    assertThatStudentHasReportInDirectoryWithScore(undergrad, UNDERGRADUATE_DIRECTORY_NAME, undergradScore);</span>
+<span class="source-line-no">092</span><span id="line-92">    assertThatStudentHasReportInDirectoryWithScore(grad, GRADUATE_DIRECTORY_NAME, gradScore);</span>
+<span class="source-line-no">093</span><span id="line-93">  }</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">  private Student addStudentInSectionWithScore(GradeBook gradeBook, Assignment assignment, String studentId, Student.Section enrolledSection, double undergradScore) {</span>
+<span class="source-line-no">096</span><span id="line-96">    Student undergrad = new Student(studentId);</span>
+<span class="source-line-no">097</span><span id="line-97">    undergrad.setEnrolledSection(enrolledSection);</span>
+<span class="source-line-no">098</span><span id="line-98">    gradeBook.addStudent(undergrad);</span>
+<span class="source-line-no">099</span><span id="line-99">    undergrad.setGrade(assignment, undergradScore);</span>
+<span class="source-line-no">100</span><span id="line-100">    return undergrad;</span>
+<span class="source-line-no">101</span><span id="line-101">  }</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">  private void assertThatStudentHasReportInDirectoryWithScore(Student student, String dirFileName, double studentScore) throws IOException {</span>
+<span class="source-line-no">104</span><span id="line-104">    File directory = new File(tempDirectory, dirFileName);</span>
+<span class="source-line-no">105</span><span id="line-105">    assertThat(directory.exists(), equalTo(true));</span>
+<span class="source-line-no">106</span><span id="line-106"></span>
+<span class="source-line-no">107</span><span id="line-107">    File reportFile = new File(directory, SummaryReport.getReportFileName(student.getId()));</span>
+<span class="source-line-no">108</span><span id="line-108">    assertThat(reportFile.exists(), equalTo(true));</span>
+<span class="source-line-no">109</span><span id="line-109"></span>
+<span class="source-line-no">110</span><span id="line-110">    String reportContents = readTextFromFile(reportFile);</span>
+<span class="source-line-no">111</span><span id="line-111">    assertThat(reportContents, containsString(String.valueOf(studentScore)));</span>
+<span class="source-line-no">112</span><span id="line-112">  }</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">  private String readTextFromFile(File file) throws IOException {</span>
+<span class="source-line-no">115</span><span id="line-115">    StringWriter writer = new StringWriter();</span>
+<span class="source-line-no">116</span><span id="line-116">    CharStreams.copy(new FileReader(file), writer);</span>
+<span class="source-line-no">117</span><span id="line-117">    return writer.getBuffer().toString();</span>
+<span class="source-line-no">118</span><span id="line-118">  }</span>
+<span class="source-line-no">119</span><span id="line-119"></span>
+<span class="source-line-no">120</span><span id="line-120">  @Test</span>
+<span class="source-line-no">121</span><span id="line-121">  public void totalsArePrintedForAllStudents() {</span>
+<span class="source-line-no">122</span><span id="line-122">    GradeBook gradeBook = new GradeBook("test");</span>
+<span class="source-line-no">123</span><span id="line-123">    Assignment assignment = new Assignment("assignment", 4.0);</span>
+<span class="source-line-no">124</span><span id="line-124">    gradeBook.addAssignment(assignment);</span>
+<span class="source-line-no">125</span><span id="line-125"></span>
+<span class="source-line-no">126</span><span id="line-126">    String worseUndergradStudentName = "worseUndergrad";</span>
+<span class="source-line-no">127</span><span id="line-127">    addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 3.0);</span>
+<span class="source-line-no">128</span><span id="line-128"></span>
+<span class="source-line-no">129</span><span id="line-129">    String betterUndergradStudentName = "betterUndergrad";</span>
+<span class="source-line-no">130</span><span id="line-130">    addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 3.5);</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">    String worseGradStudentName = "worseGrad";</span>
+<span class="source-line-no">133</span><span id="line-133">    addStudentInSectionWithScore(gradeBook, assignment, worseGradStudentName, GRADUATE, 3.0);</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">    String betterGradStudentName = "betterGrad";</span>
+<span class="source-line-no">136</span><span id="line-136">    addStudentInSectionWithScore(gradeBook, assignment, betterGradStudentName, GRADUATE, 3.5);</span>
+<span class="source-line-no">137</span><span id="line-137"></span>
+<span class="source-line-no">138</span><span id="line-138">    calculateTotalGradesForStudents(gradeBook, false);</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">    CapturingPrintWriter out = new CapturingPrintWriter();</span>
+<span class="source-line-no">141</span><span id="line-141">    SummaryReport.printOutStudentTotals(gradeBook.studentsStream().collect(Collectors.toSet()), out);</span>
+<span class="source-line-no">142</span><span id="line-142"></span>
+<span class="source-line-no">143</span><span id="line-143">    String written = out.getTextWrittenToWriter();</span>
+<span class="source-line-no">144</span><span id="line-144">    String[] strings = { betterUndergradStudentName, worseUndergradStudentName, betterGradStudentName, worseGradStudentName };</span>
+<span class="source-line-no">145</span><span id="line-145">    assertThat(written, stringContainsInOrder(Arrays.asList(strings)));</span>
+<span class="source-line-no">146</span><span id="line-146">  }</span>
+<span class="source-line-no">147</span><span id="line-147"></span>
+<span class="source-line-no">148</span><span id="line-148">  private void calculateTotalGradesForStudents(GradeBook gradeBook, boolean assignLetterGrades) {</span>
+<span class="source-line-no">149</span><span id="line-149">    PrintWriter pw = new PrintWriter(new Writer() {</span>
+<span class="source-line-no">150</span><span id="line-150">      @Override</span>
+<span class="source-line-no">151</span><span id="line-151">      public void write(char[] cbuf, int off, int len) throws IOException {</span>
+<span class="source-line-no">152</span><span id="line-152"></span>
+<span class="source-line-no">153</span><span id="line-153">      }</span>
+<span class="source-line-no">154</span><span id="line-154"></span>
+<span class="source-line-no">155</span><span id="line-155">      @Override</span>
+<span class="source-line-no">156</span><span id="line-156">      public void flush() throws IOException {</span>
+<span class="source-line-no">157</span><span id="line-157"></span>
+<span class="source-line-no">158</span><span id="line-158">      }</span>
+<span class="source-line-no">159</span><span id="line-159"></span>
+<span class="source-line-no">160</span><span id="line-160">      @Override</span>
+<span class="source-line-no">161</span><span id="line-161">      public void close() throws IOException {</span>
+<span class="source-line-no">162</span><span id="line-162"></span>
+<span class="source-line-no">163</span><span id="line-163">      }</span>
+<span class="source-line-no">164</span><span id="line-164">    });</span>
+<span class="source-line-no">165</span><span id="line-165"></span>
+<span class="source-line-no">166</span><span id="line-166">    gradeBook.studentsStream().forEach(student -&gt; {</span>
+<span class="source-line-no">167</span><span id="line-167">      SummaryReport.dumpReportTo(gradeBook, student, pw, assignLetterGrades);</span>
+<span class="source-line-no">168</span><span id="line-168">    });</span>
+<span class="source-line-no">169</span><span id="line-169">  }</span>
+<span class="source-line-no">170</span><span id="line-170"></span>
+<span class="source-line-no">171</span><span id="line-171">  private class CapturingPrintWriter extends PrintWriter {</span>
+<span class="source-line-no">172</span><span id="line-172">    public CapturingPrintWriter() {</span>
+<span class="source-line-no">173</span><span id="line-173">      super(new StringWriter());</span>
+<span class="source-line-no">174</span><span id="line-174">    }</span>
+<span class="source-line-no">175</span><span id="line-175"></span>
+<span class="source-line-no">176</span><span id="line-176">    public String getTextWrittenToWriter() {</span>
+<span class="source-line-no">177</span><span id="line-177">      return ((StringWriter) this.out).getBuffer().toString();</span>
+<span class="source-line-no">178</span><span id="line-178">    }</span>
+<span class="source-line-no">179</span><span id="line-179">  }</span>
+<span class="source-line-no">180</span><span id="line-180"></span>
+<span class="source-line-no">181</span><span id="line-181">  @Test</span>
+<span class="source-line-no">182</span><span id="line-182">  public void assignLetterGradesAccordingToGradeBookRangesForSection() {</span>
+<span class="source-line-no">183</span><span id="line-183">    GradeBook gradeBook = new GradeBook("test");</span>
+<span class="source-line-no">184</span><span id="line-184">    Assignment assignment = new Assignment("assignment", 10.0);</span>
+<span class="source-line-no">185</span><span id="line-185">    gradeBook.addAssignment(assignment);</span>
+<span class="source-line-no">186</span><span id="line-186"></span>
+<span class="source-line-no">187</span><span id="line-187">    GradeBook.LetterGradeRanges undergradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.UNDERGRADUATE);</span>
+<span class="source-line-no">188</span><span id="line-188">    undergradLetterGradeRanges.getRange(LetterGrade.A).setRange(95, 100);</span>
+<span class="source-line-no">189</span><span id="line-189">    undergradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 94);</span>
+<span class="source-line-no">190</span><span id="line-190">    undergradLetterGradeRanges.validate();</span>
+<span class="source-line-no">191</span><span id="line-191"></span>
+<span class="source-line-no">192</span><span id="line-192">    GradeBook.LetterGradeRanges gradLetterGradeRanges = gradeBook.getLetterGradeRanges(Student.Section.GRADUATE);</span>
+<span class="source-line-no">193</span><span id="line-193">    gradLetterGradeRanges.getRange(LetterGrade.A).setRange(92, 100);</span>
+<span class="source-line-no">194</span><span id="line-194">    gradLetterGradeRanges.getRange(LetterGrade.A_MINUS).setRange(90, 91);</span>
+<span class="source-line-no">195</span><span id="line-195">    gradLetterGradeRanges.validate();</span>
+<span class="source-line-no">196</span><span id="line-196"></span>
+<span class="source-line-no">197</span><span id="line-197">    String betterUndergradStudentName = "betterUndergrad";</span>
+<span class="source-line-no">198</span><span id="line-198">    Student betterUndergrad = addStudentInSectionWithScore(gradeBook, assignment, betterUndergradStudentName, UNDERGRADUATE, 9.7);</span>
+<span class="source-line-no">199</span><span id="line-199">    assertThat(betterUndergrad.getLetterGrade(), nullValue());</span>
+<span class="source-line-no">200</span><span id="line-200"></span>
+<span class="source-line-no">201</span><span id="line-201">    String worseUndergradStudentName = "worseUndergrad";</span>
+<span class="source-line-no">202</span><span id="line-202">    Student worseUndergrad = addStudentInSectionWithScore(gradeBook, assignment, worseUndergradStudentName, UNDERGRADUATE, 9.2);</span>
+<span class="source-line-no">203</span><span id="line-203">    assertThat(worseUndergrad.getLetterGrade(), nullValue());</span>
+<span class="source-line-no">204</span><span id="line-204"></span>
+<span class="source-line-no">205</span><span id="line-205">    String gradStudentName = "grad";</span>
+<span class="source-line-no">206</span><span id="line-206">    Student grad = addStudentInSectionWithScore(gradeBook, assignment, gradStudentName, GRADUATE, 9.2);</span>
+<span class="source-line-no">207</span><span id="line-207">    assertThat(grad.getLetterGrade(), nullValue());</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">    calculateTotalGradesForStudents(gradeBook, true);</span>
+<span class="source-line-no">210</span><span id="line-210"></span>
+<span class="source-line-no">211</span><span id="line-211">    assertThat(betterUndergrad.getLetterGrade(), equalTo(LetterGrade.A));</span>
+<span class="source-line-no">212</span><span id="line-212">    assertThat(worseUndergrad.getLetterGrade(), equalTo(LetterGrade.A_MINUS));</span>
+<span class="source-line-no">213</span><span id="line-213">    assertThat(grad.getLetterGrade(), equalTo(LetterGrade.A));</span>
+<span class="source-line-no">214</span><span id="line-214">  }</span>
+<span class="source-line-no">215</span><span id="line-215"></span>
+<span class="source-line-no">216</span><span id="line-216">  @Test</span>
+<span class="source-line-no">217</span><span id="line-217">  public void assignmentDueInThePastIsLate() {</span>
+<span class="source-line-no">218</span><span id="line-218">    Assignment assignment = new Assignment("Test", 4.0);</span>
+<span class="source-line-no">219</span><span id="line-219">    LocalDateTime dueDate = LocalDateTime.now().minusDays(3);</span>
+<span class="source-line-no">220</span><span id="line-220">    assignment.setDueDate(dueDate);</span>
+<span class="source-line-no">221</span><span id="line-221"></span>
+<span class="source-line-no">222</span><span id="line-222">    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(true));</span>
+<span class="source-line-no">223</span><span id="line-223">  }</span>
+<span class="source-line-no">224</span><span id="line-224"></span>
+<span class="source-line-no">225</span><span id="line-225">  @Test</span>
+<span class="source-line-no">226</span><span id="line-226">  public void assignmentDueInTheFutureIsNotLate() {</span>
+<span class="source-line-no">227</span><span id="line-227">    Assignment assignment = new Assignment("Test", 4.0);</span>
+<span class="source-line-no">228</span><span id="line-228">    LocalDateTime dueDate = LocalDateTime.now().plusDays(3);</span>
+<span class="source-line-no">229</span><span id="line-229">    assignment.setDueDate(dueDate);</span>
+<span class="source-line-no">230</span><span id="line-230"></span>
+<span class="source-line-no">231</span><span id="line-231">    assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(false));</span>
+<span class="source-line-no">232</span><span id="line-232">  }</span>
+<span class="source-line-no">233</span><span id="line-233"></span>
+<span class="source-line-no">234</span><span id="line-234">}</span>
 
 
 
