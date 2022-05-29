@@ -10,7 +10,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Apache Maven Doxia Site Renderer 2.0.0-M2" />
-    <title>CS410J Java Example Code &#x2013; Dependency Information</title>
+    <title>kata-archetype &#x2013; Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.11.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -25,7 +25,7 @@
     <div class="container-fluid">
       <header>
         <div id="banner">
-          <div class="pull-left"><div id="bannerLeft"><h1>CS410J Java Example Code</h1>
+          <div class="pull-left"><div id="bannerLeft"><h1>kata-archetype</h1>
 </div>
 </div>
           <div class="pull-right"></div>
@@ -44,30 +44,6 @@
         <header id="leftColumn" class="span2">
           <nav class="well sidebar-nav">
   <ul class="nav nav-list">
-   <li class="nav-header">Modules</li>
-    <li><a href="examples/index.html" title="examples"><span class="none"></span>examples</a></li>
-    <li><a href="web/index.html" title="Web Application examples"><span class="none"></span>Web Application examples</a></li>
-    <li><a href="family/index.html" title="CS410J Family Tree Application"><span class="none"></span>CS410J Family Tree Application</a></li>
-    <li><a href="grader/index.html" title="grader"><span class="none"></span>grader</a></li>
-    <li><a href="projects-parent/index.html" title="Parent Project for CS410J Projects"><span class="none"></span>Parent Project for CS410J Projects</a></li>
-   <li class="nav-header">Project Documentation</li>
-    <li><a href="project-info.html" title="Project Information"><span class="icon-chevron-down"></span>Project Information</a>
-     <ul class="nav nav-list">
-      <li><a href="dependencies.html" title="Dependencies"><span class="none"></span>Dependencies</a></li>
-      <li><a href="dependency-convergence.html" title="Dependency Convergence"><span class="none"></span>Dependency Convergence</a></li>
-      <li class="active"><a><span class="none"></span>Dependency Information</a></li>
-      <li><a href="distribution-management.html" title="Distribution Management"><span class="none"></span>Distribution Management</a></li>
-      <li><a href="index.html" title="About"><span class="none"></span>About</a></li>
-      <li><a href="issue-management.html" title="Issue Management"><span class="none"></span>Issue Management</a></li>
-      <li><a href="licenses.html" title="Licenses"><span class="none"></span>Licenses</a></li>
-      <li><a href="modules.html" title="Project Modules"><span class="none"></span>Project Modules</a></li>
-      <li><a href="plugin-management.html" title="Plugin Management"><span class="none"></span>Plugin Management</a></li>
-      <li><a href="plugins.html" title="Plugins"><span class="none"></span>Plugins</a></li>
-      <li><a href="scm.html" title="Source Code Management"><span class="none"></span>Source Code Management</a></li>
-      <li><a href="summary.html" title="Summary"><span class="none"></span>Summary</a></li>
-      <li><a href="team.html" title="Team"><span class="none"></span>Team</a></li>
-     </ul></li>
-    <li><a href="project-reports.html" title="Project Reports"><span class="icon-chevron-right"></span>Project Reports</a></li>
   </ul>
           </nav>
           <div class="well sidebar-nav">
@@ -94,26 +70,26 @@
 <h3><a name="Apache_Maven"></a>Apache Maven</h3><a name="Apache_Maven"></a>
 <div class="source"><pre class="prettyprint linenums">&lt;dependency&gt;
   &lt;groupId&gt;io.github.davidwhitlock.cs410J&lt;/groupId&gt;
-  &lt;artifactId&gt;cs410j&lt;/artifactId&gt;
+  &lt;artifactId&gt;kata-archetype&lt;/artifactId&gt;
   &lt;version&gt;2022.1.0-SNAPSHOT&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
+  &lt;type&gt;maven-archetype&lt;/type&gt;
 &lt;/dependency&gt;</pre></div></section><section>
 <h3><a name="Apache_Buildr"></a>Apache Buildr</h3><a name="Apache_Buildr"></a>
-<div class="source"><pre class="prettyprint linenums">'io.github.davidwhitlock.cs410J:cs410j:pom:2022.1.0-SNAPSHOT'</pre></div></section><section>
+<div class="source"><pre class="prettyprint linenums">'io.github.davidwhitlock.cs410J:kata-archetype:maven-archetype:2022.1.0-SNAPSHOT'</pre></div></section><section>
 <h3><a name="Apache_Ivy"></a>Apache Ivy</h3><a name="Apache_Ivy"></a>
-<div class="source"><pre class="prettyprint linenums">&lt;dependency org=&quot;io.github.davidwhitlock.cs410J&quot; name=&quot;cs410j&quot; rev=&quot;2022.1.0-SNAPSHOT&quot;&gt;
-  &lt;artifact name=&quot;cs410j&quot; type=&quot;pom&quot; /&gt;
+<div class="source"><pre class="prettyprint linenums">&lt;dependency org=&quot;io.github.davidwhitlock.cs410J&quot; name=&quot;kata-archetype&quot; rev=&quot;2022.1.0-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;kata-archetype&quot; type=&quot;maven-archetype&quot; /&gt;
 &lt;/dependency&gt;</pre></div></section><section>
 <h3><a name="Groovy_Grape"></a>Groovy Grape</h3><a name="Groovy_Grape"></a>
 <div class="source"><pre class="prettyprint linenums">@Grapes(
-@Grab(group='io.github.davidwhitlock.cs410J', module='cs410j', version='2022.1.0-SNAPSHOT')
+@Grab(group='io.github.davidwhitlock.cs410J', module='kata-archetype', version='2022.1.0-SNAPSHOT')
 )</pre></div></section><section>
 <h3><a name="Gradle.2FGrails"></a>Gradle/Grails</h3><a name="Gradle.2FGrails"></a>
-<div class="source"><pre class="prettyprint linenums">compile 'io.github.davidwhitlock.cs410J:cs410j:2022.1.0-SNAPSHOT'</pre></div></section><section>
+<div class="source"><pre class="prettyprint linenums">compile 'io.github.davidwhitlock.cs410J:kata-archetype:2022.1.0-SNAPSHOT'</pre></div></section><section>
 <h3><a name="Scala_SBT"></a>Scala SBT</h3><a name="Scala_SBT"></a>
-<div class="source"><pre class="prettyprint linenums">libraryDependencies += &quot;io.github.davidwhitlock.cs410J&quot; % &quot;cs410j&quot; % &quot;2022.1.0-SNAPSHOT&quot;</pre></div></section><section>
+<div class="source"><pre class="prettyprint linenums">libraryDependencies += &quot;io.github.davidwhitlock.cs410J&quot; % &quot;kata-archetype&quot; % &quot;2022.1.0-SNAPSHOT&quot;</pre></div></section><section>
 <h3><a name="Leiningen"></a>Leiningen</h3><a name="Leiningen"></a>
-<div class="source"><pre class="prettyprint linenums">[io.github.davidwhitlock.cs410J/cs410j &quot;2022.1.0-SNAPSHOT&quot;]</pre></div></section></section>
+<div class="source"><pre class="prettyprint linenums">[io.github.davidwhitlock.cs410J/kata-archetype &quot;2022.1.0-SNAPSHOT&quot;]</pre></div></section></section>
         </main>
       </div>
     </div>
