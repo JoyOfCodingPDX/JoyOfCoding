@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
-  <version>2022.1.0-SNAPSHOT</version>
+  <version>2022.1.0</version>
   <artifactId>cs410j</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -90,7 +90,7 @@
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
       <maven-pmd-plugin.version>3.16.0</maven-pmd-plugin.version>
 
-      <student.version>2022.5.0-SNAPSHOT</student.version>
+      <student.version>2022.5.0</student.version>
     </properties>
     <repositories>
       <repository>  <!-- Needed for Groovy dependencies -->
