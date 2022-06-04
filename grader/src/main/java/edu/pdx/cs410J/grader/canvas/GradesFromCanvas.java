@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.grader.canvas;
 
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.GradeBook;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,24 +59,35 @@ public class GradesFromCanvas {
     return this.students;
   }
 
-  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(String canvasQuizName, GradeBook gradebook) {
+  public Optional<Assignment> findAssignmentInGradebookForCanvasQuiz(CanvasAssignment canvasAssignment, GradeBook gradebook) {
+    String canvasQuizName = canvasAssignment.getName();
+    Optional<Assignment> maybeAssignment;
+
     Assignment assignment = gradebook.getAssignment(canvasQuizName);
     if (assignment != null) {
-      return Optional.of(assignment);
+      maybeAssignment = noteMatchedAssignment(assignment, canvasAssignment);
+
+    } else {
+      maybeAssignment = findAssignmentInGradebookLike(canvasAssignment, gradebook);
     }
 
-    return findAssignmentInGradebookLike(canvasQuizName, gradebook);
+    return maybeAssignment;
   }
 
-  private Optional<Assignment> findAssignmentInGradebookLike(String canvasQuizName, GradeBook gradebook) {
+  private Optional<Assignment> noteMatchedAssignment(Assignment assignment, CanvasAssignment canvasAssignment) {
+    assignment.setCanvasId(canvasAssignment.getId());
+    return Optional.of(assignment);
+  }
+
+  private Optional<Assignment> findAssignmentInGradebookLike(CanvasAssignment canvasAssignment, GradeBook gradebook) {
     List<Assignment> assignments = new ArrayList<>();
+    String canvasQuizName = canvasAssignment.getName();
     for (String assignmentName : gradebook.getAssignmentNames()) {
       Assignment assignment = gradebook.getAssignment(assignmentName);
       if (canvasQuizName.startsWith(assignmentName)) {
         assignments.add(assignment);
-      }
 
-      if (canvasQuizName.contains(assignment.getDescription())) {
+      } else if (canvasQuizName.contains(assignment.getDescription())) {
         assignments.add(assignment);
       }
     }
@@ -85,7 +96,7 @@ public class GradesFromCanvas {
       return Optional.empty();
 
     } else if (assignments.size() == 1) {
-      return Optional.of(assignments.get(0));
+      return noteMatchedAssignment(assignments.get(0), canvasAssignment);
 
     } else {
       String message = "Multiple assignments match \"" + canvasQuizName + "\": " +
@@ -100,7 +111,7 @@ public class GradesFromCanvas {
     private final String loginId;
     private final String canvasId;
     private final String section;
-    private final Map<String, Double> scores = new HashMap<>();
+    private final Map<CanvasAssignment, Double> scores = new HashMap<>();
 
     public CanvasStudent(String firstName, String lastName, String loginId, String canvasId, String section) {
       this.firstName = firstName;
@@ -126,15 +137,15 @@ public class GradesFromCanvas {
       return this.canvasId;
     }
 
-    public void setScore(String quizName, Double score) {
-      this.scores.put(quizName, score);
+    public void setScore(CanvasAssignment assignment, Double score) {
+      this.scores.put(assignment, score);
     }
 
-    public Double getScore(String quizName) {
-      return this.scores.get(quizName);
+    public Double getScore(CanvasAssignment assignment) {
+      return this.scores.get(assignment);
     }
 
-    public Iterable<String> getAssignmentNames() {
+    public Iterable<CanvasAssignment> getAssignments() {
       return this.scores.keySet();
     }
 
@@ -206,6 +217,33 @@ public class GradesFromCanvas {
       }
 
       return new CanvasStudent(firstName, lastName, loginId, canvasId, section);
+    }
+  }
+
+  public static class CanvasAssignment {
+    private final String name;
+    private final int id;
+    private double pointsPossible;
+
+    public CanvasAssignment(String name, int id) {
+      this.name = name;
+      this.id = id;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    public double getPointsPossible() {
+      return pointsPossible;
+    }
+
+    void setPossiblePoints(double possiblePoints) {
+      this.pointsPossible = possiblePoints;
     }
   }
 }

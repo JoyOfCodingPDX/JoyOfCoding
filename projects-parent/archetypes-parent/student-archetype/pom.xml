@@ -5,11 +5,11 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0</version>
   </parent>
 
   <artifactId>student-archetype</artifactId>
-  <version>2022.0.0</version>
+  <version>2022.1.0</version>
   <packaging>maven-archetype</packaging>
 
   <name>Archetype for Student project</name>

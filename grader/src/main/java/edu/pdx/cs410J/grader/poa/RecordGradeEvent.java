@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.grader.poa;
 
-import edu.pdx.cs410J.grader.Assignment;
-import edu.pdx.cs410J.grader.Student;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Student;
 
 public class RecordGradeEvent {
   private final double score;

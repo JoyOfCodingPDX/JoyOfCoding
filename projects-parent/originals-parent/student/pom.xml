@@ -4,11 +4,11 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0</version>
   </parent>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>student</artifactId>
-  <version>2022.0.0</version>
+  <version>2022.1.0</version>
   <packaging>jar</packaging>
 
   <name>Student Project</name>
@@ -72,11 +72,6 @@
           <version>${maven-surefire-report-plugin.version}</version>
         </plugin>
          <plugin>
-           <groupId>org.codehaus.mojo</groupId>
-           <artifactId>jdepend-maven-plugin</artifactId>
-           <version>${jdepend-maven-plugin.version}</version>
-         </plugin>
-         <plugin>
            <groupId>org.apache.maven.plugins</groupId>
            <artifactId>maven-checkstyle-plugin</artifactId>
            <version>${maven-checkstyle-plugin.version}</version>
@@ -93,12 +88,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>2022.0.0</version>
+      <version>2022.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2022.0.0</version>
+      <version>2022.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -115,13 +110,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>${maven.javadoc.plugin.version}</version>
+            <version>${maven-javadoc-plugin.version}</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2022.0.0</version>
+                <version>2022.5.0</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

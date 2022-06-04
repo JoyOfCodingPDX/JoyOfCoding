@@ -1,6 +1,11 @@
 package edu.pdx.cs410J.grader.canvas;
 
+import edu.pdx.cs410J.grader.gradebook.Assignment;
+import edu.pdx.cs410J.grader.gradebook.GradeBook;
+import edu.pdx.cs410J.grader.gradebook.Student;
 import edu.pdx.cs410J.grader.*;
+import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasAssignment;
+import edu.pdx.cs410J.grader.canvas.GradesFromCanvas.CanvasStudent;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -19,8 +24,9 @@ public class GradesFromCanvasImporterTest extends CanvasTestCase {
     gradebook.addStudent(student);
 
     GradesFromCanvas canvas = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
-    canvasStudent.setScore("quiz", 3.4);
+    CanvasAssignment assignment = new CanvasAssignment("quiz", 1234);
+    CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
+    canvasStudent.setScore(assignment, 3.4);
     canvas.addStudent(canvasStudent);
 
     assertThrows(IllegalStateException.class, () ->
@@ -28,7 +34,7 @@ public class GradesFromCanvasImporterTest extends CanvasTestCase {
     );
   }
 
-  private GradesFromCanvas.CanvasStudent createCanvasStudentWithId(String studentId) {
+  private CanvasStudent createCanvasStudentWithId(String studentId) {
     return createCanvasStudent("First", "Last", studentId);
   }
 
@@ -44,8 +50,9 @@ public class GradesFromCanvasImporterTest extends CanvasTestCase {
     gradebook.addStudent(student);
 
     GradesFromCanvas canvas = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
-    canvasStudent.setScore(quizName, score);
+    CanvasAssignment assignment = new CanvasAssignment(quizName, 1234);
+    CanvasStudent canvasStudent = createCanvasStudentWithId(studentId);
+    canvasStudent.setScore(assignment, score);
     canvas.addStudent(canvasStudent);
 
     GradesFromCanvasImporter.importGradesFromCanvas(canvas, gradebook);
@@ -70,8 +77,9 @@ public class GradesFromCanvasImporterTest extends CanvasTestCase {
     gradebook.addStudent(student);
 
     GradesFromCanvas canvas = new GradesFromCanvas();
-    GradesFromCanvas.CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName);
-    canvasStudent.setScore(quizName, score);
+    CanvasStudent canvasStudent = createCanvasStudent(firstName, lastName);
+    CanvasAssignment quiz = new CanvasAssignment(quizName, 1234);
+    canvasStudent.setScore(quiz, score);
     canvas.addStudent(canvasStudent);
 
     GradesFromCanvasImporter.importGradesFromCanvas(canvas, gradebook);

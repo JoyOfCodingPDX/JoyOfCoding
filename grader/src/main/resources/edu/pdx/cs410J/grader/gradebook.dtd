@@ -45,9 +45,10 @@ number of late days allowed in the class -->
 
 <!-- An assignment has a name, description, a required number of
 points it is worth, a type, a due date, and some optional notes -->
-<!ELEMENT assignment (name, description?, points, due-date?, notes*)>
+<!ELEMENT assignment (name, description?, points, canvas-id?, due-date?, notes*)>
 <!ATTLIST assignment
-  type  (PROJECT | QUIZ | OTHER | POA | OPTIONAL)  #REQUIRED
+  type         (PROJECT | QUIZ | OTHER | POA | OPTIONAL)  #REQUIRED
+  project-type (APP_CLASSES | TEXT_FILE | PRETTY_PRINT | XML | REST | ANDROID)  #IMPLIED
 >
 
 <!ELEMENT description (#PCDATA)>

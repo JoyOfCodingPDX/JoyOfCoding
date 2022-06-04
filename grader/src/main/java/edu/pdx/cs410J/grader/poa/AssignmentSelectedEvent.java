@@ -1,6 +1,6 @@
 package edu.pdx.cs410J.grader.poa;
 
-import edu.pdx.cs410J.grader.Assignment;
+import edu.pdx.cs410J.grader.gradebook.Assignment;
 
 public class AssignmentSelectedEvent {
   private final Assignment assignment;

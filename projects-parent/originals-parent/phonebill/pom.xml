@@ -3,7 +3,7 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.0.0</version>
+    <version>2022.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
@@ -49,12 +49,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.0.0</version>
+      <version>2022.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.0.0</version>
+      <version>2022.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -119,11 +119,6 @@
         <version>${maven-surefire-report-plugin.version}</version>
       </plugin>
        <plugin>
-         <groupId>org.codehaus.mojo</groupId>
-         <artifactId>jdepend-maven-plugin</artifactId>
-         <version>${jdepend-maven-plugin.version}</version>
-       </plugin>
-       <plugin>
          <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-checkstyle-plugin</artifactId>
          <version>${maven-checkstyle-plugin.version}</version>
@@ -146,13 +141,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>${maven.javadoc.plugin.version}</version>
+            <version>${maven-javadoc-plugin.version}</version>
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>2022.0.0</version>
+                <version>${student.version}</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
