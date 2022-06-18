@@ -1,12 +1,11 @@
 package edu.pdx.cs410J;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,6 @@ public abstract class InvokeMainTestCase
     {
         private final Class<?> mainClass;
         private final String[] args;
-        private Integer exitCode;
         private String out;
         private String err;
 
@@ -117,35 +115,20 @@ public abstract class InvokeMainTestCase
         private void invokeMain( Method main )
             throws IllegalAccessException, InvocationTargetException
         {
-            SecurityManager oldSecurityManager = System.getSecurityManager();
             PrintStream oldOut = System.out;
             PrintStream oldErr = System.err;
             try {
-                MainMethodResult.ExitStatusSecurityManager essm = new ExitStatusSecurityManager(oldSecurityManager);
-                System.setSecurityManager( essm );
-
                 ByteArrayOutputStream newOut = new ByteArrayOutputStream();
                 ByteArrayOutputStream newErr = new ByteArrayOutputStream();
                 System.setOut( new PrintStream(newOut) );
                 System.setErr( new PrintStream(newErr) );
 
-                try {
-                    main.invoke( null, (Object) copyOfArgs());
-
-                } catch ( InvocationTargetException ex ) {
-                    if ( ex.getCause() instanceof ExitException ) {
-                        this.exitCode = ((ExitException) ex.getCause()).getExitCode();
-
-                    } else {
-                        throw ex;
-                    }
-                }
+                main.invoke( null, (Object) copyOfArgs());
 
                 this.out = newOut.toString();
                 this.err = newErr.toString();
 
             } finally {
-                System.setSecurityManager( oldSecurityManager );
                 System.setOut( oldOut );
                 System.setErr( oldErr );
             }
@@ -168,7 +151,7 @@ public abstract class InvokeMainTestCase
          */
         public Integer getExitCode()
         {
-            return this.exitCode;
+            throw new UnsupportedOperationException("No more exit code");
         }
 
         /**
@@ -189,64 +172,5 @@ public abstract class InvokeMainTestCase
             return err;
         }
 
-        /**
-         * A {@link SecurityManager} that delegates security checks to another {@link SecurityManager}, but captures
-         * the exit code called by {@link System#exit(int)}
-         */
-        private static class ExitStatusSecurityManager extends SecurityManager
-        {
-            private final SecurityManager delegate;
-
-            public ExitStatusSecurityManager( SecurityManager manager )
-            {
-                this.delegate = manager;
-            }
-
-            @Override
-            public void checkPermission( Permission perm )
-            {
-                if (this.delegate != null) {
-                    this.delegate.checkPermission( perm );
-                }
-            }
-
-            @Override
-            public void checkPermission( Permission perm, Object context )
-            {
-                if (this.delegate != null) {
-                    this.delegate.checkPermission( perm, context );
-                }
-            }
-
-            @Override
-            public void checkExit( int status )
-            {
-                if (this.delegate != null) {
-                    this.delegate.checkExit( status );
-                }
-
-                throw new ExitException(status);
-            }
-
-        }
-
-        /**
-         * An exception that is thrown when the the main method calls {@link System#exit(int)}.  This lets us capture
-         * the exit code without the VM actually exiting.
-         */
-        private static class ExitException extends SecurityException
-        {
-            private final int exitCode;
-
-            public ExitException( int exitCode )
-            {
-                this.exitCode = exitCode;
-            }
-
-            public int getExitCode()
-            {
-                return exitCode;
-            }
-        }
     }
 }

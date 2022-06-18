@@ -20,11 +20,9 @@ public class CreateMovie {
       MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);
       long id = db.createMovie(title, year);
       System.out.println("Created movie " + id);
-      System.exit(0);
 
     } catch (RemoteException | NotBoundException ex) {
       ex.printStackTrace(System.err);
-      System.exit(1);
     }
 
   }

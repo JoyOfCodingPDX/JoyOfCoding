@@ -22,7 +22,6 @@ public class MovieDatabaseRmiMainTest extends MovieDatabaseRmiTestCase {
     int year = 2018;
 
     MainMethodResult result = invokeMain(CreateMovie.class, RMI_HOST, String.valueOf(RMI_PORT), title, String.valueOf(year));
-    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("Created movie"));
     assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 
