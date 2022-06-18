@@ -5,7 +5,7 @@ if (!buildLog.isFile()) {
 
 String logText = buildLog.text
 
-def expectedCoverage = "Rule violated for bundle coverage: instructions covered ratio"
+def expectedCoverage = "All coverage checks have been met."
 if (!logText.contains(expectedCoverage)) {
   throw new IllegalStateException("Didn't find expected build output: " + expectedCoverage)
 }

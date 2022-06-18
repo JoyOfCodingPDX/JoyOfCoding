@@ -18,7 +18,6 @@ public class Project1 {
     for (String arg : args) {
       System.out.println(arg);
     }
-    System.exit(1);
   }
 
 }
