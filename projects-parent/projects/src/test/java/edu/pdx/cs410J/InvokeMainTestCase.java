@@ -146,15 +146,6 @@ public abstract class InvokeMainTestCase
         }
 
         /**
-         * Returns the exit code of this program (the argument to {@link System#exit(int)}
-         * @return <code>null</code> if {@link System#exit(int)} was not invoked
-         */
-        public Integer getExitCode()
-        {
-            throw new UnsupportedOperationException("No more exit code");
-        }
-
-        /**
          * Returns the data written to standard out
          * @return the data written to standard out
          */
