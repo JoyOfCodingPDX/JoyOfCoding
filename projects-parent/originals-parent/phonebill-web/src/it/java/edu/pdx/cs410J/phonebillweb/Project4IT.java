@@ -32,14 +32,12 @@ class Project4IT extends InvokeMainTestCase {
     @Test
     void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
-        assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
 
     @Test
     void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(PrettyPrinter.formatWordCount(0)));
     }
@@ -63,7 +61,6 @@ class Project4IT extends InvokeMainTestCase {
         String definition = "DEFINITION";
 
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
