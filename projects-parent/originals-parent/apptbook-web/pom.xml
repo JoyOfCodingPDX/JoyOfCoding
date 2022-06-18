@@ -21,7 +21,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.2.0-SNAPSHOT</version>
+      <version>2022.2.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.2.0-SNAPSHOT</version>
+      <version>2022.2.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
