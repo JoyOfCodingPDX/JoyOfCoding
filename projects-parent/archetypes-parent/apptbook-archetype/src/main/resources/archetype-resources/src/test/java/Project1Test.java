@@ -15,8 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * A unit test for code in the <code>Project1</code> class.  This is different
- * from <code>Project1IT</code> which is an integration test (and can handle the calls
- * to {@link System${symbol_pound}exit(int)} and the like.
+ * from <code>Project1IT</code> which is an integration test (and can capture data
+ * written to {@link System${symbol_pound}out} and the like.
  */
 class Project1Test {
 

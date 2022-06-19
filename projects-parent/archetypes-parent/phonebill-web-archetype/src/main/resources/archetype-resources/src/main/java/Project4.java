@@ -87,8 +87,6 @@ public class Project4 {
         }
 
         System.out.println(message);
-
-        System.exit(0);
     }
 
     /**
@@ -108,8 +106,6 @@ public class Project4 {
     {
         PrintStream err = System.err;
         err.println("** " + message);
-
-        System.exit(1);
     }
 
     /**
@@ -133,7 +129,5 @@ public class Project4 {
         err.println("is printed.");
         err.println("If no word is specified, all dictionary entries are printed");
         err.println();
-
-        System.exit(1);
     }
 }

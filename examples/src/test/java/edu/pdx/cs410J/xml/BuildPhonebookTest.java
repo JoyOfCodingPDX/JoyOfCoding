@@ -11,7 +11,6 @@ public class BuildPhonebookTest extends InvokeMainTestCase {
   @Test
   public void runningMainGenerateXmlAndNoErrors() {
     MainMethodResult result = invokeMain(BuildPhonebook.class);
-    assertThat(result.getExitCode(), nullValue());
     assertThat(result.getTextWrittenToStandardError(), equalTo(""));
     assertThat(result.getTextWrittenToStandardOut(), containsString("<name>Tripwire, Inc.</name>"));
   }

@@ -19,6 +19,20 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>maven-snapshots</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -88,12 +102,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>2022.1.0</version>
+      <version>2022.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2022.1.0</version>
+      <version>2022.2.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

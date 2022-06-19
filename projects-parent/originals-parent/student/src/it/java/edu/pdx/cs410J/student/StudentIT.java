@@ -4,7 +4,6 @@ import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
 
 /**
@@ -13,12 +12,6 @@ import static org.hamcrest.core.StringContains.containsString;
  * to easily invoke the <code>main</code> method of <code>Student</code>.
  */
 class StudentIT extends InvokeMainTestCase {
-
-  @Test
-  void invokingMainWithNoArgumentsHasExitCodeOf1() {
-    InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class);
-    assertThat(result.getExitCode(), equalTo(1));
-  }
 
   @Test
   void invokingMainWithNoArgumentsPrintsMissingArgumentsToStandardError() {
