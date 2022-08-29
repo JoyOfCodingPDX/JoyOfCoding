@@ -3,14 +3,14 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.1.0</version>
+    <version>2023.0.0-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>java-koans-archetype</artifactId>
-  <version>2022.2.0-SNAPSHOT</version>
+  <version>2023.0.0-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>java-koans-archetype</name>
@@ -66,4 +66,18 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
+
+  <repositories>
+    <repository>
+      <id>maven-snapshots</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>
