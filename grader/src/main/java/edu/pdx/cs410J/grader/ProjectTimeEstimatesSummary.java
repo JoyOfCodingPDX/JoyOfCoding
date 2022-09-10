@@ -14,51 +14,67 @@ import static edu.pdx.cs410J.grader.gradebook.Assignment.ProjectType.*;
 
 public class ProjectTimeEstimatesSummary {
   public TimeEstimatesSummaries getTimeEstimateSummaries(GradeBook book) {
+    return getTimeEstimateSummaries(Collections.singletonList(book));
+  }
+
+  public TimeEstimatesSummaries getTimeEstimateSummaries(List<GradeBook> books) {
     TimeEstimatesSummaries summaries = new TimeEstimatesSummaries();
 
-    book.assignmentsStream().forEach(assignment -> {
-      ProjectType projectType = assignment.getProjectType();
-      if (projectType != null) {
-        summaries.addSummariesFor(book, assignment);
-      }
+    Set<ProjectType> projectTypes = new HashSet<>();
+    for (GradeBook book : books) {
+      book.assignmentsStream()
+        .map(Assignment::getProjectType)
+        .filter(Objects::nonNull)
+        .forEach(projectTypes::add);
+    }
+
+    projectTypes.forEach(projectType -> {
+      summaries.addSummariesFor(books, projectType);
     });
 
     return summaries;
   }
 
   public static void main(String[] args) {
-    String gradeBookFileName = null;
+    List<String> gradeBookFileNames = new ArrayList<>();
 
-    for (String arg : args) {
-      if (gradeBookFileName == null) {
-        gradeBookFileName = arg;
-      }
-    }
+    Collections.addAll(gradeBookFileNames, args);
 
-    if (gradeBookFileName == null) {
+    if (gradeBookFileNames.isEmpty()) {
       usage("Missing grade book file name");
       return;
     }
 
-    File gradeBookFile = new File(gradeBookFileName);
-    if (!gradeBookFile.exists()) {
-      usage("Cannot find grade book file: " + gradeBookFile);
-      return;
-    }
+    List<GradeBook> gradeBooks = gradeBookFileNames.stream()
+      .map(ProjectTimeEstimatesSummary::getExistingFile)
+      .map(ProjectTimeEstimatesSummary::parseGradeBookFile)
+      .collect(Collectors.toList());
 
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(gradeBooks);
+
+    PrintWriter pw = new PrintWriter(System.out, true);
+    summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, REST, ANDROID));
+    pw.flush();
+
+  }
+
+  private static GradeBook parseGradeBookFile(File file) {
     try {
-      GradeBook book = new XmlGradeBookParser(gradeBookFile).parse();
-
-      ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
-      TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
-
-      PrintWriter pw = new PrintWriter(System.out, true);
-      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, REST, ANDROID));
-      pw.flush();
+      return new XmlGradeBookParser(file).parse();
 
     } catch (ParserException | IOException e) {
-      usage("While parsing " + gradeBookFile + ": " + e);
+      usage("While parsing " + file + ": " + e);
+      return null;
     }
+  }
+
+  private static File getExistingFile(String fileName) {
+    File gradeBookFile = new File(fileName);
+    if (!gradeBookFile.exists()) {
+      usage("Cannot find grade book file: " + gradeBookFile);
+    }
+    return gradeBookFile;
   }
 
   private static void usage(String message) {
@@ -78,10 +94,17 @@ public class ProjectTimeEstimatesSummary {
       return this.summaries.get(projectType);
     }
 
-    void addSummariesFor(GradeBook book, Assignment assignment) {
-      Collection<Double> estimates = getEstimates(book, assignment);
-      if (!estimates.isEmpty()) {
-        summaries.put(assignment.getProjectType(), new TimeEstimatesSummary(estimates));
+    void addSummariesFor(List<GradeBook> books, ProjectType projectType) {
+      Collection<Double> allEstimates = new ArrayList<>();
+      books.forEach(book -> {
+        book.assignmentsStream()
+          .filter(assignment -> assignment.getProjectType() == projectType)
+          .map(assignment -> getEstimates(book, assignment))
+          .forEach(allEstimates::addAll);
+      });
+
+      if (!allEstimates.isEmpty()) {
+          summaries.put(projectType, new TimeEstimatesSummary(allEstimates));
       }
     }
 
@@ -146,7 +169,7 @@ public class ProjectTimeEstimatesSummary {
     }
 
     private void formatRowOfDoubles(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, Double> cellValue) {
-      formatRow(pw, projectTypes, rowTitle,projectType -> {
+      formatRow(pw, projectTypes, rowTitle, projectType -> {
         TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
         if (summary == null) {
           return "n/a";
@@ -169,14 +192,14 @@ public class ProjectTimeEstimatesSummary {
 
     private void countRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRow(pw, projectTypes, "Count", projectType -> {
-          TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
-          if (summary == null) {
-            return "0";
+        TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
+        if (summary == null) {
+          return "0";
 
-          } else {
-            return String.valueOf(summary.getCount());
-          }
-        });
+        } else {
+          return String.valueOf(summary.getCount());
+        }
+      });
     }
 
     private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) {
