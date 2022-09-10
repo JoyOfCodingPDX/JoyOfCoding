@@ -39,7 +39,6 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopPort>9999</stopPort>
           <stopKey>stop-jetty</stopKey>
           <webApp>
@@ -54,8 +53,6 @@
               <goal>start</goal>
             </goals>
             <configuration>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
               <httpConnector>
                 <port>${jetty.http.port}</port>
               </httpConnector>
