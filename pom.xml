@@ -92,13 +92,6 @@
 
       <student.version>2023.0.0-SNAPSHOT</student.version>
     </properties>
-    <repositories>
-      <repository>  <!-- Needed for Groovy dependencies -->
-        <id>jcenter</id>
-        <name>bintray</name>
-        <url>https://jcenter.bintray.com</url>
-      </repository>
-    </repositories>
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
