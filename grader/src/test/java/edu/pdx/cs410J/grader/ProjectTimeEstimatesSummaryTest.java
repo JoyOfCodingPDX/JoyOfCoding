@@ -347,4 +347,25 @@ public class ProjectTimeEstimatesSummaryTest {
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
     assertThat(summaries.getTimeEstimateSummary(APP_CLASSES), nullValue());
   }
+
+  @Test
+  void calculationsUsingMultipleGradeBooks() {
+    GradeBook book1 = new GradeBook("Book 1");
+    GradeBook book2 = new GradeBook("Book 2");
+
+    ProjectType projectType = APP_CLASSES;
+
+    Assignment project1 = addProject(book1, projectType);
+    noteSubmission(addStudent(book1, "student1"), project1, 1.0);
+    noteSubmission(addStudent(book1, "student2"), project1, 2.0);
+    Assignment project2 = addProject(book2, projectType);
+    noteSubmission(addStudent(book2, "student4"), project2, 4.0);
+    noteSubmission(addStudent(book2, "student5"), project2, 5.0);
+
+    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();
+    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(List.of(book1, book2));
+    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+    assertThat(estimates.getCount(), equalTo(4));
+    assertThat(estimates.getAverage(), equalTo(3.0));
+  }
 }
