@@ -59,59 +59,33 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <httpConnector>
-            <port>${jetty.http.port}</port>
-          </httpConnector>
-          <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+          <stopKey>stop-jetty</stopKey>
           <webApp>
             <contextPath>/${project.build.finalName}</contextPath>
           </webApp>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.6.7</version>
         <executions>
           <execution>
-            <id>start-container</id>
+            <id>start-jetty</id>
             <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
             </goals>
+            <configuration>
+              <httpConnector>
+                <port>${jetty.http.port}</port>
+              </httpConnector>
+            </configuration>
           </execution>
           <execution>
-            <id>stop-container</id>
+            <id>stop-jetty</id>
             <phase>post-integration-test</phase>
             <goals>
               <goal>stop</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <container>
-            <containerId>jetty9x</containerId>
-            <type>embedded</type>
-            <systemProperties>
-              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
-            </systemProperties>
-          </container>
-          <configuration>
-            <properties>
-              <cargo.servlet.port>${jetty.http.port}</cargo.servlet.port>
-            </properties>
-          </configuration>
-          <deployables>
-            <deployable>
-              <location>
-                ${project.build.directory}/${project.build.finalName}.${project.packaging}
-              </location>
-              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/index.html</pingURL>
-              <pingTimeout>20000</pingTimeout>
-            </deployable>
-          </deployables>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
