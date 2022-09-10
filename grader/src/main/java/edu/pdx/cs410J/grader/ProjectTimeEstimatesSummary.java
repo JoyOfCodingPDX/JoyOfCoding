@@ -53,7 +53,7 @@ public class ProjectTimeEstimatesSummary {
       TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
 
       PrintWriter pw = new PrintWriter(System.out, true);
-      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, REST, ANDROID));
+      summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, REST, ANDROID));
       pw.flush();
 
     } catch (ParserException | IOException e) {
@@ -198,6 +198,9 @@ public class ProjectTimeEstimatesSummary {
 
         case XML:
           return "XML";
+
+        case KOANS:
+          return "Koans";
 
         case REST:
           return "REST";

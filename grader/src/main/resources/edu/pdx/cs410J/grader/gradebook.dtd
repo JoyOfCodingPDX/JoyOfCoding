@@ -48,7 +48,7 @@ points it is worth, a type, a due date, and some optional notes -->
 <!ELEMENT assignment (name, description?, points, canvas-id?, due-date?, notes*)>
 <!ATTLIST assignment
   type         (PROJECT | QUIZ | OTHER | POA | OPTIONAL)  #REQUIRED
-  project-type (APP_CLASSES | TEXT_FILE | PRETTY_PRINT | XML | REST | ANDROID)  #IMPLIED
+  project-type (APP_CLASSES | TEXT_FILE | PRETTY_PRINT | KOANS | XML | REST | ANDROID)  #IMPLIED
 >
 
 <!ELEMENT description (#PCDATA)>

@@ -175,6 +175,11 @@ public class GradeBookXmlTest {
   }
 
   @Test
+  void koansProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(KOANS);
+  }
+
+  @Test
   void xmlProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
     persistProjectOfType(XML);
   }

@@ -184,6 +184,10 @@ public class XmlGradeBookParser extends XmlHelper {
           assignment.setProjectType(PRETTY_PRINT);
           break;
 
+        case "KOANS":
+          assignment.setProjectType(KOANS);
+          break;
+
         case "XML":
           assignment.setProjectType(XML);
           break;
