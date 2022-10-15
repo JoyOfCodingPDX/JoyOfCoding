@@ -45,6 +45,7 @@ public class PhoneBillRestClient {
    */
   public Map<String, String> getAllDictionaryEntries() throws IOException, ParserException {
     Response response = http.get(Map.of());
+    throwExceptionIfNotOkayHttpStatus(response);
 
     TextParser parser = new TextParser(new StringReader(response.getContent()));
     return parser.parse();
