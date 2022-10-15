@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.phonebillweb;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -84,19 +83,6 @@ public class Project4 {
         }
 
         System.out.println(message);
-    }
-
-    /**
-     * Makes sure that the give response has the expected HTTP status code
-     * @param code The expected status code
-     * @param response The response from the server
-     */
-    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
-    {
-        if (response.getHttpStatusCode() != code) {
-            error(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
-                                response.getHttpStatusCode(), response.getContent()));
-        }
     }
 
     private static void error( String message )

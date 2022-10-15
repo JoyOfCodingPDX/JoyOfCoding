@@ -89,19 +89,6 @@ public class Project4 {
         System.out.println(message);
     }
 
-    /**
-     * Makes sure that the give response has the expected HTTP status code
-     * @param code The expected status code
-     * @param response The response from the server
-     */
-    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
-    {
-        if (response.getHttpStatusCode() != code) {
-            error(String.format("Expected HTTP code %d, got code %d.${symbol_escape}n${symbol_escape}n%s", code,
-                                response.getHttpStatusCode(), response.getContent()));
-        }
-    }
-
     private static void error( String message )
     {
         PrintStream err = System.err;
