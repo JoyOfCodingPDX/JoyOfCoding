@@ -18,7 +18,7 @@ public class PrettyPrinter {
   @VisibleForTesting
   static String formatDictionaryEntry(String word, String definition )
   {
-    return String.format("  %s : %s", word, definition);
+    return String.format("  %s -> %s", word, definition);
   }
 
 
