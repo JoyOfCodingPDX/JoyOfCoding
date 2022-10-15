@@ -53,7 +53,7 @@ public class AppointmentBookRestClient {
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException, ParserException {
-    Response response = http.get(Map.of("word", word));
+    Response response = http.get(Map.of(AppointmentBookServlet.WORD_PARAMETER, word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -62,7 +62,7 @@ public class AppointmentBookRestClient {
   }
 
   public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = postToMyURL(Map.of("word", word, "definition", definition));
+    Response response = postToMyURL(Map.of(AppointmentBookServlet.WORD_PARAMETER, word, "definition", definition));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

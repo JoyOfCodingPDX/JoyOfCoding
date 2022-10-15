@@ -54,7 +54,7 @@ public class PhoneBillRestClient {
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException, ParserException {
-    Response response = http.get(Map.of("word", word));
+    Response response = http.get(Map.of(PhoneBillServlet.WORD_PARAMETER, word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -63,7 +63,7 @@ public class PhoneBillRestClient {
   }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-      Response response = http.post(Map.of("word", word, "definition", definition));
+      Response response = http.post(Map.of(PhoneBillServlet.WORD_PARAMETER, word, "definition", definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
