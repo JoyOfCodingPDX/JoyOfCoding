@@ -59,5 +59,5 @@ class AirlineRestClientIT {
     HttpRequestHelper.RestException ex =
       assertThrows(HttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
     assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));
+    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter(AirlineServlet.WORD_PARAMETER)));
   }}
