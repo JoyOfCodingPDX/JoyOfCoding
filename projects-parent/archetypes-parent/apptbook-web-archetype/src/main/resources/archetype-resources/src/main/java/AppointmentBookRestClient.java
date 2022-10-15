@@ -65,7 +65,7 @@ public class AppointmentBookRestClient {
   }
 
   public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = postToMyURL(Map.of(AppointmentBookServlet.WORD_PARAMETER, word, "definition", definition));
+    Response response = postToMyURL(Map.of(AppointmentBookServlet.WORD_PARAMETER, word, AppointmentBookServlet.WORD_PARAMETER, definition));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

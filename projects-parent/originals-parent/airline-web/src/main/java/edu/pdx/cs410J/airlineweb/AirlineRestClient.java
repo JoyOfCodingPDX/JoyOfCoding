@@ -63,7 +63,7 @@ public class AirlineRestClient
   }
 
   public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = http.post(Map.of(AirlineServlet.WORD_PARAMETER, word, "definition", definition));
+    Response response = http.post(Map.of(AirlineServlet.WORD_PARAMETER, word, AirlineServlet.DEFINITION_PARAMETER, definition));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

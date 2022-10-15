@@ -66,7 +66,7 @@ public class PhoneBillRestClient {
   }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-      Response response = http.post(Map.of(PhoneBillServlet.WORD_PARAMETER, word, "definition", definition));
+      Response response = http.post(Map.of(PhoneBillServlet.WORD_PARAMETER, word, PhoneBillServlet.DEFINITION_PARAMETER, definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
