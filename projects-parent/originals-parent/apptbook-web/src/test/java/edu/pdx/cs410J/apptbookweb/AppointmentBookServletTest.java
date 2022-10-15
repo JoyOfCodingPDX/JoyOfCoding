@@ -46,8 +46,8 @@ public class AppointmentBookServletTest {
     String definition = "TEST DEFINITION";
 
     HttpServletRequest request = mock(HttpServletRequest.class);
-    when(request.getParameter("word")).thenReturn(word);
-    when(request.getParameter("definition")).thenReturn(definition);
+    when(request.getParameter(AppointmentBookServlet.WORD_PARAMETER)).thenReturn(word);
+    when(request.getParameter(AppointmentBookServlet.DEFINITION_PARAMETER)).thenReturn(definition);
 
     HttpServletResponse response = mock(HttpServletResponse.class);
 
