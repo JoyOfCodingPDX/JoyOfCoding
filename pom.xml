@@ -90,7 +90,7 @@
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
       <maven-pmd-plugin.version>3.16.0</maven-pmd-plugin.version>
 
-      <student.version>2023.0.0-SNAPSHOT</student.version>
+      <grader.version>2023.0.0-SNAPSHOT</grader.version>
     </properties>
   <dependencies>
     <dependency>
