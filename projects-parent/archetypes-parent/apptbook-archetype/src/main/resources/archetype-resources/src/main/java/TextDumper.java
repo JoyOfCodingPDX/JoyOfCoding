@@ -10,6 +10,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A skeletal implementation of the <code>TextDumper</code> class for Project 2.
+ */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
   private final Writer writer;
 

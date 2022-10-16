@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class TextDumperTest {
 
   @Test
-  void appointmentBookOwnerIsDumpedInTextFormat() {
+  void phoneBillOwnerIsDumpedInTextFormat() {
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
 

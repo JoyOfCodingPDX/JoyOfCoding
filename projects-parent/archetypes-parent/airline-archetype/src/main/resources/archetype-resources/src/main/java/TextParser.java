@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+/**
+ * A skeletal implementation of the <code>TextParser</code> class for Project 2.
+ */
 public class TextParser implements AirlineParser<Airline> {
   private final Reader reader;
 

@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * A skeletal implementation of the <code>TextParser</code> class for Project 2.
+ */
 public class TextParser implements PhoneBillParser<PhoneBill> {
   private final Reader reader;
 
