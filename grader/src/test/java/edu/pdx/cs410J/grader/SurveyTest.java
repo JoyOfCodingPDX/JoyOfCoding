@@ -68,6 +68,18 @@ public class SurveyTest {
   }
 
   @Test
+  void invalidJavaIdentifierIsInvalid() {
+    String id = "123";
+    assertThat(Survey.isJavaIdentifier(id), equalTo(false));
+  }
+
+  @Test
+  void validJavaIdentifierIsValid() {
+    String id = "whitlock123";
+    assertThat(Survey.isJavaIdentifier(id), equalTo(true));
+  }
+
+  @Test
   void successfulSurveyWritesStudentXmlFile(@TempDir File tempDir) throws IOException, ParserException {
     String firstName = "First name";
     String lastName = "Last name";
