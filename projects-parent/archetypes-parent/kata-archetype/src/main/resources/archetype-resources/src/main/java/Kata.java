@@ -3,6 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * A class for getting started with a code kata
  *
@@ -11,6 +13,7 @@ package ${package};
  */
 public class Kata {
 
+  @VisibleForTesting
   public static void main(String[] args) {
     System.err.println("Missing command line arguments");
   }
