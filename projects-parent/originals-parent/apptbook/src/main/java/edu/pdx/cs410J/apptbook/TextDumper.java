@@ -2,11 +2,12 @@ package edu.pdx.cs410J.apptbook;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * A skeletal implementation of the <code>TextDumper</code> class for Project 2.
+ */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
   private final Writer writer;
 
