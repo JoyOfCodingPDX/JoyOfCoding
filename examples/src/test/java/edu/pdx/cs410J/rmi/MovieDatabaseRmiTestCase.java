@@ -16,7 +16,7 @@ public class MovieDatabaseRmiTestCase extends InvokeMainTestCase {
   static int rmiPort;
 
   private static int getRandomPort() {
-    return (int) (1_000 + Math.random() * (9_000 - 1));
+    return (int) (1_025 + Math.random() * (9_000 - 1));
   }
 
   static final String RMI_HOST = "localhost";
