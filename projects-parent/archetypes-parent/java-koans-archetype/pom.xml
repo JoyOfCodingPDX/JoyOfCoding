@@ -8,7 +8,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>java-koans-archetype</artifactId>
   <version>2023.0.0-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
@@ -48,7 +47,7 @@
     <developer>
       <id>dwhitlock</id>
       <name>David Whitlock</name>
-      <url>http://www.cs.pdx.edu/~whitlock</url>
+      <url>https://www.cs.pdx.edu/~whitlock</url>
       <roles>
         <role>Maven-izer</role>
       </roles>
@@ -57,9 +56,9 @@
       <id>YOU</id>
       <name>Your name here</name>
       <email>you@youremail.com</email>
-      <url>http://www.cs.pdx.edu/~YOU</url>
+      <url>https://www.cs.pdx.edu/~YOU</url>
       <organization>PSU Department of Computer Science</organization>
-      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <organizationUrl>https://www.cs.pdx.edu</organizationUrl>
       <roles>
         <role>Student who does koans</role>
       </roles>

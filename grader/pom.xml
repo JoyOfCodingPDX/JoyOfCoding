@@ -5,12 +5,11 @@
     <version>2023.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>grader</artifactId>
   <name>grader</name>
   <version>${grader.version}</version>
   <packaging>jar</packaging>
-  <url>http://www.cs.pdx.edu/~whitlock</url>
+  <url>https://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
       <groupId>com.sun.mail</groupId>
@@ -25,12 +24,12 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.5.2</version>
+      <version>5.7.1</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.3.0-alpha10</version>
+      <version>1.4.5</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
