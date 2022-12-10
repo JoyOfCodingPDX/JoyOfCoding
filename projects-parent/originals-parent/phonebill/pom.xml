@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
@@ -13,15 +13,15 @@
   <name>CS410J Phone Bill Project</name>
   <description>A Phone Bill application for CS410J at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
-  <url>http://www.cs.pdx.edu/~whitlock</url>
+  <url>https://www.cs.pdx.edu/~whitlock</url>
   <developers>
     <developer>
       <id>YOU</id>
       <name>Your name here</name>
       <email>you@youremail.com</email>
-      <url>http://www.cs.pdx.edu/~YOU</url>
+      <url>https://www.cs.pdx.edu/~YOU</url>
       <organization>PSU Department of Computer Science</organization>
-      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <organizationUrl>https://www.cs.pdx.edu</organizationUrl>
       <roles>
         <role>Student</role>
       </roles>
