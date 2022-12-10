@@ -87,6 +87,7 @@
       <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
       <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
       <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
+      <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
 
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
