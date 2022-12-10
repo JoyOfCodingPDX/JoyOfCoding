@@ -2,16 +2,10 @@ package edu.pdx.cs410J.grader;
 
 import com.google.common.io.CharStreams;
 import edu.pdx.cs410J.grader.gradebook.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -24,40 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class SummaryReportTest {
-
-  private File tempDirectory;
-
-  @BeforeEach
-  public void createTempDirectoryForTest() {
-    String tempDirName = "SummaryReportTestTempDirectory-" + System.currentTimeMillis();
-    tempDirectory = new File(System.getProperty("java.io.tmpdir"), tempDirName);
-    System.out.println("Temp dir is " + tempDirectory.getAbsolutePath());
-
-    boolean dirWasCreated = tempDirectory.mkdirs();
-    assertThat(dirWasCreated, equalTo(true));
-  }
-
-  @AfterEach
-  public void deleteTempDirectoryForTest() throws IOException {
-    Files.walkFileTree(tempDirectory.toPath(), new SimpleFileVisitor<Path>() {
-      @Override
-      public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        return deleteFile(file);
-      }
-
-      @Override
-      public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-        return deleteFile(dir);
-      }
-
-      private FileVisitResult deleteFile(Path file) throws IOException {
-        Files.delete(file);
-        return FileVisitResult.CONTINUE;
-      }
-    });
-
-    assertThat(tempDirectory.exists(), equalTo(false));
-  }
 
   @Test
   public void ungradedAssignmentsDoNotCountTowardsGraded() {
@@ -75,7 +35,7 @@ public class SummaryReportTest {
   }
 
   @Test
-  public void reportsAreGeneratedInCorrectDirectories() throws IOException {
+  public void reportsAreGeneratedInCorrectDirectories(@TempDir File tempDirectory) throws IOException {
     GradeBook gradeBook = new GradeBook("test");
     Assignment assignment = new Assignment("assignment", 4.0);
     gradeBook.addAssignment(assignment);
@@ -88,8 +48,8 @@ public class SummaryReportTest {
 
     SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);
 
-    assertThatStudentHasReportInDirectoryWithScore(undergrad, UNDERGRADUATE_DIRECTORY_NAME, undergradScore);
-    assertThatStudentHasReportInDirectoryWithScore(grad, GRADUATE_DIRECTORY_NAME, gradScore);
+    assertThatStudentHasReportInDirectoryWithScore(undergrad, tempDirectory, UNDERGRADUATE_DIRECTORY_NAME, undergradScore);
+    assertThatStudentHasReportInDirectoryWithScore(grad, tempDirectory, GRADUATE_DIRECTORY_NAME, gradScore);
   }
 
   private Student addStudentInSectionWithScore(GradeBook gradeBook, Assignment assignment, String studentId, Student.Section enrolledSection, double undergradScore) {
@@ -100,7 +60,7 @@ public class SummaryReportTest {
     return undergrad;
   }
 
-  private void assertThatStudentHasReportInDirectoryWithScore(Student student, String dirFileName, double studentScore) throws IOException {
+  private void assertThatStudentHasReportInDirectoryWithScore(Student student, File tempDirectory, String dirFileName, double studentScore) throws IOException {
     File directory = new File(tempDirectory, dirFileName);
     assertThat(directory.exists(), equalTo(true));
 
@@ -148,27 +108,25 @@ public class SummaryReportTest {
   private void calculateTotalGradesForStudents(GradeBook gradeBook, boolean assignLetterGrades) {
     PrintWriter pw = new PrintWriter(new Writer() {
       @Override
-      public void write(char[] cbuf, int off, int len) throws IOException {
+      public void write(char[] cbuf, int off, int len) {
 
       }
 
       @Override
-      public void flush() throws IOException {
+      public void flush() {
 
       }
 
       @Override
-      public void close() throws IOException {
+      public void close() {
 
       }
     });
 
-    gradeBook.studentsStream().forEach(student -> {
-      SummaryReport.dumpReportTo(gradeBook, student, pw, assignLetterGrades);
-    });
+    gradeBook.studentsStream().forEach(student -> SummaryReport.dumpReportTo(gradeBook, student, pw, assignLetterGrades));
   }
 
-  private class CapturingPrintWriter extends PrintWriter {
+  private static class CapturingPrintWriter extends PrintWriter {
     public CapturingPrintWriter() {
       super(new StringWriter());
     }
