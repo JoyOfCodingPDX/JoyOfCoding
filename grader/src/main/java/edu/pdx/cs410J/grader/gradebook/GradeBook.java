@@ -97,14 +97,17 @@ public class GradeBook {
 
   /**
    * Adds an <code>Assignment</code> to this class
+   *
+   * @return <code>assignment</code> so that method calls can be chained
    */
-  public void addAssignment(Assignment assign) {
+  public Assignment addAssignment(Assignment assignment) {
     this.setDirty(true);
-    this.assignments.put(assign.getName(), assign);
+    this.assignments.put(assignment.getName(), assignment);
+    return assignment;
   }
 
   /**
-   * Returns the ids of all of the students in this class
+   * Returns the ids of all the students in this class
    */
   public Set<String> getStudentIds() {
     return this.students.keySet();
@@ -121,11 +124,13 @@ public class GradeBook {
   /**
    * Adds a <code>Student</code> to this <code>GradeBook</code>
    *
+   * @return <code>student</code> so that calls can be chained
    * @see #containsStudent
    */
-  public void addStudent(Student student) {
+  public Student addStudent(Student student) {
     this.setDirty(true);
     this.students.put(student.getId(), student);
+    return student;
   }
 
   /**

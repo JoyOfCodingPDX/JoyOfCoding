@@ -23,7 +23,7 @@ import static edu.pdx.cs410J.grader.gradebook.Student.Section.*;
 public class SummaryReport {
   static final String UNDERGRADUATE_DIRECTORY_NAME = "undergraduates";
   static final String GRADUATE_DIRECTORY_NAME = "graduates";
-  private static HashMap<Student, Double> allTotals = new HashMap<>();
+  private static final HashMap<Student, Double> allTotals = new HashMap<>();
 
   /**
    * Computes the student's final average and makes a pretty report.
@@ -171,12 +171,19 @@ public class SummaryReport {
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
-    return book.studentsStream().noneMatch(student -> studentHasGradeFor(student, assignment));
+    boolean noAssignmentIsGraded = book.studentsStream()
+      .map(student -> getGrade(assignment, student))
+      .noneMatch(grade -> grade != null && !grade.isNotGraded());
+
+    boolean allAssignmentHaveGradeOfZero = book.studentsStream()
+      .map(student -> getGrade(assignment, student))
+      .allMatch(grade -> grade != null && grade.getScore() == 0.0);
+
+    return noAssignmentIsGraded || allAssignmentHaveGradeOfZero;
   }
 
-  private static boolean studentHasGradeFor(Student student, Assignment assignment) {
-    Grade grade = student.getGrade(assignment.getName());
-    return grade != null && !grade.isNotGraded();
+  private static Grade getGrade(Assignment assignment, Student student) {
+    return student.getGrade(assignment.getName());
   }
 
   private static double getScore(Grade grade) {
@@ -195,8 +202,8 @@ public class SummaryReport {
     return new TreeSet<>(book.getAssignmentNames());
   }
 
-  private static PrintWriter out = new PrintWriter(System.out, true);
-  private static PrintWriter err = new PrintWriter(System.err, true);
+  private static final PrintWriter out = new PrintWriter(System.out, true);
+  private static final PrintWriter err = new PrintWriter(System.err, true);
 
   /**
    * Prints usage information about this main program
@@ -324,23 +331,15 @@ public class SummaryReport {
   }
 
   private static SortedSet<Student> getStudentSortedByTotalPoints(Set<Student> students) {
-    SortedSet<Student> sorted = new TreeSet<>(new Comparator<Student>() {
-        @Override
-        public int compare(Student s1, Student s2) {
-          Double d1 = allTotals.get(s1);
-          Double d2 = allTotals.get(s2);
-          if ( d2.compareTo( d1 ) == 0 ) {
-            return s1.getId().compareTo( s2.getId() );
-          } else {
-            return d2.compareTo(d1);
-          }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-          return true;
-        }
-      });
+    SortedSet<Student> sorted = new TreeSet<>((s1, s2) -> {
+      Double d1 = allTotals.get(s1);
+      Double d2 = allTotals.get(s2);
+      if (d2.compareTo(d1) == 0) {
+        return s1.getId().compareTo(s2.getId());
+      } else {
+        return d2.compareTo(d1);
+      }
+    });
 
     sorted.addAll(students);
     return sorted;
@@ -407,6 +406,7 @@ public class SummaryReport {
 
   private static void printErrorMessageAndExit(String message, Throwable ex) {
     err.println(message);
+    ex.printStackTrace(err);
     System.exit(1);
   }
 
