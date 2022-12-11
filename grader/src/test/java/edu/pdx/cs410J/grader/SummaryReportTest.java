@@ -189,4 +189,64 @@ public class SummaryReportTest {
     assertThat(SummaryReport.dueDateHasPassed(assignment), equalTo(false));
   }
 
+  @Test
+  void assignmentWithAllZeroGradesDoesNotAppearInReport(@TempDir File tempDirectory) throws IOException {
+    GradeBook gradeBook = new GradeBook("test");
+    String someNonZeroGradesName = "someNonZeroGrades";
+    String allZeroGradesName = "allZeroGrades";
+
+    Assignment someNonZeroGrades = gradeBook.addAssignment(new Assignment(someNonZeroGradesName, 10.0));
+    Assignment allZeroGrades = gradeBook.addAssignment(new Assignment(allZeroGradesName, 10.0));
+
+    Student studentWithSomeNonZeroGrades =
+      gradeBook.addStudent(new Student("studentWithSomeNonZeroGrades"))
+        .setLastName("studentWithSomeNonZeroGrades")
+        .setEnrolledSection(UNDERGRADUATE)
+        .setGrade(someNonZeroGrades, 5.0)
+        .setGrade(allZeroGrades, 0.0);
+
+    Student studentWithAllZeroGrades =
+      gradeBook.addStudent(new Student("studentWithAllZeroGrades"))
+        .setLastName("studentWithAllZeroGrades")
+        .setEnrolledSection(UNDERGRADUATE)
+        .setGrade(someNonZeroGrades, 0.0)
+        .setGrade(allZeroGrades, 0.0);
+
+    assertThat(SummaryReport.noStudentHasGradeFor(allZeroGrades, gradeBook), equalTo(true));
+
+    SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);
+
+    File studentWithSomeNonZeroGradesReportFile = getStudentReportFile(tempDirectory, studentWithSomeNonZeroGrades);
+    assertThat(studentWithSomeNonZeroGradesReportFile.exists(), equalTo(true));
+
+    String studentWithSomeNonZeroGradesReport = readTextFromFile(studentWithSomeNonZeroGradesReportFile);
+    assertThat(studentWithSomeNonZeroGradesReport, containsString(someNonZeroGradesName));
+    assertThat(studentWithSomeNonZeroGradesReport, not(containsString(allZeroGradesName)));
+
+    File studentWithAllZeroGradesReportFile = getStudentReportFile(tempDirectory, studentWithAllZeroGrades);
+    assertThat(studentWithAllZeroGradesReportFile.exists(), equalTo(true));
+
+    String studentWithAllZeroGradesReport = readTextFromFile(studentWithAllZeroGradesReportFile);
+    assertThat(studentWithAllZeroGradesReport, containsString(someNonZeroGradesName));
+    assertThat(studentWithAllZeroGradesReport, not(containsString(allZeroGradesName)));
+
+  }
+
+  private static File getStudentReportFile(File directory, Student student) {
+    String sectionDirName;
+    switch (student.getEnrolledSection()) {
+      case GRADUATE:
+        sectionDirName = GRADUATE_DIRECTORY_NAME;
+        break;
+      case UNDERGRADUATE:
+        sectionDirName = UNDERGRADUATE_DIRECTORY_NAME;
+        break;
+      default:
+        throw new UnsupportedOperationException("Don't know how to handle section: " + student.getEnrolledSection());
+    }
+
+    File sectionDirectory = new File(directory, sectionDirName);
+    return new File(sectionDirectory, SummaryReport.getReportFileName(student.getId()));
+  }
+
 }
