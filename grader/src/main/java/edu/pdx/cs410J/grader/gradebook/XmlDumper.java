@@ -268,6 +268,10 @@ public class XmlDumper extends XmlHelper {
           assignmentNode.setAttribute("project-type", "PRETTY_PRINT");
           break;
 
+        case KOANS:
+          assignmentNode.setAttribute("project-type", "KOANS");
+          break;
+
         case XML:
           assignmentNode.setAttribute("project-type", "XML");
           break;

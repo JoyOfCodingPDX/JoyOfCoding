@@ -8,6 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * A skeletal implementation of the <code>TextParser</code> class for Project 2.
+ */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
   private final Reader reader;
 

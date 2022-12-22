@@ -80,7 +80,7 @@ public class Project5 {
             }
 
         } catch (IOException | ParserException ex ) {
-            error("While contacting server: " + ex);
+            error("While contacting server: " + ex.getMessage());
             return;
         }
 

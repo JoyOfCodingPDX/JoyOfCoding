@@ -28,12 +28,13 @@ public class Assignment extends NotableImpl {
     APP_CLASSES,
     TEXT_FILE,
     PRETTY_PRINT,
+    KOANS,
     XML,
     REST,
     ANDROID
   }
 
-  private String name;
+  private final String name;
   private String description;
   private double points;
   private int canvasId;

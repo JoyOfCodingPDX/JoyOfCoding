@@ -132,6 +132,9 @@ public class Survey extends EmailSender {
 
     } else if (isEmailAddress(id)) {
       printErrorMessageAndExit("** Your student id cannot be an email address");
+
+    } else if (!isJavaIdentifier(id)) {
+      printErrorMessageAndExit("** Your student id must be a valid Java identifier");
     }
 
     Student student = new Student(id);
@@ -156,6 +159,26 @@ public class Survey extends EmailSender {
     } catch (AddressException e) {
       return false;
     }
+  }
+
+  @VisibleForTesting
+  static boolean isJavaIdentifier(String id) {
+    if (id == null || id.equals("")) {
+      return false;
+    }
+
+    if (!Character.isJavaIdentifierStart(id.charAt(0))) {
+      return false;
+    }
+
+    for (int i = 1; i < id.length(); i++) {
+      char c = id.charAt(i);
+      if (!Character.isJavaIdentifierPart(c)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private void askEnrolledSectionQuestion(Student student) {

@@ -62,6 +62,6 @@ class AppointmentBookRestClientIT {
     RestException ex =
       assertThrows(RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
     assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter("word")));  }
+    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter(AppointmentBookServlet.WORD_PARAMETER)));  }
 
 }

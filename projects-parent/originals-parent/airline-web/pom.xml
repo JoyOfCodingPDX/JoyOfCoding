@@ -3,7 +3,7 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.1.0</version>
+    <version>2023.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
@@ -14,24 +14,24 @@
   </properties>
 
   <packaging>war</packaging>
-  <version>2022.1.0</version>
+  <version>2023.0.0</version>
   <name>Airline Web/REST Project</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.2.0-SNAPSHOT</version>
+      <version>2023.0.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2022.1.0</version>
+      <version>2023.0.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2022.2.0-SNAPSHOT</version>
+      <version>2023.0.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -59,59 +59,33 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <httpConnector>
-            <port>${jetty.http.port}</port>
-          </httpConnector>
-          <stopKey>stop-key</stopKey>
           <stopPort>9999</stopPort>
+          <stopKey>stop-jetty</stopKey>
           <webApp>
             <contextPath>/${project.build.finalName}</contextPath>
           </webApp>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.6.7</version>
         <executions>
           <execution>
-            <id>start-container</id>
+            <id>start-jetty</id>
             <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
             </goals>
+            <configuration>
+              <httpConnector>
+                <port>${jetty.http.port}</port>
+              </httpConnector>
+            </configuration>
           </execution>
           <execution>
-            <id>stop-container</id>
+            <id>stop-jetty</id>
             <phase>post-integration-test</phase>
             <goals>
               <goal>stop</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <container>
-            <containerId>jetty9x</containerId>
-            <type>embedded</type>
-            <systemProperties>
-              <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
-            </systemProperties>
-          </container>
-          <configuration>
-            <properties>
-              <cargo.servlet.port>${jetty.http.port}</cargo.servlet.port>
-            </properties>
-          </configuration>
-          <deployables>
-            <deployable>
-              <location>
-                ${project.build.directory}/${project.build.finalName}.${project.packaging}
-              </location>
-              <pingURL>http://localhost:${jetty.http.port}/${project.build.finalName}/index.html</pingURL>
-              <pingTimeout>20000</pingTimeout>
-            </deployable>
-          </deployables>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -163,7 +137,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>${student.version}</version>
+                <version>${grader.version}</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>

@@ -42,6 +42,9 @@ class Project5IT extends InvokeMainTestCase {
     @Test
     void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT );
+
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(PrettyPrinter.formatWordCount(0)));
     }
@@ -65,14 +68,23 @@ class Project5IT extends InvokeMainTestCase {
         String definition = "DEFINITION";
 
         MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT, word, definition );
+
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
         result = invokeMain( Project5.class, HOSTNAME, PORT, word );
+
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
         out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
 
         result = invokeMain( Project5.class, HOSTNAME, PORT );
+
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
         out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
     }

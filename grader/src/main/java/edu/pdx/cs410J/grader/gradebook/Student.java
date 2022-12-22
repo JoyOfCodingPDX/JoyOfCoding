@@ -517,9 +517,9 @@ public class Student extends NotableImpl {
     this.addLate(assignment.getName());
   }
 
-  public void setGrade(Assignment assignment, double score) {
+  public Student setGrade(Assignment assignment, double score) {
     this.setGrade(assignment, new Grade(assignment, score));
-
+    return this;
   }
 
   public Student setEnrolledSection(Section enrolledSection) {

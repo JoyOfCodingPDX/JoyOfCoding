@@ -4,16 +4,16 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2022.1.0</version>
+    <version>2023.0.0</version>
   </parent>
   <groupId>io.github.davidwhitlock.cs410J.original</groupId>
   <artifactId>kata</artifactId>
-  <version>2022.1.0</version>
+  <version>2023.0.0</version>
   <packaging>jar</packaging>
 
   <name>Kata Project</name>
   <description>A simple project for getting started with code katas</description>
-  <url>http://www.cs.pdx.edu</url>
+  <url>https://www.cs.pdx.edu</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2022.2.0-SNAPSHOT</version>
+      <version>2023.0.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -111,7 +111,7 @@
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.cs410J</groupId>
                 <artifactId>grader</artifactId>
-                <version>${student.version}</version>
+                <version>${grader.version}</version>
               </docletArtifact>
               <useStandardDocletOptions>false</useStandardDocletOptions>
               <show>private</show>
