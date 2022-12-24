@@ -33,16 +33,14 @@
 <span class="source-line-no">020</span><span id="line-20">      MovieDatabase db = (MovieDatabase) LocateRegistry.getRegistry(host, port).lookup(MovieDatabase.RMI_OBJECT_NAME);</span>
 <span class="source-line-no">021</span><span id="line-21">      long id = db.createMovie(title, year);</span>
 <span class="source-line-no">022</span><span id="line-22">      System.out.println("Created movie " + id);</span>
-<span class="source-line-no">023</span><span id="line-23">      System.exit(0);</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">    } catch (RemoteException | NotBoundException ex) {</span>
-<span class="source-line-no">026</span><span id="line-26">      ex.printStackTrace(System.err);</span>
-<span class="source-line-no">027</span><span id="line-27">      System.exit(1);</span>
-<span class="source-line-no">028</span><span id="line-28">    }</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">    } catch (RemoteException | NotBoundException ex) {</span>
+<span class="source-line-no">025</span><span id="line-25">      ex.printStackTrace(System.err);</span>
+<span class="source-line-no">026</span><span id="line-26">    }</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">  }</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  }</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">}</span>
+<span class="source-line-no">030</span><span id="line-30">}</span>
 
 
 

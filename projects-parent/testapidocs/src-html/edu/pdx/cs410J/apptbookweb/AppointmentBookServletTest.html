@@ -59,8 +59,8 @@
 <span class="source-line-no">046</span><span id="line-46">    String definition = "TEST DEFINITION";</span>
 <span class="source-line-no">047</span><span id="line-47"></span>
 <span class="source-line-no">048</span><span id="line-48">    HttpServletRequest request = mock(HttpServletRequest.class);</span>
-<span class="source-line-no">049</span><span id="line-49">    when(request.getParameter("word")).thenReturn(word);</span>
-<span class="source-line-no">050</span><span id="line-50">    when(request.getParameter("definition")).thenReturn(definition);</span>
+<span class="source-line-no">049</span><span id="line-49">    when(request.getParameter(AppointmentBookServlet.WORD_PARAMETER)).thenReturn(word);</span>
+<span class="source-line-no">050</span><span id="line-50">    when(request.getParameter(AppointmentBookServlet.DEFINITION_PARAMETER)).thenReturn(definition);</span>
 <span class="source-line-no">051</span><span id="line-51"></span>
 <span class="source-line-no">052</span><span id="line-52">    HttpServletResponse response = mock(HttpServletResponse.class);</span>
 <span class="source-line-no">053</span><span id="line-53"></span>

@@ -17,30 +17,26 @@
 <span class="source-line-no">004</span><span id="line-4"></span>
 <span class="source-line-no">005</span><span id="line-5">import static org.hamcrest.MatcherAssert.assertThat;</span>
 <span class="source-line-no">006</span><span id="line-6">import static org.hamcrest.Matchers.containsString;</span>
-<span class="source-line-no">007</span><span id="line-7">import static org.hamcrest.Matchers.equalTo;</span>
-<span class="source-line-no">008</span><span id="line-8"></span>
-<span class="source-line-no">009</span><span id="line-9">public final class InvokeMainTest extends InvokeMainTestCase {</span>
-<span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">  @Test</span>
-<span class="source-line-no">012</span><span id="line-12">  public void commandLineArgsWrittenToStandardOutAreCaptured() {</span>
-<span class="source-line-no">013</span><span id="line-13">    String[] args = { "One", "Two", "Three"};</span>
-<span class="source-line-no">014</span><span id="line-14">    MainMethodResult result = invokeMain(InvokeMainTest.class, args);</span>
-<span class="source-line-no">015</span><span id="line-15">    assertThat(result.getExitCode(), equalTo(0));</span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">    String out = result.getTextWrittenToStandardOut();</span>
-<span class="source-line-no">018</span><span id="line-18">    for(String arg : args) {</span>
-<span class="source-line-no">019</span><span id="line-19">      assertThat(out, containsString(arg));</span>
-<span class="source-line-no">020</span><span id="line-20">    }</span>
-<span class="source-line-no">021</span><span id="line-21">  }</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">  public static void main(String... args) {</span>
-<span class="source-line-no">024</span><span id="line-24">    for (String arg : args) {</span>
-<span class="source-line-no">025</span><span id="line-25">      System.out.println(arg);</span>
-<span class="source-line-no">026</span><span id="line-26">    }</span>
-<span class="source-line-no">027</span><span id="line-27"></span>
-<span class="source-line-no">028</span><span id="line-28">    System.exit(0);</span>
-<span class="source-line-no">029</span><span id="line-29">  }</span>
-<span class="source-line-no">030</span><span id="line-30">}</span>
+<span class="source-line-no">007</span><span id="line-7"></span>
+<span class="source-line-no">008</span><span id="line-8">public final class InvokeMainTest extends InvokeMainTestCase {</span>
+<span class="source-line-no">009</span><span id="line-9"></span>
+<span class="source-line-no">010</span><span id="line-10">  @Test</span>
+<span class="source-line-no">011</span><span id="line-11">  public void commandLineArgsWrittenToStandardOutAreCaptured() {</span>
+<span class="source-line-no">012</span><span id="line-12">    String[] args = { "One", "Two", "Three"};</span>
+<span class="source-line-no">013</span><span id="line-13">    MainMethodResult result = invokeMain(InvokeMainTest.class, args);</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">    String out = result.getTextWrittenToStandardOut();</span>
+<span class="source-line-no">016</span><span id="line-16">    for(String arg : args) {</span>
+<span class="source-line-no">017</span><span id="line-17">      assertThat(out, containsString(arg));</span>
+<span class="source-line-no">018</span><span id="line-18">    }</span>
+<span class="source-line-no">019</span><span id="line-19">  }</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">  public static void main(String... args) {</span>
+<span class="source-line-no">022</span><span id="line-22">    for (String arg : args) {</span>
+<span class="source-line-no">023</span><span id="line-23">      System.out.println(arg);</span>
+<span class="source-line-no">024</span><span id="line-24">    }</span>
+<span class="source-line-no">025</span><span id="line-25">  }</span>
+<span class="source-line-no">026</span><span id="line-26">}</span>
 
 
 

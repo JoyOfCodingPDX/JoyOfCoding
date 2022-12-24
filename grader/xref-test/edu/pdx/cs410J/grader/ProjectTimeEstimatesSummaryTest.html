@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>ProjectTimeEstimatesSummaryTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
@@ -355,7 +355,28 @@
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>     assertThat(summaries.getTimeEstimateSummary(APP_CLASSES), nullValue());
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>   }
-<a class="jxr_linenumber" name="L350" href="#L350">350</a> }
+<a class="jxr_linenumber" name="L350" href="#L350">350</a> 
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>   @Test
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>   <strong class="jxr_keyword">void</strong> calculationsUsingMultipleGradeBooks() {
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     GradeBook book1 = <strong class="jxr_keyword">new</strong> GradeBook(<span class="jxr_string">"Book 1"</span>);
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>     GradeBook book2 = <strong class="jxr_keyword">new</strong> GradeBook(<span class="jxr_string">"Book 2"</span>);
+<a class="jxr_linenumber" name="L355" href="#L355">355</a> 
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     ProjectType projectType = APP_CLASSES;
+<a class="jxr_linenumber" name="L357" href="#L357">357</a> 
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>     Assignment project1 = addProject(book1, projectType);
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>     noteSubmission(addStudent(book1, <span class="jxr_string">"student1"</span>), project1, 1.0);
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>     noteSubmission(addStudent(book1, <span class="jxr_string">"student2"</span>), project1, 2.0);
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>     Assignment project2 = addProject(book2, projectType);
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     noteSubmission(addStudent(book2, <span class="jxr_string">"student4"</span>), project2, 4.0);
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     noteSubmission(addStudent(book2, <span class="jxr_string">"student5"</span>), project2, 5.0);
+<a class="jxr_linenumber" name="L364" href="#L364">364</a> 
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>     ProjectTimeEstimatesSummary summary = <strong class="jxr_keyword">new</strong> ProjectTimeEstimatesSummary();
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(List.of(book1, book2));
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>     TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>     assertThat(estimates.getCount(), equalTo(4));
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>     assertThat(estimates.getAverage(), equalTo(3.0));
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>   }
+<a class="jxr_linenumber" name="L371" href="#L371">371</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>

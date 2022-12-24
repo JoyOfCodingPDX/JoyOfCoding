@@ -24,11 +24,10 @@
 <span class="source-line-no">011</span><span id="line-11">  @Test</span>
 <span class="source-line-no">012</span><span id="line-12">  public void runningMainGenerateXmlAndNoErrors() {</span>
 <span class="source-line-no">013</span><span id="line-13">    MainMethodResult result = invokeMain(BuildPhonebook.class);</span>
-<span class="source-line-no">014</span><span id="line-14">    assertThat(result.getExitCode(), nullValue());</span>
-<span class="source-line-no">015</span><span id="line-15">    assertThat(result.getTextWrittenToStandardError(), equalTo(""));</span>
-<span class="source-line-no">016</span><span id="line-16">    assertThat(result.getTextWrittenToStandardOut(), containsString("&lt;name&gt;Tripwire, Inc.&lt;/name&gt;"));</span>
-<span class="source-line-no">017</span><span id="line-17">  }</span>
-<span class="source-line-no">018</span><span id="line-18">}</span>
+<span class="source-line-no">014</span><span id="line-14">    assertThat(result.getTextWrittenToStandardError(), equalTo(""));</span>
+<span class="source-line-no">015</span><span id="line-15">    assertThat(result.getTextWrittenToStandardOut(), containsString("&lt;name&gt;Tripwire, Inc.&lt;/name&gt;"));</span>
+<span class="source-line-no">016</span><span id="line-16">  }</span>
+<span class="source-line-no">017</span><span id="line-17">}</span>
 
 
 

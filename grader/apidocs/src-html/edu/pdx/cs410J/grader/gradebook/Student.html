@@ -530,9 +530,9 @@
 <span class="source-line-no">517</span><span id="line-517">    this.addLate(assignment.getName());</span>
 <span class="source-line-no">518</span><span id="line-518">  }</span>
 <span class="source-line-no">519</span><span id="line-519"></span>
-<span class="source-line-no">520</span><span id="line-520">  public void setGrade(Assignment assignment, double score) {</span>
+<span class="source-line-no">520</span><span id="line-520">  public Student setGrade(Assignment assignment, double score) {</span>
 <span class="source-line-no">521</span><span id="line-521">    this.setGrade(assignment, new Grade(assignment, score));</span>
-<span class="source-line-no">522</span><span id="line-522"></span>
+<span class="source-line-no">522</span><span id="line-522">    return this;</span>
 <span class="source-line-no">523</span><span id="line-523">  }</span>
 <span class="source-line-no">524</span><span id="line-524"></span>
 <span class="source-line-no">525</span><span id="line-525">  public Student setEnrolledSection(Section enrolledSection) {</span>

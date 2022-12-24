@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>GradeBookXmlTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
@@ -183,28 +183,33 @@
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>   }
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> 
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>   @Test
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>   <strong class="jxr_keyword">void</strong> xmlProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>     persistProjectOfType(XML);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>   <strong class="jxr_keyword">void</strong> koansProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>     persistProjectOfType(KOANS);
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>   }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> 
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>   @Test
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>   <strong class="jxr_keyword">void</strong> restProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     persistProjectOfType(REST);
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>   <strong class="jxr_keyword">void</strong> xmlProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>     persistProjectOfType(XML);
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>   }
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> 
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>   @Test
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>   <strong class="jxr_keyword">void</strong> androidProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>     persistProjectOfType(ANDROID);
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>   <strong class="jxr_keyword">void</strong> restProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     persistProjectOfType(REST);
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>   }
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>   @Test
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>   <strong class="jxr_keyword">void</strong> canParseGradeBookWithoutProjectType() <strong class="jxr_keyword">throws</strong> ParserException {
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     InputStream stream = getClass().getResourceAsStream(<span class="jxr_string">"gradebookWithoutProjectTypes.xml"</span>);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>     GradeBook book = <strong class="jxr_keyword">new</strong> XmlGradeBookParser(stream).parse();
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     assertThat(book, notNullValue());
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>   }
-<a class="jxr_linenumber" name="L198" href="#L198">198</a> 
-<a class="jxr_linenumber" name="L199" href="#L199">199</a> }
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>   <strong class="jxr_keyword">void</strong> androidProjectTypeIsPersistedToXml() <strong class="jxr_keyword">throws</strong> ParserException, IOException, TransformerException {
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     persistProjectOfType(ANDROID);
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>   }
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>   @Test
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>   <strong class="jxr_keyword">void</strong> canParseGradeBookWithoutProjectType() <strong class="jxr_keyword">throws</strong> ParserException {
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     InputStream stream = getClass().getResourceAsStream(<span class="jxr_string">"gradebookWithoutProjectTypes.xml"</span>);
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     GradeBook book = <strong class="jxr_keyword">new</strong> XmlGradeBookParser(stream).parse();
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     assertThat(book, notNullValue());
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>   }
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> 
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>

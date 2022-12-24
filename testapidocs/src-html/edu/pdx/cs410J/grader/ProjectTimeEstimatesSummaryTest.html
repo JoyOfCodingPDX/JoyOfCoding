@@ -360,7 +360,28 @@
 <span class="source-line-no">347</span><span id="line-347">    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(book);</span>
 <span class="source-line-no">348</span><span id="line-348">    assertThat(summaries.getTimeEstimateSummary(APP_CLASSES), nullValue());</span>
 <span class="source-line-no">349</span><span id="line-349">  }</span>
-<span class="source-line-no">350</span><span id="line-350">}</span>
+<span class="source-line-no">350</span><span id="line-350"></span>
+<span class="source-line-no">351</span><span id="line-351">  @Test</span>
+<span class="source-line-no">352</span><span id="line-352">  void calculationsUsingMultipleGradeBooks() {</span>
+<span class="source-line-no">353</span><span id="line-353">    GradeBook book1 = new GradeBook("Book 1");</span>
+<span class="source-line-no">354</span><span id="line-354">    GradeBook book2 = new GradeBook("Book 2");</span>
+<span class="source-line-no">355</span><span id="line-355"></span>
+<span class="source-line-no">356</span><span id="line-356">    ProjectType projectType = APP_CLASSES;</span>
+<span class="source-line-no">357</span><span id="line-357"></span>
+<span class="source-line-no">358</span><span id="line-358">    Assignment project1 = addProject(book1, projectType);</span>
+<span class="source-line-no">359</span><span id="line-359">    noteSubmission(addStudent(book1, "student1"), project1, 1.0);</span>
+<span class="source-line-no">360</span><span id="line-360">    noteSubmission(addStudent(book1, "student2"), project1, 2.0);</span>
+<span class="source-line-no">361</span><span id="line-361">    Assignment project2 = addProject(book2, projectType);</span>
+<span class="source-line-no">362</span><span id="line-362">    noteSubmission(addStudent(book2, "student4"), project2, 4.0);</span>
+<span class="source-line-no">363</span><span id="line-363">    noteSubmission(addStudent(book2, "student5"), project2, 5.0);</span>
+<span class="source-line-no">364</span><span id="line-364"></span>
+<span class="source-line-no">365</span><span id="line-365">    ProjectTimeEstimatesSummary summary = new ProjectTimeEstimatesSummary();</span>
+<span class="source-line-no">366</span><span id="line-366">    TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(List.of(book1, book2));</span>
+<span class="source-line-no">367</span><span id="line-367">    TimeEstimatesSummary estimates = summaries.getTimeEstimateSummary(projectType);</span>
+<span class="source-line-no">368</span><span id="line-368">    assertThat(estimates.getCount(), equalTo(4));</span>
+<span class="source-line-no">369</span><span id="line-369">    assertThat(estimates.getAverage(), equalTo(3.0));</span>
+<span class="source-line-no">370</span><span id="line-370">  }</span>
+<span class="source-line-no">371</span><span id="line-371">}</span>
 
 
 

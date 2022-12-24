@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>Project4 xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
@@ -88,48 +88,42 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          } <strong class="jxr_keyword">catch</strong> (IOException | ParserException ex ) {
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>              error(<span class="jxr_string">"While contacting server: "</span> + ex);
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              error(<span class="jxr_string">"While contacting server: "</span> + ex.getMessage());
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          }
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          System.out.println(message);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          System.exit(0);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> error( String message )
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      {
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          PrintStream err = System.err;
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          err.println(<span class="jxr_string">"** "</span> + message);
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          System.exit(1);
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>  
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">     * Prints usage information for this program and exits</em>
-<a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * @param message An error message to print</em>
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> usage( String message )
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         PrintStream err = System.err;
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         err.println(<span class="jxr_string">"** "</span> + message);
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         err.println();
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         err.println(<span class="jxr_string">"usage: java Project4 host port [word] [definition]"</span>);
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         err.println(<span class="jxr_string">"  host         Host of web server"</span>);
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         err.println(<span class="jxr_string">"  port         Port of web server"</span>);
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         err.println(<span class="jxr_string">"  word         Word in dictionary"</span>);
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         err.println(<span class="jxr_string">"  definition   Definition of word"</span>);
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         err.println();
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         err.println(<span class="jxr_string">"This simple program posts words and their definitions"</span>);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         err.println(<span class="jxr_string">"to the server."</span>);
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         err.println(<span class="jxr_string">"If no definition is specified, then the word's definition"</span>);
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         err.println(<span class="jxr_string">"is printed."</span>);
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         err.println(<span class="jxr_string">"If no word is specified, all dictionary entries are printed"</span>);
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         err.println();
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> 
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         System.exit(1);
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
-<a class="jxr_linenumber" name="L124" href="#L124">124</a> }
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>  
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> error( String message )
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          PrintStream err = System.err;
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          err.println(<span class="jxr_string">"** "</span> + message);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      }
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>  <em class="jxr_javadoccomment">     * Prints usage information for this program and exits</em>
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">     * @param message An error message to print</em>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> usage( String message )
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         PrintStream err = System.err;
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         err.println(<span class="jxr_string">"** "</span> + message);
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         err.println();
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         err.println(<span class="jxr_string">"usage: java Project4 host port [word] [definition]"</span>);
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         err.println(<span class="jxr_string">"  host         Host of web server"</span>);
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         err.println(<span class="jxr_string">"  port         Port of web server"</span>);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         err.println(<span class="jxr_string">"  word         Word in dictionary"</span>);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         err.println(<span class="jxr_string">"  definition   Definition of word"</span>);
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         err.println();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         err.println(<span class="jxr_string">"This simple program posts words and their definitions"</span>);
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         err.println(<span class="jxr_string">"to the server."</span>);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         err.println(<span class="jxr_string">"If no definition is specified, then the word's definition"</span>);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         err.println(<span class="jxr_string">"is printed."</span>);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         err.println(<span class="jxr_string">"If no word is specified, all dictionary entries are printed"</span>);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         err.println();
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="http://www.pdx.edu">Portland State University</a>. All rights reserved.</div>

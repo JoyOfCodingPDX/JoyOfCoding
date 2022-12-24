@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>AppointmentBookServletTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
@@ -54,8 +54,8 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      String definition = <span class="jxr_string">"TEST DEFINITION"</span>;
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      HttpServletRequest request = mock(HttpServletRequest.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      when(request.getParameter(<span class="jxr_string">"word"</span>)).thenReturn(word);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      when(request.getParameter(<span class="jxr_string">"definition"</span>)).thenReturn(definition);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      when(request.getParameter(AppointmentBookServlet.WORD_PARAMETER)).thenReturn(word);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      when(request.getParameter(AppointmentBookServlet.DEFINITION_PARAMETER)).thenReturn(definition);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      HttpServletResponse response = mock(HttpServletResponse.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
