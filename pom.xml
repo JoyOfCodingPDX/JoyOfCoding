@@ -82,7 +82,7 @@
       <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
       <maven-surefire-report-plugin.version>3.0.0-M7</maven-surefire-report-plugin.version>
       <maven-checkstyle-plugin.version>3.2.2</maven-checkstyle-plugin.version>
-      <checkstyle.version>10.5.0</checkstyle.version>
+      <checkstyle.version>10.11.0</checkstyle.version>
       <maven-archetype-plugin.version>3.2.1</maven-archetype-plugin.version>
       <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
       <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version>
