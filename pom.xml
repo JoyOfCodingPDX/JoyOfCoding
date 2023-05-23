@@ -62,26 +62,26 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>6.52.0</pmd.version>
+        <pmd.version>6.55.0</pmd.version>
 
-        <wagon-git.version>2.0.3</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
-        <wagon-ssh.version>3.5.2</wagon-ssh.version>
+        <wagon-git.version>2.0.4</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
+        <wagon-ssh.version>3.5.3</wagon-ssh.version>
 
-        <junit.version>5.9.1</junit.version>
+        <junit.version>5.10.0-M1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mockito.version>4.9.0</mockito.version>
+        <mockito.version>5.3.1</mockito.version>
         <surefire.version>3.1.0</surefire.version>
       <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
       <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
       <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
       <jetty-maven-plugin.version>10.0.12</jetty-maven-plugin.version>
-      <spotbugs-maven-plugin.version>4.7.3.0</spotbugs-maven-plugin.version>
+      <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
       <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
       <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
       <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
       <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
       <maven-surefire-report-plugin.version>3.0.0-M7</maven-surefire-report-plugin.version>
-      <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
+      <maven-checkstyle-plugin.version>3.2.2</maven-checkstyle-plugin.version>
       <checkstyle.version>10.5.0</checkstyle.version>
       <maven-archetype-plugin.version>3.2.1</maven-archetype-plugin.version>
       <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
