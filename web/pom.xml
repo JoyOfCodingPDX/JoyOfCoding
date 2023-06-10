@@ -3,17 +3,17 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2023.0.0</version>
+    <version>2023.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
   <artifactId>web</artifactId>
   <packaging>war</packaging>
   <name>Web Application examples</name>
-  <version>2023.0.0</version>
+  <version>2023.1.0</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>6.2.1.Final</resteasy.version>
+    <resteasy.version>6.2.4.Final</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>
@@ -113,12 +113,12 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
+      <version>2.12.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>examples</artifactId>
-      <version>2023.0.0</version>
+      <version>2023.1.0</version>
     </dependency>
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-guice</artifactId>
-      <version>4.7.7.Final</version>
+      <version>4.7.9.Final</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
