@@ -18,7 +18,7 @@ public class TextParserTest {
 
   @Test
   void validTextFileCanBeParsed() throws ParserException {
-    InputStream resource = getClass().getResourceAsStream("valid-${artifactId}.txt");
+    InputStream resource = getClass().getResourceAsStream("valid-apptbook.txt");
     assertThat(resource, notNullValue());
 
     TextParser parser = new TextParser(new InputStreamReader(resource));
@@ -28,7 +28,7 @@ public class TextParserTest {
 
   @Test
   void invalidTextFileThrowsParserException() {
-    InputStream resource = getClass().getResourceAsStream("empty-${artifactId}.txt");
+    InputStream resource = getClass().getResourceAsStream("empty-apptbook.txt");
     assertThat(resource, notNullValue());
 
     TextParser parser = new TextParser(new InputStreamReader(resource));
