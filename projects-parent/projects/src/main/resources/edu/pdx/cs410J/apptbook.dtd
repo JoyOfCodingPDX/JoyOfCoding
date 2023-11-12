@@ -8,12 +8,12 @@
 
 <!ELEMENT owner (#PCDATA)>
 
-<!-- An appointment has a begin, end, and text -->
-<!ELEMENT appt (begin, end, text)>
+<!-- An appointment has a begin date/time, end date/time, and description -->
+<!ELEMENT appt (begin, end, description)>
 
 <!ELEMENT begin (date, time)>
 <!ELEMENT end (date, time)>
-<!ELEMENT text (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
 
 <!-- A date has a month, day, and a year specified by Calendar.DATE,
      Calendar.MONTH, and Calendar.YEAR, respectfully. -->
@@ -24,11 +24,19 @@
           year   CDATA  #REQUIRED
 >
 
-<!-- A time has an hour and a minute.  Hours are specified by
-     Calendar.HOUR_OF_DAY.  Minutes are specified by Calendar.MINUTE. -->
+<!-- A time has an hour, a minute, and at time zone.
+
+     Hours are specified by ChronoField.HOUR_OF_DAY.
+
+     Minutes are specified by ChronoField.MINUTE_OF_HOUR.
+
+     The time zone is the name of the time zone such as "America/Los_Angeles"
+
+-->
 <!ELEMENT time EMPTY>
 <!ATTLIST time
-          hour    CDATA  #REQUIRED
-          minute  CDATA  #REQUIRED
+          hour       CDATA  #REQUIRED
+          minute     CDATA  #REQUIRED
+          time-zone  CDATA  #REQUIRED
 >
 

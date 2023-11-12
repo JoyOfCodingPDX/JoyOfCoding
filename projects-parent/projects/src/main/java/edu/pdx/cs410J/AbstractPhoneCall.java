@@ -1,6 +1,7 @@
 package edu.pdx.cs410J;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -28,7 +29,7 @@ public abstract class AbstractPhoneCall implements Serializable {
   /**
    * Returns the time that this phone call began as a {@link Date}.
    */
-  public Date getBeginTime() {
+  public ZonedDateTime getBeginTime() {
     return null;
   }
 
@@ -42,7 +43,7 @@ public abstract class AbstractPhoneCall implements Serializable {
    * Returns the time that this phone call was completed as a
    * {@link Date}.
    */
-  public Date getEndTime() {
+  public ZonedDateTime getEndTime() {
     return null;
   }
 

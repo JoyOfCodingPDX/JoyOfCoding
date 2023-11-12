@@ -8,12 +8,12 @@
   <appt>
     <begin>
       <date day="11" month="10" year="2023"/>
-      <time hour="13" minute="6"/>
+      <time hour="13" minute="6" time-zone="America/Los_Angeles"/>
     </begin>
     <end>
       <date day="11" month="10" year="2023"/>
       <!-- <time hour="14" minute="0"/> -->
     </end>
-    <text>Example Appointment</text>
+    <description>Example Appointment</description>
   </appt>
 </apptbook>
