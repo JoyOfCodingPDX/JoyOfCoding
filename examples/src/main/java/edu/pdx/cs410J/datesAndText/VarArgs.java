@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.j2se15;
+package edu.pdx.cs410J.datesAndText;
 
 /**
  * Demonstrates variable-length method arguments in J2SE 1.5.
