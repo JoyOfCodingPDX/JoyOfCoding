@@ -3,7 +3,7 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2023.1.0</version>
+    <version>2024.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -32,12 +32,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2023.1.0</version>
+      <version>2024.0.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.cs410J</groupId>
       <artifactId>projects</artifactId>
-      <version>2023.1.0</version>
+      <version>2024.0.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

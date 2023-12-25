@@ -1,7 +1,7 @@
 package edu.pdx.cs410J;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 /**
  * This class represents an airline flight.  Each flight has a unique
@@ -26,7 +26,7 @@ public abstract class AbstractFlight implements Serializable {
   /**
    * Returns this flight's departure time as a <code>Date</code>.
    */
-  public Date getDeparture() {
+  public ZonedDateTime getDeparture() {
     return null;
   }
 
@@ -45,7 +45,7 @@ public abstract class AbstractFlight implements Serializable {
   /**
    * Returns this flight's arrival time as a <code>Date</code>.
    */
-  public Date getArrival() {
+  public ZonedDateTime getArrival() {
     return null;
   }
 

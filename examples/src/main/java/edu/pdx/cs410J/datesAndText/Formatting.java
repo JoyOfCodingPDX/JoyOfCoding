@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.j2se15;
+package edu.pdx.cs410J.datesAndText;
 
 import java.io.PrintStream;
 import java.util.Calendar;

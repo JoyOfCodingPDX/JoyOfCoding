@@ -5,9 +5,7 @@ package ${package};
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 
 /**

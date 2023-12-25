@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!DOCTYPE apptbook
+        SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/apptbook.dtd">
+
+<apptbook>
+  <owner>Example Appointment Book</owner>
+  <appt>
+    <begin>
+      <date day="11" month="10" year="2023"/>
+      <time hour="13" minute="6" time-zone="America/Los_Angeles"/>
+    </begin>
+    <end>
+      <date day="11" month="10" year="2023"/>
+      <!-- <time hour="14" minute="0"/> -->
+    </end>
+    <description>Example Appointment</description>
+  </appt>
+</apptbook>
