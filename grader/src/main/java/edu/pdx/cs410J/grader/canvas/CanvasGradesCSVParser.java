@@ -18,38 +18,16 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   private static final String[] ignoredColumnNames = new String[] {
     "ID",
     "SIS User ID",
-    SECTION_COLUMN,
-    "Quizzes and Surveys Current Points",
-    "Quizzes and Surveys Final Points",
-    "Quizzes and Surveys Current Score",
-    "Quizzes and Surveys Unposted Current Score",
-    "Quizzes and Surveys Final Score",
-    "Quizzes and Surveys Unposted Final Score",
-    "Getting Ready Current Points",
-    "Getting Ready Final Points",
-    "Getting Ready Current Score",
-    "Getting Ready Unposted Current Score",
-    "Getting Ready Final Score",
-    "Getting Ready Unposted Final Score",
-    "Assignments Current Points",
-    "Assignments Final Points",
-    "Assignments Current Score",
-    "Assignments Unposted Current Score",
-    "Assignments Final Score",
-    "Assignments Unposted Final Score",
-    "Imported Assignments Current Points",
-    "Imported Assignments Final Points",
-    "Imported Assignments Current Score",
-    "Imported Assignments Unposted Current Score",
-    "Imported Assignments Final Score",
-    "Imported Assignments Unposted Final Score",
+    SECTION_COLUMN
+  };
+
+  private static final String[] ignoredColumnNameContains = new String[] {
     "Current Points",
     "Final Points",
     "Current Score",
-    "Unposted Current Score",
-    "Final Score",
-    "Unposted Final Score"
+    "Final Score"
   };
+
 
   private int studentNameColumn;
   private int studentIdColumn;
@@ -183,6 +161,11 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   private boolean isColumnIgnored(String columnName) {
     for (String ignored : ignoredColumnNames) {
       if (ignored.equals(columnName)) {
+        return true;
+      }
+    }
+    for (String ignored : ignoredColumnNameContains) {
+      if (columnName.contains(ignored)) {
         return true;
       }
     }

@@ -33,15 +33,18 @@ public class CanvasGradesCSVParserTest {
   void canReadAssignmentsFromCSV() throws IOException {
     CanvasGradesCSVParser parser = createParserFromResource();
     List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
-    assertThat(assignments.get(0).getName(), equalTo("End of Term Survey"));
-    assertThat(assignments.get(0).getId(), equalTo(95625));
-    assertThat(assignments.get(0).getPointsPossible(), equalTo(3.00));
-    assertThat(assignments.get(1).getName(), equalTo("Midterm Survey"));
-    assertThat(assignments.get(1).getId(), equalTo(95626));
-    assertThat(assignments.get(1).getPointsPossible(), equalTo(3.00));
-    assertThat(assignments.get(2).getName(), equalTo("Project 1 POA"));
-    assertThat(assignments.get(2).getId(), equalTo(187669));
-    assertThat(assignments.get(2).getPointsPossible(), equalTo(1.00));
+
+    GradesFromCanvas.CanvasAssignment endOfTermSurvey = getAssignment(assignments, "End of Term Survey");
+    assertThat(endOfTermSurvey.getId(), equalTo(812131));
+    assertThat(endOfTermSurvey.getPointsPossible(), equalTo(3.00));
+
+    GradesFromCanvas.CanvasAssignment midtermSurvey = getAssignment(assignments, "Midterm Survey");
+    assertThat(midtermSurvey.getId(), equalTo(812133));
+    assertThat(midtermSurvey.getPointsPossible(), equalTo(3.00));
+
+    GradesFromCanvas.CanvasAssignment project1POA = getAssignment(assignments, "Project 1 POA");
+    assertThat(project1POA.getId(), equalTo(812140));
+    assertThat(project1POA.getPointsPossible(), equalTo(1.00));
   }
 
   private CanvasGradesCSVParser createParserFromResource() throws IOException {
@@ -56,12 +59,12 @@ public class CanvasGradesCSVParserTest {
     assertThat(students.get(0).getLastName(), equalTo("Last1"));
     assertThat(students.get(0).getLoginId(), equalTo("student1"));
     assertThat(students.get(0).getCanvasId(), equalTo("11111"));
-    assertThat(students.get(0).getSection(), equalTo("CS-410P-069: TOP: Adv Prog In Java"));
+    assertThat(students.get(0).getSection(), equalTo("CS-410P-009: TOP: Cnt Sw Dev Java & Android"));
     assertThat(students.get(1).getFirstName(), equalTo("First2"));
     assertThat(students.get(1).getLastName(), equalTo("Last2"));
     assertThat(students.get(1).getLoginId(), equalTo("student2"));
     assertThat(students.get(1).getCanvasId(), equalTo("22222"));
-    assertThat(students.get(1).getSection(), equalTo("CS-510-090: TOP: Adv Prog In Java"));
+    assertThat(students.get(1).getSection(), equalTo("CS-510-075: TOP: Cnt Sw Dev Java & Android"));
   }
 
   @Test
@@ -77,13 +80,13 @@ public class CanvasGradesCSVParserTest {
     List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
     List<GradesFromCanvas.CanvasStudent> students = parser.getGrades().getStudents();
 
-    GradesFromCanvas.CanvasAssignment quiz1 = getAssignment(assignments, "Quiz 1: Programming Background");
+    GradesFromCanvas.CanvasAssignment quiz1 = getAssignment(assignments, "Quiz 1: Source Code Management with GitHub");
     assertThat(students.get(0).getScore(quiz1), equalTo(3.00));
     assertThat(students.get(1).getScore(quiz1), equalTo(2.85));
 
     GradesFromCanvas.CanvasAssignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
     assertThat(students.get(0).getScore(quiz2), nullValue());
-    assertThat(students.get(1).getScore(quiz2), equalTo(3.00));
+    assertThat(students.get(1).getScore(quiz2), equalTo(2.80));
   }
 
   private GradesFromCanvas.CanvasAssignment getAssignment(List<GradesFromCanvas.CanvasAssignment> assignments, String assignmentName) {
