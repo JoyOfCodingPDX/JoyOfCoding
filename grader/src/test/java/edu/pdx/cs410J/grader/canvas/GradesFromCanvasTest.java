@@ -115,6 +115,32 @@ public class GradesFromCanvasTest extends CanvasTestCase {
   }
 
   @Test
+  public void matchStudentByNickAndLastNameIgnoringCase() {
+    String firstName = "firstName";
+    String nickName = "nickName";
+    String lastName = "lastName";
+    String canvasId = "canvasId";
+
+    GradesFromCanvas grades = new GradesFromCanvas();
+    CanvasStudent d2lStudent = createCanvasStudent(nickName, lastName, "loginId", canvasId);
+    grades.addStudent(d2lStudent);
+
+    GradeBook book = new GradeBook("test");
+    Student student = new Student("studentId");
+    student.setFirstName(firstName.toUpperCase());
+    student.setLastName(lastName.toLowerCase());
+    student.setNickName(nickName.toLowerCase());
+    book.addStudent(student);
+    book.makeClean();
+
+    assertThat(student.getCanvasId(), is(nullValue()));
+    assertThat(student.isDirty(), is(false));
+
+    assertThat(grades.findStudentInGradebookForCanvasStudent(d2lStudent, book).orElse(null), equalTo(student));
+    assertThat(student.getCanvasId(), equalTo(canvasId));
+    assertThat(student.isDirty(), is(true));
+  }
+  @Test
   public void matchStudentDifferentFirstAndLastNameButSameD2LId() {
     String canvasId = "canvasId";
     String firstName = "firstName";

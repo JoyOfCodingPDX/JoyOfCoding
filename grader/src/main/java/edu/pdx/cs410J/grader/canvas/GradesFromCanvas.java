@@ -31,6 +31,10 @@ public class GradesFromCanvas {
         noteStudent(canvasStudent, student, book);
         return true;
 
+      } else if (haveSameNickAndLastNameIgnoringCase(canvasStudent, student)) {
+        noteStudent(canvasStudent, student, book);
+        return true;
+
       } else {
         return false;
       }
@@ -48,6 +52,11 @@ public class GradesFromCanvas {
 
   private boolean haveSameFirstAndLastNameIgnoringCase(CanvasStudent d2lStudent, Student student) {
     return d2lStudent.getFirstName().equalsIgnoreCase(student.getFirstName()) &&
+      d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
+  }
+
+  private boolean haveSameNickAndLastNameIgnoringCase(CanvasStudent d2lStudent, Student student) {
+    return d2lStudent.getFirstName().equalsIgnoreCase(student.getNickName()) &&
       d2lStudent.getLastName().equalsIgnoreCase(student.getLastName());
   }
 
