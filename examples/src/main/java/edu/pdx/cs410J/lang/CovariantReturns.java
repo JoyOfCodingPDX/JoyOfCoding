@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.j2se15;
+package edu.pdx.cs410J.lang;
 
 /**
  * This class demonstrates <I>covariant returns</I> in JDK 1.5.  The

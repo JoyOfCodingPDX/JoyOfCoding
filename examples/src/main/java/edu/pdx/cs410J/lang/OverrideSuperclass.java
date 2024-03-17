@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.j2se15;
+package edu.pdx.cs410J.lang;
 
 /**
  * This class contains one method that is overridden in a {@linkplain

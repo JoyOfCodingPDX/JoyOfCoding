@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.j2se15;
+package edu.pdx.cs410J.lang;
 
 /**
  * Demonstrates adding behavior to enumerated types.
