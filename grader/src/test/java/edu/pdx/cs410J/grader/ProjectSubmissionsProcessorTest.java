@@ -32,7 +32,7 @@ public class ProjectSubmissionsProcessorTest {
    * Then: The submission is noted under the expected id and a new Student
    * is <b>not</b> created.
    *
-   * This tests issue #52 (https://github.com/DavidWhitlock/PortlandStateJava/issues/52)
+   * This tests issue #52 (https://github.com/JoyOfCodingPDX/JoyOfCoding/issues/52)
    */
   @Test
   public void matchStudentBasedOnFirstAndLastName() throws StudentEmailAttachmentProcessor.SubmissionException {

@@ -12,7 +12,7 @@
   <version>${version}</version>
   <name>Java Koans</name>
   <inceptionYear>2012</inceptionYear>
-  <url>https://github.com/DavidWhitlock/java-koans</url>
+  <url>https://github.com/JoyOfCodingPDX/java-koans</url>
   <developers>
     <developer>
       <id>matyb</id>

@@ -22,7 +22,7 @@
   </organization>
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/DavidWhitlock/PortlandStateJava/issues</url>
+    <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/issues</url>
   </issueManagement>
   <licenses>
     <license>
@@ -46,9 +46,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
-    <developerConnection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</developerConnection>
-    <url>https://github.com/DavidWhitlock/PortlandStateJava/tree/main</url>
+    <connection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</connection>
+    <developerConnection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</developerConnection>
+    <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/tree/main</url>
     <tag>HEAD</tag>
   </scm>
     <properties>
@@ -541,7 +541,7 @@
             <linksource>true</linksource>
             <overview>overview.html</overview>
             <links>
-              <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
+              <link>http://davidwhitlock.github.io/JoyOfCoding/apidocs</link>
             </links>
             <show>package</show>
             <detectJavaApiLink/>
@@ -701,7 +701,7 @@
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
-      <url>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</url>
+      <url>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</url>
     </site>
   </distributionManagement>
 </project>
