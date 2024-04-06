@@ -541,7 +541,7 @@
             <linksource>true</linksource>
             <overview>overview.html</overview>
             <links>
-              <link>http://davidwhitlock.github.io/JoyOfCoding/apidocs</link>
+              <link>http://joyofcodingpdx.github.io/JoyOfCoding/apidocs</link>
             </links>
             <show>package</show>
             <detectJavaApiLink/>
