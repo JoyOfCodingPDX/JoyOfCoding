@@ -4,7 +4,7 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.0</version>
+    <version>2024.0.1</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>2024.0.0</version>
+      <version>2024.0.1</version>
     </dependency>
   </dependencies>
   <properties>
