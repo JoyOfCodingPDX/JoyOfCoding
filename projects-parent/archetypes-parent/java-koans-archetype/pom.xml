@@ -3,13 +3,13 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.0</version>
+    <version>2024.0.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>java-koans-archetype</artifactId>
-  <version>2024.0.0</version>
+  <version>2024.0.1</version>
   <packaging>maven-archetype</packaging>
 
   <name>java-koans-archetype</name>
@@ -33,7 +33,7 @@
     </pluginManagement>
   </build>
 
-  <url>https://github.com/DavidWhitlock/java-koans</url>
+  <url>https://github.com/JoyOfCodingPDX/java-koans</url>
 
   <developers>
     <developer>

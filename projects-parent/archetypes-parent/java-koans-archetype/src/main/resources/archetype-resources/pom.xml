@@ -4,7 +4,7 @@
   <parent>
     <artifactId>cs410j</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.0</version>
+    <version>2024.0.1</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -12,7 +12,7 @@
   <version>${version}</version>
   <name>Java Koans</name>
   <inceptionYear>2012</inceptionYear>
-  <url>https://github.com/DavidWhitlock/java-koans</url>
+  <url>https://github.com/JoyOfCodingPDX/java-koans</url>
   <developers>
     <developer>
       <id>matyb</id>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>2024.0.0</version>
+      <version>2024.0.1</version>
     </dependency>
   </dependencies>
   <properties>

@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.cs410J</groupId>
-  <version>2024.0.0</version>
+  <version>2024.0.1</version>
   <artifactId>cs410j</artifactId>
   <packaging>pom</packaging>
   <name>CS410J Java Example Code</name>
@@ -22,7 +22,7 @@
   </organization>
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/DavidWhitlock/PortlandStateJava/issues</url>
+    <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/issues</url>
   </issueManagement>
   <licenses>
     <license>
@@ -46,9 +46,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</connection>
-    <developerConnection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</developerConnection>
-    <url>https://github.com/DavidWhitlock/PortlandStateJava/tree/main</url>
+    <connection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</connection>
+    <developerConnection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</developerConnection>
+    <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/tree/main</url>
     <tag>HEAD</tag>
   </scm>
     <properties>
@@ -92,7 +92,7 @@
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
 
-      <grader.version>2024.0.0</grader.version>
+      <grader.version>2024.0.1</grader.version>
     </properties>
   <dependencies>
     <dependency>
@@ -541,7 +541,7 @@
             <linksource>true</linksource>
             <overview>overview.html</overview>
             <links>
-              <link>http://davidwhitlock.github.io/PortlandStateJava/apidocs</link>
+              <link>http://joyofcodingpdx.github.io/JoyOfCoding/apidocs</link>
             </links>
             <show>package</show>
             <detectJavaApiLink/>
@@ -701,7 +701,7 @@
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
-      <url>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git</url>
+      <url>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git</url>
     </site>
   </distributionManagement>
 </project>

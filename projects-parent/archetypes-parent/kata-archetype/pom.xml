@@ -5,10 +5,10 @@
   <parent>
     <artifactId>archetypes-parent</artifactId>
     <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.0</version>
+    <version>2024.0.1</version>
   </parent>
   <artifactId>kata-archetype</artifactId>
-  <version>2024.0.0</version>
+  <version>2024.0.1</version>
   <packaging>maven-archetype</packaging>
 
   <name>kata-archetype</name>
@@ -60,14 +60,14 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:DavidWhitlock/PortlandStateJava.git/kata</connection>
+    <connection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/kata</connection>
   </scm>
 
   <distributionManagement>
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
-      <url>git:ssh://git@github.com/DavidWhitlock/PortlandStateJava.git?gh-pages#</url>
+      <url>git:ssh://git@github.com/JoyOfCodingPDX/JoyOfCoding.git?gh-pages#</url>
     </site>
   </distributionManagement>
 </project>
