@@ -46,9 +46,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.davidwhitlock.com.sandwich</groupId>
+      <groupId>io.github.davidwhitlock.joy.com.sandwich</groupId>
       <artifactId>koans-lib</artifactId>
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <properties>
