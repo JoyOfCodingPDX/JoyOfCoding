@@ -2,24 +2,24 @@
 <project>
   <parent>
     <artifactId>cs410j</artifactId>
-    <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.1</version>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>examples</artifactId>
   <name>examples</name>
-  <version>2024.0.1</version>
+  <version>1.0.0-SNAPSHOT</version>
   <url>https://www.cs.pdx.edu/~whitlock</url>
   <dependencies>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>family</artifactId>
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>
@@ -43,9 +43,9 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

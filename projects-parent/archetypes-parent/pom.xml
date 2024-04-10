@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.davidwhitlock.cs410J</groupId>
+        <groupId>io.github.davidwhitlock.joy</groupId>
         <artifactId>projects-parent</artifactId>
-        <version>2024.0.1</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>archetypes-parent</artifactId>
-    <version>2024.0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
