@@ -6,7 +6,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>apptbook-web</artifactId>
 
   <properties>

@@ -6,12 +6,12 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>airline</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-SNAPSHOT</version>
-  <name>CS410J Airline Project</name>
-  <description>An Airline application for CS410J at Portland State University</description>
+  <name>Airline Project</name>
+  <description>An Airline application for The Joy of Coding at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <developers>

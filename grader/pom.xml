@@ -1,6 +1,6 @@
 <?xml version="1.0"?><project>
   <parent>
-    <artifactId>cs410j</artifactId>
+    <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>

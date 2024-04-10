@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>cs410j</artifactId>
+    <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -10,8 +10,8 @@
   <artifactId>${artifactId}</artifactId>
   <packaging>jar</packaging>
   <version>${version}</version>
-  <name>CS410J Appointment Book Project</name>
-  <description>An Appointment Book application for CS410J at Portland State University</description>
+  <name>Appointment Book Project</name>
+  <description>An Appointment Book application for The Joy of Coding at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <developers>

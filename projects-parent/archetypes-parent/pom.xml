@@ -15,7 +15,7 @@
 
     <packaging>pom</packaging>
 
-    <name>Parent Project for CS410J Project Archetypes</name>
+    <name>Parent Project for Project Archetypes</name>
 
     <modules>
         <module>student-archetype</module>

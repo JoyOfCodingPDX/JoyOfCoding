@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.joy</groupId>
   <version>1.0.0-SNAPSHOT</version>
-  <artifactId>cs410j</artifactId>
+  <artifactId>joy</artifactId>
   <packaging>pom</packaging>
-  <name>CS410J Java Example Code</name>
-  <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
+  <name>Java Example Code</name>
+  <description>Example Java Code for The Joy of Coding at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
     <module>examples</module>
