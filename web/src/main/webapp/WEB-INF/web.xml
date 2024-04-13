@@ -3,7 +3,7 @@
   "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>CS410J Examples Web Application</display-name>
+  <display-name>Example Web Application</display-name>
   <context-param>
     <!-- Register REST services bound into these modules with resteasy -->
     <param-name>resteasy.guice.modules</param-name>

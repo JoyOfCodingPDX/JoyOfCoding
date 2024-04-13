@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>originals-parent</artifactId>
-    <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.1</version>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>kata</artifactId>
-  <version>2024.0.1</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Kata Project</name>
@@ -86,9 +86,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -109,7 +109,7 @@
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>io.github.davidwhitlock.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.joy</groupId>
                 <artifactId>grader</artifactId>
                 <version>${grader.version}</version>
               </docletArtifact>

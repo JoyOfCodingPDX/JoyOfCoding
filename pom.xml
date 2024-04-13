@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.davidwhitlock.cs410J</groupId>
-  <version>2024.0.1</version>
-  <artifactId>cs410j</artifactId>
+  <groupId>io.github.davidwhitlock.joy</groupId>
+  <version>1.0.0-SNAPSHOT</version>
+  <artifactId>joy</artifactId>
   <packaging>pom</packaging>
-  <name>CS410J Java Example Code</name>
-  <description>Example Java Code for CS410J: Advanced Java Programming at Portland State University</description>
+  <name>Java Example Code</name>
+  <description>Example Java Code for The Joy of Coding at Portland State University</description>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <modules>
     <module>examples</module>
@@ -92,7 +92,7 @@
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
 
-      <grader.version>2024.0.1</grader.version>
+      <grader.version>1.0.0-SNAPSHOT</grader.version>
     </properties>
   <dependencies>
     <dependency>

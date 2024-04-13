@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>cs410j</artifactId>
-    <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.1</version>
+    <artifactId>joy</artifactId>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -100,14 +100,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>examples</artifactId> <!-- For the Human class -->
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2024.0.1</version>
+      <version>1.0.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -128,7 +128,7 @@
             <configuration>
               <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>io.github.davidwhitlock.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.joy</groupId>
                 <artifactId>grader</artifactId>
                 <version>${grader.version}</version>
               </docletArtifact>
