@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AppointmentBookDumper;
-import edu.pdx.cs410J.PhoneBillDumper;
+import edu.pdx.cs.joy.AppointmentBookDumper;
+import edu.pdx.cs.joy.PhoneBillDumper;
 
 import java.io.IOException;
 import java.io.PrintWriter;

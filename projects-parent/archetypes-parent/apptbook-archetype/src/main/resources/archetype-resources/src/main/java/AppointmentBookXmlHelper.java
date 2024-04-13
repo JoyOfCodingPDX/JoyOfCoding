@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.ProjectXmlHelper;
+import edu.pdx.cs.joy.ProjectXmlHelper;
 
 public class AppointmentBookXmlHelper extends ProjectXmlHelper {
 
@@ -17,7 +17,7 @@ public class AppointmentBookXmlHelper extends ProjectXmlHelper {
    * The Public ID for the Family Tree DTD
    */
   protected static final String PUBLIC_ID =
-    "-//Portland State University//DTD CS410J Appointment Book//EN";
+    "-//Joy of Coding at PSU//DTD Appointment Book//EN";
 
   protected AppointmentBookXmlHelper() {
     super(PUBLIC_ID, SYSTEM_ID, "apptbook.dtd");

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gradebook PUBLIC "-//Joy of Coding at PSU//DTD Grade Book//EN" "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+<gradebook>
+<name>Summer 2021</name>
+<assignments>
+<assignment type="OTHER">
+<name>Final 1</name>
+<description>Final exam (written)</description>
+<points>8.0</points>
+<due-date>2021-08-11T18:00:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>Final 2</name>
+<description>Final exam (group)</description>
+<points>4.0</points>
+<due-date>2021-08-11T23:00:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project1</name>
+<description>Fundamental App Classes</description>
+<points>6.0</points>
+<due-date>2021-07-07T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project2</name>
+<description>Text File</description>
+<points>8.0</points>
+<due-date>2021-07-14T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project3</name>
+<description>Pretty Printing</description>
+<points>9.0</points>
+<due-date>2021-07-21T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project4</name>
+<description>REST</description>
+<points>12.0</points>
+<due-date>2021-07-30T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project5</name>
+<description>Mobile Application</description>
+<points>14.0</points>
+<due-date>2021-08-11T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>koans</name>
+<description>Java koans</description>
+<points>6.0</points>
+<due-date>2021-07-21T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>mobbing</name>
+<description>Reflections on Mob Programming</description>
+<points>3.5</points>
+<due-date>2021-08-04T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>pairing</name>
+<description>Reflections on Pair Programming</description>
+<points>3.5</points>
+<due-date>2021-07-21T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa1</name>
+<description>POA for Project 1</description>
+<points>1.0</points>
+<due-date>2021-07-04T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa2</name>
+<description>POA for Project 2</description>
+<points>1.0</points>
+<due-date>2021-07-11T21:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa3</name>
+<description>POA for Project 3</description>
+<points>1.0</points>
+<due-date>2021-07-18T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa4</name>
+<description>POA for Project 4</description>
+<points>1.0</points>
+<due-date>2021-07-25T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa5</name>
+<description>POA for Project 5</description>
+<points>1.0</points>
+<due-date>2021-08-08T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz1</name>
+<description>Programming Background</description>
+<points>3.0</points>
+<due-date>2021-06-30T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz2</name>
+<description>Java Language and OOP</description>
+<points>3.0</points>
+<due-date>2021-07-07T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz3</name>
+<description>Language API</description>
+<points>3.0</points>
+<due-date>2021-07-14T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz4</name>
+<description>Java IO and Collections</description>
+<points>3.0</points>
+<due-date>2021-07-21T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz5</name>
+<description>Mid-term survey</description>
+<points>3.0</points>
+<due-date>2021-07-21T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz7</name>
+<description>Android Development</description>
+<points>3.0</points>
+<due-date>2021-08-04T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz8</name>
+<description>End-of-term Survey</description>
+<points>3.0</points>
+<due-date>2021-08-11T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>restquiz</name>
+<description>Web and REST</description>
+<points>3.0</points>
+<due-date>2021-07-28T17:30:00</due-date>
+<notes/>
+</assignment>
+</assignments>
+<letter-grade-ranges for-section="undergraduate">
+<letter-grade-range letter-grade="A" maximum-score="100" minimum-score="94"/>
+<letter-grade-range letter-grade="A-" maximum-score="93" minimum-score="90"/>
+<letter-grade-range letter-grade="B+" maximum-score="89" minimum-score="87"/>
+<letter-grade-range letter-grade="B" maximum-score="86" minimum-score="83"/>
+<letter-grade-range letter-grade="B-" maximum-score="82" minimum-score="80"/>
+<letter-grade-range letter-grade="C+" maximum-score="79" minimum-score="77"/>
+<letter-grade-range letter-grade="C" maximum-score="76" minimum-score="73"/>
+<letter-grade-range letter-grade="C-" maximum-score="72" minimum-score="70"/>
+<letter-grade-range letter-grade="D+" maximum-score="69" minimum-score="67"/>
+<letter-grade-range letter-grade="D" maximum-score="66" minimum-score="63"/>
+<letter-grade-range letter-grade="D-" maximum-score="62" minimum-score="60"/>
+<letter-grade-range letter-grade="F" maximum-score="59" minimum-score="-10"/>
+</letter-grade-ranges>
+<letter-grade-ranges for-section="graduate">
+<letter-grade-range letter-grade="A" maximum-score="100" minimum-score="94"/>
+<letter-grade-range letter-grade="A-" maximum-score="93" minimum-score="90"/>
+<letter-grade-range letter-grade="B+" maximum-score="89" minimum-score="87"/>
+<letter-grade-range letter-grade="B" maximum-score="86" minimum-score="83"/>
+<letter-grade-range letter-grade="B-" maximum-score="82" minimum-score="80"/>
+<letter-grade-range letter-grade="C+" maximum-score="79" minimum-score="77"/>
+<letter-grade-range letter-grade="C" maximum-score="76" minimum-score="73"/>
+<letter-grade-range letter-grade="C-" maximum-score="72" minimum-score="70"/>
+<letter-grade-range letter-grade="D+" maximum-score="69" minimum-score="67"/>
+<letter-grade-range letter-grade="D" maximum-score="66" minimum-score="63"/>
+<letter-grade-range letter-grade="D-" maximum-score="62" minimum-score="60"/>
+<letter-grade-range letter-grade="F" maximum-score="59" minimum-score="-10"/>
+</letter-grade-ranges>
+<students/>
+</gradebook>

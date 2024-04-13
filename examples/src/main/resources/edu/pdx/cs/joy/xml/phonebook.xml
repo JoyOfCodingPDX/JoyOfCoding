@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!DOCTYPE phonebook SYSTEM
+        '/Users/david/PSU/svn/CS399J/trunk/examples/src/resources/java/edu/pdx/cs/joy/xml/phonebook.dtd'>
+
+<phonebook>
+  <resident>
+    <first-name><name>David</name></first-name>
+    <initial>M</initial>
+    <last-name><name>Whitlock</name></last-name>
+    <address>
+      <street>PSU CS Department</street>
+      <street>P.O. Box 751</street>
+      <city>Portland</city>
+      <state>OR</state>
+      <zip>97201</zip>
+    </address>
+    <phone areacode="503" number="725-4039"/>
+  </resident>
+  <business>
+    <name>Powell's Technical Bookstore</name>
+    <address>
+      <street>33 NW Park</street>
+      <city>Portland</city>
+      <state>OR</state>
+      <zip>97209</zip>
+    </address>
+    <phone areacode="503" number="228-3906"/>
+  </business>
+</phonebook>

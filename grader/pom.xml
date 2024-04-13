@@ -52,7 +52,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.grader.GraderTools</mainClass>
+              <mainClass>edu.pdx.cs.joy.grader.GraderTools</mainClass>
             </manifest>
           </archive>
         </configuration>

@@ -7,7 +7,7 @@
     </encoder>
   </appender>
 
-  <logger name="edu.pdx.cs410J.grader" level="INFO">
+  <logger name="edu.pdx.cs.joy.grader" level="INFO">
     <appender-ref ref="STDOUT" />
   </logger>
 

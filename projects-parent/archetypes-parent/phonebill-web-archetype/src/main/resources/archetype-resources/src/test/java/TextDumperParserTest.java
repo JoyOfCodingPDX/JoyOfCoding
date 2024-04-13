@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs.joy.ParserException;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;

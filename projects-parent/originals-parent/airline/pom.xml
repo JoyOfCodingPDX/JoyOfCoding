@@ -59,7 +59,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.airline.Project1</mainClass>
+              <mainClass>edu.pdx.cs.joy.airline.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -131,7 +131,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc-plugin.version}</version>
             <configuration>
-              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>edu.pdx.cs.joy.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.joy</groupId>
                 <artifactId>grader</artifactId>

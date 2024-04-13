@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.lang.Human;
+import edu.pdx.cs.joy.lang.Human;
 
 import java.util.ArrayList;
                                                                                     
