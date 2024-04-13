@@ -6,7 +6,7 @@
 All Grade Book XML data must include a DOCTYPE of the following form:
 
   <!DOCTYPE gradebook PUBLIC
-       "-//Portland State University//DTD CS410J Grade Book//EN"
+       "-//Joy of Coding at PSU//DTD Grade Book//EN"
        "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
 
 -->

@@ -24,7 +24,7 @@ public class XmlHelper implements EntityResolver, ErrorHandler {
 
   /** The Public ID for the Grade Bookd DTD */
   protected static final String publicID = 
-    "-//Portland State University//DTD CS410J Grade Book//EN";
+    "-//Joy of Coding at PSU//DTD Grade Book//EN";
 
   protected static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
