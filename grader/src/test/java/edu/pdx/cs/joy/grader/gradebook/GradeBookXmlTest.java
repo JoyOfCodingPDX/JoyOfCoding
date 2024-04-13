@@ -198,4 +198,11 @@ public class GradeBookXmlTest {
     assertThat(book, notNullValue());
   }
 
+  @Test
+  void canParseGradebookWithOldDTD() throws ParserException {
+    InputStream stream = getClass().getResourceAsStream("gradebookWithOldDTD.xml");
+    GradeBook book = new XmlGradeBookParser(stream).parse();
+    assertThat(book, notNullValue());
+  }
+
 }
