@@ -108,7 +108,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
-              <mainClass>edu.pdx.cs410J.apptbookweb.Project4</mainClass>
+              <mainClass>edu.pdx.cs.joy.apptbookweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -133,7 +133,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc-plugin.version}</version>
             <configuration>
-              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>grader.edu.pdx.cs.joy.APIDocumentationDoclet</doclet>
               <docletArtifact>
                 <groupId>io.github.davidwhitlock.joy</groupId>
                 <artifactId>grader</artifactId>

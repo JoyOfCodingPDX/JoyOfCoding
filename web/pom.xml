@@ -79,7 +79,7 @@
             </execution>
           </executions>
           <configuration>
-              <mainClass>edu.pdx.cs410J.web.HttpRequestHelper</mainClass>
+              <mainClass>edu.pdx.cs.joy.web.HttpRequestHelper</mainClass>
           </configuration>
         </plugin>
         <plugin>
@@ -92,7 +92,7 @@
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
                 <classpathLayoutType>repository</classpathLayoutType>
-                <mainClass>edu.pdx.cs410J.di.RestfulCreditCardService</mainClass>
+                <mainClass>edu.pdx.cs.joy.di.RestfulCreditCardService</mainClass>
               </manifest>
             </archive>
           </configuration>

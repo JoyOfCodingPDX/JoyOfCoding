@@ -6,7 +6,7 @@
   <display-name>Airline REST Service</display-name>
   <servlet>
     <servlet-name>AirlineServlet</servlet-name>
-    <servlet-class>edu.pdx.cs410J.airlineweb.AirlineServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.airlineweb.AirlineServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AirlineServlet</servlet-name>
