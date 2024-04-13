@@ -78,7 +78,7 @@ public class ProjectTimeEstimatesSummary {
     PrintStream err = System.err;
     err.println("** " + message);
     err.println();
-    err.println("usage: ProjectTimeEstimatesSummary gradeBookFile");
+    err.println("usage: ProjectTimeEstimatesSummary gradeBookFile*");
     err.println();
 
     System.exit(1);

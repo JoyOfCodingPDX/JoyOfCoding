@@ -22,9 +22,13 @@ public class XmlHelper implements EntityResolver, ErrorHandler {
   protected static final String systemID = 
     "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd";
 
-  /** The Public ID for the Grade Bookd DTD */
+  /** The Public ID for the Grade Book DTD */
   protected static final String publicID = 
     "-//Joy of Coding at PSU//DTD Grade Book//EN";
+
+  /** The Old Public ID for the Grade Book DTD */
+  private static final String oldPublicID =
+    "-//Portland State University//DTD CS410J Grade Book//EN";
 
   protected static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -47,9 +51,9 @@ public class XmlHelper implements EntityResolver, ErrorHandler {
   public InputSource resolveEntity (String publicId, String systemId)
     throws SAXException, IOException {
 
-    if (publicId != null && publicId.equals(XmlHelper.publicID)) {
+    if (publicId != null && (publicId.equals(XmlHelper.publicID) || publicId.equals(oldPublicID))) {
       // We're resolving the external entity for the Grade Book's
-      // DTD.  Check to see if its in the jar file.  This way we don't
+      // DTD.  Check to see if it's in the jar file.  This way we don't
       // need to go all the way to the website to find the DTD.
       String location = "/edu/pdx/cs/joy/grader/gradebook.dtd";
       InputStream stream =
