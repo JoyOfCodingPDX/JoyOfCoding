@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This class is used to submit assignments in CS410J.  The user
+ * This class is used to submit assignments in The Joy of Coding.  The user
  * specified his or her email address as well as the base directory
  * for his/her source files on the command line.  The directory is
  * searched recursively for files that are allowed to be submitted.
@@ -384,7 +384,7 @@ public class Submit extends EmailSender {
    * Searches for the files given on the command line.  Ignores files
    * that do not end in .java, or that appear on the "no submit" list.
    * Files must reside in a directory named
-   * edu/pdx/cs410J/<studentId>.
+   * edu/pdx/cs/joy/<studentId>.
    */
   private Set<File> searchForSourceFiles(Set<String> fileNames) {
     // Files should be sorted by name
@@ -440,7 +440,7 @@ public class Submit extends EmailSender {
         err.println("** Not submitting file " + file +
           ": it does not reside in a Maven project in a directory named " +
           "edu" + File.separator + "pdx" + File.separator +
-          "cs410J" + File.separator + userId + " (or in one of the koans directories)");
+          "cs" + File.separator + "joy" + File.separator + userId + " (or in one of the koans directories)");
         return false;
       }
 
@@ -506,9 +506,9 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   boolean isInMavenProjectDirectory(File file) {
-    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "cs410J", "pdx", "edu", "java|javadoc|resources", "main|test|it", "src");
+    boolean isInMavenProjectDirectory = hasParentDirectories(file, userId, "joy", "cs", "pdx", "edu", "java|javadoc|resources", "main|test|it", "src");
     if (isInMavenProjectDirectory) {
-      db(file + " is in the edu/pdx/cs410J directory");
+      db(file + " is in the edu/pdx/cs/joy directory");
     }
     return isInMavenProjectDirectory;
   }
@@ -632,11 +632,11 @@ public class Submit extends EmailSender {
 
   @VisibleForTesting
   static String getZipEntryNameFor(String filePath) {
-    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc|resources)/edu/pdx/cs410J/(.*)");
+    Pattern pattern = Pattern.compile(".*/src/(main|test|it)/(java|javadoc|resources)/edu/pdx/cs/joy/(.*)");
     Matcher matcher = pattern.matcher(filePath);
 
     if (matcher.matches()) {
-      return "src/" + matcher.group(1) + "/" + matcher.group(2) + "/edu/pdx/cs410J/" + matcher.group(3);
+      return "src/" + matcher.group(1) + "/" + matcher.group(2) + "/edu/pdx/cs/joy/" + matcher.group(3);
     } else {
       throw new IllegalStateException("Can't extract zip entry name for " + filePath);
     }
@@ -687,7 +687,7 @@ public class Submit extends EmailSender {
     MimeMessage message =
       newEmailTo(newEmailSession(debug), TA_EMAIL)
         .from(userEmail, userName)
-        .withSubject("CS410J-SUBMIT " + userName + "'s " + projName)
+        .withSubject("JoyOfCoding-SUBMIT " + userName + "'s " + projName)
         .createMessage();
 
     MimeBodyPart textPart = createTextPartOfTAEmail(sourceFiles);
@@ -761,7 +761,7 @@ public class Submit extends EmailSender {
    * Sends a email to the user as a receipt of the submission.
    */
   private void mailReceipt(Set<File> sourceFiles) throws MessagingException {
-    String subject = "CS410J " + projName + " submission";
+    String subject = "The Joy of Coding " + projName + " submission";
     InternetAddress email = newInternetAddress(this.userEmail, this.userName);
     MimeMessage message =
       newEmailTo(newEmailSession(debug), email)
@@ -815,7 +815,7 @@ public class Submit extends EmailSender {
     err.println("    -verbose           Log debugging output");
     err.println("    -comment comment   Info for the Grader");
     err.println("");
-    err.println("Submits Java source code to the CS410J grader.");
+    err.println("Submits Java source code to the Grader.");
     System.exit(1);
   }
 

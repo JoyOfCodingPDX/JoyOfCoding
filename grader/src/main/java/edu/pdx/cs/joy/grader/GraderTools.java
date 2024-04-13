@@ -41,7 +41,7 @@ public class GraderTools {
 
   @VisibleForTesting
   static void setLoggingLevelToDebug() {
-    Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+    Logger logger = (Logger) LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
     logger.setLevel(Level.DEBUG);
   }
 

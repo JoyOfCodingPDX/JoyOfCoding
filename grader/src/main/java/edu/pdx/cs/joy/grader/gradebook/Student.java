@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /**
- * This class represents a student who is taking CS410J.
+ * This class represents a student who is taking the course.
  */
 public class Student extends NotableImpl {
 

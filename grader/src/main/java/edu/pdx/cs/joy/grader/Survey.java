@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.function.Consumer;
 
 /**
- * This program presents a survey that all students in CS410J should
+ * This program presents a survey that all students in The Joy of Coding should
  * answer.  It emails the results of the survey to the TA and emails a
  * receipt back to the student.
  */
@@ -99,7 +99,7 @@ public class Survey extends EmailSender {
 
     Student student = gatherStudentInformation();
 
-    String learn = ask("What do you hope to learn in CS410J?");
+    String learn = ask("What do you hope to learn in The Joy of Coding?");
     String comments = ask("What else would you like to tell me?");
 
     addNotesToStudent(student, learn, comments);
@@ -298,9 +298,9 @@ public class Survey extends EmailSender {
   private MimeBodyPart createEmailText(String learn, String comments, String summary) {
     // Create the text portion of the message
     StringBuilder text = new StringBuilder();
-    text.append("Results of CS410J Survey:\n\n");
+    text.append("Results of The Joy of Coding Survey:\n\n");
     text.append(summary);
-    text.append("\n\nWhat do you hope to learn in CS410J?\n\n");
+    text.append("\n\nWhat do you hope to learn in The Joy of Coding?\n\n");
     text.append(learn);
     text.append("\n\nIs there anything else you'd like to tell me?\n\n");
     text.append(comments);
@@ -323,7 +323,7 @@ public class Survey extends EmailSender {
     MimeMessage message = null;
     try {
       InternetAddress studentEmail = newInternetAddress(student.getEmail(), student.getFullName());
-      String subject = "CS410J Survey for " + student.getFullName();
+      String subject = "The Joy of Coding Survey for " + student.getFullName();
       message = newEmailTo(newEmailSession(false), TA_EMAIL).from(studentEmail).withSubject(subject).createMessage();
 
       InternetAddress[] cc = { studentEmail };
@@ -394,7 +394,7 @@ public class Survey extends EmailSender {
   private void printIntroduction() {
     // Ask the student a bunch of questions
     String welcome =
-      "Welcome to the CS410J Survey Program.  I'd like to ask you a couple of " +
+      "Welcome to the Survey Program.  I'd like to ask you a couple of " +
       "questions about yourself.  Except for your UNIX login id and the section " +
       "that you are enrolled in, no question " +
       "is mandatory.  Your answers will be emailed to the Grader and a receipt " +

@@ -36,7 +36,7 @@ public class AndroidZipFixerTest {
 
   @Test
   public void androidTestInDirectoryIsIgnored() {
-    String entry = "student/app/src/androidTest/java/edu/pdx/cs410J/";
+    String entry = "student/app/src/androidTest/java/edu/pdx/cs/joy/";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(null));
   }
 
@@ -108,13 +108,13 @@ public class AndroidZipFixerTest {
 
   @Test
   public void javaSourceRemainsAtTopLevel() {
-    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/MainActivity.java";
+    String entry = "app/src/main/java/edu/pdx/cs/joy/student/client/MainActivity.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(entry));
   }
 
   @Test
   public void javaSourceIsMovedToTopLevel() {
-    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/MainActivity.java";
+    String entry = "app/src/main/java/edu/pdx/cs/joy/student/client/MainActivity.java";
     assertThat(AndroidZipFixer.getFixedEntryName("directory/" + entry), equalTo(entry));
   }
 
@@ -138,7 +138,7 @@ public class AndroidZipFixerTest {
 
   @Test
   public void srcIsAddedToMainDirectory() {
-    String entry = "main/java/edu/pdx/cs410J/student/client/PrettyPrinter.java";
+    String entry = "main/java/edu/pdx/cs/joy/student/client/PrettyPrinter.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo("app/src/" + entry));
   }
 
@@ -155,8 +155,8 @@ public class AndroidZipFixerTest {
 
   @Test
   public void directoryWithJavaIsMovedToSrcMain() {
-    String entry = "student/java/edu/pdx/cs410J/student/client/Appointment.java";
-    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/Appointment.java";
+    String entry = "student/java/edu/pdx/cs/joy/student/client/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs/joy/student/client/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
@@ -174,34 +174,34 @@ public class AndroidZipFixerTest {
 
   @Test
   public void directoryWithJavaSubPackageNamedDomainIsMovedToSrcMain() {
-    String entry = "student/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
-    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String entry = "student/java/edu/pdx/cs/joy/student/client/domain/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs/joy/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
   @Test
   public void directoryWithJavaSubPackageNamedDomainRemainsInSrcMain() {
-    String entry = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String entry = "app/src/main/java/edu/pdx/cs/joy/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(entry));
   }
 
   @Test
   public void fileSubmittedWithSubmitProgramIsMovedToSrcMainJava() {
-    String entry = "edu/pdx/cs410J/student/client/domain/Appointment.java";
-    String fixed = "app/src/main/java/edu/pdx/cs410J/student/client/domain/Appointment.java";
+    String entry = "edu/pdx/cs/joy/student/client/domain/Appointment.java";
+    String fixed = "app/src/main/java/edu/pdx/cs/joy/student/client/domain/Appointment.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
   @Test
   public void packageWithMainIsMovedToAppropriateLocation() {
-    String entry = "AndroidAppointmentBook/app/src/main/java/edu/pdx/cs410j/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
-    String fixed = "app/src/main/java/edu/pdx/cs410j/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
+    String entry = "AndroidAppointmentBook/app/src/main/java/edu/pdx/cs/joy/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
+    String fixed = "app/src/main/java/edu/pdx/cs/joy/student/androidappointmentbook/ui/main/SectionsPagerAdapter.java";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), equalTo(fixed));
   }
 
   @Test
   public void pomFileInTargetIsIgnored() {
-    String entry = "airline-gwt/target/airline/META-INF/maven/edu.pdx.cs410J.student/airline-gwt/pom.xml";
+    String entry = "airline-gwt/target/airline/META-INF/maven/edu.pdx.cs.joy.student/airline-gwt/pom.xml";
     assertThat(AndroidZipFixer.getFixedEntryName(entry), nullValue());
   }
 

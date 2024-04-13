@@ -6,7 +6,7 @@ package ${package};
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * The main class for the CS410J Phone Bill Project
+ * The main class for the Phone Bill Project
  */
 public class Project1 {
 

@@ -14,7 +14,7 @@ import static edu.pdx.cs.joy.grader.gradebook.GradeBook.LetterGradeRanges.Letter
 
 /**
  * This class represents a grade book that contains information about
- * a CS410J class: the assignments, the students and their grades.
+ * an offering of the course: the assignments, the students and their grades.
  *
  * @author David Whitlock
  * @since Fall 2000

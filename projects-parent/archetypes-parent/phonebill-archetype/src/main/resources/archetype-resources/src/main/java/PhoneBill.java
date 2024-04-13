@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AbstractPhoneBill;
+import edu.pdx.cs.joy.AbstractPhoneBill;
 
 import java.util.Collection;
 

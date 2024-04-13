@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AbstractAppointment;
+import edu.pdx.cs.joy.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment {
   @Override

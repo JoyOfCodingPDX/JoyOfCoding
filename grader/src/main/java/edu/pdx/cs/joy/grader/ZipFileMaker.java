@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFileMaker {
-  protected static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+  protected static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
 
   protected final Map<Attributes.Name, String> manifestEntries;
   private OutputStream zipStream;

@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.ProjectXmlHelper;
+import edu.pdx.cs.joy.ProjectXmlHelper;
 
 public class AppointmentBookXmlHelper extends ProjectXmlHelper {
 

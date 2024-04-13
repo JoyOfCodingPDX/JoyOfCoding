@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class GradesFromCanvasImporter {
 
-  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
 
   public static void importGradesFromCanvas(GradesFromCanvas canvasGrades, GradeBook gradebook) {
     List<GradesFromCanvas.CanvasStudent> students = canvasGrades.getStudents();

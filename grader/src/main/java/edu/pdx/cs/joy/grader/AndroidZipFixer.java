@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream;
 
 public class AndroidZipFixer {
 
-  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
 
   private final GradeBook gradeBook;
 

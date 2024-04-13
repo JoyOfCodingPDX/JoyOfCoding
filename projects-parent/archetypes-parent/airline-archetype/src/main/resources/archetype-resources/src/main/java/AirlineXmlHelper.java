@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.ProjectXmlHelper;
+import edu.pdx.cs.joy.ProjectXmlHelper;
 
 /**
  * This class provides easy access to the SYSTEM and PUBLIC ids for the

@@ -3,7 +3,7 @@ package edu.pdx.cs.joy.airline;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * The main class for the CS410J airline Project
+ * The main class for the Airline Project
  */
 public class Project1 {
 

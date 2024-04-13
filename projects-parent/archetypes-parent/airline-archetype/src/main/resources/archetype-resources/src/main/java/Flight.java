@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs.joy.AbstractFlight;
 
 public class Flight extends AbstractFlight {
   @Override

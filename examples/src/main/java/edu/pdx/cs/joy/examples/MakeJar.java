@@ -24,7 +24,7 @@ public class MakeJar {
     err.println("usage: MakeJar [options] jarFile [file]+");
     err.println("  Where [options] are:");
     err.println("  -nocompress    Don't compress Jar file");
-    err.println("  -author name   Author of Jar file (default: CS410J)");
+    err.println("  -author name   Author of Jar file (default: Joy)");
     err.println("  -version n     Version of Jar file " +
 		"(default: 1.0)");
     System.exit(1);
@@ -38,7 +38,7 @@ public class MakeJar {
     String jarFileName = null;
     Set<String> fileNames = new HashSet<String>();
     boolean compress = true;
-    String author = "CS410J";   // Author of Jar file
+    String author = "Joy";   // Author of Jar file
     String version = "1.0";     // Version of Jar file
 
     // Parse the command line

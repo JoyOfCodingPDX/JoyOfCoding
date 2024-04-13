@@ -16,7 +16,7 @@ import java.util.TimerTask;
 import java.util.prefs.Preferences;
 
 /**
- * This class is a main GUI for manipulate the grade book for CS410J.
+ * This class is a main GUI for manipulate the grade book for the course.
  *
  * @author David Whitlock
  * @version $Revision: 1.15 $
@@ -618,7 +618,7 @@ public class GradeBookGUI extends JFrame {
    * Main program.  Create and show a <code>GradeBookGUI</code>
    */
   public static void main(String[] args) {
-    GradeBookGUI gui = new GradeBookGUI("CS410J Grade Book Program");
+    GradeBookGUI gui = new GradeBookGUI("Grade Book Program");
 
     if (args.length > 0) {
       PrintStream err = System.err;

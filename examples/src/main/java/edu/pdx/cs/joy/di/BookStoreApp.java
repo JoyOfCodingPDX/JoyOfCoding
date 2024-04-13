@@ -22,7 +22,7 @@ public class BookStoreApp
        addBooks(inventory);
        CreditCardService cardService = new FirstBankOfPSU( "localhost", 8080 );
 
-       Logger logger = Logger.getLogger( "edu.pdx.cs410J.Logger" );
+       Logger logger = Logger.getLogger( "edu.pdx.cs.joy.Logger" );
        logger.setLevel( Level.INFO );
 
        CheckoutPanel panel = new CheckoutPanel( inventory, cardService, logger );

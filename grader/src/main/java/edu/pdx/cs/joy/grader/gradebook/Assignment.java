@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 /**
- * This class represents an assignment give to students in CS410J.
+ * This class represents an assignment give to students in The Joy of Coding.
  *
  * @author David Whitlock
  */

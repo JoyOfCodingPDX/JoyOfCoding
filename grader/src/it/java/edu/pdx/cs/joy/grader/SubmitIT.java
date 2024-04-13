@@ -47,38 +47,38 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   @BeforeEach
   public void createFilesToSubmit() throws IOException {
-    File mainDir = createDirectories("src", "main", "java", "edu", "pdx", "cs410J", studentLoginId);
+    File mainDir = createDirectories("src", "main", "java", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList(projectName + ".java", "File1.java", "File2.java")) {
       this.filesToSubmit.add(createEmptyFile(mainDir, fileName));
     }
 
-    File mainJavaDocDir = createDirectories("src", "main", "javadoc", "edu", "pdx", "cs410J", studentLoginId);
+    File mainJavaDocDir = createDirectories("src", "main", "javadoc", "edu", "pdx", "cs", "joy", studentLoginId);
     this.filesToSubmit.add(createEmptyFile(mainJavaDocDir, "package.html"));
 
-    File mainResourcesDir = createDirectories("src", "main", "resources", "edu", "pdx", "cs410J", studentLoginId);
+    File mainResourcesDir = createDirectories("src", "main", "resources", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList("text.txt", "xml.xml")) {
       this.filesToSubmit.add(createEmptyFile(mainResourcesDir, fileName));
     }
 
-    File testDir = createDirectories("src", "test", "java", "edu", "pdx", "cs410J", studentLoginId);
+    File testDir = createDirectories("src", "test", "java", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList(projectName + "Test.java", "File1Test.java", "File2Test.java")) {
       this.filesToSubmit.add(createEmptyFile(testDir, fileName));
     }
 
-    File testJavaDocDir = createDirectories("src", "test", "javadoc", "edu", "pdx", "cs410J", studentLoginId);
+    File testJavaDocDir = createDirectories("src", "test", "javadoc", "edu", "pdx", "cs", "joy", studentLoginId);
     this.filesToSubmit.add(createEmptyFile(testJavaDocDir, "package.html"));
 
-    File testResourcesDir = createDirectories("src", "test", "resources", "edu", "pdx", "cs410J", studentLoginId);
+    File testResourcesDir = createDirectories("src", "test", "resources", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList("testData.xml", "testData.txt")) {
       this.filesToSubmit.add(createEmptyFile(testResourcesDir, fileName));
     }
 
-    File itDir = createDirectories("src", "it", "java", "edu", "pdx", "cs410J", studentLoginId);
+    File itDir = createDirectories("src", "it", "java", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList(projectName + "IT.java", "File1IT.java", "File2IT.java")) {
       this.filesToSubmit.add(createEmptyFile(itDir, fileName));
     }
 
-    File itResourcesDir = createDirectories("src", "it", "resources", "edu", "pdx", "cs410J", studentLoginId);
+    File itResourcesDir = createDirectories("src", "it", "resources", "edu", "pdx", "cs", "joy", studentLoginId);
     for (String fileName : Arrays.asList("testData.xml", "testData.txt")) {
       this.filesToSubmit.add(createEmptyFile(itResourcesDir, fileName));
     }

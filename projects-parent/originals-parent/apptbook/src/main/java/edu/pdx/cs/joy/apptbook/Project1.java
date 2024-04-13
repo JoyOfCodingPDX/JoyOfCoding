@@ -3,7 +3,7 @@ package edu.pdx.cs.joy.apptbook;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * The main class for the CS410J appointment book Project
+ * The main class for the Appointment Book Project
  */
 public class Project1 {
 

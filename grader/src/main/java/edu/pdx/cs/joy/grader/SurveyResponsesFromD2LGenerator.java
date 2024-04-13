@@ -9,7 +9,7 @@ import java.io.*;
 
 public class SurveyResponsesFromD2LGenerator {
 
-  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs410J.grader");
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
 
   public static void main(String[] args) throws IOException, ParserException {
     String d2lCsvFileName = null;
@@ -42,7 +42,7 @@ public class SurveyResponsesFromD2LGenerator {
 
   @VisibleForTesting
   static void generateHtmlForSurveyResponses(SurveyResponsesFromD2L d2lSurveyResponses, HtmlGenerator html) {
-    String title = "Previously on CS410J...";
+    String title = "Previously on The Joy of Coding...";
 
     html.beginTag("html");
 
