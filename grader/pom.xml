@@ -1,8 +1,8 @@
 <?xml version="1.0"?><project>
   <parent>
-    <artifactId>cs410j</artifactId>
-    <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2024.0.1</version>
+    <artifactId>joy</artifactId>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>grader</artifactId>
@@ -17,19 +17,19 @@
       <version>2.0.1</version>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2024.0.1</version>
+      <version>1.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.7.1</version>
+      <version>5.9</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.4.12</version>
+      <version>1.5.6</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -52,7 +52,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.grader.GraderTools</mainClass>
+              <mainClass>edu.pdx.cs.joy.grader.GraderTools</mainClass>
             </manifest>
           </archive>
         </configuration>

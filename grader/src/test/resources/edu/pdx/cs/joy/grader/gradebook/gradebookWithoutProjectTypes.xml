@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gradebook PUBLIC "-//Joy of Coding at PSU//DTD Grade Book//EN" "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+<gradebook>
+<name>Winter 2022</name>
+<assignments>
+<assignment type="OTHER">
+<name>Final 1</name>
+<description>Final Exam (Individual)</description>
+<points>8.0</points>
+<canvas-id>95635</canvas-id>
+<due-date>2022-03-16T18:00:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>Final 2</name>
+<description>Final Exam (Group)</description>
+<points>4.0</points>
+<canvas-id>95638</canvas-id>
+<due-date>2022-03-16T23:00:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project1</name>
+<description>Fundamental App Classes</description>
+<points>5.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-01-19T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project2</name>
+<description>Text File</description>
+<points>6.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-01-26T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project3</name>
+<description>Pretty Printing</description>
+<points>7.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-02-02T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project4</name>
+<description>XML</description>
+<points>7.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-02-16T18:00:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project5</name>
+<description>REST API</description>
+<points>10.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-03-02T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>Project6</name>
+<description>Mobile Application</description>
+<points>13.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-03-16T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="PROJECT">
+<name>koans</name>
+<description>Java Koans</description>
+<points>6.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-02-09T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>mobbing</name>
+<description>Reflections on Mob Programming</description>
+<points>3.5</points>
+<canvas-id>95637</canvas-id>
+<due-date>2022-03-09T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="OTHER">
+<name>pairing</name>
+<description>Reflections on Pair Programming</description>
+<points>3.5</points>
+<canvas-id>95636</canvas-id>
+<due-date>2022-02-16T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa1</name>
+<description>Project 1 POA</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-01-16T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa2</name>
+<description>POA for Project 2</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-01-23T21:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa3</name>
+<description>POA for Project 3</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-01-30T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa4</name>
+<description>POA for Project 4</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-02-13T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa5</name>
+<description>POA for Project 5</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-02-27T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="POA">
+<name>poa6</name>
+<description>POA for Project 6</description>
+<points>1.0</points>
+<canvas-id>0</canvas-id>
+<due-date>2022-03-13T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz1</name>
+<description>Programming Background</description>
+<points>3.0</points>
+<canvas-id>95628</canvas-id>
+<due-date>2022-01-12T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz2</name>
+<description>Java Language and OOP</description>
+<points>3.0</points>
+<canvas-id>95629</canvas-id>
+<due-date>2022-01-19T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz3</name>
+<description>Language API</description>
+<points>3.0</points>
+<canvas-id>95630</canvas-id>
+<due-date>2022-01-26T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz4</name>
+<description>Java I/O and Collections</description>
+<points>3.0</points>
+<canvas-id>95631</canvas-id>
+<due-date>2022-02-02T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz5</name>
+<description>Midterm Survey</description>
+<points>3.0</points>
+<canvas-id>95626</canvas-id>
+<due-date>2022-02-23T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz7</name>
+<description>Android</description>
+<points>3.0</points>
+<canvas-id>95634</canvas-id>
+<due-date>2022-03-09T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>quiz8</name>
+<description>End of Term Survey</description>
+<points>3.0</points>
+<canvas-id>95625</canvas-id>
+<due-date>2022-03-16T17:30:00</due-date>
+<notes/>
+</assignment>
+<assignment type="QUIZ">
+<name>restquiz</name>
+<description>Web and REST</description>
+<points>3.0</points>
+<canvas-id>95632</canvas-id>
+<due-date>2022-02-23T17:30:00</due-date>
+<notes/>
+</assignment>
+</assignments>
+<letter-grade-ranges for-section="undergraduate">
+<letter-grade-range letter-grade="A" maximum-score="100" minimum-score="94"/>
+<letter-grade-range letter-grade="A-" maximum-score="93" minimum-score="90"/>
+<letter-grade-range letter-grade="B+" maximum-score="89" minimum-score="87"/>
+<letter-grade-range letter-grade="B" maximum-score="86" minimum-score="83"/>
+<letter-grade-range letter-grade="B-" maximum-score="82" minimum-score="80"/>
+<letter-grade-range letter-grade="C+" maximum-score="79" minimum-score="77"/>
+<letter-grade-range letter-grade="C" maximum-score="76" minimum-score="73"/>
+<letter-grade-range letter-grade="C-" maximum-score="72" minimum-score="70"/>
+<letter-grade-range letter-grade="D+" maximum-score="69" minimum-score="67"/>
+<letter-grade-range letter-grade="D" maximum-score="66" minimum-score="63"/>
+<letter-grade-range letter-grade="D-" maximum-score="62" minimum-score="60"/>
+<letter-grade-range letter-grade="F" maximum-score="59" minimum-score="-10"/>
+</letter-grade-ranges>
+<letter-grade-ranges for-section="graduate">
+<letter-grade-range letter-grade="A" maximum-score="100" minimum-score="94"/>
+<letter-grade-range letter-grade="A-" maximum-score="93" minimum-score="90"/>
+<letter-grade-range letter-grade="B+" maximum-score="89" minimum-score="87"/>
+<letter-grade-range letter-grade="B" maximum-score="86" minimum-score="83"/>
+<letter-grade-range letter-grade="B-" maximum-score="82" minimum-score="80"/>
+<letter-grade-range letter-grade="C+" maximum-score="79" minimum-score="77"/>
+<letter-grade-range letter-grade="C" maximum-score="76" minimum-score="73"/>
+<letter-grade-range letter-grade="C-" maximum-score="72" minimum-score="70"/>
+<letter-grade-range letter-grade="D+" maximum-score="69" minimum-score="67"/>
+<letter-grade-range letter-grade="D" maximum-score="66" minimum-score="63"/>
+<letter-grade-range letter-grade="D-" maximum-score="62" minimum-score="60"/>
+<letter-grade-range letter-grade="F" maximum-score="59" minimum-score="-10"/>
+</letter-grade-ranges>
+<students/>
+</gradebook>

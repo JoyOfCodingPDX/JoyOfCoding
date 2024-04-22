@@ -3,11 +3,11 @@
   "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>CS410J Examples Web Application</display-name>
+  <display-name>Example Web Application</display-name>
   <context-param>
     <!-- Register REST services bound into these modules with resteasy -->
     <param-name>resteasy.guice.modules</param-name>
-    <param-value>edu.pdx.cs410J.di.RestModule</param-value>
+    <param-value>edu.pdx.cs.joy.di.RestModule</param-value>
   </context-param>
   <filter>
     <!-- Filter all requests through the Guice -->
@@ -27,7 +27,7 @@
     <servlet-name>ServletInfo</servlet-name>
     <display-name>Servlet Info</display-name>
     <description>Summarizes information about a servlet request</description>
-    <servlet-class>edu.pdx.cs410J.servlets.ServletInfoServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.ServletInfoServlet</servlet-class>
     <init-param>
       <param-name>param1</param-name>
       <param-value>Hello Param</param-value>
@@ -36,23 +36,23 @@
   </servlet>
   <servlet>
     <servlet-name>MovieDatabase</servlet-name>
-    <servlet-class>edu.pdx.cs410J.servlets.MovieDatabaseServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.MovieDatabaseServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>FamilyTree</servlet-name>
-    <servlet-class>edu.pdx.cs410J.servlets.FamilyTreeServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.FamilyTreeServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>LastVisitServlet</servlet-name>
-    <servlet-class>edu.pdx.cs410J.servlets.LastVisitServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.LastVisitServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>Session</servlet-name>
-    <servlet-class>edu.pdx.cs410J.servlets.SessionServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.SessionServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>FileUpload</servlet-name>
-    <servlet-class>edu.pdx.cs410J.servlets.FileUploadServlet</servlet-class>
+    <servlet-class>edu.pdx.cs.joy.servlets.FileUploadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ServletInfo</servlet-name>

@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.davidwhitlock.cs410J</groupId>
+        <groupId>io.github.davidwhitlock.joy</groupId>
         <artifactId>projects-parent</artifactId>
-        <version>2024.0.1</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>archetypes-parent</artifactId>
-    <version>2024.0.1</version>
+    <version>1.0.0</version>
 
     <packaging>pom</packaging>
 
-    <name>Parent Project for CS410J Project Archetypes</name>
+    <name>Parent Project for Project Archetypes</name>
 
     <modules>
         <module>student-archetype</module>
