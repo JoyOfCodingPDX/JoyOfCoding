@@ -1,7 +1,7 @@
 package edu.pdx.cs.joy;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -29,14 +29,14 @@ public abstract class AbstractAppointment implements Serializable
   /**
    * Returns the {@link Date} that this appointment begins.
    */
-  public ZonedDateTime getBeginTime() {
+  public LocalDateTime getBeginTime() {
     return null;
   }
 
   /**
    * Returns the {@link Date} that this appointment ends.
    */
-  public ZonedDateTime getEndTime() {
+  public LocalDateTime getEndTime() {
     return null;
   }
 
