@@ -3,13 +3,13 @@
   <parent>
     <artifactId>originals-parent</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
   <name>Phone Bill Project</name>
   <description>A Phone Bill application for The Joy of Coding at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
@@ -38,12 +38,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
