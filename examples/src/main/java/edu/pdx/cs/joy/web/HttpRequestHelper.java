@@ -251,7 +251,7 @@ public class HttpRequestHelper {
     private final int httpStatusCode;
 
     public RestException(int httpStatusCode, String message) {
-      super(message);
+      super("HTTP Status Code " + httpStatusCode + ": " + message);
 
       this.httpStatusCode = httpStatusCode;
     }
