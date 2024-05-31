@@ -25,7 +25,7 @@ import java.util.List;
 public class XmlStudentParser extends XmlHelper {
 
   /** The Reader from which the XML Data is read */ 
-  private Reader reader;
+  private final Reader reader;
 
   ///////////////////////  Constructors  ////////////////////////
 
@@ -206,6 +206,10 @@ public class XmlStudentParser extends XmlHelper {
       } else if (child.getTagName().equals("canvas-id")) {
         String canvasId = extractTextFrom(child);
         student.setCanvasId(canvasId);
+
+      } else if (child.getTagName().equals("github-user-name")) {
+        String gitHubUserName = extractTextFrom(child);
+        student.setGitHubUserName(gitHubUserName);
 
       } else if (child.getTagName().equals("letter-grade")) {
         String letterGrade = extractTextFrom(child);
