@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public class GitConfigParser {
   static final Pattern PROPERTY_PATTERN = Pattern.compile(" {8}(.*) = (.*)");
+  static final Pattern REMOTE_PATTERN = Pattern.compile("\\[remote \"(.*)\"]");
   private final Reader reader;
   private String currentSection;
 
@@ -51,8 +52,7 @@ public class GitConfigParser {
   }
 
   private void startRemoteSection(String line, Callback callback) {
-    Pattern pattern = Pattern.compile("\\[remote \"(.*)\"]");
-    Matcher matcher = pattern.matcher(line);
+    Matcher matcher = REMOTE_PATTERN.matcher(line);
     if (!matcher.matches()) {
       throw new IllegalStateException("Cannot parse line with remote: \"" + line + "\"");
     }
