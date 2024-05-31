@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -88,13 +89,17 @@ public class SurveyTest {
     String email = "email@email.com";
     String major = "Major";
     String section = "u";
+    String recordGitHubUserName = "y";
     String learn = "A lot";
     String anythingElse = "Nope";
     String verify = "y";
 
-    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, learn, anythingElse, verify);
+    String gitHubUserName = "GitHubUserName";
 
-    Survey survey = new Survey(new TextCapturingOutputStream().getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir);
+    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, recordGitHubUserName, learn, anythingElse, verify);
+    createGitConfigWithUserName(tempDir, gitHubUserName);
+
+    Survey survey = new Survey(new TextCapturingOutputStream().getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir, tempDir);
     survey.takeSurvey("-noEmail");
 
     File xmlFile = new File(tempDir, Survey.STUDENT_XML_FILE_NAME);
@@ -108,6 +113,30 @@ public class SurveyTest {
     assertThat(student.getEmail(), equalTo(email));
     assertThat(student.getMajor(), equalTo(major));
     assertThat(student.getEnrolledSection(), equalTo(Student.Section.UNDERGRADUATE));
+    assertThat(student.getGitHubUserName(), equalTo(gitHubUserName));
+  }
+
+  private void createGitConfigWithUserName(File tempDir, String gitHubUserName) throws IOException {
+    File dotGit = new File(tempDir, ".git");
+    assertThat(dotGit.mkdir(), is(true));
+    File config = new File(dotGit, "config");
+
+    try (PrintWriter pw = new PrintWriter(new FileWriter(config))) {
+      pw.println("[core]\n" +
+        "        repositoryformatversion = 0\n" +
+        "        filemode = true\n" +
+        "        bare = false\n" +
+        "        logallrefupdates = true\n" +
+        "        ignorecase = true\n" +
+        "        precomposeunicode = true\n" +
+        "[remote \"origin\"]\n" +
+        "        url = git@github.com:" + gitHubUserName + "/JoyOfCoding.git\n" +
+        "        fetch = +refs/heads/*:refs/remotes/origin/*\n" +
+        "[branch \"main\"]\n" +
+        "        remote = origin\n" +
+        "        merge = refs/heads/main\n");
+      pw.flush();
+    }
   }
 
   private InputStream getInputStreamWithLinesOfText(String... lines) {
