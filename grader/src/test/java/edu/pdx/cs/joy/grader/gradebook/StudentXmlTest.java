@@ -167,4 +167,15 @@ public class StudentXmlTest {
     assertThat(student.getCanvasId(), nullValue());
   }
 
+  @Test
+  void gitHubUserNameIsPersisted() throws ParserException, TransformerException {
+    String gitHubUserName = "gitHubUserName";
+    Student student = new Student("studentId");
+    student.setGitHubUserName(gitHubUserName);
+
+    Student student2 = writeAndReadStudentAsXml(student);
+
+    assertThat(student2.getGitHubUserName(), equalTo(gitHubUserName));
+  }
+
 }

@@ -30,12 +30,14 @@ public class Survey extends EmailSender {
 
   private boolean sendEmail = true;
   private final File xmlFileDir;
+  private File gitCheckoutDir;
 
-  public Survey(PrintStream out, PrintStream err, InputStream in, File xmlFileDir) {
+  public Survey(PrintStream out, PrintStream err, InputStream in, File xmlFileDir, File gitCheckoutDir) {
     this.out = new PrintWriter(out, true);
     this.err = new PrintWriter(err, true);
     this.in = new BufferedReader(new InputStreamReader(in));
     this.xmlFileDir = xmlFileDir;
+    this.gitCheckoutDir = gitCheckoutDir;
   }
 
   /**
@@ -52,6 +54,9 @@ public class Survey extends EmailSender {
       sb.append("Major: ").append(student.getMajor()).append("\n");
     }
     sb.append("Enrolled in: ").append(student.getEnrolledSection().asString()).append("\n");
+    if (student.getGitHubUserName() != null) {
+      sb.append("GitHub User Name: ").append(student.getGitHubUserName()).append("\n");
+    }
     return sb.toString();
   }
 
@@ -87,7 +92,8 @@ public class Survey extends EmailSender {
   }
 
   public static void main(String[] args) {
-    Survey survey = new Survey(System.out, System.err, System.in, new File(System.getProperty("user.dir")));
+    File currentDirectory = new File(System.getProperty("user.dir"));
+    Survey survey = new Survey(System.out, System.err, System.in, currentDirectory, currentDirectory);
     survey.takeSurvey(args);
   }
 
@@ -146,8 +152,35 @@ public class Survey extends EmailSender {
     askQuestionAndSetValue("What is your major?", student::setMajor);
 
     askEnrolledSectionQuestion(student);
+    askGitHubUserNameQuestion(student);
 
     return student;
+  }
+
+  private void askGitHubUserNameQuestion(Student student) {
+    String gitHubUserName = findGitHubUserName();
+    String okay = ask("Is it okay to record your GitHub username of \"" + gitHubUserName
+      + "\" so you can be added to the shared GitHub repo for Pair/Mob Programming? [y/n]");
+    if (okay.equalsIgnoreCase("y")) {
+      student.setGitHubUserName(gitHubUserName);
+    }
+  }
+
+  private String findGitHubUserName() {
+    File dotGit = new File(this.gitCheckoutDir, ".git");
+    File config = new File(dotGit, "config");
+    if (config.isFile()) {
+      try {
+        GitConfigParser parser = new GitConfigParser(new FileReader(config));
+        GitHubUserNameFinder finder = new GitHubUserNameFinder();
+        parser.parse(finder);
+        return finder.getGitHubUserName();
+
+      } catch (IOException e) {
+        return null;
+      }
+    }
+    return null;
   }
 
   @VisibleForTesting
@@ -364,7 +397,7 @@ public class Survey extends EmailSender {
                 "yourself:\n");
     out.println(summary);
 
-    String verify = ask("\nIs this information correct (y/n)?");
+    String verify = ask("\nIs this information correct? [y/n]");
     if (!verify.equals("y")) {
       printErrorMessageAndExit("** Not sending information.  Exiting.");
     }
