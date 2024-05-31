@@ -54,6 +54,9 @@ public class Survey extends EmailSender {
       sb.append("Major: ").append(student.getMajor()).append("\n");
     }
     sb.append("Enrolled in: ").append(student.getEnrolledSection().asString()).append("\n");
+    if (student.getGitHubUserName() != null) {
+      sb.append("GitHub User Name: ").append(student.getGitHubUserName()).append("\n");
+    }
     return sb.toString();
   }
 
@@ -157,7 +160,7 @@ public class Survey extends EmailSender {
   private void askGitHubUserNameQuestion(Student student) {
     String gitHubUserName = findGitHubUserName();
     String okay = ask("Is it okay to record your GitHub username of \"" + gitHubUserName
-      + "\" so you can be added to the shared GitHub repo for Pair/Mob Programming?");
+      + "\" so you can be added to the shared GitHub repo for Pair/Mob Programming? [y/n]");
     if (okay.equalsIgnoreCase("y")) {
       student.setGitHubUserName(gitHubUserName);
     }
@@ -394,7 +397,7 @@ public class Survey extends EmailSender {
                 "yourself:\n");
     out.println(summary);
 
-    String verify = ask("\nIs this information correct (y/n)?");
+    String verify = ask("\nIs this information correct? [y/n]");
     if (!verify.equals("y")) {
       printErrorMessageAndExit("** Not sending information.  Exiting.");
     }

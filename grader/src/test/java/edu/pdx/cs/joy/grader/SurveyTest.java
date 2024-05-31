@@ -99,8 +99,12 @@ public class SurveyTest {
     InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, recordGitHubUserName, learn, anythingElse, verify);
     createGitConfigWithUserName(tempDir, gitHubUserName);
 
-    Survey survey = new Survey(new TextCapturingOutputStream().getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir, tempDir);
+    TextCapturingOutputStream stdOut = new TextCapturingOutputStream();
+    Survey survey = new Survey(stdOut.getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir, tempDir);
     survey.takeSurvey("-noEmail");
+
+    String writtenToStdOut = stdOut.getTextThatWasOutput();
+    assertThat(writtenToStdOut, containsString("GitHub User Name: " + gitHubUserName));
 
     File xmlFile = new File(tempDir, Survey.STUDENT_XML_FILE_NAME);
     XmlStudentParser parser = new XmlStudentParser(xmlFile);
@@ -123,18 +127,18 @@ public class SurveyTest {
 
     try (PrintWriter pw = new PrintWriter(new FileWriter(config))) {
       pw.println("[core]\n" +
-        "        repositoryformatversion = 0\n" +
-        "        filemode = true\n" +
-        "        bare = false\n" +
-        "        logallrefupdates = true\n" +
-        "        ignorecase = true\n" +
-        "        precomposeunicode = true\n" +
+        "\trepositoryformatversion = 0\n" +
+        "\tfilemode = true\n" +
+        "\tbare = false\n" +
+        "\tlogallrefupdates = true\n" +
+        "\tignorecase = true\n" +
+        "\tprecomposeunicode = true\n" +
         "[remote \"origin\"]\n" +
-        "        url = git@github.com:" + gitHubUserName + "/JoyOfCoding.git\n" +
-        "        fetch = +refs/heads/*:refs/remotes/origin/*\n" +
+        "\turl = git@github.com:" + gitHubUserName + "/JoyOfCoding.git\n" +
+        "\tfetch = +refs/heads/*:refs/remotes/origin/*\n" +
         "[branch \"main\"]\n" +
-        "        remote = origin\n" +
-        "        merge = refs/heads/main\n");
+        "\tremote = origin\n" +
+        "\tmerge = refs/heads/main\n");
       pw.flush();
     }
   }
@@ -150,10 +154,14 @@ public class SurveyTest {
   }
 
   private static class TextCapturingOutputStream {
-    private final OutputStream captured = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream captured = new ByteArrayOutputStream();
 
     public PrintStream getPrintStream() {
       return new PrintStream(captured);
+    }
+
+    String getTextThatWasOutput() {
+      return captured.toString();
     }
   }
 }
