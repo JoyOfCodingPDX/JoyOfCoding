@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GitConfigParser {
-  static final Pattern PROPERTY_PATTERN = Pattern.compile(" {8}(.*) = (.*)");
+  static final Pattern PROPERTY_PATTERN = Pattern.compile("\\s+(.*) = (.*)");
   static final Pattern REMOTE_PATTERN = Pattern.compile("\\[remote \"(.*)\"]");
   private final Reader reader;
   private String currentSection;

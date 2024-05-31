@@ -1,31 +1,34 @@
 [core]
-        repositoryformatversion = 0
-        filemode = true
-        bare = false
-        logallrefupdates = true
-        ignorecase = true
-        precomposeunicode = true
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
 [remote "origin"]
-        url = git@github.com:JoyOfCodingPDX/JoyOfCoding.git
-        fetch = +refs/heads/*:refs/remotes/origin/*
+	url = git@github.com:JoyOfCodingPDX/JoyOfCoding.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "main"]
-        remote = origin
-        merge = refs/heads/main
+	remote = origin
+	merge = refs/heads/main
 [branch "issue-463/use-LocalDateTime-for-projects"]
-        remote = origin
-        merge = refs/heads/issue-463/use-LocalDateTime-for-projects
+	remote = origin
+	merge = refs/heads/issue-463/use-LocalDateTime-for-projects
 [branch "issue-453/use-newer-github-actions"]
-        remote = origin
-        merge = refs/heads/issue-453/use-newer-github-actions
+	remote = origin
+	merge = refs/heads/issue-453/use-newer-github-actions
 [branch "issue-463/move-snapshot-repository-include-to-top-level-pom"]
-        remote = origin
-        merge = refs/heads/issue-463/move-snapshot-repository-include-to-top-level-pom
+	remote = origin
+	merge = refs/heads/issue-463/move-snapshot-repository-include-to-top-level-pom
 [branch "issue-465/java-22"]
-        remote = origin
-        merge = refs/heads/issue-465/java-22
+	remote = origin
+	merge = refs/heads/issue-465/java-22
 [branch "issue-454/http-code-in-stack-trace"]
-        remote = origin
-        merge = refs/heads/issue-454/http-code-in-stack-trace
+	remote = origin
+	merge = refs/heads/issue-454/http-code-in-stack-trace
 [branch "1.1.1-SNAPSHOT"]
-        remote = origin
-        merge = refs/heads/1.1.1-SNAPSHOT
+	remote = origin
+	merge = refs/heads/1.1.1-SNAPSHOT
+[branch "issue-452/harvest-student-github-id"]
+	remote = origin
+	merge = refs/heads/issue-452/harvest-student-github-id
