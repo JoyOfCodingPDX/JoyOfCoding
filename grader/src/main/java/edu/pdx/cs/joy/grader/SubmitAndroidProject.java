@@ -1,15 +1,22 @@
 package edu.pdx.cs.joy.grader;
 
+import com.google.common.annotations.VisibleForTesting;
 import jakarta.mail.MessagingException;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class SubmitAndroidProject extends Submit {
 
   private SubmitAndroidProject() {
+    this(LocalDateTime::now);
+  }
 
+  @VisibleForTesting
+  SubmitAndroidProject(CurrentTimeProvider currentTimeProvider) {
+    super(currentTimeProvider);
   }
 
   @Override
