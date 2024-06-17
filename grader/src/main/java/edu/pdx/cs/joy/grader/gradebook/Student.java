@@ -30,6 +30,7 @@ public class Student extends NotableImpl {
   private List<String> resubmitted;  // Names of resubmitted Assignments
   private String canvasId;
   private Section enrolledSection;
+  private String gitHubUserName;
 
   ///////////////////////  Constructors  ///////////////////////
 
@@ -529,6 +530,14 @@ public class Student extends NotableImpl {
 
   public Section getEnrolledSection() {
     return enrolledSection;
+  }
+
+  public String getGitHubUserName() {
+    return gitHubUserName;
+  }
+
+  public void setGitHubUserName(String gitHubUserName) {
+    this.gitHubUserName = gitHubUserName;
   }
 
   public enum Section {

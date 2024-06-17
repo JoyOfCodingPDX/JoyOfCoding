@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -88,14 +89,22 @@ public class SurveyTest {
     String email = "email@email.com";
     String major = "Major";
     String section = "u";
+    String recordGitHubUserName = "y";
     String learn = "A lot";
     String anythingElse = "Nope";
     String verify = "y";
 
-    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, learn, anythingElse, verify);
+    String gitHubUserName = "GitHubUserName";
 
-    Survey survey = new Survey(new TextCapturingOutputStream().getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir);
+    InputStream in = getInputStreamWithLinesOfText(firstName, lastName, nickName, loginId, email, major, section, recordGitHubUserName, learn, anythingElse, verify);
+    createGitConfigWithUserName(tempDir, gitHubUserName);
+
+    TextCapturingOutputStream stdOut = new TextCapturingOutputStream();
+    Survey survey = new Survey(stdOut.getPrintStream(), new TextCapturingOutputStream().getPrintStream(), in, tempDir, tempDir);
     survey.takeSurvey("-noEmail");
+
+    String writtenToStdOut = stdOut.getTextThatWasOutput();
+    assertThat(writtenToStdOut, containsString("GitHub User Name: " + gitHubUserName));
 
     File xmlFile = new File(tempDir, Survey.STUDENT_XML_FILE_NAME);
     XmlStudentParser parser = new XmlStudentParser(xmlFile);
@@ -108,6 +117,30 @@ public class SurveyTest {
     assertThat(student.getEmail(), equalTo(email));
     assertThat(student.getMajor(), equalTo(major));
     assertThat(student.getEnrolledSection(), equalTo(Student.Section.UNDERGRADUATE));
+    assertThat(student.getGitHubUserName(), equalTo(gitHubUserName));
+  }
+
+  private void createGitConfigWithUserName(File tempDir, String gitHubUserName) throws IOException {
+    File dotGit = new File(tempDir, ".git");
+    assertThat(dotGit.mkdir(), is(true));
+    File config = new File(dotGit, "config");
+
+    try (PrintWriter pw = new PrintWriter(new FileWriter(config))) {
+      pw.println("[core]\n" +
+        "\trepositoryformatversion = 0\n" +
+        "\tfilemode = true\n" +
+        "\tbare = false\n" +
+        "\tlogallrefupdates = true\n" +
+        "\tignorecase = true\n" +
+        "\tprecomposeunicode = true\n" +
+        "[remote \"origin\"]\n" +
+        "\turl = git@github.com:" + gitHubUserName + "/JoyOfCoding.git\n" +
+        "\tfetch = +refs/heads/*:refs/remotes/origin/*\n" +
+        "[branch \"main\"]\n" +
+        "\tremote = origin\n" +
+        "\tmerge = refs/heads/main\n");
+      pw.flush();
+    }
   }
 
   private InputStream getInputStreamWithLinesOfText(String... lines) {
@@ -121,10 +154,14 @@ public class SurveyTest {
   }
 
   private static class TextCapturingOutputStream {
-    private final OutputStream captured = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream captured = new ByteArrayOutputStream();
 
     public PrintStream getPrintStream() {
       return new PrintStream(captured);
+    }
+
+    String getTextThatWasOutput() {
+      return captured.toString();
     }
   }
 }

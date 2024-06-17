@@ -40,8 +40,8 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   private final String studentFirstName = "First";
   private final String studentLastName = "Last";
   private final String studentName = studentFirstName + " " + studentLastName;
-  private final Collection<File> filesToSubmit = new ArrayList<>();
-  private final String studentLoginId = "student";
+  protected final Collection<File> filesToSubmit = new ArrayList<>();
+  protected final String studentLoginId = "student";
   private final String projectName = "Project";
   private final String graderEmail = TA_EMAIL.getAddress();
 
@@ -111,7 +111,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     assertThat(grade.getScore(), equalTo(Grade.NO_GRADE));
     assertThat(grade.getSubmissionTimes().size(), equalTo(1));
 
-    assertZipFileContainsFilesInMavenProjectDirectories();
+    assertZipFileContainsFilesInProjectDirectories();
   }
 
   @Test
@@ -139,7 +139,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   }
 
-  private void assertZipFileContainsFilesInMavenProjectDirectories() throws IOException {
+  private void assertZipFileContainsFilesInProjectDirectories() throws IOException {
     File zipFile = findNewestZipFileInTempDirectory();
     assertThat(zipFile, is(notNullValue()));
     List<String> entryNames = getZipFileEntryNames(zipFile);
@@ -176,27 +176,27 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     }
   }
 
-  private FileSubmitter submitter() {
-    return new FileSubmitter();
+  protected ProjectSubmitter submitter() {
+    return new ProjectSubmitter();
   }
 
-  private class FileSubmitter {
+  protected class ProjectSubmitter {
 
-    private LocalDateTime submitTime = LocalDateTime.now();
+    protected LocalDateTime submitTime = LocalDateTime.now();
     private Double estimatedHours = null;
     private boolean sendReceipt = false;
 
-    public FileSubmitter setSubmitTime(LocalDateTime submitTime) {
+    public ProjectSubmitter setSubmitTime(LocalDateTime submitTime) {
       this.submitTime = submitTime;
       return this;
     }
 
-    public FileSubmitter setEstimatedHours(Double estimatedHours) {
+    public ProjectSubmitter setEstimatedHours(Double estimatedHours) {
       this.estimatedHours = estimatedHours;
       return this;
     }
 
-    public FileSubmitter setSendReceipt(boolean sendReceipt) {
+    public ProjectSubmitter setSendReceipt(boolean sendReceipt) {
       this.sendReceipt = sendReceipt;
       return this;
     }
@@ -207,7 +207,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
       student.setFirstName(studentFirstName);
       student.setLastName(studentLastName);
 
-      Submit submit = new Submit(() -> submitTime);
+      Submit submit = getSubmitProgram();
       submit.setProjectName(projectName);
       submit.setStudent(student);
       submit.setEstimatedHours(estimatedHours);
@@ -221,6 +221,10 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
       submit.setDebug(true);
       submit.setSendReceipt(sendReceipt);
       submit.submit(false);
+    }
+
+    protected Submit getSubmitProgram() {
+      return new Submit(() -> submitTime);
     }
 
   }
