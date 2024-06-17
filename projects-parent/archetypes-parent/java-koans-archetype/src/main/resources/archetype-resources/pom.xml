@@ -109,7 +109,7 @@
   </build>
   <repositories>
     <repository>
-      <id>mavens</id>
+      <id>maven-snapshots</id>
       <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
       <layout>default</layout>
       <releases>
