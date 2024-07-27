@@ -35,15 +35,15 @@ public class CanvasGradesCSVParserTest {
     List<GradesFromCanvas.CanvasAssignment> assignments = parser.getAssignments();
 
     GradesFromCanvas.CanvasAssignment endOfTermSurvey = getAssignment(assignments, "End of Term Survey");
-    assertThat(endOfTermSurvey.getId(), equalTo(812131));
+    assertThat(endOfTermSurvey.getId(), equalTo(897970));
     assertThat(endOfTermSurvey.getPointsPossible(), equalTo(3.00));
 
     GradesFromCanvas.CanvasAssignment midtermSurvey = getAssignment(assignments, "Midterm Survey");
-    assertThat(midtermSurvey.getId(), equalTo(812133));
+    assertThat(midtermSurvey.getId(), equalTo(897968));
     assertThat(midtermSurvey.getPointsPossible(), equalTo(3.00));
 
     GradesFromCanvas.CanvasAssignment project1POA = getAssignment(assignments, "Project 1 POA");
-    assertThat(project1POA.getId(), equalTo(812140));
+    assertThat(project1POA.getId(), equalTo(897974));
     assertThat(project1POA.getPointsPossible(), equalTo(1.00));
   }
 
@@ -59,12 +59,12 @@ public class CanvasGradesCSVParserTest {
     assertThat(students.get(0).getLastName(), equalTo("Last1"));
     assertThat(students.get(0).getLoginId(), equalTo("student1"));
     assertThat(students.get(0).getCanvasId(), equalTo("11111"));
-    assertThat(students.get(0).getSection(), equalTo("CS-410P-009: TOP: Cnt Sw Dev Java & Android"));
+    assertThat(students.get(0).getSection(), equalTo("CS-410P-021: TOP: Joy Coding Java & Android"));
     assertThat(students.get(1).getFirstName(), equalTo("First2"));
     assertThat(students.get(1).getLastName(), equalTo("Last2"));
     assertThat(students.get(1).getLoginId(), equalTo("student2"));
     assertThat(students.get(1).getCanvasId(), equalTo("22222"));
-    assertThat(students.get(1).getSection(), equalTo("CS-510-075: TOP: Cnt Sw Dev Java & Android"));
+    assertThat(students.get(1).getSection(), equalTo("CS-510-045: TOP: Joy Coding Java & Android"));
   }
 
   @Test
@@ -84,7 +84,7 @@ public class CanvasGradesCSVParserTest {
     assertThat(students.get(0).getScore(quiz1), equalTo(3.00));
     assertThat(students.get(1).getScore(quiz1), equalTo(2.85));
 
-    GradesFromCanvas.CanvasAssignment quiz2 = getAssignment(assignments, "Quiz 2: Java Language and OOP");
+    GradesFromCanvas.CanvasAssignment quiz2 = getAssignment(assignments, "Quiz 3: Unit Testing and Test-Driven Development");
     assertThat(students.get(0).getScore(quiz2), nullValue());
     assertThat(students.get(1).getScore(quiz2), equalTo(2.80));
   }

@@ -40,7 +40,8 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
     CSVReader csv = new CSVReader(reader);
     try {
       extractColumnNamesFromFirstLineOfCsv(csv.readNext());
-      extractPossiblePointsFromSecondLineOfCsv(csv.readNext());
+      csv.readNext();
+      extractPossiblePointsFromThirdLineOfCsv(csv.readNext());
 
       grades = new GradesFromCanvas();
 
@@ -68,15 +69,15 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
   private void addGradesFromLineOfCsv(GradesFromCanvas.CanvasStudent student, String[] studentLine) {
     this.columnToAssignment.forEach((column, assignment) -> {
       String score = studentLine[column];
-      if (!isEmptyString(score)) {
+      if (isInterestingScore(score)) {
         student.setScore(assignment, parseScore(score));
       }
     });
 
   }
 
-  private boolean isEmptyString(String score) {
-    return "".equals(score);
+  private boolean isInterestingScore(String score) {
+    return !"".equals(score) && !"N/A".equals(score);
   }
 
   private double parseScore(String score) {
@@ -102,7 +103,7 @@ public class CanvasGradesCSVParser implements CanvasGradesCSVColumnNames {
     }
   }
 
-  private void extractPossiblePointsFromSecondLineOfCsv(String[] secondLine) {
+  private void extractPossiblePointsFromThirdLineOfCsv(String[] secondLine) {
     this.columnToAssignment.forEach((column, assignment) -> {
       String possiblePointsText = secondLine[column];
       try {
