@@ -92,7 +92,7 @@
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
 
-      <grader.version>1.2.0</grader.version>
+      <grader.version>1.3.0</grader.version>
     </properties>
   <dependencies>
     <dependency>

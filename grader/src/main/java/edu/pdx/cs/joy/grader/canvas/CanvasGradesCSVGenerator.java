@@ -20,8 +20,20 @@ public class CanvasGradesCSVGenerator implements CanvasGradesCSVColumnNames {
   public void generate(GradeBook book) {
     CSVWriter csv = new CSVWriter(writer);
     writeHeaderRow(book, csv);
+    writeManualPostingRow(book, csv);
     writePossiblePointsRow(book, csv);
     writeStudentRows(book, csv);
+  }
+
+  private void writeManualPostingRow(GradeBook book, CSVWriter csv) {
+    List<String> line = new ArrayList<>();
+    line.add("");  // Student Name
+    line.add("");  // Login ID
+    line.add("");  // Section
+
+    addCellsForEachAssignment(book, line, assignment -> "");
+
+    csv.writeNext(line.toArray(new String[0]));
   }
 
   private void writePossiblePointsRow(GradeBook book, CSVWriter csv) {
