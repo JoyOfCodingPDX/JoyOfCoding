@@ -35,9 +35,11 @@ public class AirlineServlet extends HttpServlet {
 
       String word = getParameter( WORD_PARAMETER, request );
       if (word != null) {
+          log("GET " + word);
           writeDefinition(word, response);
 
       } else {
+          log("GET all dictionary entries");
           writeAllDictionaryEntries(response);
       }
   }
@@ -64,6 +66,8 @@ public class AirlineServlet extends HttpServlet {
           return;
       }
 
+      log("POST " + word + " -> " + definition);
+
       this.dictionary.put(word, definition);
 
       PrintWriter pw = response.getWriter();
@@ -81,6 +85,8 @@ public class AirlineServlet extends HttpServlet {
   @Override
   protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
       response.setContentType("text/plain");
+
+      log("DELETE all dictionary entries");
 
       this.dictionary.clear();
 
