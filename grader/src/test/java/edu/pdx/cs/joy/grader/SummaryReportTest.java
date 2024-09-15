@@ -245,4 +245,36 @@ public class SummaryReportTest {
     return new File(sectionDirectory, SummaryReport.getReportFileName(student.getId()));
   }
 
+  @Test
+  void missingGradeIsClearInReport(@TempDir File tempDirectory) throws IOException {
+    GradeBook gradeBook = new GradeBook("test");
+
+    String assignmentName = "Assignment";
+    Assignment assignment = gradeBook.addAssignment(new Assignment(assignmentName, 10.0));
+    Assignment assignment2 = gradeBook.addAssignment(new Assignment("Assignment 2", 10.0));
+
+    Student studentWithMissingGrade =
+      gradeBook.addStudent(new Student("studentWithMissingGrade"))
+        .setLastName("studentWithMissingGrade")
+        .setEnrolledSection(Student.Section.UNDERGRADUATE)
+        .setGrade(assignment, Grade.NO_GRADE)
+        .setGrade(assignment2, 10.0);
+
+    Student studentWithGrade =
+      gradeBook.addStudent(new Student("studentWithGrade"))
+        .setLastName("studentWithGrade")
+        .setEnrolledSection(Student.Section.UNDERGRADUATE)
+        .setGrade(assignment, 10.0)
+        .setGrade(assignment2, 10.0);
+
+    SummaryReport.dumpReports(gradeBook.getStudentIds(), gradeBook, tempDirectory, false);
+
+    File studentWithMissingGradeReportFile = getStudentReportFile(tempDirectory, studentWithMissingGrade);
+    assertThat(studentWithMissingGradeReportFile.exists(), equalTo(true));
+
+    String studentWithSomeNonZeroGradesReport = readTextFromFile(studentWithMissingGradeReportFile);
+    assertThat(studentWithSomeNonZeroGradesReport, not(containsString(String.valueOf(Grade.NO_GRADE))));
+    assertThat(studentWithSomeNonZeroGradesReport, containsString("NOT GRADED"));
+  }
+
 }
