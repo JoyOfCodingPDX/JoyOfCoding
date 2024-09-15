@@ -169,4 +169,9 @@ public class AirlineServlet extends HttpServlet {
   String getDefinition(String word) {
       return this.dictionary.get(word);
   }
+
+  @Override
+  public void log(String msg) {
+    System.out.println(msg);
+  }
 }
