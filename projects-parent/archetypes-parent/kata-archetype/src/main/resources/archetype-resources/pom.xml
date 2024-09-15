@@ -4,7 +4,7 @@
   <parent>
     <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId> <!-- For the InvokeMainTest class -->
-      <version>2.1.1</version>
+      <version>2.1.1-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
