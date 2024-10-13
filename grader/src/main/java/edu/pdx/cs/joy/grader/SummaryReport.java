@@ -82,9 +82,6 @@ public class SummaryReport {
         line.append(" (OPTIONAL)");
       }
       line.append(": ");
-      line.append(format.format(score));
-      line.append("/");
-      line.append(format.format(assignment.getPoints()));
 
 
       // Skip incompletes and no grades
@@ -100,7 +97,12 @@ public class SummaryReport {
         line.append(" (INCOMPLETE)");
 
       } else if (grade.isNotGraded()) {
-        line.append( " (NOT GRADED)");
+        line.append(" (NOT GRADED)");
+
+      } else {
+        line.append(format.format(score));
+        line.append("/");
+        line.append(format.format(assignment.getPoints()));
       }
 
       pw.println(line);
