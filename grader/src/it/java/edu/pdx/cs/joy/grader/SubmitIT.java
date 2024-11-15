@@ -42,8 +42,8 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
   private final String studentName = studentFirstName + " " + studentLastName;
   protected final Collection<File> filesToSubmit = new ArrayList<>();
   protected final String studentLoginId = "student";
-  private final String projectName = "Project";
-  private final String graderEmail = TA_EMAIL.getAddress();
+  protected final String projectName = "Project";
+  protected final String graderEmail = TA_EMAIL.getAddress();
 
   @BeforeEach
   public void createFilesToSubmit() throws IOException {
@@ -151,7 +151,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     });
   }
 
-  private List<String> getZipFileEntryNames(File zipFile) throws IOException {
+  protected List<String> getZipFileEntryNames(File zipFile) throws IOException {
     List<String> entryNames = new ArrayList<>();
     FileInputStream stream = new FileInputStream(zipFile);
     try (
@@ -166,7 +166,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     return entryNames;
   }
 
-  private File findNewestZipFileInTempDirectory() {
+  protected File findNewestZipFileInTempDirectory() {
     File[] zipFiles = this.tempDirectory.listFiles((dir, name) -> name.endsWith(".zip"));
     if (zipFiles == null) {
       return null;
@@ -201,7 +201,7 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
       return this;
     }
 
-    private void submitFiles() throws IOException, MessagingException {
+    protected void submitFiles() throws IOException, MessagingException {
       Student student = new Student(studentLoginId);
       student.setEmail(studentEmail);
       student.setFirstName(studentFirstName);
