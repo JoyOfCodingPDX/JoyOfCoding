@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -82,5 +83,13 @@ public class SubmitAndroidProjectIT extends SubmitIT {
 
     assertThat(entryNames, not(hasItem(".gradle")));
     assertThat(entryNames, not(hasItem(".gradle/config.properties")));
+  }
+
+  @Override
+  protected Collection<File> getExpectedFilesToSubmit() {
+    Collection<File> allFiles = super.getExpectedFilesToSubmit();
+    return allFiles.stream()
+      .filter(file -> !file.getPath().contains(".gradle"))
+      .toList();
   }
 }

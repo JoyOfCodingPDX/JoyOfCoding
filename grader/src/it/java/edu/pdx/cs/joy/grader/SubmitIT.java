@@ -145,10 +145,14 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
     List<String> entryNames = getZipFileEntryNames(zipFile);
     assertThat(entryNames, not(empty()));
 
-    filesToSubmit.forEach(file -> {
+    getExpectedFilesToSubmit().forEach(file -> {
       String filePath = file.getPath().substring(this.tempDirectory.getPath().length() + 1);
       assertThat(entryNames, hasItem(filePath));
     });
+  }
+
+  protected Collection<File> getExpectedFilesToSubmit() {
+    return filesToSubmit;
   }
 
   protected List<String> getZipFileEntryNames(File zipFile) throws IOException {
