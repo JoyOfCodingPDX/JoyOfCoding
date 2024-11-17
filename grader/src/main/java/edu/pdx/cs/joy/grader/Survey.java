@@ -40,6 +40,11 @@ public class Survey extends EmailSender {
     this.gitCheckoutDir = gitCheckoutDir;
   }
 
+  public static boolean hasPdxDotEduEmail(Student student) {
+    String email = student.getEmail();
+    return email != null && email.endsWith("@pdx.edu");
+  }
+
   /**
    * Returns a textual summary of a <code>Student</code>
    */
@@ -148,7 +153,11 @@ public class Survey extends EmailSender {
     setValueIfNotEmpty(lastName, student::setLastName);
     setValueIfNotEmpty(nickName, student::setNickName);
 
-    askQuestionAndSetValue("What is your email address (doesn't have to be PSU)?", student::setEmail);
+    askQuestionAndSetValue("What is your email address (must be @pdx.edu)?", student::setEmail);
+    if (!hasPdxDotEduEmail(student)) {
+      printErrorMessageAndExit("** Your email address must be @pdx.edu");
+    }
+
     askQuestionAndSetValue("What is your major?", student::setMajor);
 
     askEnrolledSectionQuestion(student);
