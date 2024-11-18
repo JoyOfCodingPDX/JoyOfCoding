@@ -8,12 +8,10 @@ import java.net.URL;
 
 public abstract class ProjectXmlHelper implements ErrorHandler, EntityResolver {
   private final String publicId;
-  private final String systemId;
   private final String dtdFileName;
 
-  protected ProjectXmlHelper(String publicId, String systemId, String dtdFileName) {
+  protected ProjectXmlHelper(String publicId, String dtdFileName) {
     this.publicId = publicId;
-    this.systemId = systemId;
     this.dtdFileName = dtdFileName;
   }
 
@@ -34,7 +32,7 @@ public abstract class ProjectXmlHelper implements ErrorHandler, EntityResolver {
 
   @Override
   public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-    if (this.publicId.equals(publicId) || this.systemId.equals(systemId)) {
+    if (this.publicId.equals(publicId)) {
       // We're resolving the external entity for the DTD
       // Check to see if it's in the jar file.  This way we don't
       // need to go all the way to the website to find the DTD.
@@ -45,14 +43,6 @@ public abstract class ProjectXmlHelper implements ErrorHandler, EntityResolver {
       }
     }
 
-    // Try to access the DTD using the URL
-    try {
-      URL url = new URL(systemId);
-      InputStream stream = url.openStream();
-      return new InputSource(stream);
-
-    } catch (Exception ex) {
-      return null;
-    }
+    return null;
   }
 }

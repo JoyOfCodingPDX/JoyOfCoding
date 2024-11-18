@@ -2,7 +2,7 @@
 
 <!-- A sample airline XML file -->
 <!DOCTYPE airline
-          SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
+        PUBLIC "-//Joy of Coding at PSU//DTD Airline//EN" "airline.dtd">
 
 <airline>
   <name>Example Airlines</name>
