@@ -2,7 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.davidwhitlock.joy.original</groupId>
+  <parent>
+    <artifactId>archetypes-parent</artifactId>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>2.2.0-SNAPSHOT</version>
+  </parent>
   <artifactId>airline-archetype</artifactId>
   <version>2.2.0-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
@@ -14,7 +18,7 @@
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
         <artifactId>archetype-packaging</artifactId>
-        <version>3.2.1</version>
+        <version>${maven-archetype-plugin.version}</version>
       </extension>
     </extensions>
 
@@ -22,58 +26,24 @@
       <plugins>
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>${maven-archetype-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
-  <description>An Airline application for The Joy of Coding at Portland State University</description>
-
-  <url>http://www.cs.pdx.edu/~whitlock</url>
-
-  <developers>
-    <developer>
-      <id>YOU</id>
-      <name>Your name here</name>
-      <email>you@youremail.com</email>
-      <url>http://www.cs.pdx.edu/~YOU</url>
-      <organization>PSU Department of Computer Science</organization>
-      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
-      <roles>
-        <role>Student</role>
-      </roles>
-      <timezone>-7</timezone>
-    </developer>
-  </developers>
-
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/projects-parent/originals-parent/airline</connection>
-    <developerConnection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/projects-parent/originals-parent/airline</developerConnection>
-    <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/tree/main/projects-parent/originals-parent/airline</url>
-  </scm>
-
-  <distributionManagement>
+  <repositories>
     <repository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>ossrh</id>
+      <id>maven-snapshots</id>
       <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>gh-pages</id>
-      <name>GitHub Pages</name>
-      <url>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/projects-parent/originals-parent</url>
-    </site>
-  </distributionManagement>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
 </project>
