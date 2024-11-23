@@ -40,5 +40,4 @@
 <!ATTLIST time
           hour       CDATA  #REQUIRED
           minute     CDATA  #REQUIRED
-          time-zone  CDATA  #REQUIRED
 >
