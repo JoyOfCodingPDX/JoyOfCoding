@@ -1,0 +1,8 @@
+keystore "file:/u/whitlock/public_html/src/edu/pdx/cs/joy/examples/yourstore";
+
+grant signedBy "dave",  
+  codeBase "file:/u/whitlock/public_html/src/edu/pdx/cs/joy/examples/dave-signed.jar"
+{
+  permission java.util.PropertyPermission "user.home", "read";
+  permission java.io.FilePermission "${user.home}${/}*", "write, read";
+};

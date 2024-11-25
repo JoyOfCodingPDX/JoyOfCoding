@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
+import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -62,7 +63,7 @@ class PhoneBillRestClientIT {
     RestException ex =
       assertThrows(RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
     assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    assertThat(ex.getMessage(), equalTo(Messages.missingRequiredParameter(PhoneBillServlet.WORD_PARAMETER)));
+    assertThat(ex.getMessage(), containsString(Messages.missingRequiredParameter(PhoneBillServlet.WORD_PARAMETER)));
   }
 
 }

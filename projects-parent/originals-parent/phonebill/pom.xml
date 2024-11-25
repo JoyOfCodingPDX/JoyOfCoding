@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>originals-parent</artifactId>
-    <groupId>io.github.davidwhitlock.cs410J</groupId>
-    <version>2023.1.0-SNAPSHOT</version>
+    <groupId>io.github.davidwhitlock.joy</groupId>
+    <version>2.1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.davidwhitlock.cs410J.original</groupId>
+  <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>phonebill</artifactId>
   <packaging>jar</packaging>
-  <version>2023.1.0-SNAPSHOT</version>
-  <name>CS410J Phone Bill Project</name>
-  <description>A Phone Bill application for CS410J at Portland State University</description>
+  <version>2.1.1</version>
+  <name>Phone Bill Project</name>
+  <description>A Phone Bill application for The Joy of Coding at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
   <url>https://www.cs.pdx.edu/~whitlock</url>
   <developers>
@@ -36,14 +36,14 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2023.1.0-SNAPSHOT</version>
+      <version>2.1.1</version>
     </dependency>
     <dependency>
-      <groupId>io.github.davidwhitlock.cs410J</groupId>
+      <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>2023.1.0-SNAPSHOT</version>
+      <version>2.1.1</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.phonebill.Project1</mainClass>
+              <mainClass>edu.pdx.cs.joy.phonebill.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -132,9 +132,9 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc-plugin.version}</version>
             <configuration>
-              <doclet>edu.pdx.cs410J.grader.APIDocumentationDoclet</doclet>
+              <doclet>edu.pdx.cs.joy.grader.APIDocumentationDoclet</doclet>
               <docletArtifact>
-                <groupId>io.github.davidwhitlock.cs410J</groupId>
+                <groupId>io.github.davidwhitlock.joy</groupId>
                 <artifactId>grader</artifactId>
                 <version>${grader.version}</version>
               </docletArtifact>

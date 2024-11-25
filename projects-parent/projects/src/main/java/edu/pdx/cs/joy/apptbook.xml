@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- A sample appointment book XML file -->
+
+<!DOCTYPE apptbook
+          SYSTEM 'http://www.cs.pdx.edu/~whitlock/dtds/apptbook.dtd'>
+
+<apptbook>
+  <owner>Dave</owner>
+  <appt>
+    <begin>
+      <date day="25" month="9" year="2000"/>
+      <time hour="17" minute="0" time-zone="America/Los_Angeles"/>
+    </begin>
+    <end>
+      <date day="25" month="9" year="2000"/>
+      <time hour="17" minute="45" time-zone="America/Los_Angeles"/>
+    </end>
+    <description>Office hours at pizza place</description>
+  </appt>
+  <appt>
+    <begin>
+      <date day="25" month="9" year="2000"/>
+      <time hour="18" minute="0" time-zone="America/Los_Angeles"/>
+    </begin>
+    <end>
+      <date day="25" month="9" year="2000"/>
+      <time hour="21" minute="30" time-zone="America/Los_Angeles"/>
+    </end>
+    <description>Keeping students awake in The Joy of Coding</description>
+  </appt>
+</apptbook>

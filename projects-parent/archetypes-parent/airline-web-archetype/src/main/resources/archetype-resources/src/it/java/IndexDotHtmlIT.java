@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
-import edu.pdx.cs410J.web.HttpRequestHelper.Response;
+import edu.pdx.cs.joy.web.HttpRequestHelper;
+import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

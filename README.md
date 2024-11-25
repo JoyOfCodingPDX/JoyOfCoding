@@ -1,8 +1,8 @@
-Advanced Programming with Java at Portland State University
+The Joy of Coding with Java and Android at Portland State University
 =================
 
-Source code for the [Advanced Programming with Java](http://web.cecs.pdx.edu/~whitlock/) course at Portland State University.
+Source code for [The Joy of Coding with Java and Android](http://web.cecs.pdx.edu/~whitlock/) course at Portland State University.
 
-If you're taking this course, check out the [Getting Started](https://github.com/DavidWhitlock/PortlandStateJavaGettingStarted) repository! 
+If you're taking this course, check out the [Getting Started](https://github.com/JoyOfCodingPDX/GettingStarted) repository! 
 
-[![Java CI with Maven](https://github.com/DavidWhitlock/PortlandStateJava/actions/workflows/maven.yml/badge.svg)](https://github.com/DavidWhitlock/PortlandStateJava/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/JoyOfCodingPDX/JoyOfCoding/actions/workflows/maven.yml/badge.svg)](https://github.com/JoyOfCodingPDX/JoyOfCoding/actions/workflows/maven.yml)

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- DTD for describing an appointment book and the appointments it
+     holds -->
+
+<!-- An appointment book has an owner and some number of appointments -->
+<!ELEMENT apptbook (owner, appt*)>
+
+<!ELEMENT owner (#PCDATA)>
+
+<!-- An appointment has a begin date/time, end date/time, and description -->
+<!ELEMENT appt (begin, end, description)>
+
+<!ELEMENT begin (date, time)>
+<!ELEMENT end (date, time)>
+<!ELEMENT description (#PCDATA)>
+
+<!-- A date has a month, day, and a year specified by Calendar.DATE,
+     Calendar.MONTH, and Calendar.YEAR, respectfully. -->
+<!ELEMENT date EMPTY>
+<!ATTLIST date
+          day    CDATA  #REQUIRED
+          month  CDATA  #REQUIRED
+          year   CDATA  #REQUIRED
+>
+
+<!-- A time has an hour, a minute, and at time zone.
+
+     Hours are specified by ChronoField.HOUR_OF_DAY.
+
+     Minutes are specified by ChronoField.MINUTE_OF_HOUR.
+
+     The time zone is the name of the time zone such as "America/Los_Angeles"
+
+-->
+<!ELEMENT time EMPTY>
+<!ATTLIST time
+          hour       CDATA  #REQUIRED
+          minute     CDATA  #REQUIRED
+          time-zone  CDATA  #REQUIRED
+>
+

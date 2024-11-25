@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!-- A DTD for a grade book, students, and their grades -->
+
+<!--
+All Grade Book XML data must include a DOCTYPE of the following form:
+
+  <!DOCTYPE gradebook PUBLIC
+       "-//Joy of Coding at PSU//DTD Grade Book//EN"
+       "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+
+-->
+
+<!-- A grade book consists of the name of the class, the assignments
+in the class, the ids of the students in the class, and an optional
+number of late days allowed in the class -->
+<!ELEMENT minimum-score (#PCDATA)>
+<!ELEMENT maximum-score (#PCDATA)>
+<!ELEMENT letter-grade-range EMPTY>
+<!ATTLIST letter-grade-range
+          letter-grade   CDATA  #REQUIRED
+          minimum-score  CDATA  #REQUIRED
+          maximum-score  CDATA  #REQUIRED
+>
+<!ELEMENT letter-grade-ranges (letter-grade-range+)>
+<!ATTLIST letter-grade-ranges
+          for-section (undergraduate | graduate) #IMPLIED
+>
+<!ELEMENT section-name (#PCDATA)>
+<!ATTLIST section-name
+          for-section (undergraduate | graduate) #IMPLIED
+>
+<!ELEMENT gradebook (name, assignments, letter-grade-ranges*, section-name*, students, lateDays?)>
+<!ATTLIST gradebook
+          crn CDATA #IMPLIED
+>
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT assignments (assignment*)>
+
+<!ELEMENT students (id*)>
+
+<!ELEMENT lateDays (#PCDATA)>
+
+<!-- An assignment has a name, description, a required number of
+points it is worth, a type, a due date, and some optional notes -->
+<!ELEMENT assignment (name, description?, points, canvas-id?, due-date?, notes*)>
+<!ATTLIST assignment
+  type         (PROJECT | QUIZ | OTHER | POA | OPTIONAL)  #REQUIRED
+  project-type (APP_CLASSES | TEXT_FILE | PRETTY_PRINT | KOANS | XML | REST | ANDROID)  #IMPLIED
+>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT points (#PCDATA)>
+<!ELEMENT due-date (#PCDATA)>
+
+<!ELEMENT notes (note*)>
+<!ELEMENT note (#PCDATA)>
+
+<!-- A student has an id, first and last name, a nick name, email
+address, social security number, a major, some grades, some late
+assignments, and some notes -->
+<!ELEMENT student (id, firstName?, lastName?, nickName?, email?, ssn?,
+                   major?, canvas-id?, github-user-name?, d2l-id?, letter-grade?, grades?, late?, resubmitted?, notes?)>
+<!ATTLIST student
+          enrolled-section (undergraduate | graduate) #IMPLIED
+>
+
+<!ELEMENT id (#PCDATA)>
+
+<!ELEMENT firstName (#PCDATA)>
+<!ELEMENT lastName (#PCDATA)>
+<!ELEMENT nickName (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT ssn (#PCDATA)>  <!-- xxx-xx-xxxx -->
+<!ELEMENT major (#PCDATA)>
+<!ELEMENT canvas-id (#PCDATA)>
+<!ELEMENT github-user-name (#PCDATA)>
+<!ELEMENT d2l-id (#PCDATA)>
+<!ELEMENT letter-grade (#PCDATA)>
+<!ELEMENT grades (grade*)>
+<!ELEMENT late (name*)>
+<!ELEMENT resubmitted (name*)>
+
+<!-- A grade has an assignment name, a score, submissions, and some notes -->
+<!ELEMENT submission (#PCDATA)>
+<!ELEMENT submissions (submission | submission-info)*>
+<!ELEMENT grade (name, score, submissions?, notes?)>
+<!ATTLIST grade
+  type (INCOMPLETE | NO_GRADE) #IMPLIED
+>
+
+<!ELEMENT submission-info (date, estimated-hours?)>
+<!ATTLIST submission-info
+          late (true | false) "false"
+>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT estimated-hours (#PCDATA)>
+
+<!ELEMENT score (#PCDATA)>

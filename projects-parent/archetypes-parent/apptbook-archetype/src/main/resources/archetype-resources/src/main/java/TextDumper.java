@@ -3,11 +3,9 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import edu.pdx.cs410J.AppointmentBookDumper;
+import edu.pdx.cs.joy.AppointmentBookDumper;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 
 /**

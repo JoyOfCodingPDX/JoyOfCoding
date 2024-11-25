@@ -5,7 +5,7 @@ if (!buildLog.isFile()) {
 
 String logText = buildLog.text
 
-def expectedJavaDoc = "The main class for the CS410J Phone Bill Project"
+def expectedJavaDoc = "The main class for the Phone Bill Project"
 if (!logText.contains(expectedJavaDoc)) {
   throw new IllegalStateException("Didn't find expected JavaDoc: " + expectedJavaDoc)
 }
