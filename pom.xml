@@ -68,7 +68,7 @@
         <wagon-ssh.version>3.5.3</wagon-ssh.version>
 
         <junit.version>5.11.3</junit.version>
-        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest.version>3.0</hamcrest.version>
         <mockito.version>5.14.2</mockito.version>
         <surefire.version>3.2.5</surefire.version>
       <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
