@@ -57,7 +57,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <guava.version>33.1.1-jre</guava.version>
+        <guava.version>33.3.1-jre</guava.version>
         <guice.version>5.1.0</guice.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
