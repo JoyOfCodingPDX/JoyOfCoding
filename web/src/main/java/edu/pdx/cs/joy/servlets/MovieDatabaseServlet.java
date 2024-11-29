@@ -4,10 +4,10 @@ import edu.pdx.cs.joy.rmi.Movie;
 import edu.pdx.cs.joy.rmi.MovieDatabase;
 import edu.pdx.cs.joy.rmi.MovieDatabaseImpl;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,8 +16,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * A servlet that provides REST access to a movie database

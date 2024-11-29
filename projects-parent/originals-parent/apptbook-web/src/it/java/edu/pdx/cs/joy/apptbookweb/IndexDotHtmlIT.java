@@ -1,6 +1,7 @@
 package edu.pdx.cs.joy.apptbookweb;
 
 import edu.pdx.cs.joy.web.HttpRequestHelper;
+import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,17 +17,17 @@ class IndexDotHtmlIT {
 
   @Test
   void indexDotHtmlExists() throws IOException {
-    HttpRequestHelper.Response indexDotHtml = fetchIndexDotHtml();
+    Response indexDotHtml = fetchIndexDotHtml();
     assertThat(indexDotHtml.getHttpStatusCode(), equalTo(200));
   }
 
   @Test
   void indexDotHtmlHasReasonableContent() throws IOException {
-    HttpRequestHelper.Response indexDotHtml = fetchIndexDotHtml();
+    Response indexDotHtml = fetchIndexDotHtml();
     assertThat(indexDotHtml.getContent(), containsString("<form"));
   }
 
-  private HttpRequestHelper.Response fetchIndexDotHtml() throws IOException {
+  private Response fetchIndexDotHtml() throws IOException {
     int port = Integer.parseInt(PORT);
     return new IndexDotHtmlHelper(HOSTNAME, port).getIndexDotHtml();
   }
@@ -39,7 +40,7 @@ class IndexDotHtmlIT {
       this.http = new HttpRequestHelper(String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, "index.html" ));
     }
 
-    HttpRequestHelper.Response getIndexDotHtml() throws IOException {
+    Response getIndexDotHtml() throws IOException {
       return http.get(Map.of());
     }
   }

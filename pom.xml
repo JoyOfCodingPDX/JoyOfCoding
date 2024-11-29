@@ -58,7 +58,8 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <guava.version>33.3.1-jre</guava.version>
-        <guice.version>5.1.0</guice.version>
+        <guice.version>7.0.0</guice.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -74,7 +75,7 @@
       <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
       <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
       <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-      <jetty-maven-plugin.version>10.0.24</jetty-maven-plugin.version>
+      <jetty-maven-plugin.version>11.0.24</jetty-maven-plugin.version>
       <spotbugs-maven-plugin.version>4.8.6.6</spotbugs-maven-plugin.version>
       <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
       <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>

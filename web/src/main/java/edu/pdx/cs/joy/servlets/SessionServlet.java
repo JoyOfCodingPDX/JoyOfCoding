@@ -1,7 +1,7 @@
 package edu.pdx.cs.joy.servlets;
 
-import javax.servlet.http.*;
-import javax.servlet.ServletException;
+import jakarta.servlet.http.*;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;

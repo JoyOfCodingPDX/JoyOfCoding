@@ -2,8 +2,8 @@ package edu.pdx.cs.joy.servlets;
 
 import java.io.*;
 import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 /**
  * A servlet that returns all sorts of information available from the

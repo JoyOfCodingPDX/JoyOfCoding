@@ -1,7 +1,7 @@
 package edu.pdx.cs.joy.phonebillweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -57,8 +57,7 @@ class PhoneBillRestClientIT {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String emptyString = "";
 
-    HttpRequestHelper.RestException ex =
-      assertThrows(HttpRequestHelper.RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
+    RestException ex = assertThrows(RestException.class, () -> client.addDictionaryEntry(emptyString, emptyString));
     assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
     assertThat(ex.getMessage(), containsString(Messages.missingRequiredParameter(PhoneBillServlet.WORD_PARAMETER)));
   }
