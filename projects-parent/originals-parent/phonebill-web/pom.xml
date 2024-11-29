@@ -39,7 +39,7 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.1.0</version>
+      <version>${jakarta.servlet-api.version}</version>
     </dependency>
     <dependency>
       <groupId>jakarta.platform</groupId>
