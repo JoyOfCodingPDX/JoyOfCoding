@@ -1,8 +1,10 @@
 package edu.pdx.cs.joy.phonebillweb;
 
 import com.google.common.annotations.VisibleForTesting;
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper;
+import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -42,7 +44,7 @@ public class PhoneBillRestClient {
    * Returns all dictionary entries from the server
    */
   public Map<String, String> getAllDictionaryEntries() throws IOException, ParserException {
-    HttpRequestHelper.Response response = http.get(Map.of());
+    Response response = http.get(Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
 
     TextParser parser = new TextParser(new StringReader(response.getContent()));
@@ -53,7 +55,7 @@ public class PhoneBillRestClient {
    * Returns the definition for the given word
    */
   public String getDefinition(String word) throws IOException, ParserException {
-    HttpRequestHelper.Response response = http.get(Map.of(PhoneBillServlet.WORD_PARAMETER, word));
+    Response response = http.get(Map.of(PhoneBillServlet.WORD_PARAMETER, word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -62,20 +64,20 @@ public class PhoneBillRestClient {
   }
 
     public void addDictionaryEntry(String word, String definition) throws IOException {
-      HttpRequestHelper.Response response = http.post(Map.of(PhoneBillServlet.WORD_PARAMETER, word, PhoneBillServlet.DEFINITION_PARAMETER, definition));
+      Response response = http.post(Map.of(PhoneBillServlet.WORD_PARAMETER, word, PhoneBillServlet.DEFINITION_PARAMETER, definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
   public void removeAllDictionaryEntries() throws IOException {
-      HttpRequestHelper.Response response = http.delete(Map.of());
+      Response response = http.delete(Map.of());
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
-    private void throwExceptionIfNotOkayHttpStatus(HttpRequestHelper.Response response) {
+    private void throwExceptionIfNotOkayHttpStatus(Response response) {
       int code = response.getHttpStatusCode();
       if (code != HTTP_OK) {
         String message = response.getContent();
-        throw new HttpRequestHelper.RestException(code, message);
+        throw new RestException(code, message);
       }
     }
 
