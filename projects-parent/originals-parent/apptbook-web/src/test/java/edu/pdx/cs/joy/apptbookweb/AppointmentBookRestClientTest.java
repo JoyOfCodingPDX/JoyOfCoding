@@ -1,7 +1,7 @@
 package edu.pdx.cs.joy.apptbookweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
