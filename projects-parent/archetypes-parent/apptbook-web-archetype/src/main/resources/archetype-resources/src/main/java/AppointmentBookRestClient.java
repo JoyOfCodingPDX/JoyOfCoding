@@ -4,15 +4,15 @@
 package ${package};
 
 import com.google.common.annotations.VisibleForTesting;
-import edu.pdx.cs.joy.ParserException;
 import edu.pdx.cs.joy.web.HttpRequestHelper;
+import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
-import static edu.pdx.cs.joy.web.HttpRequestHelper.Response;
-import static edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
