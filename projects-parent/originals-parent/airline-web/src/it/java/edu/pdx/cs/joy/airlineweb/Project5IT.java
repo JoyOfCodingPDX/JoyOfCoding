@@ -1,8 +1,8 @@
 package edu.pdx.cs.joy.airlineweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.InvokeMainTestCase;
 import edu.pdx.cs.joy.UncaughtExceptionInMain;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -54,7 +54,7 @@ class Project5IT extends InvokeMainTestCase {
             fail("Should have thrown a RestException");
 
         } catch (UncaughtExceptionInMain ex) {
-            HttpRequestHelper.RestException cause = (HttpRequestHelper.RestException) ex.getCause();
+            RestException cause = (RestException) ex.getCause();
             assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
         }
     }
