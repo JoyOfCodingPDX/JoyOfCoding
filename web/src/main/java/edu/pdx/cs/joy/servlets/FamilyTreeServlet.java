@@ -3,16 +3,15 @@ package edu.pdx.cs.joy.servlets;
 import edu.pdx.cs.joy.family.FamilyTree;
 import edu.pdx.cs.joy.family.Person;
 import edu.pdx.cs.joy.family.XmlDumper;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * A servlet that provides access to a {@link FamilyTree} via REST
@@ -24,15 +23,18 @@ public class FamilyTreeServlet extends HttpServlet {
 
   private int nextPersonId = 1;
 
-  public void init(ServletConfig servletConfig) throws ServletException {
+  @Override
+  public void init(ServletConfig servletConfig) {
     tree = new FamilyTree();
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     createPerson(request, response);
   }
 
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String uri = request.getRequestURI();
     String lastPart = uri.substring(uri.lastIndexOf('/') + 1, uri.length());
 

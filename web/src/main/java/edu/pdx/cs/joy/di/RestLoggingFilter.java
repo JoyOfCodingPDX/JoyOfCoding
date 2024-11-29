@@ -2,9 +2,9 @@ package edu.pdx.cs.joy.di;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -24,7 +24,8 @@ public class RestLoggingFilter implements Filter
       this.cards = cards;        
     }
 
-    public void init( FilterConfig config ) throws ServletException
+    @Override
+    public void init(FilterConfig config ) throws ServletException
     {
       // Initialize some credit cards for testing purposes.  This probably isn't the best place to do this. 
       for (int i = 1; i <= 10; i++) {
@@ -33,7 +34,8 @@ public class RestLoggingFilter implements Filter
       }
     }
 
-    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain )
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain )
         throws IOException, ServletException
     {
         long begin = System.currentTimeMillis();
@@ -56,6 +58,7 @@ public class RestLoggingFilter implements Filter
 
     }
 
+    @Override
     public void destroy()
     {
 

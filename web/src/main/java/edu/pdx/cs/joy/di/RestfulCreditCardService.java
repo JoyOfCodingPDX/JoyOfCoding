@@ -2,10 +2,8 @@ package edu.pdx.cs.joy.di;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import jakarta.ws.rs.*;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import java.util.Map;
 
 /**
