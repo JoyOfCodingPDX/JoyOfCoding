@@ -5,11 +5,12 @@ package intermediate;
 
 import com.sandwich.koan.Koan;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import static com.sandwich.koan.constant.KoanConstants.__;
 import static com.sandwich.util.Assert.assertEquals;
@@ -17,7 +18,7 @@ import static com.sandwich.util.Assert.assertEquals;
 
 public class AboutDates {
 
-    private Date date = new Date(100010001000L);
+    private LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(100010001000L), ZoneId.systemDefault());
 
     @Koan
     public void dateToString() {
@@ -26,50 +27,39 @@ public class AboutDates {
 
     @Koan
     public void changingDateValue() {
-        int oneHourInMiliseconds = 3600000;
-        date.setTime(date.getTime() + oneHourInMiliseconds);
+        date = date.plusHours(1);
         assertEquals(date.toString(), __);
     }
 
     @Koan
-    public void usingCalendarToChangeDates() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.MONTH, 1);
-        assertEquals(cal.getTime().toString(), __);
+    public void usingPlusToChangeDatesDoesntWrapOtherFields() {
+        date = date.plusMonths(12);
+        assertEquals(date.toString(), __);
     }
 
     @Koan
-    public void usingRollToChangeDatesDoesntWrapOtherFields() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.roll(Calendar.MONTH, 12);
-        assertEquals(cal.getTime().toString(), __);
-    }
-
-    @Koan
-    public void usingDateFormatToFormatDate() {
-        String formattedDate = DateFormat.getDateInstance().format(date);
+    public void usingDateTimeFormatterToFormatDate() {
+        String formattedDate = DateTimeFormatter.ISO_DATE.format(date);
         assertEquals(formattedDate, __);
     }
 
     @Koan
-    public void usingDateFormatToFormatDateShort() {
-        String formattedDate = DateFormat.getDateInstance(DateFormat.SHORT).format(date);
+    public void usingDateTimeFormatterToFormatDateShort() {
+        String formattedDate = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(date);
         assertEquals(formattedDate, __);
     }
 
     @Koan
-    public void usingDateFormatToFormatDateFull() {
-        String formattedDate = DateFormat.getDateInstance(DateFormat.FULL).format(date);
-        // There is also DateFormat.MEDIUM and DateFormat.LONG... you get the idea ;-)
+    public void usingDateTimeFormatterToFormatDateFull() {
+        String formattedDate = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(date);
+        // There is also FormatStyle.LONG and FormatStyle.FULL... you get the idea ;-)
         assertEquals(formattedDate, __);
     }
 
     @Koan
-    public void usingDateFormatToParseDates() throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-        Date date2 = dateFormat.parse("01-01-2000");
+    public void usingDateTimeFormatterToParseDates() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        LocalDate date2 = LocalDate.parse("01-01-2000", formatter);
         assertEquals(date2.toString(), __);
         // What happened to the time? What do you need to change to keep the time as well?
     }
