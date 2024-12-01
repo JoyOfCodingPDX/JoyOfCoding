@@ -65,6 +65,7 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
+      <directory></directory>
       <includes>
         <include>LICENSE</include>
         <include>mvnw.cmd</include>
