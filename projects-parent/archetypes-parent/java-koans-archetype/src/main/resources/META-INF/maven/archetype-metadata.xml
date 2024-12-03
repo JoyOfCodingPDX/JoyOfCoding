@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="java-koans"
-    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+<archetype-descriptor xsi:schemaLocation="https://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0 https://maven.apache.org/xsd/archetype-descriptor-1.1.0.xsd" name="java-koans"
+    xmlns="https://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <fileSets>
     <fileSet filtered="true" encoding="UTF-8">
@@ -12,7 +12,6 @@
     <fileSet filtered="true" encoding="UTF-8">
       <directory>.mvn/wrapper</directory>
       <includes>
-        <include>**/*.java</include>
         <include>**/*.properties</include>
       </includes>
     </fileSet>
@@ -54,12 +53,6 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
-      <directory>.mvn/wrapper</directory>
-      <includes>
-        <include>**/*.jar</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8">
       <directory>app/lib</directory>
       <includes>
         <include>**/*.jar</include>
@@ -76,8 +69,6 @@
       <includes>
         <include>LICENSE</include>
         <include>mvnw.cmd</include>
-        <include>run.bat</include>
-        <include>run.sh</include>
         <include>mvnw</include>
       </includes>
     </fileSet>

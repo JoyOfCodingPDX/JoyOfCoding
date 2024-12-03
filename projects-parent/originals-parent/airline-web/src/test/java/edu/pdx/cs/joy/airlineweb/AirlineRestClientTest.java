@@ -1,7 +1,7 @@
 package edu.pdx.cs.joy.airlineweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,7 +11,8 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * A unit test for the REST client that demonstrates using mocks and

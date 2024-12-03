@@ -4,7 +4,6 @@
 package ${package};
 
 import edu.pdx.cs.joy.ParserException;
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.PrintStream;

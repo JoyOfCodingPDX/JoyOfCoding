@@ -5,9 +5,9 @@ package ${package};
 
 import com.google.common.annotations.VisibleForTesting;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -39,9 +39,11 @@ public class AppointmentBookServlet extends HttpServlet
 
         String word = getParameter( WORD_PARAMETER, request );
         if (word != null) {
+            log("GET " + word);
             writeDefinition(word, response);
 
         } else {
+            log("GET all dictionary entries");
             writeAllDictionaryEntries(response);
         }
     }
@@ -68,6 +70,8 @@ public class AppointmentBookServlet extends HttpServlet
             return;
         }
 
+        log("POST " + word + " -> " + definition);
+
         this.dictionary.put(word, definition);
 
         PrintWriter pw = response.getWriter();
@@ -85,6 +89,8 @@ public class AppointmentBookServlet extends HttpServlet
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
+
+        log("DELETE all dictionary entries");
 
         this.dictionary.clear();
 
@@ -163,5 +169,10 @@ public class AppointmentBookServlet extends HttpServlet
     @VisibleForTesting
     String getDefinition(String word) {
         return this.dictionary.get(word);
+    }
+
+    @Override
+    public void log(String msg) {
+      System.out.println(msg);
     }
 }

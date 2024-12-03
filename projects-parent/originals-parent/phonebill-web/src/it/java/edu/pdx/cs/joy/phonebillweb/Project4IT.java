@@ -1,8 +1,8 @@
 package edu.pdx.cs.joy.phonebillweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.InvokeMainTestCase;
 import edu.pdx.cs.joy.UncaughtExceptionInMain;
+import edu.pdx.cs.joy.web.HttpRequestHelper.RestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -53,7 +53,7 @@ class Project4IT extends InvokeMainTestCase {
             fail("Expected a RestException to be thrown");
 
         } catch (UncaughtExceptionInMain ex) {
-            HttpRequestHelper.RestException cause = (HttpRequestHelper.RestException) ex.getCause();
+            RestException cause = (RestException) ex.getCause();
             assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
         }
     }

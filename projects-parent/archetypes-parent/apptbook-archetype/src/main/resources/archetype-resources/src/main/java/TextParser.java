@@ -7,7 +7,6 @@ import edu.pdx.cs.joy.AppointmentBookParser;
 import edu.pdx.cs.joy.ParserException;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 

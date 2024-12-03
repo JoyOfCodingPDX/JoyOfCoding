@@ -1,7 +1,8 @@
 package edu.pdx.cs.joy.phonebillweb;
 
-import edu.pdx.cs.joy.web.HttpRequestHelper;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.web.HttpRequestHelper;
+import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,10 +29,10 @@ public class PhoneBillRestClientTest {
     assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
   }
 
-  private HttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
+  private Response dictionaryAsText(Map<String, String> dictionary) {
     StringWriter writer = new StringWriter();
     new TextDumper(writer).dump(dictionary);
 
-    return new HttpRequestHelper.Response(writer.toString());
+    return new Response(writer.toString());
   }
 }

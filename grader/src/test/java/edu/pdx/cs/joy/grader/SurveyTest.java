@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
-import java.nio.file.Files;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -58,7 +57,7 @@ public class SurveyTest {
 
   @Test
   void validEmailAddressIsValid() {
-    String address = "whitlock@cs.pdx.edu";
+    String address = "whitlocd@pdx.edu";
     assertThat(Survey.isEmailAddress(address), equalTo(true));
   }
 
@@ -86,7 +85,7 @@ public class SurveyTest {
     String lastName = "Last name";
     String nickName = "Nick name";
     String loginId = "LoginId";
-    String email = "email@email.com";
+    String email = "email@pdx.edu";
     String major = "Major";
     String section = "u";
     String recordGitHubUserName = "y";
@@ -164,4 +163,19 @@ public class SurveyTest {
       return captured.toString();
     }
   }
+
+  @Test
+  void emailAddressIsPdxDotEdu() {
+    Student student = new Student("id");
+    student.setEmail("student@pdx.edu");
+    assertThat(Survey.hasPdxDotEduEmail(student), equalTo(true));
+  }
+
+  @Test
+  void emailAddressIsNotPdxDotEdu() {
+    Student student = new Student("id");
+    student.setEmail("student@gmail.com");
+    assertThat(Survey.hasPdxDotEduEmail(student), equalTo(false));
+  }
+
 }
