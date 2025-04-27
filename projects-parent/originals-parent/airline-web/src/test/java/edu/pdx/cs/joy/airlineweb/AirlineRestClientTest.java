@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +24,9 @@ public class AirlineRestClientTest {
 
   @Test
   void getAllDictionaryEntriesPerformsHttpGetWithNoParameters() throws ParserException, IOException {
-    Map<String, String> dictionary = Map.of("One", "1", "Two", "2");
+    Dictionary<String, String> dictionary = new Hashtable<>();
+    dictionary.put("One", "1");
+    dictionary.put("Two", "2");
 
     HttpRequestHelper http = mock(HttpRequestHelper.class);
     when(http.get(eq(Map.of()))).thenReturn(dictionaryAsText(dictionary));
@@ -32,7 +36,7 @@ public class AirlineRestClientTest {
     assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
   }
 
-  private HttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
+  private HttpRequestHelper.Response dictionaryAsText(Dictionary<String, String> dictionary) {
     StringWriter writer = new StringWriter();
     new TextDumper(writer).dump(dictionary);
 

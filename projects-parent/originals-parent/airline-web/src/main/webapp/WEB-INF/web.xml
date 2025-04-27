@@ -10,7 +10,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>AirlineServlet</servlet-name>
-    <url-pattern>/flights</url-pattern>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
   <error-page>
     <location>/error.jsp</location>

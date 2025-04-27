@@ -2,6 +2,8 @@ package edu.pdx.cs.joy.airlineweb;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.Map;
 
 public class TextDumper {
@@ -11,12 +13,14 @@ public class TextDumper {
     this.writer = writer;
   }
 
-  public void dump(Map<String, String> dictionary) {
+  public void dump(Dictionary<String, String> dictionary) {
     try (
       PrintWriter pw = new PrintWriter(this.writer)
     ){
-      for (Map.Entry<String, String> entry : dictionary.entrySet()) {
-        pw.println(entry.getKey() + " : " + entry.getValue());
+      Enumeration<String> words = dictionary.keys();
+      while (words.hasMoreElements()) {
+        String word = words.nextElement();
+        pw.println(word + " : " + dictionary.get(word));
       }
 
       pw.flush();

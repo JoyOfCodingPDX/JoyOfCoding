@@ -1,14 +1,16 @@
 package edu.pdx.cs.joy.airlineweb;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This servlet ultimately provides a REST API for working with an
@@ -20,7 +22,7 @@ public class AirlineServlet extends HttpServlet {
   static final String WORD_PARAMETER = "word";
   static final String DEFINITION_PARAMETER = "definition";
 
-  private final Map<String, String> dictionary = new HashMap<>();
+  private final Map<String, Dictionary<String, String>> dictionaries = new HashMap<>();
 
   /**
    * Handles an HTTP GET request from a client by writing the definition of the
@@ -29,18 +31,23 @@ public class AirlineServlet extends HttpServlet {
    * are written to the HTTP response.
    */
   @Override
-  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException
-  {
+  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException {
       response.setContentType( "text/plain" );
+
+    Dictionary<String, String> dictionary = getDictionary(request);
+    if (dictionary == null) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
+    }
 
       String word = getParameter( WORD_PARAMETER, request );
       if (word != null) {
           log("GET " + word);
-          writeDefinition(word, response);
+          writeDefinition(dictionary, word, response);
 
       } else {
           log("GET all dictionary entries");
-          writeAllDictionaryEntries(response);
+          writeAllDictionaryEntries(dictionary, response);
       }
   }
 
@@ -68,13 +75,38 @@ public class AirlineServlet extends HttpServlet {
 
       log("POST " + word + " -> " + definition);
 
-      this.dictionary.put(word, definition);
+      Dictionary<String, String> dictionary = getDictionary(request);
+      if (dictionary == null) {
+          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+          return;
+      }
+      dictionary.put(word, definition);
 
       PrintWriter pw = response.getWriter();
       pw.println(Messages.definedWordAs(word, definition));
       pw.flush();
 
       response.setStatus( HttpServletResponse.SC_OK);
+  }
+
+  private Dictionary<String, String> getDictionary(HttpServletRequest request) {
+    String dictionaryName = getDictionaryName(request);
+    if (dictionaryName == null) {
+      return null;
+    }
+    return this.dictionaries.computeIfAbsent(dictionaryName, _ -> new Hashtable<>());
+  }
+
+  private String getDictionaryName(HttpServletRequest request) {
+    String requestURI = request.getRequestURI();
+    Pattern pattern = Pattern.compile("/airline/(.+)/flights");
+    Matcher matcher = pattern.matcher(requestURI);
+    if (matcher.matches()) {
+      return matcher.group(1);
+
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -88,7 +120,7 @@ public class AirlineServlet extends HttpServlet {
 
       log("DELETE all dictionary entries");
 
-      this.dictionary.clear();
+      this.dictionaries.clear();
 
       PrintWriter pw = response.getWriter();
       pw.println(Messages.allDictionaryEntriesDeleted());
@@ -115,8 +147,8 @@ public class AirlineServlet extends HttpServlet {
    *
    * The text of the message is formatted with {@link TextDumper}
    */
-  private void writeDefinition(String word, HttpServletResponse response) throws IOException {
-    String definition = this.dictionary.get(word);
+  private void writeDefinition(Dictionary<String, String> dictionary, String word, HttpServletResponse response) throws IOException {
+    String definition = dictionary.get(word);
 
     if (definition == null) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -124,7 +156,8 @@ public class AirlineServlet extends HttpServlet {
     } else {
       PrintWriter pw = response.getWriter();
 
-      Map<String, String> wordDefinition = Map.of(word, definition);
+      Dictionary<String, String> wordDefinition = new Hashtable<>();
+      wordDefinition.put(word, definition);
       TextDumper dumper = new TextDumper(pw);
       dumper.dump(wordDefinition);
 
@@ -137,7 +170,7 @@ public class AirlineServlet extends HttpServlet {
    *
    * The text of the message is formatted with {@link TextDumper}
    */
-  private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
+  private void writeAllDictionaryEntries(Dictionary<String, String> dictionary, HttpServletResponse response ) throws IOException
   {
       PrintWriter pw = response.getWriter();
       TextDumper dumper = new TextDumper(pw);
@@ -162,13 +195,12 @@ public class AirlineServlet extends HttpServlet {
     }
   }
 
-  @VisibleForTesting
-  String getDefinition(String word) {
-      return this.dictionary.get(word);
-  }
-
   @Override
   public void log(String msg) {
     System.out.println(msg);
+  }
+
+  public Dictionary<String, String> getDictionary(String dictionaryName) {
+    return this.dictionaries.get(dictionaryName);
   }
 }

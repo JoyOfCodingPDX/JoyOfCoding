@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Dictionary;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -24,7 +25,11 @@ class AirlineServletTest {
   void initiallyServletContainsNoDictionaryEntries() throws IOException {
     AirlineServlet servlet = new AirlineServlet();
 
+    String dictionaryName = "TEST DICTIONARY";
+
     HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn(String.format("/airline/%s/flights", dictionaryName));
+
     HttpServletResponse response = mock(HttpServletResponse.class);
     PrintWriter pw = mock(PrintWriter.class);
 
@@ -41,10 +46,12 @@ class AirlineServletTest {
   void addOneWordToDictionary() throws IOException {
     AirlineServlet servlet = new AirlineServlet();
 
+    String dictionaryName = "TEST DICTIONARY";
     String word = "TEST WORD";
     String definition = "TEST DEFINITION";
 
     HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn(String.format("/airline/%s/flights", dictionaryName));
     when(request.getParameter(AirlineServlet.WORD_PARAMETER)).thenReturn(word);
     when(request.getParameter(AirlineServlet.DEFINITION_PARAMETER)).thenReturn(definition);
 
@@ -66,7 +73,21 @@ class AirlineServletTest {
 
     assertThat(statusCode.getValue(), equalTo(HttpServletResponse.SC_OK));
 
-    assertThat(servlet.getDefinition(word), equalTo(definition));
+    Dictionary<String, String> dictionary = servlet.getDictionary(dictionaryName);
+    assertThat(dictionary.get(word), equalTo(definition));
+  }
+
+  @Test
+  void missingDictionaryNameReturnsNotFound() throws IOException {
+    AirlineServlet servlet = new AirlineServlet();
+
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getRequestURI()).thenReturn("/airline/flights");
+
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    servlet.doGet(request, response);
+
+    verify(response).setStatus(HttpServletResponse.SC_NOT_FOUND);
   }
 
 }
