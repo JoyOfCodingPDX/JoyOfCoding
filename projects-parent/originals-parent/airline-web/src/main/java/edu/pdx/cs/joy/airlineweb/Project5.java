@@ -16,6 +16,7 @@ public class Project5 {
     public static final String MISSING_ARGS = "Missing command line arguments";
 
     public static void main(String... args) {
+        String dictionaryName = null;
         String hostName = null;
         String portString = null;
         String word = null;
@@ -27,6 +28,9 @@ public class Project5 {
 
             } else if ( portString == null) {
                 portString = arg;
+
+            } else if (dictionaryName == null) {
+                dictionaryName = arg;
 
             } else if (word == null) {
                 word = arg;
@@ -63,7 +67,7 @@ public class Project5 {
         try {
             if (word == null) {
                 // Print all word/definition pairs
-                Map<String, String> dictionary = client.getAllDictionaryEntries();
+                Map<String, String> dictionary = client.getAllDictionaryEntries(dictionaryName);
                 StringWriter sw = new StringWriter();
                 PrettyPrinter pretty = new PrettyPrinter(sw);
                 pretty.dump(dictionary);
@@ -71,11 +75,11 @@ public class Project5 {
 
             } else if (definition == null) {
                 // Print all dictionary entries
-                message = PrettyPrinter.formatDictionaryEntry(word, client.getDefinition(word));
+                message = PrettyPrinter.formatDictionaryEntry(word, client.getDefinition(dictionaryName, word));
 
             } else {
                 // Post the word/definition pair
-                client.addDictionaryEntry(word, definition);
+                client.addDictionaryEntry(dictionaryName, word, definition);
                 message = Messages.definedWordAs(word, definition);
             }
 

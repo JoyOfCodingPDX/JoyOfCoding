@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,7 +31,7 @@ public class HttpRequestHelper {
    */
   public Response get(Map<String, String> parameters) throws IOException {
     StringBuilder query = encodeParameters(parameters);
-    if (query.length() > 0) {
+    if (!query.isEmpty()) {
       query.insert(0, '?');
     }
 

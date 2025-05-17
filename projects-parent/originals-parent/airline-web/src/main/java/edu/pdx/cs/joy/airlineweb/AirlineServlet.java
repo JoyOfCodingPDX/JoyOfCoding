@@ -94,7 +94,7 @@ public class AirlineServlet extends HttpServlet {
     if (dictionaryName == null) {
       return null;
     }
-    return this.dictionaries.computeIfAbsent(dictionaryName, _ -> new Hashtable<>());
+    return this.dictionaries.computeIfAbsent(dictionaryName, k -> new Hashtable<>());
   }
 
   private String getDictionaryName(HttpServletRequest request) {

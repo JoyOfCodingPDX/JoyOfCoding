@@ -24,6 +24,8 @@ public class AirlineRestClientTest {
 
   @Test
   void getAllDictionaryEntriesPerformsHttpGetWithNoParameters() throws ParserException, IOException {
+    String dictionaryName = "TEST DICTIONARY";
+
     Dictionary<String, String> dictionary = new Hashtable<>();
     dictionary.put("One", "1");
     dictionary.put("Two", "2");
@@ -33,7 +35,7 @@ public class AirlineRestClientTest {
     
     AirlineRestClient client = new AirlineRestClient(http);
 
-    assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
+    assertThat(client.getAllDictionaryEntries(dictionaryName), equalTo(dictionary));
   }
 
   private HttpRequestHelper.Response dictionaryAsText(Dictionary<String, String> dictionary) {

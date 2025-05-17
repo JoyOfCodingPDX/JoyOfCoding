@@ -7,7 +7,10 @@ import edu.pdx.cs.joy.web.HttpRequestHelper.Response;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.function.Function;
 
 import static edu.pdx.cs.joy.web.HttpRequestHelper.*;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -22,40 +25,49 @@ public class AirlineRestClient
     private static final String WEB_APP = "airline";
     private static final String SERVLET = "flights";
 
-    private final HttpRequestHelper http;
+    private final Function<String, HttpRequestHelper> httpRequestHelperCreator;
 
 
-    /**
+  /**
      * Creates a client to the airline REST service running on the given host and port
      * @param hostName The name of the host
      * @param port The port
      */
     public AirlineRestClient( String hostName, int port )
     {
-        this(new HttpRequestHelper(String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET)));
+        this.httpRequestHelperCreator =
+          dictionaryName -> new HttpRequestHelper(String.format("http://%s:%d/%s/%s/%s", hostName, port, WEB_APP, SERVLET, urlEncode(dictionaryName)));
     }
 
-    @VisibleForTesting
+  private String urlEncode(String dictionaryName) {
+    return URLEncoder.encode(dictionaryName, Charset.defaultCharset());
+  }
+
+  @VisibleForTesting
     AirlineRestClient(HttpRequestHelper http) {
-      this.http = http;
+      this.httpRequestHelperCreator = (dictionaryName) -> http;
     }
 
   /**
    * Returns all dictionary entries from the server
    */
-  public Map<String, String> getAllDictionaryEntries() throws IOException, ParserException {
-    Response response = http.get(Map.of());
+  public Map<String, String> getAllDictionaryEntries(String dictionaryName) throws IOException, ParserException {
+    Response response = getHttpRequestHelper(dictionaryName).get(Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
 
     TextParser parser = new TextParser(new StringReader(response.getContent()));
     return parser.parse();
   }
 
+  private HttpRequestHelper getHttpRequestHelper(String dictionaryName) {
+    return httpRequestHelperCreator.apply(dictionaryName);
+  }
+
   /**
    * Returns the definition for the given word
    */
-  public String getDefinition(String word) throws IOException, ParserException {
-    Response response = http.get(Map.of(AirlineServlet.WORD_PARAMETER, word));
+  public String getDefinition(String dictionaryName, String word) throws IOException, ParserException {
+    Response response = getHttpRequestHelper(dictionaryName).get(Map.of(AirlineServlet.WORD_PARAMETER, word));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -63,13 +75,13 @@ public class AirlineRestClient
     return parser.parse().get(word);
   }
 
-  public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = http.post(Map.of(AirlineServlet.WORD_PARAMETER, word, AirlineServlet.DEFINITION_PARAMETER, definition));
+  public void addDictionaryEntry(String dictionaryName, String word, String definition) throws IOException {
+    Response response = getHttpRequestHelper(dictionaryName).post(Map.of(AirlineServlet.WORD_PARAMETER, word, AirlineServlet.DEFINITION_PARAMETER, definition));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
   public void removeAllDictionaryEntries() throws IOException {
-    Response response = http.delete(Map.of());
+    Response response = getHttpRequestHelper("ANY DICTIONARY").delete(Map.of());
     throwExceptionIfNotOkayHttpStatus(response);
   }
 
