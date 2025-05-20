@@ -3,7 +3,7 @@
   <parent>
     <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -22,17 +22,17 @@
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>examples</artifactId>
-      <version>1.3.1-SNAPSHOT</version>
+      <version>1.3.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.0.2-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>

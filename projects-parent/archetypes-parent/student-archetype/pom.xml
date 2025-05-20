@@ -4,7 +4,7 @@
 
   <groupId>io.github.davidwhitlock.joy.original</groupId>
   <artifactId>student-archetype</artifactId>
-  <version>2.3.2-SNAPSHOT</version>
+  <version>2.3.3-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>student-archetype</name>
@@ -63,13 +63,16 @@
 
   <distributionManagement>
     <repository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <name>Central Portal Snapshots</name>
+      <id>central-portal-snapshots</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
