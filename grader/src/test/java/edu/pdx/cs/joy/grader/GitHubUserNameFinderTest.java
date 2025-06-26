@@ -8,10 +8,19 @@ import static org.hamcrest.Matchers.equalTo;
 public class GitHubUserNameFinderTest {
 
   @Test
-  void findGitHubUserName() {
+  void findGitHubUserNameWithGitHubUrl() {
     GitHubUserNameFinder finder = new GitHubUserNameFinder();
     finder.startRemoteSection("origin");
     finder.property("url", "git@github.com:JoyOfCodingPDX/JoyOfCoding.git");
+
+    assertThat(finder.getGitHubUserName(), equalTo("JoyOfCodingPDX"));
+  }
+
+  @Test
+  void findGitHubUserNameWithHttpsUrl() {
+    GitHubUserNameFinder finder = new GitHubUserNameFinder();
+    finder.startRemoteSection("origin");
+    finder.property("url", "https://github.com/JoyOfCodingPDX/JoyOfCoding.git");
 
     assertThat(finder.getGitHubUserName(), equalTo("JoyOfCodingPDX"));
   }

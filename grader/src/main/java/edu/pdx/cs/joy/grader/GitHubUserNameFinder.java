@@ -20,10 +20,15 @@ public class GitHubUserNameFinder implements GitConfigParser.Callback {
   }
 
   private void extractGitHubUserNameFrom(String gitUrl) {
-    Pattern pattern = Pattern.compile("git@github.com:(.*)/.*\\.git");
-    Matcher matcher = pattern.matcher(gitUrl);
-    if (matcher.matches()) {
-      this.gitHubUserName = matcher.group(1);
+    Matcher gitHubMatcher = Pattern.compile("git@github.com:(.*)/.*\\.git").matcher(gitUrl);
+    if (gitHubMatcher.matches()) {
+      this.gitHubUserName = gitHubMatcher.group(1);
+
+    } else {
+      Matcher httpsMatcher = Pattern.compile("https://github.com/(.*)/.*\\.git").matcher(gitUrl);
+      if (httpsMatcher.matches()) {
+        this.gitHubUserName = httpsMatcher.group(1);
+      }
     }
   }
 
