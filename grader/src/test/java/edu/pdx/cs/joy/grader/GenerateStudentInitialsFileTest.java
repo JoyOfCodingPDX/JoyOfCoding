@@ -16,9 +16,11 @@ public class GenerateStudentInitialsFileTest {
 
   @Test
   void generatedInitialsAreSortedByLastNameInitial() {
-    Stream<Student> students = Stream.of(new Student("dave").setFirstName("Zoe").setLastName("Adams"),
-      new Student("alice").setFirstName("Alice").setLastName("Smith"),
-      new Student("bob").setFirstName("Bob").setLastName("Johnson"));
+    Stream<Student> students = Stream.of(
+      new Student("larry").setFirstName("Larry").setLastName("Smith"),
+    new Student("zoe").setFirstName("Zoe").setLastName("Adams"),
+      new Student("alice").setFirstName("Alice").setLastName("Smith")
+    );
 
     List<String> initials = GenerateStudentInitialsFile.generateInitials(students);
 
@@ -26,8 +28,29 @@ public class GenerateStudentInitialsFileTest {
 
     Iterator<String> iterator = initials.iterator();
     assertThat(iterator.next(), equalTo("ZA"));
-    assertThat(iterator.next(), equalTo("BJ"));
     assertThat(iterator.next(), equalTo("AS"));
+    assertThat(iterator.next(), equalTo("LS"));
+  }
+
+  @Test
+  void useMoreCharactersWhenInitialsMatch() {
+    Stream<Student> students = Stream.of(
+      new Student("zoe").setFirstName("Zoe").setLastName("Adams"),
+      new Student("zelda").setFirstName("Zelda").setLastName("Adams"),
+      new Student("larry").setFirstName("Larry").setLastName("Smith"),
+      new Student("larry").setFirstName("Larry").setLastName("Smithson")
+    );
+
+    List<String> initials = GenerateStudentInitialsFile.generateInitials(students);
+
+    assertThat(initials, hasSize(4));
+
+    Iterator<String> iterator = initials.iterator();
+    assertThat(iterator.next(), equalTo("ZoA"));
+    assertThat(iterator.next(), equalTo("ZeA"));
+    assertThat(iterator.next(), equalTo("LSmith"));
+    assertThat(iterator.next(), equalTo("LSmithson"));
+
   }
 
 }

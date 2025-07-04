@@ -11,19 +11,14 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toCollection;
 
 public class GenerateStudentInitialsFile {
-  public static String computeInitials(Student student) {
-    return String.valueOf(getInitial(student.getFirstName())) +
-      getInitial(student.getLastName());
-  }
-
-  private static char getInitial(String word) {
-    return Character.toUpperCase(word.charAt(0));
-  }
 
   public static List<String> generateInitials(Stream<Student> students) {
-    Stream<Student> studentsByName = students
-      .sorted(GenerateStudentInitialsFile::sortStudentsByLastThenFirstName);
-    return studentsByName.map(GenerateStudentInitialsFile::computeInitials)
+    List<StudentInitials> studentInitials = students
+      .sorted(GenerateStudentInitialsFile::sortStudentsByLastThenFirstName)
+      .map(StudentInitials::new)
+      .collect(toCollection(ArrayList::new));
+    return studentInitials.stream()
+      .map(StudentInitials::getInitials)
       .collect(toCollection(ArrayList::new));
   }
 
@@ -33,5 +28,20 @@ public class GenerateStudentInitialsFile {
       return lastNameComparison;
     }
     return s1.getFirstName().compareToIgnoreCase(s2.getFirstName());
+  }
+
+  private static class StudentInitials {
+    private final Student student;
+    int uniqueCharsOfFirstname = 1;
+    int uniqueCharsOfLastname = 1;
+
+    public StudentInitials(Student student) {
+      this.student = student;
+    }
+
+    public String getInitials() {
+      return student.getFirstName().substring(0, uniqueCharsOfFirstname).toUpperCase()
+        + student.getLastName().substring(0, uniqueCharsOfLastname).toUpperCase();
+    }
   }
 }
