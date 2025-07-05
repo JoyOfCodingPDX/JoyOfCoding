@@ -110,6 +110,10 @@ public class GenerateStudentInitialsFile {
     GradeBook book = loadGradeBookFromFile(gradeBookFileName);
     List<String> initials = generateInitials(book.studentsStream());
 
+    System.out.println("""
+      Replace your initials in this file with the word "HERE" to demonstrate that you can push to this repository.
+      
+      """);
     for (int i = 0; i < initials.size(); i++) {
       String initial = initials.get(i);
       System.out.format("%2d. %s%n", (i + 1), initial);
