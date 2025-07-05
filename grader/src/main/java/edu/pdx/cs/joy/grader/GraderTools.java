@@ -77,6 +77,9 @@ public class GraderTools {
       case "projectTimeEstimates":
         return ProjectTimeEstimatesSummary.class;
 
+        case "generateStudentInitialsFile":
+        return GenerateStudentInitialsFile.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -97,19 +100,20 @@ public class GraderTools {
     err.println("Executes one of the Grader tools");
     err.println();
     err.println("usage: GraderTools tool toolArg*");
-    err.println("  tool                        The tool to execute");
-    err.println("    gradebook                 The Grade Book GUI");
-    err.println("    fetch                     Fetch student surveys or projects from the Grader's");
-    err.println("                              emails account");
-    err.println("    importFromCanvas          Import grades from a Canvas CSV");
-    err.println("    importFromProjectReports  Import grades from graded project reports");
-    err.println("    mailFileToStudent         Email text files to students");
-    err.println("    gradePOAs                 Tool for downloading and grading POAs");
-    err.println("    generateGradeSummary      Generate grade summary report for one or more students");
-    err.println("    htmlForSurveyResults      Generate an html file for the responses to a D2L survey");
-    err.println("    fixAndroidZips            Fix zip files for the Android project to work with grading script");
-    err.println("    projectTimeEstimates      Generate markdown that summarizes the estimated project hours");
-    err.println("  toolArg                     A command line argument to send to the tool");
+    err.println("  tool                           The tool to execute");
+    err.println("    gradebook                    The Grade Book GUI");
+    err.println("    fetch                        Fetch student surveys or projects from the Grader's");
+    err.println("                                 emails account");
+    err.println("    importFromCanvas             Import grades from a Canvas CSV");
+    err.println("    importFromProjectReports     Import grades from graded project reports");
+    err.println("    mailFileToStudent            Email text files to students");
+    err.println("    gradePOAs                    Tool for downloading and grading POAs");
+    err.println("    generateGradeSummary         Generate grade summary report for one or more students");
+    err.println("    htmlForSurveyResults         Generate an html file for the responses to a D2L survey");
+    err.println("    fixAndroidZips               Fix zip files for the Android project to work with grading script");
+    err.println("    projectTimeEstimates         Generate markdown that summarizes the estimated project hours");
+    err.println("    generateStudentInitialsFile  Generate a list of student initials from a grade book");
+    err.println("  toolArg                        A command line argument to send to the tool");
     err.println();
 
     System.exit(1);

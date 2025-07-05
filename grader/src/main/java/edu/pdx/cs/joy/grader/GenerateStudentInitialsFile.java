@@ -1,8 +1,13 @@
 package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
+import edu.pdx.cs.joy.grader.gradebook.XmlGradeBookParser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -94,5 +99,48 @@ public class GenerateStudentInitialsFile {
         this.uniqueCharsOfFirstname++;
       }
     }
+  }
+
+  public static void main(String[] args) {
+    if (args.length < 1) {
+      usage("Usage: GenerateStudentInitialsFile gradeBookFile");
+    }
+
+    String gradeBookFileName = args[0];
+    GradeBook book = loadGradeBookFromFile(gradeBookFileName);
+    List<String> initials = generateInitials(book.studentsStream());
+
+    for (int i = 0; i < initials.size(); i++) {
+      String initial = initials.get(i);
+      System.out.format("%2d. %s%n", (i + 1), initial);
+    }
+  }
+
+  private static GradeBook loadGradeBookFromFile(String gradeBookFileName) {
+    File gradeBookFile = getExistingGradeBookFile(gradeBookFileName);
+    return parseGradeBookFile(gradeBookFile);
+  }
+
+  private static GradeBook parseGradeBookFile(File file) {
+    try {
+      return new XmlGradeBookParser(file).parse();
+
+    } catch (ParserException | IOException e) {
+      usage("While parsing " + file + ": " + e);
+      return null;
+    }
+  }
+
+  private static File getExistingGradeBookFile(String gradeBookFileName) {
+    File file = new File(gradeBookFileName);
+    if (!file.exists()) {
+      usage("Grade book file does not exist: " + gradeBookFileName);
+    }
+    return file;
+  }
+
+  private static void usage(String message) {
+    System.err.println(message);
+    System.exit(1);
   }
 }
