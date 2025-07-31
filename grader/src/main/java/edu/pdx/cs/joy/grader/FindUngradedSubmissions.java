@@ -21,7 +21,7 @@ public class FindUngradedSubmissions {
 
   public boolean isGraded(Path submissionPath) {
     SubmissionDetails submission = this.submissionDetailsProvider.getSubmissionDetails(submissionPath);
-    Path testOutput = this.testOutputProvider.getTestOutput(submission.getStudentId());
+    Path testOutput = this.testOutputProvider.getTestOutput(submission.studentId());
     if (!Files.exists(testOutput)) {
       return false;
     }
@@ -30,7 +30,7 @@ public class FindUngradedSubmissions {
     if (!testOutputDetails.hasGrade()) {
       return false;
 
-    } else if (submission.getSubmissionTime().isAfter(testOutputDetails.getTestedTime())) {
+    } else if (submission.submissionTime().isAfter(testOutputDetails.testedTime())) {
       return false;
     }
 
@@ -38,23 +38,8 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  static class SubmissionDetails {
+  record SubmissionDetails(String studentId, ZonedDateTime submissionTime) {
 
-    private final String studentId;
-    private final ZonedDateTime submissionTime;
-
-    public SubmissionDetails(String studentId, ZonedDateTime submissionTime) {
-      this.studentId = studentId;
-      this.submissionTime = submissionTime;
-    }
-
-    public String getStudentId() {
-      return this.studentId;
-    }
-
-    public ZonedDateTime getSubmissionTime() {
-      return this.submissionTime;
-    }
   }
 
   interface SubmissionDetailsProvider {
@@ -70,22 +55,6 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  static
-  class TestOutputDetails {
-    private final ZonedDateTime testedTime;
-    private final boolean hasGrade;
-
-    public TestOutputDetails(ZonedDateTime testedTime, boolean hasGrade) {
-      this.testedTime = testedTime;
-      this.hasGrade = hasGrade;
-    }
-
-    public ZonedDateTime getTestedTime() {
-      return this.testedTime;
-    }
-
-    public boolean hasGrade() {
-      return this.hasGrade;
-    }
+    record TestOutputDetails(ZonedDateTime testedTime, boolean hasGrade) {
   }
 }
