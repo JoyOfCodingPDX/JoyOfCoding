@@ -27,7 +27,10 @@ public class FindUngradedSubmissions {
     }
 
     TestOutputDetails testOutputDetails = this.testOutputDetailsProvider.getTestOutputDetails(testOutput);
-    if (submission.getSubmissionTime().isAfter(testOutputDetails.getGradedTime())) {
+    if (!testOutputDetails.hasGrade()) {
+      return false;
+
+    } else if (submission.getSubmissionTime().isAfter(testOutputDetails.getTestedTime())) {
       return false;
     }
 
@@ -69,14 +72,20 @@ public class FindUngradedSubmissions {
   @VisibleForTesting
   static
   class TestOutputDetails {
-    private final ZonedDateTime gradedTime;
+    private final ZonedDateTime testedTime;
+    private final boolean hasGrade;
 
-    public TestOutputDetails(ZonedDateTime gradedTime) {
-      this.gradedTime = gradedTime;
+    public TestOutputDetails(ZonedDateTime testedTime, boolean hasGrade) {
+      this.testedTime = testedTime;
+      this.hasGrade = hasGrade;
     }
 
-    public ZonedDateTime getGradedTime() {
-      return this.gradedTime;
+    public ZonedDateTime getTestedTime() {
+      return this.testedTime;
+    }
+
+    public boolean hasGrade() {
+      return this.hasGrade;
     }
   }
 }
