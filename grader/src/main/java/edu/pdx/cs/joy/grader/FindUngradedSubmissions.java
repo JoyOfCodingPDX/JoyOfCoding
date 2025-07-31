@@ -21,20 +21,20 @@ public class FindUngradedSubmissions {
 
   public boolean isGraded(Path submissionPath) {
     SubmissionDetails submission = this.submissionDetailsProvider.getSubmissionDetails(submissionPath);
-    Path testOutput = this.testOutputProvider.getTestOutput(submission.studentId());
-    if (!Files.exists(testOutput)) {
+    Path testOutputPath = this.testOutputProvider.getTestOutput(submission.studentId());
+    if (!Files.exists(testOutputPath)) {
       return false;
     }
 
-    TestOutputDetails testOutputDetails = this.testOutputDetailsProvider.getTestOutputDetails(testOutput);
-    if (!testOutputDetails.hasGrade()) {
+    TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
+    if (!testOutput.hasGrade()) {
       return false;
 
-    } else if (submission.submissionTime().isAfter(testOutputDetails.testedTime())) {
+    } else if (submission.submissionTime().isAfter(testOutput.testedTime())) {
       return false;
     }
 
-    throw new UnsupportedOperationException("Grading logic not implemented yet");
+    return true;
   }
 
   @VisibleForTesting
