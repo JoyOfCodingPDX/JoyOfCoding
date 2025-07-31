@@ -35,7 +35,7 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
-  void submissionWithNoTestOutputIsNotGraded() {
+  void submissionWithNoTestOutputNeedsToBeTested() {
     FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
 
     String studentId = "student123";
@@ -49,11 +49,13 @@ public class FindUngradedSubmissionsTest {
     when(testOutputProvider.getTestOutput(studentId)).thenReturn(testOutput);
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, mock(FindUngradedSubmissions.TestOutputDetailsProvider.class));
-    assertThat(finder.isGraded(submission), equalTo(false));
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(true));
+    assertThat(analysis.needsToBeGraded(), equalTo(true));
   }
 
   @Test
-  void submissionWithTestOutputOlderThanSubmissionIsNotGraded() {
+  void submissionWithTestOutputOlderThanSubmissionNeedsToBeTested() {
     FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
 
     String studentId = "student123";
@@ -72,7 +74,9 @@ public class FindUngradedSubmissionsTest {
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(gradedTime, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
-    assertThat(finder.isGraded(submission), equalTo(false));
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(true));
+    assertThat(analysis.needsToBeGraded(), equalTo(true));
   }
 
   @Test
@@ -95,7 +99,9 @@ public class FindUngradedSubmissionsTest {
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(gradedTime, false));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
-    assertThat(finder.isGraded(submission), equalTo(false));
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(true));
   }
 
   @Test
@@ -118,6 +124,8 @@ public class FindUngradedSubmissionsTest {
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(gradedTime, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
-    assertThat(finder.isGraded(submission), equalTo(true));
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
   }
 }

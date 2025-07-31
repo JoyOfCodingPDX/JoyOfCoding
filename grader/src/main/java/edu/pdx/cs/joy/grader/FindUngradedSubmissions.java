@@ -19,22 +19,35 @@ public class FindUngradedSubmissions {
   }
 
 
-  public boolean isGraded(Path submissionPath) {
+  @VisibleForTesting
+  SubmissionAnalysis analyzeSubmission(Path submissionPath) {
     SubmissionDetails submission = this.submissionDetailsProvider.getSubmissionDetails(submissionPath);
     Path testOutputPath = this.testOutputProvider.getTestOutput(submission.studentId());
+    boolean needsToBeTested;
+    boolean needsToBeGraded;
+
     if (!Files.exists(testOutputPath)) {
-      return false;
+      needsToBeTested = true;
+      needsToBeGraded = true;
+
+    } else {
+
+      TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
+      if (submission.submissionTime().isAfter(testOutput.testedTime())) {
+        needsToBeTested = true;
+        needsToBeGraded = true;
+
+      } else if (!testOutput.hasGrade()) {
+        needsToBeTested = false;
+        needsToBeGraded = true;
+
+      } else {
+        needsToBeTested = false;
+        needsToBeGraded = false;
+      }
     }
 
-    TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
-    if (!testOutput.hasGrade()) {
-      return false;
-
-    } else if (submission.submissionTime().isAfter(testOutput.testedTime())) {
-      return false;
-    }
-
-    return true;
+    return new SubmissionAnalysis(needsToBeTested, needsToBeGraded);
   }
 
   @VisibleForTesting
@@ -56,5 +69,10 @@ public class FindUngradedSubmissions {
 
   @VisibleForTesting
     record TestOutputDetails(ZonedDateTime testedTime, boolean hasGrade) {
+  }
+
+  @VisibleForTesting
+  record SubmissionAnalysis (boolean needsToBeTested, boolean needsToBeGraded) {
+
   }
 }
