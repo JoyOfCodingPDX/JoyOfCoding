@@ -2,9 +2,11 @@ package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
+import java.util.stream.Stream;
 
 public class FindUngradedSubmissions {
   private final SubmissionDetailsProvider submissionDetailsProvider;
@@ -53,6 +55,34 @@ public class FindUngradedSubmissions {
   @VisibleForTesting
   record SubmissionDetails(String studentId, ZonedDateTime submissionTime) {
 
+  }
+
+  public static void main(String[] args) {
+    Stream<Path> submissions = findSubmissionsIn(args);
+    submissions.forEach(System.out::println);
+  }
+
+  private static Stream<Path> findSubmissionsIn(String... fileNames) {
+    return Stream.of(fileNames)
+      .map(Path::of)
+      .filter(Files::exists)
+      .flatMap(path -> {
+        if (Files.isDirectory(path)) {
+          try (Stream<Path> walk = Files.walk(path)) {
+            return walk.filter(FindUngradedSubmissions::isZipFile);
+
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        } else if (isZipFile(path)) {
+          return Stream.of(path);
+        }
+        return Stream.empty();
+      });
+  }
+
+  private static boolean isZipFile(Path p) {
+    return Files.isRegularFile(p) && p.getFileName().toString().endsWith(".zip");
   }
 
   interface SubmissionDetailsProvider {
