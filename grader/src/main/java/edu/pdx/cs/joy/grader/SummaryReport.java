@@ -223,7 +223,7 @@ public class SummaryReport {
    * Main program that creates summary reports for every student in a
    * grade book located in a given XML file.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     boolean assignLetterGrades = false;
     String xmlFileName = null;
     String outputDirName = null;
@@ -283,23 +283,46 @@ public class SummaryReport {
 
     // Sort students by totals and print out results:
     Set<Student> students1 = allTotals.keySet();
-    printOutStudentTotals(students1, out);
+    try (PrintWriter allStudentTotalsFile = new PrintWriter(new FileWriter("all-student-totals.txt"), true)) {
+      printOutStudentTotals(students1, new Writer() {
+        @Override
+        public void write(char[] cbuf, int off, int len) {
+          allStudentTotalsFile.write(cbuf, off, len);
+          out.write(cbuf, off, len);
+        }
+
+        @Override
+        public void flush() {
+          allStudentTotalsFile.flush();
+          out.flush();
+        }
+
+        @Override
+        public void close() {
+          allStudentTotalsFile.close();
+          out.close();
+        }
+      });
+
+      allStudentTotalsFile.flush();
+    }
 
     saveGradeBookIfDirty(xmlFileName, book);
 
   }
 
   @VisibleForTesting
-  static void printOutStudentTotals(Set<Student> allStudents, PrintWriter out) {
+  static void printOutStudentTotals(Set<Student> allStudents, Writer writer) {
+    PrintWriter pw = new PrintWriter(writer, true);
     SortedSet<Student> sorted = getStudentSortedByTotalPoints(allStudents);
 
-    out.println("Undergraduates:");
+    pw.println("Undergraduates:");
     Stream<Student> undergrads = sorted.stream().filter(student -> student.getEnrolledSection() == Student.Section.UNDERGRADUATE);
-    printOutStudentTotals(out, undergrads);
+    printOutStudentTotals(pw, undergrads);
 
-    out.println("Graduate Students:");
+    pw.println("Graduate Students:");
     Stream<Student> grads = sorted.stream().filter(student -> student.getEnrolledSection() == Student.Section.GRADUATE);
-    printOutStudentTotals(out, grads);
+    printOutStudentTotals(pw, grads);
 
   }
 
