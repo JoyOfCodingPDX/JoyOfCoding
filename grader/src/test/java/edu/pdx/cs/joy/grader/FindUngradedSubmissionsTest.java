@@ -64,6 +64,7 @@ public class FindUngradedSubmissionsTest {
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(true));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
+    assertThat(analysis.submission(), equalTo(submission));
   }
 
   @Test

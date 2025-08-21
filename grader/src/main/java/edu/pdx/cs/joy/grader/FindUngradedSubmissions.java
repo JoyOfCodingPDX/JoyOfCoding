@@ -65,7 +65,7 @@ public class FindUngradedSubmissions {
       }
     }
 
-    return new SubmissionAnalysis(needsToBeTested, needsToBeGraded);
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded);
   }
 
   @VisibleForTesting
@@ -88,11 +88,15 @@ public class FindUngradedSubmissions {
       }
     });
 
-    System.out.println(needsToBeTested.size() + " submissions need to be tested: ");
-    needsToBeTested.forEach(System.out::println);
+    printOutAnalyses(needsToBeTested, "tested");
+    printOutAnalyses(needsToBeGraded, "graded");
+  }
 
-    System.out.println(needsToBeGraded.size() + " submissions need to be graded: ");
-    needsToBeGraded.forEach(System.out::println);
+  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action) {
+    int size = analyses.size();
+    String plural = (size != 1 ? "s" : "");
+    System.out.println(size + " submission" + plural + " need to be " + action + ": ");
+    analyses.forEach(analysis -> System.out.println("  " + analysis.submission));
   }
 
   private static Stream<Path> findSubmissionsIn(String... fileNames) {
@@ -141,7 +145,7 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  record SubmissionAnalysis (boolean needsToBeTested, boolean needsToBeGraded) {
+  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded) {
 
   }
 
