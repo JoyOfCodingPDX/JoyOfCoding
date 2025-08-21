@@ -77,8 +77,11 @@ public class GraderTools {
       case "projectTimeEstimates":
         return ProjectTimeEstimatesSummary.class;
 
-        case "generateStudentInitialsFile":
+      case "generateStudentInitialsFile":
         return GenerateStudentInitialsFile.class;
+
+      case "findUngradedSubmissions":
+        return FindUngradedSubmissions.class;
 
       default:
         usage("Unknown tool: " + tool);
@@ -113,6 +116,7 @@ public class GraderTools {
     err.println("    fixAndroidZips               Fix zip files for the Android project to work with grading script");
     err.println("    projectTimeEstimates         Generate markdown that summarizes the estimated project hours");
     err.println("    generateStudentInitialsFile  Generate a list of student initials from a grade book");
+    err.println("    findUngradedSubmissions      List submissions that need to be tested or graded");
     err.println("  toolArg                        A command line argument to send to the tool");
     err.println();
 

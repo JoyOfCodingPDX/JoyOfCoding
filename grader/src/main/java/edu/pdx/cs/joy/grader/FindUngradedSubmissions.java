@@ -74,6 +74,11 @@ public class FindUngradedSubmissions {
   }
 
   public static void main(String[] args) {
+    if (args.length == 0) {
+      System.err.println("Usage: java FindUngradedSubmissions submissionZipOrDirectory+");
+      System.exit(1);
+    }
+
     Stream<Path> submissions = findSubmissionsIn(args);
     FindUngradedSubmissions finder = new FindUngradedSubmissions();
     Stream<SubmissionAnalysis> analyses = submissions.map(finder::analyzeSubmission);
@@ -94,8 +99,8 @@ public class FindUngradedSubmissions {
 
   private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action) {
     int size = analyses.size();
-    String plural = (size != 1 ? "s" : "");
-    System.out.println(size + " submission" + plural + " need to be " + action + ": ");
+    String description = (size == 1 ? " submission needs" : " submissions need");
+    System.out.println(size + description + " to be " + action + ": ");
     analyses.forEach(analysis -> System.out.println("  " + analysis.submission));
   }
 
