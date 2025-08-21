@@ -3,9 +3,14 @@ package edu.pdx.cs.joy.grader;
 import com.google.common.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class FindUngradedSubmissions {
@@ -64,21 +69,24 @@ public class FindUngradedSubmissions {
 
   private static Stream<Path> findSubmissionsIn(String... fileNames) {
     return Stream.of(fileNames)
-      .map(Path::of)
-      .filter(Files::exists)
-      .flatMap(path -> {
-        if (Files.isDirectory(path)) {
-          try (Stream<Path> walk = Files.walk(path)) {
-            return walk.filter(FindUngradedSubmissions::isZipFile);
+        .map(Path::of)
+        .filter(Files::exists)
+        .flatMap(path -> findSubmissionsIn(path).stream());
+  }
 
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        } else if (isZipFile(path)) {
-          return Stream.of(path);
-        }
-        return Stream.empty();
-      });
+  private static Collection<? extends Path> findSubmissionsIn(Path path) {
+    if (Files.isDirectory(path)) {
+      try (Stream<Path> walk = Files.walk(path, FileVisitOption.FOLLOW_LINKS)) {
+        return walk.filter(FindUngradedSubmissions::isZipFile).toList();
+
+      } catch (IOException e) {
+        throw new RuntimeException("Error while walking through directory: " + path, e);
+      }
+    } else if (isZipFile(path)) {
+      return List.of(path);
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   private static boolean isZipFile(Path p) {
