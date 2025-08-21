@@ -35,7 +35,7 @@ public abstract class StudentEmailAttachmentProcessor implements EmailAttachment
     this.logger.debug(message);
   }
 
-  protected class SubmissionException extends Exception {
+  protected static class SubmissionException extends Exception {
     public SubmissionException(String message) {
       super(message);
     }
