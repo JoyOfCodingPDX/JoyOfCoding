@@ -65,12 +65,11 @@
     <developerConnection>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/projects-parent/originals-parent/student</developerConnection>
     <url>https://github.com/JoyOfCodingPDX/JoyOfCoding/tree/main/projects-parent/originals-parent/student</url>
   </scm>
-<!--
   <distributionManagement>
     <repository>
       <name>Central Portal Snapshots</name>
-      <id>central-portals</id>
-      <url>https://central.sonatype.com/repository/mavens/</url>
+      <id>central-portal-snapshots</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -84,5 +83,4 @@
       <url>scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/projects-parent/originals-parent</url>
     </site>
   </distributionManagement>
-  -->
 </project>
