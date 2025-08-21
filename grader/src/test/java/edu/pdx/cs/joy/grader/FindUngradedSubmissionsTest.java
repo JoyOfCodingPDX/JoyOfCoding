@@ -93,6 +93,30 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
+  void submissionWithTestOutputLessThanAMinuteOlderThanSubmissionDoesNotNeedToBeTested() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student123";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime testedSubmissionTime = submissionTime.minusSeconds(10); // Simulate test output older than submission
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testedSubmissionTime, true));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+  }
+
+  @Test
   void submissionWithNoGradeNeedsToBeGraded() {
     FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
 
@@ -153,6 +177,13 @@ public class FindUngradedSubmissionsTest {
   void parseSubmissionTimeFromTestOutputLine() {
     LocalDateTime submissionTime = TestOutputDetailsProviderFromTestOutputFile.parseSubmissionTime("              Submitted on Wed Aug  6 01:13:59 PM PDT 2025");
     LocalDateTime expectedTime = LocalDateTime.of(2025, 8, 6, 13, 13, 59);
+    assertThat(submissionTime, equalTo(expectedTime));
+  }
+
+  @Test
+  void parseSubmissionTimeFromTestOutputLineWithTwoDigitDay() {
+    LocalDateTime submissionTime = TestOutputDetailsProviderFromTestOutputFile.parseSubmissionTime("              Submitted on Wed Jul 23 12:59:13 PM PDT 2025");
+    LocalDateTime expectedTime = LocalDateTime.of(2025, 7, 23, 12, 59, 13);
     assertThat(submissionTime, equalTo(expectedTime));
   }
 

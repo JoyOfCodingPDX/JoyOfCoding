@@ -43,29 +43,40 @@ public class FindUngradedSubmissions {
     Path testOutputPath = this.testOutputProvider.getTestOutput(submissionDirectory, submission.studentId());
     boolean needsToBeTested;
     boolean needsToBeGraded;
+    String reason;
 
     if (!Files.exists(testOutputPath)) {
       needsToBeTested = true;
       needsToBeGraded = true;
+      reason = "Test output file does not exist: " + testOutputPath;
 
     } else {
 
       TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
-      if (submission.submissionTime().isAfter(testOutput.testedSubmissionTime())) {
+      if (submittedAfterTesting(submission, testOutput)) {
         needsToBeTested = true;
         needsToBeGraded = true;
+        reason = "Submission on " + submission.submissionTime() + " is after testing on " + testOutput.testedSubmissionTime();
 
       } else if (!testOutput.hasGrade()) {
         needsToBeTested = false;
         needsToBeGraded = true;
+        reason = "Test output file does not have a grade: " + testOutputPath;
 
       } else {
         needsToBeTested = false;
         needsToBeGraded = false;
+        reason = "Test output file was graded after submission: " + testOutputPath;
       }
     }
 
-    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded);
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason);
+  }
+
+  private static boolean submittedAfterTesting(SubmissionDetails submission, TestOutputDetails testOutput) {
+    LocalDateTime submissionTime = submission.submissionTime();
+    LocalDateTime testedSubmissionTime = testOutput.testedSubmissionTime();
+    return submissionTime.isAfter(testedSubmissionTime.plusMinutes(1L));
   }
 
   @VisibleForTesting
@@ -101,7 +112,7 @@ public class FindUngradedSubmissions {
     int size = analyses.size();
     String description = (size == 1 ? " submission needs" : " submissions need");
     System.out.println(size + description + " to be " + action + ": ");
-    analyses.forEach(analysis -> System.out.println("  " + analysis.submission));
+    analyses.forEach(analysis -> System.out.println("  " + analysis.submission + "   " + analysis.reason));
   }
 
   private static Stream<Path> findSubmissionsIn(String... fileNames) {
@@ -150,7 +161,7 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded) {
+  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason) {
 
   }
 
@@ -201,8 +212,17 @@ public class FindUngradedSubmissions {
 
     private static LocalDateTime parseTime(String timeString) {
       try {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM  d hh:mm:ss a z yyyy");
-        return ZonedDateTime.parse(timeString, formatter).toLocalDateTime();
+        ZonedDateTime zoned;
+        try {
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM d hh:mm:ss a z yyyy");
+          zoned = ZonedDateTime.parse(timeString, formatter);
+
+        } catch (DateTimeParseException ex) {
+          // Single-digit day format
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM  d hh:mm:ss a z yyyy");
+          zoned = ZonedDateTime.parse(timeString, formatter);
+        }
+        return zoned.toLocalDateTime();
 
       } catch (DateTimeParseException ex) {
         return LocalDateTime.parse(timeString);
