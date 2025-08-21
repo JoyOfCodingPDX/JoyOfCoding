@@ -8,10 +8,16 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class FindUngradedSubmissions {
@@ -30,7 +36,6 @@ public class FindUngradedSubmissions {
     this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile());
   }
 
-
   @VisibleForTesting
   SubmissionAnalysis analyzeSubmission(Path submissionPath) {
     SubmissionDetails submission = this.submissionDetailsProvider.getSubmissionDetails(submissionPath);
@@ -46,7 +51,7 @@ public class FindUngradedSubmissions {
     } else {
 
       TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
-      if (submission.submissionTime().isAfter(testOutput.testedTime())) {
+      if (submission.submissionTime().isAfter(testOutput.testedSubmissionTime())) {
         needsToBeTested = true;
         needsToBeGraded = true;
 
@@ -132,7 +137,7 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-    record TestOutputDetails(LocalDateTime testedTime, boolean hasGrade) {
+    record TestOutputDetails(LocalDateTime testedSubmissionTime, boolean hasGrade) {
   }
 
   @VisibleForTesting
@@ -163,14 +168,94 @@ public class FindUngradedSubmissions {
   private static class TestOutputProviderInParentDirectory implements TestOutputPathProvider {
     @Override
     public Path getTestOutput(Path submissionDirectory, String studentId) {
-      throw new UnsupportedOperationException("This method is not implemented yet");
+      return submissionDirectory.resolve(studentId + ".out");
     }
   }
 
-  private static class TestOutputDetailsProviderFromTestOutputFile implements TestOutputDetailsProvider {
+  @VisibleForTesting
+  static class TestOutputDetailsProviderFromTestOutputFile implements TestOutputDetailsProvider {
+    private static final Pattern SUBMISSION_TIME_PATTERN = Pattern.compile(".*Submitted on (.+)");
+
+    public static LocalDateTime parseSubmissionTime(String line) {
+      if (line.contains("Submitted on")) {
+        Matcher matcher = TestOutputDetailsProviderFromTestOutputFile.SUBMISSION_TIME_PATTERN.matcher(line);
+        if (matcher.matches()) {
+          String timeString = matcher.group(1).trim();
+          return parseTime(timeString);
+        } else {
+          throw new IllegalArgumentException("Could not parse submission time from line: " + line);
+        }
+      }
+
+      return null;
+    }
+
+    private static LocalDateTime parseTime(String timeString) {
+      try {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM  d hh:mm:ss a z yyyy");
+        return ZonedDateTime.parse(timeString, formatter).toLocalDateTime();
+
+      } catch (DateTimeParseException ex) {
+        return LocalDateTime.parse(timeString);
+      }
+    }
+
+    public static Double parseGrade(String line) {
+      if (line.contains("out of")) {
+        String[] parts = line.split("out of");
+        if (parts.length == 2) {
+          try {
+            return Double.parseDouble(parts[0].trim());
+          } catch (NumberFormatException e) {
+            return Double.NaN;
+          }
+        }
+      }
+      return null;
+    }
+
     @Override
     public TestOutputDetails getTestOutputDetails(Path testOutput) {
-      throw new UnsupportedOperationException("This method is not implemented yet");
+      try {
+        return parseTestOutputDetails(Files.lines(testOutput));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    static TestOutputDetails parseTestOutputDetails(Stream<String> lines) {
+      TestOutputDetailsCreator creator = new TestOutputDetailsCreator();
+      lines.forEach(creator);
+      return creator.createTestOutputDetails();
+    }
+
+    private static class TestOutputDetailsCreator implements Consumer<String> {
+      private LocalDateTime testedSubmissionTime;
+      private Boolean hasGrade;
+
+      @Override
+      public void accept(String line) {
+        LocalDateTime submissionTime = parseSubmissionTime(line);
+        if (submissionTime != null) {
+          this.testedSubmissionTime = submissionTime;
+        }
+
+        Double grade = parseGrade(line);
+        if (grade != null) {
+          this.hasGrade = !grade.isNaN();
+        }
+      }
+
+      public TestOutputDetails createTestOutputDetails() {
+        if (this.testedSubmissionTime == null) {
+          throw new IllegalStateException("Tested submission time was not set");
+
+        } else if( this.hasGrade == null) {
+          throw new IllegalStateException("Has grade was not set");
+        }
+
+        return new TestOutputDetails(this.testedSubmissionTime, hasGrade);
+      }
     }
   }
 }
