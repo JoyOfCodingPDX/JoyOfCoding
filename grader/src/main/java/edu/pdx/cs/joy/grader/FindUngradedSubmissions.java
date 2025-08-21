@@ -86,11 +86,27 @@ public class FindUngradedSubmissions {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      System.err.println("Usage: java FindUngradedSubmissions submissionZipOrDirectory+");
+      System.err.println("Usage: java FindUngradedSubmissions -includeReason submissionZipOrDirectory+");
       System.exit(1);
     }
 
-    Stream<Path> submissions = findSubmissionsIn(args);
+    boolean includeReason = false;
+    List<String> fileNames = new ArrayList<>();
+
+    for (String arg : args) {
+      if (arg.equals("-includeReason")) {
+        includeReason = true;
+
+      } else if (arg.startsWith("-")) {
+        System.err.println("Unknown option: " + arg);
+        System.exit(1);
+
+      } else {
+        fileNames.add(arg);
+      }
+    }
+
+    Stream<Path> submissions = findSubmissionsIn(fileNames);
     FindUngradedSubmissions finder = new FindUngradedSubmissions();
     Stream<SubmissionAnalysis> analyses = submissions.map(finder::analyzeSubmission);
     List<SubmissionAnalysis> needsToBeTested = new ArrayList<>();
@@ -104,19 +120,25 @@ public class FindUngradedSubmissions {
       }
     });
 
-    printOutAnalyses(needsToBeTested, "tested");
-    printOutAnalyses(needsToBeGraded, "graded");
+    printOutAnalyses(needsToBeTested, "tested", includeReason);
+    printOutAnalyses(needsToBeGraded, "graded", includeReason);
   }
 
-  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action) {
+  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, boolean includeReason) {
     int size = analyses.size();
     String description = (size == 1 ? " submission needs" : " submissions need");
     System.out.println(size + description + " to be " + action + ": ");
-    analyses.forEach(analysis -> System.out.println("  " + analysis.submission + "   " + analysis.reason));
+    analyses.forEach(analysis -> {
+      System.out.print("  " + analysis.submission);
+      if (includeReason) {
+        System.out.print("   " + analysis.reason);
+      }
+      System.out.println();
+    });
   }
 
-  private static Stream<Path> findSubmissionsIn(String... fileNames) {
-    return Stream.of(fileNames)
+  private static Stream<Path> findSubmissionsIn(List<String> fileNames) {
+    return fileNames.stream()
         .map(Path::of)
         .filter(Files::exists)
         .flatMap(FindUngradedSubmissions::findSubmissionsIn);
