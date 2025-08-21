@@ -261,9 +261,12 @@ public class FindUngradedSubmissions {
     private static class TestOutputDetailsCreator implements Consumer<String> {
       private LocalDateTime testedSubmissionTime;
       private Boolean hasGrade;
+      private int lineCount;
 
       @Override
       public void accept(String line) {
+        this.lineCount++;
+
         LocalDateTime submissionTime = parseSubmissionTime(line);
         if (submissionTime != null) {
           this.testedSubmissionTime = submissionTime;
@@ -271,7 +274,8 @@ public class FindUngradedSubmissions {
 
         Double grade = parseGrade(line);
         if (grade != null) {
-          this.hasGrade = !grade.isNaN();
+          boolean testOutputHasNotesForStudent = lineCount > 7;
+          this.hasGrade = testOutputHasNotesForStudent || !grade.isNaN();
         }
       }
 

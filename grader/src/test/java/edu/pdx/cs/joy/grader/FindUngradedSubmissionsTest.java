@@ -220,4 +220,24 @@ public class FindUngradedSubmissionsTest {
     assertThat(details.testedSubmissionTime(), equalTo(submissionTime));
     assertThat(details.hasGrade(), equalTo(true));
   }
+
+  @Test
+  void testOutputDetailsWithMessageToStudentDoesNotNeedToBeGraded() {
+    Stream<String> lines = Stream.of(
+        "Hi, Student.  There were some problems with your submission",
+        "",
+        "I ran it through the testing script and there are a couple of things",
+        "I'd like you to fix before I ask the Graders to score it",
+        "",
+        "              The Joy of Coding Project 3: edu.pdx.cs.joy.student.Project3",
+        "              Submitted by Student Name",
+        "              Submitted on Wed Jul 30 05:10:26 PM PDT 2025",
+        "              Graded on    Wed Jul 30 05:41:04 PM PDT 2025",
+        "",
+        " out of 7.0"
+    );
+    FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(lines);
+    assertThat(details.hasGrade(), equalTo(true));
+
+  }
 }
