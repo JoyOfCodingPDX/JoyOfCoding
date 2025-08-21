@@ -130,7 +130,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     }
   }
 
-  private LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {
+  public static LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {
     String string = getSubmissionTimeString(attrs);
     return Submit.ManifestAttributes.parseSubmissionTime(string);
   }
@@ -150,7 +150,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
       "With comment: " + submissionComment + "\n";
   }
 
-  private String getSubmissionTimeString(Attributes attrs) throws SubmissionException {
+  private static String getSubmissionTimeString(Attributes attrs) throws SubmissionException {
     return getManifestAttributeValue(attrs, Submit.ManifestAttributes.SUBMISSION_TIME, "Submission time missing from manifest");
   }
 
@@ -169,7 +169,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
   private Student getStudentFromGradeBook(Attributes attrs) throws SubmissionException {
-    String studentId = getManifestAttributeValue(attrs, Submit.ManifestAttributes.USER_ID, "Student Id missing from manifest");
+    String studentId = getStudentIdFromManifestAttributes(attrs);
     String studentName = getManifestAttributeValue(attrs, Submit.ManifestAttributes.USER_NAME, "Student Name missing from manifest");
     String studentEmail = getManifestAttributeValue(attrs, Submit.ManifestAttributes.USER_EMAIL, "Student Email missing from manifest");
 
@@ -184,6 +184,10 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
         studentName + "\" or email \"" + studentEmail + "\" in grade book";
       return new SubmissionException(s);
     });
+  }
+
+  public static String getStudentIdFromManifestAttributes(Attributes attrs) throws SubmissionException {
+    return getManifestAttributeValue(attrs, Submit.ManifestAttributes.USER_ID, "Student Id missing from manifest");
   }
 
   private boolean hasEmail(Student student, String studentEmail) {
@@ -203,7 +207,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   }
 
 
-  private String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
+  private static String getManifestAttributeValue(Attributes attrs, Attributes.Name attribute, String message) throws SubmissionException {
     String value = attrs.getValue(attribute);
     if (value == null) {
       throwSubmissionException(message);
@@ -211,13 +215,17 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     return value;
   }
 
-  private void throwSubmissionException(String message) throws SubmissionException {
+  private static void throwSubmissionException(String message) throws SubmissionException {
     throw new SubmissionException(message);
-
   }
 
   private Manifest getManifestFromByteArray(byte[] file) throws IOException {
-    ZipInputStream in = new ZipInputStream(new ByteArrayInputStream(file));
+    InputStream zipFile = new ByteArrayInputStream(file);
+    return getManifestFromZipFile(zipFile);
+  }
+
+  public static Manifest getManifestFromZipFile(InputStream zipFile) throws IOException {
+    ZipInputStream in = new ZipInputStream(zipFile);
     for (ZipEntry entry = in.getNextEntry(); entry != null ; entry = in.getNextEntry()) {
       if (entry.getName().equals(JarFile.MANIFEST_NAME)) {
         Manifest manifest = new Manifest();

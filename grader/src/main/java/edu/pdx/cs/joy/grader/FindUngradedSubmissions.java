@@ -3,10 +3,15 @@ package edu.pdx.cs.joy.grader;
 import com.google.common.annotations.VisibleForTesting;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import java.util.stream.Stream;
 
 public class FindUngradedSubmissions {
@@ -21,11 +26,16 @@ public class FindUngradedSubmissions {
     this.testOutputDetailsProvider = testOutputDetailsProvider;
   }
 
+  public FindUngradedSubmissions() {
+    this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile());
+  }
+
 
   @VisibleForTesting
   SubmissionAnalysis analyzeSubmission(Path submissionPath) {
     SubmissionDetails submission = this.submissionDetailsProvider.getSubmissionDetails(submissionPath);
-    Path testOutputPath = this.testOutputProvider.getTestOutput(submission.studentId());
+    Path submissionDirectory = submissionPath.getParent();
+    Path testOutputPath = this.testOutputProvider.getTestOutput(submissionDirectory, submission.studentId());
     boolean needsToBeTested;
     boolean needsToBeGraded;
 
@@ -54,13 +64,30 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  record SubmissionDetails(String studentId, ZonedDateTime submissionTime) {
+  record SubmissionDetails(String studentId, LocalDateTime submissionTime) {
 
   }
 
   public static void main(String[] args) {
     Stream<Path> submissions = findSubmissionsIn(args);
-    submissions.forEach(System.out::println);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions();
+    Stream<SubmissionAnalysis> analyses = submissions.map(finder::analyzeSubmission);
+    List<SubmissionAnalysis> needsToBeTested = new ArrayList<>();
+    List<SubmissionAnalysis> needsToBeGraded = new ArrayList<>();
+    analyses.forEach(analysis -> {
+      if (analysis.needsToBeTested()) {
+        needsToBeTested.add(analysis);
+
+      } else if (analysis.needsToBeGraded()) {
+        needsToBeGraded.add(analysis);
+      }
+    });
+
+    System.out.println(needsToBeTested.size() + " submissions need to be tested: ");
+    needsToBeTested.forEach(System.out::println);
+
+    System.out.println(needsToBeGraded.size() + " submissions need to be graded: ");
+    needsToBeGraded.forEach(System.out::println);
   }
 
   private static Stream<Path> findSubmissionsIn(String... fileNames) {
@@ -97,7 +124,7 @@ public class FindUngradedSubmissions {
   }
 
   interface TestOutputPathProvider {
-    Path getTestOutput(String studentId);
+    Path getTestOutput(Path submissionDirectory, String studentId);
   }
 
   interface TestOutputDetailsProvider {
@@ -105,11 +132,45 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-    record TestOutputDetails(ZonedDateTime testedTime, boolean hasGrade) {
+    record TestOutputDetails(LocalDateTime testedTime, boolean hasGrade) {
   }
 
   @VisibleForTesting
   record SubmissionAnalysis (boolean needsToBeTested, boolean needsToBeGraded) {
 
+  }
+
+  private static class SubmissionDetailsProviderFromZipFile implements SubmissionDetailsProvider {
+    @Override
+    public SubmissionDetails getSubmissionDetails(Path submission) {
+      try (InputStream zipFile = Files.newInputStream(submission)) {
+        Manifest manifest = ProjectSubmissionsProcessor.getManifestFromZipFile(zipFile);
+        return getSubmissionDetails(manifest);
+
+      } catch (IOException | StudentEmailAttachmentProcessor.SubmissionException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    private SubmissionDetails getSubmissionDetails(Manifest manifest) throws StudentEmailAttachmentProcessor.SubmissionException {
+      Attributes attrs = manifest.getMainAttributes();
+      String studentId = ProjectSubmissionsProcessor.getStudentIdFromManifestAttributes(attrs);
+      LocalDateTime submissionTime = ProjectSubmissionsProcessor.getSubmissionTime(attrs);
+      return new SubmissionDetails(studentId, submissionTime);
+    }
+  }
+
+  private static class TestOutputProviderInParentDirectory implements TestOutputPathProvider {
+    @Override
+    public Path getTestOutput(Path submissionDirectory, String studentId) {
+      throw new UnsupportedOperationException("This method is not implemented yet");
+    }
+  }
+
+  private static class TestOutputDetailsProviderFromTestOutputFile implements TestOutputDetailsProvider {
+    @Override
+    public TestOutputDetails getTestOutputDetails(Path testOutput) {
+      throw new UnsupportedOperationException("This method is not implemented yet");
+    }
   }
 }
