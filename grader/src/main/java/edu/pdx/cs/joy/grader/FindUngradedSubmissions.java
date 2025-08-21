@@ -7,10 +7,6 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class FindUngradedSubmissions {
@@ -71,21 +67,24 @@ public class FindUngradedSubmissions {
     return Stream.of(fileNames)
         .map(Path::of)
         .filter(Files::exists)
-        .flatMap(path -> findSubmissionsIn(path).stream());
+        .flatMap(FindUngradedSubmissions::findSubmissionsIn);
   }
 
-  private static Collection<? extends Path> findSubmissionsIn(Path path) {
+  private static Stream<? extends Path> findSubmissionsIn(Path path) {
     if (Files.isDirectory(path)) {
-      try (Stream<Path> walk = Files.walk(path, FileVisitOption.FOLLOW_LINKS)) {
-        return walk.filter(FindUngradedSubmissions::isZipFile).toList();
+      try {
+        // If we put the walk into a try-with-resources, the consumer of the stream will encounter and
+        // exception, because the stream will be closed immediately.
+        Stream<Path> walk = Files.walk(path, FileVisitOption.FOLLOW_LINKS);
+        return walk.filter(FindUngradedSubmissions::isZipFile);
 
       } catch (IOException e) {
         throw new RuntimeException("Error while walking through directory: " + path, e);
       }
     } else if (isZipFile(path)) {
-      return List.of(path);
+      return Stream.of(path);
     } else {
-      return Collections.emptyList();
+      return Stream.empty();
     }
   }
 
