@@ -4,7 +4,7 @@
   <parent>
     <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>1.2.3</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <artifactId>${artifactId}</artifactId>
   <groupId>${groupId}</groupId>
