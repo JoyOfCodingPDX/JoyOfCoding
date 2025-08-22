@@ -106,6 +106,8 @@ public class Survey extends EmailSender {
   void takeSurvey(String... args) {
     parseCommandLine(args);
 
+    exitIfStudentXmlFileAlreadyExists();
+
     printIntroduction();
 
     Student student = gatherStudentInformation();
@@ -119,6 +121,19 @@ public class Survey extends EmailSender {
 
     emailSurveyResults(student, learn, comments);
 
+  }
+
+  private void exitIfStudentXmlFileAlreadyExists() {
+    File studentXmlFile = new File(this.xmlFileDir, STUDENT_XML_FILE_NAME);
+    if (studentXmlFile.exists()) {
+      String message = "\nIt looks like you've already run the Survey program.\n" +
+                       "\nThe student XML file \"" + STUDENT_XML_FILE_NAME +
+                       "\" already exists in the directory \"" + this.xmlFileDir + "\".\n" +
+                       "\nYou don't need to run the Survey program again.\n" +
+                       "\nIf you want to run it again, please delete the file \"" +
+                       STUDENT_XML_FILE_NAME + "\" and try again.";
+      printErrorMessageAndExit(message);
+    }
   }
 
   private void addNotesToStudent(Student student, String learn, String comments) {
