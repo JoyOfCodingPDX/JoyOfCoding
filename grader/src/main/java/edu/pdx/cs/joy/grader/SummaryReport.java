@@ -37,6 +37,12 @@ public class SummaryReport {
     double best = 0.0;
     double total = 0.0;
 
+    if (assignLetterGrades) {
+      String studentName = student.getNickName() != null ? student.getNickName() : student.getFirstName();
+      pw.println("Hi, " + studentName + ".  Here are your final grades for \"The Joy of Coding\".");
+      pw.println();
+    }
+
     pw.println("Grade summary for: " + student.getFullName());
     SimpleDateFormat df = 
       new SimpleDateFormat("EEEE MMMM d, yyyy 'at' h:mm a");
@@ -171,15 +177,19 @@ public class SummaryReport {
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
-    boolean noAssignmentIsGraded = book.studentsStream()
-      .map(student -> getGrade(assignment, student))
-      .noneMatch(grade -> grade != null && !grade.isNotGraded());
+    return noSubmissionIsGraded(assignment, book) || allSubmissionsHaveGradeOfZero(assignment, book);
+  }
 
-    boolean allAssignmentHaveGradeOfZero = book.studentsStream()
+  private static boolean allSubmissionsHaveGradeOfZero(Assignment assignment, GradeBook book) {
+    return book.studentsStream()
       .map(student -> getGrade(assignment, student))
       .allMatch(grade -> grade != null && grade.getScore() == 0.0);
+  }
 
-    return noAssignmentIsGraded || allAssignmentHaveGradeOfZero;
+  private static boolean noSubmissionIsGraded(Assignment assignment, GradeBook book) {
+    return book.studentsStream()
+      .map(student -> getGrade(assignment, student))
+      .noneMatch(grade -> grade != null && !grade.isNotGraded());
   }
 
   private static Grade getGrade(Assignment assignment, Student student) {
