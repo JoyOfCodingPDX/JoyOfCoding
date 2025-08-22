@@ -5,7 +5,7 @@ import edu.pdx.cs.joy.lang.Human;
 import java.util.ArrayList;
                                                                                     
 /**                                                                                 
- * This class is represents a <code>Student</code>.                                 
+ * This class represents a <code>Student</code>.
  */                                                                                 
 public class Student extends Human {
                                                                                     
@@ -20,7 +20,7 @@ public class Student extends Human {
    * @param gpa                                                                     
    *        The student's grade point average                                       
    * @param gender                                                                  
-   *        The student's gender ("male", "female", or "other", case insensitive)
+   *        The student's gender ("male", "female", or "other", case-insensitive)
    */                                                                               
   public Student(String name, ArrayList<String> classes, double gpa, String gender) {
     super(name);
@@ -48,6 +48,6 @@ public class Student extends Human {
    * standard out by invoking its <code>toString</code> method.
    */
   public static void main(String[] args) {
-    System.err.println("Missing command line arguments");
+    System.err.println("Missing required student information");
   }
 }
