@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!DOCTYPE phone-bill
+          PUBLIC "-//Joy of Coding at PSU//DTD Phone Bill//EN" "phonebill.dtd">
+
+<phone-bill>
+  <customer>Dave</customer>
+  <call>
+    <caller>503-245-2345</caller>
+    <callee>607-777-1369</callee>
+    <start>
+      <date day="03" month="04" year="2025"/>
+      <time hour="9" minute="56"/>
+    </start>
+    <end>
+      <date day="03" month="04" year="2025"/>
+      <!-- 43 minute call -->
+      <time hour="10" minute="39"/>
+    </end>
+  </call>
+  <call>
+    <caller>603-868-1932</caller>
+    <callee>765-497-8254</callee>
+    <start>
+      <date day="10" month="7" year="2025"/>
+      <time hour="5" minute="27"/>
+    </start>
+    <end>
+      <date day="10" month="7" year="2025"/>
+      <time hour="6" minute="04"/>
+    </end>
+  </call>
+</phone-bill>
