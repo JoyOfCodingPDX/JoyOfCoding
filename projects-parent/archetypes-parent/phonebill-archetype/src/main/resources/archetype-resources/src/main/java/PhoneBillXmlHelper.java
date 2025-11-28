@@ -8,7 +8,7 @@ import edu.pdx.cs.joy.ProjectXmlHelper;
 public class PhoneBillXmlHelper extends ProjectXmlHelper {
 
   /**
-   * The Public ID for the Family Tree DTD
+   * The Public ID for the Phone Bill DTD
    */
   protected static final String PUBLIC_ID =
     "-//Joy of Coding at PSU//DTD Phone Bill//EN";
