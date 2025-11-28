@@ -1,0 +1,23 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='us-ascii'?>
+
+<!DOCTYPE phone-bill
+        PUBLIC "-//Joy of Coding at PSU//DTD Phone Bill//EN" "${artifactId}.dtd">
+
+<phone-bill>
+  <customer>Dave</customer>
+  <call>
+    <caller>503-245-2345</caller>
+    <!-- Missing callee -->
+    <start>
+      <date day="03" month="04" year="2025"/>
+      <time hour="9" minute="56"/>
+    </start>
+    <end>
+      <date day="03" month="04" year="2025"/>
+      <time hour="10" minute="39"/>
+    </end>
+  </call>
+</phone-bill>
