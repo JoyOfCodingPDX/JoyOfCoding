@@ -15,26 +15,21 @@ class AppointmentBookXmlHelperTest {
 
   @Test
   void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
-    AppointmentBookXmlHelper helper = new AppointmentBookXmlHelper();
-
-
-    DocumentBuilderFactory factory =
-      DocumentBuilderFactory.newInstance();
-    factory.setValidating(true);
-
-    DocumentBuilder builder =
-      factory.newDocumentBuilder();
-    builder.setErrorHandler(helper);
-    builder.setEntityResolver(helper);
+    DocumentBuilder builder = newValidatingDocumentBuilder(new AppointmentBookXmlHelper());
 
     builder.parse(this.getClass().getResourceAsStream("valid-apptbook.xml"));
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
-    AppointmentBookXmlHelper helper = new AppointmentBookXmlHelper();
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
+    DocumentBuilder builder = newValidatingDocumentBuilder(new AppointmentBookXmlHelper());
 
+    assertThrows(SAXParseException.class, () ->
+      builder.parse(this.getClass().getResourceAsStream("invalid-apptbook.xml"))
+    );
+  }
 
+  private static DocumentBuilder newValidatingDocumentBuilder(AppointmentBookXmlHelper helper) throws ParserConfigurationException {
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
     factory.setValidating(true);
@@ -43,10 +38,7 @@ class AppointmentBookXmlHelperTest {
       factory.newDocumentBuilder();
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
-
-    assertThrows(SAXParseException.class, () ->
-      builder.parse(this.getClass().getResourceAsStream("invalid-apptbook.xml"))
-    );
+    return builder;
   }
 
 }

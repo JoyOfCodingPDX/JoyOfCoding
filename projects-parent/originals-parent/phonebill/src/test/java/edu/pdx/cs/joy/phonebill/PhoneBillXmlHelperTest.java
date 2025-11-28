@@ -15,26 +15,21 @@ class PhoneBillXmlHelperTest {
 
   @Test
   void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
-    PhoneBillXmlHelper helper = new PhoneBillXmlHelper();
-
-
-    DocumentBuilderFactory factory =
-      DocumentBuilderFactory.newInstance();
-    factory.setValidating(true);
-
-    DocumentBuilder builder =
-      factory.newDocumentBuilder();
-    builder.setErrorHandler(helper);
-    builder.setEntityResolver(helper);
+    DocumentBuilder builder = newValidatingDocumentBuilder(new PhoneBillXmlHelper());
 
     builder.parse(this.getClass().getResourceAsStream("valid-phonebill.xml"));
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
-    PhoneBillXmlHelper helper = new PhoneBillXmlHelper();
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
+    DocumentBuilder builder = newValidatingDocumentBuilder(new PhoneBillXmlHelper());
 
+    assertThrows(SAXParseException.class, () ->
+      builder.parse(this.getClass().getResourceAsStream("invalid-phonebill.xml"))
+    );
+  }
 
+  private static DocumentBuilder newValidatingDocumentBuilder(PhoneBillXmlHelper helper) throws ParserConfigurationException {
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
     factory.setValidating(true);
@@ -43,10 +38,7 @@ class PhoneBillXmlHelperTest {
       factory.newDocumentBuilder();
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
-
-    assertThrows(SAXParseException.class, () ->
-      builder.parse(this.getClass().getResourceAsStream("invalid-phonebill.xml"))
-    );
+    return builder;
   }
 
 }

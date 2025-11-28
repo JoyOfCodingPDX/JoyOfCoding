@@ -15,26 +15,21 @@ class AirlineXmlHelperTest {
 
   @Test
   void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
-    AirlineXmlHelper helper = new AirlineXmlHelper();
-
-
-    DocumentBuilderFactory factory =
-      DocumentBuilderFactory.newInstance();
-    factory.setValidating(true);
-
-    DocumentBuilder builder =
-      factory.newDocumentBuilder();
-    builder.setErrorHandler(helper);
-    builder.setEntityResolver(helper);
+    DocumentBuilder builder = newValidatingDocumentBuilder(new AirlineXmlHelper());
 
     builder.parse(this.getClass().getResourceAsStream("valid-airline.xml"));
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
-    AirlineXmlHelper helper = new AirlineXmlHelper();
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
+    DocumentBuilder builder = newValidatingDocumentBuilder(new AirlineXmlHelper());
 
+    assertThrows(SAXParseException.class, () ->
+      builder.parse(this.getClass().getResourceAsStream("invalid-airline.xml"))
+    );
+  }
 
+  private static DocumentBuilder newValidatingDocumentBuilder(AirlineXmlHelper helper) throws ParserConfigurationException {
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
     factory.setValidating(true);
@@ -43,10 +38,7 @@ class AirlineXmlHelperTest {
       factory.newDocumentBuilder();
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
-
-    assertThrows(SAXParseException.class, () ->
-      builder.parse(this.getClass().getResourceAsStream("invalid-airline.xml"))
-    );
+    return builder;
   }
 
 }
