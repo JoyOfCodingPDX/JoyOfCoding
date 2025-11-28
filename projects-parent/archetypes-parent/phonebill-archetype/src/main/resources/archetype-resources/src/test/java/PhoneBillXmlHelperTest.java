@@ -20,7 +20,6 @@ class PhoneBillXmlHelperTest {
   void canParseValidXmlFile() throws ParserConfigurationException, IOException, SAXException {
     PhoneBillXmlHelper helper = new PhoneBillXmlHelper();
 
-
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
     factory.setValidating(true);
@@ -36,7 +35,6 @@ class PhoneBillXmlHelperTest {
   @Test
   void cantParseInvalidXmlFile() throws ParserConfigurationException {
     PhoneBillXmlHelper helper = new PhoneBillXmlHelper();
-
 
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
