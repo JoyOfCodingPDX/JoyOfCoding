@@ -31,7 +31,7 @@ class PhoneBillXmlHelperTest {
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
     PhoneBillXmlHelper helper = new PhoneBillXmlHelper();
 
 

@@ -34,7 +34,7 @@ class AirlineXmlHelperTest {
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
     AirlineXmlHelper helper = new AirlineXmlHelper();
 
 

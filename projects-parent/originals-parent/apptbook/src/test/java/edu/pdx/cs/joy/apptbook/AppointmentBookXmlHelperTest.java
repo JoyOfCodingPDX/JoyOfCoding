@@ -31,7 +31,7 @@ class AppointmentBookXmlHelperTest {
   }
 
   @Test
-  void cantParseInvalidXmlFile() throws ParserConfigurationException {
+  void throwsExceptionWhenParsingInvalidXmlFile() throws ParserConfigurationException {
     AppointmentBookXmlHelper helper = new AppointmentBookXmlHelper();
 
 
