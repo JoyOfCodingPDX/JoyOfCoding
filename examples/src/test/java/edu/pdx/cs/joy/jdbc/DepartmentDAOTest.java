@@ -41,8 +41,7 @@ public class DepartmentDAOTest {
   @Test
   public void testPersistAndFetchDepartmentById() throws SQLException {
     // Create a department (ID will be auto-generated)
-    Department department = new Department();
-    department.setName("Computer Science");
+    Department department = new Department("Computer Science");
 
     // Persist the department
     departmentDAO.save(department);
@@ -62,8 +61,7 @@ public class DepartmentDAOTest {
   @Test
   public void testFindDepartmentByName() throws SQLException {
     // Create and persist a department (ID will be auto-generated)
-    Department department = new Department();
-    department.setName("Mathematics");
+    Department department = new Department("Mathematics");
     departmentDAO.save(department);
 
     // Fetch the department by name
@@ -96,14 +94,9 @@ public class DepartmentDAOTest {
   @Test
   public void testFindAllDepartments() throws SQLException {
     // Create multiple departments (IDs will be auto-generated)
-    Department dept1 = new Department();
-    dept1.setName("Computer Science");
-
-    Department dept2 = new Department();
-    dept2.setName("Mathematics");
-
-    Department dept3 = new Department();
-    dept3.setName("Physics");
+    Department dept1 = new Department("Computer Science");
+    Department dept2 = new Department("Mathematics");
+    Department dept3 = new Department("Physics");
 
     // Persist all departments
     departmentDAO.save(dept1);
@@ -135,8 +128,7 @@ public class DepartmentDAOTest {
   @Test
   public void testDepartmentEquality() throws SQLException {
     // Create and persist a department (ID will be auto-generated)
-    Department original = new Department();
-    original.setName("Engineering");
+    Department original = new Department("Engineering");
     departmentDAO.save(original);
 
     // Fetch the department by its auto-generated ID

@@ -51,8 +51,7 @@ public class CourseDAOTest {
   @Test
   public void testPersistAndFetchCourse() throws SQLException {
     // Create and persist a department first (required for foreign key)
-    Department department = new Department();
-    department.setName("Computer Science");
+    Department department = new Department("Computer Science");
     departmentDAO.save(department);
 
     // Get the auto-generated department ID
@@ -86,11 +85,8 @@ public class CourseDAOTest {
   @Test
   public void testPersistMultipleCourses() throws SQLException {
     // Create and persist departments first (required for foreign key)
-    Department csDepartment = new Department();
-    csDepartment.setName("Computer Science");
-
-    Department mathDepartment = new Department();
-    mathDepartment.setName("Mathematics");
+    Department csDepartment = new Department("Computer Science");
+    Department mathDepartment = new Department("Mathematics");
 
     departmentDAO.save(csDepartment);
     departmentDAO.save(mathDepartment);

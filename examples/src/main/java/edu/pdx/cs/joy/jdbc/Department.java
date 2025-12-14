@@ -20,6 +20,16 @@ public class Department {
   }
 
   /**
+   * Creates a new Department with the specified name.
+   * The ID will be auto-generated when the department is saved to the database.
+   *
+   * @param name the name of the department
+   */
+  public Department(String name) {
+    this.name = name;
+  }
+
+  /**
    * Creates a new Department with no initial values.
    * Useful for frameworks that use reflection.
    */

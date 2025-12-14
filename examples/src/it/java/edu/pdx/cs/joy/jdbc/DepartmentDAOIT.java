@@ -70,8 +70,7 @@ public class DepartmentDAOIT {
   @Order(1)
   public void testPersistDepartment() throws SQLException {
     // Create and persist a department (ID will be auto-generated)
-    Department department = new Department();
-    department.setName(TEST_DEPARTMENT_NAME);
+    Department department = new Department(TEST_DEPARTMENT_NAME);
     departmentDAO.save(department);
 
     // Store the auto-generated ID for use in subsequent tests
