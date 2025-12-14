@@ -45,7 +45,8 @@ public class CourseDAO {
         "CREATE TABLE courses (" +
         "  id IDENTITY PRIMARY KEY," +
         "  title VARCHAR(255) NOT NULL," +
-        "  department_id INTEGER NOT NULL" +
+        "  department_id INTEGER NOT NULL," +
+        "  FOREIGN KEY (department_id) REFERENCES departments(id)" +
         ")"
       );
     }

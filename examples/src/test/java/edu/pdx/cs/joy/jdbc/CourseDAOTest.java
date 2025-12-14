@@ -10,38 +10,52 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CourseDAOTest {
 
   private Connection connection;
   private CourseDAO courseDAO;
+  private DepartmentDAO departmentDAO;
 
   @BeforeEach
   public void setUp() throws SQLException {
     // Create an in-memory H2 database
     connection = H2DatabaseHelper.createInMemoryConnection("test");
 
-    // Drop the table if it exists from a previous test, then create it
+    // Drop tables if they exist from a previous test, then create them
+    // Note: Must drop courses first due to foreign key constraint
     CourseDAO.dropTable(connection);
+    DepartmentDAO.dropTable(connection);
+
+    // Create departments table first, then courses (due to foreign key)
+    DepartmentDAO.createTable(connection);
     CourseDAO.createTable(connection);
 
-    // Initialize the DAO with the connection
+    // Initialize the DAOs with the connection
     courseDAO = new CourseDAO(connection);
+    departmentDAO = new DepartmentDAO(connection);
   }
 
   @AfterEach
   public void tearDown() throws SQLException {
     if (connection != null && !connection.isClosed()) {
-      // Drop the table and close the connection
+      // Drop tables and close the connection
+      // Note: Must drop courses first due to foreign key constraint
       CourseDAO.dropTable(connection);
+      DepartmentDAO.dropTable(connection);
       connection.close();
     }
   }
 
   @Test
   public void testPersistAndFetchCourse() throws SQLException {
-    // Create a course
+    // Create and persist a department first (required for foreign key)
     int csDepartmentId = 101;
+    Department department = new Department(csDepartmentId, "Computer Science");
+    departmentDAO.save(department);
+
+    // Create a course
     String javaCourseName = "Introduction to Java";
     Course course = new Course(javaCourseName, csDepartmentId);
 
@@ -68,9 +82,16 @@ public class CourseDAOTest {
 
   @Test
   public void testPersistMultipleCourses() throws SQLException {
-    // Create multiple courses
+    // Create and persist departments first (required for foreign key)
     int csDepartmentId = 102;
     int mathDepartmentId = 103;
+
+    Department csDepartment = new Department(csDepartmentId, "Computer Science");
+    Department mathDepartment = new Department(mathDepartmentId, "Mathematics");
+    departmentDAO.save(csDepartment);
+    departmentDAO.save(mathDepartment);
+
+    // Create multiple courses
     String dataStructuresName = "Data Structures";
     String algorithmsName = "Algorithms";
     String calculusName = "Calculus";
@@ -96,4 +117,17 @@ public class CourseDAOTest {
     assertThat(coursesByDept103, hasSize(1));
     assertThat(coursesByDept103, hasItem(hasProperty("title", is(calculusName))));
   }
+
+  @Test
+  public void testForeignKeyConstraintPreventsInvalidDepartmentId() {
+    // Try to create a course with a non-existent department ID
+    Course course = new Course("Database Systems", 999);
+
+    // Attempting to save should throw an SQLException due to foreign key constraint
+    SQLException exception = assertThrows(SQLException.class, () -> {
+      courseDAO.save(course);
+    });
+    assertThat(exception.getMessage(), containsString("Referential integrity"));
+  }
+
 }
