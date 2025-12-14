@@ -10,26 +10,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CourseDAOIT {
+public class DepartmentDAOIT {
 
-  private static final String TEST_COURSE_TITLE = "Advanced JDBC Programming";
   private static final int TEST_DEPARTMENT_ID = 201;
+  private static final String TEST_DEPARTMENT_NAME = "Computer Science";
 
   private static String dbFilePath;
   private Connection connection;
-  private CourseDAO courseDAO;
+  private DepartmentDAO departmentDAO;
 
   @BeforeAll
   public static void createTable() throws SQLException {
     // Create database file in temporary directory
     String tempDir = System.getProperty("java.io.tmpdir");
-    dbFilePath = tempDir + File.separator + "CourseDAOIT.db";
+    dbFilePath = tempDir + File.separator + "DepartmentDAOIT.db";
 
     // Connect to the file-based H2 database
     Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
 
-    // Create the courses table
-    CourseDAO.createTable(connection);
+    // Create the departments table
+    DepartmentDAO.createTable(connection);
 
     connection.close();
   }
@@ -38,7 +38,7 @@ public class CourseDAOIT {
   public void setUp() throws SQLException {
     // Connect to the existing database file
     connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
-    courseDAO = new CourseDAO(connection);
+    departmentDAO = new DepartmentDAO(connection);
   }
 
   @AfterEach
@@ -52,7 +52,7 @@ public class CourseDAOIT {
   public static void cleanUp() throws SQLException {
     // Connect one final time to drop the table and clean up
     Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
-    CourseDAO.dropTable(connection);
+    DepartmentDAO.dropTable(connection);
     connection.close();
 
     // Delete the database files
@@ -68,27 +68,27 @@ public class CourseDAOIT {
 
   @Test
   @Order(1)
-  public void testPersistCourse() throws SQLException {
-    // Create and persist a course
-    Course course = new Course(TEST_COURSE_TITLE, TEST_DEPARTMENT_ID);
-    courseDAO.save(course);
+  public void testPersistDepartment() throws SQLException {
+    // Create and persist a department
+    Department department = new Department(TEST_DEPARTMENT_ID, TEST_DEPARTMENT_NAME);
+    departmentDAO.save(department);
 
-    // Verify the course was saved by fetching it in the same test
-    Course fetchedCourse = courseDAO.findByTitle(TEST_COURSE_TITLE);
-    assertThat(fetchedCourse, is(notNullValue()));
-    assertThat(fetchedCourse.getTitle(), is(equalTo(TEST_COURSE_TITLE)));
-    assertThat(fetchedCourse.getDepartmentId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    // Verify the department was saved by fetching it in the same test
+    Department fetchedDepartment = departmentDAO.findById(TEST_DEPARTMENT_ID);
+    assertThat(fetchedDepartment, is(notNullValue()));
+    assertThat(fetchedDepartment.getId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    assertThat(fetchedDepartment.getName(), is(equalTo(TEST_DEPARTMENT_NAME)));
   }
 
   @Test
   @Order(2)
-  public void testFindPersistedCourse() throws SQLException {
-    // Search for the course that was persisted in the previous test
-    Course fetchedCourse = courseDAO.findByTitle(TEST_COURSE_TITLE);
+  public void testFindPersistedDepartment() throws SQLException {
+    // Search for the department that was persisted in the previous test
+    Department fetchedDepartment = departmentDAO.findById(TEST_DEPARTMENT_ID);
 
-    // Validate that the course persisted between test methods
-    assertThat(fetchedCourse, is(notNullValue()));
-    assertThat(fetchedCourse.getTitle(), is(equalTo(TEST_COURSE_TITLE)));
-    assertThat(fetchedCourse.getDepartmentId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    // Validate that the department persisted between test methods
+    assertThat(fetchedDepartment, is(notNullValue()));
+    assertThat(fetchedDepartment.getId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    assertThat(fetchedDepartment.getName(), is(equalTo(TEST_DEPARTMENT_NAME)));
   }
 }
