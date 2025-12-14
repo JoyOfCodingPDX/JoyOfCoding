@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +26,7 @@ public class CourseDAOIT {
     dbFilePath = tempDir + File.separator + "CourseDAOIT.db";
 
     // Connect to the file-based H2 database
-    Connection connection = DriverManager.getConnection("jdbc:h2:" + dbFilePath);
+    Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
 
     // Create the courses table
     CourseDAO.createTable(connection);
@@ -38,7 +37,7 @@ public class CourseDAOIT {
   @BeforeEach
   public void setUp() throws SQLException {
     // Connect to the existing database file
-    connection = DriverManager.getConnection("jdbc:h2:" + dbFilePath);
+    connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
     courseDAO = new CourseDAO(connection);
   }
 
@@ -52,7 +51,7 @@ public class CourseDAOIT {
   @AfterAll
   public static void cleanUp() throws SQLException {
     // Connect one final time to drop the table and clean up
-    Connection connection = DriverManager.getConnection("jdbc:h2:" + dbFilePath);
+    Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
     CourseDAO.dropTable(connection);
     connection.close();
 

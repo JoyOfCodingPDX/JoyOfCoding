@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class CourseDAOTest {
   @BeforeEach
   public void setUp() throws SQLException {
     // Create an in-memory H2 database
-    connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+    connection = H2DatabaseHelper.createInMemoryConnection("test");
 
     // Drop the table if it exists from a previous test, then create it
     CourseDAO.dropTable(connection);
