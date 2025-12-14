@@ -22,6 +22,36 @@ public class CourseDAO {
   }
 
   /**
+   * Drops the courses table from the database if it exists.
+   *
+   * @param connection the database connection to use
+   * @throws SQLException if a database error occurs
+   */
+  public static void dropTable(Connection connection) throws SQLException {
+    try (Statement statement = connection.createStatement()) {
+      statement.execute("DROP TABLE IF EXISTS courses");
+    }
+  }
+
+  /**
+   * Creates the courses table in the database.
+   *
+   * @param connection the database connection to use
+   * @throws SQLException if a database error occurs
+   */
+  public static void createTable(Connection connection) throws SQLException {
+    try (Statement statement = connection.createStatement()) {
+      statement.execute(
+        "CREATE TABLE courses (" +
+        "  id IDENTITY PRIMARY KEY," +
+        "  title VARCHAR(255) NOT NULL," +
+        "  department_id INTEGER NOT NULL" +
+        ")"
+      );
+    }
+  }
+
+  /**
    * Saves a course to the database.
    *
    * @param course the course to save

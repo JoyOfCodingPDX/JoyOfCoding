@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,16 +23,8 @@ public class CourseDAOTest {
     connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
 
     // Drop the table if it exists from a previous test, then create it
-    try (Statement statement = connection.createStatement()) {
-      statement.execute("DROP TABLE IF EXISTS courses");
-      statement.execute(
-        "CREATE TABLE courses (" +
-        "  id IDENTITY PRIMARY KEY," +
-        "  title VARCHAR(255) NOT NULL," +
-        "  department_id INTEGER NOT NULL" +
-        ")"
-      );
-    }
+    CourseDAO.dropTable(connection);
+    CourseDAO.createTable(connection);
 
     // Initialize the DAO with the connection
     courseDAO = new CourseDAO(connection);
@@ -43,9 +34,7 @@ public class CourseDAOTest {
   public void tearDown() throws SQLException {
     if (connection != null && !connection.isClosed()) {
       // Drop the table and close the connection
-      try (Statement statement = connection.createStatement()) {
-        statement.execute("DROP TABLE IF EXISTS courses");
-      }
+      CourseDAO.dropTable(connection);
       connection.close();
     }
   }
