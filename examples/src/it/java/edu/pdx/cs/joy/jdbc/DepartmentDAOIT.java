@@ -12,8 +12,8 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DepartmentDAOIT {
 
-  private static final int TEST_DEPARTMENT_ID = 201;
   private static final String TEST_DEPARTMENT_NAME = "Computer Science";
+  private static int generatedDepartmentId;
 
   private static String dbFilePath;
   private Connection connection;
@@ -69,14 +69,21 @@ public class DepartmentDAOIT {
   @Test
   @Order(1)
   public void testPersistDepartment() throws SQLException {
-    // Create and persist a department
-    Department department = new Department(TEST_DEPARTMENT_ID, TEST_DEPARTMENT_NAME);
+    // Create and persist a department (ID will be auto-generated)
+    Department department = new Department();
+    department.setName(TEST_DEPARTMENT_NAME);
     departmentDAO.save(department);
 
+    // Store the auto-generated ID for use in subsequent tests
+    generatedDepartmentId = department.getId();
+
+    // Verify that an ID was auto-generated
+    assertThat(generatedDepartmentId, is(greaterThan(0)));
+
     // Verify the department was saved by fetching it in the same test
-    Department fetchedDepartment = departmentDAO.findById(TEST_DEPARTMENT_ID);
+    Department fetchedDepartment = departmentDAO.findById(generatedDepartmentId);
     assertThat(fetchedDepartment, is(notNullValue()));
-    assertThat(fetchedDepartment.getId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    assertThat(fetchedDepartment.getId(), is(equalTo(generatedDepartmentId)));
     assertThat(fetchedDepartment.getName(), is(equalTo(TEST_DEPARTMENT_NAME)));
   }
 
@@ -84,11 +91,12 @@ public class DepartmentDAOIT {
   @Order(2)
   public void testFindPersistedDepartment() throws SQLException {
     // Search for the department that was persisted in the previous test
-    Department fetchedDepartment = departmentDAO.findById(TEST_DEPARTMENT_ID);
+    // using the auto-generated ID
+    Department fetchedDepartment = departmentDAO.findById(generatedDepartmentId);
 
     // Validate that the department persisted between test methods
     assertThat(fetchedDepartment, is(notNullValue()));
-    assertThat(fetchedDepartment.getId(), is(equalTo(TEST_DEPARTMENT_ID)));
+    assertThat(fetchedDepartment.getId(), is(equalTo(generatedDepartmentId)));
     assertThat(fetchedDepartment.getName(), is(equalTo(TEST_DEPARTMENT_NAME)));
   }
 }

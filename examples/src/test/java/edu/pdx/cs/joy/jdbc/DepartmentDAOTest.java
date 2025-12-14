@@ -40,25 +40,30 @@ public class DepartmentDAOTest {
 
   @Test
   public void testPersistAndFetchDepartmentById() throws SQLException {
-    // Create a department
-    Department department = new Department(101, "Computer Science");
+    // Create a department (ID will be auto-generated)
+    Department department = new Department();
+    department.setName("Computer Science");
 
     // Persist the department
     departmentDAO.save(department);
 
-    // Fetch the department by ID
-    Department fetchedDepartment = departmentDAO.findById(101);
+    // Verify that an ID was auto-generated
+    assertThat(department.getId(), is(greaterThan(0)));
+
+    // Fetch the department by the auto-generated ID
+    Department fetchedDepartment = departmentDAO.findById(department.getId());
 
     // Validate the fetched department using Hamcrest assertions
     assertThat(fetchedDepartment, is(notNullValue()));
-    assertThat(fetchedDepartment.getId(), is(equalTo(101)));
+    assertThat(fetchedDepartment.getId(), is(equalTo(department.getId())));
     assertThat(fetchedDepartment.getName(), is(equalTo("Computer Science")));
   }
 
   @Test
   public void testFindDepartmentByName() throws SQLException {
-    // Create and persist a department
-    Department department = new Department(102, "Mathematics");
+    // Create and persist a department (ID will be auto-generated)
+    Department department = new Department();
+    department.setName("Mathematics");
     departmentDAO.save(department);
 
     // Fetch the department by name
@@ -66,7 +71,7 @@ public class DepartmentDAOTest {
 
     // Validate the fetched department
     assertThat(fetchedDepartment, is(notNullValue()));
-    assertThat(fetchedDepartment.getId(), is(equalTo(102)));
+    assertThat(fetchedDepartment.getId(), is(equalTo(department.getId())));
     assertThat(fetchedDepartment.getName(), is(equalTo("Mathematics")));
   }
 
@@ -90,10 +95,15 @@ public class DepartmentDAOTest {
 
   @Test
   public void testFindAllDepartments() throws SQLException {
-    // Create multiple departments
-    Department dept1 = new Department(101, "Computer Science");
-    Department dept2 = new Department(102, "Mathematics");
-    Department dept3 = new Department(103, "Physics");
+    // Create multiple departments (IDs will be auto-generated)
+    Department dept1 = new Department();
+    dept1.setName("Computer Science");
+
+    Department dept2 = new Department();
+    dept2.setName("Mathematics");
+
+    Department dept3 = new Department();
+    dept3.setName("Physics");
 
     // Persist all departments
     departmentDAO.save(dept1);
@@ -108,9 +118,9 @@ public class DepartmentDAOTest {
     assertThat(allDepartments, hasItem(hasProperty("name", is("Computer Science"))));
     assertThat(allDepartments, hasItem(hasProperty("name", is("Mathematics"))));
     assertThat(allDepartments, hasItem(hasProperty("name", is("Physics"))));
-    assertThat(allDepartments, hasItem(hasProperty("id", is(101))));
-    assertThat(allDepartments, hasItem(hasProperty("id", is(102))));
-    assertThat(allDepartments, hasItem(hasProperty("id", is(103))));
+    assertThat(allDepartments, hasItem(hasProperty("id", is(dept1.getId()))));
+    assertThat(allDepartments, hasItem(hasProperty("id", is(dept2.getId()))));
+    assertThat(allDepartments, hasItem(hasProperty("id", is(dept3.getId()))));
   }
 
   @Test
@@ -124,12 +134,13 @@ public class DepartmentDAOTest {
 
   @Test
   public void testDepartmentEquality() throws SQLException {
-    // Create and persist a department
-    Department original = new Department(104, "Engineering");
+    // Create and persist a department (ID will be auto-generated)
+    Department original = new Department();
+    original.setName("Engineering");
     departmentDAO.save(original);
 
-    // Fetch the department
-    Department fetched = departmentDAO.findById(104);
+    // Fetch the department by its auto-generated ID
+    Department fetched = departmentDAO.findById(original.getId());
 
     // Validate that the objects are equal
     assertThat(fetched, is(equalTo(original)));
