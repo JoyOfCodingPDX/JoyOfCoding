@@ -26,7 +26,7 @@ public class DepartmentDAOIT {
     dbFilePath = tempDir + File.separator + "DepartmentDAOIT.db";
 
     // Connect to the file-based H2 database
-    Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
+    Connection connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
 
     // Create the departments table
     DepartmentDAO.createTable(connection);
@@ -37,7 +37,7 @@ public class DepartmentDAOIT {
   @BeforeEach
   public void setUp() throws SQLException {
     // Connect to the existing database file
-    connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
+    connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
     departmentDAO = new DepartmentDAO(connection);
   }
 
@@ -51,7 +51,7 @@ public class DepartmentDAOIT {
   @AfterAll
   public static void cleanUp() throws SQLException {
     // Connect one final time to drop the table and clean up
-    Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFilePath);
+    Connection connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
     DepartmentDAO.dropTable(connection);
     connection.close();
 

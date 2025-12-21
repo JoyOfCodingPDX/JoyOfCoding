@@ -1,5 +1,6 @@
 package edu.pdx.cs.joy.jdbc;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,11 +28,11 @@ public class H2DatabaseHelper {
    * Creates a connection to a file-based H2 database.
    * The database will be persisted to a file at the specified path.
    *
-   * @param filePath the path to the database file (without the .mv.db extension)
+   * @param databaseFilesDirectory the database file (without the .mv.db extension)
    * @return a connection to the file-based H2 database
    * @throws SQLException if a database error occurs
    */
-  public static Connection createFileBasedConnection(String filePath) throws SQLException {
-    return DriverManager.getConnection("jdbc:h2:" + filePath);
+  public static Connection createFileBasedConnection(File databaseFilesDirectory) throws SQLException {
+    return DriverManager.getConnection("jdbc:h2:" + databaseFilesDirectory.getAbsolutePath());
   }
 }
