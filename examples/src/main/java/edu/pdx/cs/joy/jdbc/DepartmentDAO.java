@@ -154,5 +154,44 @@ public class DepartmentDAO {
     String name = resultSet.getString("name");
     return new Department(id, name);
   }
+
+  /**
+   * Updates an existing department in the database.
+   *
+   * @param department the department to update
+   * @throws SQLException if a database error occurs
+   */
+  public void update(Department department) throws SQLException {
+    String sql = "UPDATE departments SET name = ? WHERE id = ?";
+
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setString(1, department.getName());
+      statement.setInt(2, department.getId());
+      int rowsAffected = statement.executeUpdate();
+
+      if (rowsAffected == 0) {
+        throw new SQLException("Update failed, no department found with ID: " + department.getId());
+      }
+    }
+  }
+
+  /**
+   * Deletes a department from the database by ID.
+   *
+   * @param id the ID of the department to delete
+   * @throws SQLException if a database error occurs
+   */
+  public void delete(int id) throws SQLException {
+    String sql = "DELETE FROM departments WHERE id = ?";
+
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setInt(1, id);
+      int rowsAffected = statement.executeUpdate();
+
+      if (rowsAffected == 0) {
+        throw new SQLException("Delete failed, no department found with ID: " + id);
+      }
+    }
+  }
 }
 
