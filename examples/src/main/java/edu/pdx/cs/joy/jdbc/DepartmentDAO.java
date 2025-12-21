@@ -34,7 +34,7 @@ public class DepartmentDAO {
   }
 
   /**
-   * Creates the departments table in the database.
+   * Creates the departments table in the database if it does not already exist.
    *
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
@@ -42,7 +42,7 @@ public class DepartmentDAO {
   public static void createTable(Connection connection) throws SQLException {
     try (Statement statement = connection.createStatement()) {
       statement.execute(
-        "CREATE TABLE departments (" +
+        "CREATE TABLE IF NOT EXISTS departments (" +
         "  id IDENTITY PRIMARY KEY," +
         "  name VARCHAR(255) NOT NULL" +
         ")"
