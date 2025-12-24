@@ -2,9 +2,10 @@ package edu.pdx.cs.joy.jdbc;
 
 /**
  * Represents a course in a college course catalog.
- * Each course has a title, is associated with a department, and has a number of credits.
+ * Each course has a unique ID, a title, is associated with a department, and has a number of credits.
  */
 public class Course {
+  private int id;
   private String title;
   private int departmentId;
   private int credits;
@@ -27,6 +28,24 @@ public class Course {
    * Useful for frameworks that use reflection.
    */
   public Course() {
+  }
+
+  /**
+   * Returns the unique ID of this course.
+   *
+   * @return the course ID
+   */
+  public int getId() {
+    return id;
+  }
+
+  /**
+   * Sets the unique ID of this course.
+   *
+   * @param id the course ID
+   */
+  public void setId(int id) {
+    this.id = id;
   }
 
   /**
@@ -86,7 +105,8 @@ public class Course {
   @Override
   public String toString() {
     return "Course{" +
-      "title='" + title + '\'' +
+      "id=" + id +
+      ", title='" + title + '\'' +
       ", departmentId=" + departmentId +
       ", credits=" + credits +
       '}';
@@ -99,6 +119,7 @@ public class Course {
 
     Course course = (Course) o;
 
+    if (id != course.id) return false;
     if (departmentId != course.departmentId) return false;
     if (credits != course.credits) return false;
     return title != null ? title.equals(course.title) : course.title == null;
@@ -106,7 +127,8 @@ public class Course {
 
   @Override
   public int hashCode() {
-    int result = title != null ? title.hashCode() : 0;
+    int result = id;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
     result = 31 * result + departmentId;
     result = 31 * result + credits;
     return result;

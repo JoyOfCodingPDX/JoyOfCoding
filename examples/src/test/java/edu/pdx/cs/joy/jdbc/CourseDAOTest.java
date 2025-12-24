@@ -65,11 +65,16 @@ public class CourseDAOTest {
     // Persist the course
     courseDAO.save(course);
 
+    // Verify that an ID was auto-generated
+    int generatedId = course.getId();
+    assertThat(generatedId, is(greaterThan(0)));
+
     // Fetch the course by title
     Course fetchedCourse = courseDAO.findByTitle(javaCourseName);
 
     // Validate the fetched course using Hamcrest assertions
     assertThat(fetchedCourse, is(notNullValue()));
+    assertThat(fetchedCourse.getId(), is(equalTo(generatedId)));
     assertThat(fetchedCourse.getTitle(), is(equalTo(javaCourseName)));
     assertThat(fetchedCourse.getDepartmentId(), is(equalTo(csDepartmentId)));
     assertThat(fetchedCourse.getCredits(), is(equalTo(credits)));
@@ -161,6 +166,37 @@ public class CourseDAOTest {
     assertThat(fetchedThree.getCredits(), is(equalTo(3)));
     assertThat(fetchedFour.getCredits(), is(equalTo(4)));
     assertThat(fetchedFive.getCredits(), is(equalTo(5)));
+  }
+
+  @Test
+  public void testUpdateCourse() throws SQLException {
+    // Create and persist a department first (required for foreign key)
+    Department department = new Department("Computer Science");
+    departmentDAO.save(department);
+    int deptId = department.getId();
+
+    // Create and persist a course
+    Course course = new Course("Database Systems", deptId, 3);
+    courseDAO.save(course);
+
+    int courseId = course.getId();
+    assertThat(courseId, is(greaterThan(0)));
+
+    // Update the course
+    course.setTitle("Advanced Database Systems");
+    course.setCredits(4);
+    courseDAO.update(course);
+
+    // Fetch the course and verify it was updated
+    Course updatedCourse = courseDAO.findByTitle("Advanced Database Systems");
+    assertThat(updatedCourse, is(notNullValue()));
+    assertThat(updatedCourse.getId(), is(equalTo(courseId)));
+    assertThat(updatedCourse.getTitle(), is(equalTo("Advanced Database Systems")));
+    assertThat(updatedCourse.getCredits(), is(equalTo(4)));
+
+    // Verify the old title doesn't exist anymore
+    Course oldCourse = courseDAO.findByTitle("Database Systems");
+    assertThat(oldCourse, is(nullValue()));
   }
 
 }
