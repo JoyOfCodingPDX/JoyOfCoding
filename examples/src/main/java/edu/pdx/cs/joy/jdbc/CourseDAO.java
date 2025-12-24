@@ -46,6 +46,7 @@ public class CourseDAO {
         "  id IDENTITY PRIMARY KEY," +
         "  title VARCHAR(255) NOT NULL," +
         "  department_id INTEGER NOT NULL," +
+        "  credits INTEGER NOT NULL," +
         "  FOREIGN KEY (department_id) REFERENCES departments(id)" +
         ")"
       );
@@ -59,11 +60,12 @@ public class CourseDAO {
    * @throws SQLException if a database error occurs
    */
   public void save(Course course) throws SQLException {
-    String sql = "INSERT INTO courses (title, department_id) VALUES (?, ?)";
+    String sql = "INSERT INTO courses (title, department_id, credits) VALUES (?, ?, ?)";
 
     try (PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, course.getTitle());
       statement.setInt(2, course.getDepartmentId());
+      statement.setInt(3, course.getCredits());
       statement.executeUpdate();
     }
   }
@@ -76,7 +78,7 @@ public class CourseDAO {
    * @throws SQLException if a database error occurs
    */
   public Course findByTitle(String title) throws SQLException {
-    String sql = "SELECT title, department_id FROM courses WHERE title = ?";
+    String sql = "SELECT title, department_id, credits FROM courses WHERE title = ?";
 
     try (PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setString(1, title);
@@ -100,7 +102,7 @@ public class CourseDAO {
    */
   public List<Course> findByDepartmentId(int departmentId) throws SQLException {
     List<Course> courses = new ArrayList<>();
-    String sql = "SELECT title, department_id FROM courses WHERE department_id = ?";
+    String sql = "SELECT title, department_id, credits FROM courses WHERE department_id = ?";
 
     try (PreparedStatement statement = connection.prepareStatement(sql)) {
       statement.setInt(1, departmentId);
@@ -125,7 +127,8 @@ public class CourseDAO {
   private Course extractCourseFromResultSet(ResultSet resultSet) throws SQLException {
     String title = resultSet.getString("title");
     int departmentId = resultSet.getInt("department_id");
-    return new Course(title, departmentId);
+    int credits = resultSet.getInt("credits");
+    return new Course(title, departmentId, credits);
   }
 }
 

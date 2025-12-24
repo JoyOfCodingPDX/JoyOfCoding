@@ -59,7 +59,8 @@ public class CourseDAOTest {
 
     // Create a course
     String javaCourseName = "Introduction to Java";
-    Course course = new Course(javaCourseName, csDepartmentId);
+    int credits = 4;
+    Course course = new Course(javaCourseName, csDepartmentId, credits);
 
     // Persist the course
     courseDAO.save(course);
@@ -71,6 +72,7 @@ public class CourseDAOTest {
     assertThat(fetchedCourse, is(notNullValue()));
     assertThat(fetchedCourse.getTitle(), is(equalTo(javaCourseName)));
     assertThat(fetchedCourse.getDepartmentId(), is(equalTo(csDepartmentId)));
+    assertThat(fetchedCourse.getCredits(), is(equalTo(credits)));
   }
 
   @Test
@@ -100,9 +102,9 @@ public class CourseDAOTest {
     String algorithmsName = "Algorithms";
     String calculusName = "Calculus";
 
-    Course course1 = new Course(dataStructuresName, csDepartmentId);
-    Course course2 = new Course(algorithmsName, csDepartmentId);
-    Course course3 = new Course(calculusName, mathDepartmentId);
+    Course course1 = new Course(dataStructuresName, csDepartmentId, 4);
+    Course course2 = new Course(algorithmsName, csDepartmentId, 3);
+    Course course3 = new Course(calculusName, mathDepartmentId, 4);
 
     // Persist all courses
     courseDAO.save(course1);
@@ -125,13 +127,40 @@ public class CourseDAOTest {
   @Test
   public void testForeignKeyConstraintPreventsInvalidDepartmentId() {
     // Try to create a course with a non-existent department ID
-    Course course = new Course("Database Systems", 999);
+    Course course = new Course("Database Systems", 999, 3);
 
     // Attempting to save should throw an SQLException due to foreign key constraint
     SQLException exception = assertThrows(SQLException.class, () -> {
       courseDAO.save(course);
     });
     assertThat(exception.getMessage(), containsString("Referential integrity"));
+  }
+
+  @Test
+  public void testCreditsArePersisted() throws SQLException {
+    // Create and persist a department first (required for foreign key)
+    Department department = new Department("Mathematics");
+    departmentDAO.save(department);
+    int deptId = department.getId();
+
+    // Create courses with different credit values
+    Course threeCredits = new Course("Statistics", deptId, 3);
+    Course fourCredits = new Course("Linear Algebra", deptId, 4);
+    Course fiveCredits = new Course("Abstract Algebra", deptId, 5);
+
+    // Persist all courses
+    courseDAO.save(threeCredits);
+    courseDAO.save(fourCredits);
+    courseDAO.save(fiveCredits);
+
+    // Fetch the courses and verify credits
+    Course fetchedThree = courseDAO.findByTitle("Statistics");
+    Course fetchedFour = courseDAO.findByTitle("Linear Algebra");
+    Course fetchedFive = courseDAO.findByTitle("Abstract Algebra");
+
+    assertThat(fetchedThree.getCredits(), is(equalTo(3)));
+    assertThat(fetchedFour.getCredits(), is(equalTo(4)));
+    assertThat(fetchedFive.getCredits(), is(equalTo(5)));
   }
 
 }

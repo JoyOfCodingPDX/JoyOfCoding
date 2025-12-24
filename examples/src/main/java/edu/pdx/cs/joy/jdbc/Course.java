@@ -2,21 +2,24 @@ package edu.pdx.cs.joy.jdbc;
 
 /**
  * Represents a course in a college course catalog.
- * Each course has a title and is associated with a department.
+ * Each course has a title, is associated with a department, and has a number of credits.
  */
 public class Course {
   private String title;
   private int departmentId;
+  private int credits;
 
   /**
-   * Creates a new Course with the specified title and department ID.
+   * Creates a new Course with the specified title, department ID, and credits.
    *
    * @param title the title of the course
    * @param departmentId the numeric ID of the department offering this course
+   * @param credits the number of credits for this course
    */
-  public Course(String title, int departmentId) {
+  public Course(String title, int departmentId, int credits) {
     this.title = title;
     this.departmentId = departmentId;
+    this.credits = credits;
   }
 
   /**
@@ -62,11 +65,30 @@ public class Course {
     this.departmentId = departmentId;
   }
 
+  /**
+   * Returns the number of credits for this course.
+   *
+   * @return the number of credits
+   */
+  public int getCredits() {
+    return credits;
+  }
+
+  /**
+   * Sets the number of credits for this course.
+   *
+   * @param credits the number of credits
+   */
+  public void setCredits(int credits) {
+    this.credits = credits;
+  }
+
   @Override
   public String toString() {
     return "Course{" +
       "title='" + title + '\'' +
       ", departmentId=" + departmentId +
+      ", credits=" + credits +
       '}';
   }
 
@@ -78,6 +100,7 @@ public class Course {
     Course course = (Course) o;
 
     if (departmentId != course.departmentId) return false;
+    if (credits != course.credits) return false;
     return title != null ? title.equals(course.title) : course.title == null;
   }
 
@@ -85,6 +108,7 @@ public class Course {
   public int hashCode() {
     int result = title != null ? title.hashCode() : 0;
     result = 31 * result + departmentId;
+    result = 31 * result + credits;
     return result;
   }
 }
