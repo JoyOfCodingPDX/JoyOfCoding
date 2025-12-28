@@ -1,25 +1,13 @@
 package edu.pdx.cs.joy.jdbc;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Data Access Object for managing AcademicTerm entities in the database.
- * Demonstrates JDBC operations with date fields: CREATE, READ, UPDATE, DELETE.
+ * Data Access Object interface for managing AcademicTerm entities in the database.
  */
-public class AcademicTermDAO {
-
-  private final Connection connection;
-
-  /**
-   * Creates a new AcademicTermDAO with the specified database connection.
-   *
-   * @param connection the database connection to use
-   */
-  public AcademicTermDAO(Connection connection) {
-    this.connection = connection;
-  }
+public interface AcademicTermDAO {
 
   /**
    * Drops the academic_terms table from the database if it exists.
@@ -27,10 +15,8 @@ public class AcademicTermDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void dropTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute("DROP TABLE IF EXISTS academic_terms");
-    }
+  static void dropTable(Connection connection) throws SQLException {
+    AcademicTermDAOImpl.dropTable(connection);
   }
 
   /**
@@ -39,17 +25,8 @@ public class AcademicTermDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void createTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute(
-        "CREATE TABLE IF NOT EXISTS academic_terms (" +
-        "  id IDENTITY PRIMARY KEY," +
-        "  name VARCHAR(255) NOT NULL," +
-        "  start_date DATE NOT NULL," +
-        "  end_date DATE NOT NULL" +
-        ")"
-      );
-    }
+  static void createTable(Connection connection) throws SQLException {
+    AcademicTermDAOImpl.createTable(connection);
   }
 
   /**
@@ -59,26 +36,7 @@ public class AcademicTermDAO {
    * @param term the academic term to save
    * @throws SQLException if a database error occurs
    */
-  public void save(AcademicTerm term) throws SQLException {
-    String sql = "INSERT INTO academic_terms (name, start_date, end_date) VALUES (?, ?, ?)";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-      statement.setString(1, term.getName());
-      statement.setDate(2, Date.valueOf(term.getStartDate()));
-      statement.setDate(3, Date.valueOf(term.getEndDate()));
-      statement.executeUpdate();
-
-      // Retrieve the auto-generated ID and set it on the term object
-      try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-          int generatedId = generatedKeys.getInt(1);
-          term.setId(generatedId);
-        } else {
-          throw new SQLException("Creating academic term failed, no ID obtained.");
-        }
-      }
-    }
-  }
+  void save(AcademicTerm term) throws SQLException;
 
   /**
    * Finds an academic term by its ID.
@@ -87,21 +45,7 @@ public class AcademicTermDAO {
    * @return the academic term with the given ID, or null if not found
    * @throws SQLException if a database error occurs
    */
-  public AcademicTerm findById(int id) throws SQLException {
-    String sql = "SELECT id, name, start_date, end_date FROM academic_terms WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setInt(1, id);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return extractAcademicTermFromResultSet(resultSet);
-        }
-      }
-    }
-
-    return null;
-  }
+  AcademicTerm findById(int id) throws SQLException;
 
   /**
    * Finds an academic term by its name.
@@ -110,21 +54,7 @@ public class AcademicTermDAO {
    * @return the academic term with the given name, or null if not found
    * @throws SQLException if a database error occurs
    */
-  public AcademicTerm findByName(String name) throws SQLException {
-    String sql = "SELECT id, name, start_date, end_date FROM academic_terms WHERE name = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, name);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return extractAcademicTermFromResultSet(resultSet);
-        }
-      }
-    }
-
-    return null;
-  }
+  AcademicTerm findByName(String name) throws SQLException;
 
   /**
    * Finds all academic terms in the database.
@@ -132,19 +62,7 @@ public class AcademicTermDAO {
    * @return a list of all academic terms
    * @throws SQLException if a database error occurs
    */
-  public List<AcademicTerm> findAll() throws SQLException {
-    List<AcademicTerm> terms = new ArrayList<>();
-    String sql = "SELECT id, name, start_date, end_date FROM academic_terms ORDER BY start_date";
-
-    try (Statement statement = connection.createStatement();
-         ResultSet resultSet = statement.executeQuery(sql)) {
-      while (resultSet.next()) {
-        terms.add(extractAcademicTermFromResultSet(resultSet));
-      }
-    }
-
-    return terms;
-  }
+  List<AcademicTerm> findAll() throws SQLException;
 
   /**
    * Updates an existing academic term in the database.
@@ -153,21 +71,7 @@ public class AcademicTermDAO {
    * @param term the academic term to update
    * @throws SQLException if a database error occurs
    */
-  public void update(AcademicTerm term) throws SQLException {
-    String sql = "UPDATE academic_terms SET name = ?, start_date = ?, end_date = ? WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, term.getName());
-      statement.setDate(2, Date.valueOf(term.getStartDate()));
-      statement.setDate(3, Date.valueOf(term.getEndDate()));
-      statement.setInt(4, term.getId());
-
-      int rowsAffected = statement.executeUpdate();
-      if (rowsAffected == 0) {
-        throw new SQLException("Update failed, no academic term found with ID: " + term.getId());
-      }
-    }
-  }
+  void update(AcademicTerm term) throws SQLException;
 
   /**
    * Deletes an academic term from the database by ID.
@@ -175,35 +79,6 @@ public class AcademicTermDAO {
    * @param id the ID of the academic term to delete
    * @throws SQLException if a database error occurs
    */
-  public void delete(int id) throws SQLException {
-    String sql = "DELETE FROM academic_terms WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setInt(1, id);
-      int rowsAffected = statement.executeUpdate();
-
-      if (rowsAffected == 0) {
-        throw new SQLException("Delete failed, no academic term found with ID: " + id);
-      }
-    }
-  }
-
-  /**
-   * Extracts an AcademicTerm object from the current row of a ResultSet.
-   *
-   * @param resultSet the result set positioned at an academic term row
-   * @return an AcademicTerm object with data from the result set
-   * @throws SQLException if a database error occurs
-   */
-  private AcademicTerm extractAcademicTermFromResultSet(ResultSet resultSet) throws SQLException {
-    int id = resultSet.getInt("id");
-    String name = resultSet.getString("name");
-    Date startDate = resultSet.getDate("start_date");
-    Date endDate = resultSet.getDate("end_date");
-
-    AcademicTerm term = new AcademicTerm(name, startDate.toLocalDate(), endDate.toLocalDate());
-    term.setId(id);
-    return term;
-  }
+  void delete(int id) throws SQLException;
 }
 

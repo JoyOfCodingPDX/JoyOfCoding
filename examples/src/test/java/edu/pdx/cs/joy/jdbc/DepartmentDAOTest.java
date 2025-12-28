@@ -26,7 +26,7 @@ public class DepartmentDAOTest {
     DepartmentDAO.createTable(connection);
 
     // Initialize the DAO with the connection
-    departmentDAO = new DepartmentDAO(connection);
+    departmentDAO = new DepartmentDAOImpl(connection);
   }
 
   @AfterEach

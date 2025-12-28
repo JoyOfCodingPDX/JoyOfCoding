@@ -1,25 +1,13 @@
 package edu.pdx.cs.joy.jdbc;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Data Access Object for managing Course entities in the database.
- * Demonstrates basic JDBC operations: CREATE, READ.
+ * Data Access Object interface for managing Course entities in the database.
  */
-public class CourseDAO {
-
-  private final Connection connection;
-
-  /**
-   * Creates a new CourseDAO with the specified database connection.
-   *
-   * @param connection the database connection to use
-   */
-  public CourseDAO(Connection connection) {
-    this.connection = connection;
-  }
+public interface CourseDAO {
 
   /**
    * Drops the courses table from the database if it exists.
@@ -27,10 +15,8 @@ public class CourseDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void dropTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute("DROP TABLE IF EXISTS courses");
-    }
+  static void dropTable(Connection connection) throws SQLException {
+    CourseDAOImpl.dropTable(connection);
   }
 
   /**
@@ -39,18 +25,8 @@ public class CourseDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void createTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute(
-        "CREATE TABLE courses (" +
-        "  id IDENTITY PRIMARY KEY," +
-        "  title VARCHAR(255) NOT NULL," +
-        "  department_id INTEGER NOT NULL," +
-        "  credits INTEGER NOT NULL," +
-        "  FOREIGN KEY (department_id) REFERENCES departments(id)" +
-        ")"
-      );
-    }
+  static void createTable(Connection connection) throws SQLException {
+    CourseDAOImpl.createTable(connection);
   }
 
   /**
@@ -60,26 +36,7 @@ public class CourseDAO {
    * @param course the course to save
    * @throws SQLException if a database error occurs
    */
-  public void save(Course course) throws SQLException {
-    String sql = "INSERT INTO courses (title, department_id, credits) VALUES (?, ?, ?)";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-      statement.setString(1, course.getTitle());
-      statement.setInt(2, course.getDepartmentId());
-      statement.setInt(3, course.getCredits());
-      statement.executeUpdate();
-
-      // Retrieve the auto-generated ID and set it on the course object
-      try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-          int generatedId = generatedKeys.getInt(1);
-          course.setId(generatedId);
-        } else {
-          throw new SQLException("Creating course failed, no ID obtained.");
-        }
-      }
-    }
-  }
+  void save(Course course) throws SQLException;
 
   /**
    * Finds a course by its title.
@@ -88,21 +45,7 @@ public class CourseDAO {
    * @return the course with the given title, or null if not found
    * @throws SQLException if a database error occurs
    */
-  public Course findByTitle(String title) throws SQLException {
-    String sql = "SELECT id, title, department_id, credits FROM courses WHERE title = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, title);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return extractCourseFromResultSet(resultSet);
-        }
-      }
-    }
-
-    return null;
-  }
+  Course findByTitle(String title) throws SQLException;
 
   /**
    * Finds all courses associated with a specific department.
@@ -111,40 +54,7 @@ public class CourseDAO {
    * @return a list of courses in the department
    * @throws SQLException if a database error occurs
    */
-  public List<Course> findByDepartmentId(int departmentId) throws SQLException {
-    List<Course> courses = new ArrayList<>();
-    String sql = "SELECT id, title, department_id, credits FROM courses WHERE department_id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setInt(1, departmentId);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        while (resultSet.next()) {
-          courses.add(extractCourseFromResultSet(resultSet));
-        }
-      }
-    }
-
-    return courses;
-  }
-
-  /**
-   * Extracts a Course object from the current row of a ResultSet.
-   *
-   * @param resultSet the result set positioned at a course row
-   * @return a Course object with data from the result set
-   * @throws SQLException if a database error occurs
-   */
-  private Course extractCourseFromResultSet(ResultSet resultSet) throws SQLException {
-    int id = resultSet.getInt("id");
-    String title = resultSet.getString("title");
-    int departmentId = resultSet.getInt("department_id");
-    int credits = resultSet.getInt("credits");
-
-    Course course = new Course(title, departmentId, credits);
-    course.setId(id);
-    return course;
-  }
+  List<Course> findByDepartmentId(int departmentId) throws SQLException;
 
   /**
    * Updates an existing course in the database.
@@ -153,20 +63,6 @@ public class CourseDAO {
    * @param course the course to update
    * @throws SQLException if a database error occurs
    */
-  public void update(Course course) throws SQLException {
-    String sql = "UPDATE courses SET title = ?, department_id = ?, credits = ? WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, course.getTitle());
-      statement.setInt(2, course.getDepartmentId());
-      statement.setInt(3, course.getCredits());
-      statement.setInt(4, course.getId());
-
-      int rowsAffected = statement.executeUpdate();
-      if (rowsAffected == 0) {
-        throw new SQLException("Update failed, no course found with ID: " + course.getId());
-      }
-    }
-  }
+  void update(Course course) throws SQLException;
 }
 

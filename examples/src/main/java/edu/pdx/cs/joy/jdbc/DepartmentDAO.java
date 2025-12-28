@@ -1,25 +1,13 @@
 package edu.pdx.cs.joy.jdbc;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Data Access Object for managing Department entities in the database.
- * Demonstrates basic JDBC operations: CREATE, READ.
+ * Data Access Object interface for managing Department entities in the database.
  */
-public class DepartmentDAO {
-
-  private final Connection connection;
-
-  /**
-   * Creates a new DepartmentDAO with the specified database connection.
-   *
-   * @param connection the database connection to use
-   */
-  public DepartmentDAO(Connection connection) {
-    this.connection = connection;
-  }
+public interface DepartmentDAO {
 
   /**
    * Drops the departments table from the database if it exists.
@@ -27,10 +15,8 @@ public class DepartmentDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void dropTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute("DROP TABLE IF EXISTS departments");
-    }
+  static void dropTable(Connection connection) throws SQLException {
+    DepartmentDAOImpl.dropTable(connection);
   }
 
   /**
@@ -39,15 +25,8 @@ public class DepartmentDAO {
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
-  public static void createTable(Connection connection) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      statement.execute(
-        "CREATE TABLE IF NOT EXISTS departments (" +
-        "  id IDENTITY PRIMARY KEY," +
-        "  name VARCHAR(255) NOT NULL" +
-        ")"
-      );
-    }
+  static void createTable(Connection connection) throws SQLException {
+    DepartmentDAOImpl.createTable(connection);
   }
 
   /**
@@ -57,24 +36,7 @@ public class DepartmentDAO {
    * @param department the department to save
    * @throws SQLException if a database error occurs
    */
-  public void save(Department department) throws SQLException {
-    String sql = "INSERT INTO departments (name) VALUES (?)";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-      statement.setString(1, department.getName());
-      statement.executeUpdate();
-
-      // Retrieve the auto-generated ID and set it on the department object
-      try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-          int generatedId = generatedKeys.getInt(1);
-          department.setId(generatedId);
-        } else {
-          throw new SQLException("Creating department failed, no ID obtained.");
-        }
-      }
-    }
-  }
+  void save(Department department) throws SQLException;
 
   /**
    * Finds a department by its ID.
@@ -83,21 +45,7 @@ public class DepartmentDAO {
    * @return the department with the given ID, or null if not found
    * @throws SQLException if a database error occurs
    */
-  public Department findById(int id) throws SQLException {
-    String sql = "SELECT id, name FROM departments WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setInt(1, id);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return extractDepartmentFromResultSet(resultSet);
-        }
-      }
-    }
-
-    return null;
-  }
+  Department findById(int id) throws SQLException;
 
   /**
    * Finds a department by its name.
@@ -106,21 +54,7 @@ public class DepartmentDAO {
    * @return the department with the given name, or null if not found
    * @throws SQLException if a database error occurs
    */
-  public Department findByName(String name) throws SQLException {
-    String sql = "SELECT id, name FROM departments WHERE name = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, name);
-
-      try (ResultSet resultSet = statement.executeQuery()) {
-        if (resultSet.next()) {
-          return extractDepartmentFromResultSet(resultSet);
-        }
-      }
-    }
-
-    return null;
-  }
+  Department findByName(String name) throws SQLException;
 
   /**
    * Finds all departments in the database.
@@ -128,32 +62,7 @@ public class DepartmentDAO {
    * @return a list of all departments
    * @throws SQLException if a database error occurs
    */
-  public List<Department> findAll() throws SQLException {
-    List<Department> departments = new ArrayList<>();
-    String sql = "SELECT id, name FROM departments ORDER BY id";
-
-    try (Statement statement = connection.createStatement();
-         ResultSet resultSet = statement.executeQuery(sql)) {
-      while (resultSet.next()) {
-        departments.add(extractDepartmentFromResultSet(resultSet));
-      }
-    }
-
-    return departments;
-  }
-
-  /**
-   * Extracts a Department object from the current row of a ResultSet.
-   *
-   * @param resultSet the result set positioned at a department row
-   * @return a Department object with data from the result set
-   * @throws SQLException if a database error occurs
-   */
-  private Department extractDepartmentFromResultSet(ResultSet resultSet) throws SQLException {
-    int id = resultSet.getInt("id");
-    String name = resultSet.getString("name");
-    return new Department(id, name);
-  }
+  List<Department> findAll() throws SQLException;
 
   /**
    * Updates an existing department in the database.
@@ -161,19 +70,7 @@ public class DepartmentDAO {
    * @param department the department to update
    * @throws SQLException if a database error occurs
    */
-  public void update(Department department) throws SQLException {
-    String sql = "UPDATE departments SET name = ? WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setString(1, department.getName());
-      statement.setInt(2, department.getId());
-      int rowsAffected = statement.executeUpdate();
-
-      if (rowsAffected == 0) {
-        throw new SQLException("Update failed, no department found with ID: " + department.getId());
-      }
-    }
-  }
+  void update(Department department) throws SQLException;
 
   /**
    * Deletes a department from the database by ID.
@@ -181,17 +78,6 @@ public class DepartmentDAO {
    * @param id the ID of the department to delete
    * @throws SQLException if a database error occurs
    */
-  public void delete(int id) throws SQLException {
-    String sql = "DELETE FROM departments WHERE id = ?";
-
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.setInt(1, id);
-      int rowsAffected = statement.executeUpdate();
-
-      if (rowsAffected == 0) {
-        throw new SQLException("Delete failed, no department found with ID: " + id);
-      }
-    }
-  }
+  void delete(int id) throws SQLException;
 }
 

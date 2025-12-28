@@ -67,9 +67,9 @@ public class PrintH2DatabaseSchemaIT extends InvokeMainTestCase {
       CourseDAO.createTable(connection);
 
       // Create DAOs
-      DepartmentDAO departmentDAO = new DepartmentDAO(connection);
-      AcademicTermDAO termDAO = new AcademicTermDAO(connection);
-      CourseDAO courseDAO = new CourseDAO(connection);
+      DepartmentDAO departmentDAO = new DepartmentDAOImpl(connection);
+      AcademicTermDAO termDAO = new AcademicTermDAOImpl(connection);
+      CourseDAO courseDAO = new CourseDAOImpl(connection);
 
       // Insert sample departments
       Department csDept = new Department("Computer Science");

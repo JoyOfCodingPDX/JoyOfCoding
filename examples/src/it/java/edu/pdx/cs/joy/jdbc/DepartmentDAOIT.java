@@ -38,7 +38,7 @@ public class DepartmentDAOIT {
   public void setUp() throws SQLException {
     // Connect to the existing database file
     connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
-    departmentDAO = new DepartmentDAO(connection);
+    departmentDAO = new DepartmentDAOImpl(connection);
   }
 
   @AfterEach

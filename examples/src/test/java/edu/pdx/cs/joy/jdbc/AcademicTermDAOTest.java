@@ -27,7 +27,7 @@ public class AcademicTermDAOTest {
     AcademicTermDAO.createTable(connection);
 
     // Initialize the DAO with the connection
-    termDAO = new AcademicTermDAO(connection);
+    termDAO = new AcademicTermDAOImpl(connection);
   }
 
   @AfterEach

@@ -33,8 +33,8 @@ public class CourseDAOTest {
     CourseDAO.createTable(connection);
 
     // Initialize the DAOs with the connection
-    courseDAO = new CourseDAO(connection);
-    departmentDAO = new DepartmentDAO(connection);
+    courseDAO = new CourseDAOImpl(connection);
+    departmentDAO = new DepartmentDAOImpl(connection);
   }
 
   @AfterEach

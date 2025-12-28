@@ -34,7 +34,7 @@ public class ManageDepartments {
       DepartmentDAO.createTable(connection);
 
       // Create a new DepartmentDAO
-      DepartmentDAO departmentDAO = new DepartmentDAO(connection);
+      DepartmentDAO departmentDAO = new DepartmentDAOImpl(connection);
 
       switch (command) {
         case "create":
