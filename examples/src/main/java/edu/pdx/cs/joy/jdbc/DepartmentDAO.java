@@ -1,6 +1,5 @@
 package edu.pdx.cs.joy.jdbc;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,26 +7,6 @@ import java.util.List;
  * Data Access Object interface for managing Department entities in the database.
  */
 public interface DepartmentDAO {
-
-  /**
-   * Drops the departments table from the database if it exists.
-   *
-   * @param connection the database connection to use
-   * @throws SQLException if a database error occurs
-   */
-  static void dropTable(Connection connection) throws SQLException {
-    DepartmentDAOImpl.dropTable(connection);
-  }
-
-  /**
-   * Creates the departments table in the database if it does not already exist.
-   *
-   * @param connection the database connection to use
-   * @throws SQLException if a database error occurs
-   */
-  static void createTable(Connection connection) throws SQLException {
-    DepartmentDAOImpl.createTable(connection);
-  }
 
   /**
    * Saves a department to the database.

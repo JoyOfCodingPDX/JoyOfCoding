@@ -62,9 +62,9 @@ public class PrintH2DatabaseSchemaIT extends InvokeMainTestCase {
 
     try (Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFile)) {
       // Create tables
-      DepartmentDAO.createTable(connection);
-      AcademicTermDAO.createTable(connection);
-      CourseDAO.createTable(connection);
+      DepartmentDAOImpl.createTable(connection);
+      AcademicTermDAOImpl.createTable(connection);
+      CourseDAOImpl.createTable(connection);
 
       // Create DAOs
       DepartmentDAO departmentDAO = new DepartmentDAOImpl(connection);

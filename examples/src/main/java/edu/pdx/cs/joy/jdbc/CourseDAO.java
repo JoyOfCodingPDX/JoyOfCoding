@@ -1,6 +1,5 @@
 package edu.pdx.cs.joy.jdbc;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,26 +7,6 @@ import java.util.List;
  * Data Access Object interface for managing Course entities in the database.
  */
 public interface CourseDAO {
-
-  /**
-   * Drops the courses table from the database if it exists.
-   *
-   * @param connection the database connection to use
-   * @throws SQLException if a database error occurs
-   */
-  static void dropTable(Connection connection) throws SQLException {
-    CourseDAOImpl.dropTable(connection);
-  }
-
-  /**
-   * Creates the courses table in the database.
-   *
-   * @param connection the database connection to use
-   * @throws SQLException if a database error occurs
-   */
-  static void createTable(Connection connection) throws SQLException {
-    CourseDAOImpl.createTable(connection);
-  }
 
   /**
    * Saves a course to the database.

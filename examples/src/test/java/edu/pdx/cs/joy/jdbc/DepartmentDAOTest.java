@@ -22,8 +22,8 @@ public class DepartmentDAOTest {
     connection = H2DatabaseHelper.createInMemoryConnection("test");
 
     // Drop the table if it exists from a previous test, then create it
-    DepartmentDAO.dropTable(connection);
-    DepartmentDAO.createTable(connection);
+    DepartmentDAOImpl.dropTable(connection);
+    DepartmentDAOImpl.createTable(connection);
 
     // Initialize the DAO with the connection
     departmentDAO = new DepartmentDAOImpl(connection);
@@ -33,7 +33,7 @@ public class DepartmentDAOTest {
   public void tearDown() throws SQLException {
     if (connection != null && !connection.isClosed()) {
       // Drop the table and close the connection
-      DepartmentDAO.dropTable(connection);
+      DepartmentDAOImpl.dropTable(connection);
       connection.close();
     }
   }

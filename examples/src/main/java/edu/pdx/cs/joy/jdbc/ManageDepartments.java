@@ -31,7 +31,7 @@ public class ManageDepartments {
 
     try (Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFile)) {
       // Create the departments table if it doesn't exist
-      DepartmentDAO.createTable(connection);
+      DepartmentDAOImpl.createTable(connection);
 
       // Create a new DepartmentDAO
       DepartmentDAO departmentDAO = new DepartmentDAOImpl(connection);

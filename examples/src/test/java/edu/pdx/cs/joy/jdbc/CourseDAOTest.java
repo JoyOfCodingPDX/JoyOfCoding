@@ -25,12 +25,12 @@ public class CourseDAOTest {
 
     // Drop tables if they exist from a previous test, then create them
     // Note: Must drop courses first due to foreign key constraint
-    CourseDAO.dropTable(connection);
-    DepartmentDAO.dropTable(connection);
+    CourseDAOImpl.dropTable(connection);
+    DepartmentDAOImpl.dropTable(connection);
 
     // Create departments table first, then courses (due to foreign key)
-    DepartmentDAO.createTable(connection);
-    CourseDAO.createTable(connection);
+    DepartmentDAOImpl.createTable(connection);
+    CourseDAOImpl.createTable(connection);
 
     // Initialize the DAOs with the connection
     courseDAO = new CourseDAOImpl(connection);
@@ -42,8 +42,8 @@ public class CourseDAOTest {
     if (connection != null && !connection.isClosed()) {
       // Drop tables and close the connection
       // Note: Must drop courses first due to foreign key constraint
-      CourseDAO.dropTable(connection);
-      DepartmentDAO.dropTable(connection);
+      CourseDAOImpl.dropTable(connection);
+      DepartmentDAOImpl.dropTable(connection);
       connection.close();
     }
   }

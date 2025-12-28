@@ -23,8 +23,8 @@ public class AcademicTermDAOTest {
     connection = H2DatabaseHelper.createInMemoryConnection("test");
 
     // Drop and create the academic_terms table
-    AcademicTermDAO.dropTable(connection);
-    AcademicTermDAO.createTable(connection);
+    AcademicTermDAOImpl.dropTable(connection);
+    AcademicTermDAOImpl.createTable(connection);
 
     // Initialize the DAO with the connection
     termDAO = new AcademicTermDAOImpl(connection);
@@ -33,7 +33,7 @@ public class AcademicTermDAOTest {
   @AfterEach
   public void tearDown() throws SQLException {
     if (connection != null && !connection.isClosed()) {
-      AcademicTermDAO.dropTable(connection);
+      AcademicTermDAOImpl.dropTable(connection);
       connection.close();
     }
   }

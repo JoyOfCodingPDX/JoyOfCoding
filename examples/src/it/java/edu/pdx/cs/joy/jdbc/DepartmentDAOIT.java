@@ -29,7 +29,7 @@ public class DepartmentDAOIT {
     Connection connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
 
     // Create the departments table
-    DepartmentDAO.createTable(connection);
+    DepartmentDAOImpl.createTable(connection);
 
     connection.close();
   }
@@ -52,7 +52,7 @@ public class DepartmentDAOIT {
   public static void cleanUp() throws SQLException {
     // Connect one final time to drop the table and clean up
     Connection connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFilePath));
-    DepartmentDAO.dropTable(connection);
+    DepartmentDAOImpl.dropTable(connection);
     connection.close();
 
     // Delete the database files
