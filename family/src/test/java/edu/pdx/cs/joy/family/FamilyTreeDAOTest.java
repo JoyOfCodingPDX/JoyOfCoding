@@ -1,8 +1,6 @@
-package edu.pdx.cs.joy.jdbc;
+package edu.pdx.cs.joy.family;
 
-import edu.pdx.cs.joy.family.FamilyTree;
-import edu.pdx.cs.joy.family.Marriage;
-import edu.pdx.cs.joy.family.Person;
+import edu.pdx.cs.joy.jdbc.H2DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

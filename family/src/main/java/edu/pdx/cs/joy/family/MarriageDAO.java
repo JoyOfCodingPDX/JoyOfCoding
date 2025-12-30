@@ -1,6 +1,4 @@
-package edu.pdx.cs.joy.jdbc;
-
-import edu.pdx.cs.joy.family.Marriage;
+package edu.pdx.cs.joy.family;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,6 +1,4 @@
-package edu.pdx.cs.joy.jdbc;
-
-import edu.pdx.cs.joy.family.Person;
+package edu.pdx.cs.joy.family;
 
 import java.sql.*;
 import java.util.ArrayList;
