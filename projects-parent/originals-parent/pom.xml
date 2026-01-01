@@ -5,11 +5,11 @@
     <parent>
         <groupId>io.github.davidwhitlock.joy</groupId>
         <artifactId>projects-parent</artifactId>
-        <version>2.2.5-SNAPSHOT</version>
+        <version>2.2.5</version>
     </parent>
 
     <artifactId>originals-parent</artifactId>
-    <version>2.2.5-SNAPSHOT</version>
+    <version>2.2.5</version>
 
     <packaging>pom</packaging>
 
