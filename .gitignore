@@ -18,3 +18,5 @@ target
 */target
 dependency-reduced-pom.xml
 
+# H2 database files
+*.db
