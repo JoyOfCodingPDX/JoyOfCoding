@@ -23,15 +23,15 @@ public class PhoneBillDAO {
   }
 
   /**
-   * Creates the phone_bills table in the database.
+   * Creates the customers table in the database.
    *
    * @param connection the database connection to use
    * @throws SQLException if a database error occurs
    */
   public static void createTable(Connection connection) throws SQLException {
     String createTableSQL =
-      "CREATE TABLE phone_bills (" +
-      "  customer_name VARCHAR(255) PRIMARY KEY" +
+      "CREATE TABLE customers (" +
+      "  name VARCHAR(255) PRIMARY KEY" +
       ")";
 
     try (Statement statement = connection.createStatement()) {
@@ -46,7 +46,7 @@ public class PhoneBillDAO {
    * @throws SQLException if a database error occurs
    */
   public void save(PhoneBill bill) throws SQLException {
-    String insertSQL = "INSERT INTO phone_bills (customer_name) VALUES (?)";
+    String insertSQL = "INSERT INTO customers (name) VALUES (?)";
 
     try (PreparedStatement statement = connection.prepareStatement(insertSQL)) {
       statement.setString(1, bill.getCustomer());
@@ -62,14 +62,14 @@ public class PhoneBillDAO {
    * @throws SQLException if a database error occurs
    */
   public PhoneBill findByCustomer(String customerName) throws SQLException {
-    String selectSQL = "SELECT customer_name FROM phone_bills WHERE customer_name = ?";
+    String selectSQL = "SELECT name FROM customers WHERE name = ?";
 
     try (PreparedStatement statement = connection.prepareStatement(selectSQL)) {
       statement.setString(1, customerName);
 
       try (ResultSet resultSet = statement.executeQuery()) {
         if (resultSet.next()) {
-          String name = resultSet.getString("customer_name");
+          String name = resultSet.getString("name");
           return new PhoneBill(name);
         }
       }
