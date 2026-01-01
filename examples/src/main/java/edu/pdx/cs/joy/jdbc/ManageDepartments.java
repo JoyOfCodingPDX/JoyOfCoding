@@ -55,7 +55,6 @@ public class ManageDepartments {
         default:
           System.err.println("Unknown command: " + command);
           printUsage();
-          return;
       }
     }
   }

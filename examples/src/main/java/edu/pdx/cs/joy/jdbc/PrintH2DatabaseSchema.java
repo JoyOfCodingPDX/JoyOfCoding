@@ -2,12 +2,19 @@ package edu.pdx.cs.joy.jdbc;
 
 import java.io.File;
 import java.sql.*;
+import java.util.Set;
 
 /**
  * A command-line program that uses the JDBC DatabaseMetaData API to print
  * information about the tables in an H2 database file.
  */
 public class PrintH2DatabaseSchema {
+
+  private static final Set<String> uninterestingTablePrefixes = Set.of(
+    "CONSTANTS", "ENUM_VALUES", "INDEXES", "INDEX_COLUMNS", "INFORMATION_SCHEMA_CATALOG_NAME",
+    "IN_DOUBT", "LOCKS", "QUERY_STATISTICS", "RIGHTS", "ROLES", "SESSIONS", "SESSION_STATE",
+    "SETTINGS", "SYNONYMS", "USERS"
+  );
 
   /**
    * Prints information about all tables in the database.
@@ -33,6 +40,11 @@ public class PrintH2DatabaseSchema {
       while (tables.next()) {
         foundTables = true;
         String tableName = tables.getString("TABLE_NAME");
+
+        if (tableNameIsNotInteresting(tableName)) {
+          continue; // Skip system or uninteresting tables
+        }
+
         String tableType = tables.getString("TABLE_TYPE");
         String remarks = tables.getString("REMARKS");
 
@@ -59,6 +71,10 @@ public class PrintH2DatabaseSchema {
         System.out.println("No tables found in the database.");
       }
     }
+  }
+
+  private static boolean tableNameIsNotInteresting(String tableName) {
+    return uninterestingTablePrefixes.stream().anyMatch(tableName::startsWith);
   }
 
   /**
