@@ -59,6 +59,7 @@
 
         <guava.version>33.5.0-jre</guava.version>
         <guice.version>7.0.0</guice.version>
+        <h2.version>2.2.224</h2.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
