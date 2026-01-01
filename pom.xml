@@ -59,19 +59,19 @@
 
         <guava.version>33.5.0-jre</guava.version>
         <guice.version>7.0.0</guice.version>
-        <h2.version>2.2.224</h2.version>
+        <h2.version>2.4.240</h2.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>7.18.0</pmd.version>
+        <pmd.version>7.20.0</pmd.version>
 
         <wagon-git.version>2.0.4</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.5.3</wagon-ssh.version>
 
         <junit.version>5.12.2</junit.version>
         <hamcrest.version>3.0</hamcrest.version>
-        <mockito.version>5.20.0</mockito.version>
+        <mockito.version>5.21.0</mockito.version>
         <surefire.version>3.5.4</surefire.version>
       <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
       <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
@@ -84,7 +84,7 @@
       <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
       <maven-surefire-report-plugin.version>3.5.4</maven-surefire-report-plugin.version>
       <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-      <checkstyle.version>12.1.2</checkstyle.version>
+      <checkstyle.version>12.3.1</checkstyle.version>
       <maven-archetype-plugin.version>3.4.0</maven-archetype-plugin.version>
       <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
       <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
