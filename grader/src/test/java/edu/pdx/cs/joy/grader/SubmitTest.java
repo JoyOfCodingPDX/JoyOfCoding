@@ -310,7 +310,7 @@ public class SubmitTest {
 
   @Test
   public void validateProjectName() {
-    List.of("koans", "Project0", "Project4").forEach(
+    List.of("koans", "Project1", "Project4").forEach(
       projectName -> {
         Submit submit = new Submit();
         submit.setProjectName(projectName);

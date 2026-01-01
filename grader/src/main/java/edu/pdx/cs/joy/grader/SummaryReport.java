@@ -37,6 +37,12 @@ public class SummaryReport {
     double best = 0.0;
     double total = 0.0;
 
+    if (assignLetterGrades) {
+      String studentName = student.getNickName() != null ? student.getNickName() : student.getFirstName();
+      pw.println("Hi, " + studentName + ".  Here are your final grades for \"The Joy of Coding\".");
+      pw.println();
+    }
+
     pw.println("Grade summary for: " + student.getFullName());
     SimpleDateFormat df = 
       new SimpleDateFormat("EEEE MMMM d, yyyy 'at' h:mm a");
@@ -171,15 +177,19 @@ public class SummaryReport {
   }
 
   static boolean noStudentHasGradeFor(Assignment assignment, GradeBook book) {
-    boolean noAssignmentIsGraded = book.studentsStream()
-      .map(student -> getGrade(assignment, student))
-      .noneMatch(grade -> grade != null && !grade.isNotGraded());
+    return noSubmissionIsGraded(assignment, book) || allSubmissionsHaveGradeOfZero(assignment, book);
+  }
 
-    boolean allAssignmentHaveGradeOfZero = book.studentsStream()
+  private static boolean allSubmissionsHaveGradeOfZero(Assignment assignment, GradeBook book) {
+    return book.studentsStream()
       .map(student -> getGrade(assignment, student))
       .allMatch(grade -> grade != null && grade.getScore() == 0.0);
+  }
 
-    return noAssignmentIsGraded || allAssignmentHaveGradeOfZero;
+  private static boolean noSubmissionIsGraded(Assignment assignment, GradeBook book) {
+    return book.studentsStream()
+      .map(student -> getGrade(assignment, student))
+      .noneMatch(grade -> grade != null && !grade.isNotGraded());
   }
 
   private static Grade getGrade(Assignment assignment, Student student) {
@@ -223,7 +233,7 @@ public class SummaryReport {
    * Main program that creates summary reports for every student in a
    * grade book located in a given XML file.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     boolean assignLetterGrades = false;
     String xmlFileName = null;
     String outputDirName = null;
@@ -283,23 +293,46 @@ public class SummaryReport {
 
     // Sort students by totals and print out results:
     Set<Student> students1 = allTotals.keySet();
-    printOutStudentTotals(students1, out);
+    try (PrintWriter allStudentTotalsFile = new PrintWriter(new FileWriter("all-student-totals.txt"), true)) {
+      printOutStudentTotals(students1, new Writer() {
+        @Override
+        public void write(char[] cbuf, int off, int len) {
+          allStudentTotalsFile.write(cbuf, off, len);
+          out.write(cbuf, off, len);
+        }
+
+        @Override
+        public void flush() {
+          allStudentTotalsFile.flush();
+          out.flush();
+        }
+
+        @Override
+        public void close() {
+          allStudentTotalsFile.close();
+          out.close();
+        }
+      });
+
+      allStudentTotalsFile.flush();
+    }
 
     saveGradeBookIfDirty(xmlFileName, book);
 
   }
 
   @VisibleForTesting
-  static void printOutStudentTotals(Set<Student> allStudents, PrintWriter out) {
+  static void printOutStudentTotals(Set<Student> allStudents, Writer writer) {
+    PrintWriter pw = new PrintWriter(writer, true);
     SortedSet<Student> sorted = getStudentSortedByTotalPoints(allStudents);
 
-    out.println("Undergraduates:");
+    pw.println("Undergraduates:");
     Stream<Student> undergrads = sorted.stream().filter(student -> student.getEnrolledSection() == Student.Section.UNDERGRADUATE);
-    printOutStudentTotals(out, undergrads);
+    printOutStudentTotals(pw, undergrads);
 
-    out.println("Graduate Students:");
+    pw.println("Graduate Students:");
     Stream<Student> grads = sorted.stream().filter(student -> student.getEnrolledSection() == Student.Section.GRADUATE);
-    printOutStudentTotals(out, grads);
+    printOutStudentTotals(pw, grads);
 
   }
 

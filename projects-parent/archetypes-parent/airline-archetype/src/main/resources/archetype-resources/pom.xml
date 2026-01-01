@@ -3,7 +3,7 @@
   <parent>
     <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>1.2.3</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -32,12 +32,12 @@
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.3</version>
+      <version>3.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.3</version>
+      <version>3.0.4-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -97,8 +97,8 @@
   <repositories>
     <repository>
       <name>Central Portal Snapshots</name>
-      <id>central-portals</id>
-      <url>https://central.sonatype.com/repository/mavens/</url>
+      <id>central-portal-snapshots</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
       <releases>
         <enabled>false</enabled>
       </releases>

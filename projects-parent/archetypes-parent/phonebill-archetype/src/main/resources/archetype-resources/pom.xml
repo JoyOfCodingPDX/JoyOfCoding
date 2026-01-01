@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>joy</artifactId>
     <groupId>io.github.davidwhitlock.joy</groupId>
-    <version>1.2.3</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>${groupId}</groupId>
@@ -13,15 +13,15 @@
   <name>Phone Bill Project</name>
   <description>A Phone Bill application for The Joy of Coding at Portland State University</description>
   <inceptionYear>2000</inceptionYear>
-  <url>http://www.cs.pdx.edu/~whitlock</url>
+  <url>https://www.cs.pdx.edu/~whitlock</url>
   <developers>
     <developer>
       <id>YOU</id>
       <name>Your name here</name>
       <email>you@youremail.com</email>
-      <url>http://www.cs.pdx.edu/~YOU</url>
+      <url>https://www.cs.pdx.edu/~YOU</url>
       <organization>PSU Department of Computer Science</organization>
-      <organizationUrl>http://www.cs.pdx.edu</organizationUrl>
+      <organizationUrl>https://www.cs.pdx.edu</organizationUrl>
       <roles>
         <role>Student</role>
       </roles>
@@ -29,6 +29,11 @@
     </developer>
   </developers>
   <dependencies>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -38,12 +43,17 @@
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.3</version>
+      <version>3.0.4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.davidwhitlock.joy</groupId>
+      <artifactId>examples</artifactId>
+      <version>1.4.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.github.davidwhitlock.joy</groupId>
       <artifactId>projects</artifactId>
-      <version>3.0.3</version>
+      <version>3.0.4-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
