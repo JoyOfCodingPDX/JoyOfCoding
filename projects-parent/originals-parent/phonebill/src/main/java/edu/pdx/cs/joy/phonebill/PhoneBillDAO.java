@@ -1,5 +1,8 @@
 package edu.pdx.cs.joy.phonebill;
 
+import edu.pdx.cs.joy.jdbc.H2DatabaseHelper;
+
+import java.io.File;
 import java.sql.*;
 
 /**
@@ -76,6 +79,30 @@ public class PhoneBillDAO {
     }
 
     return null;
+  }
+
+  public static void main(String[] args) throws SQLException {
+    if (args.length < 2) {
+      System.err.println("Usage: java PhoneBillDAO <db-file> <customer-name>");
+      return;
+    }
+
+    String dbFile = args[0];
+    String customerName = args[1];
+    try (Connection connection = H2DatabaseHelper.createFileBasedConnection(new File(dbFile))) {
+      PhoneBillDAO dao = new PhoneBillDAO(connection);
+      PhoneBillDAO.createTable(connection);
+
+      PhoneBill bill = new PhoneBill(customerName);
+      dao.save(bill);
+
+      PhoneBill retrievedBill = dao.findByCustomer(customerName);
+      if (retrievedBill != null) {
+        System.out.println("Retrieved PhoneBill for customer: " + retrievedBill.getCustomer());
+      } else {
+        System.out.println("No PhoneBill found for customer: " + customerName);
+      }
+    }
   }
 }
 
