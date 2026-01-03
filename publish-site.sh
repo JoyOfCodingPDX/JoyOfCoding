@@ -6,9 +6,10 @@
 set -e  # Exit on error
 
 REPO_URL="git@github.com:JoyOfCodingPDX/JoyOfCoding.git"
-STAGING_DIR="target/staging"
+STAGING_DIR="target/staging/scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git"
 WORK_DIR="target/gh-pages-publish"
 BRANCH="gh-pages"
+PARENT_SITE_DIR="target/site"
 
 echo "Publishing Maven site to GitHub Pages..."
 
@@ -17,6 +18,16 @@ if [ ! -d "$STAGING_DIR" ]; then
     echo "Error: Staging directory not found at $STAGING_DIR"
     echo "Please run 'mvn site site:stage' first"
     exit 1
+fi
+
+# Fix the index.html overwrite issue: child modules overwrite parent's index.html during staging
+# We need to restore the parent's index.html from target/site
+if [ -f "$PARENT_SITE_DIR/index.html" ]; then
+    echo "Restoring parent project's index.html (was overwritten by child modules)..."
+    cp "$PARENT_SITE_DIR/index.html" "$STAGING_DIR/index.html"
+else
+    echo "Warning: Parent site's index.html not found at $PARENT_SITE_DIR/index.html"
+    echo "Continuing anyway, but the top-level site may show the wrong project..."
 fi
 
 # Clean up any existing work directory

@@ -1,6 +1,8 @@
 # Publishing the Maven Site to GitHub Pages
 
-## The Problem
+## The Problems
+
+### 1. Argument List Too Long Error
 
 When trying to publish a large Maven site to GitHub Pages using `mvn scm-publish:publish-scm`, you may encounter the error:
 
@@ -10,14 +12,21 @@ error=7, Argument list too long
 
 This occurs because the Maven SCM Publish plugin tries to run `git add` with hundreds or thousands of file paths as arguments, exceeding the system's `ARG_MAX` limit (typically ~262KB on macOS).
 
+### 2. Child Module Overwrites Parent Index.html
+
+When running `mvn site site:stage`, Maven generates sites for all modules and stages them. However, the last child module processed overwrites the parent project's `index.html` file at the root of the staging directory. This results in visitors seeing a child module's site (like kata-archetype) instead of the parent project's overview.
+
+This is a known limitation of the Maven Site Plugin - child modules are staged to the root directory during the staging process.
+
 ## The Solution
 
 Use the provided `publish-site.sh` script instead of the Maven plugin. This script:
 
-1. Clones the `gh-pages` branch into a temporary directory
-2. Copies the staged site content using `rsync`
-3. Uses `git add -A` to stage all changes (Git handles this internally without argument length issues)
-4. Commits and pushes the changes
+1. Restores the parent project's `index.html` from `target/site/` (before it was overwritten)
+2. Clones the `gh-pages` branch into a temporary directory
+3. Copies the staged site content using `rsync`
+4. Uses `git add -A` to stage all changes (Git handles this internally without argument length issues)
+5. Commits and pushes the changes
 
 ## Usage
 
@@ -28,7 +37,9 @@ mvn clean
 mvn site site:stage
 ```
 
-This builds the site for all modules and stages it in `target/staging/`.
+This builds the site for all modules and stages it in `target/staging/scm:git:git@github.com:JoyOfCodingPDX/JoyOfCoding.git/`.
+
+Note: Archetype projects (maven-archetype packaging) are excluded from site generation to prevent them from overwriting parent project pages.
 
 ### Step 2: Publish to GitHub Pages
 
