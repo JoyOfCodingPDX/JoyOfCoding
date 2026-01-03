@@ -276,6 +276,10 @@ public class XmlDumper extends XmlHelper {
           assignmentNode.setAttribute("project-type", "XML");
           break;
 
+        case DATABASE:
+          assignmentNode.setAttribute("project-type", "DATABASE");
+          break;
+
         case REST:
           assignmentNode.setAttribute("project-type", "REST");
           break;

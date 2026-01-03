@@ -189,6 +189,10 @@ public class XmlGradeBookParser extends XmlHelper {
           assignment.setProjectType(Assignment.ProjectType.XML);
           break;
 
+        case "DATABASE":
+          assignment.setProjectType(Assignment.ProjectType.DATABASE);
+          break;
+
         case "REST":
           assignment.setProjectType(Assignment.ProjectType.REST);
           break;

@@ -30,6 +30,7 @@ public class Assignment extends NotableImpl {
     PRETTY_PRINT,
     KOANS,
     XML,
+    DATABASE,
     REST,
     ANDROID
   }

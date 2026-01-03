@@ -3,11 +3,14 @@ package edu.pdx.cs.joy.grader;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.ParserException;
 import edu.pdx.cs.joy.grader.gradebook.*;
+import edu.pdx.cs.joy.grader.gradebook.Assignment.ProjectType;
 
 import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static edu.pdx.cs.joy.grader.gradebook.Assignment.ProjectType.*;
 
 public class ProjectTimeEstimatesSummary {
   public TimeEstimatesSummaries getTimeEstimateSummaries(GradeBook book) {
@@ -17,7 +20,7 @@ public class ProjectTimeEstimatesSummary {
   public TimeEstimatesSummaries getTimeEstimateSummaries(List<GradeBook> books) {
     TimeEstimatesSummaries summaries = new TimeEstimatesSummaries();
 
-    Set<Assignment.ProjectType> projectTypes = new HashSet<>();
+    Set<ProjectType> projectTypes = new HashSet<>();
     for (GradeBook book : books) {
       book.assignmentsStream()
         .map(Assignment::getProjectType)
@@ -51,7 +54,7 @@ public class ProjectTimeEstimatesSummary {
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(gradeBooks);
 
     PrintWriter pw = new PrintWriter(System.out, true);
-    summaries.generateMarkdown(pw, List.of(Assignment.ProjectType.APP_CLASSES, Assignment.ProjectType.TEXT_FILE, Assignment.ProjectType.PRETTY_PRINT, Assignment.ProjectType.KOANS, Assignment.ProjectType.XML, Assignment.ProjectType.REST, Assignment.ProjectType.ANDROID));
+    summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, DATABASE, REST, ANDROID));
     pw.flush();
 
   }
@@ -85,13 +88,13 @@ public class ProjectTimeEstimatesSummary {
   }
 
   static class TimeEstimatesSummaries {
-    private final Map<Assignment.ProjectType, TimeEstimatesSummary> summaries = new HashMap<>();
+    private final Map<ProjectType, TimeEstimatesSummary> summaries = new HashMap<>();
 
-    public TimeEstimatesSummary getTimeEstimateSummary(Assignment.ProjectType projectType) {
+    public TimeEstimatesSummary getTimeEstimateSummary(ProjectType projectType) {
       return this.summaries.get(projectType);
     }
 
-    void addSummariesFor(List<GradeBook> books, Assignment.ProjectType projectType) {
+    void addSummariesFor(List<GradeBook> books, ProjectType projectType) {
       Collection<Double> allEstimates = new ArrayList<>();
       books.forEach(book -> {
         book.assignmentsStream()
@@ -129,7 +132,7 @@ public class ProjectTimeEstimatesSummary {
         .max(Comparator.naturalOrder());
     }
 
-    public void generateMarkdown(Writer writer, List<Assignment.ProjectType> projectTypes) {
+    public void generateMarkdown(Writer writer, List<ProjectType> projectTypes) {
       PrintWriter pw = new PrintWriter(writer, true);
       headerRows(pw, projectTypes);
       countRow(pw, projectTypes);
@@ -141,31 +144,31 @@ public class ProjectTimeEstimatesSummary {
       minimumRow(pw, projectTypes);
     }
 
-    private void minimumRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void minimumRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Minimum", TimeEstimatesSummary::getMinimum);
     }
 
-    private void lowerQuartileRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void lowerQuartileRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Bottom 25%", TimeEstimatesSummary::getLowerQuartile);
     }
 
-    private void medianRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void medianRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Median", TimeEstimatesSummary::getMedian);
     }
 
-    private void upperQuartileRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void upperQuartileRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Top 25%", TimeEstimatesSummary::getUpperQuartile);
     }
 
-    private void maximumRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void maximumRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Maximum", TimeEstimatesSummary::getMaximum);
     }
 
-    private void averageRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void averageRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRowOfDoubles(pw, projectTypes, "Average", TimeEstimatesSummary::getAverage);
     }
 
-    private void formatRowOfDoubles(PrintWriter pw, List<Assignment.ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, Double> cellValue) {
+    private void formatRowOfDoubles(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<TimeEstimatesSummary, Double> cellValue) {
       formatRow(pw, projectTypes, rowTitle, projectType -> {
         TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
         if (summary == null) {
@@ -177,7 +180,7 @@ public class ProjectTimeEstimatesSummary {
       });
     }
 
-    private void formatRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes, String rowTitle, Function<Assignment.ProjectType, String> cellValue) {
+    private void formatRow(PrintWriter pw, List<ProjectType> projectTypes, String rowTitle, Function<ProjectType, String> cellValue) {
       pw.print("| " + rowTitle + " |");
       projectTypes.forEach(projectType -> {
         pw.print(" ");
@@ -187,7 +190,7 @@ public class ProjectTimeEstimatesSummary {
       pw.println();
     }
 
-    private void countRow(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void countRow(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRow(pw, projectTypes, "Count", projectType -> {
         TimeEstimatesSummary summary = getTimeEstimateSummary(projectType);
         if (summary == null) {
@@ -199,13 +202,13 @@ public class ProjectTimeEstimatesSummary {
       });
     }
 
-    private void headerRows(PrintWriter pw, List<Assignment.ProjectType> projectTypes) {
+    private void headerRows(PrintWriter pw, List<ProjectType> projectTypes) {
       formatRow(pw, projectTypes, "", TimeEstimatesSummaries::formatProjectType);
       formatRow(pw, projectTypes, ":---", summary -> "---:");
     }
 
     @VisibleForTesting
-    static String formatProjectType(Assignment.ProjectType projectType) {
+    static String formatProjectType(ProjectType projectType) {
       switch (projectType) {
         case APP_CLASSES:
           return "App Classes";
@@ -218,6 +221,9 @@ public class ProjectTimeEstimatesSummary {
 
         case XML:
           return "XML";
+
+        case DATABASE:
+          return "DATABASE";
 
         case KOANS:
           return "Koans";
