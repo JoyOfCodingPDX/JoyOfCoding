@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"edu.pdx.cs410J.phonebillgwt.client","l":"PhoneBillGwtIT"},{"p":"edu.pdx.cs410J.phonebillgwt.client","l":"PhoneBillGwtTestSuite"},{"p":"edu.pdx.cs410J.phonebillgwt.server","l":"PhoneBillServiceImplTest"},{"p":"edu.pdx.cs410J.phonebillgwt","l":"PhoneBillServiceSyncProxyIT"}]

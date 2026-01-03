@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"edu.pdx.cs410J.airlinegwt.client","l":"Airline"},{"p":"edu.pdx.cs410J.airlinegwt.client","l":"AirlineGwt"},{"p":"edu.pdx.cs410J.airlinegwt.client","l":"AirlineService"},{"p":"edu.pdx.cs410J.airlinegwt.client","l":"AirlineServiceAsync"},{"p":"edu.pdx.cs410J.airlinegwt.server","l":"AirlineServiceImpl"},{"p":"edu.pdx.cs410J.airlinegwt.client","l":"Flight"}]

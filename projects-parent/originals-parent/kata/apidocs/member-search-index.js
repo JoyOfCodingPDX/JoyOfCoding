@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"edu.pdx.cs410J.kata","c":"Kata","l":"Kata()","u":"%3Cinit%3E()"},{"p":"edu.pdx.cs410J.kata","c":"Kata","l":"main(String[])","u":"main(java.lang.String[])"}];updateSearchResults();
+memberSearchIndex = [{"p":"edu.pdx.cs.joy.kata","c":"Kata","l":"Kata()","u":"%3Cinit%3E()"},{"p":"edu.pdx.cs.joy.kata","c":"Kata","l":"main(String[])","u":"main(java.lang.String[])"}];updateSearchResults();

@@ -1,5 +1,6 @@
-edu.pdx.cs410J.di
-edu.pdx.cs410J.junit
-edu.pdx.cs410J.rmi
-edu.pdx.cs410J.web
-edu.pdx.cs410J.xml
+edu.pdx.cs.joy.di
+edu.pdx.cs.joy.jdbc
+edu.pdx.cs.joy.junit
+edu.pdx.cs.joy.rmi
+edu.pdx.cs.joy.web
+edu.pdx.cs.joy.xml

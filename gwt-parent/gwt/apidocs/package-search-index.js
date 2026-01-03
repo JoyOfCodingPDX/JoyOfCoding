@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"edu.pdx.cs410J.gwt.client"},{"l":"edu.pdx.cs410J.gwt.client.mvp"},{"l":"edu.pdx.cs410J.gwt.server"},{"l":"edu.pdx.cs410J.gwt.server.di"},{"l":"edu.pdx.cs410J.gwt.server.mvp"},{"l":"edu.pdx.cs410J.rmi"}]

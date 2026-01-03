@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"edu.pdx.cs410J.di"},{"l":"edu.pdx.cs410J.servlets"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"edu.pdx.cs.joy.di"},{"l":"edu.pdx.cs.joy.servlets"}];updateSearchResults();

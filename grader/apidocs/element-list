@@ -1,7 +1,7 @@
-edu.pdx.cs410J.grader
-edu.pdx.cs410J.grader.canvas
-edu.pdx.cs410J.grader.gradebook
-edu.pdx.cs410J.grader.gradebook.ui
-edu.pdx.cs410J.grader.poa
-edu.pdx.cs410J.grader.poa.ui
-edu.pdx.cs410J.whitlock
+edu.pdx.cs.joy.grader
+edu.pdx.cs.joy.grader.canvas
+edu.pdx.cs.joy.grader.gradebook
+edu.pdx.cs.joy.grader.gradebook.ui
+edu.pdx.cs.joy.grader.poa
+edu.pdx.cs.joy.grader.poa.ui
+edu.pdx.cs.joy.whitlock

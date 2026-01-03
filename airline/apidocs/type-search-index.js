@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"edu.pdx.cs410J.whitlock","l":"AirlineXmlHelper"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.pdx.cs410J.whitlock","l":"Flight"},{"p":"edu.pdx.cs410J.whitlock","l":"Project1"}]

@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"edu.pdx.cs410J.student","c":"StudentTest","l":"studentNamedPatIsNamedPat()"},{"p":"edu.pdx.cs410J.student","c":"StudentTest","l":"StudentTest()","u":"%3Cinit%3E()"}];updateSearchResults();
+memberSearchIndex = [{"p":"edu.pdx.cs.joy.student","c":"StudentTest","l":"studentNamedPatIsNamedPat()"},{"p":"edu.pdx.cs.joy.student","c":"StudentTest","l":"StudentTest()","u":"%3Cinit%3E()"}];updateSearchResults();
