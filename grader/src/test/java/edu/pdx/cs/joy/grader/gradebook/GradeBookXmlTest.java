@@ -182,6 +182,11 @@ public class GradeBookXmlTest {
   }
 
   @Test
+  void databaseProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(Assignment.ProjectType.DATABASE);
+  }
+
+  @Test
   void restProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
     persistProjectOfType(Assignment.ProjectType.REST);
   }
