@@ -589,6 +589,8 @@
           <version>3.3.0</version>
           <configuration>
             <scmBranch>gh-pages</scmBranch>
+            <pubScmUrl>scm:git:https://github.com/JoyOfCodingPDX/JoyOfCoding.git</pubScmUrl>
+            <tryUpdate>true</tryUpdate>  <!-- Update existing checkout to avoid "Argument list too long" error -->
             <addUniqueDirectory>true</addUniqueDirectory>
             <skipDeletedFiles>true</skipDeletedFiles>  <!-- Attempting to delete file fails because there are too many files -->
             <extraNormalizeExtensions>svg,rss</extraNormalizeExtensions>
