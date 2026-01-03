@@ -10,7 +10,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Apache Maven Doxia Site Renderer 2.0.0-M19" />
-    <title>Maven Coordinates – kata-archetype</title>
+    <title>Maven Coordinates – Java Example Code</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.11.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -34,7 +34,7 @@
           <ul class="breadcrumb">
         <li id="publishDate">Last Published: 2026-01-03<span class="divider">|</span>
 </li>
-          <li id="projectVersion">Version: 2.2.5</li>
+          <li id="projectVersion">Version: 1.2.4</li>
           </ul>
         </div>
       </header>
@@ -42,6 +42,30 @@
         <header id="leftColumn" class="span2">
           <nav class="well sidebar-nav">
   <ul class="nav nav-list">
+   <li class="nav-header">Modules</li>
+    <li><a href="examples/index.html" title="examples"><span class="none"></span>examples</a></li>
+    <li><a href="web/index.html" title="Web Application examples"><span class="none"></span>Web Application examples</a></li>
+    <li><a href="family/index.html" title="Family Tree Application"><span class="none"></span>Family Tree Application</a></li>
+    <li><a href="grader/index.html" title="grader"><span class="none"></span>grader</a></li>
+    <li><a href="projects-parent/index.html" title="Parent Project for Projects"><span class="none"></span>Parent Project for Projects</a></li>
+   <li class="nav-header">Project Documentation</li>
+    <li><a href="project-info.html" title="Project Information"><span class="icon-chevron-down"></span>Project Information</a>
+     <ul class="nav nav-list">
+      <li><a href="dependencies.html" title="Dependencies"><span class="none"></span>Dependencies</a></li>
+      <li><a href="dependency-convergence.html" title="Dependency Convergence"><span class="none"></span>Dependency Convergence</a></li>
+      <li class="active"><a><span class="none"></span>Maven Coordinates</a></li>
+      <li><a href="distribution-management.html" title="Distribution Management"><span class="none"></span>Distribution Management</a></li>
+      <li><a href="index.html" title="About"><span class="none"></span>About</a></li>
+      <li><a href="issue-management.html" title="Issue Management"><span class="none"></span>Issue Management</a></li>
+      <li><a href="licenses.html" title="Licenses"><span class="none"></span>Licenses</a></li>
+      <li><a href="modules.html" title="Project Modules"><span class="none"></span>Project Modules</a></li>
+      <li><a href="plugin-management.html" title="Plugin Management"><span class="none"></span>Plugin Management</a></li>
+      <li><a href="plugins.html" title="Plugins"><span class="none"></span>Plugins</a></li>
+      <li><a href="scm.html" title="Source Code Management"><span class="none"></span>Source Code Management</a></li>
+      <li><a href="summary.html" title="Summary"><span class="none"></span>Summary</a></li>
+      <li><a href="team.html" title="Team"><span class="none"></span>Team</a></li>
+     </ul></li>
+    <li><a href="project-reports.html" title="Project Reports"><span class="icon-chevron-right"></span>Project Reports</a></li>
   </ul>
           </nav>
           <div class="well sidebar-nav">
@@ -68,24 +92,24 @@
 <h2>Apache Maven</h2>
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;io.github.davidwhitlock.joy&lt;/groupId&gt;
-  &lt;artifactId&gt;kata-archetype&lt;/artifactId&gt;
-  &lt;version&gt;2.2.5&lt;/version&gt;
-  &lt;type&gt;maven-archetype&lt;/type&gt;
+  &lt;artifactId&gt;joy&lt;/artifactId&gt;
+  &lt;version&gt;1.2.4&lt;/version&gt;
+  &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;</pre></section><section><a id="Apache_Ivy"></a>
 <h2>Apache Ivy</h2>
-<pre>&lt;dependency org=&quot;io.github.davidwhitlock.joy&quot; name=&quot;kata-archetype&quot; rev=&quot;2.2.5&quot;&gt;
-  &lt;artifact name=&quot;kata-archetype&quot; type=&quot;maven-archetype&quot; /&gt;
+<pre>&lt;dependency org=&quot;io.github.davidwhitlock.joy&quot; name=&quot;joy&quot; rev=&quot;1.2.4&quot;&gt;
+  &lt;artifact name=&quot;joy&quot; type=&quot;pom&quot; /&gt;
 &lt;/dependency&gt;</pre></section><section><a id="Groovy_Grape"></a>
 <h2>Groovy Grape</h2>
 <pre>@Grapes(
-@Grab(group='io.github.davidwhitlock.joy', module='kata-archetype', version='2.2.5')
+@Grab(group='io.github.davidwhitlock.joy', module='joy', version='1.2.4')
 )</pre></section><section><a id="Gradle.2FGrails"></a>
 <h2>Gradle/Grails</h2>
-<pre>implementation 'io.github.davidwhitlock.joy:kata-archetype:2.2.5'</pre></section><section><a id="Scala_SBT"></a>
+<pre>implementation 'io.github.davidwhitlock.joy:joy:1.2.4'</pre></section><section><a id="Scala_SBT"></a>
 <h2>Scala SBT</h2>
-<pre>libraryDependencies += &quot;io.github.davidwhitlock.joy&quot; % &quot;kata-archetype&quot; % &quot;2.2.5&quot;</pre></section><section><a id="Leiningen"></a>
+<pre>libraryDependencies += &quot;io.github.davidwhitlock.joy&quot; % &quot;joy&quot; % &quot;1.2.4&quot;</pre></section><section><a id="Leiningen"></a>
 <h2>Leiningen</h2>
-<pre>[io.github.davidwhitlock.joy/kata-archetype &quot;2.2.5&quot;]</pre></section></section>
+<pre>[io.github.davidwhitlock.joy/joy &quot;1.2.4&quot;]</pre></section></section>
         </main>
       </div>
     </div>
