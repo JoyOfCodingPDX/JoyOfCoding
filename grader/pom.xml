@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>grader</artifactId>
   <name>grader</name>
-  <version>1.5.1</version>
+  <version>${grader.version}</version>
   <packaging>jar</packaging>
   <url>https://www.cs.pdx.edu/~whitlock</url>
   <dependencyManagement>
