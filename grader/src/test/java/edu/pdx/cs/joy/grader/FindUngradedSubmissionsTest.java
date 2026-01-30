@@ -84,7 +84,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime testedSubmissionTime = submissionTime.minusDays(1); // Simulate test output older than submission
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testedSubmissionTime, true));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -109,7 +109,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime testedSubmissionTime = submissionTime.minusSeconds(10); // Simulate test output older than submission
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testedSubmissionTime, true));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -133,12 +133,13 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1); // Simulate test output newer than submission
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(gradedTime, false));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(false));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
+    assertThat(analysis.testOutput(), equalTo(testOutput));
   }
 
   @Test
@@ -158,7 +159,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(gradedTime, true));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -215,8 +216,10 @@ public class FindUngradedSubmissionsTest {
         "",
         "12.5 out of 13.0"
     );
-    FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(lines);
+    Path testOutput = mock(Path.class);
+    FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(testOutput, lines);
     LocalDateTime submissionTime = LocalDateTime.of(2025, 8, 6, 13, 13, 59);
+    assertThat(details.testOutput(), equalTo(testOutput));
     assertThat(details.testedSubmissionTime(), equalTo(submissionTime));
     assertThat(details.hasGrade(), equalTo(true));
   }
@@ -236,7 +239,8 @@ public class FindUngradedSubmissionsTest {
         "",
         " out of 7.0"
     );
-    FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(lines);
+    Path testOutput = mock(Path.class);
+    FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(testOutput, lines);
     assertThat(details.hasGrade(), equalTo(true));
 
   }

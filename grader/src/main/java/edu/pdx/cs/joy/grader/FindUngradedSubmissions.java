@@ -14,6 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
@@ -70,7 +71,7 @@ public class FindUngradedSubmissions {
       }
     }
 
-    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason);
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath);
   }
 
   private static boolean submittedAfterTesting(SubmissionDetails submission, TestOutputDetails testOutput) {
@@ -120,16 +121,16 @@ public class FindUngradedSubmissions {
       }
     });
 
-    printOutAnalyses(needsToBeTested, "tested", includeReason);
-    printOutAnalyses(needsToBeGraded, "graded", includeReason);
+    printOutAnalyses(needsToBeTested, "tested", SubmissionAnalysis::submission, includeReason);
+    printOutAnalyses(needsToBeGraded, "graded", SubmissionAnalysis::testOutput, includeReason);
   }
 
-  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, boolean includeReason) {
+  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, Function<SubmissionAnalysis, Path> getPath, boolean includeReason) {
     int size = analyses.size();
     String description = (size == 1 ? " submission needs" : " submissions need");
     System.out.println(size + description + " to be " + action + ": ");
     analyses.forEach(analysis -> {
-      System.out.print("  " + analysis.submission);
+      System.out.print("  " + getPath.apply(analysis));
       if (includeReason) {
         System.out.print("   " + analysis.reason);
       }
@@ -179,11 +180,11 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-    record TestOutputDetails(LocalDateTime testedSubmissionTime, boolean hasGrade) {
+  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade) {
   }
 
   @VisibleForTesting
-  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason) {
+  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason, Path testOutput) {
 
   }
 
@@ -268,22 +269,27 @@ public class FindUngradedSubmissions {
     @Override
     public TestOutputDetails getTestOutputDetails(Path testOutput) {
       try {
-        return parseTestOutputDetails(Files.lines(testOutput));
+        return parseTestOutputDetails(testOutput, Files.lines(testOutput));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     }
 
-    static TestOutputDetails parseTestOutputDetails(Stream<String> lines) {
-      TestOutputDetailsCreator creator = new TestOutputDetailsCreator();
+    static TestOutputDetails parseTestOutputDetails(Path testOutput, Stream<String> lines) {
+      TestOutputDetailsCreator creator = new TestOutputDetailsCreator(testOutput);
       lines.forEach(creator);
       return creator.createTestOutputDetails();
     }
 
     private static class TestOutputDetailsCreator implements Consumer<String> {
+      private final Path testOutput;
       private LocalDateTime testedSubmissionTime;
       private Boolean hasGrade;
       private int lineCount;
+
+      public TestOutputDetailsCreator(Path testOutput) {
+        this.testOutput = testOutput;
+      }
 
       @Override
       public void accept(String line) {
@@ -309,7 +315,7 @@ public class FindUngradedSubmissions {
           throw new IllegalStateException("Has grade was not set");
         }
 
-        return new TestOutputDetails(this.testedSubmissionTime, hasGrade);
+        return new TestOutputDetails(this.testOutput, this.testedSubmissionTime, hasGrade);
       }
     }
   }
