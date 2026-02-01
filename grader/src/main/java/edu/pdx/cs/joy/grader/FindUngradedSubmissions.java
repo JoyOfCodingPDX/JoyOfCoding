@@ -1,6 +1,9 @@
 package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
+import edu.pdx.cs.joy.grader.gradebook.GradeBook;
+import edu.pdx.cs.joy.grader.gradebook.Student;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.jar.Attributes;
@@ -94,23 +98,23 @@ public class FindUngradedSubmissions {
     }
 
     // Get the gradebook
-    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.GradeBook> gradeBookOpt = gradeBookProvider.getGradeBook();
+    java.util.Optional<GradeBook> gradeBookOpt = gradeBookProvider.getGradeBook();
     if (gradeBookOpt.isEmpty()) {
       return false;
     }
 
-    edu.pdx.cs.joy.grader.gradebook.GradeBook gradeBook = gradeBookOpt.get();
+    GradeBook gradeBook = gradeBookOpt.get();
 
     // Get the student from the gradebook
-    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.Student> studentOpt = gradeBook.getStudent(submission.studentId());
+    Optional<Student> studentOpt = gradeBook.getStudent(submission.studentId());
     if (studentOpt.isEmpty()) {
       return true; // Student not in gradebook, grade needs to be recorded
     }
 
-    edu.pdx.cs.joy.grader.gradebook.Student student = studentOpt.get();
+    Student student = studentOpt.get();
 
     // Get the grade for the assignment
-    edu.pdx.cs.joy.grader.gradebook.Grade grade = student.getGrade(testOutput.projectName());
+    Grade grade = student.getGrade(testOutput.projectName());
     if (grade == null) {
       return true; // No grade recorded for this assignment
     }
@@ -225,7 +229,7 @@ public class FindUngradedSubmissions {
   }
 
   interface GradeBookProvider {
-    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.GradeBook> getGradeBook();
+    java.util.Optional<GradeBook> getGradeBook();
   }
 
   @VisibleForTesting

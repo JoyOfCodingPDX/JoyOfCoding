@@ -1,6 +1,8 @@
 package edu.pdx.cs.joy.grader;
 
 import edu.pdx.cs.joy.grader.FindUngradedSubmissions.TestOutputDetailsProviderFromTestOutputFile;
+import edu.pdx.cs.joy.grader.gradebook.GradeBook;
+import edu.pdx.cs.joy.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.FileSystem;
@@ -8,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -333,13 +336,13 @@ public class FindUngradedSubmissionsTest {
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5));
 
     // Create a mock GradeBook with a student that doesn't have a grade for Project1
-    edu.pdx.cs.joy.grader.gradebook.GradeBook gradeBook = mock(edu.pdx.cs.joy.grader.gradebook.GradeBook.class);
-    edu.pdx.cs.joy.grader.gradebook.Student student = mock(edu.pdx.cs.joy.grader.gradebook.Student.class);
-    when(gradeBook.getStudent(studentId)).thenReturn(java.util.Optional.of(student));
+    GradeBook gradeBook = mock(GradeBook.class);
+    Student student = mock(Student.class);
+    when(gradeBook.getStudent(studentId)).thenReturn(Optional.of(student));
     when(student.getGrade("Project1")).thenReturn(null); // No grade recorded
 
     FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
-    when(gradeBookProvider.getGradeBook()).thenReturn(java.util.Optional.of(gradeBook));
+    when(gradeBookProvider.getGradeBook()).thenReturn(Optional.of(gradeBook));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
