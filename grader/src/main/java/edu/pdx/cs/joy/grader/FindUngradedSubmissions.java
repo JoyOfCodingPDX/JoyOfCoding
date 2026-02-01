@@ -180,7 +180,7 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade) {
+  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade, String projectName, Double grade) {
   }
 
   @VisibleForTesting
@@ -266,6 +266,18 @@ public class FindUngradedSubmissions {
       return null;
     }
 
+    private static final Pattern PROJECT_NAME_PATTERN = Pattern.compile(".*The Joy of Coding Project \\d+: edu\\.pdx\\.cs[\\w.]*\\.(\\w+)");
+
+    public static String parseProjectName(String line) {
+      if (line.contains("The Joy of Coding Project")) {
+        Matcher matcher = PROJECT_NAME_PATTERN.matcher(line);
+        if (matcher.matches()) {
+          return matcher.group(1);
+        }
+      }
+      return null;
+    }
+
     @Override
     public TestOutputDetails getTestOutputDetails(Path testOutput) {
       try {
@@ -286,6 +298,8 @@ public class FindUngradedSubmissions {
       private LocalDateTime testedSubmissionTime;
       private Boolean hasGrade;
       private int lineCount;
+      private String projectName;
+      private Double grade;
 
       public TestOutputDetailsCreator(Path testOutput) {
         this.testOutput = testOutput;
@@ -300,8 +314,14 @@ public class FindUngradedSubmissions {
           this.testedSubmissionTime = submissionTime;
         }
 
+        String parsedProjectName = parseProjectName(line);
+        if (parsedProjectName != null) {
+          this.projectName = parsedProjectName;
+        }
+
         Double grade = parseGrade(line);
         if (grade != null) {
+          this.grade = grade;
           boolean testOutputHasNotesForStudent = lineCount > 7;
           this.hasGrade = testOutputHasNotesForStudent || !grade.isNaN();
         }
@@ -315,7 +335,7 @@ public class FindUngradedSubmissions {
           throw new IllegalStateException("Has grade was not set");
         }
 
-        return new TestOutputDetails(this.testOutput, this.testedSubmissionTime, hasGrade);
+        return new TestOutputDetails(this.testOutput, this.testedSubmissionTime, hasGrade, projectName, grade);
       }
     }
   }
