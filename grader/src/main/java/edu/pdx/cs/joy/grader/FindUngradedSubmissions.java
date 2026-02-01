@@ -25,16 +25,23 @@ public class FindUngradedSubmissions {
   private final SubmissionDetailsProvider submissionDetailsProvider;
   private final TestOutputPathProvider testOutputProvider;
   private final TestOutputDetailsProvider testOutputDetailsProvider;
+  private final GradeBookProvider gradeBookProvider;
 
   @VisibleForTesting
-  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider) {
+  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider, GradeBookProvider gradeBookProvider) {
     this.submissionDetailsProvider = submissionDetailsProvider;
     this.testOutputProvider = testOutputProvider;
     this.testOutputDetailsProvider = testOutputDetailsProvider;
+    this.gradeBookProvider = gradeBookProvider;
+  }
+
+  @VisibleForTesting
+  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider) {
+    this(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, null);
   }
 
   public FindUngradedSubmissions() {
-    this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile());
+    this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile(), null);
   }
 
   @VisibleForTesting
@@ -71,7 +78,45 @@ public class FindUngradedSubmissions {
       }
     }
 
-    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath);
+    boolean gradeNeedsToBeRecorded = false;
+    if (!needsToBeGraded && gradeBookProvider != null) {
+      TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
+      gradeNeedsToBeRecorded = checkIfGradeNeedsRecording(submission, testOutput);
+    }
+
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath, gradeNeedsToBeRecorded);
+  }
+
+  private boolean checkIfGradeNeedsRecording(SubmissionDetails submission, TestOutputDetails testOutput) {
+    // If test output doesn't have project name or grade, can't check
+    if (testOutput.projectName() == null || testOutput.grade() == null) {
+      return false;
+    }
+
+    // Get the gradebook
+    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.GradeBook> gradeBookOpt = gradeBookProvider.getGradeBook();
+    if (gradeBookOpt.isEmpty()) {
+      return false;
+    }
+
+    edu.pdx.cs.joy.grader.gradebook.GradeBook gradeBook = gradeBookOpt.get();
+
+    // Get the student from the gradebook
+    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.Student> studentOpt = gradeBook.getStudent(submission.studentId());
+    if (studentOpt.isEmpty()) {
+      return true; // Student not in gradebook, grade needs to be recorded
+    }
+
+    edu.pdx.cs.joy.grader.gradebook.Student student = studentOpt.get();
+
+    // Get the grade for the assignment
+    edu.pdx.cs.joy.grader.gradebook.Grade grade = student.getGrade(testOutput.projectName());
+    if (grade == null) {
+      return true; // No grade recorded for this assignment
+    }
+
+    // Compare grades - if different, needs to be recorded
+    return grade.getScore() != testOutput.grade();
   }
 
   private static boolean submittedAfterTesting(SubmissionDetails submission, TestOutputDetails testOutput) {
@@ -179,12 +224,16 @@ public class FindUngradedSubmissions {
     TestOutputDetails getTestOutputDetails(Path testOutput);
   }
 
+  interface GradeBookProvider {
+    java.util.Optional<edu.pdx.cs.joy.grader.gradebook.GradeBook> getGradeBook();
+  }
+
   @VisibleForTesting
   record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade, String projectName, Double grade) {
   }
 
   @VisibleForTesting
-  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason, Path testOutput) {
+  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason, Path testOutput, boolean gradeNeedsToBeRecorded) {
 
   }
 

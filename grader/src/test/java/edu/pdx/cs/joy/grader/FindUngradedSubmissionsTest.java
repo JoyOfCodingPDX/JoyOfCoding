@@ -285,4 +285,67 @@ public class FindUngradedSubmissionsTest {
     assertThat(details.hasGrade(), equalTo(true));
 
   }
+
+  @Test
+  void submissionAnalysisIncludesGradeNeedsToBeRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student123";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(false));
+  }
+
+  @Test
+  void submissionWithGradeMissingFromGradeBookNeedsToBeRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student123";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5));
+
+    // Create a mock GradeBook with a student that doesn't have a grade for Project1
+    edu.pdx.cs.joy.grader.gradebook.GradeBook gradeBook = mock(edu.pdx.cs.joy.grader.gradebook.GradeBook.class);
+    edu.pdx.cs.joy.grader.gradebook.Student student = mock(edu.pdx.cs.joy.grader.gradebook.Student.class);
+    when(gradeBook.getStudent(studentId)).thenReturn(java.util.Optional.of(student));
+    when(student.getGrade("Project1")).thenReturn(null); // No grade recorded
+
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    when(gradeBookProvider.getGradeBook()).thenReturn(java.util.Optional.of(gradeBook));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(true));  // This should be true!
+  }
 }
