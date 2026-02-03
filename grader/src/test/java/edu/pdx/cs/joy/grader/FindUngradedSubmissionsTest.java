@@ -1,6 +1,7 @@
 package edu.pdx.cs.joy.grader;
 
 import edu.pdx.cs.joy.grader.FindUngradedSubmissions.TestOutputDetailsProviderFromTestOutputFile;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
@@ -350,5 +351,83 @@ public class FindUngradedSubmissionsTest {
     assertThat(analysis.needsToBeTested(), equalTo(false));
     assertThat(analysis.needsToBeGraded(), equalTo(false));
     assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(true));  // This should be true!
+  }
+
+  @Test
+  void submissionWithDifferentGradeInGradeBookNeedsToBeRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student456";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project2", 12.5));
+
+    // Create a mock GradeBook with a student that has a DIFFERENT grade for Project2
+    GradeBook gradeBook = mock(GradeBook.class);
+    Student student = mock(Student.class);
+    Grade grade = mock(Grade.class);
+
+    when(gradeBook.getStudent(studentId)).thenReturn(Optional.of(student));
+    when(student.getGrade("Project2")).thenReturn(grade);
+    when(grade.getScore()).thenReturn(10.0); // GradeBook has 10.0, test output has 12.5
+
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    when(gradeBookProvider.getGradeBook()).thenReturn(Optional.of(gradeBook));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(true));  // Grades differ!
+  }
+
+  @Test
+  void submissionWithMatchingGradeInGradeBookDoesNotNeedToBeRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student789";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project3", 15.0));
+
+    // Create a mock GradeBook with a student that has a MATCHING grade for Project3
+    GradeBook gradeBook = mock(GradeBook.class);
+    Student student = mock(Student.class);
+    Grade grade = mock(Grade.class);
+
+    when(gradeBook.getStudent(studentId)).thenReturn(Optional.of(student));
+    when(student.getGrade("Project3")).thenReturn(grade);
+    when(grade.getScore()).thenReturn(15.0); // GradeBook and test output both have 15.0
+
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    when(gradeBookProvider.getGradeBook()).thenReturn(Optional.of(gradeBook));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(false));  // Grades match!
   }
 }
