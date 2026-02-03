@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.grader.gradebook.Grade;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
+import edu.pdx.cs.joy.grader.gradebook.XmlGradeBookParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +43,13 @@ public class FindUngradedSubmissions {
   @VisibleForTesting
   FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider) {
     this(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, null);
+  }
+
+  public FindUngradedSubmissions(String gradeBookXmlFile) {
+    this(new SubmissionDetailsProviderFromZipFile(),
+         new TestOutputProviderInParentDirectory(),
+         new TestOutputDetailsProviderFromTestOutputFile(),
+         new GradeBookProviderFromXmlFile(gradeBookXmlFile));
   }
 
   public FindUngradedSubmissions() {
@@ -136,7 +144,7 @@ public class FindUngradedSubmissions {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      System.err.println("Usage: java FindUngradedSubmissions -includeReason submissionZipOrDirectory+");
+      System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
       System.exit(1);
     }
 
@@ -156,22 +164,37 @@ public class FindUngradedSubmissions {
       }
     }
 
+    // First non-option argument is the required gradebook XML file
+    if (fileNames.isEmpty()) {
+      System.err.println("Missing required gradebook XML file");
+      System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
+      System.exit(1);
+    }
+
+    String gradeBookXmlFile = fileNames.removeFirst();
+
     Stream<Path> submissions = findSubmissionsIn(fileNames);
-    FindUngradedSubmissions finder = new FindUngradedSubmissions();
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(gradeBookXmlFile);
     Stream<SubmissionAnalysis> analyses = submissions.map(finder::analyzeSubmission);
     List<SubmissionAnalysis> needsToBeTested = new ArrayList<>();
     List<SubmissionAnalysis> needsToBeGraded = new ArrayList<>();
+    List<SubmissionAnalysis> gradeNeedsToBeRecorded = new ArrayList<>();
+
     analyses.forEach(analysis -> {
       if (analysis.needsToBeTested()) {
         needsToBeTested.add(analysis);
 
       } else if (analysis.needsToBeGraded()) {
         needsToBeGraded.add(analysis);
+
+      } else if (analysis.gradeNeedsToBeRecorded()) {
+        gradeNeedsToBeRecorded.add(analysis);
       }
     });
 
     printOutAnalyses(needsToBeTested, "tested", SubmissionAnalysis::submission, includeReason);
     printOutAnalyses(needsToBeGraded, "graded", SubmissionAnalysis::testOutput, includeReason);
+    printOutAnalyses(gradeNeedsToBeRecorded, "recorded", SubmissionAnalysis::testOutput, includeReason);
   }
 
   private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, Function<SubmissionAnalysis, Path> getPath, boolean includeReason) {
@@ -265,6 +288,29 @@ public class FindUngradedSubmissions {
     @Override
     public Path getTestOutput(Path submissionDirectory, String studentId) {
       return submissionDirectory.resolve(studentId + ".out");
+    }
+  }
+
+  private static class GradeBookProviderFromXmlFile implements GradeBookProvider {
+    private final String xmlFilePath;
+    private GradeBook gradeBook;
+
+    GradeBookProviderFromXmlFile(String xmlFilePath) {
+      this.xmlFilePath = xmlFilePath;
+    }
+
+    @Override
+    public java.util.Optional<GradeBook> getGradeBook() {
+      if (gradeBook == null && xmlFilePath != null) {
+        try {
+          XmlGradeBookParser parser = new XmlGradeBookParser(xmlFilePath);
+          gradeBook = parser.parse();
+        } catch (Exception e) {
+          System.err.println("Error loading gradebook from " + xmlFilePath + ": " + e.getMessage());
+          System.exit(1);
+        }
+      }
+      return java.util.Optional.ofNullable(gradeBook);
     }
   }
 
