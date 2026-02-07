@@ -145,7 +145,7 @@ public class FindUngradedSubmissions {
   public static void main(String[] args) {
     if (args.length == 0) {
       System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
-      System.exit(1);
+      return;
     }
 
     boolean includeReason = false;
@@ -157,7 +157,7 @@ public class FindUngradedSubmissions {
 
       } else if (arg.startsWith("-")) {
         System.err.println("Unknown option: " + arg);
-        System.exit(1);
+        return;
 
       } else {
         fileNames.add(arg);
@@ -168,10 +168,21 @@ public class FindUngradedSubmissions {
     if (fileNames.isEmpty()) {
       System.err.println("Missing required gradebook XML file");
       System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
-      System.exit(1);
+      return;
     }
 
     String gradeBookXmlFile = fileNames.removeFirst();
+
+    // Validate that the gradebook XML file can be parsed
+    try {
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookXmlFile);
+      parser.parse(); // This will throw an exception if the file is invalid
+    } catch (Exception e) {
+      System.err.println("Error: The first argument must be a valid gradebook XML file");
+      System.err.println("Cannot parse gradebook from: " + gradeBookXmlFile);
+      System.err.println("Error: " + e.getMessage());
+      return;
+    }
 
     Stream<Path> submissions = findSubmissionsIn(fileNames);
     FindUngradedSubmissions finder = new FindUngradedSubmissions(gradeBookXmlFile);
@@ -306,8 +317,9 @@ public class FindUngradedSubmissions {
           XmlGradeBookParser parser = new XmlGradeBookParser(xmlFilePath);
           gradeBook = parser.parse();
         } catch (Exception e) {
-          System.err.println("Error loading gradebook from " + xmlFilePath + ": " + e.getMessage());
-          System.exit(1);
+          String message = "Error loading gradebook from " + xmlFilePath + ": " + e.getMessage();
+          System.err.println(message);
+          throw new RuntimeException(message, e);
         }
       }
       return java.util.Optional.ofNullable(gradeBook);
