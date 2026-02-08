@@ -18,7 +18,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -265,7 +264,7 @@ public class FindUngradedSubmissions {
   }
 
   @VisibleForTesting
-  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade, String projectName, Double grade) {
+  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade, String projectName, Double grade, boolean hasBeenReviewed) {
   }
 
   @VisibleForTesting
@@ -391,67 +390,15 @@ public class FindUngradedSubmissions {
     public TestOutputDetails getTestOutputDetails(Path testOutput) {
       try {
         return parseTestOutputDetails(testOutput, Files.lines(testOutput));
-      } catch (IOException e) {
+      } catch (IOException | TestedProjectSubmissionOutputParsingException e) {
         throw new RuntimeException(e);
       }
     }
 
-    static TestOutputDetails parseTestOutputDetails(Path testOutput, Stream<String> lines) {
-      TestOutputDetailsCreator creator = new TestOutputDetailsCreator(testOutput);
-      lines.forEach(creator);
-      return creator.createTestOutputDetails();
-
-      /*
-            ProjectScore projectScore = parseTestedSubmissionOutput(lines);
-      return new TestOutputDetails(testOutput, null, !Double.isNaN(projectScore.getScore()), projectScore.getProjectName(), projectScore.getScore());
-
-       */
+    static TestOutputDetails parseTestOutputDetails(Path testOutput, Stream<String> lines) throws TestedProjectSubmissionOutputParsingException {
+      ProjectScore projectScore = parseTestedSubmissionOutput(lines);
+      return new TestOutputDetails(testOutput, projectScore.getSubmissionTime(), !Double.isNaN(projectScore.getScore()), projectScore.getProjectName(), projectScore.getScore(), projectScore.isReviewed());
     }
 
-    private static class TestOutputDetailsCreator implements Consumer<String> {
-      private final Path testOutput;
-      private LocalDateTime testedSubmissionTime;
-      private Boolean hasGrade;
-      private int lineCount;
-      private String projectName;
-      private Double grade;
-
-      public TestOutputDetailsCreator(Path testOutput) {
-        this.testOutput = testOutput;
-      }
-
-      @Override
-      public void accept(String line) {
-        this.lineCount++;
-
-        LocalDateTime submissionTime = parseSubmissionTime(line);
-        if (submissionTime != null) {
-          this.testedSubmissionTime = submissionTime;
-        }
-
-        String parsedProjectName = parseProjectName(line);
-        if (parsedProjectName != null) {
-          this.projectName = parsedProjectName;
-        }
-
-        Double grade = parseGrade(line);
-        if (grade != null) {
-          this.grade = grade;
-          boolean testOutputHasNotesForStudent = lineCount > 7;
-          this.hasGrade = testOutputHasNotesForStudent || !grade.isNaN();
-        }
-      }
-
-      public TestOutputDetails createTestOutputDetails() {
-        if (this.testedSubmissionTime == null) {
-          throw new IllegalStateException("Tested submission time was not set");
-
-        } else if( this.hasGrade == null) {
-          throw new IllegalStateException("Has grade was not set");
-        }
-
-        return new TestOutputDetails(this.testOutput, this.testedSubmissionTime, hasGrade, projectName, grade);
-      }
-    }
   }
 }

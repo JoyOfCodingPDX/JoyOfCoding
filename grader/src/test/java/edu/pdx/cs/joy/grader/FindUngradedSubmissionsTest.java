@@ -88,7 +88,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime testedSubmissionTime = submissionTime.minusDays(1); // Old test output
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -113,7 +113,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime testedSubmissionTime = submissionTime.plusMinutes(30); // Still within 1 minute tolerance
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -137,7 +137,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1); // Simulate test output newer than submission
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, null, null));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, null, null, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, null);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -163,7 +163,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, null, null));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, null, null, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -235,8 +235,9 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
-  void parseTestOutputDetails() {
+  void parseTestOutputDetails() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException {
     Stream<String> lines = Stream.of(
+        "              The Joy of Coding Project 2: edu.pdx.cs410J.whitlock.Project2",
         "              Submitted on Wed Aug  6 01:13:59 PM PDT 2025",
         "",
         "12.5 out of 13.0"
@@ -250,7 +251,7 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
-  void testOutputDetailsIncludesProjectNameAndGrade() {
+  void testOutputDetailsIncludesProjectNameAndGrade() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException {
     Stream<String> lines = Stream.of(
         "              The Joy of Coding Project 2: edu.pdx.cs410J.whitlock.Project2",
         "              Submitted by Dave Whitlock",
@@ -270,7 +271,7 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
-  void testOutputDetailsWithMessageToStudentDoesNotNeedToBeGraded() {
+  void testOutputDetailsWithMessageToStudentDoesNotNeedToBeGraded() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException {
     Stream<String> lines = Stream.of(
         "Hi, Student.  There were some problems with your submission",
         "",
@@ -286,8 +287,8 @@ public class FindUngradedSubmissionsTest {
     );
     Path testOutput = mock(Path.class);
     FindUngradedSubmissions.TestOutputDetails details = TestOutputDetailsProviderFromTestOutputFile.parseTestOutputDetails(testOutput, lines);
-    assertThat(details.hasGrade(), equalTo(true));
-
+    assertThat(details.hasGrade(), equalTo(false));
+    assertThat(details.hasBeenReviewed(), equalTo(true));
   }
 
   @Test
@@ -307,7 +308,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5, true));
 
     FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
@@ -334,7 +335,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5, true));
 
     // Create a mock GradeBook with a student that doesn't have a grade for Project1
     GradeBook gradeBook = mock(GradeBook.class);
@@ -370,7 +371,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project2", 12.5));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project2", 12.5, true));
 
     // Create a mock GradeBook with a student that has a DIFFERENT grade for Project2
     GradeBook gradeBook = mock(GradeBook.class);
@@ -409,7 +410,7 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project3", 15.0));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project3", 15.0, true));
 
     // Create a mock GradeBook with a student that has a MATCHING grade for Project3
     GradeBook gradeBook = mock(GradeBook.class);
@@ -449,7 +450,7 @@ public class FindUngradedSubmissionsTest {
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
     // Test output has NO grade yet (hasGrade = false, grade = null)
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, "Project4", null));
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, "Project4", null, true));
 
     // Create a mock GradeBook with a student that HAS a grade for Project4 in the gradebook
     GradeBook gradeBook = mock(GradeBook.class);
