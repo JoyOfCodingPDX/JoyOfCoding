@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * Integration test that validates the end-to-end functionality of finding unrecorded submission grades.
  */
-public class FindUnrecordedSubmissionGradesIT {
+public class FindUngradedSubmissionGradesIT {
 
   @Test
   void findUnrecordedSubmissionGrades(@TempDir Path tempDir) throws IOException {

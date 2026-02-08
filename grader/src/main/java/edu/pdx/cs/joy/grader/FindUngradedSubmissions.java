@@ -26,6 +26,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.*;
+
 public class FindUngradedSubmissions {
   private final SubmissionDetailsProvider submissionDetailsProvider;
   private final TestOutputPathProvider testOutputProvider;
@@ -50,10 +52,6 @@ public class FindUngradedSubmissions {
          new TestOutputProviderInParentDirectory(),
          new TestOutputDetailsProviderFromTestOutputFile(),
          new GradeBookProviderFromXmlFile(gradeBookXmlFile));
-  }
-
-  public FindUngradedSubmissions() {
-    this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile(), null);
   }
 
   @VisibleForTesting
@@ -402,6 +400,12 @@ public class FindUngradedSubmissions {
       TestOutputDetailsCreator creator = new TestOutputDetailsCreator(testOutput);
       lines.forEach(creator);
       return creator.createTestOutputDetails();
+
+      /*
+            ProjectScore projectScore = parseTestedSubmissionOutput(lines);
+      return new TestOutputDetails(testOutput, null, !Double.isNaN(projectScore.getScore()), projectScore.getProjectName(), projectScore.getScore());
+
+       */
     }
 
     private static class TestOutputDetailsCreator implements Consumer<String> {

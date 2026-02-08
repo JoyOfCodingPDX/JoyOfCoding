@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 
+import static edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.*;
 import static edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -20,14 +22,14 @@ class TestedProjectSubmissionOutputParserTest {
     project.addLine("asdfhjkl");
     project.addLine("iadguow");
 
-    assertThrows(TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException.class, () ->
+    assertThrows(TestedProjectSubmissionOutputParsingException.class, () ->
       ProjectGradesImporter.getScoreFrom(project.getReader())
     );
   }
 
   @Test
   public void scoreRegularExpressionWorkWithSimpleCase() {
-    Matcher matcher = TestedProjectSubmissionOutputParser.scorePattern.matcher("3.0 out of 4.5");
+    Matcher matcher = scorePattern.matcher("3.0 out of 4.5");
     assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("3.0"));
@@ -35,20 +37,21 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void gradedProjectWithOutOfHasValidScore() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void gradedProjectWithOutOfHasValidScore() throws TestedProjectSubmissionOutputParsingException, IOException {
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.4));
     assertThat(score.getTotalPoints(), equalTo(3.5));
   }
 
   @Test
   public void scoreMatchesRegardlessOfCase() {
-    Matcher matcher = TestedProjectSubmissionOutputParser.scorePattern.matcher("4.0 OUT OF 5.0");
+    Matcher matcher = scorePattern.matcher("4.0 OUT OF 5.0");
     assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("4.0"));
@@ -57,7 +60,7 @@ class TestedProjectSubmissionOutputParserTest {
 
   @Test
   public void scoreMatchesIntegerPoints() {
-    Matcher matcher = TestedProjectSubmissionOutputParser.scorePattern.matcher("4 out of 5");
+    Matcher matcher = scorePattern.matcher("4 out of 5");
     assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("4"));
@@ -66,7 +69,7 @@ class TestedProjectSubmissionOutputParserTest {
 
   @Test
   public void scoreMatchesInTheMiddleOfOtherText() {
-    Matcher matcher = TestedProjectSubmissionOutputParser.scorePattern.matcher("You got 4 out of 5 points");
+    Matcher matcher = scorePattern.matcher("You got 4 out of 5 points");
     assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo("4"));
@@ -74,13 +77,14 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void gradedProjectWithIntegerPoints() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void gradedProjectWithIntegerPoints() throws TestedProjectSubmissionOutputParsingException, IOException {
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine("3 out of 5");
     project.addLine("iadguow");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.0));
     assertThat(score.getTotalPoints(), equalTo(5.0));
   }
@@ -99,20 +103,21 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void onlyFirstScoreIsReturned() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void onlyFirstScoreIsReturned() throws TestedProjectSubmissionOutputParsingException, IOException {
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
     project.addLine("3.3 out of 3.4");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.4));
     assertThat(score.getTotalPoints(), equalTo(3.5));
   }
 
   @Test
-  public void projectNameIsIdentified() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void projectNameIsIdentified() throws TestedProjectSubmissionOutputParsingException, IOException {
     String projectName = "Project2";
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
@@ -125,7 +130,7 @@ class TestedProjectSubmissionOutputParserTest {
     project.addLine("5.5 out of 6.0");
     project.addLine("");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(5.5));
     assertThat(score.getTotalPoints(), equalTo(6.0));
     assertThat(score.getProjectName(), equalTo(projectName));
@@ -134,7 +139,7 @@ class TestedProjectSubmissionOutputParserTest {
 
   @Test
   public void scoreRegularExpressionWorksWithMissingScore() {
-    Matcher matcher = TestedProjectSubmissionOutputParser.scorePattern.matcher(" out of 4.5");
+    Matcher matcher = scorePattern.matcher(" out of 4.5");
     assertThat(matcher.find(), equalTo(true));
     assertThat(matcher.groupCount(), equalTo(2));
     assertThat(matcher.group(1), equalTo(null));
@@ -142,7 +147,7 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void ungradedProjectWithoutCommentIsNotReviewed() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void ungradedProjectWithoutCommentIsNotReviewed() throws TestedProjectSubmissionOutputParsingException, IOException {
     String projectName = "Project2";
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
@@ -155,7 +160,7 @@ class TestedProjectSubmissionOutputParserTest {
     project.addLine(" out of 6.0");
     project.addLine("");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(Double.NaN));
     assertThat(score.getTotalPoints(), equalTo(6.0));
     assertThat(score.getProjectName(), equalTo(projectName));
@@ -163,7 +168,7 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void testOutputWithCommentsForStudentIsMarkedAsReviewed() throws TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException, IOException {
+  public void testOutputWithCommentsForStudentIsMarkedAsReviewed() throws TestedProjectSubmissionOutputParsingException, IOException {
     String projectName = "Project2";
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
@@ -178,10 +183,33 @@ class TestedProjectSubmissionOutputParserTest {
     project.addLine(" out of 6.0");
     project.addLine("");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(Double.NaN));
     assertThat(score.getTotalPoints(), equalTo(6.0));
     assertThat(score.getProjectName(), equalTo(projectName));
     assertThat(score.isReviewed(), equalTo(true));
+  }
+
+  @Test
+  public void submissionTimeIsIdentified() throws TestedProjectSubmissionOutputParsingException, IOException {
+    String projectName = "Project2";
+    LocalDateTime submissionTime = LocalDateTime.of(2026, 2, 4, 17, 7, 17);
+
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("");
+    project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student." + projectName);
+    project.addLine("              Submitted by Student Name");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
+    project.addLine("              Graded on    Wed Feb  4 06:08:07 PM PST 2026");
+    project.addLine("");
+    project.addLine("5.5 out of 6.0");
+    project.addLine("");
+
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    assertThat(score.getScore(), equalTo(5.5));
+    assertThat(score.getTotalPoints(), equalTo(6.0));
+    assertThat(score.getProjectName(), equalTo(projectName));
+    assertThat(score.isReviewed(), equalTo(true));
+    assertThat(score.getSubmissionTime(), equalTo(submissionTime));
   }
 }

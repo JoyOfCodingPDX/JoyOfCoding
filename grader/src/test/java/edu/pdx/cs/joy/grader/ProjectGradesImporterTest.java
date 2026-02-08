@@ -34,6 +34,7 @@ public class ProjectGradesImporterTest {
     String score = "5.8";
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine(score + " out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -61,6 +62,7 @@ public class ProjectGradesImporterTest {
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -81,6 +83,7 @@ public class ProjectGradesImporterTest {
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
