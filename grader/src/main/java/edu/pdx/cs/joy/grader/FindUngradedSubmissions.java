@@ -12,9 +12,6 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -325,40 +322,6 @@ public class FindUngradedSubmissions {
 
   @VisibleForTesting
   static class TestOutputDetailsProviderFromTestOutputFile implements TestOutputDetailsProvider {
-    private static final Pattern SUBMISSION_TIME_PATTERN = Pattern.compile(".*Submitted on (.+)");
-
-    public static LocalDateTime parseSubmissionTime(String line) {
-      if (line.contains("Submitted on")) {
-        Matcher matcher = TestOutputDetailsProviderFromTestOutputFile.SUBMISSION_TIME_PATTERN.matcher(line);
-        if (matcher.matches()) {
-          String timeString = matcher.group(1).trim();
-          return parseTime(timeString);
-        } else {
-          throw new IllegalArgumentException("Could not parse submission time from line: " + line);
-        }
-      }
-
-      return null;
-    }
-
-    private static LocalDateTime parseTime(String timeString) {
-      try {
-        ZonedDateTime zoned;
-        try {
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM d hh:mm:ss a z yyyy");
-          zoned = ZonedDateTime.parse(timeString, formatter);
-
-        } catch (DateTimeParseException ex) {
-          // Single-digit day format
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM  d hh:mm:ss a z yyyy");
-          zoned = ZonedDateTime.parse(timeString, formatter);
-        }
-        return zoned.toLocalDateTime();
-
-      } catch (DateTimeParseException ex) {
-        return LocalDateTime.parse(timeString);
-      }
-    }
 
     public static Double parseGrade(String line) {
       if (line.contains("out of")) {

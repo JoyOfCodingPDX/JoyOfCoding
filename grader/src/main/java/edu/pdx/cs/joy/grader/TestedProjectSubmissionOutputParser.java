@@ -20,8 +20,6 @@ public class TestedProjectSubmissionOutputParser {
   static final Pattern projectNamePattern = Pattern.compile(".*The Joy of Coding Project \\d+: edu\\.pdx\\.[\\w.]*\\.(Project\\d+)", Pattern.CASE_INSENSITIVE);
   private static final Pattern submissionTimePattern = Pattern.compile(".*Submitted on (.+)", Pattern.CASE_INSENSITIVE);
 
-
-
   static @NonNull ProjectScore parseTestedSubmissionOutput(Reader reader) throws TestedProjectSubmissionOutputParsingException, IOException {
     try (BufferedReader br = new BufferedReader(reader)) {
       return parseTestedSubmissionOutput(br.lines());
@@ -58,14 +56,7 @@ public class TestedProjectSubmissionOutputParser {
       }
 
       if (submissionTime == null && line.contains("Submitted on")) {
-        Matcher matcher = submissionTimePattern.matcher(line);
-        if (matcher.matches()) {
-          String timeString = matcher.group(1).trim();
-          submissionTime = parseTime(timeString);
-
-        } else {
-          throw new IllegalArgumentException("Could not parse submission time from line: " + line);
-        }
+        submissionTime = parseSubmissionTime(line);
       }
     }
 
@@ -84,7 +75,16 @@ public class TestedProjectSubmissionOutputParser {
     return new ProjectScore(score, scoreLineNumber, totalPoints, projectName, submissionTime);
   }
 
-  private static LocalDateTime parseTime(String timeString) {
+  static LocalDateTime parseSubmissionTime(String line) {
+    Matcher matcher = submissionTimePattern.matcher(line);
+    String timeString;
+    if (matcher.matches()) {
+      timeString = matcher.group(1).trim();
+
+    } else {
+      throw new IllegalArgumentException("Could not parse submission time from line: " + line);
+    }
+
     try {
       ZonedDateTime zoned;
       try {

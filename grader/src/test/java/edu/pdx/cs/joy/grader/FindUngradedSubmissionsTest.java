@@ -172,27 +172,6 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
-  void parseSubmissionTimeFromAndroidProjectTestOutputLine() {
-    LocalDateTime submissionTime = TestOutputDetailsProviderFromTestOutputFile.parseSubmissionTime("              Submitted on 2025-08-18T11:34:19.017953486");
-    LocalDateTime expectedTime = LocalDateTime.of(2025, 8, 18, 11, 34, 19, 17953486);
-    assertThat(submissionTime, equalTo(expectedTime));
-  }
-
-  @Test
-  void parseSubmissionTimeFromTestOutputLine() {
-    LocalDateTime submissionTime = TestOutputDetailsProviderFromTestOutputFile.parseSubmissionTime("              Submitted on Wed Aug  6 01:13:59 PM PDT 2025");
-    LocalDateTime expectedTime = LocalDateTime.of(2025, 8, 6, 13, 13, 59);
-    assertThat(submissionTime, equalTo(expectedTime));
-  }
-
-  @Test
-  void parseSubmissionTimeFromTestOutputLineWithTwoDigitDay() {
-    LocalDateTime submissionTime = TestOutputDetailsProviderFromTestOutputFile.parseSubmissionTime("              Submitted on Wed Jul 23 12:59:13 PM PDT 2025");
-    LocalDateTime expectedTime = LocalDateTime.of(2025, 7, 23, 12, 59, 13);
-    assertThat(submissionTime, equalTo(expectedTime));
-  }
-
-  @Test
   void parseProjectNameFromTestOutputLine() {
     String line = "              The Joy of Coding Project 1: edu.pdx.cs410J.studentId.Project1";
     String projectName = TestOutputDetailsProviderFromTestOutputFile.parseProjectName(line);
