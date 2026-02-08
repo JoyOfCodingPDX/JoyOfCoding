@@ -54,6 +54,16 @@ GradeBook XML file.
 
 ## Test Cases
 
+A submission is considered graded if there is a line like "4.6 out of 5.0" in the testOutput `.out` file, even if
+that grade is not recorded in the GradeBook XML file. In this case, the submission should be considered unrecorded.
+
+A submission with a line like " out of 5.0" on line 7 is not considered to be graded.
+
+If a line like " out of 5.0" appears on a line after line 7, the submission should be considered graded. We can assume
+that there is a note from the grade in the testOutput .out file that instructs the student to fix a fundamental flaw and
+resubmit. Since there is no grade, the submission does not need to be recorded in the gradebook, and it should not be
+considered unrecorded.
+
 If a submission hasn't been graded yet, it should not be considered unrecorded.
 
 If the submission has been graded (that is, a grade appears in the testOutput `.out` file) and there is no grade for the
@@ -63,8 +73,9 @@ If the submission has been graded and the grade in the GradeBook is different fr
 the submission should be considered unrecorded.
 
 If the submission has been graded and the grade in the GradeBook matches the grade in the testOutput `.out`, the
-submission
-should not be considered unrecorded.
+submission should not be considered unrecorded.
+
+If the submission has not been graded, it should not be considered unrecorded regardless of what is in the GradeBook.
 
 There should be an end-to-end integration test for that includes parsing a gradebook XML file and multiple submission
 files (.out) that verify that some .out files have grades that need to be recorded and other .out files don't. This

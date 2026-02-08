@@ -4,6 +4,7 @@ import edu.pdx.cs.joy.grader.gradebook.Assignment;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import edu.pdx.cs.joy.grader.gradebook.XmlDumper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Integration test that validates the end-to-end functionality of finding unrecorded submission grades.
@@ -152,6 +152,235 @@ public class FindUnrecordedSubmissionGradesIT {
     // Verify error message is produced
     assertThat(errorOutput, containsString("Error: The first argument must be a valid gradebook XML file"));
     assertThat(errorOutput, containsString("Cannot parse gradebook from:"));
+  }
+
+  @Test
+  void ungradedSubmissionIsNotListedAsNeedingRecording(@TempDir Path tempDir) throws IOException {
+    // Create a gradebook with one student who has a grade recorded
+    GradeBook book = new GradeBook("Test Course");
+
+    Assignment project1 = new Assignment("Project1", 6.0);
+    project1.setType(Assignment.AssignmentType.PROJECT);
+    project1.setDescription("First Project");
+    project1.setDueDate(LocalDateTime.of(2025, 1, 15, 17, 30));
+    book.addAssignment(project1);
+
+    // Add student with a grade already recorded in gradebook
+    Student charlie = new Student("charlie");
+    charlie.setFirstName("Charlie");
+    charlie.setLastName("Brown");
+    charlie.setEmail("charlie@test.edu");
+    charlie.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    charlie.setGrade("Project1", new edu.pdx.cs.joy.grader.gradebook.Grade("Project1", 5.0));
+    book.addStudent(charlie);
+
+    // Write gradebook
+    Path gradebookFile = tempDir.resolve("gradebook.xml");
+    XmlDumper dumper = new XmlDumper(gradebookFile.toFile());
+    dumper.dump(book);
+
+    // Create test output file with NO GRADE (ungraded submission)
+    // The line " out of 6.0" indicates no grade has been assigned yet
+    Path testOutputFile = tempDir.resolve("charlie.out");
+    String content = """
+              The Joy of Coding Project 1: edu.pdx.cs410J.charlie.Project1
+              Submitted by charlie
+              Submitted on Wed Jan 15 10:30:00 AM PST 2025
+              Graded on    Wed Jan 15 11:00:00 AM PST 2025
+
+         out of 6.0
+        
+        Test results follow...
+        """;
+    Files.writeString(testOutputFile, content);
+
+    // Create submission zip file
+    createSubmissionZip(tempDir, "charlie", "Project1");
+
+    // Invoke FindUngradedSubmissions
+    String[] args = {
+        gradebookFile.toString(),
+        tempDir.toString()
+    };
+
+    MainMethodResult result = invokeMain(FindUngradedSubmissions.class, args);
+
+    String output = result.getTextWrittenToStandardOut();
+    String errorOutput = result.getTextWrittenToStandardError();
+
+    // Verify no errors
+    assertThat("Error output should be empty: " + errorOutput,
+               errorOutput, not(containsString("Error")));
+
+    // The submission needs to be graded (no grade in test output)
+    assertThat(output, containsString("1 submission needs to be graded"));
+    assertThat(output, containsString("charlie.out"));
+
+    // The submission should NOT be listed as needing recording
+    // because it hasn't been graded yet
+    assertThat(output, containsString("0 submissions need to be recorded"));
+
+    // Verify charlie.out only appears once (in "needs to be graded" section)
+    int occurrences = output.split("charlie\\.out", -1).length - 1;
+    assertThat("charlie.out should appear exactly once", occurrences, equalTo(1));
+  }
+
+  @Disabled
+  @Test
+  void multipleUngradedSubmissionsAreNotListedAsNeedingRecording(@TempDir Path tempDir) throws IOException {
+    // This test reproduces the real-world bug where:
+    // - student2.out, student3.out, student4.out all have NO grade (line " out of 6.0" AFTER line 7)
+    // - These .out files have notes from the grader (e.g., "fix and resubmit")
+    // - student1.out has a grade 5.0 that matches the gradebook
+    // Expected: The 3 submissions with notes but no grade should NOT appear in "need to be recorded"
+    //           They are considered "graded" (because of notes) but have no actual grade (NaN)
+    // Actual bug: All 4 appear in "need to be recorded" because NaN != any grade value
+
+    GradeBook book = new GradeBook("Test Course");
+
+    Assignment project2 = new Assignment("Project2", 6.0);
+    project2.setType(Assignment.AssignmentType.PROJECT);
+    project2.setDescription("Text File Project");
+    project2.setDueDate(LocalDateTime.of(2026, 1, 26, 17, 30));
+    book.addAssignment(project2);
+
+    // Add students - student1 has matching grade, others have no grade in gradebook
+    Student student1 = new Student("student1");
+    student1.setFirstName("Student");
+    student1.setLastName("One");
+    student1.setEmail("student1@test.edu");
+    student1.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    student1.setGrade("Project2", new edu.pdx.cs.joy.grader.gradebook.Grade("Project2", 5.0));
+    book.addStudent(student1);
+
+    Student student2 = new Student("student2");
+    student2.setFirstName("Student");
+    student2.setLastName("Two");
+    student2.setEmail("student2@test.edu");
+    student2.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    book.addStudent(student2);
+
+    Student student3 = new Student("student3");
+    student3.setFirstName("Student");
+    student3.setLastName("Three");
+    student3.setEmail("student3@test.edu");
+    student3.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    book.addStudent(student3);
+
+    Student student4 = new Student("student4");
+    student4.setFirstName("Student");
+    student4.setLastName("Four");
+    student4.setEmail("student4@test.edu");
+    student4.setEnrolledSection(Student.Section.UNDERGRADUATE);
+    book.addStudent(student4);
+
+    // Write gradebook
+    Path gradebookFile = tempDir.resolve("gradebook.xml");
+    XmlDumper dumper = new XmlDumper(gradebookFile.toFile());
+    dumper.dump(book);
+
+    // Create test output for student1 WITH a grade (5.0) that matches gradebook
+    createTestOutputWithGrade(tempDir, "student1", "Project2", 5.0);
+
+    // Create test outputs for the others with NO grades
+    createTestOutputWithNoGrade(tempDir, "student2", "Project2");
+    createTestOutputWithNoGrade(tempDir, "student3", "Project2");
+    createTestOutputWithNoGrade(tempDir, "student4", "Project2");
+
+    // Create submission zips
+    createSubmissionZip(tempDir, "student1", "Project2");
+    createSubmissionZip(tempDir, "student2", "Project2");
+    createSubmissionZip(tempDir, "student3", "Project2");
+    createSubmissionZip(tempDir, "student4", "Project2");
+
+    // Invoke FindUngradedSubmissions
+    String[] args = {
+        gradebookFile.toString(),
+        tempDir.toString()
+    };
+
+    MainMethodResult result = invokeMain(FindUngradedSubmissions.class, args);
+
+    String output = result.getTextWrittenToStandardOut();
+    String errorOutput = result.getTextWrittenToStandardError();
+
+    System.out.println("=== BUG REPRODUCTION OUTPUT ===");
+    System.out.println(output);
+    System.out.println("=== END OUTPUT ===");
+
+    // Verify no errors
+    assertThat("Error output should be empty: " + errorOutput,
+               errorOutput, not(containsString("Error")));
+
+    // The 3 submissions with notes are considered "graded" (hasGrade=true because lineCount > 7)
+    // So they should NOT appear in "needs to be graded"
+    assertThat(output, containsString("0 submissions need to be graded"));
+
+    // NO submissions should be listed as needing recording
+    // (student1 has matching grade, others have notes but no actual grade which shouldn't be recorded)
+    assertThat(output, containsString("0 submissions need to be recorded"));
+
+    // NONE of the .out files should appear in the output
+    assertThat(output, not(containsString("student1.out")));
+    assertThat(output, not(containsString("student2.out")));
+    assertThat(output, not(containsString("student3.out")));
+    assertThat(output, not(containsString("student4.out")));
+  }
+
+  private void createTestOutputWithGrade(Path tempDir, String studentId, String projectName, double grade) throws IOException {
+    Path testOutputFile = tempDir.resolve(studentId + ".out");
+
+    LocalDateTime submissionTime = LocalDateTime.of(2026, 1, 20, 10, 30);
+    LocalDateTime gradedTime = LocalDateTime.of(2026, 1, 20, 11, 0);
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM d hh:mm:ss a 'PST' yyyy");
+    String submissionTimeStr = submissionTime.format(formatter);
+    String gradedTimeStr = gradedTime.format(formatter);
+
+    String content = String.format("""
+              The Joy of Coding Project 2: edu.pdx.cs410J.%s.%s
+              Submitted by %s
+              Submitted on %s
+              Graded on    %s
+
+        %.1f out of 6.0
+        
+        Test results follow...
+        """, studentId, projectName, studentId, submissionTimeStr, gradedTimeStr, grade);
+
+    Files.writeString(testOutputFile, content);
+  }
+
+  private void createTestOutputWithNoGrade(Path tempDir, String studentId, String projectName) throws IOException {
+    Path testOutputFile = tempDir.resolve(studentId + ".out");
+
+    LocalDateTime submissionTime = LocalDateTime.of(2026, 1, 20, 10, 30);
+    LocalDateTime gradedTime = LocalDateTime.of(2026, 1, 20, 11, 0);
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM d hh:mm:ss a 'PST' yyyy");
+    String submissionTimeStr = submissionTime.format(formatter);
+    String gradedTimeStr = gradedTime.format(formatter);
+
+    // This creates a test output with " out of 6.0" AFTER line 7 (line 9)
+    // The grader has left a note instructing the student to fix and resubmit
+    // According to spec: this should be considered graded (hasGrade=true)
+    // But should NOT be considered needing recording (because there's no actual grade)
+    String content = String.format("""
+              The Joy of Coding Project 2: edu.pdx.cs410J.%s.%s
+              Submitted by %s
+              Submitted on %s
+              Graded on    %s
+
+        NOTE TO STUDENT: Your submission has a fundamental flaw.
+        Please fix the following issue and resubmit:
+         out of 6.0
+        
+        - Your code does not compile
+        
+        Test results follow...
+        """, studentId, projectName, studentId, submissionTimeStr, gradedTimeStr);
+
+    Files.writeString(testOutputFile, content);
   }
 
   private Path createGradebook(Path tempDir) throws IOException {

@@ -1,6 +1,5 @@
 package edu.pdx.cs.joy.grader;
 
-import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.ParserException;
 import edu.pdx.cs.joy.grader.gradebook.*;
 import org.slf4j.Logger;
@@ -10,11 +9,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProjectGradesImporter {
-  static final Pattern scorePattern = Pattern.compile("(\\d+\\.?\\d*) out of (\\d+\\.?\\d*)", Pattern.CASE_INSENSITIVE);
 
   private final GradeBook gradeBook;
   private final Assignment assignment;
@@ -26,27 +22,12 @@ public class ProjectGradesImporter {
     this.logger = logger;
   }
 
-  public static ProjectScore getScoreFrom(Reader reader) throws ScoreNotFoundException {
-    BufferedReader br = new BufferedReader(reader);
-    Optional<String> scoreLine = br.lines().filter(scorePattern.asPredicate()).findFirst();
-
-    if (scoreLine.isPresent()) {
-      Matcher matcher = scorePattern.matcher(scoreLine.get());
-      if (matcher.find()) {
-        return new ProjectScore(matcher.group(1), matcher.group(2));
-
-      } else {
-        throw new IllegalStateException("Matcher didn't match \"" + scoreLine.get() + "\"");
-      }
-
-    } else {
-      throw new ScoreNotFoundException();
-    }
-
+  public static TestedProjectSubmissionOutputParser.ProjectScore getScoreFrom(Reader reader) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+    return TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput(reader);
   }
 
-  public void recordScoreFromProjectReport(String studentId, Reader report) throws ScoreNotFoundException {
-    ProjectScore score = getScoreFrom(report);
+  public void recordScoreFromProjectReport(String studentId, Reader report) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+    TestedProjectSubmissionOutputParser.ProjectScore score = getScoreFrom(report);
 
     if (score.getTotalPoints() != this.assignment.getPoints()) {
       String message = "Assignment " + this.assignment.getName() + " should be worth " + this.assignment.getPoints() +
@@ -79,24 +60,6 @@ public class ProjectGradesImporter {
 
   private void warn(String message) {
     logger.warn(message);
-  }
-
-  static class ProjectScore {
-    private final double score;
-    private final double totalPoints;
-
-    private ProjectScore(String score, String totalPoints) {
-      this.score = Double.parseDouble(score);
-      this.totalPoints = Double.parseDouble(totalPoints);
-    }
-
-    public double getScore() {
-      return this.score;
-    }
-
-    public double getTotalPoints() {
-      return this.totalPoints;
-    }
   }
 
   public static void main(String[] args) {
@@ -137,7 +100,7 @@ public class ProjectGradesImporter {
 
       } catch (FileNotFoundException ex) {
         throw new IllegalStateException("Could not find file \"" + projectFile + "\"");
-      } catch (ScoreNotFoundException e) {
+      } catch (TestedProjectSubmissionOutputParser.ScoreNotFoundException e) {
         logger.warn("Could not find score in " + projectFileName);
       }
     }
@@ -233,8 +196,4 @@ public class ProjectGradesImporter {
     return null;
   }
 
-  @VisibleForTesting
-  static class ScoreNotFoundException extends Exception {
-
-  }
 }
