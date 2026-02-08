@@ -64,7 +64,8 @@ public class FindUngradedSubmissionsTest {
     FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
     when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, mock(FindUngradedSubmissions.TestOutputDetailsProvider.class));
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, mock(FindUngradedSubmissions.TestOutputDetailsProvider.class), gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(true));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
@@ -90,7 +91,8 @@ public class FindUngradedSubmissionsTest {
     LocalDateTime testedSubmissionTime = submissionTime.minusDays(1); // Old test output
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null, true));
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(true));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
@@ -115,7 +117,8 @@ public class FindUngradedSubmissionsTest {
     LocalDateTime testedSubmissionTime = submissionTime.plusMinutes(30); // Still within 1 minute tolerance
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, testedSubmissionTime, true, null, null, true));
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(false));
   }
@@ -137,9 +140,11 @@ public class FindUngradedSubmissionsTest {
 
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1); // Simulate test output newer than submission
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, null, null, true));
+    boolean hasBeenReviewed = false;
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, null, null, hasBeenReviewed));
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, null);
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(false));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
@@ -165,7 +170,8 @@ public class FindUngradedSubmissionsTest {
     LocalDateTime gradedTime = submissionTime.plusDays(1);
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, null, null, true));
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
     assertThat(analysis.needsToBeTested(), equalTo(false));
     assertThat(analysis.needsToBeGraded(), equalTo(false));
@@ -289,7 +295,8 @@ public class FindUngradedSubmissionsTest {
     LocalDateTime gradedTime = submissionTime.plusDays(1);
     when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5, true));
 
-    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider);
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
     FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
 
     assertThat(analysis.needsToBeTested(), equalTo(false));
@@ -429,7 +436,8 @@ public class FindUngradedSubmissionsTest {
     FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
     LocalDateTime gradedTime = submissionTime.plusDays(1);
     // Test output has NO grade yet (hasGrade = false, grade = null)
-    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, "Project4", null, true));
+    boolean hasBeenReviewed = false;
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, false, "Project4", null, hasBeenReviewed));
 
     // Create a mock GradeBook with a student that HAS a grade for Project4 in the gradebook
     GradeBook gradeBook = mock(GradeBook.class);
@@ -450,6 +458,40 @@ public class FindUngradedSubmissionsTest {
     assertThat(analysis.needsToBeTested(), equalTo(false));
     assertThat(analysis.needsToBeGraded(), equalTo(true));
     // Even though gradebook has a grade, since submission isn't graded yet, it should NOT be considered unrecorded
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(false));
+  }
+
+
+  @Test
+  void reviewedSubmissionDoesNotNeedToBeTestedGradedOrRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student999";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    // Test output has NO grade yet (hasGrade = false, grade = null)
+    boolean hasGrade = false;
+    boolean hasBeenReviewed = true;
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, hasGrade, "Project4", null, hasBeenReviewed));
+
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+
+    // The submission needs to be graded (no grade in test output yet)
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
     assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(false));
   }
 }

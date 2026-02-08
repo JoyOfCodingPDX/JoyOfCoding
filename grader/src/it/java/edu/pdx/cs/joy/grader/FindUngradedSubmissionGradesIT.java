@@ -1,6 +1,7 @@
 package edu.pdx.cs.joy.grader;
 
 import edu.pdx.cs.joy.grader.gradebook.Assignment;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import edu.pdx.cs.joy.grader.gradebook.XmlDumper;
@@ -171,7 +172,7 @@ public class FindUngradedSubmissionGradesIT {
     charlie.setLastName("Brown");
     charlie.setEmail("charlie@test.edu");
     charlie.setEnrolledSection(Student.Section.UNDERGRADUATE);
-    charlie.setGrade("Project1", new edu.pdx.cs.joy.grader.gradebook.Grade("Project1", 5.0));
+    charlie.setGrade("Project1", new Grade("Project1", 5.0));
     book.addStudent(charlie);
 
     // Write gradebook
@@ -225,7 +226,6 @@ public class FindUngradedSubmissionGradesIT {
     assertThat("charlie.out should appear exactly once", occurrences, equalTo(1));
   }
 
-  @Disabled
   @Test
   void multipleUngradedSubmissionsAreNotListedAsNeedingRecording(@TempDir Path tempDir) throws IOException {
     // This test reproduces the real-world bug where:
@@ -250,7 +250,7 @@ public class FindUngradedSubmissionGradesIT {
     student1.setLastName("One");
     student1.setEmail("student1@test.edu");
     student1.setEnrolledSection(Student.Section.UNDERGRADUATE);
-    student1.setGrade("Project2", new edu.pdx.cs.joy.grader.gradebook.Grade("Project2", 5.0));
+    student1.setGrade("Project2", new Grade("Project2", 5.0));
     book.addStudent(student1);
 
     Student student2 = new Student("student2");
@@ -365,20 +365,18 @@ public class FindUngradedSubmissionGradesIT {
     // The grader has left a note instructing the student to fix and resubmit
     // According to spec: this should be considered graded (hasGrade=true)
     // But should NOT be considered needing recording (because there's no actual grade)
-    String content = String.format("""
-              The Joy of Coding Project 2: edu.pdx.cs410J.%s.%s
-              Submitted by %s
-              Submitted on %s
-              Graded on    %s
-
-        NOTE TO STUDENT: Your submission has a fundamental flaw.
-        Please fix the following issue and resubmit:
-         out of 6.0
-        
-        - Your code does not compile
-        
-        Test results follow...
-        """, studentId, projectName, studentId, submissionTimeStr, gradedTimeStr);
+    String content = String.format("      The Joy of Coding Project 2: edu.pdx.cs410J.%s.%s\n" +
+                                   "      Submitted by %s\n" +
+                                   "      Submitted on %s\n" +
+                                   "      Graded on    %s\n" +
+                                   "\n" +
+                                   "NOTE TO STUDENT: Your submission has a fundamental flaw.\n" +
+                                   "Please fix the following issue and resubmit:\n" +
+                                   "- Your code does not compile\n" +
+                                   "\n" +
+                                   " out of 6.0\n" +
+                                   "\n" +
+                                   "Test results follow...\n", studentId, projectName, studentId, submissionTimeStr, gradedTimeStr);
 
     Files.writeString(testOutputFile, content);
   }
@@ -437,7 +435,7 @@ public class FindUngradedSubmissionGradesIT {
     student.setEnrolledSection(Student.Section.UNDERGRADUATE);
 
     if (gradeScore != null && assignmentName != null) {
-      edu.pdx.cs.joy.grader.gradebook.Grade grade = new edu.pdx.cs.joy.grader.gradebook.Grade(assignmentName, gradeScore);
+      Grade grade = new Grade(assignmentName, gradeScore);
       student.setGrade(assignmentName, grade);
     }
 

@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.jar.Attributes;
@@ -32,15 +33,11 @@ public class FindUngradedSubmissions {
 
   @VisibleForTesting
   FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider, GradeBookProvider gradeBookProvider) {
+    Objects.requireNonNull(gradeBookProvider, "GradeBook provider cannot be null");
     this.submissionDetailsProvider = submissionDetailsProvider;
     this.testOutputProvider = testOutputProvider;
     this.testOutputDetailsProvider = testOutputDetailsProvider;
     this.gradeBookProvider = gradeBookProvider;
-  }
-
-  @VisibleForTesting
-  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider) {
-    this(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, null);
   }
 
   public FindUngradedSubmissions(String gradeBookXmlFile) {
@@ -57,43 +54,41 @@ public class FindUngradedSubmissions {
     Path testOutputPath = this.testOutputProvider.getTestOutput(submissionDirectory, submission.studentId());
     boolean needsToBeTested;
     boolean needsToBeGraded;
+    boolean needsToBeRecorded;
     String reason;
 
     if (!Files.exists(testOutputPath)) {
       needsToBeTested = true;
       needsToBeGraded = true;
+      needsToBeRecorded = false;
       reason = "Test output file does not exist: " + testOutputPath;
 
     } else {
-
       TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
       if (submittedAfterTesting(submission, testOutput)) {
         needsToBeTested = true;
         needsToBeGraded = true;
+        needsToBeRecorded = false;
         reason = "Submission on " + submission.submissionTime() + " is after testing on " + testOutput.testedSubmissionTime();
 
       } else if (!testOutput.hasGrade()) {
         needsToBeTested = false;
-        needsToBeGraded = true;
+        needsToBeGraded = !testOutput.hasBeenReviewed();
+        needsToBeRecorded = false;
         reason = "Test output file does not have a grade: " + testOutputPath;
 
       } else {
         needsToBeTested = false;
         needsToBeGraded = false;
+        needsToBeRecorded = doesCareNeedToBeRecorded(submission, testOutput);
         reason = "Test output file was graded after submission: " + testOutputPath;
       }
     }
 
-    boolean gradeNeedsToBeRecorded = false;
-    if (!needsToBeGraded && gradeBookProvider != null) {
-      TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
-      gradeNeedsToBeRecorded = checkIfGradeNeedsRecording(submission, testOutput);
-    }
-
-    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath, gradeNeedsToBeRecorded);
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath, needsToBeRecorded);
   }
 
-  private boolean checkIfGradeNeedsRecording(SubmissionDetails submission, TestOutputDetails testOutput) {
+  private boolean doesCareNeedToBeRecorded(SubmissionDetails submission, TestOutputDetails testOutput) {
     // If test output doesn't have project name or grade, can't check
     if (testOutput.projectName() == null || testOutput.grade() == null) {
       return false;
