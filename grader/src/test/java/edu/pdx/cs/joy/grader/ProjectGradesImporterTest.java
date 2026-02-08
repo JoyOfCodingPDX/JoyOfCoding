@@ -1,5 +1,6 @@
 package edu.pdx.cs.joy.grader;
 
+import edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.TestedProjectSubmissionOutputParsingException;
 import edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParserTest.TestedProjectSubmissionOutput;
 import edu.pdx.cs.joy.grader.gradebook.Assignment;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
@@ -22,7 +23,7 @@ public class ProjectGradesImporterTest {
   private final Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
   @Test
-  public void scoreIsRecordedInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+  public void scoreIsRecordedInGradeBook() throws TestedProjectSubmissionOutputParsingException, IOException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
@@ -32,6 +33,7 @@ public class ProjectGradesImporterTest {
 
     String score = "5.8";
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
     project.addLine(score + " out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -49,7 +51,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+  public void throwIllegalStateExceptionWhenTotalPointsInReportDoesNotMatchGradeBook() {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 8.0);
 
@@ -58,6 +60,7 @@ public class ProjectGradesImporterTest {
     gradeBook.addAssignment(assignment);
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -69,7 +72,7 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void logWarningWhenStudentDoesNotExistInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+  public void logWarningWhenStudentDoesNotExistInGradeBook() throws TestedProjectSubmissionOutputParsingException, IOException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
@@ -77,6 +80,7 @@ public class ProjectGradesImporterTest {
     gradeBook.addAssignment(assignment);
 
     TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student.Project2");
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
