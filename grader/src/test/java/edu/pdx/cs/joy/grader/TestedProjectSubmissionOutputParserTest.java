@@ -2,10 +2,12 @@ package edu.pdx.cs.joy.grader;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 
+import static edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +16,7 @@ class TestedProjectSubmissionOutputParserTest {
 
   @Test
   public void gradedProjectWithNoGradeThrowsScoreNotFoundException() {
-    GradedProject project = new GradedProject();
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("asdfhjkl");
     project.addLine("iadguow");
 
@@ -33,12 +35,12 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void gradedProjectWithOutOfHasValidScore() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
-    GradedProject project = new GradedProject();
+  public void gradedProjectWithOutOfHasValidScore() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput(project.getReader());
+    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.4));
     assertThat(score.getTotalPoints(), equalTo(3.5));
   }
@@ -71,17 +73,17 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void gradedProjectWithIntegerPoints() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
-    GradedProject project = new GradedProject();
+  public void gradedProjectWithIntegerPoints() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("3 out of 5");
     project.addLine("iadguow");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput(project.getReader());
+    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.0));
     assertThat(score.getTotalPoints(), equalTo(5.0));
   }
 
-  static class GradedProject {
+  static class TestedProjectSubmissionOutput {
     private final StringBuilder sb = new StringBuilder();
 
     public void addLine(String line) {
@@ -95,14 +97,34 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
-  public void onlyFirstScoreIsReturned() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
-    GradedProject project = new GradedProject();
+  public void onlyFirstScoreIsReturned() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("3.4 out of 3.5");
     project.addLine("iadguow");
     project.addLine("3.3 out of 3.4");
 
-    TestedProjectSubmissionOutputParser.ProjectScore score = TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput(project.getReader());
+    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
     assertThat(score.getScore(), equalTo(3.4));
     assertThat(score.getTotalPoints(), equalTo(3.5));
+  }
+
+  @Test
+  public void projectNameIsIdentified() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
+    String projectName = "Project2";
+
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("");
+    project.addLine("              The Joy of Coding Project 2: edu.pdx.cs410J.student." + projectName);
+    project.addLine("              Submitted by Student Name");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
+    project.addLine("              Graded on    Wed Feb  4 06:08:07 PM PST 2026");
+    project.addLine("");
+    project.addLine("5.5 out of 6.0");
+    project.addLine("");
+
+    TestedProjectSubmissionOutputParser.ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    assertThat(score.getScore(), equalTo(5.5));
+    assertThat(score.getTotalPoints(), equalTo(6.0));
+    assertThat(score.getProjectName(), equalTo(projectName));
   }
 }

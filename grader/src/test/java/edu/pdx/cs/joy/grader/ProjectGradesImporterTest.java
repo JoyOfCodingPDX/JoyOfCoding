@@ -1,6 +1,6 @@
 package edu.pdx.cs.joy.grader;
 
-import edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParserTest.GradedProject;
+import edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParserTest.TestedProjectSubmissionOutput;
 import edu.pdx.cs.joy.grader.gradebook.Assignment;
 import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -20,7 +22,7 @@ public class ProjectGradesImporterTest {
   private final Logger logger = LoggerFactory.getLogger(this.getClass().getPackage().getName());
 
   @Test
-  public void scoreIsRecordedInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+  public void scoreIsRecordedInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
@@ -29,7 +31,7 @@ public class ProjectGradesImporterTest {
     gradeBook.addAssignment(assignment);
 
     String score = "5.8";
-    GradedProject project = new GradedProject();
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine(score + " out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -55,7 +57,7 @@ public class ProjectGradesImporterTest {
     gradeBook.addStudent(new Student(studentId));
     gradeBook.addAssignment(assignment);
 
-    GradedProject project = new GradedProject();
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");
@@ -67,14 +69,14 @@ public class ProjectGradesImporterTest {
   }
 
   @Test
-  public void logWarningWhenStudentDoesNotExistInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+  public void logWarningWhenStudentDoesNotExistInGradeBook() throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
     String studentId = "student";
     Assignment assignment = new Assignment("project", 6.0);
 
     GradeBook gradeBook = new GradeBook("test");
     gradeBook.addAssignment(assignment);
 
-    GradedProject project = new GradedProject();
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
     project.addLine("5.8 out of 6.0");
     project.addLine("");
     project.addLine("asdfasd");

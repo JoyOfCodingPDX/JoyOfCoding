@@ -22,11 +22,11 @@ public class ProjectGradesImporter {
     this.logger = logger;
   }
 
-  public static TestedProjectSubmissionOutputParser.ProjectScore getScoreFrom(Reader reader) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+  public static TestedProjectSubmissionOutputParser.ProjectScore getScoreFrom(Reader reader) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
     return TestedProjectSubmissionOutputParser.parseTestedSubmissionOutput(reader);
   }
 
-  public void recordScoreFromProjectReport(String studentId, Reader report) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException {
+  public void recordScoreFromProjectReport(String studentId, Reader report) throws TestedProjectSubmissionOutputParser.ScoreNotFoundException, IOException {
     TestedProjectSubmissionOutputParser.ProjectScore score = getScoreFrom(report);
 
     if (score.getTotalPoints() != this.assignment.getPoints()) {
@@ -95,11 +95,12 @@ public class ProjectGradesImporter {
       try {
         importer.recordScoreFromProjectReport(studentId, new FileReader(projectFile));
 
-      } catch (IllegalStateException ex) {
-        throw new IllegalStateException("While recording score from " + projectFileName, ex);
-
       } catch (FileNotFoundException ex) {
         throw new IllegalStateException("Could not find file \"" + projectFile + "\"");
+
+      } catch (IllegalStateException | IOException ex) {
+        throw new IllegalStateException("While recording score from " + projectFileName, ex);
+
       } catch (TestedProjectSubmissionOutputParser.ScoreNotFoundException e) {
         logger.warn("Could not find score in " + projectFileName);
       }
