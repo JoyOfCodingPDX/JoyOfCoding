@@ -138,6 +138,25 @@ class TestedProjectSubmissionOutputParserTest {
   }
 
   @Test
+  public void koansProjectNameIsIdentified() throws TestedProjectSubmissionOutputParsingException, IOException {
+    TestedProjectSubmissionOutput project = new TestedProjectSubmissionOutput();
+    project.addLine("");
+    project.addLine("              The Joy of Coding Koans");
+    project.addLine("              Submitted by Student Name");
+    project.addLine("              Submitted on Wed Feb  4 05:07:17 PM PST 2026");
+    project.addLine("              Graded on    Wed Feb  4 06:08:07 PM PST 2026");
+    project.addLine("");
+    project.addLine("5.5 out of 6.0");
+    project.addLine("");
+
+    ProjectScore score = parseTestedSubmissionOutput(project.getReader());
+    assertThat(score.getScore(), equalTo(5.5));
+    assertThat(score.getTotalPoints(), equalTo(6.0));
+    assertThat(score.getProjectName(), equalTo("koans"));
+    assertThat(score.isReviewed(), equalTo(true));
+  }
+
+  @Test
   public void scoreRegularExpressionWorksWithMissingScore() {
     Matcher matcher = scorePattern.matcher(" out of 4.5");
     assertThat(matcher.find(), equalTo(true));

@@ -349,7 +349,7 @@ public class FindUngradedSubmissions {
       try {
         return parseTestOutputDetails(testOutput, Files.lines(testOutput));
       } catch (IOException | TestedProjectSubmissionOutputParsingException e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException("While parsing " + testOutput, e);
       }
     }
 
