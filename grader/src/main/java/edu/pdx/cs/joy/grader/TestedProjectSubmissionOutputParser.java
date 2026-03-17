@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class TestedProjectSubmissionOutputParser {
   static final Pattern scorePattern = Pattern.compile("(\\d+\\.?\\d*)? out of (\\d+\\.?\\d*)", Pattern.CASE_INSENSITIVE);
-  static final Pattern projectNamePattern = Pattern.compile(".*The Joy of Coding Project \\d+: edu\\.pdx\\.[\\w.]*\\.(Project\\d+)", Pattern.CASE_INSENSITIVE);
+  static final Pattern projectNamePattern = Pattern.compile(".*The Joy of Coding Project (\\d+): .*", Pattern.CASE_INSENSITIVE);
   static final Pattern koansProjectNamePattern = Pattern.compile(".*The Joy of Coding Koans.*", Pattern.CASE_INSENSITIVE);
   private static final Pattern submissionTimePattern = Pattern.compile(".*Submitted on (.+)", Pattern.CASE_INSENSITIVE);
 
@@ -52,7 +52,7 @@ public class TestedProjectSubmissionOutputParser {
       if (projectName == null && line.contains("The Joy of Coding")) {
         Matcher matcher = projectNamePattern.matcher(line);
         if (matcher.find()) {
-          projectName = matcher.group(1);
+          projectName = "Project" + matcher.group(1);
 
         } else {
           matcher = koansProjectNamePattern.matcher(line);

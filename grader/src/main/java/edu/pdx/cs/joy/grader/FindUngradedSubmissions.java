@@ -332,13 +332,13 @@ public class FindUngradedSubmissions {
       return null;
     }
 
-    private static final Pattern PROJECT_NAME_PATTERN = Pattern.compile(".*The Joy of Coding Project \\d+: edu\\.pdx\\.cs[\\w.]*\\.(\\w+)");
+    private static final Pattern PROJECT_NAME_PATTERN = Pattern.compile(".*The Joy of Coding Project (\\d+): .*");
 
     public static String parseProjectName(String line) {
       if (line.contains("The Joy of Coding Project")) {
         Matcher matcher = PROJECT_NAME_PATTERN.matcher(line);
         if (matcher.matches()) {
-          return matcher.group(1);
+          return "Project" + matcher.group(1);
         }
       }
       return null;

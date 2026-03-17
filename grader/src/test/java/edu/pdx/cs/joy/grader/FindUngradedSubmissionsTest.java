@@ -199,6 +199,13 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
+  void parseProject6NameFromTestOutputLine() {
+    String line = "              The Joy of Coding Project 6: Android";
+    String projectName = TestOutputDetailsProviderFromTestOutputFile.parseProjectName(line);
+    assertThat(projectName, equalTo("Project6"));
+  }
+
+  @Test
   void lineWithGradeHasGrade() {
     String line = "12.5 out of 13.0";
     Double grade = TestOutputDetailsProviderFromTestOutputFile.parseGrade(line);
