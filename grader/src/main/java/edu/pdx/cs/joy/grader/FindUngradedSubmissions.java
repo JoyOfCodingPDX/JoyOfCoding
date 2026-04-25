@@ -105,7 +105,7 @@ public class FindUngradedSubmissions {
     // Get the student from the gradebook
     Optional<Student> studentOpt = gradeBook.getStudent(submission.studentId());
     if (studentOpt.isEmpty()) {
-      return true; // Student not in gradebook, grade needs to be recorded
+      return false; // Student not in gradebook, nothing to record
     }
 
     Student student = studentOpt.get();
