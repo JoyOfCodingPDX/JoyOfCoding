@@ -195,9 +195,8 @@ public class PrintH2DatabaseSchema {
    * Main method that takes a database file path and prints the schema.
    *
    * @param args command line arguments where args[0] is the path to the H2 database file
-   * @throws SQLException if a database error occurs
    */
-  public static void main(String[] args) throws SQLException {
+  public static void main(String[] args) {
     if (args.length < 1) {
       System.err.println("Missing database file path argument");
       System.err.println("Usage: java PrintH2DatabaseSchema <database-file-path>");
@@ -212,6 +211,8 @@ public class PrintH2DatabaseSchema {
 
     try (Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFile)) {
       printDatabaseSchema(connection);
+    } catch (SQLException ex) {
+      System.err.println("Error: " + ex.getMessage());
     }
   }
 }
