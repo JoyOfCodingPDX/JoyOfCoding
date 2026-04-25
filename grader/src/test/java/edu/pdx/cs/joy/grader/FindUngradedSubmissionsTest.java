@@ -178,6 +178,40 @@ public class FindUngradedSubmissionsTest {
   }
 
   @Test
+  void gradedSubmissionForStudentNotInGradebookDoesNotNeedToBeRecorded() {
+    FindUngradedSubmissions.SubmissionDetailsProvider submissionDetailsProvider = mock(FindUngradedSubmissions.SubmissionDetailsProvider.class);
+
+    String studentId = "student123";
+    LocalDateTime submissionTime = LocalDateTime.now();
+    FindUngradedSubmissions.SubmissionDetails submissionDetails = new FindUngradedSubmissions.SubmissionDetails(studentId, submissionTime);
+    Path submission = getPathToExistingFile();
+    when(submissionDetailsProvider.getSubmissionDetails(submission)).thenReturn(submissionDetails);
+
+    Path testOutput = getPathToExistingFile();
+
+    FindUngradedSubmissions.TestOutputPathProvider testOutputProvider = mock(FindUngradedSubmissions.TestOutputPathProvider.class);
+    when(testOutputProvider.getTestOutput(any(Path.class), eq(studentId))).thenReturn(testOutput);
+
+    FindUngradedSubmissions.TestOutputDetailsProvider testOutputDetailsProvider = mock(FindUngradedSubmissions.TestOutputDetailsProvider.class);
+    LocalDateTime gradedTime = submissionTime.plusDays(1);
+    when(testOutputDetailsProvider.getTestOutputDetails(testOutput)).thenReturn(
+        new FindUngradedSubmissions.TestOutputDetails(testOutput, gradedTime, true, "Project1", 12.5, true));
+
+    // Student does not exist in the gradebook
+    GradeBook gradeBook = mock(GradeBook.class);
+    when(gradeBook.getStudent(studentId)).thenReturn(Optional.empty());
+
+    FindUngradedSubmissions.GradeBookProvider gradeBookProvider = mock(FindUngradedSubmissions.GradeBookProvider.class);
+    when(gradeBookProvider.getGradeBook()).thenReturn(Optional.of(gradeBook));
+
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(submissionDetailsProvider, testOutputProvider, testOutputDetailsProvider, gradeBookProvider);
+    FindUngradedSubmissions.SubmissionAnalysis analysis = finder.analyzeSubmission(submission);
+    assertThat(analysis.needsToBeTested(), equalTo(false));
+    assertThat(analysis.needsToBeGraded(), equalTo(false));
+    assertThat(analysis.gradeNeedsToBeRecorded(), equalTo(false));
+  }
+
+  @Test
   void parseProjectNameFromTestOutputLine() {
     String line = "              The Joy of Coding Project 1: edu.pdx.cs410J.studentId.Project1";
     String projectName = TestOutputDetailsProviderFromTestOutputFile.parseProjectName(line);
