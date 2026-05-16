@@ -544,9 +544,9 @@
             <aggregate>true</aggregate>
             <linksource>true</linksource>
             <overview>overview.html</overview>
-<!--            <links>-->
-<!--              <link>http://joyofcodingpdx.github.io/JoyOfCoding/apidocs</link>-->
-<!--            </links>-->
+            <links>
+              <link>http://joyofcodingpdx.github.io/JoyOfCoding/apidocs</link>
+            </links>
             <show>package</show>
             <detectJavaApiLink/>
             <detectLinks/>
