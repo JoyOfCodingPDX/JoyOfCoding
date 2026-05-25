@@ -257,6 +257,33 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 1", "2026-06-24", "2026-06-24")));
   }
 
+  @Test
+  void compareAssignmentsMatchesCaseInsensitiveQuizPrefixesAndReflectionNames() {
+    CompareCanvasAndWebsiteSchedules.ComparisonReport report = CompareCanvasAndWebsiteSchedules.compareAssignments(
+      List.of(
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Quiz 2: Java Language and OOP",
+          Optional.of(LocalDate.parse("2026-07-08"))),
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("End of Term Survey",
+          Optional.of(LocalDate.parse("2026-08-12"))),
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Reflections on Pair Programming",
+          Optional.of(LocalDate.parse("2026-07-22")))
+      ),
+      List.of(
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Quiz 2", LocalDate.parse("2026-07-08")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("End of term Survey", LocalDate.parse("2026-08-12")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Reflections on your experiences pair programming",
+          LocalDate.parse("2026-07-22"))
+      ));
+
+    assertThat(report.differingDueDates(), equalTo(List.of()));
+    assertThat(report.undeterminedDueDates(), equalTo(List.of()));
+    assertThat(report.matchingDueDates(), contains(
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("End of term Survey", "2026-08-12", "2026-08-12"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 2", "2026-07-08", "2026-07-08"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Reflections on your experiences pair programming",
+        "2026-07-22", "2026-07-22")));
+  }
+
   private static File writeFile(File tempDir, String fileName, String content) throws IOException {
     File file = new File(tempDir, fileName);
     Files.writeString(file.toPath(), content);

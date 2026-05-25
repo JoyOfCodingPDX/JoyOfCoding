@@ -41,6 +41,8 @@ public class CompareCanvasAndWebsiteSchedules {
   private static final DateTimeFormatter WEBSITE_DATE_FORMAT =
     DateTimeFormatter.ofPattern("MMMM d, uuuu", Locale.US);
   private static final ZoneId PACIFIC_TIME_ZONE = ZoneId.of("America/Los_Angeles");
+  private static final Pattern QUIZ_PREFIX_PATTERN = Pattern.compile("^quiz\\s+(\\d+)\\b.*");
+  private static final Pattern REFLECTION_PATTERN = Pattern.compile("^reflections on\\s+(.+)$");
 
   private final HttpClient httpClient;
   private final URI canvasBaseUri;
@@ -335,47 +337,116 @@ public class CompareCanvasAndWebsiteSchedules {
 
   @VisibleForTesting
   static ComparisonReport compareAssignments(List<CanvasAssignment> canvasAssignments, List<WebsiteAssignment> websiteAssignments) {
-    Map<String, Optional<LocalDate>> canvasByName = new LinkedHashMap<>();
-    for (CanvasAssignment assignment : canvasAssignments) {
-      canvasByName.put(assignment.name(), assignment.dueDate());
-    }
-
-    Map<String, LocalDate> websiteByName = new LinkedHashMap<>();
-    for (WebsiteAssignment assignment : websiteAssignments) {
-      websiteByName.put(assignment.name(), assignment.dueDate());
-    }
-
     List<ComparisonRow> differing = new ArrayList<>();
     List<ComparisonRow> undetermined = new ArrayList<>();
     List<ComparisonRow> matching = new ArrayList<>();
 
-    for (String name : new TreeSet<>(unionOfNames(canvasByName, websiteByName))) {
-      Optional<LocalDate> canvasDueDate = canvasByName.containsKey(name)
-        ? canvasByName.get(name)
-        : null;
-      LocalDate websiteDueDate = websiteByName.get(name);
-      String canvasText = formatCanvasDate(canvasDueDate);
-      String websiteText = formatWebsiteDate(websiteDueDate);
+    List<WebsiteAssignment> unmatchedWebsiteAssignments = new ArrayList<>(websiteAssignments);
+    for (CanvasAssignment canvasAssignment : canvasAssignments) {
+      WebsiteAssignment websiteAssignment = findAndRemoveMatchingWebsiteAssignment(canvasAssignment, unmatchedWebsiteAssignments);
 
-      if (canvasDueDate == null || canvasDueDate.isEmpty() || websiteDueDate == null) {
-        undetermined.add(new ComparisonRow(name, canvasText, websiteText));
-
-      } else if (canvasDueDate.get().equals(websiteDueDate)) {
-        matching.add(new ComparisonRow(name, canvasText, websiteText));
+      if (websiteAssignment == null) {
+        undetermined.add(new ComparisonRow(
+          canvasAssignment.name(),
+          formatCanvasDate(canvasAssignment.dueDate()),
+          formatWebsiteDate(null)));
 
       } else {
-        differing.add(new ComparisonRow(name, canvasText, websiteText));
+        ComparisonRow row = new ComparisonRow(
+          websiteAssignment.name(),
+          formatCanvasDate(canvasAssignment.dueDate()),
+          formatWebsiteDate(websiteAssignment.dueDate()));
+
+        if (canvasAssignment.dueDate().isEmpty()) {
+          undetermined.add(row);
+
+        } else if (canvasAssignment.dueDate().get().equals(websiteAssignment.dueDate())) {
+          matching.add(row);
+
+        } else {
+          differing.add(row);
+        }
       }
     }
+
+    for (WebsiteAssignment websiteAssignment : unmatchedWebsiteAssignments) {
+      undetermined.add(new ComparisonRow(
+        websiteAssignment.name(),
+        formatCanvasDate(null),
+        formatWebsiteDate(websiteAssignment.dueDate())));
+    }
+
+    sortRowsByAssignmentName(differing);
+    sortRowsByAssignmentName(undetermined);
+    sortRowsByAssignmentName(matching);
 
     return new ComparisonReport(differing, undetermined, matching);
   }
 
-  private static TreeSet<String> unionOfNames(Map<String, Optional<LocalDate>> canvasByName, Map<String, LocalDate> websiteByName) {
-    TreeSet<String> names = new TreeSet<>();
-    names.addAll(canvasByName.keySet());
-    names.addAll(websiteByName.keySet());
-    return names;
+  private static WebsiteAssignment findAndRemoveMatchingWebsiteAssignment(CanvasAssignment canvasAssignment,
+                                                                          List<WebsiteAssignment> websiteAssignments) {
+    WebsiteAssignment match = findMatchingWebsiteAssignment(canvasAssignment, websiteAssignments,
+      (canvas, website) -> canvas.equals(website));
+    if (match == null) {
+      match = findMatchingWebsiteAssignment(canvasAssignment, websiteAssignments,
+        (canvas, website) -> canvas.equalsIgnoreCase(website));
+    }
+    if (match == null) {
+      String normalizedCanvasName = normalizeAssignmentName(canvasAssignment.name());
+      match = findMatchingWebsiteAssignment(canvasAssignment, websiteAssignments,
+        (canvas, website) -> normalizedCanvasName.equals(normalizeAssignmentName(website)));
+    }
+
+    if (match != null) {
+      websiteAssignments.remove(match);
+    }
+    return match;
+  }
+
+  private static WebsiteAssignment findMatchingWebsiteAssignment(CanvasAssignment canvasAssignment,
+                                                                 List<WebsiteAssignment> websiteAssignments,
+                                                                 AssignmentNameMatcher matcher) {
+    for (WebsiteAssignment websiteAssignment : websiteAssignments) {
+      if (matcher.matches(canvasAssignment.name(), websiteAssignment.name())) {
+        return websiteAssignment;
+      }
+    }
+
+    return null;
+  }
+
+  private static String normalizeAssignmentName(String name) {
+    String normalized = name.toLowerCase(Locale.US).trim();
+    normalized = normalized.replace(':', ' ');
+    normalized = normalized.replaceAll("\\s+", " ");
+    normalized = normalizeQuizName(normalized);
+    normalized = normalizeReflectionName(normalized);
+    return normalized.trim();
+  }
+
+  private static String normalizeQuizName(String normalized) {
+    Matcher matcher = QUIZ_PREFIX_PATTERN.matcher(normalized);
+    if (matcher.matches()) {
+      return "quiz " + matcher.group(1);
+    }
+
+    return normalized;
+  }
+
+  private static String normalizeReflectionName(String normalized) {
+    Matcher matcher = REFLECTION_PATTERN.matcher(normalized);
+    if (!matcher.matches()) {
+      return normalized;
+    }
+
+    String topic = matcher.group(1)
+      .replace("your experiences ", "")
+      .trim();
+    return "reflections on " + topic;
+  }
+
+  private static void sortRowsByAssignmentName(List<ComparisonRow> rows) {
+    rows.sort((left, right) -> left.assignmentName().compareToIgnoreCase(right.assignmentName()));
   }
 
   private static String formatCanvasDate(Optional<LocalDate> dueDate) {
@@ -475,5 +546,10 @@ public class CompareCanvasAndWebsiteSchedules {
 
   @VisibleForTesting
   static record ComparisonRow(String assignmentName, String canvasDueDate, String websiteDueDate) {
+  }
+
+  @FunctionalInterface
+  private interface AssignmentNameMatcher {
+    boolean matches(String canvasName, String websiteName);
   }
 }
