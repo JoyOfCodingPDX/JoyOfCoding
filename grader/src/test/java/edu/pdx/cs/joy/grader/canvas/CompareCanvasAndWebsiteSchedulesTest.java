@@ -14,6 +14,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -24,14 +27,15 @@ import static org.hamcrest.Matchers.equalTo;
 public class CompareCanvasAndWebsiteSchedulesTest {
 
   @Test
-  void printsCourseNamesReturnedByCanvas(@TempDir File tempDir) throws IOException, InterruptedException {
+  void printsCourseNameOfNextCourseOffering(@TempDir File tempDir) throws IOException, InterruptedException {
     AtomicReference<String> authorizationHeader = new AtomicReference<>();
     HttpServer server = createCanvasServer(exchange -> {
       authorizationHeader.set(exchange.getRequestHeaders().getFirst("Authorization"));
       respond(exchange, 200, """
         [
-          {"id": 1, "name": "Java Koans"},
-          {"id": 2, "name": "Project 1"}
+          {"id": 1, "name": "Spring 2026", "start_at": "2026-03-30T16:00:00Z"},
+          {"id": 2, "name": "Summer 2026", "start_at": "2026-06-22T16:00:00Z"},
+          {"id": 3, "name": "Fall 2026", "start_at": "2026-09-28T16:00:00Z"}
         ]
         """);
     });
@@ -40,10 +44,11 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       URI canvasBaseUri = canvasBaseUri(server);
 
       ByteArrayOutputStream output = new ByteArrayOutputStream();
-      CompareCanvasAndWebsiteSchedules tool = new CompareCanvasAndWebsiteSchedules(HttpClient.newHttpClient(), canvasBaseUri);
+      CompareCanvasAndWebsiteSchedules tool = new CompareCanvasAndWebsiteSchedules(HttpClient.newHttpClient(), canvasBaseUri,
+        fixedClock("2026-05-25T16:00:00Z"));
       tool.run(new String[] { apiTokenFile.getAbsolutePath() }, new PrintStream(output, true, StandardCharsets.UTF_8));
 
-      assertThat(output.toString(StandardCharsets.UTF_8), equalTo("Java Koans%nProject 1%n".formatted()));
+      assertThat(output.toString(StandardCharsets.UTF_8), equalTo("Summer 2026%n".formatted()));
       assertThat(authorizationHeader.get(), equalTo("Bearer canvas-token"));
     } finally {
       server.stop(0);
@@ -51,7 +56,7 @@ public class CompareCanvasAndWebsiteSchedulesTest {
   }
 
   @Test
-  void printsCourseNamesFromAllCanvasPages(@TempDir File tempDir) throws IOException, InterruptedException {
+  void printsNextCourseOfferingFromAllCanvasPages(@TempDir File tempDir) throws IOException, InterruptedException {
     HttpServer server = HttpServer.create(new InetSocketAddress(0), 0);
     URI canvasBaseUri = canvasBaseUri(server);
     server.createContext("/api/v1/courses", exchange -> {
@@ -60,7 +65,8 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         if ("page=2".equals(query)) {
           respond(exchange, 200, """
             [
-              {"id": 2, "name": "Project 2"}
+              {"id": 3, "name": "Fall 2026", "start_at": "2026-09-28T16:00:00Z"},
+              {"id": 4, "name": "Winter 2027", "start_at": "2027-01-04T16:00:00Z"}
             ]
             """);
 
@@ -68,7 +74,8 @@ public class CompareCanvasAndWebsiteSchedulesTest {
           exchange.getResponseHeaders().add("Link", "<%s/api/v1/courses?page=2>; rel=\"next\"".formatted(canvasBaseUri));
           respond(exchange, 200, """
             [
-              {"id": 1, "name": "Project 1"}
+              {"id": 1, "name": "Spring 2026", "start_at": "2026-03-30T16:00:00Z"},
+              {"id": 2, "name": "Summer 2026", "start_at": "2026-06-22T16:00:00Z"}
             ]
             """);
         }
@@ -81,22 +88,24 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       File apiTokenFile = writeApiTokenFile(tempDir, "canvas-token");
 
       ByteArrayOutputStream output = new ByteArrayOutputStream();
-      CompareCanvasAndWebsiteSchedules tool = new CompareCanvasAndWebsiteSchedules(HttpClient.newHttpClient(), canvasBaseUri);
+      CompareCanvasAndWebsiteSchedules tool = new CompareCanvasAndWebsiteSchedules(HttpClient.newHttpClient(), canvasBaseUri,
+        fixedClock("2026-05-25T16:00:00Z"));
       tool.run(new String[] { apiTokenFile.getAbsolutePath() }, new PrintStream(output, true, StandardCharsets.UTF_8));
 
-      assertThat(output.toString(StandardCharsets.UTF_8), equalTo("Project 1%nProject 2%n".formatted()));
+      assertThat(output.toString(StandardCharsets.UTF_8), equalTo("Summer 2026%n".formatted()));
     } finally {
       server.stop(0);
     }
   }
 
   @Test
-  void parseCourseNamesIgnoresNestedNameFields() {
-    List<String> courseNames = CompareCanvasAndWebsiteSchedules.parseCourseNames("""
+  void parseCoursesIgnoresCoursesWithoutTopLevelStartDate() {
+    List<CompareCanvasAndWebsiteSchedules.CanvasCourse> courses = CompareCanvasAndWebsiteSchedules.parseCourses("""
       [
         {
           "id": 1,
           "name": "Java Koans",
+          "start_at": "2026-06-22T16:00:00Z",
           "term": {
             "name": "Spring 2026"
           }
@@ -105,11 +114,17 @@ public class CompareCanvasAndWebsiteSchedulesTest {
           "id": 2,
           "course_code": "CS 410",
           "name": "Project 1"
+        },
+        {
+          "id": 3,
+          "name": "Project 2",
+          "start_at": null
         }
       ]
       """);
 
-    assertThat(courseNames, contains("Java Koans", "Project 1"));
+    assertThat(courses, contains(
+      new CompareCanvasAndWebsiteSchedules.CanvasCourse("Java Koans", Instant.parse("2026-06-22T16:00:00Z"))));
   }
 
   private static HttpServer createCanvasServer(CanvasHandler handler) throws IOException {
@@ -140,6 +155,10 @@ public class CompareCanvasAndWebsiteSchedulesTest {
 
   private static URI canvasBaseUri(HttpServer server) {
     return URI.create("http://localhost:" + server.getAddress().getPort());
+  }
+
+  private static Clock fixedClock(String instant) {
+    return Clock.fixed(Instant.parse(instant), ZoneOffset.UTC);
   }
 
   @FunctionalInterface

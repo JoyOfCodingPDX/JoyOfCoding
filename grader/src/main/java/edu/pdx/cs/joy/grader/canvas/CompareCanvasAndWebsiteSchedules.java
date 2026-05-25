@@ -18,8 +18,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,15 +33,22 @@ public class CompareCanvasAndWebsiteSchedules {
 
   private final HttpClient httpClient;
   private final URI canvasBaseUri;
+  private final Clock clock;
 
   public CompareCanvasAndWebsiteSchedules() {
-    this(HttpClient.newHttpClient(), DEFAULT_CANVAS_BASE_URI);
+    this(HttpClient.newHttpClient(), DEFAULT_CANVAS_BASE_URI, Clock.systemUTC());
   }
 
   @VisibleForTesting
   CompareCanvasAndWebsiteSchedules(HttpClient httpClient, URI canvasBaseUri) {
+    this(httpClient, canvasBaseUri, Clock.systemUTC());
+  }
+
+  @VisibleForTesting
+  CompareCanvasAndWebsiteSchedules(HttpClient httpClient, URI canvasBaseUri, Clock clock) {
     this.httpClient = httpClient;
     this.canvasBaseUri = canvasBaseUri;
+    this.clock = clock;
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -46,6 +57,9 @@ public class CompareCanvasAndWebsiteSchedules {
 
     } catch (IllegalArgumentException ex) {
       usage(ex.getMessage());
+
+    } catch (IllegalStateException ex) {
+      error(ex.getMessage());
     }
   }
 
@@ -54,9 +68,7 @@ public class CompareCanvasAndWebsiteSchedules {
     String apiTokenFileName = parseApiTokenFileName(args);
     String apiToken = readApiToken(Path.of(apiTokenFileName));
 
-    for (String courseName : getCourseNames(apiToken)) {
-      out.println(courseName);
-    }
+    out.println(getNextCourseName(apiToken));
   }
 
   private static String parseApiTokenFileName(String[] args) {
@@ -92,17 +104,24 @@ public class CompareCanvasAndWebsiteSchedules {
   }
 
   @VisibleForTesting
-  List<String> getCourseNames(String apiToken) throws IOException, InterruptedException {
-    List<String> courseNames = new ArrayList<>();
+  String getNextCourseName(String apiToken) throws IOException, InterruptedException {
+    List<CanvasCourse> courses = new ArrayList<>();
     URI nextPage = getCoursesUri();
 
     while (nextPage != null) {
       HttpResponse<String> response = invokeCanvas(nextPage, apiToken);
-      courseNames.addAll(parseCourseNames(response.body()));
+      courses.addAll(parseCourses(response.body()));
       nextPage = getNextPage(response.headers());
     }
 
-    return courseNames;
+    Instant now = this.clock.instant();
+    Optional<CanvasCourse> nextCourse = courses.stream()
+      .filter(course -> course.startAt().isAfter(now))
+      .min((left, right) -> left.startAt().compareTo(right.startAt()));
+
+    return nextCourse
+      .map(CanvasCourse::name)
+      .orElseThrow(() -> new IllegalStateException("No upcoming Canvas course offerings found"));
   }
 
   private URI getCoursesUri() {
@@ -136,23 +155,26 @@ public class CompareCanvasAndWebsiteSchedules {
   }
 
   @VisibleForTesting
-  static List<String> parseCourseNames(String json) {
-    List<String> courseNames = new ArrayList<>();
+  static List<CanvasCourse> parseCourses(String json) {
+    List<CanvasCourse> courses = new ArrayList<>();
     try (JsonReader reader = Json.createReader(new StringReader(json))) {
-      JsonArray courses = reader.readArray();
-      for (JsonValue courseValue : courses) {
+      JsonArray jsonCourses = reader.readArray();
+      for (JsonValue courseValue : jsonCourses) {
         if (courseValue.getValueType() != JsonValue.ValueType.OBJECT) {
           continue;
         }
 
         JsonObject course = courseValue.asJsonObject();
         JsonValue name = course.get("name");
-        if (name instanceof JsonString) {
-          courseNames.add(((JsonString) name).getString());
+        JsonValue startAt = course.get("start_at");
+        if (name instanceof JsonString && startAt instanceof JsonString) {
+          courses.add(new CanvasCourse(
+            ((JsonString) name).getString(),
+            OffsetDateTime.parse(((JsonString) startAt).getString()).toInstant()));
         }
       }
 
-      return courseNames;
+      return courses;
     }
   }
 
@@ -164,9 +186,18 @@ public class CompareCanvasAndWebsiteSchedules {
     err.println("usage: java CompareCanvasAndWebsiteSchedules apiTokenFileName");
     err.println("    apiTokenFileName             File containing the Canvas API token");
     err.println();
-    err.println("Prints the names of all courses available to the Canvas API token");
+    err.println("Prints the name of the Canvas course offering that will start next");
     err.println();
 
     System.exit(1);
+  }
+
+  private static void error(String message) {
+    System.err.println("+++ " + message);
+    System.exit(1);
+  }
+
+  @VisibleForTesting
+  static record CanvasCourse(String name, Instant startAt) {
   }
 }
