@@ -24,6 +24,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,9 +42,23 @@ public class CompareCanvasAndWebsiteSchedules {
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
   private static final DateTimeFormatter WEBSITE_DATE_FORMAT =
     DateTimeFormatter.ofPattern("MMMM d, uuuu", Locale.US);
+  private static final DateTimeFormatter COMMENT_DATE_WITH_OPTIONAL_YEAR_FORMAT =
+    new DateTimeFormatterBuilder()
+      .parseCaseInsensitive()
+      .appendPattern("MMMM d")
+      .optionalStart()
+      .appendLiteral(", ")
+      .appendValue(ChronoField.YEAR, 4)
+      .optionalEnd()
+      .toFormatter(Locale.US);
   private static final ZoneId PACIFIC_TIME_ZONE = ZoneId.of("America/Los_Angeles");
+  private static final String FINAL_EXAM_DURING_CLASS_TIME = "final exam during class time";
+  private static final Pattern PROJECT_NAME_PATTERN = Pattern.compile("^Project \\d+$");
   private static final Pattern QUIZ_PREFIX_PATTERN = Pattern.compile("^quiz\\s+(\\d+)\\b.*");
   private static final Pattern REFLECTION_PATTERN = Pattern.compile("^reflections on\\s+(.+)$");
+  private static final Pattern FINAL_EXAM_DATE_PATTERN = Pattern.compile(
+    "(?i)individual[^.]*final exam[^.]*?([A-Z][a-z]+\\s+\\d{1,2}(?:,\\s*\\d{4})?)|" +
+      "final exam[^.]*individual[^.]*?([A-Z][a-z]+\\s+\\d{1,2}(?:,\\s*\\d{4})?)");
 
   private final HttpClient httpClient;
   private final URI canvasBaseUri;
@@ -158,8 +174,11 @@ public class CompareCanvasAndWebsiteSchedules {
         LocalDate dueDate = parseWebsiteDate(meetings.getString(i));
         addDueAssignments(assignments, topics, dueDate);
       }
+
+      addFinalExamAssignments(assignments, lectures, meetings, parseWebsiteDate(meetings.getString(meetings.size() - 1)).getYear());
     }
 
+    addPlanOfAttackAssignments(assignments);
     return assignments;
   }
 
@@ -195,6 +214,70 @@ public class CompareCanvasAndWebsiteSchedules {
     if (reflection != null && reflection.get("title") instanceof JsonString) {
       assignments.add(new WebsiteAssignment("Reflections on " + reflection.getString("title"), dueDate));
     }
+  }
+
+  private static void addPlanOfAttackAssignments(List<WebsiteAssignment> assignments) {
+    List<WebsiteAssignment> poaAssignments = new ArrayList<>();
+    for (WebsiteAssignment assignment : assignments) {
+      if (PROJECT_NAME_PATTERN.matcher(assignment.name()).matches()) {
+        poaAssignments.add(new WebsiteAssignment(assignment.name() + " POA", assignment.dueDate().minusDays(3)));
+      }
+    }
+
+    assignments.addAll(poaAssignments);
+  }
+
+  private static void addFinalExamAssignments(List<WebsiteAssignment> assignments, JsonArray lectures, JsonArray meetings, int defaultYear) {
+    LocalDate individualDueDate = findFinalExamIndividualDueDate(lectures, meetings, defaultYear);
+    if (individualDueDate == null) {
+      return;
+    }
+
+    assignments.add(new WebsiteAssignment("Final Exam (Individual)", individualDueDate));
+    assignments.add(new WebsiteAssignment("Final Exam (Group)", individualDueDate.plusDays(1)));
+  }
+
+  private static LocalDate findFinalExamIndividualDueDate(JsonArray lectures, JsonArray meetings, int defaultYear) {
+    for (int i = 0; i < lectures.size(); i++) {
+      JsonValue lectureValue = lectures.get(i);
+      if (lectureValue.getValueType() != JsonValue.ValueType.OBJECT) {
+        continue;
+      }
+
+      JsonObject lecture = lectureValue.asJsonObject();
+      JsonValue comment = lecture.get("comment");
+      if (comment instanceof JsonString) {
+        String commentText = ((JsonString) comment).getString();
+        LocalDate maybeDate = parseFinalExamDateFromComment(commentText, defaultYear);
+        if (maybeDate == null && commentText.toLowerCase(Locale.US).contains(FINAL_EXAM_DURING_CLASS_TIME)) {
+          maybeDate = parseWebsiteDate(meetings.getString(i));
+        }
+        if (maybeDate != null) {
+          return maybeDate;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private static LocalDate parseFinalExamDateFromComment(String comment, int defaultYear) {
+    Matcher matcher = FINAL_EXAM_DATE_PATTERN.matcher(comment);
+    if (!matcher.find()) {
+      return null;
+    }
+
+    String dateText = matcher.group(1) != null ? matcher.group(1) : matcher.group(2);
+    if (dateText == null) {
+      return null;
+    }
+
+    LocalDate parsed = LocalDate.parse(dateText.trim(), COMMENT_DATE_WITH_OPTIONAL_YEAR_FORMAT);
+    if (!dateText.contains(",")) {
+      parsed = parsed.withYear(defaultYear);
+    }
+
+    return parsed;
   }
 
   private static String readApiToken(Path apiTokenFile) throws IOException {

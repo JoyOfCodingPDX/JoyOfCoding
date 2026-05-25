@@ -77,6 +77,7 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         respond(exchange, 200, """
           [
             {"id": 11, "name": "Quiz 1", "due_at": "2026-06-25T06:59:00Z"},
+            {"id": 14, "name": "Project 1 POA", "due_at": "2026-06-27T06:59:00Z"},
             {"id": 12, "name": "Project 1", "due_at": "2026-07-01T06:59:00Z"},
             {"id": 13, "name": "Survey 1", "due_at": null}
           ]
@@ -114,9 +115,10 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         Survey 1                         (no due date)  (not found)
         
         Assignments with matching due dates:
-        Assignment  Canvas      Website   
-        ----------  ----------  ----------
-        Quiz 1      2026-06-24  2026-06-24
+        Assignment     Canvas      Website
+        -------------  ----------  ----------
+        Project 1 POA  2026-06-26  2026-06-26
+        Quiz 1         2026-06-24  2026-06-24
         """));
     } finally {
       server.stop(0);
@@ -229,7 +231,35 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Quiz 1", LocalDate.parse("2026-06-24")),
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1", LocalDate.parse("2026-06-29")),
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Midterm Survey", LocalDate.parse("2026-06-29")),
-      new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Reflections on pair programming", LocalDate.parse("2026-06-29"))));
+      new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Reflections on pair programming", LocalDate.parse("2026-06-29")),
+      new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1 POA", LocalDate.parse("2026-06-26"))));
+  }
+
+  @Test
+  void parseWebsiteAssignmentsDerivesFinalExamAssignmentsFromComment() {
+    List<CompareCanvasAndWebsiteSchedules.WebsiteAssignment> assignments =
+      CompareCanvasAndWebsiteSchedules.parseWebsiteAssignments("""
+        {
+          "meetings" : [
+            "August 5, 2026",
+            "August 12, 2026"
+          ],
+          "lectures" : [
+            {
+              "session" : 15,
+              "comment" : "Android Lab. Let's focus on the final project."
+            },
+            {
+              "session" : 16,
+              "comment" : "Final Exam during class time.  Please attend in person."
+            }
+          ]
+        }
+        """);
+
+    assertThat(assignments, contains(
+      new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Final Exam (Individual)", LocalDate.parse("2026-08-12")),
+      new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Final Exam (Group)", LocalDate.parse("2026-08-13"))));
   }
 
   @Test
@@ -237,12 +267,14 @@ public class CompareCanvasAndWebsiteSchedulesTest {
     CompareCanvasAndWebsiteSchedules.ComparisonReport report = CompareCanvasAndWebsiteSchedules.compareAssignments(
       List.of(
         new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Quiz 1", Optional.of(LocalDate.parse("2026-06-24"))),
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Project 1 POA", Optional.of(LocalDate.parse("2026-06-26"))),
         new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Project 1", Optional.of(LocalDate.parse("2026-06-30"))),
         new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Survey 1", Optional.empty())
       ),
       List.of(
         new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Java Koans", LocalDate.parse("2026-06-24")),
         new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Quiz 1", LocalDate.parse("2026-06-24")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1 POA", LocalDate.parse("2026-06-26")),
         new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1", LocalDate.parse("2026-06-29")),
         new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Midterm Survey", LocalDate.parse("2026-06-29"))
       ));
@@ -254,6 +286,7 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Midterm Survey", "(not found)", "2026-06-29"),
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Survey 1", "(no due date)", "(not found)")));
     assertThat(report.matchingDueDates(), contains(
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Project 1 POA", "2026-06-26", "2026-06-26"),
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 1", "2026-06-24", "2026-06-24")));
   }
 
