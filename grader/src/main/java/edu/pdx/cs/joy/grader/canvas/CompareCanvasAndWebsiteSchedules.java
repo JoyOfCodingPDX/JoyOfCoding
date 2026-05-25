@@ -459,9 +459,9 @@ public class CompareCanvasAndWebsiteSchedules {
         formatWebsiteDate(websiteAssignment.dueDate())));
     }
 
-    sortRowsByAssignmentName(differing);
-    sortRowsByAssignmentName(undetermined);
-    sortRowsByAssignmentName(matching);
+    sortRowsByWebsiteDueDate(differing);
+    sortRowsByWebsiteDueDate(undetermined);
+    sortRowsByWebsiteDueDate(matching);
 
     return new ComparisonReport(differing, undetermined, matching);
   }
@@ -528,8 +528,23 @@ public class CompareCanvasAndWebsiteSchedules {
     return "reflections on " + topic;
   }
 
-  private static void sortRowsByAssignmentName(List<ComparisonRow> rows) {
-    rows.sort((left, right) -> left.assignmentName().compareToIgnoreCase(right.assignmentName()));
+  private static void sortRowsByWebsiteDueDate(List<ComparisonRow> rows) {
+    rows.sort((left, right) -> {
+      int byDate = websiteSortKey(left).compareTo(websiteSortKey(right));
+      if (byDate != 0) {
+        return byDate;
+      }
+
+      return left.assignmentName().compareToIgnoreCase(right.assignmentName());
+    });
+  }
+
+  private static LocalDate websiteSortKey(ComparisonRow row) {
+    if ("(not found)".equals(row.websiteDueDate())) {
+      return LocalDate.MAX;
+    }
+
+    return LocalDate.parse(row.websiteDueDate());
   }
 
   private static String formatCanvasDate(Optional<LocalDate> dueDate) {

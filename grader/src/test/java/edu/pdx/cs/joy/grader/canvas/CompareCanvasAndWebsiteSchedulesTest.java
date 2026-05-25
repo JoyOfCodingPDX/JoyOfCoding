@@ -117,8 +117,8 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         Assignments with matching due dates:
         Assignment     Canvas      Website
         -------------  ----------  ----------
-        Project 1 POA  2026-06-26  2026-06-26
         Quiz 1         2026-06-24  2026-06-24
+        Project 1 POA  2026-06-26  2026-06-26
         """));
     } finally {
       server.stop(0);
@@ -286,8 +286,8 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Midterm Survey", "(not found)", "2026-06-29"),
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Survey 1", "(no due date)", "(not found)")));
     assertThat(report.matchingDueDates(), contains(
-      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Project 1 POA", "2026-06-26", "2026-06-26"),
-      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 1", "2026-06-24", "2026-06-24")));
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 1", "2026-06-24", "2026-06-24"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Project 1 POA", "2026-06-26", "2026-06-26")));
   }
 
   @Test
@@ -311,10 +311,10 @@ public class CompareCanvasAndWebsiteSchedulesTest {
     assertThat(report.differingDueDates(), equalTo(List.of()));
     assertThat(report.undeterminedDueDates(), equalTo(List.of()));
     assertThat(report.matchingDueDates(), contains(
-      new CompareCanvasAndWebsiteSchedules.ComparisonRow("End of term Survey", "2026-08-12", "2026-08-12"),
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 2", "2026-07-08", "2026-07-08"),
       new CompareCanvasAndWebsiteSchedules.ComparisonRow("Reflections on your experiences pair programming",
-        "2026-07-22", "2026-07-22")));
+        "2026-07-22", "2026-07-22"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("End of term Survey", "2026-08-12", "2026-08-12")));
   }
 
   private static File writeFile(File tempDir, String fileName, String content) throws IOException {
