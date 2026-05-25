@@ -1,9 +1,16 @@
 package edu.pdx.cs.joy.grader.canvas;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
@@ -130,62 +137,23 @@ public class CompareCanvasAndWebsiteSchedules {
 
   @VisibleForTesting
   static List<String> parseCourseNames(String json) {
-    JsonCursor cursor = new JsonCursor(json);
     List<String> courseNames = new ArrayList<>();
+    try (JsonReader reader = Json.createReader(new StringReader(json))) {
+      JsonArray courses = reader.readArray();
+      for (JsonValue courseValue : courses) {
+        if (courseValue.getValueType() != JsonValue.ValueType.OBJECT) {
+          continue;
+        }
 
-    cursor.skipWhitespace();
-    cursor.expect('[');
-    cursor.skipWhitespace();
-    if (cursor.consume(']')) {
+        JsonObject course = courseValue.asJsonObject();
+        JsonValue name = course.get("name");
+        if (name instanceof JsonString) {
+          courseNames.add(((JsonString) name).getString());
+        }
+      }
+
       return courseNames;
     }
-
-    do {
-      String courseName = parseCourseName(cursor);
-      if (courseName != null) {
-        courseNames.add(courseName);
-      }
-      cursor.skipWhitespace();
-    } while (cursor.consume(','));
-
-    cursor.expect(']');
-    cursor.skipWhitespace();
-    if (!cursor.isDone()) {
-      throw new IllegalArgumentException("Unexpected trailing JSON content");
-    }
-
-    return courseNames;
-  }
-
-  private static String parseCourseName(JsonCursor cursor) {
-    cursor.skipWhitespace();
-    cursor.expect('{');
-    cursor.skipWhitespace();
-
-    String courseName = null;
-    if (cursor.consume('}')) {
-      return null;
-    }
-
-    do {
-      cursor.skipWhitespace();
-      String fieldName = cursor.readString();
-      cursor.skipWhitespace();
-      cursor.expect(':');
-      cursor.skipWhitespace();
-
-      if ("name".equals(fieldName) && cursor.peek() == '"') {
-        courseName = cursor.readString();
-
-      } else {
-        cursor.skipValue();
-      }
-
-      cursor.skipWhitespace();
-    } while (cursor.consume(','));
-
-    cursor.expect('}');
-    return courseName;
   }
 
   private static void usage(String message) {
@@ -200,219 +168,5 @@ public class CompareCanvasAndWebsiteSchedules {
     err.println();
 
     System.exit(1);
-  }
-
-  private static class JsonCursor {
-    private final String text;
-    private int index;
-
-    private JsonCursor(String text) {
-      this.text = text;
-    }
-
-    private void skipWhitespace() {
-      while (!isDone() && Character.isWhitespace(this.text.charAt(this.index))) {
-        this.index++;
-      }
-    }
-
-    private boolean consume(char expected) {
-      if (!isDone() && this.text.charAt(this.index) == expected) {
-        this.index++;
-        return true;
-      }
-
-      return false;
-    }
-
-    private void expect(char expected) {
-      if (isDone() || this.text.charAt(this.index) != expected) {
-        throw new IllegalArgumentException("Expected '" + expected + "' at index " + this.index);
-      }
-
-      this.index++;
-    }
-
-    private char peek() {
-      if (isDone()) {
-        throw new IllegalArgumentException("Unexpected end of JSON input");
-      }
-
-      return this.text.charAt(this.index);
-    }
-
-    private boolean isDone() {
-      return this.index >= this.text.length();
-    }
-
-    private String readString() {
-      expect('"');
-      StringBuilder builder = new StringBuilder();
-
-      while (!isDone()) {
-        char c = this.text.charAt(this.index++);
-        if (c == '"') {
-          return builder.toString();
-        }
-
-        if (c == '\\') {
-          if (isDone()) {
-            throw new IllegalArgumentException("Unterminated escape sequence in JSON string");
-          }
-
-          char escaped = this.text.charAt(this.index++);
-          switch (escaped) {
-            case '"':
-            case '\\':
-            case '/':
-              builder.append(escaped);
-              break;
-            case 'b':
-              builder.append('\b');
-              break;
-            case 'f':
-              builder.append('\f');
-              break;
-            case 'n':
-              builder.append('\n');
-              break;
-            case 'r':
-              builder.append('\r');
-              break;
-            case 't':
-              builder.append('\t');
-              break;
-            case 'u':
-              builder.append(readUnicodeEscape());
-              break;
-            default:
-              throw new IllegalArgumentException("Unsupported JSON escape \\" + escaped);
-          }
-
-        } else {
-          builder.append(c);
-        }
-      }
-
-      throw new IllegalArgumentException("Unterminated JSON string");
-    }
-
-    private char readUnicodeEscape() {
-      if (this.index + 4 > this.text.length()) {
-        throw new IllegalArgumentException("Incomplete unicode escape sequence");
-      }
-
-      String hexDigits = this.text.substring(this.index, this.index + 4);
-      this.index += 4;
-      return (char) Integer.parseInt(hexDigits, 16);
-    }
-
-    private void skipValue() {
-      skipWhitespace();
-      char c = peek();
-      switch (c) {
-        case '"':
-          readString();
-          break;
-        case '{':
-          skipObject();
-          break;
-        case '[':
-          skipArray();
-          break;
-        case 't':
-          expectLiteral("true");
-          break;
-        case 'f':
-          expectLiteral("false");
-          break;
-        case 'n':
-          expectLiteral("null");
-          break;
-        default:
-          skipNumber();
-      }
-    }
-
-    private void skipObject() {
-      expect('{');
-      skipWhitespace();
-      if (consume('}')) {
-        return;
-      }
-
-      do {
-        skipWhitespace();
-        readString();
-        skipWhitespace();
-        expect(':');
-        skipValue();
-        skipWhitespace();
-      } while (consume(','));
-
-      expect('}');
-    }
-
-    private void skipArray() {
-      expect('[');
-      skipWhitespace();
-      if (consume(']')) {
-        return;
-      }
-
-      do {
-        skipValue();
-        skipWhitespace();
-      } while (consume(','));
-
-      expect(']');
-    }
-
-    private void expectLiteral(String literal) {
-      if (!this.text.startsWith(literal, this.index)) {
-        throw new IllegalArgumentException("Expected \"" + literal + "\" at index " + this.index);
-      }
-
-      this.index += literal.length();
-    }
-
-    private void skipNumber() {
-      int start = this.index;
-
-      if (consume('-')) {
-        // Negative sign already consumed
-      }
-
-      while (!isDone() && Character.isDigit(this.text.charAt(this.index))) {
-        this.index++;
-      }
-
-      if (consume('.')) {
-        while (!isDone() && Character.isDigit(this.text.charAt(this.index))) {
-          this.index++;
-        }
-      }
-
-      if (!isDone()) {
-        char c = this.text.charAt(this.index);
-        if (c == 'e' || c == 'E') {
-          this.index++;
-          if (!isDone()) {
-            char sign = this.text.charAt(this.index);
-            if (sign == '+' || sign == '-') {
-              this.index++;
-            }
-          }
-
-          while (!isDone() && Character.isDigit(this.text.charAt(this.index))) {
-            this.index++;
-          }
-        }
-      }
-
-      if (start == this.index) {
-        throw new IllegalArgumentException("Expected JSON value at index " + this.index);
-      }
-    }
   }
 }
