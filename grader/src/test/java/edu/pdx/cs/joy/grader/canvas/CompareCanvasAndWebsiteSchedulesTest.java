@@ -101,16 +101,22 @@ public class CompareCanvasAndWebsiteSchedulesTest {
 
       assertThat(output.toString(StandardCharsets.UTF_8), equalTo("""
         Assignments with differing due dates:
-        Project 1: Canvas 2026-06-30, Website 2026-06-29
+        Assignment  Canvas      Website   
+        ----------  ----------  ----------
+        Project 1   2026-06-30  2026-06-29
         
         Assignments whose due dates couldn't be determined:
-        Java Koans: Canvas (not found), Website 2026-06-24
-        Midterm Survey: Canvas (not found), Website 2026-06-29
-        Reflections on pair programming: Canvas (not found), Website 2026-06-29
-        Survey 1: Canvas (no due date), Website (not found)
+        Assignment                       Canvas         Website
+        -------------------------------  -------------  -----------
+        Java Koans                       (not found)    2026-06-24
+        Midterm Survey                   (not found)    2026-06-29
+        Reflections on pair programming  (not found)    2026-06-29
+        Survey 1                         (no due date)  (not found)
         
         Assignments with matching due dates:
-        Quiz 1: 2026-06-24
+        Assignment  Canvas      Website   
+        ----------  ----------  ----------
+        Quiz 1      2026-06-24  2026-06-24
         """));
     } finally {
       server.stop(0);
@@ -242,13 +248,13 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       ));
 
     assertThat(report.differingDueDates(), contains(
-      "Project 1: Canvas 2026-06-30, Website 2026-06-29"));
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Project 1", "2026-06-30", "2026-06-29")));
     assertThat(report.undeterminedDueDates(), contains(
-      "Java Koans: Canvas (not found), Website 2026-06-24",
-      "Midterm Survey: Canvas (not found), Website 2026-06-29",
-      "Survey 1: Canvas (no due date), Website (not found)"));
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Java Koans", "(not found)", "2026-06-24"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Midterm Survey", "(not found)", "2026-06-29"),
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Survey 1", "(no due date)", "(not found)")));
     assertThat(report.matchingDueDates(), contains(
-      "Quiz 1: 2026-06-24"));
+      new CompareCanvasAndWebsiteSchedules.ComparisonRow("Quiz 1", "2026-06-24", "2026-06-24")));
   }
 
   private static File writeFile(File tempDir, String fileName, String content) throws IOException {

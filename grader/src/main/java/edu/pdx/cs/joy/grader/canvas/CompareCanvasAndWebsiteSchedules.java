@@ -345,24 +345,26 @@ public class CompareCanvasAndWebsiteSchedules {
       websiteByName.put(assignment.name(), assignment.dueDate());
     }
 
-    List<String> differing = new ArrayList<>();
-    List<String> undetermined = new ArrayList<>();
-    List<String> matching = new ArrayList<>();
+    List<ComparisonRow> differing = new ArrayList<>();
+    List<ComparisonRow> undetermined = new ArrayList<>();
+    List<ComparisonRow> matching = new ArrayList<>();
 
     for (String name : new TreeSet<>(unionOfNames(canvasByName, websiteByName))) {
       Optional<LocalDate> canvasDueDate = canvasByName.containsKey(name)
         ? canvasByName.get(name)
         : null;
       LocalDate websiteDueDate = websiteByName.get(name);
+      String canvasText = formatCanvasDate(canvasDueDate);
+      String websiteText = formatWebsiteDate(websiteDueDate);
 
       if (canvasDueDate == null || canvasDueDate.isEmpty() || websiteDueDate == null) {
-        undetermined.add(name + ": Canvas " + formatCanvasDate(canvasDueDate) + ", Website " + formatWebsiteDate(websiteDueDate));
+        undetermined.add(new ComparisonRow(name, canvasText, websiteText));
 
       } else if (canvasDueDate.get().equals(websiteDueDate)) {
-        matching.add(name + ": " + websiteDueDate);
+        matching.add(new ComparisonRow(name, canvasText, websiteText));
 
       } else {
-        differing.add(name + ": Canvas " + canvasDueDate.get() + ", Website " + websiteDueDate);
+        differing.add(new ComparisonRow(name, canvasText, websiteText));
       }
     }
 
@@ -392,16 +394,41 @@ public class CompareCanvasAndWebsiteSchedules {
     return dueDate.toString();
   }
 
-  private static void printSection(PrintStream out, String heading, List<String> lines) {
+  private static void printSection(PrintStream out, String heading, List<ComparisonRow> rows) {
     out.println(heading);
-    if (lines.isEmpty()) {
+    if (rows.isEmpty()) {
       out.println("(none)");
 
     } else {
-      for (String line : lines) {
-        out.println(line);
+      int assignmentWidth = "Assignment".length();
+      int canvasWidth = "Canvas".length();
+      int websiteWidth = "Website".length();
+
+      for (ComparisonRow row : rows) {
+        assignmentWidth = Math.max(assignmentWidth, row.assignmentName().length());
+        canvasWidth = Math.max(canvasWidth, row.canvasDueDate().length());
+        websiteWidth = Math.max(websiteWidth, row.websiteDueDate().length());
+      }
+
+      out.println(formatTableRow("Assignment", "Canvas", "Website", assignmentWidth, canvasWidth, websiteWidth));
+      out.println(formatTableRow("-".repeat(assignmentWidth), "-".repeat(canvasWidth), "-".repeat(websiteWidth),
+        assignmentWidth, canvasWidth, websiteWidth));
+      for (ComparisonRow row : rows) {
+        out.println(formatTableRow(row.assignmentName(), row.canvasDueDate(), row.websiteDueDate(),
+          assignmentWidth, canvasWidth, websiteWidth));
       }
     }
+  }
+
+  private static String formatTableRow(String assignment, String canvas, String website, int assignmentWidth, int canvasWidth,
+                                       int websiteWidth) {
+    return padRight(assignment, assignmentWidth) + "  " +
+      padRight(canvas, canvasWidth) + "  " +
+      website;
+  }
+
+  private static String padRight(String value, int width) {
+    return value + " ".repeat(width - value.length());
   }
 
   private static void usage(String message) {
@@ -443,6 +470,10 @@ public class CompareCanvasAndWebsiteSchedules {
   }
 
   @VisibleForTesting
-  static record ComparisonReport(List<String> differingDueDates, List<String> undeterminedDueDates, List<String> matchingDueDates) {
+  static record ComparisonReport(List<ComparisonRow> differingDueDates, List<ComparisonRow> undeterminedDueDates, List<ComparisonRow> matchingDueDates) {
+  }
+
+  @VisibleForTesting
+  static record ComparisonRow(String assignmentName, String canvasDueDate, String websiteDueDate) {
   }
 }
