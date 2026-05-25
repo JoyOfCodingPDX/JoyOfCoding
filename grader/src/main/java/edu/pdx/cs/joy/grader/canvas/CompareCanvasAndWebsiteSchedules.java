@@ -23,6 +23,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +37,7 @@ public class CompareCanvasAndWebsiteSchedules {
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
   private static final DateTimeFormatter WEBSITE_DATE_FORMAT =
     DateTimeFormatter.ofPattern("MMMM d, uuuu", Locale.US);
+  private static final ZoneId PACIFIC_TIME_ZONE = ZoneId.of("America/Los_Angeles");
 
   private final HttpClient httpClient;
   private final URI canvasBaseUri;
@@ -319,7 +321,9 @@ public class CompareCanvasAndWebsiteSchedules {
         JsonValue dueAt = assignment.get("due_at");
         Optional<LocalDate> dueDate = Optional.empty();
         if (dueAt instanceof JsonString) {
-          dueDate = Optional.of(OffsetDateTime.parse(((JsonString) dueAt).getString()).toLocalDate());
+          dueDate = Optional.of(OffsetDateTime.parse(((JsonString) dueAt).getString())
+            .atZoneSameInstant(PACIFIC_TIME_ZONE)
+            .toLocalDate());
         }
 
         assignments.add(new CanvasAssignment(((JsonString) name).getString(), dueDate));

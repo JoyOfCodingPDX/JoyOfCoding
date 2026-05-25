@@ -76,8 +76,8 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       if (path.equals("/api/v1/courses/2/assignments")) {
         respond(exchange, 200, """
           [
-            {"id": 11, "name": "Quiz 1", "due_at": "2026-06-24T23:59:00Z"},
-            {"id": 12, "name": "Project 1", "due_at": "2026-06-29T23:59:00Z"},
+            {"id": 11, "name": "Quiz 1", "due_at": "2026-06-25T06:59:00Z"},
+            {"id": 12, "name": "Project 1", "due_at": "2026-06-30T06:59:00Z"},
             {"id": 13, "name": "Survey 1", "due_at": null}
           ]
           """);
@@ -153,7 +153,7 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         {
           "id": 11,
           "name": "Quiz 1",
-          "due_at": "2026-06-24T23:59:00Z"
+          "due_at": "2026-06-25T06:59:00Z"
         },
         {
           "id": 12,
