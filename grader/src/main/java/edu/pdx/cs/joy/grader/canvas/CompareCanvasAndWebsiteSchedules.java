@@ -25,13 +25,17 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.format.DateTimeFormatter;
 
 public class CompareCanvasAndWebsiteSchedules {
   static final URI DEFAULT_CANVAS_BASE_URI = URI.create("https://canvas.pdx.edu");
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
+  private static final DateTimeFormatter WEBSITE_DATE_FORMAT =
+    DateTimeFormatter.ofPattern("MMMM d, uuuu", Locale.US);
 
   private final HttpClient httpClient;
   private final URI canvasBaseUri;
@@ -68,31 +72,125 @@ public class CompareCanvasAndWebsiteSchedules {
   @VisibleForTesting
   void run(String[] args, PrintStream out) throws IOException, InterruptedException {
     String apiTokenFileName = parseApiTokenFileName(args);
+    String websiteJsonFileName = parseWebsiteJsonFileName(args);
     String apiToken = readApiToken(Path.of(apiTokenFileName));
-
     CanvasCourse course = getNextCourse(apiToken);
-    for (CanvasAssignment assignment : getAssignments(apiToken, course)) {
+    List<CanvasAssignment> canvasAssignments = getAssignments(apiToken, course);
+
+    String websiteJson = readWebsiteJson(Path.of(websiteJsonFileName));
+    List<WebsiteAssignment> websiteAssignments = parseWebsiteAssignments(websiteJson);
+
+    out.println("Canvas:");
+    for (CanvasAssignment assignment : canvasAssignments) {
+      out.println(assignment.name() + ": " + assignment.dueDateAsText());
+    }
+    out.println();
+    out.println("Website:");
+    for (WebsiteAssignment assignment : websiteAssignments) {
       out.println(assignment.name() + ": " + assignment.dueDateAsText());
     }
   }
 
   private static String parseApiTokenFileName(String[] args) {
-    String apiTokenFileName = null;
-
-    for (String arg : args) {
-      if (apiTokenFileName == null) {
-        apiTokenFileName = arg;
-
-      } else {
-        throw new IllegalArgumentException("Extraneous command line argument: " + arg);
-      }
-    }
-
-    if (apiTokenFileName == null) {
+    if (args.length == 0) {
       throw new IllegalArgumentException("Missing API token file name");
     }
 
-    return apiTokenFileName;
+    return args[0];
+  }
+
+  private static String parseWebsiteJsonFileName(String[] args) {
+    if (args.length < 2) {
+      throw new IllegalArgumentException("Missing website JSON file name");
+    }
+
+    if (args.length > 2) {
+      throw new IllegalArgumentException("Extraneous command line argument: " + args[2]);
+    }
+
+    return args[1];
+  }
+
+  private static String readWebsiteJson(Path websiteJsonFile) throws IOException {
+    if (!Files.exists(websiteJsonFile)) {
+      throw new IllegalArgumentException("Website JSON file \"" + websiteJsonFile + "\" does not exist");
+    }
+
+    return Files.readString(websiteJsonFile);
+  }
+
+  @VisibleForTesting
+  static List<WebsiteAssignment> parseWebsiteAssignments(String json) {
+    List<WebsiteAssignment> assignments = new ArrayList<>();
+    try (JsonReader reader = Json.createReader(new StringReader(json))) {
+      JsonObject schedule = reader.readObject();
+      JsonArray meetings = schedule.getJsonArray("meetings");
+      JsonArray lectures = schedule.getJsonArray("lectures");
+
+      if (meetings == null) {
+        throw new IllegalArgumentException("Website schedule is missing meetings");
+      }
+
+      if (lectures == null) {
+        throw new IllegalArgumentException("Website schedule is missing lectures");
+      }
+
+      if (lectures.size() > meetings.size()) {
+        throw new IllegalArgumentException("Website schedule has more lectures than meetings");
+      }
+
+      for (int i = 0; i < lectures.size(); i++) {
+        JsonValue lectureValue = lectures.get(i);
+        if (lectureValue.getValueType() != JsonValue.ValueType.OBJECT) {
+          continue;
+        }
+
+        JsonObject lecture = lectureValue.asJsonObject();
+        JsonObject topics = lecture.getJsonObject("topics");
+        if (topics == null) {
+          continue;
+        }
+
+        LocalDate dueDate = parseWebsiteDate(meetings.getString(i));
+        addDueAssignments(assignments, topics, dueDate);
+      }
+    }
+
+    return assignments;
+  }
+
+  private static LocalDate parseWebsiteDate(String text) {
+    return LocalDate.parse(text, WEBSITE_DATE_FORMAT);
+  }
+
+  private static void addDueAssignments(List<WebsiteAssignment> assignments, JsonObject topics, LocalDate dueDate) {
+    JsonValue due = topics.get("due");
+    if (due instanceof JsonString) {
+      assignments.add(new WebsiteAssignment(((JsonString) due).getString(), dueDate));
+
+    } else if (due != null && due.getValueType() == JsonValue.ValueType.ARRAY) {
+      JsonArray array = topics.getJsonArray("due");
+      for (JsonValue value : array) {
+        if (value instanceof JsonString) {
+          assignments.add(new WebsiteAssignment(((JsonString) value).getString(), dueDate));
+        }
+      }
+    }
+
+    JsonObject quiz = topics.getJsonObject("quiz");
+    if (quiz != null && quiz.get("number") instanceof JsonNumber) {
+      assignments.add(new WebsiteAssignment("Quiz " + quiz.getInt("number"), dueDate));
+    }
+
+    JsonObject survey = topics.getJsonObject("survey");
+    if (survey != null && survey.get("name") instanceof JsonString) {
+      assignments.add(new WebsiteAssignment(survey.getString("name") + " Survey", dueDate));
+    }
+
+    JsonObject reflection = topics.getJsonObject("reflection");
+    if (reflection != null && reflection.get("title") instanceof JsonString) {
+      assignments.add(new WebsiteAssignment("Reflections on " + reflection.getString("title"), dueDate));
+    }
   }
 
   private static String readApiToken(Path apiTokenFile) throws IOException {
@@ -236,10 +334,11 @@ public class CompareCanvasAndWebsiteSchedules {
 
     err.println("+++ " + message);
     err.println();
-    err.println("usage: java CompareCanvasAndWebsiteSchedules apiTokenFileName");
+    err.println("usage: java CompareCanvasAndWebsiteSchedules apiTokenFileName websiteJsonFileName");
     err.println("    apiTokenFileName             File containing the Canvas API token");
+    err.println("    websiteJsonFileName          File containing the website schedule JSON");
     err.println();
-    err.println("Prints assignment due dates for the Canvas course offering that will start next");
+    err.println("Prints assignment due dates from Canvas and the website schedule JSON");
     err.println();
 
     System.exit(1);
@@ -258,6 +357,13 @@ public class CompareCanvasAndWebsiteSchedules {
   static record CanvasAssignment(String name, Optional<LocalDate> dueDate) {
     String dueDateAsText() {
       return this.dueDate.map(LocalDate::toString).orElse("(no due date)");
+    }
+  }
+
+  @VisibleForTesting
+  static record WebsiteAssignment(String name, LocalDate dueDate) {
+    String dueDateAsText() {
+      return this.dueDate.toString();
     }
   }
 }
