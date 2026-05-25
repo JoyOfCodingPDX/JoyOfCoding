@@ -3,6 +3,7 @@ package edu.pdx.cs.joy.grader.canvas;
 import com.google.common.annotations.VisibleForTesting;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonString;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,10 @@ public class CompareCanvasAndWebsiteSchedules {
     String apiTokenFileName = parseApiTokenFileName(args);
     String apiToken = readApiToken(Path.of(apiTokenFileName));
 
-    out.println(getNextCourseName(apiToken));
+    CanvasCourse course = getNextCourse(apiToken);
+    for (CanvasAssignment assignment : getAssignments(apiToken, course)) {
+      out.println(assignment.name() + ": " + assignment.dueDateAsText());
+    }
   }
 
   private static String parseApiTokenFileName(String[] args) {
@@ -104,7 +109,7 @@ public class CompareCanvasAndWebsiteSchedules {
   }
 
   @VisibleForTesting
-  String getNextCourseName(String apiToken) throws IOException, InterruptedException {
+  CanvasCourse getNextCourse(String apiToken) throws IOException, InterruptedException {
     List<CanvasCourse> courses = new ArrayList<>();
     URI nextPage = getCoursesUri();
 
@@ -120,12 +125,29 @@ public class CompareCanvasAndWebsiteSchedules {
       .min((left, right) -> left.startAt().compareTo(right.startAt()));
 
     return nextCourse
-      .map(CanvasCourse::name)
       .orElseThrow(() -> new IllegalStateException("No upcoming Canvas course offerings found"));
+  }
+
+  @VisibleForTesting
+  List<CanvasAssignment> getAssignments(String apiToken, CanvasCourse course) throws IOException, InterruptedException {
+    List<CanvasAssignment> assignments = new ArrayList<>();
+    URI nextPage = getAssignmentsUri(course);
+
+    while (nextPage != null) {
+      HttpResponse<String> response = invokeCanvas(nextPage, apiToken);
+      assignments.addAll(parseAssignments(response.body()));
+      nextPage = getNextPage(response.headers());
+    }
+
+    return assignments;
   }
 
   private URI getCoursesUri() {
     return this.canvasBaseUri.resolve("/api/v1/courses?per_page=100");
+  }
+
+  private URI getAssignmentsUri(CanvasCourse course) {
+    return this.canvasBaseUri.resolve("/api/v1/courses/" + course.id() + "/assignments?per_page=100");
   }
 
   private HttpResponse<String> invokeCanvas(URI uri, String apiToken) throws IOException, InterruptedException {
@@ -165,16 +187,47 @@ public class CompareCanvasAndWebsiteSchedules {
         }
 
         JsonObject course = courseValue.asJsonObject();
+        JsonValue id = course.get("id");
         JsonValue name = course.get("name");
         JsonValue startAt = course.get("start_at");
-        if (name instanceof JsonString && startAt instanceof JsonString) {
+        if (id instanceof JsonNumber && name instanceof JsonString && startAt instanceof JsonString) {
           courses.add(new CanvasCourse(
+            ((JsonNumber) id).intValue(),
             ((JsonString) name).getString(),
             OffsetDateTime.parse(((JsonString) startAt).getString()).toInstant()));
         }
       }
 
       return courses;
+    }
+  }
+
+  @VisibleForTesting
+  static List<CanvasAssignment> parseAssignments(String json) {
+    List<CanvasAssignment> assignments = new ArrayList<>();
+    try (JsonReader reader = Json.createReader(new StringReader(json))) {
+      JsonArray jsonAssignments = reader.readArray();
+      for (JsonValue assignmentValue : jsonAssignments) {
+        if (assignmentValue.getValueType() != JsonValue.ValueType.OBJECT) {
+          continue;
+        }
+
+        JsonObject assignment = assignmentValue.asJsonObject();
+        JsonValue name = assignment.get("name");
+        if (!(name instanceof JsonString)) {
+          continue;
+        }
+
+        JsonValue dueAt = assignment.get("due_at");
+        Optional<LocalDate> dueDate = Optional.empty();
+        if (dueAt instanceof JsonString) {
+          dueDate = Optional.of(OffsetDateTime.parse(((JsonString) dueAt).getString()).toLocalDate());
+        }
+
+        assignments.add(new CanvasAssignment(((JsonString) name).getString(), dueDate));
+      }
+
+      return assignments;
     }
   }
 
@@ -186,7 +239,7 @@ public class CompareCanvasAndWebsiteSchedules {
     err.println("usage: java CompareCanvasAndWebsiteSchedules apiTokenFileName");
     err.println("    apiTokenFileName             File containing the Canvas API token");
     err.println();
-    err.println("Prints the name of the Canvas course offering that will start next");
+    err.println("Prints assignment due dates for the Canvas course offering that will start next");
     err.println();
 
     System.exit(1);
@@ -198,6 +251,13 @@ public class CompareCanvasAndWebsiteSchedules {
   }
 
   @VisibleForTesting
-  static record CanvasCourse(String name, Instant startAt) {
+  static record CanvasCourse(int id, String name, Instant startAt) {
+  }
+
+  @VisibleForTesting
+  static record CanvasAssignment(String name, Optional<LocalDate> dueDate) {
+    String dueDateAsText() {
+      return this.dueDate.map(LocalDate::toString).orElse("(no due date)");
+    }
   }
 }
