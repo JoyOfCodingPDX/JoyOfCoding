@@ -77,7 +77,7 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         respond(exchange, 200, """
           [
             {"id": 11, "name": "Quiz 1", "due_at": "2026-06-25T06:59:00Z"},
-            {"id": 12, "name": "Project 1", "due_at": "2026-06-30T06:59:00Z"},
+            {"id": 12, "name": "Project 1", "due_at": "2026-07-01T06:59:00Z"},
             {"id": 13, "name": "Survey 1", "due_at": null}
           ]
           """);
@@ -100,17 +100,17 @@ public class CompareCanvasAndWebsiteSchedulesTest {
         new PrintStream(output, true, StandardCharsets.UTF_8));
 
       assertThat(output.toString(StandardCharsets.UTF_8), equalTo("""
-        Canvas:
-        Quiz 1: 2026-06-24
-        Project 1: 2026-06-29
-        Survey 1: (no due date)
+        Assignments with differing due dates:
+        Project 1: Canvas 2026-06-30, Website 2026-06-29
         
-        Website:
-        Java Koans: 2026-06-24
+        Assignments whose due dates couldn't be determined:
+        Java Koans: Canvas (not found), Website 2026-06-24
+        Midterm Survey: Canvas (not found), Website 2026-06-29
+        Reflections on pair programming: Canvas (not found), Website 2026-06-29
+        Survey 1: Canvas (no due date), Website (not found)
+        
+        Assignments with matching due dates:
         Quiz 1: 2026-06-24
-        Project 1: 2026-06-29
-        Midterm Survey: 2026-06-29
-        Reflections on pair programming: 2026-06-29
         """));
     } finally {
       server.stop(0);
@@ -224,6 +224,31 @@ public class CompareCanvasAndWebsiteSchedulesTest {
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1", LocalDate.parse("2026-06-29")),
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Midterm Survey", LocalDate.parse("2026-06-29")),
       new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Reflections on pair programming", LocalDate.parse("2026-06-29"))));
+  }
+
+  @Test
+  void compareAssignmentsCategorizesDifferencesUnknownsAndMatches() {
+    CompareCanvasAndWebsiteSchedules.ComparisonReport report = CompareCanvasAndWebsiteSchedules.compareAssignments(
+      List.of(
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Quiz 1", Optional.of(LocalDate.parse("2026-06-24"))),
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Project 1", Optional.of(LocalDate.parse("2026-06-30"))),
+        new CompareCanvasAndWebsiteSchedules.CanvasAssignment("Survey 1", Optional.empty())
+      ),
+      List.of(
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Java Koans", LocalDate.parse("2026-06-24")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Quiz 1", LocalDate.parse("2026-06-24")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Project 1", LocalDate.parse("2026-06-29")),
+        new CompareCanvasAndWebsiteSchedules.WebsiteAssignment("Midterm Survey", LocalDate.parse("2026-06-29"))
+      ));
+
+    assertThat(report.differingDueDates(), contains(
+      "Project 1: Canvas 2026-06-30, Website 2026-06-29"));
+    assertThat(report.undeterminedDueDates(), contains(
+      "Java Koans: Canvas (not found), Website 2026-06-24",
+      "Midterm Survey: Canvas (not found), Website 2026-06-29",
+      "Survey 1: Canvas (no due date), Website (not found)"));
+    assertThat(report.matchingDueDates(), contains(
+      "Quiz 1: 2026-06-24"));
   }
 
   private static File writeFile(File tempDir, String fileName, String content) throws IOException {

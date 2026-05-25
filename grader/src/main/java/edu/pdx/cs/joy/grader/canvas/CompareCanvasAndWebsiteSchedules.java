@@ -25,9 +25,12 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.format.DateTimeFormatter;
@@ -82,15 +85,12 @@ public class CompareCanvasAndWebsiteSchedules {
     String websiteJson = readWebsiteJson(Path.of(websiteJsonFileName));
     List<WebsiteAssignment> websiteAssignments = parseWebsiteAssignments(websiteJson);
 
-    out.println("Canvas:");
-    for (CanvasAssignment assignment : canvasAssignments) {
-      out.println(assignment.name() + ": " + assignment.dueDateAsText());
-    }
+    ComparisonReport report = compareAssignments(canvasAssignments, websiteAssignments);
+    printSection(out, "Assignments with differing due dates:", report.differingDueDates());
     out.println();
-    out.println("Website:");
-    for (WebsiteAssignment assignment : websiteAssignments) {
-      out.println(assignment.name() + ": " + assignment.dueDateAsText());
-    }
+    printSection(out, "Assignments whose due dates couldn't be determined:", report.undeterminedDueDates());
+    out.println();
+    printSection(out, "Assignments with matching due dates:", report.matchingDueDates());
   }
 
   private static String parseApiTokenFileName(String[] args) {
@@ -333,6 +333,77 @@ public class CompareCanvasAndWebsiteSchedules {
     }
   }
 
+  @VisibleForTesting
+  static ComparisonReport compareAssignments(List<CanvasAssignment> canvasAssignments, List<WebsiteAssignment> websiteAssignments) {
+    Map<String, Optional<LocalDate>> canvasByName = new LinkedHashMap<>();
+    for (CanvasAssignment assignment : canvasAssignments) {
+      canvasByName.put(assignment.name(), assignment.dueDate());
+    }
+
+    Map<String, LocalDate> websiteByName = new LinkedHashMap<>();
+    for (WebsiteAssignment assignment : websiteAssignments) {
+      websiteByName.put(assignment.name(), assignment.dueDate());
+    }
+
+    List<String> differing = new ArrayList<>();
+    List<String> undetermined = new ArrayList<>();
+    List<String> matching = new ArrayList<>();
+
+    for (String name : new TreeSet<>(unionOfNames(canvasByName, websiteByName))) {
+      Optional<LocalDate> canvasDueDate = canvasByName.containsKey(name)
+        ? canvasByName.get(name)
+        : null;
+      LocalDate websiteDueDate = websiteByName.get(name);
+
+      if (canvasDueDate == null || canvasDueDate.isEmpty() || websiteDueDate == null) {
+        undetermined.add(name + ": Canvas " + formatCanvasDate(canvasDueDate) + ", Website " + formatWebsiteDate(websiteDueDate));
+
+      } else if (canvasDueDate.get().equals(websiteDueDate)) {
+        matching.add(name + ": " + websiteDueDate);
+
+      } else {
+        differing.add(name + ": Canvas " + canvasDueDate.get() + ", Website " + websiteDueDate);
+      }
+    }
+
+    return new ComparisonReport(differing, undetermined, matching);
+  }
+
+  private static TreeSet<String> unionOfNames(Map<String, Optional<LocalDate>> canvasByName, Map<String, LocalDate> websiteByName) {
+    TreeSet<String> names = new TreeSet<>();
+    names.addAll(canvasByName.keySet());
+    names.addAll(websiteByName.keySet());
+    return names;
+  }
+
+  private static String formatCanvasDate(Optional<LocalDate> dueDate) {
+    if (dueDate == null) {
+      return "(not found)";
+    }
+
+    return dueDate.map(LocalDate::toString).orElse("(no due date)");
+  }
+
+  private static String formatWebsiteDate(LocalDate dueDate) {
+    if (dueDate == null) {
+      return "(not found)";
+    }
+
+    return dueDate.toString();
+  }
+
+  private static void printSection(PrintStream out, String heading, List<String> lines) {
+    out.println(heading);
+    if (lines.isEmpty()) {
+      out.println("(none)");
+
+    } else {
+      for (String line : lines) {
+        out.println(line);
+      }
+    }
+  }
+
   private static void usage(String message) {
     PrintStream err = System.err;
 
@@ -342,7 +413,7 @@ public class CompareCanvasAndWebsiteSchedules {
     err.println("    apiTokenFileName             File containing the Canvas API token");
     err.println("    websiteJsonFileName          File containing the website schedule JSON");
     err.println();
-    err.println("Prints assignment due dates from Canvas and the website schedule JSON");
+    err.println("Compares assignment due dates from Canvas and the website schedule JSON");
     err.println();
 
     System.exit(1);
@@ -369,5 +440,9 @@ public class CompareCanvasAndWebsiteSchedules {
     String dueDateAsText() {
       return this.dueDate.toString();
     }
+  }
+
+  @VisibleForTesting
+  static record ComparisonReport(List<String> differingDueDates, List<String> undeterminedDueDates, List<String> matchingDueDates) {
   }
 }
