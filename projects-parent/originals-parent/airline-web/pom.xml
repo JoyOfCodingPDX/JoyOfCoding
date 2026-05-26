@@ -55,8 +55,8 @@
         <version>${build-helper-maven-plugin.version}</version>
       </plugin>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
+        <groupId>org.eclipse.jetty.ee11</groupId>
+        <artifactId>jetty-ee11-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
           <stopPort>9999</stopPort>
@@ -182,4 +182,3 @@
     </profile>
   </profiles>
 </project>
-
