@@ -108,7 +108,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
-              <mainClass>${package}.Project5</mainClass>
+              <mainClass>${package}.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
