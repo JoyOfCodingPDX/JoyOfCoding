@@ -108,7 +108,7 @@
               <addClasspath>true</addClasspath>
               <classpathLayoutType>repository</classpathLayoutType>
               <classpathPrefix>file:///${localRepositoryWithEscapedSpaces}</classpathPrefix>
-              <mainClass>edu.pdx.cs.joy.airlineweb.Project5</mainClass>
+              <mainClass>edu.pdx.cs.joy.airlineweb.Project4</mainClass>
             </manifest>
           </archive>
         </configuration>
