@@ -7,7 +7,7 @@
     <version>2.2.6-SNAPSHOT</version>
   </parent>
   <artifactId>apptbook-web-archetype</artifactId>
-  <version>3.0.5-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>apptbook-web-archetype</name>
