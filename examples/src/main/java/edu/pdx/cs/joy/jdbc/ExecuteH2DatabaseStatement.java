@@ -14,9 +14,8 @@ public class ExecuteH2DatabaseStatement {
    * Main method that takes a database file path and SQL statement as arguments.
    *
    * @param args command line arguments: args[0] = database file path, args[1] = SQL statement
-   * @throws SQLException if a database error occurs
    */
-  public static void main(String[] args) throws SQLException {
+  public static void main(String[] args) {
     if (args.length < 2) {
       System.err.println("Missing required arguments");
       System.err.println("Usage: java ExecuteH2DatabaseStatement <database-file-path> <sql-statement>");
@@ -39,6 +38,8 @@ public class ExecuteH2DatabaseStatement {
 
     try (Connection connection = H2DatabaseHelper.createFileBasedConnection(dbFile)) {
       executeStatement(connection, sqlStatement);
+    } catch (SQLException ex) {
+      System.err.println("Error: " + ex.getMessage());
     }
   }
 

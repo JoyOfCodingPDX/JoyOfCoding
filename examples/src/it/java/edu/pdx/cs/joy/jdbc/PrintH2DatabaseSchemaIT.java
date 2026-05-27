@@ -4,10 +4,12 @@ import edu.pdx.cs.joy.InvokeMainTestCase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -182,5 +184,17 @@ public class PrintH2DatabaseSchemaIT extends InvokeMainTestCase {
     // Verify the database file path is shown
     assertThat(output, containsString("Reading schema from H2 database:"));
     assertThat(output, containsString(dbFilePath));
+  }
+
+  @Test
+  public void testInvalidDatabasePathPrintsErrorWithoutStackTrace(@TempDir Path tempDirectory) {
+    String invalidDatabasePath = tempDirectory.resolve("missing-db").toAbsolutePath() + ";IFEXISTS=TRUE";
+
+    MainMethodResult result = invokeMain(PrintH2DatabaseSchema.class, invalidDatabasePath);
+    String errorOutput = result.getTextWrittenToStandardError();
+
+    assertThat(errorOutput, containsString("Error:"));
+    assertThat(errorOutput, not(containsString("Exception in thread")));
+    assertThat(errorOutput, not(containsString("\tat ")));
   }
 }

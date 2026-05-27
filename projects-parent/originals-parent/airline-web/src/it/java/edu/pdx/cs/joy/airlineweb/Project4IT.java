@@ -1,7 +1,4 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-package ${package};
+package edu.pdx.cs.joy.airlineweb;
 
 import edu.pdx.cs.joy.InvokeMainTestCase;
 import edu.pdx.cs.joy.UncaughtExceptionInMain;
@@ -19,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.MethodOrderer.MethodName;
 
 /**
- * An integration test for {@link Project5} that invokes its main method with
+ * An integration test for {@link Project4} that invokes its main method with
  * various arguments
  */
 @TestMethodOrder(MethodName.class)
-class Project5IT extends InvokeMainTestCase {
+class Project4IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
     private static final String PORT = System.getProperty("http.port", "8080");
 
@@ -35,13 +32,13 @@ class Project5IT extends InvokeMainTestCase {
 
     @Test
     void test1NoCommandLineArguments() {
-        MainMethodResult result = invokeMain( Project5.class );
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project5.MISSING_ARGS));
+        MainMethodResult result = invokeMain( Project4.class );
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
 
     @Test
     void test2EmptyServer() {
-        MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT );
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
 
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 
@@ -53,7 +50,7 @@ class Project5IT extends InvokeMainTestCase {
     void test3NoDefinitionsThrowsAppointmentBookRestException() {
         String word = "WORD";
         try {
-            invokeMain(Project5.class, HOSTNAME, PORT, word);
+            invokeMain(Project4.class, HOSTNAME, PORT, word);
             fail("Should have thrown a RestException");
 
         } catch (UncaughtExceptionInMain ex) {
@@ -67,21 +64,21 @@ class Project5IT extends InvokeMainTestCase {
         String word = "WORD";
         String definition = "DEFINITION";
 
-        MainMethodResult result = invokeMain( Project5.class, HOSTNAME, PORT, word, definition );
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
 
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
 
-        result = invokeMain( Project5.class, HOSTNAME, PORT, word );
+        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
 
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 
         out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
 
-        result = invokeMain( Project5.class, HOSTNAME, PORT );
+        result = invokeMain( Project4.class, HOSTNAME, PORT );
 
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 

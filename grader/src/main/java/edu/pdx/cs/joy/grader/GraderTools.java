@@ -3,6 +3,7 @@ package edu.pdx.cs.joy.grader;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs.joy.grader.canvas.CompareCanvasAndWebsiteSchedules;
 import edu.pdx.cs.joy.grader.canvas.GradesFromCanvasImporter;
 import edu.pdx.cs.joy.grader.gradebook.ui.GradeBookGUI;
 import edu.pdx.cs.joy.grader.poa.ui.PlanOfAttackGrader;
@@ -83,6 +84,9 @@ public class GraderTools {
       case "findUngradedSubmissions":
         return FindUngradedSubmissions.class;
 
+      case "compareCanvasAndWebsiteSchedules":
+        return CompareCanvasAndWebsiteSchedules.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -117,6 +121,8 @@ public class GraderTools {
     err.println("    projectTimeEstimates         Generate markdown that summarizes the estimated project hours");
     err.println("    generateStudentInitialsFile  Generate a list of student initials from a grade book");
     err.println("    findUngradedSubmissions      List submissions that need to be tested or graded");
+    err.println("    compareCanvasAndWebsiteSchedules");
+    err.println("                                 Compare assignment due dates in Canvas and the website schedule");
     err.println("  toolArg                        A command line argument to send to the tool");
     err.println();
 

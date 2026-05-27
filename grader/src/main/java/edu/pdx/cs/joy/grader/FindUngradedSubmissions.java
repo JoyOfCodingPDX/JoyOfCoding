@@ -1,6 +1,10 @@
 package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
+import edu.pdx.cs.joy.grader.gradebook.GradeBook;
+import edu.pdx.cs.joy.grader.gradebook.Student;
+import edu.pdx.cs.joy.grader.gradebook.XmlGradeBookParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,32 +12,39 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static edu.pdx.cs.joy.grader.TestedProjectSubmissionOutputParser.*;
+
 public class FindUngradedSubmissions {
   private final SubmissionDetailsProvider submissionDetailsProvider;
   private final TestOutputPathProvider testOutputProvider;
   private final TestOutputDetailsProvider testOutputDetailsProvider;
+  private final GradeBookProvider gradeBookProvider;
 
   @VisibleForTesting
-  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider) {
+  FindUngradedSubmissions(SubmissionDetailsProvider submissionDetailsProvider, TestOutputPathProvider testOutputProvider, TestOutputDetailsProvider testOutputDetailsProvider, GradeBookProvider gradeBookProvider) {
+    Objects.requireNonNull(gradeBookProvider, "GradeBook provider cannot be null");
     this.submissionDetailsProvider = submissionDetailsProvider;
     this.testOutputProvider = testOutputProvider;
     this.testOutputDetailsProvider = testOutputDetailsProvider;
+    this.gradeBookProvider = gradeBookProvider;
   }
 
-  public FindUngradedSubmissions() {
-    this(new SubmissionDetailsProviderFromZipFile(), new TestOutputProviderInParentDirectory(), new TestOutputDetailsProviderFromTestOutputFile());
+  public FindUngradedSubmissions(String gradeBookXmlFile) {
+    this(new SubmissionDetailsProviderFromZipFile(),
+         new TestOutputProviderInParentDirectory(),
+         new TestOutputDetailsProviderFromTestOutputFile(),
+         new GradeBookProviderFromXmlFile(gradeBookXmlFile));
   }
 
   @VisibleForTesting
@@ -43,34 +54,70 @@ public class FindUngradedSubmissions {
     Path testOutputPath = this.testOutputProvider.getTestOutput(submissionDirectory, submission.studentId());
     boolean needsToBeTested;
     boolean needsToBeGraded;
+    boolean needsToBeRecorded;
     String reason;
 
     if (!Files.exists(testOutputPath)) {
       needsToBeTested = true;
       needsToBeGraded = true;
+      needsToBeRecorded = false;
       reason = "Test output file does not exist: " + testOutputPath;
 
     } else {
-
       TestOutputDetails testOutput = this.testOutputDetailsProvider.getTestOutputDetails(testOutputPath);
       if (submittedAfterTesting(submission, testOutput)) {
         needsToBeTested = true;
         needsToBeGraded = true;
+        needsToBeRecorded = false;
         reason = "Submission on " + submission.submissionTime() + " is after testing on " + testOutput.testedSubmissionTime();
 
       } else if (!testOutput.hasGrade()) {
         needsToBeTested = false;
-        needsToBeGraded = true;
+        needsToBeGraded = !testOutput.hasBeenReviewed();
+        needsToBeRecorded = false;
         reason = "Test output file does not have a grade: " + testOutputPath;
 
       } else {
         needsToBeTested = false;
         needsToBeGraded = false;
+        needsToBeRecorded = doesCareNeedToBeRecorded(submission, testOutput);
         reason = "Test output file was graded after submission: " + testOutputPath;
       }
     }
 
-    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason);
+    return new SubmissionAnalysis(submissionPath, needsToBeTested, needsToBeGraded, reason, testOutputPath, needsToBeRecorded);
+  }
+
+  private boolean doesCareNeedToBeRecorded(SubmissionDetails submission, TestOutputDetails testOutput) {
+    // If test output doesn't have project name or grade, can't check
+    if (testOutput.projectName() == null || testOutput.grade() == null) {
+      return false;
+    }
+
+    // Get the gradebook
+    java.util.Optional<GradeBook> gradeBookOpt = gradeBookProvider.getGradeBook();
+    if (gradeBookOpt.isEmpty()) {
+      return false;
+    }
+
+    GradeBook gradeBook = gradeBookOpt.get();
+
+    // Get the student from the gradebook
+    Optional<Student> studentOpt = gradeBook.getStudent(submission.studentId());
+    if (studentOpt.isEmpty()) {
+      return false; // Student not in gradebook, nothing to record
+    }
+
+    Student student = studentOpt.get();
+
+    // Get the grade for the assignment
+    Grade grade = student.getGrade(testOutput.projectName());
+    if (grade == null) {
+      return true; // No grade recorded for this assignment
+    }
+
+    // Compare grades - if different, needs to be recorded
+    return grade.getScore() != testOutput.grade();
   }
 
   private static boolean submittedAfterTesting(SubmissionDetails submission, TestOutputDetails testOutput) {
@@ -86,8 +133,8 @@ public class FindUngradedSubmissions {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      System.err.println("Usage: java FindUngradedSubmissions -includeReason submissionZipOrDirectory+");
-      System.exit(1);
+      System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
+      return;
     }
 
     boolean includeReason = false;
@@ -99,37 +146,63 @@ public class FindUngradedSubmissions {
 
       } else if (arg.startsWith("-")) {
         System.err.println("Unknown option: " + arg);
-        System.exit(1);
+        return;
 
       } else {
         fileNames.add(arg);
       }
     }
 
+    // First non-option argument is the required gradebook XML file
+    if (fileNames.isEmpty()) {
+      System.err.println("Missing required gradebook XML file");
+      System.err.println("Usage: java FindUngradedSubmissions -includeReason gradeBookXmlFile submissionZipOrDirectory+");
+      return;
+    }
+
+    String gradeBookXmlFile = fileNames.removeFirst();
+
+    // Validate that the gradebook XML file can be parsed
+    try {
+      XmlGradeBookParser parser = new XmlGradeBookParser(gradeBookXmlFile);
+      parser.parse(); // This will throw an exception if the file is invalid
+    } catch (Exception e) {
+      System.err.println("Error: The first argument must be a valid gradebook XML file");
+      System.err.println("Cannot parse gradebook from: " + gradeBookXmlFile);
+      System.err.println("Error: " + e.getMessage());
+      return;
+    }
+
     Stream<Path> submissions = findSubmissionsIn(fileNames);
-    FindUngradedSubmissions finder = new FindUngradedSubmissions();
+    FindUngradedSubmissions finder = new FindUngradedSubmissions(gradeBookXmlFile);
     Stream<SubmissionAnalysis> analyses = submissions.map(finder::analyzeSubmission);
     List<SubmissionAnalysis> needsToBeTested = new ArrayList<>();
     List<SubmissionAnalysis> needsToBeGraded = new ArrayList<>();
+    List<SubmissionAnalysis> gradeNeedsToBeRecorded = new ArrayList<>();
+
     analyses.forEach(analysis -> {
       if (analysis.needsToBeTested()) {
         needsToBeTested.add(analysis);
 
       } else if (analysis.needsToBeGraded()) {
         needsToBeGraded.add(analysis);
+
+      } else if (analysis.gradeNeedsToBeRecorded()) {
+        gradeNeedsToBeRecorded.add(analysis);
       }
     });
 
-    printOutAnalyses(needsToBeTested, "tested", includeReason);
-    printOutAnalyses(needsToBeGraded, "graded", includeReason);
+    printOutAnalyses(needsToBeTested, "tested", SubmissionAnalysis::submission, includeReason);
+    printOutAnalyses(needsToBeGraded, "graded", SubmissionAnalysis::testOutput, includeReason);
+    printOutAnalyses(gradeNeedsToBeRecorded, "recorded", SubmissionAnalysis::testOutput, includeReason);
   }
 
-  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, boolean includeReason) {
+  private static void printOutAnalyses(List<SubmissionAnalysis> analyses, String action, Function<SubmissionAnalysis, Path> getPath, boolean includeReason) {
     int size = analyses.size();
     String description = (size == 1 ? " submission needs" : " submissions need");
     System.out.println(size + description + " to be " + action + ": ");
     analyses.forEach(analysis -> {
-      System.out.print("  " + analysis.submission);
+      System.out.print("  " + getPath.apply(analysis));
       if (includeReason) {
         System.out.print("   " + analysis.reason);
       }
@@ -178,12 +251,16 @@ public class FindUngradedSubmissions {
     TestOutputDetails getTestOutputDetails(Path testOutput);
   }
 
-  @VisibleForTesting
-    record TestOutputDetails(LocalDateTime testedSubmissionTime, boolean hasGrade) {
+  interface GradeBookProvider {
+    java.util.Optional<GradeBook> getGradeBook();
   }
 
   @VisibleForTesting
-  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason) {
+  record TestOutputDetails(Path testOutput, LocalDateTime testedSubmissionTime, boolean hasGrade, String projectName, Double grade, boolean hasBeenReviewed) {
+  }
+
+  @VisibleForTesting
+  record SubmissionAnalysis (Path submission, boolean needsToBeTested, boolean needsToBeGraded, String reason, Path testOutput, boolean gradeNeedsToBeRecorded) {
 
   }
 
@@ -214,42 +291,32 @@ public class FindUngradedSubmissions {
     }
   }
 
+  private static class GradeBookProviderFromXmlFile implements GradeBookProvider {
+    private final String xmlFilePath;
+    private GradeBook gradeBook;
+
+    GradeBookProviderFromXmlFile(String xmlFilePath) {
+      this.xmlFilePath = xmlFilePath;
+    }
+
+    @Override
+    public java.util.Optional<GradeBook> getGradeBook() {
+      if (gradeBook == null && xmlFilePath != null) {
+        try {
+          XmlGradeBookParser parser = new XmlGradeBookParser(xmlFilePath);
+          gradeBook = parser.parse();
+        } catch (Exception e) {
+          String message = "Error loading gradebook from " + xmlFilePath + ": " + e.getMessage();
+          System.err.println(message);
+          throw new RuntimeException(message, e);
+        }
+      }
+      return java.util.Optional.ofNullable(gradeBook);
+    }
+  }
+
   @VisibleForTesting
   static class TestOutputDetailsProviderFromTestOutputFile implements TestOutputDetailsProvider {
-    private static final Pattern SUBMISSION_TIME_PATTERN = Pattern.compile(".*Submitted on (.+)");
-
-    public static LocalDateTime parseSubmissionTime(String line) {
-      if (line.contains("Submitted on")) {
-        Matcher matcher = TestOutputDetailsProviderFromTestOutputFile.SUBMISSION_TIME_PATTERN.matcher(line);
-        if (matcher.matches()) {
-          String timeString = matcher.group(1).trim();
-          return parseTime(timeString);
-        } else {
-          throw new IllegalArgumentException("Could not parse submission time from line: " + line);
-        }
-      }
-
-      return null;
-    }
-
-    private static LocalDateTime parseTime(String timeString) {
-      try {
-        ZonedDateTime zoned;
-        try {
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM d hh:mm:ss a z yyyy");
-          zoned = ZonedDateTime.parse(timeString, formatter);
-
-        } catch (DateTimeParseException ex) {
-          // Single-digit day format
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM  d hh:mm:ss a z yyyy");
-          zoned = ZonedDateTime.parse(timeString, formatter);
-        }
-        return zoned.toLocalDateTime();
-
-      } catch (DateTimeParseException ex) {
-        return LocalDateTime.parse(timeString);
-      }
-    }
 
     public static Double parseGrade(String line) {
       if (line.contains("out of")) {
@@ -265,52 +332,31 @@ public class FindUngradedSubmissions {
       return null;
     }
 
+    private static final Pattern PROJECT_NAME_PATTERN = Pattern.compile(".*The Joy of Coding Project (\\d+): .*");
+
+    public static String parseProjectName(String line) {
+      if (line.contains("The Joy of Coding Project")) {
+        Matcher matcher = PROJECT_NAME_PATTERN.matcher(line);
+        if (matcher.matches()) {
+          return "Project" + matcher.group(1);
+        }
+      }
+      return null;
+    }
+
     @Override
     public TestOutputDetails getTestOutputDetails(Path testOutput) {
       try {
-        return parseTestOutputDetails(Files.lines(testOutput));
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+        return parseTestOutputDetails(testOutput, Files.lines(testOutput));
+      } catch (IOException | TestedProjectSubmissionOutputParsingException e) {
+        throw new RuntimeException("While parsing " + testOutput, e);
       }
     }
 
-    static TestOutputDetails parseTestOutputDetails(Stream<String> lines) {
-      TestOutputDetailsCreator creator = new TestOutputDetailsCreator();
-      lines.forEach(creator);
-      return creator.createTestOutputDetails();
+    static TestOutputDetails parseTestOutputDetails(Path testOutput, Stream<String> lines) throws TestedProjectSubmissionOutputParsingException {
+      ProjectScore projectScore = parseTestedSubmissionOutput(lines);
+      return new TestOutputDetails(testOutput, projectScore.getSubmissionTime(), !Double.isNaN(projectScore.getScore()), projectScore.getProjectName(), projectScore.getScore(), projectScore.isReviewed());
     }
 
-    private static class TestOutputDetailsCreator implements Consumer<String> {
-      private LocalDateTime testedSubmissionTime;
-      private Boolean hasGrade;
-      private int lineCount;
-
-      @Override
-      public void accept(String line) {
-        this.lineCount++;
-
-        LocalDateTime submissionTime = parseSubmissionTime(line);
-        if (submissionTime != null) {
-          this.testedSubmissionTime = submissionTime;
-        }
-
-        Double grade = parseGrade(line);
-        if (grade != null) {
-          boolean testOutputHasNotesForStudent = lineCount > 7;
-          this.hasGrade = testOutputHasNotesForStudent || !grade.isNaN();
-        }
-      }
-
-      public TestOutputDetails createTestOutputDetails() {
-        if (this.testedSubmissionTime == null) {
-          throw new IllegalStateException("Tested submission time was not set");
-
-        } else if( this.hasGrade == null) {
-          throw new IllegalStateException("Has grade was not set");
-        }
-
-        return new TestOutputDetails(this.testedSubmissionTime, hasGrade);
-      }
-    }
   }
 }

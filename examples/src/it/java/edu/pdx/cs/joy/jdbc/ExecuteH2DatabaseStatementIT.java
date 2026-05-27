@@ -299,5 +299,17 @@ public class ExecuteH2DatabaseStatementIT extends InvokeMainTestCase {
     assertThat(output, containsString("4"));
     assertThat(output, containsString("1 row(s) returned"));
   }
-}
 
+  @Test
+  @Order(15)
+  public void testInvalidStatementPrintsErrorWithoutStackTrace() {
+    MainMethodResult result = invokeMain(ExecuteH2DatabaseStatement.class, dbFilePath,
+        "SELECT * FROM customers");
+    String errorOutput = result.getTextWrittenToStandardError();
+
+    assertThat(errorOutput, containsString("Error:"));
+    assertThat(errorOutput, containsString("Table \"CUSTOMERS\" not found"));
+    assertThat(errorOutput, not(containsString("Exception in thread")));
+    assertThat(errorOutput, not(containsString("\tat ")));
+  }
+}
