@@ -28,6 +28,12 @@ public class APIDocumentationDocletTest {
   }
 
   @Test
+  public void classHeaderUsesLowerCaseClass() {
+    assertThat(APIDocumentationDoclet.classHeader("edu.pdx.cs.joy.grader.Foo"),
+      equalTo("class edu.pdx.cs.joy.grader.Foo"));
+  }
+
+  @Test
   public void leadingWhitespaceIsRemovedWhenIndenting() {
     String rawText = "classes - The names of the classes the student is taking.  A student              \n" +
       "        may take zero or more classes.";

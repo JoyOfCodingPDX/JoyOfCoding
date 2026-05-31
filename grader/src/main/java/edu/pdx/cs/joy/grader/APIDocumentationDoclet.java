@@ -42,6 +42,11 @@ public class APIDocumentationDoclet implements Doclet {
     return name.replaceAll("(\\w+\\.)*(\\w+)", "$2");
   }
 
+  @VisibleForTesting
+  static String classHeader(String qualifiedName) {
+    return "class " + qualifiedName;
+  }
+
   @Override
   public void init(Locale locale, Reporter reporter) {
     this.reporter = reporter;
@@ -157,7 +162,7 @@ public class APIDocumentationDoclet implements Doclet {
   }
 
   private void generateClassDocumentation(Elements elements, DocTrees docTrees, TypeElement aClass, PrintWriter pw) {
-    pw.println("Class " + aClass.getQualifiedName());
+    pw.println(classHeader(aClass.getQualifiedName().toString()));
 
     indent(getFullBodyComment(docTrees, aClass), 2, pw);
     pw.println("");
