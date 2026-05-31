@@ -40,7 +40,7 @@ public class APIDocumentationDocletIT {
       }
       """);
 
-    assertThat(output, containsString("class edu.pdx.cs.joy.grader.fixtures.Color"));
+    assertThat(output, containsString("enum edu.pdx.cs.joy.grader.fixtures.Color"));
     assertThat(output, containsString("label()"));
     assertThat(output, not(containsString("Color()")));
     assertThat(output, not(containsString("values()")));
@@ -62,7 +62,7 @@ public class APIDocumentationDocletIT {
       }
       """);
 
-    assertThat(output, containsString("class edu.pdx.cs.joy.grader.fixtures.Measurement"));
+    assertThat(output, containsString("record edu.pdx.cs.joy.grader.fixtures.Measurement"));
     assertThat(output, containsString("doubled()"));
     assertThat(output, not(containsString("Measurement(int value)")));
     assertThat(output, not(containsString("toString()")));

@@ -43,8 +43,12 @@ public class APIDocumentationDoclet implements Doclet {
   }
 
   @VisibleForTesting
-  static String classHeader(String qualifiedName) {
-    return "class " + qualifiedName;
+  static String classHeader(ElementKind kind, String qualifiedName) {
+    return switch (kind) {
+      case ENUM -> "enum " + qualifiedName;
+      case RECORD -> "record " + qualifiedName;
+      default -> "class " + qualifiedName;
+    };
   }
 
   @Override
@@ -162,7 +166,7 @@ public class APIDocumentationDoclet implements Doclet {
   }
 
   private void generateClassDocumentation(Elements elements, DocTrees docTrees, TypeElement aClass, PrintWriter pw) {
-    pw.println(classHeader(aClass.getQualifiedName().toString()));
+    pw.println(classHeader(aClass.getKind(), aClass.getQualifiedName().toString()));
 
     indent(getFullBodyComment(docTrees, aClass), 2, pw);
     pw.println("");
