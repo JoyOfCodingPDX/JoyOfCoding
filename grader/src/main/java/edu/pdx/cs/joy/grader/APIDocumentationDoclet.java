@@ -9,11 +9,13 @@ import com.sun.source.util.DocTrees;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
+import org.jspecify.annotations.NonNull;
 
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
 import java.io.PrintWriter;
 import java.text.BreakIterator;
 import java.util.*;
@@ -38,6 +40,15 @@ public class APIDocumentationDoclet implements Doclet {
   @VisibleForTesting
   static String removePackageNames(String name) {
     return name.replaceAll("(\\w+\\.)*(\\w+)", "$2");
+  }
+
+  @VisibleForTesting
+  static String classHeader(ElementKind kind, String qualifiedName) {
+    return switch (kind) {
+      case ENUM -> "enum " + qualifiedName;
+      case RECORD -> "record " + qualifiedName;
+      default -> "class " + qualifiedName;
+    };
   }
 
   @Override
@@ -149,27 +160,49 @@ public class APIDocumentationDoclet implements Doclet {
 
     DocTrees docTrees = environment.getDocTrees();
     for (TypeElement aClass : ElementFilter.typesIn(environment.getIncludedElements())) {
-      generateClassDocumentation(docTrees, aClass, pw);
+      generateClassDocumentation(environment.getElementUtils(), docTrees, aClass, pw);
     }
     return true;
   }
 
-  private void generateClassDocumentation(DocTrees docTrees, TypeElement aClass, PrintWriter pw) {
-    pw.println("Class " + aClass.getQualifiedName());
+  private void generateClassDocumentation(Elements elements, DocTrees docTrees, TypeElement aClass, PrintWriter pw) {
+    pw.println(classHeader(aClass.getKind(), aClass.getQualifiedName().toString()));
 
     indent(getFullBodyComment(docTrees, aClass), 2, pw);
     pw.println("");
 
-    Stream<? extends Element> constructors = aClass.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.CONSTRUCTOR);
+    Stream<? extends Element> constructors = getConstructors(elements, docTrees, aClass);
     constructors.forEach(constructor -> {
       generateMethodDocumentation(docTrees, (ExecutableElement) constructor, pw);
     });
 
-    Stream<? extends Element> methods = aClass.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD);
+    Stream<? extends Element> methods = getMethods(elements, docTrees, aClass);
     methods.forEach(method -> {
       generateMethodDocumentation(docTrees, (ExecutableElement) method, pw);
     });
 
+  }
+
+  private @NonNull Stream<? extends Element> getMethods(Elements elements, DocTrees docTrees, TypeElement aClass) {
+    return getElementsOfKind(elements, docTrees, aClass, ElementKind.METHOD);
+  }
+
+  private @NonNull Stream<? extends Element> getElementsOfKind(Elements elements, DocTrees docTrees, TypeElement aClass, ElementKind kind) {
+    return aClass.getEnclosedElements().stream()
+      .filter(e -> e.getKind() == kind)
+      .filter(e -> shouldDocument(elements, docTrees, (ExecutableElement) e));
+  }
+
+  private @NonNull Stream<? extends Element> getConstructors(Elements elements, DocTrees docTrees, TypeElement aClass) {
+    return getElementsOfKind(elements, docTrees, aClass, ElementKind.CONSTRUCTOR);
+  }
+
+  private boolean shouldDocument(Elements elements, DocTrees docTrees, ExecutableElement executable) {
+    if (executable.getKind() == ElementKind.CONSTRUCTOR) {
+      return elements.getOrigin(executable) == Elements.Origin.EXPLICIT;
+    }
+
+    return docTrees.getPath(executable) != null;
   }
 
   private void generateMethodDocumentation(DocTrees docTrees, ExecutableElement method, PrintWriter pw) {
