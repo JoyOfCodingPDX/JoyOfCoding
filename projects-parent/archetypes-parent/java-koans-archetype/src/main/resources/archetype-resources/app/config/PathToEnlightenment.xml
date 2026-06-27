@@ -5,8 +5,8 @@
 <packages>
     <package pkg="beginner" name="Novice">
         <suite class="AboutKoans">
-        <koan name="findAboutKoansFile" displayIncompleteKoanException="false" />
-        <koan name="definitionOfKoanCompletion" displayIncompleteKoanException="false" />
+            <koan name="findAboutKoansFile" displayIncompleteKoanException="false" requireAssertion="false" />
+            <koan name="definitionOfKoanCompletion" displayIncompleteKoanException="false" requireAssertion="false" />
         </suite>
         <suite class="AboutAssertions"/>
         <suite class="AboutEquality"/>
