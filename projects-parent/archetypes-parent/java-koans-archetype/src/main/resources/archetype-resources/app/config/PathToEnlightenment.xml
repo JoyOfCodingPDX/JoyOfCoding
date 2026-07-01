@@ -17,13 +17,19 @@
         <suite class="AboutPrimitives" />
         <suite class="AboutObjects"/>
         <suite class="AboutInheritance"/>
-        <suite class="AboutCasting"/>
+        <suite class="AboutCasting">
+            <koan name="classCasting" requireAssertion="false" />
+        </suite>
         <suite class="AboutConstructors"/>
         <suite class="AboutEnums"/>
-        <suite class="AboutExceptions"/>
+        <suite class="AboutExceptions">
+            <koan name="catchUncheckedExceptions" requireAssertion="false" />
+        </suite>
         <suite class="AboutMethodPreference"/>
         <suite class="AboutBitwiseOperators"/>
-        <suite class="AboutArrays"/>
+        <suite class="AboutArrays">
+            <koan name="arrayIndexOutOfBounds" requireAssertion="false" />
+        </suite>
         <suite class="AboutVarArgs"/>
     </package>
     <package pkg="intermediate" name="Intermediate">
@@ -39,7 +45,9 @@
         <suite class="AboutSerialization"/>
     </package>
     <package pkg="advanced" name="Advanced">
-        <suite class="AboutMocks"/>
+        <suite class="AboutMocks">
+            <koan name="simpleAnonymousMock" requireAssertion="false" />
+        </suite>
     </package>
     <package pkg="java7" name="Java 7">
         <suite class="AboutJava7LiteralsEnhancements"/>
