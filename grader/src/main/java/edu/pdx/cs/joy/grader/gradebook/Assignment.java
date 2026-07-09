@@ -25,10 +25,10 @@ public class Assignment extends NotableImpl {
 
 
   public enum ProjectType {
+    KOANS,
     APP_CLASSES,
     TEXT_FILE,
     PRETTY_PRINT,
-    KOANS,
     XML,
     DATABASE,
     REST,
