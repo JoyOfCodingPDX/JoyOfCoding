@@ -2,6 +2,7 @@ package edu.pdx.cs.joy.grader;
 
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SubmitTest {
+
+  private final File tempDir;
+
+  public SubmitTest(@TempDir File tempDir) {
+    this.tempDir = tempDir;
+  }
 
   @Test
   public void nineDigitStringIsInvalidLoginId() {
@@ -269,7 +276,7 @@ public class SubmitTest {
   }
 
   private void assertFileCanBeSubmitted(String userId, String fileName, String[] dirs, boolean canSubmit) throws IOException {
-    File dir = new File(System.getProperty("user.dir"));
+    File dir = this.tempDir;
     for (String dirName : dirs) {
       dir = new File(dir, dirName);
       dir.mkdirs();

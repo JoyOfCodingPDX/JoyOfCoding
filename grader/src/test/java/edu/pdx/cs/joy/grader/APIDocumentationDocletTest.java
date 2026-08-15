@@ -2,6 +2,7 @@ package edu.pdx.cs.joy.grader;
 
 import org.junit.jupiter.api.Test;
 
+import javax.lang.model.element.ElementKind;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -25,6 +26,24 @@ public class APIDocumentationDocletTest {
     String fullName = "java.util.Map<java.lang.String,java.lang.String>";
     String shortName = "Map<String,String>";
     assertThat(APIDocumentationDoclet.removePackageNames(fullName), equalTo(shortName));
+  }
+
+  @Test
+  public void classHeaderUsesLowerCaseClass() {
+    assertThat(APIDocumentationDoclet.classHeader(ElementKind.CLASS, "edu.pdx.cs.joy.grader.Foo"),
+      equalTo("class edu.pdx.cs.joy.grader.Foo"));
+  }
+
+  @Test
+  public void classHeaderUsesEnumForEnums() {
+    assertThat(APIDocumentationDoclet.classHeader(ElementKind.ENUM, "edu.pdx.cs.joy.grader.Color"),
+      equalTo("enum edu.pdx.cs.joy.grader.Color"));
+  }
+
+  @Test
+  public void classHeaderUsesRecordForRecords() {
+    assertThat(APIDocumentationDoclet.classHeader(ElementKind.RECORD, "edu.pdx.cs.joy.grader.Measurement"),
+      equalTo("record edu.pdx.cs.joy.grader.Measurement"));
   }
 
   @Test
