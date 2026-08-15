@@ -6,19 +6,14 @@ import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.store.FolderListener;
 import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
-import com.icegreen.greenmail.util.DummySSLServerSocketFactory;
-import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.sun.mail.util.MailSSLSocketFactory;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.security.GeneralSecurityException;
-import java.security.Security;
 import java.util.Properties;
 
 public class GreenmailIntegrationTestCase {
@@ -35,8 +30,6 @@ public class GreenmailIntegrationTestCase {
     ServerSetup smtp = new ServerSetup(smtpPort, emailServerHost, ServerSetup.PROTOCOL_SMTP);
     ServerSetup imaps = new ServerSetup(imapsPort, emailServerHost, ServerSetup.PROTOCOL_IMAPS);
     emailServer = new GreenMail(new ServerSetup[]{ smtp, imaps });
-
-    Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
 
     GreenMailUser user = emailServer.setUser(emailAddress, imapUserName, imapPassword);
     doSomethingWithUser(user);
@@ -83,11 +76,10 @@ public class GreenmailIntegrationTestCase {
     return folder;
   }
 
-  protected Store connectToIMAPServer() throws GeneralSecurityException, MessagingException {
+  protected Store connectToIMAPServer() throws MessagingException {
     Properties props = new Properties();
-
-    DummySSLSocketFactory socketFactory = new DummySSLSocketFactory();
-    props.put("mail.imaps.ssl.socketFactory", socketFactory);
+    props.put("mail.imaps.ssl.trust", emailServerHost);
+    props.put("mail.imaps.ssl.checkserveridentity", "false");
 
     Session session = Session.getInstance(props, null);
     Store store = session.getStore("imaps");
