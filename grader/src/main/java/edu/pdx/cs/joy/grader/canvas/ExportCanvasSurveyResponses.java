@@ -40,6 +40,8 @@ public class ExportCanvasSurveyResponses {
 
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
   private static final Pattern QUESTION_COLUMN_PATTERN = Pattern.compile("^\\d+:\\s+(.+)$");
+  private static final String CONSENT_QUESTION =
+    "May I use your answers to these questions (not your name) todescribe this course in the future?";
   private static final Duration REPORT_POLL_DELAY = Duration.ofSeconds(1);
 
   private final HttpClient httpClient;
@@ -254,7 +256,7 @@ public class ExportCanvasSurveyResponses {
     Map<Integer, String> questionColumns = new LinkedHashMap<>();
     for (int column = 0; column < header.length; column++) {
       Matcher matcher = QUESTION_COLUMN_PATTERN.matcher(header[column]);
-      if (matcher.matches()) {
+      if (matcher.matches() && !CONSENT_QUESTION.equals(matcher.group(1))) {
         questionColumns.put(column, matcher.group(1));
       }
     }

@@ -33,7 +33,7 @@ public class ExportCanvasSurveyResponsesTest {
       try {
         redirectedAuthorizationHeaders.add(exchange.getRequestHeaders().getFirst("Authorization"));
         respond(exchange, 200, """
-          name,id,section,section_id,submitted,attempt,100: What should future students know?,0.5,101: May we use your answer?,0.0,n correct,n incorrect,score
+          name,id,section,section_id,submitted,attempt,100: What should future students know?,0.5,101: May I use your answers to these questions (not your name) todescribe this course in the future?,0.0,n correct,n incorrect,score
           Student One,1,001,10,2026-08-10,1,Use <generics> & write tests,0.5,Yes,0.0,2,0,1
           Student Two,2,001,10,2026-08-10,1,,0.5,No,0.0,1,1,0.5
           """);
@@ -63,7 +63,8 @@ public class ExportCanvasSurveyResponsesTest {
       String html = Files.readString(output.toPath());
       assertThat(html, containsString("What should future students know?"));
       assertThat(html, containsString("Use &lt;generics&gt; &amp; write tests"));
-      assertThat(html, containsString("Yes"));
+      assertThat(html, not(containsString("May I use your answers to these questions")));
+      assertThat(html, not(containsString("Yes")));
       assertThat(html, not(containsString("Student One")));
       assertThat(html, not(containsString("student.one@example.com")));
 
