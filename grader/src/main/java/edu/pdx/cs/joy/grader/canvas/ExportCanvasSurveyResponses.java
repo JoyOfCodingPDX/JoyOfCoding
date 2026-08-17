@@ -38,6 +38,10 @@ public class ExportCanvasSurveyResponses {
   static final URI DEFAULT_CANVAS_BASE_URI = URI.create("https://canvas.pdx.edu");
   static final String SURVEY_TITLE = "End of Term Survey";
 
+  private static final String PAGE_TITLE = "Previously on The Joy of Coding...";
+  private static final String INTRODUCTION = "Here are some comments from students who have taken The Joy of Coding.";
+  private static final String XHTML_DOCTYPE =
+    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
   private static final Pattern QUESTION_COLUMN_PATTERN = Pattern.compile("^\\d+:\\s+(.+)$");
   private static final String CONSENT_QUESTION =
@@ -347,24 +351,37 @@ public class ExportCanvasSurveyResponses {
     }
 
     try (Writer writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-      writer.write("<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>");
-      writeEscapedHtml(writer, SURVEY_TITLE);
-      writer.write("</title>\n</head>\n<body>\n<h1>");
-      writeEscapedHtml(writer, SURVEY_TITLE);
-      writer.write("</h1>\n<ol>\n");
+      writer.write(XHTML_DOCTYPE + "\n");
+      writer.write("<html>\n");
+      writer.write("  <head>\n");
+      writer.write("    <title>");
+      writeEscapedHtml(writer, PAGE_TITLE);
+      writer.write("</title>\n");
+      writer.write("  </head>\n");
+      writer.write("  <body>\n");
+      writer.write("    <h1>");
+      writeEscapedHtml(writer, PAGE_TITLE);
+      writer.write("</h1>\n");
+      writer.write("    <p>");
+      writeEscapedHtml(writer, INTRODUCTION);
+      writer.write("</p>\n");
+      writer.write("    <ol>\n");
 
       for (Map.Entry<String, List<String>> question : responses.entrySet()) {
-        writer.write("<li>");
+        writer.write("      <li>");
         writeEscapedHtml(writer, question.getKey());
-        writer.write("\n<ul>\n");
+        writer.write("</li>\n");
+        writer.write("      <ul>\n");
         for (String answer : question.getValue()) {
-          writer.write("<li>");
+          writer.write("        <li>");
           writeEscapedHtml(writer, answer);
           writer.write("</li>\n");
         }
-        writer.write("</ul>\n</li>\n");
+        writer.write("      </ul>\n");
       }
-      writer.write("</ol>\n</body>\n</html>\n");
+      writer.write("    </ol>\n");
+      writer.write("  </body>\n");
+      writer.write("</html>\n");
     }
   }
 

@@ -61,6 +61,10 @@ public class ExportCanvasSurveyResponsesTest {
       exporter.export("canvas-token", 42, output.toPath());
 
       String html = Files.readString(output.toPath());
+      assertThat(html, containsString("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
+      assertThat(html, containsString("<title>Previously on The Joy of Coding...</title>"));
+      assertThat(html, containsString("<h1>Previously on The Joy of Coding...</h1>"));
+      assertThat(html, containsString("<p>Here are some comments from students who have taken The Joy of Coding.</p>"));
       assertThat(html, containsString("What should future students know?"));
       assertThat(html, containsString("Use &lt;generics&gt; &amp; write tests"));
       assertThat(html, not(containsString("This answer must not be included")));
