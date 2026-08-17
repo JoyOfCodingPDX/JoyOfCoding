@@ -47,6 +47,7 @@ public class ExportCanvasSurveyResponses {
     "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
   private static final Pattern QUESTION_COLUMN_PATTERN = Pattern.compile("^\\d+:\\s+(.+)$");
+  private static final Pattern TERM_NAME_PATTERN = Pattern.compile("^(Winter|Spring|Summer|Fall) (\\d{4})$");
   private static final String CONSENT_QUESTION =
     "May I use your answers to these questions (not your name) todescribe this course in the future?";
   private static final Duration REPORT_POLL_DELAY = Duration.ofSeconds(1);
@@ -81,26 +82,41 @@ public class ExportCanvasSurveyResponses {
     if (args.length == 1) {
       throw new IllegalArgumentException("Missing Canvas course ID");
     }
-    if (args.length == 2) {
-      throw new IllegalArgumentException("Missing HTML output file name");
-    }
-    if (args.length > 3) {
-      throw new IllegalArgumentException("Extraneous command line argument: " + args[3]);
+    if (args.length > 2) {
+      throw new IllegalArgumentException("Extraneous command line argument: " + args[2]);
     }
 
     String apiToken = readApiToken(Path.of(args[0]));
     int courseId = parseCourseId(args[1]);
-    Path outputFile = Path.of(args[2]);
 
-    export(apiToken, courseId, outputFile);
+    export(apiToken, courseId, Path.of("."));
   }
 
   @VisibleForTesting
-  void export(String apiToken, int courseId, Path outputFile) throws IOException, InterruptedException {
+  void export(String apiToken, int courseId, Path outputDirectory) throws IOException, InterruptedException {
+    Path outputFile = outputDirectory.resolve(outputFileName(getCourseTermName(apiToken, courseId)));
     CanvasQuiz quiz = findClassicSurvey(apiToken, courseId);
     String reportCsv = downloadStudentAnalysisReport(apiToken, courseId, quiz.id());
     Map<String, List<String>> responses = parseSurveyResponses(reportCsv);
     writeHtml(outputFile, responses);
+  }
+
+  private String getCourseTermName(String apiToken, int courseId) throws IOException, InterruptedException {
+    URI courseUri = this.canvasBaseUri.resolve("/api/v1/courses/" + courseId + "?include%5B%5D=term");
+    JsonObject course = getJsonObject(apiToken, courseUri);
+    JsonObject term = course.getJsonObject("term");
+    if (term == null || term.getJsonString("name") == null) {
+      throw new IOException("Canvas course " + courseId + " has no term name");
+    }
+    return term.getString("name");
+  }
+
+  private static String outputFileName(String termName) {
+    Matcher matcher = TERM_NAME_PATTERN.matcher(termName);
+    if (!matcher.matches()) {
+      throw new IllegalArgumentException("Canvas course term \"" + termName + "\" is not a season and year");
+    }
+    return "comments-" + matcher.group(1).toLowerCase() + matcher.group(2) + ".html";
   }
 
   private CanvasQuiz findClassicSurvey(String apiToken, int courseId) throws IOException, InterruptedException {
@@ -432,10 +448,11 @@ public class ExportCanvasSurveyResponses {
     PrintStream err = System.err;
     err.println("+++ " + message);
     err.println();
-    err.println("usage: java ExportCanvasSurveyResponses apiTokenFileName courseId htmlFileName");
+    err.println("usage: java ExportCanvasSurveyResponses apiTokenFileName courseId");
     err.println("    apiTokenFileName  File containing the Canvas API token");
     err.println("    courseId          Canvas ID of the course offering");
-    err.println("    htmlFileName      Output file for anonymized survey responses");
+    err.println("");
+    err.println("Writes comments-seasonyear.html for the course's Canvas term");
     err.println();
     err.println("Exports the \"" + SURVEY_TITLE + "\" Classic Quiz from Canvas as anonymized HTML");
     err.println();

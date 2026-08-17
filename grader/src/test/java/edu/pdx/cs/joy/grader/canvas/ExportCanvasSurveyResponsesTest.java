@@ -57,11 +57,10 @@ public class ExportCanvasSurveyResponsesTest {
     server.start();
 
     try {
-      File output = new File(tempDir, "survey.html");
       ExportCanvasSurveyResponses exporter = new ExportCanvasSurveyResponses(HttpClient.newHttpClient(), canvasBaseUri);
-      exporter.export("canvas-token", 42, output.toPath());
+      exporter.export("canvas-token", 42, tempDir.toPath());
 
-      String html = Files.readString(output.toPath());
+      String html = Files.readString(new File(tempDir, "comments-summer2026.html").toPath());
       assertThat(html, containsString("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""));
       assertThat(html, containsString("<title>Previously on The Joy of Coding...</title>"));
       assertThat(html, containsString("<h1>Previously on The Joy of Coding...</h1>"));
@@ -80,7 +79,7 @@ public class ExportCanvasSurveyResponsesTest {
       assertThat(html, not(containsString("Student One")));
       assertThat(html, not(containsString("student.one@example.com")));
 
-      assertEquals(6, authorizationHeaders.size());
+      assertEquals(7, authorizationHeaders.size());
       authorizationHeaders.forEach(header -> assertEquals("Bearer canvas-token", header));
       assertEquals(1, redirectedAuthorizationHeaders.size());
       assertEquals(null, redirectedAuthorizationHeaders.get(0));
@@ -92,7 +91,12 @@ public class ExportCanvasSurveyResponsesTest {
 
   private static void respondToCanvasRequest(HttpExchange exchange, URI canvasBaseUri, URI fileServerUri) throws IOException {
     String path = exchange.getRequestURI().getPath();
-    if (path.equals("/api/v1/courses/42/quizzes") && "page=2".equals(exchange.getRequestURI().getQuery())) {
+    if (path.equals("/api/v1/courses/42")) {
+      respond(exchange, 200, """
+        {"term": {"name": "Summer 2026"}}
+        """);
+
+    } else if (path.equals("/api/v1/courses/42/quizzes") && "page=2".equals(exchange.getRequestURI().getQuery())) {
       respond(exchange, 200, """
         [{"id": 9, "title": "End of Term Survey", "quiz_type": "assignment"}]
         """);
