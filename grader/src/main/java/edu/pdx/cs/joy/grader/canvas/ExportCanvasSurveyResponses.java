@@ -9,6 +9,8 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -38,6 +40,7 @@ public class ExportCanvasSurveyResponses {
   static final URI DEFAULT_CANVAS_BASE_URI = URI.create("https://canvas.pdx.edu");
   static final String SURVEY_TITLE = "End of Term Survey";
 
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
   private static final String PAGE_TITLE = "Previously on The Joy of Coding...";
   private static final String INTRODUCTION = "Here are some comments from students who have taken The Joy of Coding.";
   private static final String PREPARATION_QUESTION = "How well prepared were you for the work in this class?";
@@ -94,10 +97,13 @@ public class ExportCanvasSurveyResponses {
 
   @VisibleForTesting
   void export(String apiToken, int courseId, Path outputDirectory) throws IOException, InterruptedException {
+    logger.info("Retrieving the Canvas term for course " + courseId);
     Path outputFile = outputDirectory.resolve(outputFileName(getCourseTermName(apiToken, courseId)));
+    logger.info("Finding the \"" + SURVEY_TITLE + "\" quiz");
     CanvasQuiz quiz = findClassicSurvey(apiToken, courseId);
     String reportCsv = downloadStudentAnalysisReport(apiToken, courseId, quiz.id());
     Map<String, List<String>> responses = parseSurveyResponses(reportCsv);
+    logger.info("Writing anonymized survey responses to " + outputFile);
     writeHtml(outputFile, responses);
   }
 
@@ -152,6 +158,7 @@ public class ExportCanvasSurveyResponses {
     String body = """
       {"quiz_report":{"report_type":"student_analysis","includes_all_versions":true}}
       """;
+    logger.info("Requesting the Canvas student analysis report");
     HttpResponse<String> response = invokeCanvas(reportsUri, apiToken, HttpRequest.BodyPublishers.ofString(body));
     JsonObject report = parseObject(response.body());
 
@@ -161,6 +168,7 @@ public class ExportCanvasSurveyResponses {
       throw new IOException("Canvas did not return a report progress URL");
     }
 
+    logger.info("Waiting for Canvas to generate the student analysis report");
     waitForReport(apiToken, URI.create(progressUrl.getString()));
     JsonObject completedReport = getJsonObject(apiToken, URI.create(reportUrl.getString()));
     JsonObject file = completedReport.getJsonObject("file");
@@ -168,6 +176,7 @@ public class ExportCanvasSurveyResponses {
       throw new IOException("Canvas did not return a generated report file");
     }
 
+    logger.info("Downloading the student analysis report");
     return downloadReportFile(apiToken, URI.create(file.getString("url")));
   }
 
