@@ -40,6 +40,9 @@ public class ExportCanvasSurveyResponses {
 
   private static final String PAGE_TITLE = "Previously on The Joy of Coding...";
   private static final String INTRODUCTION = "Here are some comments from students who have taken The Joy of Coding.";
+  private static final String PREPARATION_QUESTION = "How well prepared were you for the work in this class?";
+  private static final List<String> PREPARATION_RESPONSES =
+    List.of("very good", "good", "fair", "poor", "very poor");
   private static final String XHTML_DOCTYPE =
     "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
   private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
@@ -371,18 +374,45 @@ public class ExportCanvasSurveyResponses {
         writer.write("      <li>");
         writeEscapedHtml(writer, question.getKey());
         writer.write("</li>\n");
-        writer.write("      <ul>\n");
-        for (String answer : question.getValue()) {
-          writer.write("        <li>");
-          writeEscapedHtml(writer, answer);
-          writer.write("</li>\n");
+
+        if (PREPARATION_QUESTION.equals(question.getKey())) {
+          writeResponseCounts(writer, question.getValue());
+
+        } else {
+          writer.write("      <ul>\n");
+          for (String answer : question.getValue()) {
+            writer.write("        <li>");
+            writeEscapedHtml(writer, answer);
+            writer.write("</li>\n");
+          }
+          writer.write("      </ul>\n");
         }
-        writer.write("      </ul>\n");
       }
       writer.write("    </ol>\n");
       writer.write("  </body>\n");
       writer.write("</html>\n");
     }
+  }
+
+  private static void writeResponseCounts(Writer writer, List<String> responses) throws IOException {
+    Map<String, Integer> counts = new LinkedHashMap<>();
+    PREPARATION_RESPONSES.forEach(response -> counts.put(response, 0));
+    for (String response : responses) {
+      if (counts.containsKey(response)) {
+        counts.merge(response, 1, Integer::sum);
+      }
+    }
+
+    writer.write("      <table>\n");
+    writer.write("        <tr><th>Response</th><th>Students</th></tr>\n");
+    for (Map.Entry<String, Integer> count : counts.entrySet()) {
+      writer.write("        <tr><td>");
+      writeEscapedHtml(writer, count.getKey());
+      writer.write("</td><td>");
+      writer.write(String.valueOf(count.getValue()));
+      writer.write("</td></tr>\n");
+    }
+    writer.write("      </table>\n");
   }
 
   private static void writeEscapedHtml(Writer writer, String text) throws IOException {

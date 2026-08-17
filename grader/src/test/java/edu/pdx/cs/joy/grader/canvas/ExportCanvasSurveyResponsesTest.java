@@ -33,9 +33,10 @@ public class ExportCanvasSurveyResponsesTest {
       try {
         redirectedAuthorizationHeaders.add(exchange.getRequestHeaders().getFirst("Authorization"));
         respond(exchange, 200, """
-          name,id,section,section_id,submitted,attempt,100: What should future students know?,0.5,101: May I use your answers to these questions (not your name) todescribe this course in the future?,0.0,n correct,n incorrect,score
-          Student One,1,001,10,2026-08-10,1,Use <generics> & write tests,0.5,Yes,0.0,2,0,1
-          Student Two,2,001,10,2026-08-10,1,This answer must not be included,0.5,No,0.0,1,1,0.5
+          name,id,section,section_id,submitted,attempt,100: How well prepared were you for the work in this class?,0.5,101: What should future students know?,0.5,102: May I use your answers to these questions (not your name) todescribe this course in the future?,0.0,n correct,n incorrect,score
+          Student One,1,001,10,2026-08-10,1,very good,0.5,Use <generics> & write tests,0.5,Yes,0.0,2,0,1
+          Student Two,2,001,10,2026-08-10,1,good,0.5,Another useful response,0.5,Yes,0.0,2,0,1
+          Student Three,3,001,10,2026-08-10,1,very good,0.5,This answer must not be included,0.5,No,0.0,1,1,0.5
           """);
       } finally {
         exchange.close();
@@ -65,6 +66,12 @@ public class ExportCanvasSurveyResponsesTest {
       assertThat(html, containsString("<title>Previously on The Joy of Coding...</title>"));
       assertThat(html, containsString("<h1>Previously on The Joy of Coding...</h1>"));
       assertThat(html, containsString("<p>Here are some comments from students who have taken The Joy of Coding.</p>"));
+      assertThat(html, containsString("<tr><th>Response</th><th>Students</th></tr>"));
+      assertThat(html, containsString("<tr><td>very good</td><td>1</td></tr>"));
+      assertThat(html, containsString("<tr><td>good</td><td>1</td></tr>"));
+      assertThat(html, containsString("<tr><td>fair</td><td>0</td></tr>"));
+      assertThat(html, containsString("<tr><td>poor</td><td>0</td></tr>"));
+      assertThat(html, containsString("<tr><td>very poor</td><td>0</td></tr>"));
       assertThat(html, containsString("What should future students know?"));
       assertThat(html, containsString("Use &lt;generics&gt; &amp; write tests"));
       assertThat(html, not(containsString("This answer must not be included")));
