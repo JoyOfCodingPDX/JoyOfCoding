@@ -233,11 +233,16 @@ public class ExportCanvasSurveyResponses {
       }
 
       Map<Integer, String> questionColumns = findQuestionColumns(header);
+      int consentColumn = findConsentColumn(header);
       Map<String, List<String>> responses = new LinkedHashMap<>();
       questionColumns.values().forEach(question -> responses.putIfAbsent(question, new ArrayList<>()));
 
       String[] row;
       while ((row = reader.readNext()) != null) {
+        if (!hasGivenConsent(row, consentColumn)) {
+          continue;
+        }
+
         for (Map.Entry<Integer, String> questionColumn : questionColumns.entrySet()) {
           int column = questionColumn.getKey();
           if (column < row.length && !row[column].isBlank()) {
@@ -264,6 +269,21 @@ public class ExportCanvasSurveyResponses {
       throw new IllegalArgumentException("Canvas student analysis report has no question columns");
     }
     return questionColumns;
+  }
+
+  private static int findConsentColumn(String[] header) {
+    for (int column = 0; column < header.length; column++) {
+      Matcher matcher = QUESTION_COLUMN_PATTERN.matcher(header[column]);
+      if (matcher.matches() && CONSENT_QUESTION.equals(matcher.group(1))) {
+        return column;
+      }
+    }
+
+    throw new IllegalArgumentException("Canvas student analysis report has no consent question");
+  }
+
+  private static boolean hasGivenConsent(String[] row, int consentColumn) {
+    return consentColumn < row.length && "yes".equalsIgnoreCase(row[consentColumn].trim());
   }
 
   private static List<CanvasQuiz> parseQuizzes(String json) {
