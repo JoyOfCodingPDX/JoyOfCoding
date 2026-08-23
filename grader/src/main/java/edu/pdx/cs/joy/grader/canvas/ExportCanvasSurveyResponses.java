@@ -1,0 +1,473 @@
+package edu.pdx.cs.joy.grader.canvas;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
+import java.io.Writer;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Exports the responses to the End of Term Survey from a Canvas Classic Quiz
+ * as anonymized HTML.
+ */
+public class ExportCanvasSurveyResponses {
+  static final URI DEFAULT_CANVAS_BASE_URI = URI.create("https://canvas.pdx.edu");
+  static final String SURVEY_TITLE = "End of Term Survey";
+
+  private static final Logger logger = LoggerFactory.getLogger("edu.pdx.cs.joy.grader");
+  private static final String PAGE_TITLE = "Previously on The Joy of Coding...";
+  private static final String INTRODUCTION = "Here are some comments from students who have taken The Joy of Coding.";
+  private static final String PREPARATION_QUESTION = "How well prepared were you for the work in this class?";
+  private static final List<String> PREPARATION_RESPONSES =
+    List.of("very good", "good", "fair", "poor", "very poor");
+  private static final String XHTML_DOCTYPE =
+    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+  private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
+  private static final Pattern QUESTION_COLUMN_PATTERN = Pattern.compile("^\\d+:\\s+(.+)$");
+  private static final Pattern TERM_NAME_PATTERN = Pattern.compile("^(Winter|Spring|Summer|Fall) (\\d{4})$");
+  private static final String CONSENT_QUESTION =
+    "May I use your answers to these questions (not your name) todescribe this course in the future?";
+  private static final Duration REPORT_POLL_DELAY = Duration.ofSeconds(1);
+
+  private final HttpClient httpClient;
+  private final URI canvasBaseUri;
+
+  public ExportCanvasSurveyResponses() {
+    this(HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build(), DEFAULT_CANVAS_BASE_URI);
+  }
+
+  @VisibleForTesting
+  ExportCanvasSurveyResponses(HttpClient httpClient, URI canvasBaseUri) {
+    this.httpClient = httpClient;
+    this.canvasBaseUri = canvasBaseUri;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    try {
+      new ExportCanvasSurveyResponses().run(args);
+
+    } catch (IllegalArgumentException | IllegalStateException ex) {
+      usage(ex.getMessage());
+    }
+  }
+
+  @VisibleForTesting
+  void run(String[] args) throws IOException, InterruptedException {
+    if (args.length == 0) {
+      throw new IllegalArgumentException("Missing Canvas API token file name");
+    }
+    if (args.length == 1) {
+      throw new IllegalArgumentException("Missing Canvas course ID");
+    }
+    if (args.length > 2) {
+      throw new IllegalArgumentException("Extraneous command line argument: " + args[2]);
+    }
+
+    String apiToken = readApiToken(Path.of(args[0]));
+    int courseId = parseCourseId(args[1]);
+
+    export(apiToken, courseId, Path.of("."));
+  }
+
+  @VisibleForTesting
+  void export(String apiToken, int courseId, Path outputDirectory) throws IOException, InterruptedException {
+    logger.info("Retrieving the Canvas term for course " + courseId);
+    Path outputFile = outputDirectory.resolve(outputFileName(getCourseTermName(apiToken, courseId)));
+    logger.info("Finding the \"" + SURVEY_TITLE + "\" quiz");
+    CanvasQuiz quiz = findClassicSurvey(apiToken, courseId);
+    String reportCsv = downloadStudentAnalysisReport(apiToken, courseId, quiz.id());
+    Map<String, List<String>> responses = parseSurveyResponses(reportCsv);
+    logger.info("Writing anonymized survey responses to " + outputFile);
+    writeHtml(outputFile, responses);
+  }
+
+  private String getCourseTermName(String apiToken, int courseId) throws IOException, InterruptedException {
+    URI courseUri = this.canvasBaseUri.resolve("/api/v1/courses/" + courseId + "?include%5B%5D=term");
+    JsonObject course = getJsonObject(apiToken, courseUri);
+    JsonObject term = course.getJsonObject("term");
+    if (term == null || term.getJsonString("name") == null) {
+      throw new IOException("Canvas course " + courseId + " has no term name");
+    }
+    return term.getString("name");
+  }
+
+  private static String outputFileName(String termName) {
+    Matcher matcher = TERM_NAME_PATTERN.matcher(termName);
+    if (!matcher.matches()) {
+      throw new IllegalArgumentException("Canvas course term \"" + termName + "\" is not a season and year");
+    }
+    return "comments-" + matcher.group(1).toLowerCase() + matcher.group(2) + ".html";
+  }
+
+  private CanvasQuiz findClassicSurvey(String apiToken, int courseId) throws IOException, InterruptedException {
+    List<CanvasQuiz> matches = new ArrayList<>();
+    URI nextPage = this.canvasBaseUri.resolve("/api/v1/courses/" + courseId + "/quizzes?per_page=100");
+
+    while (nextPage != null) {
+      HttpResponse<String> response = invokeCanvas(nextPage, apiToken, HttpRequest.BodyPublishers.noBody());
+      for (CanvasQuiz quiz : parseQuizzes(response.body())) {
+        if (SURVEY_TITLE.equals(quiz.title())) {
+          matches.add(quiz);
+        }
+      }
+      nextPage = getNextPage(response.headers());
+    }
+
+    if (matches.isEmpty()) {
+      throw new IllegalStateException("Canvas course " + courseId + " has no quiz named \"" + SURVEY_TITLE + "\"");
+    }
+    if (matches.size() > 1) {
+      throw new IllegalStateException("Canvas course " + courseId + " has multiple quizzes named \"" + SURVEY_TITLE + "\"");
+    }
+
+    CanvasQuiz survey = matches.get(0);
+    if (survey.quizType() == null) {
+      throw new IllegalStateException("\"" + SURVEY_TITLE + "\" is not a Classic Quiz");
+    }
+    return survey;
+  }
+
+  private String downloadStudentAnalysisReport(String apiToken, int courseId, int quizId) throws IOException, InterruptedException {
+    URI reportsUri = this.canvasBaseUri.resolve("/api/v1/courses/" + courseId + "/quizzes/" + quizId + "/reports");
+    String body = """
+      {"quiz_report":{"report_type":"student_analysis","includes_all_versions":true}}
+      """;
+    logger.info("Requesting the Canvas student analysis report");
+    HttpResponse<String> response = invokeCanvas(reportsUri, apiToken, HttpRequest.BodyPublishers.ofString(body));
+    JsonObject report = parseObject(response.body());
+
+    JsonString progressUrl = report.getJsonString("progress_url");
+    JsonString reportUrl = report.getJsonString("url");
+    if (progressUrl == null || reportUrl == null) {
+      throw new IOException("Canvas did not return a report progress URL");
+    }
+
+    logger.info("Waiting for Canvas to generate the student analysis report");
+    waitForReport(apiToken, URI.create(progressUrl.getString()));
+    JsonObject completedReport = getJsonObject(apiToken, URI.create(reportUrl.getString()));
+    JsonObject file = completedReport.getJsonObject("file");
+    if (file == null || file.getJsonString("url") == null) {
+      throw new IOException("Canvas did not return a generated report file");
+    }
+
+    logger.info("Downloading the student analysis report");
+    return downloadReportFile(apiToken, URI.create(file.getString("url")));
+  }
+
+  private String downloadReportFile(String apiToken, URI fileUrl) throws IOException, InterruptedException {
+    URI currentUrl = fileUrl;
+    boolean includeAuthorization = true;
+
+    while (true) {
+      HttpResponse<String> response = sendRequest(currentUrl, apiToken, HttpRequest.BodyPublishers.noBody(), includeAuthorization);
+      if (response.statusCode() >= 200 && response.statusCode() < 300) {
+        return response.body();
+      }
+      if (response.statusCode() < 300 || response.statusCode() >= 400) {
+        throw new IOException("Canvas report download from " + currentUrl + " failed with status code " + response.statusCode());
+      }
+
+      String location = response.headers().firstValue("Location")
+        .orElseThrow(() -> new IOException("Canvas report download redirected without a Location header"));
+      currentUrl = currentUrl.resolve(location);
+      includeAuthorization = isCanvasUri(currentUrl);
+    }
+  }
+
+  private void waitForReport(String apiToken, URI progressUrl) throws IOException, InterruptedException {
+    while (true) {
+      JsonObject progress = getJsonObject(apiToken, progressUrl);
+      String workflowState = progress.getString("workflow_state", "");
+      if ("completed".equals(workflowState)) {
+        return;
+      }
+      if ("failed".equals(workflowState)) {
+        throw new IOException("Canvas failed to generate the student analysis report");
+      }
+
+      Thread.sleep(REPORT_POLL_DELAY);
+    }
+  }
+
+  private JsonObject getJsonObject(String apiToken, URI uri) throws IOException, InterruptedException {
+    HttpResponse<String> response = invokeCanvas(uri, apiToken, HttpRequest.BodyPublishers.noBody());
+    return parseObject(response.body());
+  }
+
+  private HttpResponse<String> invokeCanvas(URI uri, String apiToken, HttpRequest.BodyPublisher body)
+    throws IOException, InterruptedException {
+    if (!isCanvasUri(uri)) {
+      throw new IllegalArgumentException("Canvas API returned an unexpected URI: " + uri);
+    }
+
+    HttpResponse<String> response = sendRequest(uri, apiToken, body, true);
+    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+      throw new IOException("Canvas request to " + uri + " failed with status code " + response.statusCode());
+    }
+    return response;
+  }
+
+  private HttpResponse<String> sendRequest(URI uri, String apiToken, HttpRequest.BodyPublisher body, boolean includeAuthorization)
+    throws IOException, InterruptedException {
+    HttpRequest.Builder request = HttpRequest.newBuilder(uri)
+      .header("Accept", "application/json");
+    if (includeAuthorization) {
+      request.header("Authorization", "Bearer " + apiToken);
+    }
+    if (body.contentLength() == 0) {
+      request.GET();
+    } else {
+      request.header("Content-Type", "application/json").POST(body);
+    }
+
+    HttpResponse<String> response = this.httpClient.send(request.build(), HttpResponse.BodyHandlers.ofString());
+    return response;
+  }
+
+  private boolean isCanvasUri(URI uri) {
+    return this.canvasBaseUri.getScheme().equalsIgnoreCase(uri.getScheme())
+      && this.canvasBaseUri.getHost().equalsIgnoreCase(uri.getHost())
+      && this.canvasBaseUri.getPort() == uri.getPort();
+  }
+
+  @VisibleForTesting
+  static Map<String, List<String>> parseSurveyResponses(String csv) throws IOException {
+    try (CSVReader reader = new CSVReader(new StringReader(csv))) {
+      String[] header = reader.readNext();
+      if (header == null) {
+        throw new IOException("Canvas student analysis report is empty");
+      }
+
+      Map<Integer, String> questionColumns = findQuestionColumns(header);
+      int consentColumn = findConsentColumn(header);
+      Map<String, List<String>> responses = new LinkedHashMap<>();
+      questionColumns.values().forEach(question -> responses.putIfAbsent(question, new ArrayList<>()));
+
+      String[] row;
+      while ((row = reader.readNext()) != null) {
+        if (!hasGivenConsent(row, consentColumn)) {
+          continue;
+        }
+
+        for (Map.Entry<Integer, String> questionColumn : questionColumns.entrySet()) {
+          int column = questionColumn.getKey();
+          if (column < row.length && !row[column].isBlank()) {
+            responses.get(questionColumn.getValue()).add(row[column]);
+          }
+        }
+      }
+      return responses;
+
+    } catch (CsvValidationException ex) {
+      throw new IOException("While parsing the Canvas student analysis report", ex);
+    }
+  }
+
+  private static Map<Integer, String> findQuestionColumns(String[] header) {
+    Map<Integer, String> questionColumns = new LinkedHashMap<>();
+    for (int column = 0; column < header.length; column++) {
+      Matcher matcher = QUESTION_COLUMN_PATTERN.matcher(header[column]);
+      if (matcher.matches() && !CONSENT_QUESTION.equals(matcher.group(1))) {
+        questionColumns.put(column, matcher.group(1));
+      }
+    }
+    if (questionColumns.isEmpty()) {
+      throw new IllegalArgumentException("Canvas student analysis report has no question columns");
+    }
+    return questionColumns;
+  }
+
+  private static int findConsentColumn(String[] header) {
+    for (int column = 0; column < header.length; column++) {
+      Matcher matcher = QUESTION_COLUMN_PATTERN.matcher(header[column]);
+      if (matcher.matches() && CONSENT_QUESTION.equals(matcher.group(1))) {
+        return column;
+      }
+    }
+
+    throw new IllegalArgumentException("Canvas student analysis report has no consent question");
+  }
+
+  private static boolean hasGivenConsent(String[] row, int consentColumn) {
+    return consentColumn < row.length && "yes".equalsIgnoreCase(row[consentColumn].trim());
+  }
+
+  private static List<CanvasQuiz> parseQuizzes(String json) {
+    List<CanvasQuiz> quizzes = new ArrayList<>();
+    try (JsonReader reader = Json.createReader(new StringReader(json))) {
+      JsonArray values = reader.readArray();
+      for (JsonValue value : values) {
+        if (value.getValueType() != JsonValue.ValueType.OBJECT) {
+          continue;
+        }
+        JsonObject quiz = value.asJsonObject();
+        JsonString title = quiz.getJsonString("title");
+        if (title != null && quiz.containsKey("id")) {
+          quizzes.add(new CanvasQuiz(quiz.getInt("id"), title.getString(), quiz.getString("quiz_type", null)));
+        }
+      }
+    }
+    return quizzes;
+  }
+
+  private static JsonObject parseObject(String json) {
+    try (JsonReader reader = Json.createReader(new StringReader(json))) {
+      return reader.readObject();
+    }
+  }
+
+  private URI getNextPage(HttpHeaders headers) {
+    for (String linkHeader : headers.allValues("Link")) {
+      Matcher matcher = NEXT_LINK_PATTERN.matcher(linkHeader);
+      if (matcher.find()) {
+        return URI.create(matcher.group(1));
+      }
+    }
+    return null;
+  }
+
+  private static String readApiToken(Path apiTokenFile) throws IOException {
+    if (!Files.exists(apiTokenFile)) {
+      throw new IllegalArgumentException("Canvas API token file \"" + apiTokenFile + "\" does not exist");
+    }
+
+    String apiToken = Files.readString(apiTokenFile).trim();
+    if (apiToken.isEmpty()) {
+      throw new IllegalArgumentException("Canvas API token file \"" + apiTokenFile + "\" is empty");
+    }
+    return apiToken;
+  }
+
+  private static int parseCourseId(String courseIdText) {
+    try {
+      return Integer.parseInt(courseIdText);
+    } catch (NumberFormatException ex) {
+      throw new IllegalArgumentException("Canvas course ID \"" + courseIdText + "\" is not an integer");
+    }
+  }
+
+  private static void writeHtml(Path outputFile, Map<String, List<String>> responses) throws IOException {
+    Path parent = outputFile.toAbsolutePath().getParent();
+    if (parent != null && !Files.exists(parent)) {
+      throw new IllegalArgumentException("Parent directory \"" + parent + "\" does not exist");
+    }
+
+    try (Writer writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
+      writer.write(XHTML_DOCTYPE + "\n");
+      writer.write("<html>\n");
+      writer.write("  <head>\n");
+      writer.write("    <title>");
+      writeEscapedHtml(writer, PAGE_TITLE);
+      writer.write("</title>\n");
+      writer.write("  </head>\n");
+      writer.write("  <body>\n");
+      writer.write("    <h1>");
+      writeEscapedHtml(writer, PAGE_TITLE);
+      writer.write("</h1>\n");
+      writer.write("    <p>");
+      writeEscapedHtml(writer, INTRODUCTION);
+      writer.write("</p>\n");
+      writer.write("    <ol>\n");
+
+      for (Map.Entry<String, List<String>> question : responses.entrySet()) {
+        writer.write("      <li>");
+        writeEscapedHtml(writer, question.getKey());
+        writer.write("</li>\n");
+
+        if (PREPARATION_QUESTION.equals(question.getKey())) {
+          writeResponseCounts(writer, question.getValue());
+
+        } else {
+          writer.write("      <ul>\n");
+          for (String answer : question.getValue()) {
+            writer.write("        <li>");
+            writeEscapedHtml(writer, answer);
+            writer.write("</li>\n");
+          }
+          writer.write("      </ul>\n");
+        }
+      }
+      writer.write("    </ol>\n");
+      writer.write("  </body>\n");
+      writer.write("</html>\n");
+    }
+  }
+
+  private static void writeResponseCounts(Writer writer, List<String> responses) throws IOException {
+    Map<String, Integer> counts = new LinkedHashMap<>();
+    PREPARATION_RESPONSES.forEach(response -> counts.put(response, 0));
+    for (String response : responses) {
+      if (counts.containsKey(response)) {
+        counts.merge(response, 1, Integer::sum);
+      }
+    }
+
+    writer.write("      <table>\n");
+    writer.write("        <tr><th>Response</th><th>Students</th></tr>\n");
+    for (Map.Entry<String, Integer> count : counts.entrySet()) {
+      writer.write("        <tr><td>");
+      writeEscapedHtml(writer, count.getKey());
+      writer.write("</td><td>");
+      writer.write(String.valueOf(count.getValue()));
+      writer.write("</td></tr>\n");
+    }
+    writer.write("      </table>\n");
+  }
+
+  private static void writeEscapedHtml(Writer writer, String text) throws IOException {
+    for (int i = 0; i < text.length(); i++) {
+      switch (text.charAt(i)) {
+        case '&' -> writer.write("&amp;");
+        case '<' -> writer.write("&lt;");
+        case '>' -> writer.write("&gt;");
+        case '"' -> writer.write("&quot;");
+        case '\'' -> writer.write("&#39;");
+        default -> writer.write(text.charAt(i));
+      }
+    }
+  }
+
+  private static void usage(String message) {
+    PrintStream err = System.err;
+    err.println("+++ " + message);
+    err.println();
+    err.println("usage: java ExportCanvasSurveyResponses apiTokenFileName courseId");
+    err.println("    apiTokenFileName  File containing the Canvas API token");
+    err.println("    courseId          Canvas ID of the course offering");
+    err.println("");
+    err.println("Writes comments-seasonyear.html for the course's Canvas term");
+    err.println();
+    err.println("Exports the \"" + SURVEY_TITLE + "\" Classic Quiz from Canvas as anonymized HTML");
+    err.println();
+    System.exit(1);
+  }
+
+  private record CanvasQuiz(int id, String title, String quizType) {
+  }
+}
