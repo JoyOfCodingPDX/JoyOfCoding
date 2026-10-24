@@ -132,27 +132,11 @@ public class HttpRequestHelper {
 
     private final String content;
 
-    private int contentLines = 0;
-
     private Response(HttpResponse<String> response) {
       this.httpStatusCode = response.statusCode();
 
-      StringBuilder content = new StringBuilder();
       String body = response.body();
-      if (body != null) {
-        try (BufferedReader rd = new BufferedReader(new StringReader(body))) {
-          String line;
-          while ((line = rd.readLine()) != null) {
-            content.append(line);
-            content.append("\n");
-            contentLines++;
-          }
-        } catch (IOException e) {
-          throw new UncheckedIOException(e);
-        }
-      }
-
-      this.content = content.toString().trim();
+      this.content = body == null ? "" : body.trim();
     }
 
     @VisibleForTesting
@@ -176,14 +160,7 @@ public class HttpRequestHelper {
       return content;
     }
 
-    /**
-     * Returns the number of lines in the response's content
-     */
-    public int getContentLines() {
-      return contentLines;
-    }
   }
-
 
   private static Map<String, String> arrayToMap(String[] parameters) {
     Map<String, String> params = new HashMap<>();
@@ -223,10 +200,10 @@ public class HttpRequestHelper {
       return;
     }
 
+    String content = response.getContent();
     System.out.println("Returned code " + response.getHttpStatusCode() + " and " +
-      response.getContentLines() + " lines of content\n");
-    System.out.println(response.getContent());
-
+      content.lines().count() + " lines of content\n");
+    System.out.println(content);
   }
 
   public static class RestException extends RuntimeException {
