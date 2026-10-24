@@ -11,11 +11,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * A helper class that provides methods for requesting resources via HTTP
+ * A helper class that provides methods for requesting resources via HTTP.  It handles parameter encoding
+ * and the specifics of the {@link HttpClient} API.
  */
 public class HttpRequestHelper {
 
@@ -36,9 +37,9 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the GET
    */
   public Response get(Map<String, String> parameters) throws IOException {
-    StringBuilder query = encodeParameters(parameters);
+    String query = encodeParameters(parameters);
     if (!query.isEmpty()) {
-      query.insert(0, '?');
+      query = "?" + query;
     }
 
     HttpRequest request = HttpRequest.newBuilder(URI.create(urlString + query))
@@ -68,7 +69,7 @@ public class HttpRequestHelper {
   }
 
   private Response sendEncodedRequest(String requestMethod, Map<String, String> parameters) throws IOException {
-    String data = encodeParameters(parameters).toString();
+    String data = encodeParameters(parameters);
 
     HttpRequest request = HttpRequest.newBuilder(URI.create(urlString))
       .header("Content-Type", "application/x-www-form-urlencoded")
@@ -93,20 +94,11 @@ public class HttpRequestHelper {
    * @param parameters The parameter key/value pairs
    * @return The encoded parameters
    */
-  private StringBuilder encodeParameters(Map<String, String> parameters) {
-    StringBuilder query = new StringBuilder();
-    for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
-      Map.Entry<String, String> pair = iter.next();
-      String key = pair.getKey();
-      String value = pair.getValue();
-      query.append(URLEncoder.encode(key, StandardCharsets.UTF_8));
-      query.append("=");
-      query.append(URLEncoder.encode(value, StandardCharsets.UTF_8));
-      if (iter.hasNext()) {
-        query.append("&");
-      }
-    }
-    return query;
+  private String encodeParameters(Map<String, String> parameters) {
+    return parameters.entrySet().stream()
+      .map(pair -> URLEncoder.encode(pair.getKey(), StandardCharsets.UTF_8) + "=" +
+        URLEncoder.encode(pair.getValue(), StandardCharsets.UTF_8))
+      .collect(Collectors.joining("&"));
   }
 
   /**
