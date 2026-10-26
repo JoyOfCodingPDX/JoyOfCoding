@@ -4,17 +4,25 @@ import com.google.common.annotations.VisibleForTesting;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * A helper class that provides methods for requesting resources via HTTP
+ * A helper class that provides methods for requesting resources via HTTP.  It handles parameter encoding
+ * and the specifics of the {@link HttpClient} API.
  */
 public class HttpRequestHelper {
+
+  private static final HttpClient CLIENT = HttpClient.newBuilder()
+    .followRedirects(HttpClient.Redirect.NORMAL)
+    .build();
 
   private final String urlString;
 
@@ -29,19 +37,15 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the GET
    */
   public Response get(Map<String, String> parameters) throws IOException {
-    StringBuilder query = encodeParameters(parameters);
-    if (query.length() > 0) {
-      query.insert(0, '?');
+    String query = encodeParameters(parameters);
+    if (!query.isEmpty()) {
+      query = "?" + query;
     }
 
-    URL url = new URL(urlString + query);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
-    conn.setDoOutput(true);
-    conn.setDoInput(true);
-
-    return new Response(conn);
-
+    HttpRequest request = HttpRequest.newBuilder(URI.create(urlString + query))
+      .GET()
+      .build();
+    return send(request);
   }
 
   /**
@@ -51,7 +55,7 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the POST
    */
   public Response post(Map<String, String> parameters) throws IOException {
-    return sendEncodedRequest(urlString, "POST", parameters);
+    return sendEncodedRequest("POST", parameters);
   }
 
   /**
@@ -61,25 +65,28 @@ public class HttpRequestHelper {
    * @return A <code>Response</code> summarizing the result of the POST
    */
   public Response delete(Map<String, String> parameters) throws IOException {
-    return sendEncodedRequest(urlString, "DELETE", parameters);
+    return sendEncodedRequest("DELETE", parameters);
   }
 
-  private Response sendEncodedRequest(String urlString, String requestMethod, Map<String, String> parameters) throws IOException {
-    StringBuilder data = encodeParameters(parameters);
+  private Response sendEncodedRequest(String requestMethod, Map<String, String> parameters) throws IOException {
+    String data = encodeParameters(parameters);
 
-    URL url = new URL(urlString);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod(requestMethod);
-    conn.setDoOutput(true);
+    HttpRequest request = HttpRequest.newBuilder(URI.create(urlString))
+      .header("Content-Type", "application/x-www-form-urlencoded")
+      .method(requestMethod, HttpRequest.BodyPublishers.ofString(data, StandardCharsets.UTF_8))
+      .build();
+    return send(request);
+  }
 
-    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
-    wr.write(data.toString());
-    wr.flush();
+  private Response send(HttpRequest request) throws IOException {
+    try {
+      HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+      return new Response(response);
 
-    Response response = new Response(conn);
-    wr.close();
-
-    return response;
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new IOException("Interrupted while sending HTTP request", e);
+    }
   }
 
   /**
@@ -87,20 +94,11 @@ public class HttpRequestHelper {
    * @param parameters The parameter key/value pairs
    * @return The encoded parameters
    */
-  private StringBuilder encodeParameters(Map<String, String> parameters) {
-    StringBuilder query = new StringBuilder();
-    for (Iterator<Map.Entry<String, String>> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
-      Map.Entry<String, String> pair = iter.next();
-      String key = pair.getKey();
-      String value = pair.getValue();
-      query.append(URLEncoder.encode(key, StandardCharsets.UTF_8));
-      query.append("=");
-      query.append(URLEncoder.encode(value, StandardCharsets.UTF_8));
-      if (iter.hasNext()) {
-        query.append("&");
-      }
-    }
-    return query;
+  private String encodeParameters(Map<String, String> parameters) {
+    return parameters.entrySet().stream()
+      .map(pair -> URLEncoder.encode(pair.getKey(), StandardCharsets.UTF_8) + "=" +
+        URLEncoder.encode(pair.getValue(), StandardCharsets.UTF_8))
+      .collect(Collectors.joining("&"));
   }
 
   /**
@@ -118,22 +116,11 @@ public class HttpRequestHelper {
           data.append("\n");
         });
 
-    URL url = new URL(urlString);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("PUT");
-    conn.setDoOutput(true);
-    conn.setDoInput(true);
-    conn.setRequestProperty("Content-Type", "text/plain");
-    conn.setRequestProperty("Context-Length", String.valueOf(data.length()));
-
-    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
-    wr.write(data.toString());
-    wr.flush();
-
-    Response response = new Response(conn);
-    wr.close();
-
-    return response;
+    HttpRequest request = HttpRequest.newBuilder(URI.create(urlString))
+      .header("Content-Type", "text/plain")
+      .PUT(HttpRequest.BodyPublishers.ofString(data.toString(), StandardCharsets.UTF_8))
+      .build();
+    return send(request);
   }
 
   /**
@@ -145,31 +132,11 @@ public class HttpRequestHelper {
 
     private final String content;
 
-    private int contentLines = 0;
+    private Response(HttpResponse<String> response) {
+      this.httpStatusCode = response.statusCode();
 
-    private Response(HttpURLConnection conn) throws IOException {
-      this.httpStatusCode = conn.getResponseCode();
-      InputStream stream;
-      if (this.httpStatusCode != java.net.HttpURLConnection.HTTP_OK) {
-        stream = conn.getErrorStream();
-
-      } else {
-        stream = conn.getInputStream();
-      }
-
-      StringBuilder content = new StringBuilder();
-      if (stream != null) {
-        BufferedReader rd = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        while ((line = rd.readLine()) != null) {
-          content.append(line);
-          content.append("\n");
-          contentLines++;
-        }
-        rd.close();
-      }
-
-      this.content = content.toString().trim();
+      String body = response.body();
+      this.content = body == null ? "" : body.trim();
     }
 
     @VisibleForTesting
@@ -180,7 +147,7 @@ public class HttpRequestHelper {
 
     /**
      * Returns the HTTP status code of the response
-     * @see java.net.HttpURLConnection#getResponseCode()
+     * @see java.net.http.HttpResponse#statusCode()
      */
     public int getHttpStatusCode() {
       return httpStatusCode;
@@ -193,14 +160,7 @@ public class HttpRequestHelper {
       return content;
     }
 
-    /**
-     * Returns the number of lines in the response's content
-     */
-    public int getContentLines() {
-      return contentLines;
-    }
   }
-
 
   private static Map<String, String> arrayToMap(String[] parameters) {
     Map<String, String> params = new HashMap<>();
@@ -240,10 +200,10 @@ public class HttpRequestHelper {
       return;
     }
 
+    String content = response.getContent();
     System.out.println("Returned code " + response.getHttpStatusCode() + " and " +
-      response.getContentLines() + " lines of content\n");
-    System.out.println(response.getContent());
-
+      content.lines().count() + " lines of content\n");
+    System.out.println(content);
   }
 
   public static class RestException extends RuntimeException {

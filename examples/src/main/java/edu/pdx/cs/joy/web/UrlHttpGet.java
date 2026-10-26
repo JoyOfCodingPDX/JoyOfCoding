@@ -38,7 +38,7 @@ public class UrlHttpGet {
       for (String value : headers.get(key)) {
         out.print(value);
       }
-      out.println("\n");
+      out.println();
     }
 
     out.println("\nContent");

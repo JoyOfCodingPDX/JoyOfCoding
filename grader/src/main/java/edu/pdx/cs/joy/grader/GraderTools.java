@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.grader.canvas.CompareCanvasAndWebsiteSchedules;
+import edu.pdx.cs.joy.grader.canvas.ExportCanvasSurveyResponses;
 import edu.pdx.cs.joy.grader.canvas.GradesFromCanvasImporter;
 import edu.pdx.cs.joy.grader.gradebook.ui.GradeBookGUI;
 import edu.pdx.cs.joy.grader.poa.ui.PlanOfAttackGrader;
@@ -87,6 +88,9 @@ public class GraderTools {
       case "compareCanvasAndWebsiteSchedules":
         return CompareCanvasAndWebsiteSchedules.class;
 
+      case "exportCanvasSurveyResponses":
+        return ExportCanvasSurveyResponses.class;
+
       default:
         usage("Unknown tool: " + tool);
         return null;
@@ -123,6 +127,7 @@ public class GraderTools {
     err.println("    findUngradedSubmissions      List submissions that need to be tested or graded");
     err.println("    compareCanvasAndWebsiteSchedules");
     err.println("                                 Compare assignment due dates in Canvas and the website schedule");
+    err.println("    exportCanvasSurveyResponses  Export End of Term Survey responses from a Canvas course");
     err.println("  toolArg                        A command line argument to send to the tool");
     err.println();
 

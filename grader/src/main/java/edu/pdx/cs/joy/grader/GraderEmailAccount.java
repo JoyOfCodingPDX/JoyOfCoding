@@ -1,13 +1,11 @@
 package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.sun.mail.util.MailSSLSocketFactory;
 import jakarta.mail.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -280,9 +278,8 @@ public class GraderEmailAccount {
       Properties props = new Properties();
 
       if (this.trustLocalhostSSL) {
-        MailSSLSocketFactory socketFactory= new MailSSLSocketFactory();
-        socketFactory.setTrustedHosts("127.0.0.1", "localhost");
-        props.put("mail.imaps.ssl.socketFactory", socketFactory);
+        props.put("mail.imaps.ssl.trust", "127.0.0.1 localhost");
+        props.put("mail.imaps.ssl.checkserveridentity", "false");
       }
 
       Session session = Session.getInstance(props, null);
@@ -290,7 +287,7 @@ public class GraderEmailAccount {
       store.connect(this.emailServerHostName, this.emailServerPort, this.userName, this.password);
       return store;
 
-    } catch (MessagingException | GeneralSecurityException ex) {
+    } catch (MessagingException ex) {
       throw new IllegalStateException("While connecting to " + this.emailServerHostName + ":" + this.emailServerPort, ex);
     }
   }

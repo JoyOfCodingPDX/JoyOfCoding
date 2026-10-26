@@ -8,14 +8,12 @@ import com.icegreen.greenmail.store.MailFolder;
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.sun.mail.util.MailSSLSocketFactory;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 public class GreenmailIntegrationTestCase {
@@ -78,12 +76,10 @@ public class GreenmailIntegrationTestCase {
     return folder;
   }
 
-  protected Store connectToIMAPServer() throws GeneralSecurityException, MessagingException {
+  protected Store connectToIMAPServer() throws MessagingException {
     Properties props = new Properties();
-
-    MailSSLSocketFactory socketFactory = new MailSSLSocketFactory();
-    socketFactory.setTrustedHosts(new String[]{"127.0.0.1", "localhost"});
-    props.put("mail.imaps.ssl.socketFactory", socketFactory);
+    props.put("mail.imaps.ssl.trust", emailServerHost);
+    props.put("mail.imaps.ssl.checkserveridentity", "false");
 
     Session session = Session.getInstance(props, null);
     Store store = session.getStore("imaps");
