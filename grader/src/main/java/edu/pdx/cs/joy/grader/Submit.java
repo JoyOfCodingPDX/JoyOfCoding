@@ -341,6 +341,83 @@ public class Submit extends EmailSender {
     return true;
   }
 
+  /**
+   * Asks how AI was used on the project.  An answer is required.
+   *
+   * @return <code>false</code> if the input ended before an answer was given
+   */
+  private boolean askForAiUsage() {
+    Grade.SubmissionInfo.AiUsage[] choices = Grade.SubmissionInfo.AiUsage.values();
+
+    out.println("\nHow would you describe your use of AI on this project?");
+    out.println("  1. AI wrote the vast majority of the code");
+    out.println("  2. AI reviewed the code I wrote and offered me suggestions for improvement");
+    out.println("  3. AI researched answers to questions I had");
+    out.println("  4. AI was not used");
+    out.println("  5. Other\n");
+
+    while (true) {
+      out.print("Enter a number between 1 and 5:  ");
+      out.flush();
+
+      try {
+        String line = in.readLine();
+        if (line == null) {
+          err.println("\n** No answer was given about the use of AI");
+          return false;
+        }
+
+        try {
+          int choice = Integer.parseInt(line.trim());
+          if (choice >= 1 && choice <= choices.length) {
+            Grade.SubmissionInfo.AiUsage aiUsage = choices[choice - 1];
+            this.setAiUsage(aiUsage);
+            if (aiUsage == Grade.SubmissionInfo.AiUsage.OTHER) {
+              return askForAiUsageDescription();
+            }
+            return true;
+          }
+
+        } catch (NumberFormatException ex) {
+          // Fall through to the error message
+        }
+
+        out.println("** Please enter a number between 1 and 5");
+
+      } catch (IOException ex) {
+        err.println("** Exception while reading from System.in: " + ex);
+      }
+    }
+  }
+
+  private boolean askForAiUsageDescription() throws IOException {
+    out.println("\nPlease explain how you used AI (enter a blank line when you are finished):");
+
+    StringBuilder description = new StringBuilder();
+    while (true) {
+      String line = in.readLine();
+      if (line == null || line.trim().isEmpty()) {
+        if (description.length() > 0) {
+          this.setAiUsageDescription(description.toString());
+          return true;
+        }
+
+        if (line == null) {
+          err.println("\n** No explanation was given about the use of AI");
+          return false;
+        }
+
+        out.println("** An explanation is required.  Please describe how you used AI:");
+
+      } else {
+        if (description.length() > 0) {
+          description.append('\n');
+        }
+        description.append(line);
+      }
+    }
+  }
+
   private void askForEstimatedHours() {
     out.println("\nTo help inform how future students plan their approach to this project, you can");
     out.println("record the approximate number of hours you spent on this project. This estimate");
@@ -568,6 +645,9 @@ public class Submit extends EmailSender {
 
     askForEstimatedHours();
 
+    if (!askForAiUsage()) {
+      return false;
+    }
     return doesUserWantToSubmit();
   }
 
