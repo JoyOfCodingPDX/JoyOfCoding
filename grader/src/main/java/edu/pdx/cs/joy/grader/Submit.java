@@ -680,6 +680,12 @@ public class Submit extends EmailSender {
     if (estimatedHours != null) {
       manifestEntries.put(ManifestAttributes.ESTIMATED_HOURS, String.valueOf(estimatedHours));
     }
+    if (aiUsage != null) {
+      manifestEntries.put(ManifestAttributes.AI_USAGE, aiUsage.name());
+    }
+    if (aiUsageDescription != null) {
+      manifestEntries.put(ManifestAttributes.AI_USAGE_DESCRIPTION, ManifestAttributes.escapeLineBreaks(aiUsageDescription));
+    }
     return manifestEntries;
   }
 
@@ -932,6 +938,26 @@ public class Submit extends EmailSender {
 
     private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+
+    // Manifest values can't contain line breaks, so they are escaped
+    static String escapeLineBreaks(String value) {
+      return value.replace("\\", "\\\\").replace("\n", "\\n").replace("\r", "\\r");
+    }
+
+    static String unescapeLineBreaks(String value) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < value.length(); i++) {
+        char c = value.charAt(i);
+        if (c == '\\' && i + 1 < value.length()) {
+          char next = value.charAt(++i);
+          sb.append(next == 'n' ? '\n' : next == 'r' ? '\r' : next);
+
+        } else {
+          sb.append(c);
+        }
+      }
+      return sb.toString();
+    }
 
     static String formatSubmissionTime(LocalDateTime submitTime) {
       return submitTime.format(DATE_TIME_FORMATTER);

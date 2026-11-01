@@ -112,6 +112,7 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     Student student = getStudentFromGradeBook(attrs);
     Assignment project = getProjectFromGradeBook(attrs);
     String note = getSubmissionNote(attrs);
+    Grade.SubmissionInfo.AiUsage aiUsage = getAiUsage(attrs);
 
     Grade grade = student.getGrade(project);
     if (grade == null) {
@@ -123,6 +124,13 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
     LocalDateTime submissionTime = getSubmissionTime(attrs);
     Grade.SubmissionInfo submission = grade.noteSubmission(submissionTime);
     submission.setEstimatedHours(getEstimatedHours(attrs));
+    submission.setAiUsage(aiUsage);
+    if (aiUsage != null) {
+      String description = attrs.getValue(Submit.ManifestAttributes.AI_USAGE_DESCRIPTION);
+      if (description != null) {
+        submission.setAiUsageDescription(Submit.ManifestAttributes.unescapeLineBreaks(description));
+      }
+    }
 
     if (project.isSubmissionLate(submissionTime)) {
       student.addLate(project.getName());
@@ -133,6 +141,20 @@ class ProjectSubmissionsProcessor extends StudentEmailAttachmentProcessor {
   public static LocalDateTime getSubmissionTime(Attributes attrs) throws SubmissionException {
     String string = getSubmissionTimeString(attrs);
     return Submit.ManifestAttributes.parseSubmissionTime(string);
+  }
+
+  private Grade.SubmissionInfo.AiUsage getAiUsage(Attributes attrs) throws SubmissionException {
+    String aiUsage = attrs.getValue(Submit.ManifestAttributes.AI_USAGE);
+    if (aiUsage == null) {
+      return null;
+    }
+
+    try {
+      return Grade.SubmissionInfo.AiUsage.valueOf(aiUsage);
+
+    } catch (IllegalArgumentException ex) {
+      throw new SubmissionException("Unrecognized AI usage in manifest: \"" + aiUsage + "\"");
+    }
   }
 
   private Double getEstimatedHours(Attributes attrs) {
