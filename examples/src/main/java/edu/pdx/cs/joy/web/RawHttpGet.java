@@ -48,9 +48,10 @@ public class RawHttpGet {
     String file = null;
     int port = 80;
 
-    for (String arg : args) {
+    for (int i = 0; i < args.length; i++) {
+      String arg = args[i];
       if (arg.equals("-port")) {
-        port = Integer.parseInt(arg);
+        port = Integer.parseInt(args[++i]);
 
       } else if (host == null) {
         host = arg;

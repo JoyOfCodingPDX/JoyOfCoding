@@ -4,8 +4,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Enumeration;
+import java.util.*;
 
 /**
  * A servlet that uses a session to maintain information about a user
@@ -83,16 +82,37 @@ public class SessionServlet extends HttpServlet {
 
   private void dumpCoookies(Cookie[] cookies, PrintWriter out) {
     out.println("<h2>Your cookies:</h2>");
+    out.println("<table border='1'>");
+    dumpCookiesTableHeader(out);
+    out.println("<tbody>");
+    Arrays.sort(cookies, Comparator.comparing(Cookie::getName));
     for (Cookie cookie : cookies) {
-      dumpKeyValue("Name", cookie.getName(), out);
-      dumpKeyValue("Domain", cookie.getDomain(), out);
-      dumpKeyValue("Path", cookie.getPath(), out);
-      dumpKeyValue("Value", cookie.getValue(), out);
-      dumpKeyValue("Comment", cookie.getComment(), out);
-      dumpKeyValue("Version", cookie.getVersion(), out);
-      dumpKeyValue("Max Age", cookie.getMaxAge(), out);
-      dumpKeyValue("Secure", cookie.getSecure(), out);
+      out.println("<tr>");
+      dumpTableCell(cookie.getName(), out);
+      dumpTableCell(cookie.getValue(), out);
+      dumpTableCell(cookie.getDomain(), out);
+      dumpTableCell(cookie.getPath(), out);
+      dumpTableCell(cookie.getMaxAge(), out);
+      dumpTableCell(cookie.getSecure(), out);
+      out.println("</tr>");
     }
+    out.println("</tbody>");
+    out.println("<table>");
+  }
+
+  private void dumpTableCell(Object value, PrintWriter out) {
+    out.println("<td>" + value + "</td>");
+  }
+
+  private void dumpCookiesTableHeader(PrintWriter out) {
+    out.println("<thead><tr>");
+    out.println("<th>Name</th>");
+    out.println("<th>Value</th>");
+    out.println("<th>Domain</th>");
+    out.println("<th>Path</th>");
+    out.println("<th>Max Age</th>");
+    out.println("<th>Secure</th>");
+    out.println("</tr></thead>");
   }
 
   private void dumpSession(HttpSession session, PrintWriter out) {
