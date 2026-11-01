@@ -2,6 +2,7 @@ package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import edu.pdx.cs.joy.grader.gradebook.XmlStudentParser;
 import jakarta.activation.DataHandler;
@@ -99,6 +100,8 @@ public class Submit extends EmailSender {
   private boolean sendReceipt = true;
   private String studentXmlFileName;
   private Double estimatedHours;
+  private Grade.SubmissionInfo.AiUsage aiUsage;
+  private String aiUsageDescription;
   private final CurrentTimeProvider currentTimeProvider;
   private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -665,7 +668,8 @@ public class Submit extends EmailSender {
     return zipFile;
   }
 
-  private Map<Attributes.Name, String> getManifestEntries() {
+  @VisibleForTesting
+  Map<Attributes.Name, String> getManifestEntries() {
     Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(ManifestAttributes.USER_NAME, userName);
     manifestEntries.put(ManifestAttributes.USER_ID, userId);
@@ -901,6 +905,19 @@ public class Submit extends EmailSender {
     this.estimatedHours = estimatedHours;
   }
 
+  public void setAiUsage(Grade.SubmissionInfo.AiUsage aiUsage) {
+    this.aiUsage = aiUsage;
+  }
+
+  public void setAiUsageDescription(String aiUsageDescription) {
+    this.aiUsageDescription = aiUsageDescription;
+  }
+
+  @VisibleForTesting
+  void setSubmitTime(LocalDateTime submitTime) {
+    this.submitTime = submitTime;
+  }
+
   static class ManifestAttributes {
 
     static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
@@ -910,6 +927,8 @@ public class Submit extends EmailSender {
     static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
     static final Attributes.Name ESTIMATED_HOURS = new Attributes.Name("Estimated-Hours");
+    static final Attributes.Name AI_USAGE = new Attributes.Name("Ai-Usage");
+    static final Attributes.Name AI_USAGE_DESCRIPTION = new Attributes.Name("Ai-Usage-Description");
 
     private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
