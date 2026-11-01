@@ -451,6 +451,16 @@ public class XmlDumper extends XmlHelper {
   private static void appendSubmissionInformation(Grade.SubmissionInfo info, Element parent) {
     appendTextElementIfValueIsNotNull(parent, "date", info.getSubmissionTime());
     appendTextElementIfValueIsNotNull(parent, "estimated-hours", info.getEstimatedHours());
+
+    if (info.getAiUsage() != null) {
+      Document doc = parent.getOwnerDocument();
+      Element aiUsage = doc.createElement("ai-usage");
+      aiUsage.setAttribute("type", info.getAiUsage().name());
+      if (info.getAiUsageDescription() != null) {
+        aiUsage.appendChild(doc.createTextNode(info.getAiUsageDescription()));
+      }
+      parent.appendChild(aiUsage);
+    }
   }
 
   private static void appendStudentInformation(Student student, Element root) {

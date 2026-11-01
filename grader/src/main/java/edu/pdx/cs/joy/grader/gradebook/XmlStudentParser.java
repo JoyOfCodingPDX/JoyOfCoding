@@ -144,6 +144,13 @@ public class XmlStudentParser extends XmlHelper {
 
       } else if (child.getTagName().equals("estimated-hours")) {
         setSubmissionEstimatedHoursFromTextInNode(info, child);
+
+      } else if (child.getTagName().equals("ai-usage")) {
+        info.setAiUsage(Grade.SubmissionInfo.AiUsage.valueOf(child.getAttribute("type")));
+        String description = extractTextFrom(child);
+        if (!description.isEmpty()) {
+          info.setAiUsageDescription(description);
+        }
       }
     }
 

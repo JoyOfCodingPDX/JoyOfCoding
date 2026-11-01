@@ -91,11 +91,15 @@ assignments, and some notes -->
   type (INCOMPLETE | NO_GRADE) #IMPLIED
 >
 
-<!ELEMENT submission-info (date, estimated-hours?)>
+<!ELEMENT submission-info (date, estimated-hours?, ai-usage?)>
 <!ATTLIST submission-info
           late (true | false) "false"
 >
 <!ELEMENT date (#PCDATA)>
 <!ELEMENT estimated-hours (#PCDATA)>
+<!ELEMENT ai-usage (#PCDATA)>
+<!ATTLIST ai-usage
+          type (VIBE_CODED | REVIEWED | RESEARCHED | NOT_USED | OTHER) #REQUIRED
+>
 
 <!ELEMENT score (#PCDATA)>
