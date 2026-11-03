@@ -2,6 +2,7 @@ package edu.pdx.cs.joy.grader;
 
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs.joy.ParserException;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import edu.pdx.cs.joy.grader.gradebook.XmlStudentParser;
 import jakarta.activation.DataHandler;
@@ -99,6 +100,8 @@ public class Submit extends EmailSender {
   private boolean sendReceipt = true;
   private String studentXmlFileName;
   private Double estimatedHours;
+  private Grade.SubmissionInfo.AiUsage aiUsage;
+  private String aiUsageDescription;
   private final CurrentTimeProvider currentTimeProvider;
   private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -338,6 +341,83 @@ public class Submit extends EmailSender {
     return true;
   }
 
+  /**
+   * Asks how AI was used on the project.  An answer is required.
+   *
+   * @return <code>false</code> if the input ended before an answer was given
+   */
+  private boolean askForAiUsage() {
+    Grade.SubmissionInfo.AiUsage[] choices = Grade.SubmissionInfo.AiUsage.values();
+
+    out.println("\nHow would you describe your use of AI on this project?");
+    out.println("  1. AI wrote the vast majority of the code");
+    out.println("  2. AI reviewed the code I wrote and offered me suggestions for improvement");
+    out.println("  3. AI researched answers to questions I had");
+    out.println("  4. AI was not used");
+    out.println("  5. Other\n");
+
+    while (true) {
+      out.print("Enter a number between 1 and 5:  ");
+      out.flush();
+
+      try {
+        String line = in.readLine();
+        if (line == null) {
+          err.println("\n** No answer was given about the use of AI");
+          return false;
+        }
+
+        try {
+          int choice = Integer.parseInt(line.trim());
+          if (choice >= 1 && choice <= choices.length) {
+            Grade.SubmissionInfo.AiUsage aiUsage = choices[choice - 1];
+            this.setAiUsage(aiUsage);
+            if (aiUsage == Grade.SubmissionInfo.AiUsage.OTHER) {
+              return askForAiUsageDescription();
+            }
+            return true;
+          }
+
+        } catch (NumberFormatException ex) {
+          // Fall through to the error message
+        }
+
+        out.println("** Please enter a number between 1 and 5");
+
+      } catch (IOException ex) {
+        err.println("** Exception while reading from System.in: " + ex);
+      }
+    }
+  }
+
+  private boolean askForAiUsageDescription() throws IOException {
+    out.println("\nPlease explain how you used AI (enter a blank line when you are finished):");
+
+    StringBuilder description = new StringBuilder();
+    while (true) {
+      String line = in.readLine();
+      if (line == null || line.trim().isEmpty()) {
+        if (description.length() > 0) {
+          this.setAiUsageDescription(description.toString());
+          return true;
+        }
+
+        if (line == null) {
+          err.println("\n** No explanation was given about the use of AI");
+          return false;
+        }
+
+        out.println("** An explanation is required.  Please describe how you used AI:");
+
+      } else {
+        if (description.length() > 0) {
+          description.append('\n');
+        }
+        description.append(line);
+      }
+    }
+  }
+
   private void askForEstimatedHours() {
     out.println("\nTo help inform how future students plan their approach to this project, you can");
     out.println("record the approximate number of hours you spent on this project. This estimate");
@@ -565,6 +645,9 @@ public class Submit extends EmailSender {
 
     askForEstimatedHours();
 
+    if (!askForAiUsage()) {
+      return false;
+    }
     return doesUserWantToSubmit();
   }
 
@@ -665,7 +748,8 @@ public class Submit extends EmailSender {
     return zipFile;
   }
 
-  private Map<Attributes.Name, String> getManifestEntries() {
+  @VisibleForTesting
+  Map<Attributes.Name, String> getManifestEntries() {
     Map<Attributes.Name, String> manifestEntries = new HashMap<>();
     manifestEntries.put(ManifestAttributes.USER_NAME, userName);
     manifestEntries.put(ManifestAttributes.USER_ID, userId);
@@ -675,6 +759,12 @@ public class Submit extends EmailSender {
     manifestEntries.put(ManifestAttributes.SUBMISSION_TIME, ManifestAttributes.formatSubmissionTime(submitTime));
     if (estimatedHours != null) {
       manifestEntries.put(ManifestAttributes.ESTIMATED_HOURS, String.valueOf(estimatedHours));
+    }
+    if (aiUsage != null) {
+      manifestEntries.put(ManifestAttributes.AI_USAGE, aiUsage.name());
+    }
+    if (aiUsageDescription != null) {
+      manifestEntries.put(ManifestAttributes.AI_USAGE_DESCRIPTION, ManifestAttributes.escapeLineBreaks(aiUsageDescription));
     }
     return manifestEntries;
   }
@@ -901,6 +991,19 @@ public class Submit extends EmailSender {
     this.estimatedHours = estimatedHours;
   }
 
+  public void setAiUsage(Grade.SubmissionInfo.AiUsage aiUsage) {
+    this.aiUsage = aiUsage;
+  }
+
+  public void setAiUsageDescription(String aiUsageDescription) {
+    this.aiUsageDescription = aiUsageDescription;
+  }
+
+  @VisibleForTesting
+  void setSubmitTime(LocalDateTime submitTime) {
+    this.submitTime = submitTime;
+  }
+
   static class ManifestAttributes {
 
     static final Attributes.Name USER_NAME = new Attributes.Name("Submitter-User-Name");
@@ -910,9 +1013,31 @@ public class Submit extends EmailSender {
     static final Attributes.Name SUBMISSION_TIME = new Attributes.Name("Submission-Time");
     static final Attributes.Name SUBMISSION_COMMENT = new Attributes.Name("Submission-Comment");
     static final Attributes.Name ESTIMATED_HOURS = new Attributes.Name("Estimated-Hours");
+    static final Attributes.Name AI_USAGE = new Attributes.Name("Ai-Usage");
+    static final Attributes.Name AI_USAGE_DESCRIPTION = new Attributes.Name("Ai-Usage-Description");
 
     private static final DateTimeFormatter LEGACY_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+
+    // Manifest values can't contain line breaks, so they are escaped
+    static String escapeLineBreaks(String value) {
+      return value.replace("\\", "\\\\").replace("\n", "\\n").replace("\r", "\\r");
+    }
+
+    static String unescapeLineBreaks(String value) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < value.length(); i++) {
+        char c = value.charAt(i);
+        if (c == '\\' && i + 1 < value.length()) {
+          char next = value.charAt(++i);
+          sb.append(next == 'n' ? '\n' : next == 'r' ? '\r' : next);
+
+        } else {
+          sb.append(c);
+        }
+      }
+      return sb.toString();
+    }
 
     static String formatSubmissionTime(LocalDateTime submitTime) {
       return submitTime.format(DATE_TIME_FORMATTER);

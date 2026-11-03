@@ -309,6 +309,34 @@ public class Grade extends NotableImpl {
     private LocalDateTime submissionTime;
     private Double estimatedHours;
     private boolean isLate;
+    private AiUsage aiUsage;
+    private String aiUsageDescription;
+
+    public enum AiUsage {
+      VIBE_CODED,
+      REVIEWED,
+      RESEARCHED,
+      NOT_USED,
+      OTHER
+    }
+
+    public AiUsage getAiUsage() {
+      return aiUsage;
+    }
+
+    public SubmissionInfo setAiUsage(AiUsage aiUsage) {
+      this.aiUsage = aiUsage;
+      return this;
+    }
+
+    public String getAiUsageDescription() {
+      return aiUsageDescription;
+    }
+
+    public SubmissionInfo setAiUsageDescription(String aiUsageDescription) {
+      this.aiUsageDescription = aiUsageDescription;
+      return this;
+    }
 
     public LocalDateTime getSubmissionTime() {
       return submissionTime;

@@ -63,7 +63,7 @@ public class MovieDatabaseServletIT {
     String content = response.getContent();
     assertTrue(content.contains(title1), content);
     assertTrue(content.contains(title2), content);
-    int lines = response.getContentLines();
+    int lines = countLines(response.getContent());
     assertTrue(lines > 1, () -> "Expected more than 1 line, only got " + lines + "\n" +
       "In content: " + content);
   }
@@ -77,7 +77,7 @@ public class MovieDatabaseServletIT {
     assertNotNull(response);
     assertTrue(response.getContent().contains(title), response.getContent());
     assertTrue(response.getContent().contains(year), response.getContent());
-    assertEquals(1, response.getContentLines());
+    assertEquals(1, countLines(response.getContent()));
   }
 
   @Test
@@ -151,12 +151,12 @@ public class MovieDatabaseServletIT {
     HttpRequestHelper.Response response =
       http().put(Map.of("id", String.valueOf(id), "title", newTitle, "year", newYear));
     assertEquals(HTTP_OK, response.getHttpStatusCode(), response.getContent());
-    assertEquals(1, response.getContentLines());
+    assertEquals(1, countLines(response.getContent()));
     assertEquals(String.valueOf(id), response.getContent());
 
     response = http().get(Map.of("id", String.valueOf(id)));
     assertEquals(HTTP_OK, response.getHttpStatusCode());
-    assertEquals(1, response.getContentLines());
+    assertEquals(1, countLines(response.getContent()));
     assertTrue(response.getContent().contains(newTitle));
     assertTrue(response.getContent().contains(newYear));
   }
@@ -172,4 +172,8 @@ public class MovieDatabaseServletIT {
     assertThat(response.getContent(), response.getHttpStatusCode(), equalTo(HTTP_NOT_FOUND));
   }
 
+
+  private static int countLines(String content) {
+    return (int) content.lines().count();
+  }
 }

@@ -2,6 +2,8 @@ package edu.pdx.cs.joy.grader.gradebook;
 
 import edu.pdx.cs.joy.ParserException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;
@@ -84,6 +86,81 @@ public class StudentXmlTest {
     Grade.SubmissionInfo info2 = grade2.getSubmissionInfos().get(1);
     assertThat(info2.getSubmissionTime(), equalTo(submissionTime2));
     assertThat(info2.getEstimatedHours(), nullValue());
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Grade.SubmissionInfo.AiUsage.class, mode = EnumSource.Mode.EXCLUDE, names = "OTHER")
+  public void aiUsageIsPersistedInXml(Grade.SubmissionInfo.AiUsage aiUsage) throws TransformerException, ParserException {
+    Student student = new Student("test");
+    String assignmentName = "project";
+    Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
+    grade.noteSubmission(LocalDateTime.now().withNano(0)).setAiUsage(aiUsage);
+    student.setGrade(assignmentName, grade);
+
+    Grade.SubmissionInfo info = writeAndReadStudentAsXml(student).getGrade(assignmentName).getSubmissionInfos().get(0);
+
+    assertThat(info.getAiUsage(), equalTo(aiUsage));
+    assertThat(info.getAiUsageDescription(), nullValue());
+  }
+
+  @Test
+  public void otherAiUsageDescriptionIsPersistedInXml() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    String assignmentName = "project";
+    String description = "AI chose music for me to listen to";
+    Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
+    grade.noteSubmission(LocalDateTime.now().withNano(0))
+      .setAiUsage(Grade.SubmissionInfo.AiUsage.OTHER)
+      .setAiUsageDescription(description);
+    student.setGrade(assignmentName, grade);
+
+    Grade.SubmissionInfo info = writeAndReadStudentAsXml(student).getGrade(assignmentName).getSubmissionInfos().get(0);
+
+    assertThat(info.getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.OTHER));
+    assertThat(info.getAiUsageDescription(), equalTo(description));
+  }
+
+  @Test
+  public void aiUsageIsWrittenAsAiUsageElementWithTypeAttribute() {
+    Student student = new Student("test");
+    String assignmentName = "project";
+    Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
+    grade.noteSubmission(LocalDateTime.now().withNano(0)).setAiUsage(Grade.SubmissionInfo.AiUsage.REVIEWED);
+    student.setGrade(assignmentName, grade);
+
+    Document doc = XmlDumper.toXml(student);
+
+    assertThat(doc, hasXPath("/student/grades/grade/submissions/submission-info/ai-usage/@type", equalTo("REVIEWED")));
+  }
+
+  @Test
+  public void submissionWithoutAiUsageHasNoAiUsageElement() throws TransformerException, ParserException {
+    Student student = new Student("test");
+    String assignmentName = "project";
+    Grade grade = new Grade(assignmentName, Grade.NO_GRADE);
+    grade.noteSubmission(LocalDateTime.now().withNano(0));
+    student.setGrade(assignmentName, grade);
+
+    Document doc = XmlDumper.toXml(student);
+    assertThat(doc, not(hasXPath("//ai-usage")));
+
+    Grade.SubmissionInfo info = writeAndReadStudentAsXml(student).getGrade(assignmentName).getSubmissionInfos().get(0);
+    assertThat(info.getAiUsage(), nullValue());
+  }
+
+  @Test
+  void canParseXmlFileWithAiUsage() throws ParserException {
+    XmlStudentParser parser = new XmlStudentParser(readTextResource("studentWithAiUsage.xml"));
+    Grade grade = parser.parseStudent().getGrade("Project1");
+
+    List<Grade.SubmissionInfo> submissions = grade.getSubmissionInfos();
+    assertThat(submissions, hasSize(2));
+
+    assertThat(submissions.get(0).getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.REVIEWED));
+    assertThat(submissions.get(0).getAiUsageDescription(), nullValue());
+
+    assertThat(submissions.get(1).getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.OTHER));
+    assertThat(submissions.get(1).getAiUsageDescription(), equalTo("AI chose music for me to listen to"));
   }
 
   @Test

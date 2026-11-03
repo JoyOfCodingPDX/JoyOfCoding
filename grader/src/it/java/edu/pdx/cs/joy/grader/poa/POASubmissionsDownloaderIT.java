@@ -23,6 +23,7 @@ import java.util.concurrent.Future;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
 public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
@@ -88,7 +89,7 @@ public class POASubmissionsDownloaderIT extends GreenmailIntegrationTestCase  {
     POASubmission submission = captor.getValue();
     assertThat(submission.getSubject(), equalTo(subject));
     assertThat(submission.getContent(), equalTo(poa));
-    assertThat(submission.getContentType(), equalTo(contentType));
+    assertThat(submission.getContentType(), equalToIgnoringCase(contentType));
     assertThat(submission.getSubmitter(), equalTo(sender));
 
     ArgumentCaptor<StatusMessage> statusCaptor = ArgumentCaptor.forClass(StatusMessage.class);

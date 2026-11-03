@@ -8,6 +8,8 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -162,6 +164,87 @@ public class ProjectSubmissionsProcessorTest {
     List<Grade.SubmissionInfo> submissions = student.getGrade(projectName).getSubmissionInfos();
     assertThat(submissions, hasSize(1));
     assertThat(submissions.get(0).getEstimatedHours(), equalTo(estimatedHours));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Grade.SubmissionInfo.AiUsage.class, mode = EnumSource.Mode.EXCLUDE, names = "OTHER")
+  public void aiUsageNotedInGradeBook(Grade.SubmissionInfo.AiUsage aiUsage) throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setAiUsage(aiUsage)
+      .build();
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    Grade.SubmissionInfo submission = getOnlySubmission(student, projectName);
+    assertThat(submission.getAiUsage(), equalTo(aiUsage));
+    assertThat(submission.getAiUsageDescription(), nullValue());
+  }
+
+  @Test
+  public void otherAiUsageDescriptionNotedInGradeBook() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    String description = "AI chose music for me to listen to";
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setAiUsage(Grade.SubmissionInfo.AiUsage.OTHER)
+      .setAiUsageDescription(description)
+      .build();
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    Grade.SubmissionInfo submission = getOnlySubmission(student, projectName);
+    assertThat(submission.getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.OTHER));
+    assertThat(submission.getAiUsageDescription(), equalTo(description));
+  }
+
+  @Test
+  public void submissionWithoutAiUsageInManifestHasNoAiUsage() throws StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .build();
+
+    noteProjectSubmissionInGradeBook(gradebook, manifest);
+
+    Grade.SubmissionInfo submission = getOnlySubmission(student, projectName);
+    assertThat(submission.getAiUsage(), nullValue());
+    assertThat(submission.getAiUsageDescription(), nullValue());
+  }
+
+  @Test
+  public void submissionWithUnrecognizedAiUsageIsRejected() {
+    String projectName = "Project";
+
+    GradeBook gradebook = createGradeBookWithAssignment(projectName);
+    Student student = createStudentInGradeBook(gradebook);
+
+    Manifest manifest = manifest(projectName)
+      .setStudent(student)
+      .setAiUsage("BOGUS")
+      .build();
+
+    assertThrows(StudentEmailAttachmentProcessor.SubmissionException.class, () ->
+      noteProjectSubmissionInGradeBook(gradebook, manifest));
+  }
+
+  private Grade.SubmissionInfo getOnlySubmission(Student student, String projectName) {
+    List<Grade.SubmissionInfo> submissions = student.getGrade(projectName).getSubmissionInfos();
+    assertThat(submissions, hasSize(1));
+    return submissions.get(0);
   }
 
   @Test
@@ -325,6 +408,18 @@ public class ProjectSubmissionsProcessorTest {
 
     public ManifestBuilder setEstimatedHours(Double estimatedHours) {
       return setAttribute(Submit.ManifestAttributes.ESTIMATED_HOURS, String.valueOf(estimatedHours));
+    }
+
+    public ManifestBuilder setAiUsage(Grade.SubmissionInfo.AiUsage aiUsage) {
+      return setAiUsage(aiUsage.name());
+    }
+
+    public ManifestBuilder setAiUsage(String aiUsage) {
+      return setAttribute(Submit.ManifestAttributes.AI_USAGE, aiUsage);
+    }
+
+    public ManifestBuilder setAiUsageDescription(String description) {
+      return setAttribute(Submit.ManifestAttributes.AI_USAGE_DESCRIPTION, description);
     }
   }
 

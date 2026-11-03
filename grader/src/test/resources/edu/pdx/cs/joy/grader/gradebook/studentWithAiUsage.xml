@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE student PUBLIC "-//Joy of Coding at PSU//DTD Grade Book//EN" "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+<student enrolled-section="graduate">
+<id>studentId</id>
+<firstName>FirstName</firstName>
+<lastName>LastName</lastName>
+<email>email@email.com</email>
+<major>Major</major>
+<grades>
+<grade>
+<name>Project1</name>
+<score>3.2</score>
+<submissions>
+<submission-info>
+<date>2026-07-15T20:43:46.644270791</date>
+<estimated-hours>13.0</estimated-hours>
+<ai-usage type="REVIEWED"/>
+</submission-info>
+<submission-info>
+<date>2026-07-16T20:43:46.644270791</date>
+<estimated-hours>15.0</estimated-hours>
+<ai-usage type="OTHER">AI chose music for me to listen to</ai-usage>
+</submission-info>
+</submissions>
+</grade>
+</grades>
+</student>

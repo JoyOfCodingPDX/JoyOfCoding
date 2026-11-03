@@ -1,17 +1,26 @@
 package edu.pdx.cs.joy.grader;
 
+import edu.pdx.cs.joy.grader.gradebook.Assignment;
+import edu.pdx.cs.joy.grader.gradebook.Grade;
+import edu.pdx.cs.joy.grader.gradebook.GradeBook;
 import edu.pdx.cs.joy.grader.gradebook.Student;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -345,6 +354,88 @@ public class SubmitTest {
     assertThat(zipFileTitle, containsString(firstName));
     assertThat(zipFileTitle, containsString(lastName));
     assertThat(zipFileTitle, not(containsString(nickName)));
+  }
+
+  @Test
+  void aiUsageIsIncludedInManifestEntries() {
+    Submit submit = submitWithTime();
+    submit.setAiUsage(Grade.SubmissionInfo.AiUsage.REVIEWED);
+
+    Map<Attributes.Name, String> entries = submit.getManifestEntries();
+
+    assertThat(entries.get(Submit.ManifestAttributes.AI_USAGE), equalTo("REVIEWED"));
+    assertThat(entries, not(hasKey(Submit.ManifestAttributes.AI_USAGE_DESCRIPTION)));
+  }
+
+  @Test
+  void aiUsageDescriptionIsIncludedInManifestEntries() {
+    Submit submit = submitWithTime();
+    submit.setAiUsage(Grade.SubmissionInfo.AiUsage.OTHER);
+    submit.setAiUsageDescription("AI chose music for me to listen to");
+
+    Map<Attributes.Name, String> entries = submit.getManifestEntries();
+
+    assertThat(entries.get(Submit.ManifestAttributes.AI_USAGE), equalTo("OTHER"));
+    assertThat(entries.get(Submit.ManifestAttributes.AI_USAGE_DESCRIPTION), equalTo("AI chose music for me to listen to"));
+  }
+
+  @Test
+  void manifestEntriesOmitAiUsageWhenNotAnswered() {
+    Map<Attributes.Name, String> entries = submitWithTime().getManifestEntries();
+
+    assertThat(entries, not(hasKey(Submit.ManifestAttributes.AI_USAGE)));
+    assertThat(entries, not(hasKey(Submit.ManifestAttributes.AI_USAGE_DESCRIPTION)));
+  }
+
+  @Test
+  void aiUsageDescriptionWithNewlinesSurvivesManifestRoundTrip() throws IOException, StudentEmailAttachmentProcessor.SubmissionException {
+    String projectName = "Project1";
+    String description = "Line one\nLine two with a \\ backslash and \u00fcn\u00efcode\r\nLine three";
+
+    Student student = new Student("studentId");
+    student.setFirstName("First");
+    student.setLastName("Last");
+    student.setEmail("student@email.com");
+
+    Submit submit = submitWithTime();
+    submit.setProjectName(projectName);
+    submit.setStudent(student);
+    submit.setAiUsage(Grade.SubmissionInfo.AiUsage.OTHER);
+    submit.setAiUsageDescription(description);
+
+    Manifest manifest = writeAndReadManifest(submit.getManifestEntries());
+    manifest.getMainAttributes().put(Submit.ManifestAttributes.SUBMISSION_COMMENT, "comment");
+
+    GradeBook gradeBook = new GradeBook("test");
+    gradeBook.addStudent(student);
+    gradeBook.addAssignment(new Assignment(projectName, 10.0));
+
+    new ProjectSubmissionsProcessor(tempDir, gradeBook).noteSubmissionInGradeBook(manifest);
+
+    Grade.SubmissionInfo info = student.getGrade(projectName).getSubmissionInfos().get(0);
+    assertThat(info.getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.OTHER));
+    assertThat(info.getAiUsageDescription(), equalTo(description));
+  }
+
+  private Submit submitWithTime() {
+    Submit submit = new Submit();
+    submit.setSubmitTime(LocalDateTime.of(2026, 7, 15, 20, 43, 46));
+    return submit;
+  }
+
+  private Manifest writeAndReadManifest(Map<Attributes.Name, String> entries) throws IOException {
+    Manifest manifest = new Manifest();
+    Attributes attrs = manifest.getMainAttributes();
+    attrs.put(Attributes.Name.MANIFEST_VERSION, "1.0");
+    entries.forEach((name, value) -> {
+      if (value != null) {
+        attrs.put(name, value);
+      }
+    });
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    manifest.write(bytes);
+    return new Manifest(new ByteArrayInputStream(bytes.toByteArray()));
   }
 
 }

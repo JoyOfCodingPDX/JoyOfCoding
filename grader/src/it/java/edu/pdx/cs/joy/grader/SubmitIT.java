@@ -139,6 +139,40 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
   }
 
+  @Test
+  void aiUsageIsPassedThroughToManifest() throws MessagingException, IOException {
+    submitter().setAiUsage(Grade.SubmissionInfo.AiUsage.REVIEWED, null).submitFiles();
+
+    SubmissionInfo info = fetchOnlySubmissionInfo();
+    assertThat(info.getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.REVIEWED));
+    assertThat(info.getAiUsageDescription(), nullValue());
+  }
+
+  @Test
+  void otherAiUsageDescriptionWithNewlineIsPassedThroughToManifest() throws MessagingException, IOException {
+    String description = "AI chose music for me\nand picked a playlist";
+
+    submitter().setAiUsage(Grade.SubmissionInfo.AiUsage.OTHER, description).submitFiles();
+
+    SubmissionInfo info = fetchOnlySubmissionInfo();
+    assertThat(info.getAiUsage(), equalTo(Grade.SubmissionInfo.AiUsage.OTHER));
+    assertThat(info.getAiUsageDescription(), equalTo(description));
+  }
+
+  private SubmissionInfo fetchOnlySubmissionInfo() {
+    GradeBook gradeBook = new GradeBook("SubmitIT");
+    gradeBook.addStudent(new Student(studentLoginId));
+    gradeBook.addAssignment(new Assignment(projectName, 3.5));
+
+    GraderEmailAccount account = new GraderEmailAccount(emailServerHost, imapsPort, graderEmail, imapPassword, true, m -> { });
+    FetchAndProcessGraderEmail.fetchAndProcessGraderEmails("projects", account, this.tempDirectory, gradeBook);
+
+    Grade grade = gradeBook.getStudent(studentLoginId).get().getGrade(projectName);
+    assertThat(grade, is(notNullValue()));
+    assertThat(grade.getSubmissionInfos(), hasSize(1));
+    return grade.getSubmissionInfos().get(0);
+  }
+
   private void assertZipFileContainsFilesInProjectDirectories() throws IOException {
     File zipFile = findNewestZipFileInTempDirectory();
     assertThat(zipFile, is(notNullValue()));
@@ -188,6 +222,8 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     protected LocalDateTime submitTime = LocalDateTime.now();
     private Double estimatedHours = null;
+    private Grade.SubmissionInfo.AiUsage aiUsage = null;
+    private String aiUsageDescription = null;
     private boolean sendReceipt = false;
 
     public ProjectSubmitter setSubmitTime(LocalDateTime submitTime) {
@@ -197,6 +233,12 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
 
     public ProjectSubmitter setEstimatedHours(Double estimatedHours) {
       this.estimatedHours = estimatedHours;
+      return this;
+    }
+
+    public ProjectSubmitter setAiUsage(Grade.SubmissionInfo.AiUsage aiUsage, String description) {
+      this.aiUsage = aiUsage;
+      this.aiUsageDescription = description;
       return this;
     }
 
@@ -215,6 +257,8 @@ public class SubmitIT extends EmailSenderIntegrationTestCase {
       submit.setProjectName(projectName);
       submit.setStudent(student);
       submit.setEstimatedHours(estimatedHours);
+      submit.setAiUsage(aiUsage);
+      submit.setAiUsageDescription(aiUsageDescription);
 
       for (File file : filesToSubmit) {
         submit.addFile(file.getAbsolutePath());
