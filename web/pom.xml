@@ -12,7 +12,7 @@
   <version>2.1.1-SNAPSHOT</version>
   <url>http://www.cs.pdx.edu/~whitlock</url>
   <properties>
-    <resteasy.version>7.0.2.Final</resteasy.version>
+    <resteasy.version>7.0.5.Final</resteasy.version>
     <jetty.http.port>8080</jetty.http.port>
   </properties>
   <build>
