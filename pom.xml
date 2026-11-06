@@ -557,7 +557,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>4.0.0-M16</version>
+          <version>3.22.0</version>
           <configuration>
             <!-- Prevent child modules from overwriting parent's index.html -->
             <topSiteURL>.</topSiteURL>
