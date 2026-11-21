@@ -8,6 +8,7 @@ import javax.xml.transform.TransformerException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -184,6 +185,41 @@ public class GradeBookXmlTest {
   @Test
   void databaseProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
     persistProjectOfType(Assignment.ProjectType.DATABASE);
+  }
+
+  @Test
+  void aiAssistedProjectTypeIsWrittenToXml() {
+    GradeBook book = new GradeBook("test");
+    book.addAssignment(new Assignment("project", 1.0).setProjectType(Assignment.ProjectType.AI_ASSISTED));
+
+    Document doc = XmlDumper.dumpGradeBook(book, new XmlHelper());
+
+    assertThat(doc, hasXPath("/gradebook/assignments/assignment/@project-type", equalTo("AI_ASSISTED")));
+  }
+
+  @Test
+  void aiAssistedProjectTypeIsParsedFromXml() throws ParserException {
+    String xml = """
+      <!DOCTYPE gradebook PUBLIC "-//Joy of Coding at PSU//DTD Grade Book//EN"
+        "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+      <gradebook>
+        <name>test</name>
+        <assignments>
+          <assignment type="PROJECT" project-type="AI_ASSISTED">
+            <name>project</name><points>1.0</points>
+          </assignment>
+        </assignments>
+        <students/>
+      </gradebook>
+      """;
+    XmlGradeBookParser parser = new XmlGradeBookParser(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+
+    assertThat(parser.parse().getAssignment("project").getProjectType(), equalTo(Assignment.ProjectType.AI_ASSISTED));
+  }
+
+  @Test
+  void aiAssistedProjectTypeIsPersistedToXml() throws ParserException, IOException, TransformerException {
+    persistProjectOfType(Assignment.ProjectType.AI_ASSISTED);
   }
 
   @Test

@@ -201,6 +201,10 @@ public class XmlGradeBookParser extends XmlHelper {
           assignment.setProjectType(Assignment.ProjectType.ANDROID);
           break;
 
+        case "AI_ASSISTED":
+          assignment.setProjectType(Assignment.ProjectType.AI_ASSISTED);
+          break;
+
         default:
           throw new ParserException("Unknown project type: " + projectType);
       }

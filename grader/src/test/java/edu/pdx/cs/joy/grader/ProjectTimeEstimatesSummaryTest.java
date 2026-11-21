@@ -255,6 +255,28 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
+  void aiAssistedSummaryUsesMaximumEstimateAndIgnoresMissingEstimates() {
+    GradeBook book = new GradeBook("test");
+    Assignment project = addProject(book, Assignment.ProjectType.AI_ASSISTED);
+    noteSubmission(addStudent(book, "student1"), project, 2.0, 4.0);
+    noteSubmission(addStudent(book, "student2"), project, 6.0);
+    noteSubmission(addStudent(book, "student3"), project, (Double) null);
+
+    ProjectTimeEstimatesSummary.TimeEstimatesSummaries summaries =
+      new ProjectTimeEstimatesSummary().getTimeEstimateSummaries(book);
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary estimates =
+      summaries.getTimeEstimateSummary(Assignment.ProjectType.AI_ASSISTED);
+
+    assertThat(estimates.getCount(), equalTo(2));
+    assertThat(estimates.getAverage(), equalTo(5.0));
+    StringWriter output = new StringWriter();
+    summaries.generateMarkdown(output, List.of(Assignment.ProjectType.AI_ASSISTED));
+    assertThat(output.toString(), containsString("|  | AI Assisted |"));
+    assertThat(output.toString(), containsString("| Count | 2 |"));
+    assertThat(output.toString(), containsString("| Average | 5 hours |"));
+  }
+
+  @Test
   void generateMarkdown() {
     GradeBook book = new GradeBook("test");
 
