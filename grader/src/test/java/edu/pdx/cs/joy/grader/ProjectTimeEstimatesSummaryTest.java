@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -255,6 +256,37 @@ public class ProjectTimeEstimatesSummaryTest {
   }
 
   @Test
+  void fivePercentThresholdsAreInterpolatedBetweenSortedEstimates() {
+    List<Double> estimates = IntStream.rangeClosed(1, 100)
+      .mapToDouble(i -> 101 - i)
+      .boxed()
+      .collect(Collectors.toList());
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary summary =
+      new ProjectTimeEstimatesSummary.TimeEstimatesSummary(estimates);
+
+    assertThat(summary.getBottomFivePercent(), closeTo(5.95, 0.000001));
+    assertThat(summary.getTopFivePercent(), closeTo(95.05, 0.000001));
+  }
+
+  @Test
+  void fivePercentThresholdsForOneEstimateAreThatEstimate() {
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary summary =
+      new ProjectTimeEstimatesSummary.TimeEstimatesSummary(List.of(10.0));
+
+    assertThat(summary.getBottomFivePercent(), equalTo(10.0));
+    assertThat(summary.getTopFivePercent(), equalTo(10.0));
+  }
+
+  @Test
+  void fivePercentThresholdsForTwoEstimatesAreInterpolated() {
+    ProjectTimeEstimatesSummary.TimeEstimatesSummary summary =
+      new ProjectTimeEstimatesSummary.TimeEstimatesSummary(List.of(20.0, 0.0));
+
+    assertThat(summary.getBottomFivePercent(), closeTo(1.0, 0.000001));
+    assertThat(summary.getTopFivePercent(), closeTo(19.0, 0.000001));
+  }
+
+  @Test
   void aiAssistedSummaryUsesMaximumEstimateAndIgnoresMissingEstimates() {
     GradeBook book = new GradeBook("test");
     Assignment project = addProject(book, Assignment.ProjectType.AI_ASSISTED);
@@ -317,11 +349,11 @@ public class ProjectTimeEstimatesSummaryTest {
     assertThat(lines.get(1), equalTo("| :--- | ---: | ---: |"));
     assertThat(lines.get(2), equalTo("| Count | 5 | 5 |"));
     assertThat(lines.get(3), matchesRegex("\\| Average \\| \\d hours \\| \\d hours \\|"));
-    assertThat(lines.get(4), matchesRegex("\\| Maximum \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(4), equalTo("| Top 5% | 6 hours | 8 hours |"));
     assertThat(lines.get(5), matchesRegex("\\| Top 25% \\| \\d hours \\| \\d hours \\|"));
     assertThat(lines.get(6), matchesRegex("\\| Median \\| \\d hours \\| \\d hours \\|"));
     assertThat(lines.get(7), matchesRegex("\\| Bottom 25% \\| \\d hours \\| \\d hours \\|"));
-    assertThat(lines.get(8), matchesRegex("\\| Minimum \\| \\d hours \\| \\d hours \\|"));
+    assertThat(lines.get(8), equalTo("| Bottom 5% | 2 hours | 6 hours |"));
   }
 
   @Test
