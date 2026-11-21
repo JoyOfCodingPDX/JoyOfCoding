@@ -288,6 +288,10 @@ public class XmlDumper extends XmlHelper {
           assignmentNode.setAttribute("project-type", "ANDROID");
           break;
 
+        case AI_ASSISTED:
+          assignmentNode.setAttribute("project-type", "AI_ASSISTED");
+          break;
+
         default:
           throw new IllegalStateException("Can't handle project type: " + projectType);
       }

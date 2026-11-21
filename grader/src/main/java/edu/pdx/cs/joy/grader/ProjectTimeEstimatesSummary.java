@@ -54,7 +54,7 @@ public class ProjectTimeEstimatesSummary {
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(gradeBooks);
 
     PrintWriter pw = new PrintWriter(System.out, true);
-    summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, DATABASE, REST, ANDROID));
+    summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, DATABASE, AI_ASSISTED, REST, ANDROID));
     pw.flush();
 
   }
@@ -233,6 +233,9 @@ public class ProjectTimeEstimatesSummary {
 
         case ANDROID:
           return "Android";
+
+        case AI_ASSISTED:
+          return "AI Assisted";
 
         default:
           throw new UnsupportedOperationException("Don't know how to format " + projectType);
