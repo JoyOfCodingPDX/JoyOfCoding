@@ -25,8 +25,8 @@ class ProjectTimeEstimatesSummaryIT extends InvokeMainTestCase {
 
     MainMethodResult result = invokeMain(ProjectTimeEstimatesSummary.class, gradebook.toString());
 
-    assertThat(result.getTextWrittenToStandardOut(), containsString("| DATABASE | AI Assisted | REST | Android |"));
-    assertThat(result.getTextWrittenToStandardOut(), containsString("| Count | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |"));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("| AI Assisted | REST | Android |"));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("| Count | 0 | 0 | 0 | 0 | 0 | 0 | 0 |"));
     assertThat(result.getTextWrittenToStandardError(), isEmptyString());
   }
 }

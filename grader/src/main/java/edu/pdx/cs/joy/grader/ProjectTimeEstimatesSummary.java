@@ -54,7 +54,7 @@ public class ProjectTimeEstimatesSummary {
     TimeEstimatesSummaries summaries = summary.getTimeEstimateSummaries(gradeBooks);
 
     PrintWriter pw = new PrintWriter(System.out, true);
-    summaries.generateMarkdown(pw, List.of(APP_CLASSES, TEXT_FILE, PRETTY_PRINT, KOANS, XML, DATABASE, AI_ASSISTED, REST, ANDROID));
+    summaries.generateMarkdown(pw, List.of(KOANS, APP_CLASSES, TEXT_FILE, PRETTY_PRINT, AI_ASSISTED, REST, ANDROID));
     pw.flush();
 
   }
