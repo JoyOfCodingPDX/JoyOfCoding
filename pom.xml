@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.davidwhitlock.joy</groupId>
-  <version>1.3.1-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   <artifactId>joy</artifactId>
   <packaging>pom</packaging>
   <name>Java Example Code</name>
@@ -57,39 +57,39 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <guava.version>33.6.0-jre</guava.version>
+        <guava.version>33.8.0-jre</guava.version>
         <guice.version>7.0.0</guice.version>
-        <h2.version>2.4.240</h2.version>
+        <h2.version>2.5.252</h2.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <pmd.version>7.24.0</pmd.version>
+        <pmd.version>7.29.0</pmd.version>
 
         <wagon-git.version>2.0.4</wagon-git.version> <!-- Do not upgrade to 2.0.4 as it doesn't work -->
         <wagon-ssh.version>3.5.3</wagon-ssh.version>
 
-        <junit.version>5.12.2</junit.version>
+        <junit.version>6.1.3</junit.version>
         <hamcrest.version>3.0</hamcrest.version>
-        <mockito.version>5.23.0</mockito.version>
-        <surefire.version>3.5.5</surefire.version>
-      <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-      <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
-      <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-      <jetty-maven-plugin.version>12.1.9</jetty-maven-plugin.version>
-      <spotbugs-maven-plugin.version>4.9.8.3</spotbugs-maven-plugin.version>
-      <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <mockito.version>5.24.0</mockito.version>
+        <surefire.version>3.6.1</surefire.version>
+      <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+      <build-helper-maven-plugin.version>3.6.2</build-helper-maven-plugin.version>
+      <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+      <jetty-maven-plugin.version>12.1.14</jetty-maven-plugin.version>
+      <spotbugs-maven-plugin.version>4.10.5.0</spotbugs-maven-plugin.version>
+      <jacoco-maven-plugin.version>0.8.16</jacoco-maven-plugin.version>
       <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
       <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
       <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
-      <maven-surefire-report-plugin.version>3.5.5</maven-surefire-report-plugin.version>
+      <maven-surefire-report-plugin.version>3.6.1</maven-surefire-report-plugin.version>
       <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-      <checkstyle.version>13.4.2</checkstyle.version>
+      <checkstyle.version>14.4.0</checkstyle.version>
       <maven-archetype-plugin.version>3.4.1</maven-archetype-plugin.version>
       <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
       <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
-      <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
-      <exec-maven-plugin.version>3.6.3</exec-maven-plugin.version>
+      <versions-maven-plugin.version>2.23.0</versions-maven-plugin.version>
+      <exec-maven-plugin.version>3.6.4</exec-maven-plugin.version>
 
       <jacoco.min.instruction.covered.ratio>0.75</jacoco.min.instruction.covered.ratio>
       <jacoco.max.missed.classes>0</jacoco.max.missed.classes>
@@ -126,7 +126,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.7.0</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -196,7 +196,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.4</version>
+        <version>3.2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -206,7 +206,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -243,7 +243,7 @@
       <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>0.10.0</version>
+        <version>0.12.0</version>
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
@@ -483,7 +483,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.10.0</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -557,7 +557,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>4.0.0-M16</version>
+          <version>3.22.0</version>
           <configuration>
             <!-- Prevent child modules from overwriting parent's index.html -->
             <topSiteURL>.</topSiteURL>
