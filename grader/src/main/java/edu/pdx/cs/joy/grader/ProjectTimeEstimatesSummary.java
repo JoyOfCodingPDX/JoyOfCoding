@@ -137,15 +137,15 @@ public class ProjectTimeEstimatesSummary {
       headerRows(pw, projectTypes);
       countRow(pw, projectTypes);
       averageRow(pw, projectTypes);
-      maximumRow(pw, projectTypes);
+      topFivePercentRow(pw, projectTypes);
       upperQuartileRow(pw, projectTypes);
       medianRow(pw, projectTypes);
       lowerQuartileRow(pw, projectTypes);
-      minimumRow(pw, projectTypes);
+      bottomFivePercentRow(pw, projectTypes);
     }
 
-    private void minimumRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRowOfDoubles(pw, projectTypes, "Minimum", TimeEstimatesSummary::getMinimum);
+    private void bottomFivePercentRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Bottom 5%", TimeEstimatesSummary::getBottomFivePercent);
     }
 
     private void lowerQuartileRow(PrintWriter pw, List<ProjectType> projectTypes) {
@@ -160,8 +160,8 @@ public class ProjectTimeEstimatesSummary {
       formatRowOfDoubles(pw, projectTypes, "Top 25%", TimeEstimatesSummary::getUpperQuartile);
     }
 
-    private void maximumRow(PrintWriter pw, List<ProjectType> projectTypes) {
-      formatRowOfDoubles(pw, projectTypes, "Maximum", TimeEstimatesSummary::getMaximum);
+    private void topFivePercentRow(PrintWriter pw, List<ProjectType> projectTypes) {
+      formatRowOfDoubles(pw, projectTypes, "Top 5%", TimeEstimatesSummary::getTopFivePercent);
     }
 
     private void averageRow(PrintWriter pw, List<ProjectType> projectTypes) {
@@ -247,6 +247,8 @@ public class ProjectTimeEstimatesSummary {
     private final int count;
     private final double maximum;
     private final double minimum;
+    private final double bottomFivePercent;
+    private final double topFivePercent;
     private final double median;
     private final double upperQuartile;
     private final double lowerQuartile;
@@ -258,9 +260,18 @@ public class ProjectTimeEstimatesSummary {
       List<Double> sorted = estimates.stream().sorted().collect(Collectors.toList());
       this.minimum = sorted.get(0);
       this.maximum = sorted.get(sorted.size() - 1);
+      this.bottomFivePercent = percentile(sorted, 0.05);
+      this.topFivePercent = percentile(sorted, 0.95);
       this.median = median(sorted);
       this.upperQuartile = upperQuartile(sorted);
       this.lowerQuartile = lowerQuartile(sorted);
+    }
+
+    private static double percentile(List<Double> sorted, double fraction) {
+      double position = (sorted.size() - 1) * fraction;
+      int lower = (int) Math.floor(position);
+      int upper = (int) Math.ceil(position);
+      return sorted.get(lower) + (position - lower) * (sorted.get(upper) - sorted.get(lower));
     }
 
     @VisibleForTesting
@@ -298,6 +309,14 @@ public class ProjectTimeEstimatesSummary {
 
     public int getCount() {
       return count;
+    }
+
+    public double getBottomFivePercent() {
+      return bottomFivePercent;
+    }
+
+    public double getTopFivePercent() {
+      return topFivePercent;
     }
 
     public double getMaximum() {
